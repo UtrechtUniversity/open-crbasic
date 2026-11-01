@@ -54,7 +54,10 @@ def test_operator_joined_chain_is_not_capped():
     # `alpha-beta-gamma` (no spaces) is one valid operator chain -- every operand in it is
     # checked, then exactly one more (`delta`) as the trailing peek.
     assert cr3xx._leading_unknown_words("alpha-beta-gamma delta", set()) == [
-        "alpha", "beta", "gamma", "delta",
+        "alpha",
+        "beta",
+        "gamma",
+        "delta",
     ]
 
 
@@ -96,14 +99,17 @@ def test_leading_number_then_one_peeked_word():
     assert cr3xx._leading_unknown_words(" 1.1 will be a value.", set()) == ["will"]
 
 
-@pytest.mark.parametrize("text,expected", [
-    ("foo and bar baz qux", ["foo", "bar", "baz"]),
-    ("foo to bar baz qux", ["foo", "bar", "baz"]),
-    ("foo AND bar AND baz qux zap", ["foo", "bar", "baz", "qux"]),
-    ("foo and 5 bar baz", ["foo", "bar"]),
-    ("5 foo+bar baz", ["foo"]),
-    ("instruction to measure two differential thermocouples.", ["instruction", "measure", "two"]),
-])
+@pytest.mark.parametrize(
+    "text,expected",
+    [
+        ("foo and bar baz qux", ["foo", "bar", "baz"]),
+        ("foo to bar baz qux", ["foo", "bar", "baz"]),
+        ("foo AND bar AND baz qux zap", ["foo", "bar", "baz", "qux"]),
+        ("foo and 5 bar baz", ["foo", "bar"]),
+        ("5 foo+bar baz", ["foo"]),
+        ("instruction to measure two differential thermocouples.", ["instruction", "measure", "two"]),
+    ],
+)
 def test_keyword_operators_join_the_chain(text, expected):
     # oracle, CR300, 2026-10-01 (`Is`/`Not` do not join it)
     assert cr3xx._leading_unknown_words(text, set()) == expected
@@ -133,7 +139,8 @@ def test_hook_prepends_one_line_per_word_before_the_generic_fallback():
 
 def test_hook_is_a_noop_on_cr6():
     program, diags, _ = compile_result_for_profile(
-        "foo bar baz qux\n\nBeginProg\nEndProg\n", profiles.get("cr6"), "t.cr6")
+        "foo bar baz qux\n\nBeginProg\nEndProg\n", profiles.get("cr6"), "t.cr6"
+    )
     before = [d.message for d in diags.errors]
     cr3xx.check_unknown_line_words(program, profiles.get("cr6"), diags)
     after = [d.message for d in diags.errors]
@@ -229,8 +236,10 @@ def test_cascade_replaces_a_tainted_statements_own_undefined_name_line():
     # `PortSet(C1,BadVar2)`: BadVar2 is itself undefined, but once tainted a statement's own
     # checks never run at all on CR300/CR350 -- oracle: only the cascade line, never a second
     # `BadVar2 is not defined.` of its own (`t2.cr6`).
-    text = ("Public A\n\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery(BadVar)\n"
-            "    PortSet(C1,BadVar2)\n    PortSet(C1,2)\n  NextScan\nEndProg\n")
+    text = (
+        "Public A\n\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery(BadVar)\n"
+        "    PortSet(C1,BadVar2)\n    PortSet(C1,2)\n  NextScan\nEndProg\n"
+    )
     messages = apply_hook(text)
     assert messages == [
         "BadVar is not defined.",
@@ -259,8 +268,10 @@ def test_cascade_is_a_noop_on_cr6():
 
 def test_cascade_skips_statements_with_fewer_than_two_arguments():
     # `Battery(BattV)` (one argument) is passed over -- not itself flagged, and not a stop.
-    text = ("Public A, BattV\n\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery(BadVar)\n"
-            "    Battery(BattV)\n    PortSet(C1,2)\n  NextScan\nEndProg\n")
+    text = (
+        "Public A, BattV\n\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery(BadVar)\n"
+        "    Battery(BattV)\n    PortSet(C1,2)\n  NextScan\nEndProg\n"
+    )
     messages = apply_hook(text)
     assert messages == [
         "BadVar is not defined.",
@@ -302,15 +313,13 @@ def test_undefined_call_skips_a_resolving_argument():
 
 def test_undefined_call_examines_only_four_arguments():
     # `t3.cr6`: literals are skipped, and `BadName3` (argument 7) is past the four examined.
-    text = ("Public GoodKnownVar\n\nBeginProg\n"
-            "  FooBar(BadName1,1,2,BadName2,3,GoodKnownVar,BadName3)\nEndProg\n")
+    text = "Public GoodKnownVar\n\nBeginProg\n  FooBar(BadName1,1,2,BadName2,3,GoodKnownVar,BadName3)\nEndProg\n"
     messages = apply_hook(text)
     assert messages == [
         "FooBar is not defined.",
         "BadName1 is not defined.",
         "BadName2 is not defined.",
-        "Invalid, or out of place expression:   "
-        "FooBar(BadName1,1,2,BadName2,3,GoodKnownVar,BadName3)\n.",
+        "Invalid, or out of place expression:   FooBar(BadName1,1,2,BadName2,3,GoodKnownVar,BadName3)\n.",
     ]
 
 
@@ -339,7 +348,8 @@ def test_undefined_call_with_no_undefined_arguments_adds_no_lines():
 
 def test_undefined_call_args_is_a_noop_on_cr6():
     program, diags, _ = compile_result_for_profile(
-        "BeginProg\n  FooBar(BadName1,1,BadName2)\nEndProg\n", profiles.get("cr6"), "t.cr6")
+        "BeginProg\n  FooBar(BadName1,1,BadName2)\nEndProg\n", profiles.get("cr6"), "t.cr6"
+    )
     before = [d.message for d in diags.errors]
     cr3xx.check_undefined_call_args(program, profiles.get("cr6"), diags)
     after = [d.message for d in diags.errors]
@@ -348,43 +358,49 @@ def test_undefined_call_args_is_a_noop_on_cr6():
 
 _CALL_ARG_PROGRAM = (
     "Public X(2), I\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n"
-    "  Scan (1,Sec,0,0)\n    CallTable T\n    Foo({args})\n  NextScan\nEndProg\n")
+    "  Scan (1,Sec,0,0)\n    CallTable T\n    Foo({args})\n  NextScan\nEndProg\n"
+)
 
 
-@pytest.mark.parametrize("profile_name, args, names", [
-    ("cr300", "B0, B1, B2, B3, B4, B5", "B0 B1 B2 B3"),
-    ("cr350", "B0, B1, B2, B3, B4, B5", "B0 B1 B2 B3"),
-    ("cr300", "1, 2, 3, 4, B4", ""),
-    ("cr300", "B0(1), B1, B2, B3, B4", "B0"),
-    ("cr300", "X+B0, B1, B2, B3, B4", "B0 B1 B2 B3"),
-    ("cr300", "B0, B1(1), B2", "B0 B1"),
-    ("cr300", "B0(B9), B1", "B0 B9"),
-    ("cr300", "B0+B5+B6, B1", "B0 B5 B6 B1"),
-    ("cr300", "B0, -B1, B2", "B0 B1 B2"),
-    ("cr300", "B0, B1+1, B2", "B0 B1 B2"),
-    ("cr300", "B0, B1, B2, B3+B4, B5", "B0 B1 B2 B3"),
-    ("cr300", "1, 2, 3, B3+B4", "B3"),
-    ("cr300", "B0, 1, X(I), B3", "B0 B3"),
-    ("cr300", "B0+B1, B2+B3, B4+B5", "B0 B1 B2 B3 B4 B5"),
-    ("cr300", "B0, X(B1), B2", "B0 B1 B2"),
-    ("cr300", "X, 0, B0, 2, B1", "B0"),
-    ("cr300", "B0, 1, X, 1, B1", "B0"),
-    ("cr300", "B0, X, B1, 1, B2", "B0 B1"),
-    ("cr300", "T, B1", "T B1"),
-])
+@pytest.mark.parametrize(
+    "profile_name, args, names",
+    [
+        ("cr300", "B0, B1, B2, B3, B4, B5", "B0 B1 B2 B3"),
+        ("cr350", "B0, B1, B2, B3, B4, B5", "B0 B1 B2 B3"),
+        ("cr300", "1, 2, 3, 4, B4", ""),
+        ("cr300", "B0(1), B1, B2, B3, B4", "B0"),
+        ("cr300", "X+B0, B1, B2, B3, B4", "B0 B1 B2 B3"),
+        ("cr300", "B0, B1(1), B2", "B0 B1"),
+        ("cr300", "B0(B9), B1", "B0 B9"),
+        ("cr300", "B0+B5+B6, B1", "B0 B5 B6 B1"),
+        ("cr300", "B0, -B1, B2", "B0 B1 B2"),
+        ("cr300", "B0, B1+1, B2", "B0 B1 B2"),
+        ("cr300", "B0, B1, B2, B3+B4, B5", "B0 B1 B2 B3"),
+        ("cr300", "1, 2, 3, B3+B4", "B3"),
+        ("cr300", "B0, 1, X(I), B3", "B0 B3"),
+        ("cr300", "B0+B1, B2+B3, B4+B5", "B0 B1 B2 B3 B4 B5"),
+        ("cr300", "B0, X(B1), B2", "B0 B1 B2"),
+        ("cr300", "X, 0, B0, 2, B1", "B0"),
+        ("cr300", "B0, 1, X, 1, B1", "B0"),
+        ("cr300", "B0, X, B1, 1, B2", "B0 B1"),
+        ("cr300", "T, B1", "T B1"),
+    ],
+)
 def test_undefined_call_argument_scan_matches_oracle(profile_name, args, names):
     # Oracle probes 2026-10-01; rule in the comment above `_call_arg_undefined_names`.
     profile = profiles.get(profile_name)
-    _, diags, _ = compile_result_for_profile(
-        _CALL_ARG_PROGRAM.format(args=args), profile, "t." + profile_name)
-    got = [d.message for d in diags.errors if d.line == 8
-           and d.message.endswith("is not defined.")]
+    _, diags, _ = compile_result_for_profile(_CALL_ARG_PROGRAM.format(args=args), profile, "t." + profile_name)
+    got = [d.message for d in diags.errors if d.line == 8 and d.message.endswith("is not defined.")]
     assert got == ["Foo is not defined."] + [f"{n} is not defined." for n in names.split()]
 
 
-@pytest.mark.skipif(not (Path(__file__).parent / "corpus" / "chm" / "cdmvoltse_1.CR6").is_file(), reason="CRBasic help examples not extracted; see tests/corpus/README.md")
+@pytest.mark.skipif(
+    not (Path(__file__).parent / "corpus" / "chm" / "cdmvoltse_1.CR6").is_file(),
+    reason="CRBasic help examples not extracted; see tests/corpus/README.md",
+)
 def test_cdmvoltse_corpus_declaration_cascade_order():
     from pathlib import Path
+
     path = Path(__file__).parent / "corpus" / "chm" / "cdmvoltse_1.CR6"
     program, diags = parser.parse_text(path.read_text(errors="replace"), path.name, profile=PROFILE)
     result = CompileResult(path.name, PROFILE, diags)
@@ -394,8 +410,7 @@ def test_cdmvoltse_corpus_declaration_cascade_order():
         by_line.setdefault(d.line, []).append(d.message)
     assert by_line[29].count("Bar_inHg is not defined.") == 2
     l23 = by_line[23]
-    assert l23[:3] == ["CDM_Battery is not defined.", "CDM_A108 is not defined.",
-                       "Batt_Volt is not defined."]
+    assert l23[:3] == ["CDM_Battery is not defined.", "CDM_A108 is not defined.", "Batt_Volt is not defined."]
     assert l23[3].startswith("Invalid, or out of place expression")
 
 
@@ -404,37 +419,51 @@ _BANANA = (1, "Invalid Variable declaration banana.")
 _SEC = (4, "Too many parameters:  Sec.")
 
 
-@pytest.mark.parametrize("text, expected", [
-    pytest.param(
-        _CASCADE_HEAD.format(call="PanelTemp(PTemp,15000)"),
-        [_BANANA, _SEC, (5, "PTemp is not defined."), (5, "Too many parameters:  15000.")],
-        id="c1"),
-    pytest.param(
-        _CASCADE_HEAD.format(call="PanelTemp(Nope,15000)"),
-        [_BANANA, _SEC, (5, "Nope is not defined."), (5, "Too many parameters:  15000.")],
-        id="c2"),
-    pytest.param(
-        "Public PTemp\nDim Z banana\nBeginProg\n  Scan (1,Sec,0,0)\n"
-        "    PanelTemp(PTemp,15000)\n  NextScan\nEndProg\n",
-        [(2, "Invalid Variable declaration banana."), _SEC,
-         (5, "Too many parameters:  15000.")],
-        id="c3"),
-    pytest.param(
-        "Dim Z banana\nPublic A(3), I\nBeginProg\n  Scan (1,Sec,0,0)\n"
-        "    PanelTemp(A(I),15000)\n  NextScan\nEndProg\n",
-        [_BANANA, (2, "Too many parameters:  I."), _SEC, (5, "A is not defined."),
-         (5, "I is not defined."), (5, "Dimensions not declared: A(I)."),
-         (5, "Too many parameters:  15000.")],
-        id="c4"),
-    pytest.param(
-        _CASCADE_HEAD.format(call="PanelTemp(PTemp(),15000)"),
-        [_BANANA, _SEC, (5, "PTemp is not defined."), (5, "Too many parameters:  15000.")],
-        id="c6"),
-    pytest.param(
-        _CASCADE_HEAD.format(call="VoltSe(PTemp,1,Nope,1,0,0,15000,1,0)"),
-        [_BANANA, _SEC, (5, "PTemp is not defined."), (5, "Too many parameters:  1.")],
-        id="c7"),
-])
+@pytest.mark.parametrize(
+    "text, expected",
+    [
+        pytest.param(
+            _CASCADE_HEAD.format(call="PanelTemp(PTemp,15000)"),
+            [_BANANA, _SEC, (5, "PTemp is not defined."), (5, "Too many parameters:  15000.")],
+            id="c1",
+        ),
+        pytest.param(
+            _CASCADE_HEAD.format(call="PanelTemp(Nope,15000)"),
+            [_BANANA, _SEC, (5, "Nope is not defined."), (5, "Too many parameters:  15000.")],
+            id="c2",
+        ),
+        pytest.param(
+            "Public PTemp\nDim Z banana\nBeginProg\n  Scan (1,Sec,0,0)\n"
+            "    PanelTemp(PTemp,15000)\n  NextScan\nEndProg\n",
+            [(2, "Invalid Variable declaration banana."), _SEC, (5, "Too many parameters:  15000.")],
+            id="c3",
+        ),
+        pytest.param(
+            "Dim Z banana\nPublic A(3), I\nBeginProg\n  Scan (1,Sec,0,0)\n"
+            "    PanelTemp(A(I),15000)\n  NextScan\nEndProg\n",
+            [
+                _BANANA,
+                (2, "Too many parameters:  I."),
+                _SEC,
+                (5, "A is not defined."),
+                (5, "I is not defined."),
+                (5, "Dimensions not declared: A(I)."),
+                (5, "Too many parameters:  15000."),
+            ],
+            id="c4",
+        ),
+        pytest.param(
+            _CASCADE_HEAD.format(call="PanelTemp(PTemp(),15000)"),
+            [_BANANA, _SEC, (5, "PTemp is not defined."), (5, "Too many parameters:  15000.")],
+            id="c6",
+        ),
+        pytest.param(
+            _CASCADE_HEAD.format(call="VoltSe(PTemp,1,Nope,1,0,0,15000,1,0)"),
+            [_BANANA, _SEC, (5, "PTemp is not defined."), (5, "Too many parameters:  1.")],
+            id="c7",
+        ),
+    ],
+)
 def test_cascade_rewrite_checks_first_argument(text, expected):
     # Oracle (CR300) 2026-10-01: after an invalid declaration, the first argument of the
     # cascade-rewritten call is checked for definition, in order with the other findings.
@@ -443,8 +472,10 @@ def test_cascade_rewrite_checks_first_argument(text, expected):
 
 
 def test_cascade_rewrite_skips_first_argument_that_declares_a_name():
-    text = ("Dim Z banana\nPublic X\nDataTable (Table1,True,-1)\n  Sample (1,X,FP2)\nEndTable\n"
-            "BeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n")
+    text = (
+        "Dim Z banana\nPublic X\nDataTable (Table1,True,-1)\n  Sample (1,X,FP2)\nEndTable\n"
+        "BeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n"
+    )
     _, diags, _ = compile_result(text)
     line3 = [d.message for d in diags.errors if d.line == 3]
     assert not any("is not defined" in m for m in line3)
@@ -452,41 +483,57 @@ def test_cascade_rewrite_skips_first_argument_that_declares_a_name():
 
 
 _DEST = "Illegal destination variable type, expecting Float."
-_FLOAT_DEST_FRAME = ("Public X, L As Long, St As String, D As Double\nBeginProg\n"
-                     "  Scan (1,Sec,0,0)\n{body}\n  NextScan\nEndProg\n")
+_FLOAT_DEST_FRAME = (
+    "Public X, L As Long, St As String, D As Double\nBeginProg\n  Scan (1,Sec,0,0)\n{body}\n  NextScan\nEndProg\n"
+)
 
 
 def _float_dest_body(*lines):
     return "\n".join("    " + line for line in lines)
 
 
-@pytest.mark.parametrize("profile_name,body,expected", [
-    pytest.param("cr300", ("PanelTemp(L,60)",),
-                 [(4, _DEST), (4, "Too many parameters:  60.")], id="long"),
-    pytest.param("cr300", ("PanelTemp(X+1,60)",),
-                 [(4, _DEST), (4, "Too many parameters:  60.")], id="expression"),
-    pytest.param("cr300", ("PanelTemp(D,60)",),
-                 [(4, _DEST), (4, "Too many parameters:  60.")], id="double"),
-    pytest.param("cr300", ("VoltSe(L,1,mV1000,1,0,0,60,1,0)",),
-                 [(4, _DEST), (4, "Too many parameters:  1.")], id="voltse"),
-    pytest.param("cr300", ("X = Nope2", "PanelTemp(L,60)", "X = Nope"),
-                 [(4, "Nope2 is not defined."), (5, _DEST), (5, "Too many parameters:  60."),
-                  (6, "Nope is not defined.")], id="surrounding_lines"),
-    pytest.param("cr300", ("PanelTemp(L,60)", "Battery(L)"),
-                 [(4, _DEST), (4, "Too many parameters:  60."), (5, _DEST)],
-                 id="following_call"),
-    pytest.param("cr300", ("PanelTemp(Nope,60)",),
-                 [(4, "Nope is not defined."), (4, "Too many parameters:  60.")],
-                 id="undefined_name"),
-    pytest.param("cr300", ("PanelTemp(L,60)", "PortSet(1,1)"),
-                 [(4, _DEST), (4, "Too many parameters:  60."),
-                  (5, "Too many parameters:  1.")], id="following_portset"),
-    pytest.param("cr300", ("VoltSe(Nope,1,mV1000,1,0,0,60,1,0)",),
-                 [(4, "Nope is not defined."), (4, "Too many parameters:  1.")],
-                 id="voltse_undefined"),
-    pytest.param("cr350", ("PanelTemp(L,60)",),
-                 [(4, _DEST), (4, "Too many parameters:  60.")], id="cr350"),
-])
+@pytest.mark.parametrize(
+    "profile_name,body,expected",
+    [
+        pytest.param("cr300", ("PanelTemp(L,60)",), [(4, _DEST), (4, "Too many parameters:  60.")], id="long"),
+        pytest.param("cr300", ("PanelTemp(X+1,60)",), [(4, _DEST), (4, "Too many parameters:  60.")], id="expression"),
+        pytest.param("cr300", ("PanelTemp(D,60)",), [(4, _DEST), (4, "Too many parameters:  60.")], id="double"),
+        pytest.param(
+            "cr300", ("VoltSe(L,1,mV1000,1,0,0,60,1,0)",), [(4, _DEST), (4, "Too many parameters:  1.")], id="voltse"
+        ),
+        pytest.param(
+            "cr300",
+            ("X = Nope2", "PanelTemp(L,60)", "X = Nope"),
+            [(4, "Nope2 is not defined."), (5, _DEST), (5, "Too many parameters:  60."), (6, "Nope is not defined.")],
+            id="surrounding_lines",
+        ),
+        pytest.param(
+            "cr300",
+            ("PanelTemp(L,60)", "Battery(L)"),
+            [(4, _DEST), (4, "Too many parameters:  60."), (5, _DEST)],
+            id="following_call",
+        ),
+        pytest.param(
+            "cr300",
+            ("PanelTemp(Nope,60)",),
+            [(4, "Nope is not defined."), (4, "Too many parameters:  60.")],
+            id="undefined_name",
+        ),
+        pytest.param(
+            "cr300",
+            ("PanelTemp(L,60)", "PortSet(1,1)"),
+            [(4, _DEST), (4, "Too many parameters:  60."), (5, "Too many parameters:  1.")],
+            id="following_portset",
+        ),
+        pytest.param(
+            "cr300",
+            ("VoltSe(Nope,1,mV1000,1,0,0,60,1,0)",),
+            [(4, "Nope is not defined."), (4, "Too many parameters:  1.")],
+            id="voltse_undefined",
+        ),
+        pytest.param("cr350", ("PanelTemp(L,60)",), [(4, _DEST), (4, "Too many parameters:  60.")], id="cr350"),
+    ],
+)
 def test_float_destination_first_argument(profile_name, body, expected):
     # Oracle (CR300) 2026-10-01: the first argument of a cascade-rewritten call is checked
     # for a Float destination, in order with the other findings.
@@ -497,8 +544,7 @@ def test_float_destination_first_argument(profile_name, body, expected):
 
 def test_float_destination_first_argument_accepts_float():
     # Oracle (CR300) 2026-10-01: a Float first argument raises no destination error.
-    text = _FLOAT_DEST_FRAME.format(
-        body=_float_dest_body("VoltSe(X,1,mV1000,1,0,0,60,1,0)"))
+    text = _FLOAT_DEST_FRAME.format(body=_float_dest_body("VoltSe(X,1,mV1000,1,0,0,60,1,0)"))
     _, diags, _ = compile_result(text)
     assert _DEST not in [d.message for d in diags.errors]
 
@@ -508,54 +554,68 @@ _PROSE_END = "  NextScan\nEndProg\n"
 _PROSE_SEC = "Too many parameters:  Sec."
 
 
-@pytest.mark.parametrize("text, expected", [
-    pytest.param(
-        "The program\ninstruction.\n" + _PROSE_F + _PROSE_END,
-        [(1, "The is not defined."), (1, "program is not defined."),
-         (1, "Invalid, or out of place expression: The program."), (5, _PROSE_SEC)],
-        id="the-program-instruction"),
-    pytest.param(
-        "The program\ntwo words.\n" + _PROSE_F + _PROSE_END,
-        [(1, "The is not defined."), (1, "program is not defined."),
-         (1, "Invalid, or out of place expression: The program."),
-         (2, "two is not defined."),
-         (2, "Invalid, or out of place expression: two words.."), (5, _PROSE_SEC)],
-        id="the-program-two-words"),
-    pytest.param(
-        "two words.\n" + _PROSE_F + _PROSE_END,
-        [(1, "two is not defined."),
-         (1, "Invalid, or out of place expression: two words.."), (4, _PROSE_SEC)],
-        id="two-words"),
-    pytest.param(
-        _PROSE_F + "instruction.\n" + _PROSE_END,
-        [(4, "Could not find DataTable instruction."),
-         (4, "Invalid, or out of place expression: instruction..")],
-        id="body-instruction"),
-    pytest.param(
-        _PROSE_F + "X = Nope\ninstruction.\n" + _PROSE_END,
-        [(4, "Nope is not defined.")],
-        id="undefined-then-instruction"),
-    pytest.param(
-        _PROSE_F + "foo.bar\n" + _PROSE_END,
-        [(4, "Could not find DataTable foo."),
-         (4, "Invalid, or out of place expression: foo.bar.")],
-        id="foo-dot-bar"),
-    pytest.param(
-        _PROSE_F + "instruction.\n    PortSet(1,1)\n" + _PROSE_END,
-        [(4, "Could not find DataTable instruction."),
-         (4, "Invalid, or out of place expression: instruction..")],
-        id="instruction-then-call"),
-    pytest.param(
-        _PROSE_F + "foo bar.baz\n" + _PROSE_END,
-        [(4, "foo is not defined."),
-         (4, "Invalid, or out of place expression: foo bar.baz.")],
-        id="foo-bar-dot-baz"),
-    pytest.param(
-        _PROSE_F + "X.\n" + _PROSE_END,
-        [(4, "Could not find DataTable X."),
-         (4, "Invalid, or out of place expression: X..")],
-        id="x-dot"),
-])
+@pytest.mark.parametrize(
+    "text, expected",
+    [
+        pytest.param(
+            "The program\ninstruction.\n" + _PROSE_F + _PROSE_END,
+            [
+                (1, "The is not defined."),
+                (1, "program is not defined."),
+                (1, "Invalid, or out of place expression: The program."),
+                (5, _PROSE_SEC),
+            ],
+            id="the-program-instruction",
+        ),
+        pytest.param(
+            "The program\ntwo words.\n" + _PROSE_F + _PROSE_END,
+            [
+                (1, "The is not defined."),
+                (1, "program is not defined."),
+                (1, "Invalid, or out of place expression: The program."),
+                (2, "two is not defined."),
+                (2, "Invalid, or out of place expression: two words.."),
+                (5, _PROSE_SEC),
+            ],
+            id="the-program-two-words",
+        ),
+        pytest.param(
+            "two words.\n" + _PROSE_F + _PROSE_END,
+            [(1, "two is not defined."), (1, "Invalid, or out of place expression: two words.."), (4, _PROSE_SEC)],
+            id="two-words",
+        ),
+        pytest.param(
+            _PROSE_F + "instruction.\n" + _PROSE_END,
+            [(4, "Could not find DataTable instruction."), (4, "Invalid, or out of place expression: instruction..")],
+            id="body-instruction",
+        ),
+        pytest.param(
+            _PROSE_F + "X = Nope\ninstruction.\n" + _PROSE_END,
+            [(4, "Nope is not defined.")],
+            id="undefined-then-instruction",
+        ),
+        pytest.param(
+            _PROSE_F + "foo.bar\n" + _PROSE_END,
+            [(4, "Could not find DataTable foo."), (4, "Invalid, or out of place expression: foo.bar.")],
+            id="foo-dot-bar",
+        ),
+        pytest.param(
+            _PROSE_F + "instruction.\n    PortSet(1,1)\n" + _PROSE_END,
+            [(4, "Could not find DataTable instruction."), (4, "Invalid, or out of place expression: instruction..")],
+            id="instruction-then-call",
+        ),
+        pytest.param(
+            _PROSE_F + "foo bar.baz\n" + _PROSE_END,
+            [(4, "foo is not defined."), (4, "Invalid, or out of place expression: foo bar.baz.")],
+            id="foo-bar-dot-baz",
+        ),
+        pytest.param(
+            _PROSE_F + "X.\n" + _PROSE_END,
+            [(4, "Could not find DataTable X."), (4, "Invalid, or out of place expression: X..")],
+            id="x-dot",
+        ),
+    ],
+)
 def test_table_shaped_prose_lines(text, expected):
     # Oracle (CR300) 2026-10-01. The echo ends at end-of-line with "\n" before the final ".";
     # messages are compared with the newline removed.
@@ -563,42 +623,56 @@ def test_table_shaped_prose_lines(text, expected):
     assert [(d.line, d.message.replace("\n", "")) for d in diags.errors] == expected
 
 
-@pytest.mark.parametrize("text,expected", [
-    ("Public\nPublic X\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
-     [(1, "Variable not named."), (4, "Too many parameters:  Sec.")]),
-    ("Public X\nPublic\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Y\n  NextScan\nEndProg\n",
-     [(2, "Variable not named."), (4, "Too many parameters:  Sec."), (5, "Y is not defined.")]),
-])
+@pytest.mark.parametrize(
+    "text,expected",
+    [
+        (
+            "Public\nPublic X\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+            [(1, "Variable not named."), (4, "Too many parameters:  Sec.")],
+        ),
+        (
+            "Public X\nPublic\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Y\n  NextScan\nEndProg\n",
+            [(2, "Variable not named."), (4, "Too many parameters:  Sec."), (5, "Y is not defined.")],
+        ),
+    ],
+)
 def test_bare_declaration_starts_the_cascade(text, expected):
     # Oracle, CR300, 2026-10-01; a tainted bare `Public` keeps its own message (`asin_1.CR6`).
     _, diags, _ = compile_result(text)
     assert [(d.line, d.message) for d in diags.errors] == expected
 
 
-@pytest.mark.parametrize("stmt,expected", [
-    ("    Y = 2 * ASin( 1", [(4, "Y is not defined."),
-                            (4, "No Matching, or out of place ) in expression:     Y = 2 * ASin( 1\n.")]),
-    ("    X = 2 * ASin( 1", [(4, "No Matching, or out of place ) in expression:     X = 2 * ASin( 1\n.")]),
-    ("    Y = (1", [(4, "Y is not defined."),
-                   (4, "No Matching, or out of place ) in expression:     Y = (1\n.")]),
-])
+@pytest.mark.parametrize(
+    "stmt,expected",
+    [
+        (
+            "    Y = 2 * ASin( 1",
+            [(4, "Y is not defined."), (4, "No Matching, or out of place ) in expression:     Y = 2 * ASin( 1\n.")],
+        ),
+        ("    X = 2 * ASin( 1", [(4, "No Matching, or out of place ) in expression:     X = 2 * ASin( 1\n.")]),
+        ("    Y = (1", [(4, "Y is not defined."), (4, "No Matching, or out of place ) in expression:     Y = (1\n.")]),
+    ],
+)
 def test_unclosed_paren_assignment(stmt, expected):
     # Oracle, CR300, 2026-10-01: end-of-line echo newline; an undefined target is reported first.
     _, diags, _ = compile_result(f"Public X\nBeginProg\n  Scan (1,Sec,0,0)\n{stmt}\n  NextScan\nEndProg\n")
     assert [(d.line, d.message) for d in diags.errors] == expected
 
 
-@pytest.mark.parametrize("stmt,expected", [
-    ("Delay(0,Nope,Sec)", [(4, "Nope is not defined."), (4, "Too many parameters:  Sec.")]),
-    ("ExciteV(Vx1,Nope,0)", [(4, "Nope is not defined."), (4, "Too many parameters:  0.")]),
-    ("PulseCount(X,1,P_SW,0,0,Nope,0)", [(4, "Nope is not defined."), (4, "Too many parameters:  0.")]),
-    ("MoveBytes(A,0,Nope,0,4)", [(4, "Nope is not defined."), (4, "Too many parameters:  0.")]),
-    ("Move(A(1),2,Nope,1)", [(4, "Nope is not defined."), (4, "Too many parameters:  1.")]),
-    ('SDI12Recorder(A(),C1,"0","M!",Nope,0)', [(4, "Nope is not defined."), (4, "Too many parameters:  0.")]),
-    ("WriteIO(&B1,Nope)", [(4, "Nope is not defined.")]),
-    ("PanelTemp(X,Nope)", [(4, "Nope is not defined."), (4, "Variable illegal in Parameter: Nope.")]),
-    ("SW12(SW12_1,1)", [(4, "SW12_1 is not defined."), (4, "Too many parameters:  1.")]),
-])
+@pytest.mark.parametrize(
+    "stmt,expected",
+    [
+        ("Delay(0,Nope,Sec)", [(4, "Nope is not defined."), (4, "Too many parameters:  Sec.")]),
+        ("ExciteV(Vx1,Nope,0)", [(4, "Nope is not defined."), (4, "Too many parameters:  0.")]),
+        ("PulseCount(X,1,P_SW,0,0,Nope,0)", [(4, "Nope is not defined."), (4, "Too many parameters:  0.")]),
+        ("MoveBytes(A,0,Nope,0,4)", [(4, "Nope is not defined."), (4, "Too many parameters:  0.")]),
+        ("Move(A(1),2,Nope,1)", [(4, "Nope is not defined."), (4, "Too many parameters:  1.")]),
+        ('SDI12Recorder(A(),C1,"0","M!",Nope,0)', [(4, "Nope is not defined."), (4, "Too many parameters:  0.")]),
+        ("WriteIO(&B1,Nope)", [(4, "Nope is not defined.")]),
+        ("PanelTemp(X,Nope)", [(4, "Nope is not defined."), (4, "Variable illegal in Parameter: Nope.")]),
+        ("SW12(SW12_1,1)", [(4, "SW12_1 is not defined."), (4, "Too many parameters:  1.")]),
+    ],
+)
 def test_undefined_argument_ends_argument_list(stmt, expected):
     # Oracle, CR300, 2026-10-01: an undefined argument ends the argument list.
     program = "Public X, A(4)\nBeginProg\n  Scan (1,Sec,0,0)\n    STMT\n  NextScan\nEndProg\n"
@@ -606,17 +680,22 @@ def test_undefined_argument_ends_argument_list(stmt, expected):
     assert [(d.line, d.message) for d in diags.errors] == expected
 
 
-@pytest.mark.parametrize("call,expected", [
-    ('Foo("a",Tb.X(1,1))', ["Foo is not defined."]),
-    ("Foo(Bad,Tb.X)", ["Foo is not defined.", "Bad is not defined."]),
-    ("Foo(Tb.X,Bad)", ["Foo is not defined."]),
-    ("Foo(X+Tb.X)", ["Foo is not defined."]),
-    ("Foo(Nope.X)", ["Foo is not defined."]),
-])
+@pytest.mark.parametrize(
+    "call,expected",
+    [
+        ('Foo("a",Tb.X(1,1))', ["Foo is not defined."]),
+        ("Foo(Bad,Tb.X)", ["Foo is not defined.", "Bad is not defined."]),
+        ("Foo(Tb.X,Bad)", ["Foo is not defined."]),
+        ("Foo(X+Tb.X)", ["Foo is not defined."]),
+        ("Foo(Nope.X)", ["Foo is not defined."]),
+    ],
+)
 def test_unknown_call_stops_at_a_table_member(call, expected):
     # oracle, CR300, 2026-10-01: no fallback line once a table member is reached
-    text = ("Public X\nDataTable (Tb,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n"
-            f"  Scan (1,Sec,0,0)\n    CallTable Tb\n    {call}\n  NextScan\nEndProg\n")
+    text = (
+        "Public X\nDataTable (Tb,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n"
+        f"  Scan (1,Sec,0,0)\n    CallTable Tb\n    {call}\n  NextScan\nEndProg\n"
+    )
     _, diags, _ = compile_result(text)
     assert [d.message for d in diags.errors] == expected
 
@@ -624,6 +703,7 @@ def test_unknown_call_stops_at_a_table_member(call, expected):
 def test_inline_if_scan_keeps_later_prose_lines_checkable():
     # An unreadable one-line `If` condition followed by a prose line: the inline scan once
     # replaced the first-declaration map, and the later line crashed the checker (round 47).
-    _, diags, _ = compile_result("Public Y\nBeginProg\n  Scan (1,Sec,0,0)\n    If Y Z Then Y = 1\n"
-                                 "    foo bar baz\n  NextScan\nEndProg\n")
+    _, diags, _ = compile_result(
+        "Public Y\nBeginProg\n  Scan (1,Sec,0,0)\n    If Y Z Then Y = 1\n    foo bar baz\n  NextScan\nEndProg\n"
+    )
     assert "Internal error: unable to compile program." not in [d.message for d in diags.items]

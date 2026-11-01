@@ -37,8 +37,7 @@ class MemoAnalyze:
                 return False
         for directory, names in deps.listings.items():
             directory = Path(directory)
-            now = (tuple(sorted(e.name for e in directory.iterdir() if e.is_file()))
-                   if directory.is_dir() else None)
+            now = tuple(sorted(e.name for e in directory.iterdir() if e.is_file())) if directory.is_dir() else None
             if now != names:
                 return False
         return True

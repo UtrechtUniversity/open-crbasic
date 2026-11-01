@@ -20,10 +20,26 @@ from typing import NamedTuple
 
 from .source import LineSpan, LogicalLine, Occurrence, Piece
 
-__all__ = ["LineSpan", "Occurrence", "Piece", "PhysicalRange", "reported_spans", "line_span",
-           "logical_ranges", "exact_range", "physical_lines", "lsp_position", "lsp_range",
-           "decoded_position", "POSITION_ENCODINGS", "units", "EditorBytes", "text_lines",
-           "compiler_column", "editor_character"]
+__all__ = [
+    "LineSpan",
+    "Occurrence",
+    "Piece",
+    "PhysicalRange",
+    "reported_spans",
+    "line_span",
+    "logical_ranges",
+    "exact_range",
+    "physical_lines",
+    "lsp_position",
+    "lsp_range",
+    "decoded_position",
+    "POSITION_ENCODINGS",
+    "units",
+    "EditorBytes",
+    "text_lines",
+    "compiler_column",
+    "editor_character",
+]
 
 POSITION_ENCODINGS = ("utf-16", "utf-8", "utf-32")
 
@@ -63,8 +79,7 @@ def text_lines(text: str) -> list[str]:
     return text.replace("\r\n", "\n").split("\n")
 
 
-def compiler_column(line: str, character: int, *, encoding: str = "utf-16",
-                    file_encoding: str = "utf-8") -> int:
+def compiler_column(line: str, character: int, *, encoding: str = "utf-16", file_encoding: str = "utf-8") -> int:
     """Decoded (byte) column in the compiler bytes of editor `line` for `character` (position
     encoding units). Each editor character is `len(ch.encode(file_encoding, "replace"))` bytes, so
     this is exact for a replaced character too. A `character` inside an editor character snaps back
@@ -82,8 +97,7 @@ def compiler_column(line: str, character: int, *, encoding: str = "utf-16",
     return col
 
 
-def editor_character(line: str, column: int, *, encoding: str = "utf-16",
-                     file_encoding: str = "utf-8") -> int:
+def editor_character(line: str, column: int, *, encoding: str = "utf-16", file_encoding: str = "utf-8") -> int:
     """The inverse of `compiler_column`: decoded (byte) `column` of the compiler bytes of editor
     `line` -> `character` in `encoding` units. A column inside an encoded character snaps back to
     its start; one past the end clamps to the line's length in units."""
@@ -99,12 +113,14 @@ def editor_character(line: str, column: int, *, encoding: str = "utf-16",
             return seen
     return seen
 
+
 LineMap = Mapping[str, Mapping[int, Sequence[LineSpan]]]
 
 
 class PhysicalRange(NamedTuple):
     """`columns [start_col, end_col)` of physical line `line` (1-based) of `file`'s `occurrence`.
     Columns are 0-based decoded (Latin-1) characters, i.e. byte offsets into the line."""
+
     file: str
     occurrence: int
     line: int
@@ -143,13 +159,11 @@ def logical_ranges(ll: LogicalLine, start: int, end: int) -> list[PhysicalRange]
         lo, hi = max(start, p.start), min(end, p.end)
         if start == end:
             if p.start <= start <= p.end:
-                return [PhysicalRange(p.file, p.occurrence, p.line, p.col + start - p.start,
-                                      p.col + start - p.start)]
+                return [PhysicalRange(p.file, p.occurrence, p.line, p.col + start - p.start, p.col + start - p.start)]
             continue
         if lo >= hi:
             continue
-        piece = PhysicalRange(p.file, p.occurrence, p.line, p.col + lo - p.start,
-                              p.col + hi - p.start)
+        piece = PhysicalRange(p.file, p.occurrence, p.line, p.col + lo - p.start, p.col + hi - p.start)
         if out and out[-1][:3] == piece[:3] and out[-1].end_col == piece.start_col:
             piece = piece._replace(start_col=out.pop().start_col)
         out.append(piece)
@@ -172,8 +186,9 @@ def physical_lines(data: bytes) -> list[bytes]:
     return data.replace(b"\r\n", b"\n").split(b"\n")
 
 
-def lsp_position(data: bytes | Sequence[bytes], line: int, col: int, *,
-                 encoding: str = "utf-16", editor_encoding: str = "utf-8") -> tuple[int, int]:
+def lsp_position(
+    data: bytes | Sequence[bytes], line: int, col: int, *, encoding: str = "utf-16", editor_encoding: str = "utf-8"
+) -> tuple[int, int]:
     """LSP `(line, character)` for decoded column `col` of physical `line` (1-based).
 
     `data` is the file's bytes (or `physical_lines(data)`); `col` counts the compiler's Latin-1
@@ -187,7 +202,7 @@ def lsp_position(data: bytes | Sequence[bytes], line: int, col: int, *,
     lines = physical_lines(data) if isinstance(data, (bytes, bytearray)) else data
     if not 1 <= line <= len(lines):
         raise IndexError(f"line {line} outside 1..{len(lines)}")
-    prefix = lines[line - 1][:max(col, 0)]
+    prefix = lines[line - 1][: max(col, 0)]
     decoder = codecs.getincrementaldecoder(editor_encoding)(errors="replace")
     text = decoder.decode(prefix, final=False)
     if encoding == "utf-16":
@@ -197,12 +212,15 @@ def lsp_position(data: bytes | Sequence[bytes], line: int, col: int, *,
     return line - 1, len(text)
 
 
-def lsp_range(data: bytes | Sequence[bytes], r: PhysicalRange, *, encoding: str = "utf-16",
-              editor_encoding: str = "utf-8") -> tuple[tuple[int, int], tuple[int, int]]:
+def lsp_range(
+    data: bytes | Sequence[bytes], r: PhysicalRange, *, encoding: str = "utf-16", editor_encoding: str = "utf-8"
+) -> tuple[tuple[int, int], tuple[int, int]]:
     """`((line, character), (line, character))` for a `PhysicalRange` of the same file."""
     lines = physical_lines(data) if isinstance(data, (bytes, bytearray)) else data
-    return (lsp_position(lines, r.line, r.start_col, encoding=encoding, editor_encoding=editor_encoding),
-            lsp_position(lines, r.line, r.end_col, encoding=encoding, editor_encoding=editor_encoding))
+    return (
+        lsp_position(lines, r.line, r.start_col, encoding=encoding, editor_encoding=editor_encoding),
+        lsp_position(lines, r.line, r.end_col, encoding=encoding, editor_encoding=editor_encoding),
+    )
 
 
 def _units(text: str, encoding: str) -> int:
@@ -213,8 +231,14 @@ def _units(text: str, encoding: str) -> int:
     return len(text)
 
 
-def decoded_position(data: bytes | Sequence[bytes], line: int, character: int, *,
-                     encoding: str = "utf-16", editor_encoding: str = "utf-8") -> tuple[int, int]:
+def decoded_position(
+    data: bytes | Sequence[bytes],
+    line: int,
+    character: int,
+    *,
+    encoding: str = "utf-16",
+    editor_encoding: str = "utf-8",
+) -> tuple[int, int]:
     """The inverse of `lsp_position`: LSP `(line, character)` (0-based line, `character` counted
     in `encoding` units) -> `(line, col)` with `line` 1-based and `col` the decoded (Latin-1)
     column, i.e. the byte offset into that physical line.
@@ -238,11 +262,11 @@ def decoded_position(data: bytes | Sequence[bytes], line: int, character: int, *
     decoder = codecs.getincrementaldecoder(editor_encoding)(errors="replace")
     units = start = 0
     for col in range(len(raw)):
-        step = _units(decoder.decode(raw[col:col + 1], final=False), encoding)
+        step = _units(decoder.decode(raw[col : col + 1], final=False), encoding)
         if not step:
-            continue                       # an incomplete multi-byte sequence so far
+            continue  # an incomplete multi-byte sequence so far
         if units + step > target:
-            return line + 1, start         # inside a character: snap back to its start
+            return line + 1, start  # inside a character: snap back to its start
         units += step
         start = col + 1
         if units == target:

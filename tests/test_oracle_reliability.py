@@ -1,4 +1,3 @@
-
 import json
 import subprocess
 from types import SimpleNamespace
@@ -136,8 +135,7 @@ def test_valid_old_cache_is_reused_without_runner(staged, monkeypatch):
     program, compiler, cache = staged
     cache.mkdir()
     cache_path = cache / f"{oracle._cache_key(compiler, program, None)}.json"
-    cached = {"file": program.name, "exit": 1,
-              "stdout": "case.CR6 -- Compile Failed!\n\nline 1: bad", "cmple": None}
+    cached = {"file": program.name, "exit": 1, "stdout": "case.CR6 -- Compile Failed!\n\nline 1: bad", "cmple": None}
     cache_path.write_text(json.dumps(cached))
 
     def unexpected(*args, **kwargs):
@@ -171,9 +169,7 @@ def test_stderr_is_retained(staged, monkeypatch):
     monkeypatch.setattr(
         oracle.subprocess,
         "run",
-        lambda *args, **kwargs: result(
-            1, b"case.CR6 -- Compile Failed!\r\n\r\nline 1: bad\r\n", b"wine warning\r\n"
-        ),
+        lambda *args, **kwargs: result(1, b"case.CR6 -- Compile Failed!\r\n\r\nline 1: bad\r\n", b"wine warning\r\n"),
     )
     record = oracle.run_oracle(program, compiler_path=compiler)
     assert record["stderr"] == "wine warning\n"

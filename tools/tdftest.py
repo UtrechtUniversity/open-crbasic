@@ -108,8 +108,13 @@ class OracleTdf(TypedDict):
     lst: bytes | None
 
 
-def run_oracle_tdf(program_path: Path, siblings_dir: Path, compiler_path: Path = DEFAULT_COMPILER,
-                    use_cache: bool = True, cache_only: bool = False) -> OracleTdf:
+def run_oracle_tdf(
+    program_path: Path,
+    siblings_dir: Path,
+    compiler_path: Path = DEFAULT_COMPILER,
+    use_cache: bool = True,
+    cache_only: bool = False,
+) -> OracleTdf:
     """Compile with the real exe under Wine; return {"ok", "stdout", "tdf": bytes|None,
     "lst": bytes|None}, cached under TDF_CACHE_DIR. `cache_only=True` never invokes Wine, raising
     `NotCached` instead of a cache miss (used to report on a partially-warmed cache quickly)."""
@@ -121,7 +126,9 @@ def run_oracle_tdf(program_path: Path, siblings_dir: Path, compiler_path: Path =
         validity = {"exit": exit_code, "stdout": rec.get("stdout", "")}
         if oracle._valid_result(validity, program_path.name):
             return {
-                "ok": exit_code == 0, "exit": exit_code, "stdout": rec["stdout"],
+                "ok": exit_code == 0,
+                "exit": exit_code,
+                "stdout": rec["stdout"],
                 "stderr": rec.get("stderr", ""),
                 "tdf": base64.b64decode(rec["tdf"]) if rec["tdf"] else None,
                 "lst": base64.b64decode(rec["lst"]) if rec["lst"] else None,
@@ -137,8 +144,14 @@ def run_oracle_tdf(program_path: Path, siblings_dir: Path, compiler_path: Path =
         shutil.copy2(program_path, dest)
         argv_prefix, env = _runner_command(compiler_path)
         try:
-            proc = subprocess.run(argv_prefix + ["-z", "out.tdf", "-l", "out.lst", dest.name],
-                                  cwd=tmp_dir, env=env, capture_output=True, text=False, timeout=30)
+            proc = subprocess.run(
+                argv_prefix + ["-z", "out.tdf", "-l", "out.lst", dest.name],
+                cwd=tmp_dir,
+                env=env,
+                capture_output=True,
+                text=False,
+                timeout=30,
+            )
         except (OSError, subprocess.TimeoutExpired) as exc:
             raise oracle.OracleError(f"reference compiler runner failed: {exc}") from exc
         stdout = oracle._decode_and_normalise(proc.stdout)
@@ -150,22 +163,26 @@ def run_oracle_tdf(program_path: Path, siblings_dir: Path, compiler_path: Path =
         if not oracle._valid_result({"exit": proc.returncode, "stdout": stdout}, program_path.name):
             detail = stderr.strip() or stdout or "no compiler result line"
             raise oracle.OracleError(
-                f"{compiler_path.name} returned no usable compiler verdict "
-                f"(exit {proc.returncode}): {detail[:1000]}"
+                f"{compiler_path.name} returned no usable compiler verdict (exit {proc.returncode}): {detail[:1000]}"
             )
 
     TDF_CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    cache_path.write_text(json.dumps({
-        "ok": ok, "exit": proc.returncode, "stdout": stdout, "stderr": stderr,
-        "tdf": base64.b64encode(tdf_bytes).decode("ascii") if tdf_bytes else None,
-        "lst": base64.b64encode(lst_bytes).decode("ascii") if lst_bytes else None,
-    }))
-    return {"ok": ok, "exit": proc.returncode, "stdout": stdout, "stderr": stderr,
-            "tdf": tdf_bytes, "lst": lst_bytes}
+    cache_path.write_text(
+        json.dumps(
+            {
+                "ok": ok,
+                "exit": proc.returncode,
+                "stdout": stdout,
+                "stderr": stderr,
+                "tdf": base64.b64encode(tdf_bytes).decode("ascii") if tdf_bytes else None,
+                "lst": base64.b64encode(lst_bytes).decode("ascii") if lst_bytes else None,
+            }
+        )
+    )
+    return {"ok": ok, "exit": proc.returncode, "stdout": stdout, "stderr": stderr, "tdf": tdf_bytes, "lst": lst_bytes}
 
 
-def gate_failed(gate: str, compared: int, mismatches: int, missing_artifacts: int,
-                oracle_errors: int) -> bool:
+def gate_failed(gate: str, compared: int, mismatches: int, missing_artifacts: int, oracle_errors: int) -> bool:
     if oracle_errors or compared == 0:
         return True
     return gate == "exact" and bool(mismatches or missing_artifacts)
@@ -196,19 +213,32 @@ def _first_tdf_diff(a: bytes, b: bytes) -> str:
         if t1.size != t2.size:
             return f"table {t1.name}: size theirs={t1.size} ours={t2.size}"
         if (t1.time_type, t1.time_into, t1.interval) != (t2.time_type, t2.time_into, t2.interval):
-            return (f"table {t1.name}: header theirs="
-                    f"{(t1.time_type, t1.time_into, t1.interval)} ours="
-                    f"{(t2.time_type, t2.time_into, t2.interval)}")
+            return (
+                f"table {t1.name}: header theirs="
+                f"{(t1.time_type, t1.time_into, t1.interval)} ours="
+                f"{(t2.time_type, t2.time_into, t2.interval)}"
+            )
         fn1 = [f.name for f in t1.fields]
         fn2 = [f.name for f in t2.fields]
         if fn1 != fn2:
             return f"table {t1.name}: field names theirs={fn1} ours={fn2}"
         for f1, f2 in zip(t1.fields, t2.fields):
-            for attr in ("type", "read_only", "aliases", "processing", "units", "description",
-                         "begin_index", "dimension", "subdims"):
+            for attr in (
+                "type",
+                "read_only",
+                "aliases",
+                "processing",
+                "units",
+                "description",
+                "begin_index",
+                "dimension",
+                "subdims",
+            ):
                 if getattr(f1, attr) != getattr(f2, attr):
-                    return (f"table {t1.name} field {f1.name}.{attr}: theirs="
-                            f"{getattr(f1, attr)!r} ours={getattr(f2, attr)!r}")
+                    return (
+                        f"table {t1.name} field {f1.name}.{attr}: theirs="
+                        f"{getattr(f1, attr)!r} ours={getattr(f2, attr)!r}"
+                    )
     return "(bytes differ but no structural diff found)"
 
 
@@ -248,8 +278,12 @@ def main(argv=None) -> int:
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--no-oracle", action="store_true", help="only use cached oracle results")
     ap.add_argument("--gate", choices=["report", "exact"], default="report")
-    ap.add_argument("--logger", choices=["cr6", "cr1000x", "cr300", "cr350"], default="cr6",
-                    help="logger whose compiler and profile are compared (default cr6)")
+    ap.add_argument(
+        "--logger",
+        choices=["cr6", "cr1000x", "cr300", "cr350"],
+        default="cr6",
+        help="logger whose compiler and profile are compared (default cr6)",
+    )
     ap.add_argument("--write-fixtures", action="store_true")
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args(argv)
@@ -299,7 +333,7 @@ def main(argv=None) -> int:
             mismatches.append((group, path.name, f"sizes: theirs={theirs_sizes} ours={_user_sizes(our_tdf)}"))
         if our_tdf == theirs_tdf:
             tdf_match += 1
-        elif args.logger in ("cr6", "cr1000x"):    # CR300/CR350: Status/-l are unmodelled, see sizes
+        elif args.logger in ("cr6", "cr1000x"):  # CR300/CR350: Status/-l are unmodelled, see sizes
             diff = _first_tdf_diff(theirs_tdf, our_tdf)
             mismatches.append((group, path.name, f"TDF: {diff}"))
 
@@ -309,26 +343,33 @@ def main(argv=None) -> int:
             # TDF matched but list text didn't: show a line-level diff.
             a = theirs_lst.decode("latin-1").splitlines()
             b = our_lst.decode("latin-1").splitlines()
-            first = next((i for i in range(min(len(a), len(b))) if a[i] != b[i]),
-                         min(len(a), len(b)))
+            first = next((i for i in range(min(len(a), len(b))) if a[i] != b[i]), min(len(a), len(b)))
             ta = a[first] if first < len(a) else "(missing)"
             tb = b[first] if first < len(b) else "(missing)"
             mismatches.append((group, path.name, f"LST line {first}: theirs={ta!r} ours={tb!r}"))
 
         if args.write_fixtures:
             FIXTURES_DIR.mkdir(parents=True, exist_ok=True)
-            fixture = FIXTURES_DIR / (f"{group}_{path.stem}.json" if args.logger == "cr6"
-                                      else f"{args.logger}_{group}_{path.stem}.json")
-            fixture.write_text(json.dumps({
-                "program": path.name, "group": group,
-                "source_sha256": source_hash(path, path.parent),
-                "tdf_b64": base64.b64encode(theirs_tdf).decode("ascii"),
-                "lst_b64": base64.b64encode(theirs_lst).decode("ascii"),
-            }))
+            fixture = FIXTURES_DIR / (
+                f"{group}_{path.stem}.json" if args.logger == "cr6" else f"{args.logger}_{group}_{path.stem}.json"
+            )
+            fixture.write_text(
+                json.dumps(
+                    {
+                        "program": path.name,
+                        "group": group,
+                        "source_sha256": source_hash(path, path.parent),
+                        "tdf_b64": base64.b64encode(theirs_tdf).decode("ascii"),
+                        "lst_b64": base64.b64encode(theirs_lst).decode("ascii"),
+                    }
+                )
+            )
 
     total = len(programs)
-    print(f"programs: {total}  compared: {compiled_ok}  rejected by real exe: {skipped}"
-          + (f"  not yet cached (--no-oracle): {not_cached}" if args.no_oracle else ""))
+    print(
+        f"programs: {total}  compared: {compiled_ok}  rejected by real exe: {skipped}"
+        + (f"  not yet cached (--no-oracle): {not_cached}" if args.no_oracle else "")
+    )
     print(f"missing expected artifacts: {missing_artifacts}  oracle errors: {oracle_errors}")
     print(f"TDF byte-identical: {tdf_match}/{compiled_ok}")
     print(f"table sizes identical (all tables but Status): {size_match}/{compiled_ok}")
@@ -337,8 +378,7 @@ def main(argv=None) -> int:
         print(f"\n{len(mismatches)} mismatches:")
         for group, name, diff in mismatches:
             print(f"  [{group}] {name}: {diff}")
-    return 1 if gate_failed(args.gate, compiled_ok, len(mismatches), missing_artifacts,
-                            oracle_errors) else 0
+    return 1 if gate_failed(args.gate, compiled_ok, len(mismatches), missing_artifacts, oracle_errors) else 0
 
 
 if __name__ == "__main__":

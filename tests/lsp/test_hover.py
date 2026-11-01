@@ -37,17 +37,39 @@ class FakeHelp:
         return self.pages.get(name.upper())
 
 
-def page(name: str, params: list[tuple[str, str]], summary: str = "Synthetic summary.",
-         syntax: str | None = None, optional: tuple[str, ...] = ()) -> InstructionHelp:
+def page(
+    name: str,
+    params: list[tuple[str, str]],
+    summary: str = "Synthetic summary.",
+    syntax: str | None = None,
+    optional: tuple[str, ...] = (),
+) -> InstructionHelp:
     ps = tuple(ParamHelp(n, None, d, n in optional) for n, d in params)
-    return InstructionHelp(name.upper(), (name.upper(),), f"{name} (Synthetic Title)",
-                           syntax or f"{name} ( {', '.join(n for n, _ in params)} )", ps, summary,
-                           Path("/help/Instructions") / f"{name.lower()}.htm")
+    return InstructionHelp(
+        name.upper(),
+        (name.upper(),),
+        f"{name} (Synthetic Title)",
+        syntax or f"{name} ( {', '.join(n for n, _ in params)} )",
+        ps,
+        summary,
+        Path("/help/Instructions") / f"{name.lower()}.htm",
+    )
 
 
-VOLT = page("VoltSe", [("Dest", "Where to store."), ("Reps", "How many."), ("Range", "Range code."),
-                       ("SEChan", "Channel."), ("MeasOff", "Offset."), ("SettlingTime", "Delay."),
-                       ("fN1", "Notch."), ("Mult", "Multiplier."), ("Offset", "Offset value.")])
+VOLT = page(
+    "VoltSe",
+    [
+        ("Dest", "Where to store."),
+        ("Reps", "How many."),
+        ("Range", "Range code."),
+        ("SEChan", "Channel."),
+        ("MeasOff", "Offset."),
+        ("SettlingTime", "Delay."),
+        ("fN1", "Notch."),
+        ("Mult", "Multiplier."),
+        ("Offset", "Offset value."),
+    ],
+)
 SAMPLE3 = page("Sample", [("Reps", "r"), ("Source", "s"), ("DataType", "d")])
 LEFT = page("Left", [("SearchString", "The text."), ("NumChars", "How many.")])
 HELP = FakeHelp(voltse=VOLT, sample=SAMPLE3, left=LEFT)
@@ -58,48 +80,57 @@ HELP = FakeHelp(voltse=VOLT, sample=SAMPLE3, left=LEFT)
 
 def test_simple_calls_and_active_index():
     assert ctx("VoltSe(|") == H.CallContext("VoltSe", 0, 0, 0)
-    assert required(ctx("VoltSe(a|")) .active == 0
+    assert required(ctx("VoltSe(a|")).active == 0
     assert required(ctx("VoltSe(a,|")).active == 1
     assert required(ctx("VoltSe(a, b|, c)")).active == 1
     assert required(ctx("VoltSe(a, b, c|)")).active == 2
     assert ctx("VoltSe(a, b, c)|") is None
     assert ctx("|VoltSe(a, b)") is None
-    assert ctx("VoltSe|(a)") is None          # on the name, before the paren
-    assert required(ctx("  Scan (1, Sec|, 0)")).name == "Scan"    # blank between name and paren
+    assert ctx("VoltSe|(a)") is None  # on the name, before the paren
+    assert required(ctx("  Scan (1, Sec|, 0)")).name == "Scan"  # blank between name and paren
     assert required(ctx("  Scan (1, Sec|, 0)")).column == 2
 
 
 def test_nested_calls():
     src = "A(B(1,2),3)"
-    cases = {2: ("A", 0), 4: ("B", 0), 5: ("B", 0), 6: ("B", 1), 7: ("B", 1), 8: ("A", 0),
-             9: ("A", 1), 10: ("A", 1), 11: None}
+    cases = {
+        2: ("A", 0),
+        4: ("B", 0),
+        5: ("B", 0),
+        6: ("B", 1),
+        7: ("B", 1),
+        8: ("A", 0),
+        9: ("A", 1),
+        10: ("A", 1),
+        11: None,
+    }
     for col, want in cases.items():
         got = H.call_context(src, 0, col)
         assert (got and (got.name, got.active)) == want, col
-    assert required(H.call_context(src, 0, 6)).column == 2      # B starts at column 2
+    assert required(H.call_context(src, 0, 6)).column == 2  # B starts at column 2
 
 
 def test_grouping_parentheses_and_braces_are_transparent():
     assert (required(ctx("A((1+|2), 3)")).name, required(ctx("A((1+|2), 3)")).active) == ("A", 0)
-    assert required(ctx("A((1,2)|, 3)")).active == 0           # the comma inside the group is not A's
+    assert required(ctx("A((1,2)|, 3)")).active == 0  # the comma inside the group is not A's
     assert required(ctx("A({1,2,|3}, 4)")).active == 0
     assert required(ctx("A({1,2}, 4|)")).active == 1
-    assert ctx("If (a And |b) Then") is None         # grammar words are not calls
+    assert ctx("If (a And |b) Then") is None  # grammar words are not calls
     assert ctx("x = a And (b|)") is None
     assert required(ctx("x = f(a And (b|), c)")).name == "f"
 
 
 def test_strings_comments_and_incomplete_calls():
     assert required(ctx('A("x,y", |2)')).active == 1
-    assert required(ctx('A("a)b|c", 2)')).active == 0          # inside a string: still A, argument 0
-    assert required(ctx('A("a""b,|c", 2)')).active == 0        # "" is an escaped quote
+    assert required(ctx('A("a)b|c", 2)')).active == 0  # inside a string: still A, argument 0
+    assert required(ctx('A("a""b,|c", 2)')).active == 0  # "" is an escaped quote
     assert required(ctx('A("a"",b", |2)')).active == 1
     assert required(ctx('A(1, "unterminated|')).active == 1
-    assert required(ctx("A(1, 2,|")).active == 2               # trailing comma
-    assert required(ctx("A(B(1,|")).name == "B"                # nothing closed
-    assert ctx("A(1) ' note (x, y|)") is None        # comment
+    assert required(ctx("A(1, 2,|")).active == 2  # trailing comma
+    assert required(ctx("A(B(1,|")).name == "B"  # nothing closed
+    assert ctx("A(1) ' note (x, y|)") is None  # comment
     assert ctx("A(1 ' note, |") is None
-    assert ctx("A(1, ' c\n|") is None                # next line does not continue the call
+    assert ctx("A(1, ' c\n|") is None  # next line does not continue the call
 
 
 def test_continuation_lines_and_crlf():
@@ -109,7 +140,7 @@ def test_continuation_lines_and_crlf():
     assert got is not None
     assert (got.line, got.column) == (0, 0)
     assert required(ctx("A(1, _\n   2, _\n   3|)")).active == 2
-    assert ctx("A(1,\n|2)") is None                  # no `_`: a new statement
+    assert ctx("A(1,\n|2)") is None  # no `_`: a new statement
     t, line, col = _at("A(1, _\r\n 2, |3)")
     assert required(H.call_context(t, line, col)).active == 2
     t, line, col = _at("A(1, 2,\r\n  B(3,|4)")
@@ -128,7 +159,7 @@ def test_call_context_positions_out_of_range():
     assert H.call_context("A(1)", 5, 0) is None
     assert H.call_context("A(1)", -1, 0) is None
     assert H.call_context("A(1", 0, -2) is None
-    assert required(H.call_context("A(1", 0, 99)).active == 0      # past the end clamps
+    assert required(H.call_context("A(1", 0, 99)).active == 0  # past the end clamps
     assert H.call_context("", 0, 0) is None
 
 
@@ -176,18 +207,21 @@ def test_signature_type_codes_and_kinds():
     s = H.signature_help("Sample", 0, "cr6", None)
     assert s is not None
     assert required(required(s.parameters)[3].type_code) >= 100 and s.parameters[3].optional
-    assert s.parameters[3].kind == "const_expr"      # code 101 is the optional form of 1
+    assert s.parameters[3].kind == "const_expr"  # code 101 is the optional form of 1
     assert not s.parameters[0].optional
 
 
 def test_signature_count_mismatch_uses_catalog_count_and_argn():
-    s = H.signature_help("Sample", 1, "cr6", HELP)       # help has 3, catalog 4
+    s = H.signature_help("Sample", 1, "cr6", HELP)  # help has 3, catalog 4
     assert s is not None
     assert not s.paired and s.help_count == 3 and s.catalog_count == 4
     assert [p.label for p in s.parameters] == ["arg1", "arg2", "arg3", "arg4"]
     assert all(p.documentation == "" for p in s.parameters)
     assert "help lists 3 parameters, catalog has 4" in s.note
-    assert "Synthetic summary." in s.documentation and "Help syntax: `Sample ( Reps, Source, DataType )`" in s.documentation
+    assert (
+        "Synthetic summary." in s.documentation
+        and "Help syntax: `Sample ( Reps, Source, DataType )`" in s.documentation
+    )
     assert "not applied" in s.documentation
 
 
@@ -222,19 +256,20 @@ def test_signature_for_functions():
     s = H.signature_help("Chr$", 0, "cr6", None)
     assert s is not None
     assert s.name == "CHR$" and s.label == "CHR$(arg1)"
-    assert required(H.signature_help("Chr", 0, "cr6", None)).name == "CHR"     # $ is part of the name: a different row
+    assert required(H.signature_help("Chr", 0, "cr6", None)).name == "CHR"  # $ is part of the name: a different row
 
 
 def test_signature_none_cases():
     assert H.signature_help("NoSuchThing", 0, "cr6", HELP) is None
     assert H.signature_help("Status.Battery", 0, "cr6", None) is None
-    assert H.signature_help("TRUE", 0, "cr6", None) is None      # predefined constant
-    assert H.signature_help("Then", 0, "cr6", None) is None      # keyword only
-    assert H.signature_help("NOT", 0, "cr6", None) is None       # operator without argument count
+    assert H.signature_help("TRUE", 0, "cr6", None) is None  # predefined constant
+    assert H.signature_help("Then", 0, "cr6", None) is None  # keyword only
+    assert H.signature_help("NOT", 0, "cr6", None) is None  # operator without argument count
 
 
 def test_profile_object_and_unknown_profile():
     from opencrbasic import profiles
+
     assert required(H.signature_help("VoltSe", 0, profiles.get("cr6"), None)).label.startswith("VoltSe(")
     with pytest.raises(ValueError):
         H.signature_help("VoltSe", 0, "nope", None)
@@ -311,11 +346,16 @@ def test_hover_declared_variable(prog):
     h = hv(prog, line, col + 2)
     assert h is not None
     assert (h.line, h.start_column, h.end_column) == (line, col, col + 4)
-    for part in ("**Fvar** (Public)", "Public Fvar(3) As FLOAT", "Dimensions: 3", "Units: degC",
-                 "Declared in `Main.CR6`, line 1."):
+    for part in (
+        "**Fvar** (Public)",
+        "Public Fvar(3) As FLOAT",
+        "Dimensions: 3",
+        "Units: degC",
+        "Declared in `Main.CR6`, line 1.",
+    ):
         assert part in h.markdown
     # the same word in code further down hovers the same declaration
-    line, col = find(prog[1], "Fvar", 4)       # `Fvar(1) = Chr(65)` in the Scan
+    line, col = find(prog[1], "Fvar", 4)  # `Fvar(1) = Chr(65)` in the Scan
     assert "Public Fvar(3)" in required(hv(prog, line, col)).markdown
 
 
@@ -341,16 +381,16 @@ def test_hover_nothing_in_comments_strings_numbers_members(prog):
     text = prog[1]
     assert hv(prog, *find(text, "Fvar in a comment")) is None
     line, col = find(text, '"Fvar"')
-    assert hv(prog, line, col + 2) is None           # inside the string
+    assert hv(prog, line, col + 2) is None  # inside the string
     line, col = find(text, "&H1F")
-    assert hv(prog, line, col + 2) is None           # hex literal digits are not a word
+    assert hv(prog, line, col + 2) is None  # hex literal digits are not a word
     assert hv(prog, line, col + 1) is None
     line, col = find(text, "Fvar_1")
-    assert hv(prog, line, col + 2) is None           # member after `.`
+    assert hv(prog, line, col + 2) is None  # member after `.`
     assert hv(prog, 0, 400) is None and hv(prog, 99, 0) is None and hv(prog, -1, 0) is None
     assert hv(prog, 0, -1) is None
     line, col = find(text, "+ 5")
-    assert hv(prog, line, col + 2) is None           # number
+    assert hv(prog, line, col + 2) is None  # number
 
 
 def test_hover_instruction_with_and_without_help(prog):
@@ -390,11 +430,11 @@ def test_hover_constants_keywords_and_function_without_count():
     h = H.hover(None, t, 1, 7, "cr6", None)
     assert h is not None
     assert h.markdown == "**Then** (CRBasic keyword)"
-    h = H.hover(None, t, 2, 7, "cr6", None)          # And: function row, no argument count
+    h = H.hover(None, t, 2, 7, "cr6", None)  # And: function row, no argument count
     assert h is not None
     assert "AND" in h.markdown.upper() and "no argument count" in h.markdown
-    assert H.hover(None, t, 3, 5, "cr6", None) is None   # unknown word, no analysis
-    h = H.hover(None, t, 1, 0, "cr6", None)          # If: instruction row, symbol and keyword
+    assert H.hover(None, t, 3, 5, "cr6", None) is None  # unknown word, no analysis
+    h = H.hover(None, t, 1, 0, "cr6", None)  # If: instruction row, symbol and keyword
     assert h is not None and "If" in h.markdown and "Also a predefined constant" in h.markdown
 
 
@@ -424,8 +464,11 @@ def test_declared_name_wins_over_catalog():
 
 
 def test_markdown_is_escaped_and_single_line_descriptions():
-    h = FakeHelp(voltse=page("VoltSe", [("Dest", "line one\nline two with <angle> and *star*")] * 9,
-                             summary="Has _under_ score."))
+    h = FakeHelp(
+        voltse=page(
+            "VoltSe", [("Dest", "line one\nline two with <angle> and *star*")] * 9, summary="Has _under_ score."
+        )
+    )
     s = H.signature_help("VoltSe", 0, "cr6", h)
     assert s is not None
     assert s.parameters[0].documentation == r"line one line two with \<angle\> and \*star\*"
@@ -469,6 +512,7 @@ class TestRealHelp:
 
     def test_every_catalog_callable_builds(self, prov):
         from opencrbasic.catalog import InstructionCatalog
+
         for e in InstructionCatalog.for_profile("cr6"):
             if e.kind in ("instruction", "function"):
                 s = H.signature_help(e.name, 99, "cr6", prov)
@@ -535,6 +579,7 @@ def test_two_word_end_sub_closes_hover_scope(tmp_path, end):
 
 # ---------------------------------------------------------------- function arity from the checker
 
+
 def _ftp_help(count: int) -> FakeHelp:
     names = [f"P{i}" for i in range(1, count + 1)]
     return FakeHelp(ftpclient=page("FTPClient", [(n, "d") for n in names]))
@@ -545,8 +590,10 @@ def test_function_accepted_counts_pair_help_names_with_optional_tail():
     s = H.signature_help("FTPClient", 0, "cr6", _ftp_help(11))
     assert s is not None
     assert s.paired and s.catalog_count == s.help_count == 11 and s.note == ""
-    assert s.label == "FTPCLIENT(P1, P2, P3, P4, P5, P6, P7 (optional), P8 (optional), P9 (optional), " \
-                      "P10 (optional), P11 (optional))"
+    assert (
+        s.label == "FTPCLIENT(P1, P2, P3, P4, P5, P6, P7 (optional), P8 (optional), P9 (optional), "
+        "P10 (optional), P11 (optional))"
+    )
     assert [p.optional for p in s.parameters] == [False] * 6 + [True] * 5
     assert s.parameters[0].documentation == "d"
     assert "Accepted argument counts (checker): 6, 10 or 11." in s.documentation
@@ -556,7 +603,9 @@ def test_function_accepted_counts_pair_help_names_with_optional_tail():
 
 def test_function_help_count_not_an_accepted_maximum_keeps_argn():
     # MQTTSUBSCRIBE (table nargs 4): the checker has a lower bound only, so no largest count; help has 8.
-    s = H.signature_help("MQTTSubscribe", 0, "cr6", FakeHelp(mqttsubscribe=page("MQTTSubscribe", [(f"P{i}", "d") for i in range(1, 9)])))
+    s = H.signature_help(
+        "MQTTSubscribe", 0, "cr6", FakeHelp(mqttsubscribe=page("MQTTSubscribe", [(f"P{i}", "d") for i in range(1, 9)]))
+    )
     assert s is not None
     assert not s.paired and s.label == "MQTTSUBSCRIBE(arg1, arg2, arg3, arg4)"
     assert all(p.documentation == "" and not p.optional for p in s.parameters)
@@ -565,7 +614,9 @@ def test_function_help_count_not_an_accepted_maximum_keeps_argn():
 
 def test_function_allowed_counts_pair_when_help_matches_the_maximum():
     # EMAILSEND (table nargs 6) takes 9, 13 or 14 arguments (checker `_ARITY_ALLOWED`); help names 14.
-    s = H.signature_help("EmailSend", 0, "cr6", FakeHelp(emailsend=page("EmailSend", [(f"P{i}", "d") for i in range(1, 15)])))
+    s = H.signature_help(
+        "EmailSend", 0, "cr6", FakeHelp(emailsend=page("EmailSend", [(f"P{i}", "d") for i in range(1, 15)]))
+    )
     assert s is not None
     assert s.paired and s.catalog_count == s.help_count == 14
     assert "Accepted argument counts (checker): 9, 13 or 14." in s.documentation
@@ -573,8 +624,9 @@ def test_function_allowed_counts_pair_when_help_matches_the_maximum():
 
 def test_function_range_counts_pair_when_help_matches_the_maximum():
     # NETWORKTIMEPROTOCOL (nargs 5) takes 3 or 4 arguments (checker `_ARITY_RANGE`); help lists 4.
-    help4 = FakeHelp(networktimeprotocol=page("NetworkTimeProtocol",
-                                              [("Server", "a"), ("Offset", "b"), ("Max", "c"), ("Wait", "d")]))
+    help4 = FakeHelp(
+        networktimeprotocol=page("NetworkTimeProtocol", [("Server", "a"), ("Offset", "b"), ("Max", "c"), ("Wait", "d")])
+    )
     s = H.signature_help("NetworkTimeProtocol", 0, "cr6", help4)
     assert s is not None
     assert s.paired and s.label == "NETWORKTIMEPROTOCOL(Server, Offset, Max, Wait (optional))"
@@ -582,7 +634,9 @@ def test_function_range_counts_pair_when_help_matches_the_maximum():
 
 
 def test_function_without_help_or_with_other_count_is_unchanged():
-    assert required(H.signature_help("FTPClient", 0, "cr6", None)).label == "FTPCLIENT(arg1, arg2, arg3, arg4, arg5, arg6)"
+    assert (
+        required(H.signature_help("FTPClient", 0, "cr6", None)).label == "FTPCLIENT(arg1, arg2, arg3, arg4, arg5, arg6)"
+    )
     s = H.signature_help("FTPClient", 0, "cr6", _ftp_help(9))
     assert s is not None
     assert not s.paired and s.label == "FTPCLIENT(arg1, arg2, arg3, arg4, arg5, arg6)"
@@ -593,9 +647,9 @@ def test_accepted_counts_helper():
     assert H._accepted_counts("ftpclient", 6) == (6, 10, 11)
     assert H._accepted_counts("HTTPPut", 5) == (4, 8, 9)
     assert H._accepted_counts("NetworkTimeProtocol", 5) == (3, 4)
-    assert H._accepted_counts("Left", 2) == (2,)         # both bounds are nargs in the checker tables
+    assert H._accepted_counts("Left", 2) == (2,)  # both bounds are nargs in the checker tables
     assert H._accepted_counts("EmailSend", 6) == (9, 13, 14)
-    assert H._accepted_counts("MQTTSubscribe", 4) is None    # minimum only in the checker tables
+    assert H._accepted_counts("MQTTSubscribe", 4) is None  # minimum only in the checker tables
     assert H._accepted_counts("NoSuchFunction", 3) is None
 
 
@@ -626,6 +680,7 @@ def test_no_help_placeholders_in_signature_documentation():
 def test_no_help_placeholders_in_hover_markdown(prog):
     from opencrbasic import hover as HH
     from opencrbasic.hover import _callable_markdown
+
     cat = HH._catalog("cr6")
     entry = cat.get("Sample", "instruction")
     assert entry is not None
@@ -657,10 +712,13 @@ def test_signature_help_falls_through_an_array_index_to_the_instruction():
 
     from opencrbasic.lsp import features
     from opencrbasic.lsp.features import Ctx
+
     path = Path("/nowhere/x.cr6")
-    for text, col, name in (("Sample(1, Temp(1), FP2)", 15, "Sample"),
-                            ("VoltSe(Temp(1), ", 16, "VoltSe"),
-                            ("VoltSe(x, MySub(1, ", 19, "VoltSe")):
+    for text, col, name in (
+        ("Sample(1, Temp(1), FP2)", 15, "Sample"),
+        ("VoltSe(Temp(1), ", 16, "VoltSe"),
+        ("VoltSe(x, MySub(1, ", 19, "VoltSe"),
+    ):
         c = Ctx("cr6", "utf-16", "utf-8", {path: text.encode()}, {})
         got = features.signature_help(c, path, types.Position(0, col))
         assert got is not None and got.signatures[0].label.startswith(name + "("), text

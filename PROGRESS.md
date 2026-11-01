@@ -673,7 +673,7 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    evidence link) and, with `coverageNotices`, the notices; `opencrbasic.checks` and
    `opencrbasic.toml` configure them; quick fixes match by `data`.
 9. **M5: done (round 74)** ([artifacts](docs/artifacts.md)). Open: per-profile Status tables for
-   the CR1000X/CR300/CR350 TDF (best effort now). 
+   the CR1000X/CR300/CR350 TDF (best effort now).
 10. **M7: done (round 75)**: 1.0.0, [release record](docs/release-1.0.md). Further work is
    post-1.0: per-profile TDF Status tables, the open first-error candidates (item 6), host tests of
    the M6 editor display.

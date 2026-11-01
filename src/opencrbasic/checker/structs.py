@@ -22,8 +22,12 @@ def _structure_members(program: S.Program) -> dict[str, dict[str, str]]:
     result: dict[str, dict[str, str]] = {}
     current: dict[str, str] | None = None
     for st in program.statements:
-        if isinstance(st, S.Instruction) and st.keyword.upper() == "STRUCTURETYPE" and st.args \
-                and isinstance(st.args[0], S.Name):
+        if (
+            isinstance(st, S.Instruction)
+            and st.keyword.upper() == "STRUCTURETYPE"
+            and st.args
+            and isinstance(st.args[0], S.Name)
+        ):
             current = result.setdefault(st.args[0].name.upper(), {})
         elif isinstance(st, S.Instruction) and st.keyword.upper() == "ENDSTRUCTURETYPE":
             current = None
@@ -108,7 +112,7 @@ def _member_errors(expr: S.Expr | None, kinds: dict[str, str], structs: dict) ->
             return _UNMODELLED  # nested structure members are not modelled
         else:
             found = []
-        for a in (root.args if isinstance(root, S.Index) else []):
+        for a in root.args if isinstance(root, S.Index) else []:
             found += _member_errors(a, kinds, structs)
         return found
     if isinstance(expr, S.Index):
@@ -129,8 +133,7 @@ def check_members(program: S.Program, profile, diags: Diagnostics, flat: S.Progr
     if not structs:
         return
     kinds = _variable_kinds(program, structs)
-    declared = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration)
-                for v in st.vars}
+    declared = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration) for v in st.vars}
     for st in program.statements:  # (`Sub S(C As Pt)`: `C.y` is checked too, oracle 2026-10-12)
         if isinstance(st, S.SubDef):
             for p in st.params:
@@ -138,9 +141,12 @@ def check_members(program: S.Program, profile, diags: Diagnostics, flat: S.Progr
                     kinds.setdefault(p.name.upper(), f"STRUCT:{p.type.upper()}")
     known = expressions._known_names(program, profile)
     for st in flat.statements:
-        if not isinstance(st, S.Assignment) or st.compound or \
-                expressions._undefined_names(st.target, known) or \
-                expressions._undefined_names(st.value, known):
+        if (
+            not isinstance(st, S.Assignment)
+            or st.compound
+            or expressions._undefined_names(st.target, known)
+            or expressions._undefined_names(st.value, known)
+        ):
             continue
         left, right = _member_errors(st.target, kinds, structs), _member_errors(st.value, kinds, structs)
         if any(e[0] == "?" for e in left + right) or not (left or right):
@@ -153,11 +159,15 @@ def check_members(program: S.Program, profile, diags: Diagnostics, flat: S.Progr
             sep = "\n" if profile.fallback_echo_newline and st.at_eol else ""
             diags.items += [
                 Diagnostic("error", st.line, f"Could not find {base}.{path}({index}).", st.file, cascade=False),
-                Diagnostic("error", st.line, f"Invalid assignment in expression: {st.text}{sep}.",
-                           st.file, cascade=False)]
+                Diagnostic(
+                    "error", st.line, f"Invalid assignment in expression: {st.text}{sep}.", st.file, cascade=False
+                ),
+            ]
         else:
-            diags.items += [Diagnostic("error", st.line, f"Could not find {base}.{path}({index}).",
-                                       st.file, cascade=False) for base, path, index in right]
+            diags.items += [
+                Diagnostic("error", st.line, f"Could not find {base}.{path}({index}).", st.file, cascade=False)
+                for base, path, index in right
+            ]
 
 
 def _operand_kind(expr: S.Expr | None, kinds: dict[str, str], structs: dict) -> str | None:
@@ -204,8 +214,7 @@ def check_struct_assignment(program: S.Program, profile, diags: Diagnostics, fla
         return
     kinds = _variable_kinds(program, structs)
     for st in flat.statements:
-        if not isinstance(st, S.Assignment) or st.compound or \
-                not isinstance(st.target, (S.Name, S.Index)):
+        if not isinstance(st, S.Assignment) or st.compound or not isinstance(st.target, (S.Name, S.Index)):
             continue
         left, right = _operand_kind(st.target, kinds, structs), _operand_kind(st.value, kinds, structs)
         if left is None or right is None:
@@ -224,5 +233,8 @@ def check_struct_assignment(program: S.Program, profile, diags: Diagnostics, fla
             continue
         for m in messages:
             # (no `Too many parameters` cascade: oracle, 2026-10-03)
-            diags.items.append(Diagnostic("error", st.line, m or structure._out_of_place(
-                profile, st.text, st.at_eol), st.file, cascade=False))
+            diags.items.append(
+                Diagnostic(
+                    "error", st.line, m or structure._out_of_place(profile, st.text, st.at_eol), st.file, cascade=False
+                )
+            )

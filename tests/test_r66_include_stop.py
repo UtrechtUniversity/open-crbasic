@@ -11,9 +11,16 @@ from opencrbasic.compiler import compile_file
 CASES = json.loads((Path(__file__).parent / "fixtures" / "r66_include_stop.json").read_text())["cases"]
 
 
-@pytest.mark.parametrize("case", [
-    pytest.param(case, marks=pytest.mark.xfail(reason=case["not_modelled"], strict=True))
-    if "not_modelled" in case else case for case in CASES], ids=lambda case: case["id"])
+@pytest.mark.parametrize(
+    "case",
+    [
+        pytest.param(case, marks=pytest.mark.xfail(reason=case["not_modelled"], strict=True))
+        if "not_modelled" in case
+        else case
+        for case in CASES
+    ],
+    ids=lambda case: case["id"],
+)
 def test_include_stop_observations(case, tmp_path):
     for name, text in case["files"].items():
         (tmp_path / name).write_bytes(text.encode("utf-8"))

@@ -1,4 +1,3 @@
-
 import hashlib
 from pathlib import Path
 
@@ -54,8 +53,7 @@ def test_recording_source(tmp_path):
     rec.read(tmp_path / "gone.crb")
     rec.list_dir(tmp_path)
     rec.list_dir(tmp_path / "nodir")
-    assert rec.reads == {tmp_path / "a.CR6": _sha(b"x"), tmp_path / "o.crb": _sha(b"o"),
-                         tmp_path / "gone.crb": None}
+    assert rec.reads == {tmp_path / "a.CR6": _sha(b"x"), tmp_path / "o.crb": _sha(b"o"), tmp_path / "gone.crb": None}
     assert rec.listings == {tmp_path: ("a.CR6", "o.crb"), tmp_path / "nodir": None}
 
 

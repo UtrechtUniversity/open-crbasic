@@ -14,28 +14,39 @@ from pathlib import Path
 from typing import Protocol
 
 __all__ = [
-    "ParamHelp", "InstructionHelp", "HelpProvider", "PairedParam", "PairedSignature",
-    "pair_signature", "render_markdown", "render_plain", "render_signature_label",
-    "CoverageReport", "coverage_report", "FunctionCoverageReport", "function_coverage_report",
-    "ArgCountRow", "function_arg_count_classes",
+    "ParamHelp",
+    "InstructionHelp",
+    "HelpProvider",
+    "PairedParam",
+    "PairedSignature",
+    "pair_signature",
+    "render_markdown",
+    "render_plain",
+    "render_signature_label",
+    "CoverageReport",
+    "coverage_report",
+    "FunctionCoverageReport",
+    "function_coverage_report",
+    "ArgCountRow",
+    "function_arg_count_classes",
 ]
 
 
 @dataclass(frozen=True)
 class ParamHelp:
     name: str
-    link: str | None            # target of the syntax link, as written (e.g. "../parameters/x.htm")
-    description: str            # plain text; "" when the help has none
-    optional: bool = False      # True only where the syntax line states it; False means "not stated"
-    repeatable: bool = False    # `Item1, Item2, Item3...` collapsed to one `Item`; name is the stem
+    link: str | None  # target of the syntax link, as written (e.g. "../parameters/x.htm")
+    description: str  # plain text; "" when the help has none
+    optional: bool = False  # True only where the syntax line states it; False means "not stated"
+    repeatable: bool = False  # `Item1, Item2, Item3...` collapsed to one `Item`; name is the stem
 
 
 @dataclass(frozen=True)
 class InstructionHelp:
-    name: str                   # the looked-up upper-case name
-    names: tuple[str, ...]      # every upper-case name the page documents
+    name: str  # the looked-up upper-case name
+    names: tuple[str, ...]  # every upper-case name the page documents
     title: str
-    syntax: str                 # plain text of the syntax form for `name` ("" when the page has none)
+    syntax: str  # plain text of the syntax form for `name` ("" when the page has none)
     params: tuple[ParamHelp, ...]
     summary: str
     source_path: Path
@@ -43,6 +54,7 @@ class InstructionHelp:
 
 class HelpLookup(Protocol):
     """The help lookup interface used by hover and signature rendering."""
+
     def lookup(self, name: str) -> InstructionHelp | None: ...
 
 
@@ -63,7 +75,7 @@ class _Anchor:
 class _Block:
     tag: str
     text: str
-    anchors: list[tuple[int, int, str, str]]    # (start, end, href, text) offsets into `text`
+    anchors: list[tuple[int, int, str, str]]  # (start, end, href, text) offsets into `text`
 
 
 class _Reducer(HTMLParser):
@@ -76,7 +88,7 @@ class _Reducer(HTMLParser):
         self._buf: list[str] = []
         self._len = 0
         self._anchors: list[tuple[int, int, str, str]] = []
-        self._open: list[tuple[int, str]] = []      # (start offset, href) of open anchors
+        self._open: list[tuple[int, str]] = []  # (start offset, href) of open anchors
         self._table = 0
         self._skip = 0
 
@@ -129,7 +141,7 @@ class _Reducer(HTMLParser):
                 self._close()
         elif tag == "a" and self._open:
             start, href = self._open.pop()
-            self._anchors.append((start, self._len, href, "".join(self._buf)[start:self._len]))
+            self._anchors.append((start, self._len, href, "".join(self._buf)[start : self._len]))
 
     def handle_data(self, data):
         if self._tag is not None and not self._skip:
@@ -270,8 +282,10 @@ def _parse_form(block: _Block) -> _Form | None:
                 name, optional = body, bool(_OPTIONAL.search(raw))
             if name:
                 # The link whose overlap with this span holds name text (not just a separator).
-                href = next((h for s, e, h, _ in links
-                             if s < b and a < e and re.search(r"\w", text[max(s, a):min(e, b)])), None)
+                href = next(
+                    (h for s, e, h, _ in links if s < b and a < e and re.search(r"\w", text[max(s, a) : min(e, b)])),
+                    None,
+                )
                 params.append(ParamHelp(name, href, "", optional))
             elif previous_named and _OPTIONAL.search(raw):
                 # `FileOption, [optional],`: a marker that is a list item of its own applies to the
@@ -295,7 +309,7 @@ def _heading_key(text: str) -> tuple[str, ...]:
 
 def _description_with_rows(blocks: Sequence[_Block], index: int) -> str:
     parts = [_collapse(blocks[index].text)]
-    for block in blocks[index + 1:]:
+    for block in blocks[index + 1 :]:
         if block.tag != "tr":
             break
         if text := _flat(block.text):
@@ -347,7 +361,7 @@ def _parse_page(path: Path) -> _Page | None:
             if _NAME.match(part):
                 names.append(part.upper())
         forms: dict[str, _Form] = {}
-        for b in blocks[syn + 1:]:
+        for b in blocks[syn + 1 :]:
             if b.tag in ("h2", "h3"):
                 break
             if b.tag != "p":
@@ -363,7 +377,7 @@ def _parse_page(path: Path) -> _Page | None:
             return None
         h1i = blocks.index(h1)
         summary = ""
-        for b in blocks[h1i + 1:syn]:
+        for b in blocks[h1i + 1 : syn]:
             t = _collapse(b.text)
             if b.tag == "p" and t:
                 summary = t
@@ -371,7 +385,7 @@ def _parse_page(path: Path) -> _Page | None:
         pi = next((i for i, b in enumerate(blocks) if b.tag == "h2" and _flat(b.text).lower() == "parameters"), None)
         pblocks: list[_Block] = []
         if pi is not None:
-            for b in blocks[pi + 1:]:
+            for b in blocks[pi + 1 :]:
                 if b.tag == "h2":
                     break
                 pblocks.append(b)
@@ -381,6 +395,7 @@ def _parse_page(path: Path) -> _Page | None:
 
 
 # --- provider --------------------------------------------------------------------------------------
+
 
 class HelpProvider:
     """Lazy index over `<directory>/Instructions/*.htm`; lookups never raise."""
@@ -424,13 +439,14 @@ class HelpProvider:
             return None
         form = page.forms.get(key)
         params: list[ParamHelp] = []
-        for p in (form.params if form else []):
+        for p in form.params if form else []:
             desc = _describe(page.param_blocks, p.name)
             if not desc and p.link:
                 desc = self._linked_description(p.link, p.name)
             params.append(ParamHelp(p.name, p.link, desc, p.optional, p.repeatable))
-        return InstructionHelp(key, page.names, page.title, form.text if form else "",
-                               tuple(params), page.summary, page.path)
+        return InstructionHelp(
+            key, page.names, page.title, form.text if form else "", tuple(params), page.summary, page.path
+        )
 
     def _linked_description(self, link: str, name: str) -> str:
         target = (self.directory / "Instructions" / link.replace("\\", "/")).resolve()
@@ -438,7 +454,7 @@ class HelpProvider:
             if not target.is_file() or self.directory.resolve() not in target.parents:
                 return ""
             blocks = _blocks(target.read_text(encoding="utf-8", errors="replace"))
-        except (OSError, ValueError):
+        except OSError, ValueError:
             return ""
         for i, nxt in enumerate(blocks[1:3], start=1):
             t = _collapse(nxt.text)
@@ -449,9 +465,10 @@ class HelpProvider:
 
 # --- pairing with catalog parameter lists ----------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class PairedParam:
-    label: str                          # help name, with "..." when repeatable; `argN` when unpaired
+    label: str  # help name, with "..." when repeatable; `argN` when unpaired
     type_code: int
     description: str
     optional: bool
@@ -462,32 +479,52 @@ class PairedParam:
 @dataclass(frozen=True)
 class PairedSignature:
     name: str
-    matched: bool                       # help parameter count equals the catalog count
-    help_count: int | None              # None: no help
+    matched: bool  # help parameter count equals the catalog count
+    help_count: int | None  # None: no help
     catalog_count: int
-    params: tuple[PairedParam, ...]     # friendly when matched; otherwise catalog positions only
-    note: str                           # "" when matched; the mismatch reason otherwise
+    params: tuple[PairedParam, ...]  # friendly when matched; otherwise catalog positions only
+    note: str  # "" when matched; the mismatch reason otherwise
 
 
 def pair_signature(name: str, type_codes: Sequence[int], help: InstructionHelp | None) -> PairedSignature:
     """Pair help names with catalog positions only when the counts agree; never guess otherwise."""
     n = len(type_codes)
     if help is None:
-        return PairedSignature(name, False, None, n,
-                               tuple(PairedParam(f"arg{i + 1}", t, "", False, False) for i, t in enumerate(type_codes)),
-                               "no help")
+        return PairedSignature(
+            name,
+            False,
+            None,
+            n,
+            tuple(PairedParam(f"arg{i + 1}", t, "", False, False) for i, t in enumerate(type_codes)),
+            "no help",
+        )
     h = len(help.params)
     if h == n:
-        return PairedSignature(name, True, h, n,
-                               tuple(PairedParam(p.name + "..." if p.repeatable else p.name, t,
-                                                 p.description, p.optional, True, p.repeatable)
-                                     for p, t in zip(help.params, type_codes)), "")
-    return PairedSignature(name, False, h, n,
-                           tuple(PairedParam(f"arg{i + 1}", t, "", False, False) for i, t in enumerate(type_codes)),
-                           f"help lists {h} parameters, catalog has {n}")
+        return PairedSignature(
+            name,
+            True,
+            h,
+            n,
+            tuple(
+                PairedParam(
+                    p.name + "..." if p.repeatable else p.name, t, p.description, p.optional, True, p.repeatable
+                )
+                for p, t in zip(help.params, type_codes)
+            ),
+            "",
+        )
+    return PairedSignature(
+        name,
+        False,
+        h,
+        n,
+        tuple(PairedParam(f"arg{i + 1}", t, "", False, False) for i, t in enumerate(type_codes)),
+        f"help lists {h} parameters, catalog has {n}",
+    )
 
 
 # --- rendering (separate from parsing) -------------------------------------------------------------
+
 
 def render_signature_label(sig: PairedSignature) -> str:
     inner = ", ".join(p.label + (" (optional)" if p.optional else "") for p in sig.params)
@@ -527,12 +564,13 @@ def render_markdown(help: InstructionHelp, sig: PairedSignature | None = None) -
 
 # --- coverage --------------------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class CoverageReport:
     total: int
     with_help: int
     matching: int
-    mismatches: tuple[tuple[str, int, int], ...]    # (name, help parameter count, catalog count)
+    mismatches: tuple[tuple[str, int, int], ...]  # (name, help parameter count, catalog count)
     without_help: tuple[str, ...]
 
 
@@ -557,18 +595,19 @@ def coverage_report(profile, provider: HelpProvider, names: Iterable[str] | None
 
 @dataclass(frozen=True)
 class FunctionCoverageReport:
-    total: int                                      # rows of `profile.functions` considered
-    with_nargs: int                                 # rows whose function table has `nargs`
-    with_help: int                                  # rows with a parsable help page
-    checked: int                                    # rows with help and `nargs`: count compared
-    matching: int                                   # checked rows whose help count equals nargs
-    mismatches: tuple[tuple[str, int, int], ...]    # (name, help parameter count, nargs)
+    total: int  # rows of `profile.functions` considered
+    with_nargs: int  # rows whose function table has `nargs`
+    with_help: int  # rows with a parsable help page
+    checked: int  # rows with help and `nargs`: count compared
+    matching: int  # checked rows whose help count equals nargs
+    mismatches: tuple[tuple[str, int, int], ...]  # (name, help parameter count, nargs)
     without_help: tuple[str, ...]
-    unchecked: tuple[str, ...]                      # help but no `nargs`: nothing to compare with
+    unchecked: tuple[str, ...]  # help but no `nargs`: nothing to compare with
 
 
-def function_coverage_report(profile, provider: HelpProvider, names: Iterable[str] | None = None
-                             ) -> FunctionCoverageReport:
+def function_coverage_report(
+    profile, provider: HelpProvider, names: Iterable[str] | None = None
+) -> FunctionCoverageReport:
     """Documentation coverage for `profile.functions`, separate from `coverage_report` (instructions)
     and from compiler-rule coverage. Only rows with `nargs` are compared, by parameter count."""
     table: Mapping[str, Mapping] = profile.functions
@@ -591,8 +630,9 @@ def function_coverage_report(profile, provider: HelpProvider, names: Iterable[st
         elif len(h.params) != nargs:
             mism.append((n, len(h.params), nargs))
     checked = with_help - len(unchecked)
-    return FunctionCoverageReport(len(wanted), with_nargs, with_help, checked, checked - len(mism),
-                                  tuple(mism), tuple(missing), tuple(unchecked))
+    return FunctionCoverageReport(
+        len(wanted), with_nargs, with_help, checked, checked - len(mism), tuple(mism), tuple(missing), tuple(unchecked)
+    )
 
 
 # `nargs` 6 is the 16-bit `argspec` maximum (low nibble 6, 2 bits per argument): docs/binary.md.
@@ -603,13 +643,14 @@ _PACKING_CAP = 6
 class ArgCountRow:
     name: str
     help_count: int
-    help_required: int      # help parameters not marked optional
+    help_required: int  # help parameters not marked optional
     nargs: int
-    category: str           # "packing_cap" | "optional_tail" | "other"
+    category: str  # "packing_cap" | "optional_tail" | "other"
 
 
-def function_arg_count_classes(profile, provider: HelpProvider, names: Iterable[str] | None = None
-                               ) -> tuple[ArgCountRow, ...]:
+def function_arg_count_classes(
+    profile, provider: HelpProvider, names: Iterable[str] | None = None
+) -> tuple[ArgCountRow, ...]:
     """Classify `profile.functions` whose help parameter count differs from `nargs`.
 
     `packing_cap`: `nargs` is 6, the packed `argspec` maximum, so the table cannot list more.
@@ -625,7 +666,12 @@ def function_arg_count_classes(profile, provider: HelpProvider, names: Iterable[
         if nargs is None or h is None or len(h.params) == nargs:
             continue
         required = sum(1 for p in h.params if not p.optional)
-        cat = ("packing_cap" if nargs == _PACKING_CAP
-               else "optional_tail" if required == nargs and len(h.params) > nargs else "other")
+        cat = (
+            "packing_cap"
+            if nargs == _PACKING_CAP
+            else "optional_tail"
+            if required == nargs and len(h.params) > nargs
+            else "other"
+        )
         rows.append(ArgCountRow(n, len(h.params), required, nargs, cat))
     return tuple(rows)

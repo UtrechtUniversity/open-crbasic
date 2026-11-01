@@ -17,7 +17,7 @@ def test_check_evidence(case, tmp_path):
     program = tmp_path / "t.CR6"
     program.write_bytes(case["source"].encode("utf-8"))
     result = compile_file(program, profiles.get(case["logger"]))
-    assert (0 if result.ok else 1) == case["expected_exit"] == 0   # the reference accepts the form
+    assert (0 if result.ok else 1) == case["expected_exit"] == 0  # the reference accepts the form
     codes = [f.code for f in checks.run(result.program_ast, result.profile)]
     assert codes == ([case["code"]] if case["code"] else [])
 
@@ -33,14 +33,19 @@ def test_firnmelt_programs_have_no_findings(logger):
 
 
 @pytest.mark.slow
-@pytest.mark.skipif(not any((Path(__file__).parent / "corpus" / "chm").glob("*.CR6")), reason="CRBasic help examples not extracted; see tests/corpus/README.md")
+@pytest.mark.skipif(
+    not any((Path(__file__).parent / "corpus" / "chm").glob("*.CR6")),
+    reason="CRBasic help examples not extracted; see tests/corpus/README.md",
+)
 def test_corpus_findings_are_justified():
     """Accepted CHM examples and GEUS programs: the one firing is OCB001 on a GEUS `Alias
     D2out(3)= Status`, the case the check was made for (`docs/checker.md` "Alias names that are
     CRBasic names (round 33)")."""
     repo = Path(__file__).resolve().parents[1]
-    corpora = [("cr6", sorted((Path(__file__).parent / "corpus" / "chm").glob("*.CR6"))),
-               ("cr1000x", sorted((repo / "examples" / "Logger Programs").rglob("*.CR1X")))]
+    corpora = [
+        ("cr6", sorted((Path(__file__).parent / "corpus" / "chm").glob("*.CR6"))),
+        ("cr1000x", sorted((repo / "examples" / "Logger Programs").rglob("*.CR1X"))),
+    ]
     found = []
     for logger, paths in corpora:
         for path in paths:
@@ -51,6 +56,12 @@ def test_corpus_findings_are_justified():
 
 
 def test_default_severities_are_documented():
-    assert checks.DEFAULT_SEVERITY == {"OCB001": "error", "OCB002": "warning", "OCB003": "warning",
-                                       "OCB004": "warning", "OCB005": "info",
-                                       "OCB006": "info", "OCB007": "warning"}
+    assert checks.DEFAULT_SEVERITY == {
+        "OCB001": "error",
+        "OCB002": "warning",
+        "OCB003": "warning",
+        "OCB004": "warning",
+        "OCB005": "info",
+        "OCB006": "info",
+        "OCB007": "warning",
+    }

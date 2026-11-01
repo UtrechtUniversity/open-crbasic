@@ -109,10 +109,18 @@ def compare_one(item: tuple[str, Path, Path | None], profile) -> dict:
     except oracle.OracleError as exc:
         # Keep the usual row fields for report consumers. `theirs` describes harness failure; it
         # is not reference-compiler diagnostic output and must never enter semantic classification.
-        return {"group": group, "file": display_path(path), "status": "oracle_error",
-                "class": "oracle_error", "ours": "", "theirs": str(exc),
-                "our_exit": None, "their_exit": None, "logger": getattr(profile, "name", ""),
-                "impact": impact.OPERATIONAL}
+        return {
+            "group": group,
+            "file": display_path(path),
+            "status": "oracle_error",
+            "class": "oracle_error",
+            "ours": "",
+            "theirs": str(exc),
+            "our_exit": None,
+            "their_exit": None,
+            "logger": getattr(profile, "name", ""),
+            "impact": impact.OPERATIONAL,
+        }
 
     our_exit, our_out = ours(path, profile)
     cls = fuzz.classify(our_exit, our_out, their_exit, their_out)
@@ -124,9 +132,17 @@ def compare_one(item: tuple[str, Path, Path | None], profile) -> dict:
         status = "verdict"
     else:
         status = "mismatch"
-    row = {"group": group, "file": display_path(path), "status": status, "class": cls,
-           "ours": our_out, "theirs": their_out, "our_exit": our_exit,
-           "their_exit": their_exit, "logger": getattr(profile, "name", "")}
+    row = {
+        "group": group,
+        "file": display_path(path),
+        "status": status,
+        "class": cls,
+        "ours": our_out,
+        "theirs": their_out,
+        "our_exit": our_exit,
+        "their_exit": their_exit,
+        "logger": getattr(profile, "name", ""),
+    }
     row["impact"] = impact.impact_class(row)
     return row
 
@@ -135,8 +151,7 @@ def summarise(rows: list[dict]) -> dict[str, dict[str, int]]:
     summary: dict[str, dict[str, int]] = {}
     for row in rows:
         counts = summary.setdefault(
-            row["group"], {"exact": 0, "verdict": 0, "mismatch": 0, "oracle_error": 0,
-                           "implementation_exception": 0}
+            row["group"], {"exact": 0, "verdict": 0, "mismatch": 0, "oracle_error": 0, "implementation_exception": 0}
         )
         counts[row["status"]] += 1
     return summary
@@ -145,10 +160,15 @@ def summarise(rows: list[dict]) -> dict[str, dict[str, int]]:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--logger", default="cr6")
-    ap.add_argument("--group", choices=["repo", "chm", "geus", "all"], default="all",
-                    help="`all` is repo and chm; geus runs alone")
-    ap.add_argument("--gate", choices=["report", "no-regressions", "exact"], default="report",
-                    help="exit nonzero for regressions or any non-exact result")
+    ap.add_argument(
+        "--group", choices=["repo", "chm", "geus", "all"], default="all", help="`all` is repo and chm; geus runs alone"
+    )
+    ap.add_argument(
+        "--gate",
+        choices=["report", "no-regressions", "exact"],
+        default="report",
+        help="exit nonzero for regressions or any non-exact result",
+    )
     ap.add_argument("--show", type=int, default=15, help="mismatches to print")
     ap.add_argument("--jobs", type=int, default=4)
     ap.add_argument("paths", nargs="*", type=Path)
@@ -160,8 +180,7 @@ def main() -> int:
         work = [("cli", p.resolve(), p.resolve().parent) for p in args.paths]
     elif args.group == "geus":
         ext = {"cr6": ".CR6", "cr1000x": ".CR1X"}.get(args.logger)
-        work = [("geus", p, None) for p in sorted(GEUS.rglob("*"))
-                if ext and p.is_file() and p.suffix.upper() == ext]
+        work = [("geus", p, None) for p in sorted(GEUS.rglob("*")) if ext and p.is_file() and p.suffix.upper() == ext]
     else:
         for group, (directory, pattern) in GROUPS.items():
             if args.group in ("all", group):
@@ -174,9 +193,11 @@ def main() -> int:
     summary = summarise(rows)
     for group, s in summary.items():
         total = sum(s.values())
-        print(f"{args.logger} {group}: {total} programs, exact {s['exact']}, verdict {s['verdict']}, "
-              f"mismatch {s['mismatch']}, oracle_error {s['oracle_error']}, "
-              f"implementation_exception {s['implementation_exception']}")
+        print(
+            f"{args.logger} {group}: {total} programs, exact {s['exact']}, verdict {s['verdict']}, "
+            f"mismatch {s['mismatch']}, oracle_error {s['oracle_error']}, "
+            f"implementation_exception {s['implementation_exception']}"
+        )
     print(impact.table(rows))
     shown = 0
     for r in rows:

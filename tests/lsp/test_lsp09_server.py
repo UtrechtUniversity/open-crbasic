@@ -43,7 +43,8 @@ BeginProg
 EndProg
 """
 UNICODE = PROGRAM.replace("    VoltSe(", '    x = 1 : s = "é😀" : VoltSe(').replace(
-    "Public x As Long\n", "Public x As Long\nPublic s As String * 20\n")
+    "Public x As Long\n", "Public x As Long\nPublic s As String * 20\n"
+)
 ENTRY = """Public x As Long
 Include("CPU:Lib.crb")
 BeginProg
@@ -84,8 +85,7 @@ def wait_clean(client: LspClient, path: Path, after: int = 0) -> dict:
 
 
 def failure(client: LspClient, command: str, *arguments) -> dict:
-    rid = client.send_request("workspace/executeCommand",
-                              {"command": command, "arguments": list(arguments)})
+    rid = client.send_request("workspace/executeCommand", {"command": command, "arguments": list(arguments)})
     message = client.response(rid, 60, command)
     assert "error" in message, message
     return message["error"]
@@ -118,7 +118,7 @@ def test_hints_equal_the_core_and_sit_before_the_arguments(make_client, tmp_path
     labels = [lab for ln, _, lab in got if ln == 9]
     assert labels[:3] == ["Dest:", "Reps:", "Range:"] and len(labels) == 9
     first = next(c for ln, c, lab in got if ln == 9 and lab == "Dest:")
-    assert line[first:first + 1] == "T"
+    assert line[first : first + 1] == "T"
     assert client.shutdown() == 0
 
 
@@ -152,7 +152,7 @@ def test_hint_columns_use_the_negotiated_encoding(make_client, tmp_path, encodin
     start = lines[row].index("VoltSe(") + len("VoltSe(")
     assert dest == units(lines[row], start, encoding)
     if encoding != "utf-32":
-        assert dest != start                # the emoji makes the encodings differ
+        assert dest != start  # the emoji makes the encodings differ
     assert client.shutdown() == 0
 
 
@@ -175,8 +175,10 @@ def test_the_setting_disables_hints_and_sends_a_refresh(make_client, tmp_path):
     before = len(client.server_requests("workspace/inlayHint/refresh"))
     client.settings = {**HELP, "inlayHints": {"parameterNames": False}}
     client.notify("workspace/didChangeConfiguration", {"settings": None})
-    client.wait_for(lambda: len(client.server_requests("workspace/inlayHint/refresh")) > before,
-                    what="a refresh after the setting changed")
+    client.wait_for(
+        lambda: len(client.server_requests("workspace/inlayHint/refresh")) > before,
+        what="a refresh after the setting changed",
+    )
     assert client.inlay_hints(path) == []
     client.settings = {**HELP, "inlayHints": {"parameterNames": True}}
     client.notify("workspace/didChangeConfiguration", {"settings": None})
@@ -200,12 +202,14 @@ def test_a_new_program_asks_the_client_to_refresh(make_client, tmp_path):
     path = root / "Small.CR6"
     client = started(make_client, root, inlay_refresh=True)
     client.open(path)
-    client.wait_for(lambda: client.server_requests("workspace/inlayHint/refresh"),
-                    what="a refresh after the first analysis")
+    client.wait_for(
+        lambda: client.server_requests("workspace/inlayHint/refresh"), what="a refresh after the first analysis"
+    )
     count = len(client.server_requests("workspace/inlayHint/refresh"))
     client.change(path, PROGRAM.replace("mV200", "mV20"), 2)
-    client.wait_for(lambda: len(client.server_requests("workspace/inlayHint/refresh")) > count,
-                    what="a refresh after an edit")
+    client.wait_for(
+        lambda: len(client.server_requests("workspace/inlayHint/refresh")) > count, what="a refresh after an edit"
+    )
     assert client.shutdown() == 0
 
 
@@ -282,7 +286,7 @@ def test_a_library_resolves_to_its_entry(make_client, tmp_path):
     client = started(make_client, root, FAST)
     client.open(entry)
     wait_clean(client, entry)
-    lib_uri = lib.as_uri()                       # not open: only the entry read it
+    lib_uri = lib.as_uri()  # not open: only the entry read it
     assert client.execute(COMPILER_OUTPUT, lib_uri) == commands.compiler_output(entry, "cr6", {}).text
     assert client.execute(TABLE_FIELDS, lib_uri) == client.execute(TABLE_FIELDS, entry.as_uri())
     assert client.shutdown() == 0
@@ -297,7 +301,7 @@ def test_a_library_buffer_is_compiled_through_its_entry(make_client, tmp_path):
     uri = client.open(lib, LIB.replace("lib_v", "lib_w"))
     got = client.execute(COMPILER_OUTPUT, uri)
     assert got == commands.compiler_output(entry, "cr6", {lib: LIB.replace("lib_v", "lib_w").encode()}).text
-    assert "lib_v" in got                        # the entry still uses the old name
+    assert "lib_v" in got  # the entry still uses the old name
     assert client.shutdown() == 0
 
 

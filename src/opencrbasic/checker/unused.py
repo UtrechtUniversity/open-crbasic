@@ -146,10 +146,10 @@ def check(program: S.Program, diags: Diagnostics) -> None:
     """Add every `-u` warning for `program` to `diags`. Caller's responsibility (`compiler.py`):
     only call this when `not diags.errors` (oracle-confirmed gate, see this module's docstring).
     """
-    variables: list[tuple[str, int, str, str]] = []   # (NAME upper, line, display, file)
+    variables: list[tuple[str, int, str, str]] = []  # (NAME upper, line, display, file)
     params: list[tuple[str, int, str, str]] = []
-    subs: list[tuple[str, str, str]] = []              # (NAME upper, display, file)
-    alias_map: dict[str, str] = {}                     # ALIAS-TARGET upper -> ORIGINAL-BASE upper
+    subs: list[tuple[str, str, str]] = []  # (NAME upper, display, file)
+    alias_map: dict[str, str] = {}  # ALIAS-TARGET upper -> ORIGINAL-BASE upper
 
     for stmt in program.statements:
         if isinstance(stmt, S.Declaration) and stmt.kind.upper() in ("PUBLIC", "DIM"):

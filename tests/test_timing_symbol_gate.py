@@ -18,7 +18,8 @@ def test_times_symbol_gate(case, tmp_path):
     (tmp_path / name).write_bytes(case["source"].encode("latin-1"))
     subprocess.run(
         [sys.executable, "-m", "opencrbasic", "-t", name, "out.msg"],
-        cwd=tmp_path, capture_output=True,
+        cwd=tmp_path,
+        capture_output=True,
         env={"PYTHONPATH": str(Path(__file__).parents[1] / "src")},
     )
     msg = (tmp_path / "out.msg").read_bytes().decode("latin-1")

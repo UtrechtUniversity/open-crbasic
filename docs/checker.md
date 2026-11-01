@@ -1177,7 +1177,7 @@ check never reaches them at all -- a new, third check type was needed.
    place -- an unresolved statement inside one is exactly as illegal as one at the true top level.
    Reverted entirely (the cr1000x improvement was a coincidental side effect, not independent
    evidence the change was correct, and was given up along with the fix).
-   
+
    A **second** fuzz-found false reject then showed the opposite gap for the *narrow* `Scan`/
    `Delay` rule specifically: `Delay(0,1,Sec)` inserted inside a `DataTable...EndTable` body
    (`chm/structuretype_2.CR6`-derived) real-compiles clean, but the reverted-to-narrow version still

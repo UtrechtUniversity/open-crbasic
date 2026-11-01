@@ -47,12 +47,12 @@ def _bounded_by_message_buffer(lines: list[str]) -> list[str]:
 
 @dataclass
 class CompileResult:
-    program: str                    # program name as given on the command line
+    program: str  # program name as given on the command line
     profile: Profile
     diagnostics: Diagnostics
-    mode: str | None = None         # "Sequential" / "Pipeline" (CR6, CR1000X)
-    tables: list = field(default_factory=list)      # tdf.TdfTable list, when available
-    table_list: str | None = None   # text of the `-l` output, when available
+    mode: str | None = None  # "Sequential" / "Pipeline" (CR6, CR1000X)
+    tables: list = field(default_factory=list)  # tdf.TdfTable list, when available
+    table_list: str | None = None  # text of the `-l` output, when available
     signature: int | None = None
     file_order: dict = field(default_factory=dict)  # file name -> its rank in expansion order
     # (first-seen position among `program.statements`), for `result_lines`' sort -- see there.
@@ -60,7 +60,7 @@ class CompileResult:
     implementation_exceptions: list[str] = field(default_factory=list)
     program_ast: S.Program | None = None  # the parsed program (None when parsing failed)
     pass1_errors: bool | None = None  # whether the checker found pass-1 errors (the gate `-t` follows)
-    findings: list = field(default_factory=list)    # opencrbasic checks (`checks.analyze`), never
+    findings: list = field(default_factory=list)  # opencrbasic checks (`checks.analyze`), never
     suppressed: list = field(default_factory=list)  # in `diagnostics`: `ok` ignores both
 
     def record_implementation_failure(self, where: str, exc: Exception) -> None:
@@ -96,19 +96,28 @@ class CompileResult:
     def _sort_key(self, d) -> tuple:
         if not d.line:
             return (True, _no_line_kind(d), 0)
-        if (self.profile.include_warning_first and (d.file or self.program) == self.program
-                and d.severity == "warning"
-                and d.message.startswith("Cannot open include file ")):
+        if (
+            self.profile.include_warning_first
+            and (d.file or self.program) == self.program
+            and d.severity == "warning"
+            and d.message.startswith("Cannot open include file ")
+        ):
             # reader pass: before any other message of the main file (`docs/checker.md`)
             return (False, (-1, d.line), 0)
-        if (d.severity == "warning" and d.message == "Parameter will truncate to the nearest integer."
-                and not self.diagnostics.errors):
+        if (
+            d.severity == "warning"
+            and d.message == "Parameter will truncate to the nearest integer."
+            and not self.diagnostics.errors
+        ):
             # parser warning of a compile with no errors: before every later-pass warning
             # (reachability, fnotch), whatever its line (oracle, round 17, `docs/instructions.md`)
             return (False, (-1, d.line), 0)
-        return (False, self._position(d),
-                d.message.endswith("never reached at run time.") * 2
-                or d.message.endswith("illegally occurs before BeginProg."))
+        return (
+            False,
+            self._position(d),
+            d.message.endswith("never reached at run time.") * 2
+            or d.message.endswith("illegally occurs before BeginProg."),
+        )
 
     def result_lines(self, show_signature: bool = False) -> list[str]:
         """The lines CR6Comp prints to stdout (and the message file) for this result."""
@@ -177,14 +186,21 @@ def dropped_message(result: CompileResult):
     if result.ok:
         return None
     ordered = sorted(result.diagnostics.items, key=result._sort_key)
-    kept = len(_bounded_by_message_buffer([d.cr6comp(result.program, result.profile.include_drive_prefix)
-                                           for d in ordered]))
+    kept = len(
+        _bounded_by_message_buffer([d.cr6comp(result.program, result.profile.include_drive_prefix) for d in ordered])
+    )
     return ordered[kept] if kept < len(ordered) else None
 
 
-def compile_file(path: Path, profile: Profile | None = None, display_name: str | None = None,
-                  warn_unused: bool = False, source: SourceProvider | None = None,
-                  signature: bool = True, provenance: bool = True) -> CompileResult:
+def compile_file(
+    path: Path,
+    profile: Profile | None = None,
+    display_name: str | None = None,
+    warn_unused: bool = False,
+    source: SourceProvider | None = None,
+    signature: bool = True,
+    provenance: bool = True,
+) -> CompileResult:
     """`provenance=False` (the CLI and the tools) skips the position data only the language server
     reads (`LogicalLine.pieces`, `Program.line_map`, `Stmt.origin`); the compile output is unchanged.
 
@@ -208,9 +224,11 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
         for _ in range(16):
             log = getattr(result.program_ast, "pull_log", None) or []
             site = getattr(result.program_ast, "pull_site", {})
-            errs = [(*site.get(d.file, ()), d.line) for d in result.diagnostics.items
-                    if d.severity == "error" and d.line
-                    and not d.message.endswith("illegally occurs before BeginProg.")]
+            errs = [
+                (*site.get(d.file, ()), d.line)
+                for d in result.diagnostics.items
+                if d.severity == "error" and d.line and not d.message.endswith("illegally occurs before BeginProg.")
+            ]
             bad = next((start for start, end in log if any(e < end for e in errs)), None)
             if bad is None or (limit is not None and bad >= limit):
                 break
@@ -221,19 +239,25 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
     return _finish(result, path, warn_unused, source, signature)
 
 
-def _compile_once(path: Path, profile: Profile, name: str, pull_limit: tuple[int, ...] | None,
-                  source: SourceProvider | None = None, provenance: bool = True):
+def _compile_once(
+    path: Path,
+    profile: Profile,
+    name: str,
+    pull_limit: tuple[int, ...] | None,
+    source: SourceProvider | None = None,
+    provenance: bool = True,
+):
     from . import checker, parser
+
     try:
-        program, diags = parser.parse_file(path, profile=profile, pull_limit=pull_limit, source=source,
-                                        provenance=provenance)
+        program, diags = parser.parse_file(
+            path, profile=profile, pull_limit=pull_limit, source=source, provenance=provenance
+        )
     except Exception as exc:
         diags = Diagnostics()
         diags.error(0, "Internal error: unable to parse program.")
         result = CompileResult(name, profile, diags)
-        result.implementation_exceptions.append(
-            f"parser.parse_file: {type(exc).__name__}: {exc}"
-        )
+        result.implementation_exceptions.append(f"parser.parse_file: {type(exc).__name__}: {exc}")
         if os.environ.get("OPENCRBASIC_STRICT") == "1":
             raise
         return result
@@ -245,8 +269,7 @@ def _compile_once(path: Path, profile: Profile, name: str, pull_limit: tuple[int
         stmt_lines.setdefault(file, []).append((stmt.line, index))
     for lines in stmt_lines.values():
         lines.sort()
-    result = CompileResult(name, profile, diags, file_order=file_order, stmt_lines=stmt_lines,
-                           program_ast=program)
+    result = CompileResult(name, profile, diags, file_order=file_order, stmt_lines=stmt_lines, program_ast=program)
     if len(path.name) + 1 > 60:
         diags.error(0, f"Program name exceeds maximum allowable characters by {len(path.name) - 59}.")
     try:
@@ -264,8 +287,9 @@ def _compile_once(path: Path, profile: Profile, name: str, pull_limit: tuple[int
     return result
 
 
-def _finish(result: CompileResult, path: Path, warn_unused: bool,
-            source: SourceProvider | None = None, signature: bool = True) -> CompileResult:
+def _finish(
+    result: CompileResult, path: Path, warn_unused: bool, source: SourceProvider | None = None, signature: bool = True
+) -> CompileResult:
     program, diags = result.program_ast, result.diagnostics
     if warn_unused and program is not None and not diags.errors:
         # `-u` (`docs/cli.md` "-u", `checker/unused.py`): oracle-confirmed to add nothing at all
@@ -276,6 +300,7 @@ def _finish(result: CompileResult, path: Path, warn_unused: bool,
         # than a checker pass's own crash does (`checker/__init__.py`'s `_run_pass`).
         try:
             from .checker import unused
+
             unused.check(program, diags)
         except Exception as exc:
             result.record_implementation_failure("checker.unused.check", exc)
@@ -284,6 +309,7 @@ def _finish(result: CompileResult, path: Path, warn_unused: bool,
     if not signature:
         return result
     from .signature import program_signature
+
     try:
         result.signature = program_signature(path, source)
     except Exception as exc:

@@ -10,15 +10,32 @@ from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
 FIXTURES = Path(__file__).parent / "fixtures"
-CASES = [case for name in ("r67_ctype_typing", "r67_ftpclient_overflow", "r67_nested_builtin",
-                           "r67_function_tail", "r67_measurement_reps", "r67_calltable_const",
-                           "r67_block_structure", "r67_string_size_junk")
-         for case in json.loads((FIXTURES / f"{name}.json").read_text())["cases"]]
+CASES = [
+    case
+    for name in (
+        "r67_ctype_typing",
+        "r67_ftpclient_overflow",
+        "r67_nested_builtin",
+        "r67_function_tail",
+        "r67_measurement_reps",
+        "r67_calltable_const",
+        "r67_block_structure",
+        "r67_string_size_junk",
+    )
+    for case in json.loads((FIXTURES / f"{name}.json").read_text())["cases"]
+]
 
 
-@pytest.mark.parametrize("case", [
-    pytest.param(case, marks=pytest.mark.xfail(reason=case["not_modelled"], strict=True))
-    if "not_modelled" in case else case for case in CASES], ids=lambda case: case["id"])
+@pytest.mark.parametrize(
+    "case",
+    [
+        pytest.param(case, marks=pytest.mark.xfail(reason=case["not_modelled"], strict=True))
+        if "not_modelled" in case
+        else case
+        for case in CASES
+    ],
+    ids=lambda case: case["id"],
+)
 def test_round67_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
     program.write_bytes(case["source"].encode("utf-8"))
@@ -34,8 +51,7 @@ def test_round67_observations(case, tmp_path):
 def test_ftpclient_huge_integer_no_implementation_exception(logger, sign, tmp_path):
     program = tmp_path / "t.CR6"
     option = sign + "1" + "0" * 309
-    program.write_text('Public X\nBeginProg\nX = FTPClient("h","u","p","f","g",'
-                       + option + ')\nEndProg\n')
+    program.write_text('Public X\nBeginProg\nX = FTPClient("h","u","p","f","g",' + option + ")\nEndProg\n")
     result = compile_file(program, profiles.get(logger))
     assert not result.implementation_exceptions
 
@@ -56,8 +72,7 @@ def test_routine_string_size_bang_pass1(logger, kind, tail, tmp_path):
 @pytest.mark.parametrize("nested", ["Abs(X Y)", "Round(X Y, 1)"])
 def test_function_adjacent_operand_locator_skips_unary_not(logger, nested, tmp_path):
     program = tmp_path / "t.CR6"
-    prefix = ("Public X, Y, N As Long\nFunction G(A As Long, B As Long) As Long\n"
-              "Return 1\nEndFunction\nBeginProg\n")
+    prefix = "Public X, Y, N As Long\nFunction G(A As Long, B As Long) As Long\nReturn 1\nEndFunction\nBeginProg\n"
     messages = []
     for first in ("X", "Not X"):
         program.write_text(prefix + f"N = G({first}, {nested})\nEndProg\n")

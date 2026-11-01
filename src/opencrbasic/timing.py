@@ -48,13 +48,20 @@ def times_lines(program: S.Program, profile: Profile, main_file: str) -> list[st
     del main_file
     env = consteval.Env(profile, dict(program.consts))
     try:
-        pipeline = mode.decide(program.statements, profile, lambda e: consteval.is_constant(e, env),
-                               lambda e: consteval.value_of(e, env)) == "Pipeline"
+        pipeline = (
+            mode.decide(
+                program.statements,
+                profile,
+                lambda e: consteval.is_constant(e, env),
+                lambda e: consteval.value_of(e, env),
+            )
+            == "Pipeline"
+        )
     except Exception:
         pipeline = False
     lines: list[str] = []
     scan_count = 0
-    inside = False       # within a Scan(...)'s own span (see module docstring)
+    inside = False  # within a Scan(...)'s own span (see module docstring)
     in_sub = False
     prev_kw = ""
     for stmt in _flatten(program.statements):
@@ -173,7 +180,7 @@ _MEASURE = {
 }
 _PLAIN_RANGES = {800, 802, 804}
 _C_RANGES = {820, 822, 824}
-_AUTO_RANGES = {810, 830}   # AutoRange, AutoRangeC
+_AUTO_RANGES = {810, 830}  # AutoRange, AutoRangeC
 
 
 def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
@@ -185,15 +192,23 @@ def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     model = _model(env.profile)
     if model != "cr6":
         reps, rng, flag, settle, integ = (_num(_const(stmt.args[k], env)) for k in (ri, gi, fi, si, ii))
-        if (reps is None or rng is None or flag is None or settle is None or integ is None) or reps < 1 or settle < 0 or integ < 0:
+        if (
+            (reps is None or rng is None or flag is None or settle is None or integ is None)
+            or reps < 1
+            or settle < 0
+            or integ < 0
+        ):
             return
         chan_n = _num(_const(stmt.args[ci], env))
         if chan_n is None:
             return
         reps = int(reps)
         if model == "cr3xx":
-            cost = (_c3_cost(1 + (1 if flag else 0), reps, settle) if doubling
-                    else _c3_cost(1, reps, settle, 1 if flag else 0))
+            cost = (
+                _c3_cost(1 + (1 if flag else 0), reps, settle)
+                if doubling
+                else _c3_cost(1, reps, settle, 1 if flag else 0)
+            )
         else:
             if rng not in _PLAIN_RANGES and rng not in _C_RANGES and rng not in _AUTO_RANGES:
                 return
@@ -214,7 +229,12 @@ def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
         chan = S.Number(cast(S.Name, chan).line, value=0)
     if not u_chan and _num(_const(chan, env)) is None:
         return
-    if (reps is None or rng is None or flag is None or settle is None or integ is None) or reps < 1 or settle < 0 or integ < 0:
+    if (
+        (reps is None or rng is None or flag is None or settle is None or integ is None)
+        or reps < 1
+        or settle < 0
+        or integ < 0
+    ):
         return
     auto = rng in _AUTO_RANGES
     if rng not in _PLAIN_RANGES and rng not in _C_RANGES and not auto:
@@ -240,8 +260,9 @@ def _x1000_parts(settle: float, integ: float) -> tuple[int, int]:
     return 32 * ks, 32 * m
 
 
-def _x1000_cost(n: int, settle: float, integ: float, c: bool = False, c_reps: int = 0,
-                auto_n: int = 0, u: bool = False) -> int:
+def _x1000_cost(
+    n: int, settle: float, integ: float, c: bool = False, c_reps: int = 0, auto_n: int = 0, u: bool = False
+) -> int:
     """`c`: a C range; `u`: that C range on a valid channel (SE 1..16, differential 1..8), the
     only case the 64 us per pass applies."""
     s_part, x_part = _x1000_parts(settle, integ)
@@ -292,9 +313,9 @@ def _therm(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     if a is None or a[0] < 1 or a[1] < 0 or a[2] < 0:
         return
     model = _model(env.profile)
-    n = (2 * int(a[0])) % 512   # the thermistor measurement count wraps at 512 (2 * Reps; docs/cli.md)
+    n = (2 * int(a[0])) % 512  # the thermistor measurement count wraps at 512 (2 * Reps; docs/cli.md)
     if n == 0:
-        return                  # the real compiler crashes (divide by zero) for Reps = 256, 512, ...
+        return  # the real compiler crashes (divide by zero) for Reps = 256, 512, ...
     if model == "cr3xx":
         cost = _c3_cost(2, n // 2, a[1])
     elif model == "cr1000x":
@@ -372,7 +393,11 @@ def _bridge(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
         if mp < 1:
             return
     u = 0
-    if c_range and _chan_is_u(chan) and (single or int(cast(re.Match[str], re.fullmatch(r"U(\d+)", chan.name.upper())).group(1)) % 2 == 1):
+    if (
+        c_range
+        and _chan_is_u(chan)
+        and (single or int(cast(re.Match[str], re.fullmatch(r"U(\d+)", chan.name.upper())).group(1)) % 2 == 1)
+    ):
         u = 160
     per = base * (2 if rev_diff else 1) * (2 if rev_ex else 1)
     group = max(int(mp), 1)
@@ -413,8 +438,9 @@ def _am25t(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
         else:
             s_part, x_part = _x1000_parts(settle, integ)
             first = _trunc100(180 + m * (185 + s_part + x_part) + (50 if c_range else 0))
-            total = _trunc100(180 + reps * (m * (265 + s_part + x_part) + (50 if c_range else 0)
-                                            + (m * (85 + s_part) if auto else 0)))
+            total = _trunc100(
+                180 + reps * (m * (265 + s_part + x_part) + (50 if c_range else 0) + (m * (85 + s_part) if auto else 0))
+            )
             out = [first] * 3 + [300, total]
         out.append(400 + 200 * int(cnum))
         lines.extend(f"line {stmt.line}: AM25T = {v}" for v in out)
@@ -527,6 +553,13 @@ def _acpower_x1000(stmt: S.Instruction, env: consteval.Env) -> list[int]:
     return [400] + [v for _ in range(seq) for v in (head, x)]
 
 
-_CLOSED = {"PULSEPORT": "PulsePort", "EXCITEV": "ExciteV", "PULSECOUNT": "Pulsecount",
-           "CALIBRATE": "Calibrate", "CS616": "CS616", "PERIODAVG": "PeriodAvg",
-           "MUXSELECT": "MuxSelect", "ACPOWER": "ACPower"}
+_CLOSED = {
+    "PULSEPORT": "PulsePort",
+    "EXCITEV": "ExciteV",
+    "PULSECOUNT": "Pulsecount",
+    "CALIBRATE": "Calibrate",
+    "CS616": "CS616",
+    "PERIODAVG": "PeriodAvg",
+    "MUXSELECT": "MuxSelect",
+    "ACPOWER": "ACPower",
+}

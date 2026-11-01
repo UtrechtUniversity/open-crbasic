@@ -106,9 +106,7 @@ def _read_groups(physical: list[str]) -> list[_Group]:
     return groups
 
 
-def _fold_consts_and_check_endprog(
-    eval_text: str, line: int, filename: str, parser_instance: _Parser
-) -> bool:
+def _fold_consts_and_check_endprog(eval_text: str, line: int, filename: str, parser_instance: _Parser) -> bool:
     """Folds any `Const` segment into `parser_instance.env` and returns True the moment an
     `EndProg` statement is seen. CR6Comp stops reading the file at the first top-level `EndProg`
     (`parser.py`'s own docstring, oracle-confirmed there); the same is true of `-p`/`-i`'s own
@@ -145,7 +143,7 @@ def _walk_file(
     expand_includes: bool,
     in_include: bool,
     seen: frozenset[str],
-    stop: dict | None = None,          # {"at": (file name lower, line), "hit": bool}
+    stop: dict | None = None,  # {"at": (file name lower, line), "hit": bool}
 ) -> list[str]:
     out: list[str] = []
     for g in groups:
@@ -190,11 +188,20 @@ def _walk_file(
                     child = _read_groups(_split_physical(target.read_bytes().decode("latin-1")))
                 except OSError:
                     continue
-                _walk_file(child, target.name, m_sec.group(1) if m_sec else None, target.parent,
-                           parser_instance, False, in_include or bool(m_inc), seen | {key}, stop)
+                _walk_file(
+                    child,
+                    target.name,
+                    m_sec.group(1) if m_sec else None,
+                    target.parent,
+                    parser_instance,
+                    False,
+                    in_include or bool(m_inc),
+                    seen | {key},
+                    stop,
+                )
                 if stop is not None and stop["hit"]:
                     break
-                parser_instance._done = False   # an `EndProg` in the include does not end this file
+                parser_instance._done = False  # an `EndProg` in the include does not end this file
             continue
         if (m_sec or m_inc) and expand_includes:
             if m_sec:
@@ -209,7 +216,7 @@ def _walk_file(
                 new_section, new_in_include = None, True
             target = source._resolve_include_path(spec, directory)
             if target is None:
-                out.append(g.raw)   # `-i` keeps a missing include as written (oracle, CR6, round 74)
+                out.append(g.raw)  # `-i` keeps a missing include as written (oracle, CR6, round 74)
                 continue
             key = str(target.resolve())
             if key in seen:
@@ -220,10 +227,19 @@ def _walk_file(
             except OSError:
                 continue
             child_groups = _read_groups(_split_physical(data.decode("latin-1")))
-            out.extend(_walk_file(
-                child_groups, target.name, new_section, target.parent, parser_instance,
-                expand_includes, new_in_include, seen | {key}, stop,
-            ))
+            out.extend(
+                _walk_file(
+                    child_groups,
+                    target.name,
+                    new_section,
+                    target.parent,
+                    parser_instance,
+                    expand_includes,
+                    new_in_include,
+                    seen | {key},
+                    stop,
+                )
+            )
             if parser_instance._done:
                 break
             continue
@@ -231,8 +247,7 @@ def _walk_file(
     return out
 
 
-def preprocess(path: Path, profile: Profile, *, expand_includes: bool,
-               stop: tuple[str, int] | None = None) -> bytes:
+def preprocess(path: Path, profile: Profile, *, expand_includes: bool, stop: tuple[str, int] | None = None) -> bytes:
     """The `-p` (`expand_includes=False`) or `-i` (`expand_includes=True`) output bytes for
     `path`: CRLF, one trailing CRLF, `latin-1`. With `stop` (file name, line), the output ends with
     that statement: where a dropped pass-1 error ends the reference compile."""
@@ -241,8 +256,14 @@ def preprocess(path: Path, profile: Profile, *, expand_includes: bool,
     groups = _read_groups(_split_physical(data.decode("latin-1")))
     parser_instance = _Parser(profile, Diagnostics())
     lines = _walk_file(
-        groups, path.name, None, path.parent, parser_instance,
-        expand_includes, False, frozenset({str(path.resolve())}),
+        groups,
+        path.name,
+        None,
+        path.parent,
+        parser_instance,
+        expand_includes,
+        False,
+        frozenset({str(path.resolve())}),
         None if stop is None else {"at": (stop[0].lower(), stop[1]), "hit": False},
     )
     return ("\r\n".join(lines) + "\r\n").encode("latin-1", "replace")

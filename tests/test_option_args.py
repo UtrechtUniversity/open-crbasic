@@ -9,8 +9,7 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "option_args.json").read_text(
-    encoding="utf-8"))
+FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "option_args.json").read_text(encoding="utf-8"))
 
 
 @pytest.mark.parametrize("case", FIXTURE["cases"], ids=lambda case: case["id"])

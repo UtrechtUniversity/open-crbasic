@@ -21,17 +21,17 @@ class ConfigError(Exception):
 @dataclass
 class Suppression:
     code: str
-    file: str               # glob, relative to the configuration file, case-insensitive
+    file: str  # glob, relative to the configuration file, case-insensitive
     line: int | None
     reason: str
 
 
 @dataclass
 class Config:
-    path: Path | None = None            # None: no file, built-in defaults
+    path: Path | None = None  # None: no file, built-in defaults
     checks: dict[str, str] = field(default_factory=dict)
     profile: dict[str, dict[str, str]] = field(default_factory=dict)
-    entry: dict[str, dict[str, str]] = field(default_factory=dict)   # key: normalized relative path
+    entry: dict[str, dict[str, str]] = field(default_factory=dict)  # key: normalized relative path
     suppress: list[Suppression] = field(default_factory=list)
 
     @property
@@ -59,8 +59,7 @@ def _severities(table: object, codes, where: str) -> dict[str, str]:
         if code not in codes:
             raise ConfigError(f"{where}: unknown check code {code}")
         if value not in SEVERITIES:
-            raise ConfigError(f"{where}: unknown severity {value!r} for {code}; "
-                              f"choose from {', '.join(SEVERITIES)}")
+            raise ConfigError(f"{where}: unknown severity {value!r} for {code}; choose from {', '.join(SEVERITIES)}")
         out[code] = value
     return out
 
@@ -100,7 +99,7 @@ def loads(text: str, path: Path, codes) -> Config:
             raise ConfigError(f"{name} [profile.{logger}]: unknown logger profile")
         cfg.profile[logger] = _severities(table.get("checks", {}), codes, f"{name} [profile.{logger}.checks]")
     for entry, table in _tables(data, "entry", name).items():
-        cfg.entry[norm(entry)] = _severities(table.get("checks", {}), codes, f"{name} [entry.\"{entry}\".checks]")
+        cfg.entry[norm(entry)] = _severities(table.get("checks", {}), codes, f'{name} [entry."{entry}".checks]')
     suppress = data.get("suppress", [])
     if not isinstance(suppress, list):
         raise ConfigError(f"{name}: suppress must be an array of tables ([[suppress]])")
@@ -128,8 +127,9 @@ def _tables(data: dict, key: str, name: str) -> dict[str, dict]:
     return tables
 
 
-def severity(cfg: Config, code: str, default: str, logger: str, entry: str,
-             cli: dict[str, str], lsp: dict[str, str]) -> str:
+def severity(
+    cfg: Config, code: str, default: str, logger: str, entry: str, cli: dict[str, str], lsp: dict[str, str]
+) -> str:
     """Highest layer that names `code`: CLI, LSP, entry, profile, `[checks]`, built-in default."""
     for layer in (cli, lsp, cfg.entry.get(entry, {}), cfg.profile.get(logger, {}), cfg.checks):
         if code in layer:
@@ -138,5 +138,7 @@ def severity(cfg: Config, code: str, default: str, logger: str, entry: str,
 
 
 def suppression(cfg: Config, code: str, file: str, line: int) -> Suppression | None:
-    return next((s for s in cfg.suppress if s.code == code and fnmatch.fnmatchcase(file, s.file)
-                 and s.line in (None, line)), None)
+    return next(
+        (s for s in cfg.suppress if s.code == code and fnmatch.fnmatchcase(file, s.file) and s.line in (None, line)),
+        None,
+    )

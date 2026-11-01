@@ -1,4 +1,3 @@
-
 import subprocess
 import sys
 from pathlib import Path
@@ -14,8 +13,7 @@ CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
 CHM = sorted((ROOT / "tests" / "corpus" / "chm").glob("*.CR6"))
 
 LIB = b"Public LibVar\n"
-MAIN = (b'Include("CPU:Lib.crb")\n\nPublic X\n\nBeginProg\n  X = LibVar\n  Scan(1,Sec,0,0)\n'
-        b'  NextScan\nEndProg\n')
+MAIN = b'Include("CPU:Lib.crb")\n\nPublic X\n\nBeginProg\n  X = LibVar\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n'
 
 
 def _key(d):
@@ -25,8 +23,7 @@ def _key(d):
 def _direct(entry, logger, signature=True):
     result = compile_file(entry, profiles.get(logger), warn_unused=True)
     items = sorted(result.diagnostics.items, key=result._sort_key)
-    return (result.ok, result.mode, [_key(d) for d in items],
-            result.result_lines(show_signature=signature))
+    return (result.ok, result.mode, [_key(d) for d in items], result.result_lines(show_signature=signature))
 
 
 def _siblings(entry):
@@ -40,7 +37,11 @@ def _check_equal(entry, logger, overlays, memo):
         res = analyze(request) if ov else memo(request)
         assert res.api_version == API_VERSION == 2
         assert (res.ok, res.mode, [_key(d) for d in res.diagnostics], list(res.rendered_lines)) == (
-            ok, mode, diags, lines), entry
+            ok,
+            mode,
+            diags,
+            lines,
+        ), entry
 
 
 @pytest.mark.parametrize("entry", sorted(CRBASIC.glob("*.CR6")), ids=lambda p: p.name)
@@ -120,8 +121,7 @@ def test_missing_include_is_recorded_as_miss(tmp_path, monkeypatch):
     entry = tmp_path / "Main.CR6"
     entry.write_bytes(b'Include("CPU:Gone.crb")\nBeginProg\nEndProg\n')
     res = analyze(AnalysisRequest(entry))
-    assert any("Cannot open include file" in d.message and d.severity == "warning"
-               for d in res.diagnostics)
+    assert any("Cannot open include file" in d.message and d.severity == "warning" for d in res.diagnostics)
     assert res.dependencies.listings[tmp_path] == ("Main.CR6",)
     assert tmp_path / "Gone.crb" not in res.dependencies.reads  # the miss is in the listing
     gone = tmp_path / "nodir"
@@ -164,17 +164,24 @@ def test_unreadable_entry_does_not_raise(tmp_path, monkeypatch):
     assert not res.ok
 
 
-@pytest.mark.parametrize("module", ["opencrbasic.cli", "opencrbasic.compiler", "opencrbasic.analysis",
-                                    "opencrbasic.sources"])
+@pytest.mark.parametrize(
+    "module", ["opencrbasic.cli", "opencrbasic.compiler", "opencrbasic.analysis", "opencrbasic.sources"]
+)
 def test_core_imports_without_pygls(module):
-    code = ("import sys\n"
-            "class Block:\n"
-            "    def find_spec(self, name, path=None, target=None):\n"
-            "        if name == 'pygls' or name.startswith(('pygls.', 'lsprotocol')):\n"
-            "            raise ImportError('blocked ' + name)\n"
-            "sys.meta_path.insert(0, Block())\n"
-            f"import {module}\n"
-            "assert not any(m.split('.')[0] in ('pygls', 'lsprotocol') for m in sys.modules)\n")
-    out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True,
-                         env={**__import__("os").environ, "PYTHONPATH": str(ROOT / "src")})
+    code = (
+        "import sys\n"
+        "class Block:\n"
+        "    def find_spec(self, name, path=None, target=None):\n"
+        "        if name == 'pygls' or name.startswith(('pygls.', 'lsprotocol')):\n"
+        "            raise ImportError('blocked ' + name)\n"
+        "sys.meta_path.insert(0, Block())\n"
+        f"import {module}\n"
+        "assert not any(m.split('.')[0] in ('pygls', 'lsprotocol') for m in sys.modules)\n"
+    )
+    out = subprocess.run(
+        [sys.executable, "-c", code],
+        capture_output=True,
+        text=True,
+        env={**__import__("os").environ, "PYTHONPATH": str(ROOT / "src")},
+    )
     assert out.returncode == 0, out.stderr

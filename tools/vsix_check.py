@@ -33,12 +33,11 @@ import tempfile
 import zipfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]          # opencrbasic/
+ROOT = Path(__file__).resolve().parents[1]  # opencrbasic/
 VSCODE = ROOT.parent / "open-crbasic-vsix"
 VSCE = VSCODE / "node_modules" / ".bin" / "vsce"
 DROP_ENV = ("PYTHONPATH", "PYTHONHOME", "VIRTUAL_ENV", "UV_PROJECT_ENVIRONMENT")
-TOP_LEVEL_ALLOWED = {"package.json", "readme.md", "language-configuration.json", "out",
-                     "syntaxes", "node_modules"}
+TOP_LEVEL_ALLOWED = {"package.json", "readme.md", "language-configuration.json", "out", "syntaxes", "node_modules"}
 OUT_EXCLUDED = re.compile(r"(^|/)test/|\.test\.js$|\.map$")
 MAX_DETAIL_LINES = 40
 
@@ -65,8 +64,9 @@ def clean_env() -> dict[str, str]:
 
 
 def run(argv: list, *, cwd: Path, timeout: float = 900) -> subprocess.CompletedProcess:
-    return subprocess.run([str(a) for a in argv], cwd=cwd, env=clean_env(), capture_output=True,
-                          text=True, timeout=timeout)
+    return subprocess.run(
+        [str(a) for a in argv], cwd=cwd, env=clean_env(), capture_output=True, text=True, timeout=timeout
+    )
 
 
 def first_line(proc: subprocess.CompletedProcess) -> str:
@@ -80,8 +80,7 @@ def sha(data: bytes) -> str:
 
 def environment_lines() -> list[str]:
     rev = run(["git", "-C", ROOT, "rev-parse", "--short", "HEAD"], cwd=ROOT).stdout.strip()
-    dirty = run(["git", "-C", ROOT, "status", "--porcelain", "--", "vscode", "tools"],
-                cwd=ROOT).stdout.strip()
+    dirty = run(["git", "-C", ROOT, "status", "--porcelain", "--", "vscode", "tools"], cwd=ROOT).stdout.strip()
     npm = shutil.which("npm")
     node = shutil.which("node")
     return [
@@ -89,8 +88,7 @@ def environment_lines() -> list[str]:
         f"node: {first_line(run([node, '--version'], cwd=VSCODE)) if node else 'missing'}",
         f"npm: {first_line(run([npm, '--version'], cwd=VSCODE)) if npm else 'missing'}",
         f"vsce: {first_line(run([VSCE, '--version'], cwd=VSCODE)) if VSCE.exists() else 'missing'}",
-        f"revision: {rev or 'unknown'}; vscode/ and tools/ "
-        f"{'have uncommitted changes' if dirty else 'clean'}",
+        f"revision: {rev or 'unknown'}; vscode/ and tools/ {'have uncommitted changes' if dirty else 'clean'}",
         f"checkout: {ROOT}",
     ]
 
@@ -139,8 +137,7 @@ def build(tmp: Path, report: Report) -> Path | None:
         return None
     report.record("npm run compile", True, "tsc -p ./ exit 0")
     target = tmp / "opencrbasic-package.vsix"
-    proc = run([VSCE, "package", "--allow-missing-repository", "--skip-license",
-               "--out", target], cwd=VSCODE)
+    proc = run([VSCE, "package", "--allow-missing-repository", "--skip-license", "--out", target], cwd=VSCODE)
     text = (proc.stdout + proc.stderr).strip()
     if proc.returncode != 0 or not target.exists():
         report.record("vsce package builds a VSIX", False, f"exit {proc.returncode}\n{text[-3000:]}")
@@ -154,33 +151,46 @@ def check_entries(report: Report, vsix: Path) -> dict[str, bytes]:
         infos = [i for i in z.infolist() if not i.is_dir()]
         contents = {i.filename: z.read(i) for i in infos}
     names = sorted(contents)
-    report.record("archive lists its entries", bool(names),
-                  f"{len(names)} files; top level: "
-                  f"{sorted({n.split('/', 1)[0] for n in names})}")
+    report.record(
+        "archive lists its entries",
+        bool(names),
+        f"{len(names)} files; top level: {sorted({n.split('/', 1)[0] for n in names})}",
+    )
 
-    top = {n[len("extension/"):].split("/", 1)[0] for n in names if n.startswith("extension/")}
+    top = {n[len("extension/") :].split("/", 1)[0] for n in names if n.startswith("extension/")}
     bad_top = sorted(top - TOP_LEVEL_ALLOWED)
-    report.record("extension/ holds only the allowed top-level entries", not bad_top,
-                  f"unexpected: {bad_top}" if bad_top else f"allowed: {sorted(top)}")
+    report.record(
+        "extension/ holds only the allowed top-level entries",
+        not bad_top,
+        f"unexpected: {bad_top}" if bad_top else f"allowed: {sorted(top)}",
+    )
 
-    banned = [n for n in names if re.search(r"(^|/)(src|test|tests|\.vscode|extracted_chm)/", n)
-              or re.search(r"\.(map|vsix|tsbuildinfo)$|\.test\.js$|tsconfig|\.ts$", n)
-              or n.startswith("extension/node_modules/@types/")
-              or n.startswith("extension/node_modules/typescript/")
-              or n.startswith("extension/node_modules/@vscode/")
-              or re.search(r"\.DS_Store$", n)]
-    report.record("no sources, tests, dev tools, maps or help text in the package", not banned,
-                  f"found: {banned[:40]}" if banned else "none found")
+    banned = [
+        n
+        for n in names
+        if re.search(r"(^|/)(src|test|tests|\.vscode|extracted_chm)/", n)
+        or re.search(r"\.(map|vsix|tsbuildinfo)$|\.test\.js$|tsconfig|\.ts$", n)
+        or n.startswith("extension/node_modules/@types/")
+        or n.startswith("extension/node_modules/typescript/")
+        or n.startswith("extension/node_modules/@vscode/")
+        or re.search(r"\.DS_Store$", n)
+    ]
+    report.record(
+        "no sources, tests, dev tools, maps or help text in the package",
+        not banned,
+        f"found: {banned[:40]}" if banned else "none found",
+    )
 
     expected = source_outputs()
-    packaged_out = {n[len("extension/"):]: contents[n] for n in names
-                    if n.startswith("extension/out/")}
+    packaged_out = {n[len("extension/") :]: contents[n] for n in names if n.startswith("extension/out/")}
     missing = sorted(set(expected) - set(packaged_out))
     extra = sorted(set(packaged_out) - set(expected))
     differ = sorted(k for k in set(expected) & set(packaged_out) if expected[k] != packaged_out[k])
-    report.record("out/ holds exactly the compiled non-test files, byte-identical",
-                  not (missing or extra or differ),
-                  f"compiled: {len(expected)}; missing {missing}; extra {extra}; differ {differ}")
+    report.record(
+        "out/ holds exactly the compiled non-test files, byte-identical",
+        not (missing or extra or differ),
+        f"compiled: {len(expected)}; missing {missing}; extra {extra}; differ {differ}",
+    )
 
     singles = {
         "syntaxes/crbasic.tmLanguage.json": VSCODE / "syntaxes" / "crbasic.tmLanguage.json",
@@ -190,14 +200,17 @@ def check_entries(report: Report, vsix: Path) -> dict[str, bytes]:
     for rel, src in singles.items():
         if contents.get(f"extension/{rel}") != src.read_bytes():
             mismatched.append(rel)
-    report.record("syntaxes and language configuration are the source files",
-                  not mismatched, f"differ: {mismatched}" if mismatched else
-                  ", ".join(f"{k} {sha(v.read_bytes())[:12]}" for k, v in singles.items()))
+    report.record(
+        "syntaxes and language configuration are the source files",
+        not mismatched,
+        f"differ: {mismatched}"
+        if mismatched
+        else ", ".join(f"{k} {sha(v.read_bytes())[:12]}" for k, v in singles.items()),
+    )
 
     readme = [n for n in names if n.lower() == "extension/readme.md"]
     readme_ok = bool(readme) and contents[readme[0]] == (VSCODE / "README.md").read_bytes()
-    report.record("README is packaged unchanged", readme_ok,
-                  f"{readme[0] if readme else 'missing'}")
+    report.record("README is packaged unchanged", readme_ok, f"{readme[0] if readme else 'missing'}")
 
     return contents
 
@@ -222,9 +235,11 @@ def check_manifest(report: Report, contents: dict[str, bytes]) -> None:
         diffs.append("contributes.configuration keys")
     elif p_conf != s_conf:
         diffs.append("contributes.configuration values")
-    report.record("packaged package.json matches the source", not diffs,
-                  f"{packaged.get('name')}@{packaged.get('version')}; "
-                  f"{len(p_conf)} configuration keys; differs: {diffs}")
+    report.record(
+        "packaged package.json matches the source",
+        not diffs,
+        f"{packaged.get('name')}@{packaged.get('version')}; {len(p_conf)} configuration keys; differs: {diffs}",
+    )
 
     names = [n for n in contents if n.startswith("extension/node_modules/")]
     installed = package_names(names)
@@ -232,10 +247,12 @@ def check_manifest(report: Report, contents: dict[str, bytes]) -> None:
     required = {"vscode-languageclient"}
     not_runtime = sorted(installed - closure)
     missing = sorted((closure - installed) | (required - installed))
-    report.record("bundled node_modules are exactly the runtime dependency closure",
-                  not not_runtime and not missing,
-                  f"runtime closure {len(closure)} packages, bundled {len(installed)}; "
-                  f"bundled but not runtime: {not_runtime}; runtime but not bundled: {missing}")
+    report.record(
+        "bundled node_modules are exactly the runtime dependency closure",
+        not not_runtime and not missing,
+        f"runtime closure {len(closure)} packages, bundled {len(installed)}; "
+        f"bundled but not runtime: {not_runtime}; runtime but not bundled: {missing}",
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -256,8 +273,7 @@ def main(argv: list[str] | None = None) -> int:
             size = vsix.stat().st_size
             with zipfile.ZipFile(vsix) as z:
                 count = sum(1 for i in z.infolist() if not i.is_dir())
-            report.record("package size and file count", True,
-                          f"{size} bytes ({size / 1024:.1f} KiB), {count} files")
+            report.record("package size and file count", True, f"{size} bytes ({size / 1024:.1f} KiB), {count} files")
             contents = check_entries(report, vsix)
             check_manifest(report, contents)
     except Exception as exc:

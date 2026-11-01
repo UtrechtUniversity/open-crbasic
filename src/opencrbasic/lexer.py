@@ -21,12 +21,39 @@ from dataclasses import dataclass
 
 # Longest operators first so the scanner prefers the multi-character spelling.
 _OPERATORS = [
-    "<>", "<=", ">=", "<<", ">>",
-    "+=", "-=", "*=", "/=", "\\=", "^=", "&=",
-    "+", "-", "*", "/", "\\", "^", "&",
-    "=", "<", ">",
-    "(", ")", ",", ".", ":", ";", "{", "}", "#",
-    "!", "@",  # pointer variables: `Type!` declarations, `!x` dereference, `@x` address-of
+    "<>",
+    "<=",
+    ">=",
+    "<<",
+    ">>",
+    "+=",
+    "-=",
+    "*=",
+    "/=",
+    "\\=",
+    "^=",
+    "&=",
+    "+",
+    "-",
+    "*",
+    "/",
+    "\\",
+    "^",
+    "&",
+    "=",
+    "<",
+    ">",
+    "(",
+    ")",
+    ",",
+    ".",
+    ":",
+    ";",
+    "{",
+    "}",
+    "#",
+    "!",
+    "@",  # pointer variables: `Type!` declarations, `!x` dereference, `@x` address-of
 ]
 # Sort by length desc so the regex alternation tries multi-char spellings first.
 _OPERATORS.sort(key=len, reverse=True)
@@ -45,11 +72,11 @@ KEYWORD_KINDS = {"IDENT"}
 
 @dataclass(frozen=True)
 class Token:
-    kind: str            # "IDENT" | "NUMBER" | "STRING" | "OP" | "EOF"
-    text: str            # original spelling
-    upper: str            # case-folded form (identifiers/keywords only; same as text otherwise)
-    col: int              # 0-based offset into the logical line's joined text
-    line: int = 0          # physical source line (assigned by the caller)
+    kind: str  # "IDENT" | "NUMBER" | "STRING" | "OP" | "EOF"
+    text: str  # original spelling
+    upper: str  # case-folded form (identifiers/keywords only; same as text otherwise)
+    col: int  # 0-based offset into the logical line's joined text
+    line: int = 0  # physical source line (assigned by the caller)
     value: object = None  # NUMBER: int|float; STRING: decoded contents (quotes/escapes resolved)
 
 
@@ -104,11 +131,23 @@ def tokenize(text: str, line: int = 0) -> list[Token]:
             tokens.append(Token("NUMBER", raw, raw.upper(), i, line, _number_value(raw)))
             i = m.end()
             continue
-        if ch == "." and i + 1 < n and text[i + 1].isdigit() and tokens and tokens[-1].kind == "IDENT" \
-                and text[i - 1].isalnum() or (ch == "." and i + 1 < n and text[i + 1].isdigit()
-                                              and tokens and tokens[-1].kind == "IDENT"
-                                              and text[i - 1] == "_"):
-            tokens.append(Token("OP", ".", ".", i, line))   # `Tmp.001`: a member name, not a number
+        if (
+            ch == "."
+            and i + 1 < n
+            and text[i + 1].isdigit()
+            and tokens
+            and tokens[-1].kind == "IDENT"
+            and text[i - 1].isalnum()
+            or (
+                ch == "."
+                and i + 1 < n
+                and text[i + 1].isdigit()
+                and tokens
+                and tokens[-1].kind == "IDENT"
+                and text[i - 1] == "_"
+            )
+        ):
+            tokens.append(Token("OP", ".", ".", i, line))  # `Tmp.001`: a member name, not a number
             m = re.compile(r"\w+").match(text, i + 1)
             assert m is not None  # (a digit follows the `.`)
             tokens.append(Token("IDENT", m.group(0), m.group(0).upper(), i + 1, line))
@@ -120,8 +159,10 @@ def tokenize(text: str, line: int = 0) -> list[Token]:
             raw = m.group(0)
             value = _number_value(raw)
             end = m.end()
-            if text[end:end + 1] in ("R", "r") and not (text[end + 1:end + 2].isalnum() or text[end + 1:end + 2] == "_"):
-                end += 1    # `2.15R`: a double-precision literal (oracle, CR6/CR1000X, 2026-10-10)
+            if text[end : end + 1] in ("R", "r") and not (
+                text[end + 1 : end + 2].isalnum() or text[end + 1 : end + 2] == "_"
+            ):
+                end += 1  # `2.15R`: a double-precision literal (oracle, CR6/CR1000X, 2026-10-10)
             tokens.append(Token("NUMBER", text[i:end], text[i:end], i, line, value))
             i = end
             continue

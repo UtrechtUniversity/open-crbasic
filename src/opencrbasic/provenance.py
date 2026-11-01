@@ -9,6 +9,7 @@ if TYPE_CHECKING:
 
 class LoadProvenance:
     """Annotations only: loaders populate these attributes when the corresponding data exists."""
+
     pull_log: list[tuple[tuple[int, ...], tuple[int, ...]]]
     pull_site: dict[str, tuple[int, ...]]
     include_paths: dict[str, Path]

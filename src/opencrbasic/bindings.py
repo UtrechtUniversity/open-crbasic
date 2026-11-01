@@ -41,30 +41,31 @@ _TABLE_PROPERTIES = {n.upper(): n for n in tables.TABLE_PROPERTIES}
 class Declaration:
     """One declared name. Identity (not value) distinguishes declarations: the same spelling in
     two routines, two includes of one file, or two statements gives distinct objects."""
-    name: str                          # source spelling
-    kind: str                          # public dim static const sub function param alias datatable
+
+    name: str  # source spelling
+    kind: str  # public dim static const sub function param alias datatable
     #                                    consttable structuretype objecttype structure_member label
     #                                    field system_table external
-    scope: str                         # "global" | "routine" | "structure" | "table" | "predefined"
-    routine: S.SubDef | None           # the owning Sub/Function (scope "routine"; params too)
-    container: Declaration | None    # StructureType owning a member; ConstTable owning a Const;
+    scope: str  # "global" | "routine" | "structure" | "table" | "predefined"
+    routine: S.SubDef | None  # the owning Sub/Function (scope "routine"; params too)
+    container: Declaration | None  # StructureType owning a member; ConstTable owning a Const;
     #                                    DataTable/system table owning a `field`
-    file: str                          # compiler display name
-    line: int                          # compiler-reported line
-    node: object                       # VarDecl | ConstDecl | Param | SubDef | Instruction | Label
-    stmt: S.Stmt | None                # innermost statement holding the declaration
-    unit: S.Stmt | None                # outermost statement of the source segment (owns the text)
-    index: int                         # position of `unit` in `program.statements` (-1: predefined)
-    occurrence: int | None = None      # nth same-name token of `unit.text` (see `token_of`)
-    type: str | None = None            # upper-case declared type, if any
-    quoted: bool = False               # a DataTable/ConstTable name written as a string
+    file: str  # compiler display name
+    line: int  # compiler-reported line
+    node: object  # VarDecl | ConstDecl | Param | SubDef | Instruction | Label
+    stmt: S.Stmt | None  # innermost statement holding the declaration
+    unit: S.Stmt | None  # outermost statement of the source segment (owns the text)
+    index: int  # position of `unit` in `program.statements` (-1: predefined)
+    occurrence: int | None = None  # nth same-name token of `unit.text` (see `token_of`)
+    type: str | None = None  # upper-case declared type, if any
+    quoted: bool = False  # a DataTable/ConstTable name written as a string
     external: CatalogEntry | None = None
     alias_target: Reference | None = None
-    unverified_scope: bool = False     # scope inside a routine is not established by evidence
+    unverified_scope: bool = False  # scope inside a routine is not established by evidence
     tok_key: tuple = ()
-    modelled: bool = False             # table/system_table: every field name is known (`fields_of`)
-    members: dict | None = None       # StructureType: upper member name -> [Declaration]
-    site: str = ""                     # `field`: "fieldnames" (the FieldNames string token is the
+    modelled: bool = False  # table/system_table: every field name is known (`fields_of`)
+    members: dict | None = None  # StructureType: upper member name -> [Declaration]
+    site: str = ""  # `field`: "fieldnames" (the FieldNames string token is the
     #                                    site, `quoted`), "instruction" (name derived from the Source;
     #                                    only stmt/line locate it, no token) or "property" (a
     #                                    `Table.Output`-style member, predefined)
@@ -75,22 +76,22 @@ class Declaration:
 
 @dataclass(eq=False)
 class Reference:
-    name: str                          # source spelling
+    name: str  # source spelling
     role: str
     file: str
     line: int
-    resolved: tuple = ()               # candidate declarations; () unresolved; >1 ambiguous
-    ambiguity: str = ""                # non-empty: why the candidates are not a proven single target
-    container: tuple = ()              # member reference: the table/structure declarations searched
-    routine: S.SubDef | None = None    # routine the reference occurs in
-    node: object = None                # Name | Index | Member | Call | Instruction | Param | VarDecl
+    resolved: tuple = ()  # candidate declarations; () unresolved; >1 ambiguous
+    ambiguity: str = ""  # non-empty: why the candidates are not a proven single target
+    container: tuple = ()  # member reference: the table/structure declarations searched
+    routine: S.SubDef | None = None  # routine the reference occurs in
+    node: object = None  # Name | Index | Member | Call | Instruction | Param | VarDecl
     stmt: S.Stmt | None = None
     unit: S.Stmt | None = None
     index: int = 0
     occurrence: int | None = None
-    base: Reference | None = None    # member reference: the reference of its base
+    base: Reference | None = None  # member reference: the reference of its base
     is_write: bool = False
-    forward: bool = False              # every candidate is declared in a later statement
+    forward: bool = False  # every candidate is declared in a later statement
     tok_key: tuple = ()
 
     @property
@@ -99,9 +100,10 @@ class Reference:
             return "ambiguous"
         if self.resolved:
             return "resolved"
-        if self.role == MEMBER and any(c.kind in ("datatable", "system_table")
-                                       and not c.modelled for c in self.container):
-            return "unmodelled"        # a table whose field names the index cannot list
+        if self.role == MEMBER and any(
+            c.kind in ("datatable", "system_table") and not c.modelled for c in self.container
+        ):
+            return "unmodelled"  # a table whose field names the index cannot list
         return "unresolved"
 
     def __repr__(self) -> str:
@@ -110,7 +112,7 @@ class Reference:
 
 @dataclass(frozen=True)
 class IndexFailure:
-    index: int                         # statement position, -1 for the whole build
+    index: int  # statement position, -1 for the whole build
     file: str
     line: int
     message: str
@@ -127,7 +129,7 @@ class BindingIndex:
         self.declarations: tuple[Declaration, ...] = ()
         self.references: tuple[Reference, ...] = ()
         self.failures: tuple[IndexFailure, ...] = ()
-        self.unparsed: tuple[S.Unparsed, ...] = ()      # statements the parser could not take apart
+        self.unparsed: tuple[S.Unparsed, ...] = ()  # statements the parser could not take apart
         self._by_name: dict[str, list[Declaration]] = {}
         self._refs_to: dict[int, list[Reference]] = {}
         self._by_unit: dict[int, list] = {}
@@ -138,9 +140,9 @@ class BindingIndex:
         self._external: dict[tuple, Declaration] = {}
         self._system: dict[str, Declaration] = {}
         self._tokens: dict[int, list | None] = {}
-        self._fields: dict[int, list[Declaration]] = {}          # id(DataTable decl) -> fields, in order
-        self._field_names: dict[tuple, list[Declaration]] = {}   # (id(table), UPPER name) -> fields
-        self._sys_names: dict[str, dict[str, str] | None] = {}   # system table -> upper -> spelling
+        self._fields: dict[int, list[Declaration]] = {}  # id(DataTable decl) -> fields, in order
+        self._field_names: dict[tuple, list[Declaration]] = {}  # (id(table), UPPER name) -> fields
+        self._sys_names: dict[str, dict[str, str] | None] = {}  # system table -> upper -> spelling
         self._sys_fields: dict[tuple, Declaration] = {}
         self._slow_seq = 0
 
@@ -170,8 +172,12 @@ class BindingIndex:
         kinds = defaultdict(int)
         for d in self.declarations:
             kinds[d.kind] += 1
-        return {"declarations": dict(kinds), "references": dict(refs),
-                "failures": len(self.failures), "unparsed": len(self.unparsed)}
+        return {
+            "declarations": dict(kinds),
+            "references": dict(refs),
+            "failures": len(self.failures),
+            "unparsed": len(self.unparsed),
+        }
 
     def lookup(self, name: str, routine: S.SubDef | None = None, role: str = READ) -> Resolution:
         """Candidates for a name used in `routine` (None: outside every routine)."""
@@ -201,8 +207,21 @@ class BindingIndex:
         key = (entry.name.upper(), entry.kind)
         decl = self._external.get(key)
         if decl is None:
-            decl = Declaration(entry.name, "external", "predefined", None, None, "", 0, None, None,
-                               None, -1, type=entry.kind, external=entry)
+            decl = Declaration(
+                entry.name,
+                "external",
+                "predefined",
+                None,
+                None,
+                "",
+                0,
+                None,
+                None,
+                None,
+                -1,
+                type=entry.kind,
+                external=entry,
+            )
             self._external[key] = decl
         return decl
 
@@ -223,8 +242,19 @@ class BindingIndex:
             return None
         decl = self._system.get(upper)
         if decl is None:
-            decl = Declaration(upper.capitalize() if upper != "DATATABLEINFO" else "DataTableInfo",
-                               "system_table", "predefined", None, None, "", 0, None, None, None, -1)
+            decl = Declaration(
+                upper.capitalize() if upper != "DATATABLEINFO" else "DataTableInfo",
+                "system_table",
+                "predefined",
+                None,
+                None,
+                "",
+                0,
+                None,
+                None,
+                None,
+                -1,
+            )
             self._system[upper] = decl
         return decl
 
@@ -239,14 +269,15 @@ class BindingIndex:
             if len(locals_) > 1:
                 return Resolution(tuple(locals_), "duplicate declarations in one routine")
             local = locals_[0]
-            if (profile.name in ("cr300", "cr350") and upper in profile.functions
-                    and local.kind in ("dim", "param")):
+            if profile.name in ("cr300", "cr350") and upper in profile.functions and local.kind in ("dim", "param"):
                 fn = self._predefined(upper, ("function",))
                 if fn:
-                    return Resolution(fn + (local,),
-                                      f"{profile.name}: a local Dim/parameter does not shadow a "
-                                      "built-in function (docs/checker.md, function-named "
-                                      "assignment targets)")
+                    return Resolution(
+                        fn + (local,),
+                        f"{profile.name}: a local Dim/parameter does not shadow a "
+                        "built-in function (docs/checker.md, function-named "
+                        "assignment targets)",
+                    )
             return Resolution((local,), "")
         glob = self._glob.get(upper, [])
         if glob:
@@ -255,8 +286,10 @@ class BindingIndex:
             return Resolution((glob[0],), "")
         loose = self._loose.get(upper, [])
         if loose:
-            return Resolution(tuple(loose), "declared inside a routine; its visibility outside "
-                              "that routine is not established by evidence")
+            return Resolution(
+                tuple(loose),
+                "declared inside a routine; its visibility outside that routine is not established by evidence",
+            )
         if role == CALL:
             kinds = ("instruction", "function", "symbol")
         elif role == TYPE:
@@ -275,8 +308,7 @@ class BindingIndex:
             return [cand], found
         if cand.kind == "system_table":
             if cand.name.upper() == "PUBLIC":
-                found = [d for d in self._glob.get(member_upper, [])
-                         if d.kind in ("public", "alias")]
+                found = [d for d in self._glob.get(member_upper, []) if d.kind in ("public", "alias")]
                 return [cand], found
             sysf = self._system_field(cand, member_upper) or self._table_property(cand, member_upper)
             return [cand], [sysf] if sysf is not None else []
@@ -322,8 +354,20 @@ class BindingIndex:
         key = (id(table), member_upper)
         decl = self._sys_fields.get(key)
         if decl is None:
-            decl = Declaration(_TABLE_PROPERTIES[member_upper], "field", "predefined", None, table,
-                               "", 0, None, None, None, -1, site="property")
+            decl = Declaration(
+                _TABLE_PROPERTIES[member_upper],
+                "field",
+                "predefined",
+                None,
+                table,
+                "",
+                0,
+                None,
+                None,
+                None,
+                -1,
+                site="property",
+            )
             self._sys_fields[key] = decl
         return decl
 
@@ -334,8 +378,7 @@ class BindingIndex:
         key = (table.name.upper(), member_upper)
         decl = self._sys_fields.get(key)
         if decl is None:
-            decl = Declaration(names[member_upper], "field", "predefined", None, table, "", 0, None,
-                               None, None, -1)
+            decl = Declaration(names[member_upper], "field", "predefined", None, table, "", 0, None, None, None, -1)
             self._sys_fields[key] = decl
         return decl
 
@@ -365,16 +408,21 @@ class BindingIndex:
                 if sysd is not None:
                     res = Resolution((sysd,), "")
             ref.resolved, ref.ambiguity = res.candidates, res.ambiguity
-            if (ref.role in (READ, ARGUMENT) and isinstance(ref.node, S.Index) and ref.resolved
-                    and all(_is_callable(d) for d in ref.resolved)):
+            if (
+                ref.role in (READ, ARGUMENT)
+                and isinstance(ref.node, S.Index)
+                and ref.resolved
+                and all(_is_callable(d) for d in ref.resolved)
+            ):
                 ref.role = CALL
-            if (ref.role in (READ, ARGUMENT) and ref.resolved
-                    and all(d.kind in _TABLE_KINDS for d in ref.resolved)):
+            if ref.role in (READ, ARGUMENT) and ref.resolved and all(d.kind in _TABLE_KINDS for d in ref.resolved):
                 ref.role = TABLE_REF
-        user = [d for d in ref.resolved if d.index >= 0 and d.kind not in _ROUTINE_KINDS + _TABLE_KINDS
-                and d.kind not in _STRUCT_KINDS]
-        ref.forward = bool(user) and len(user) == len(ref.resolved) \
-            and all(d.index > ref.index for d in user)
+        user = [
+            d
+            for d in ref.resolved
+            if d.index >= 0 and d.kind not in _ROUTINE_KINDS + _TABLE_KINDS and d.kind not in _STRUCT_KINDS
+        ]
+        ref.forward = bool(user) and len(user) == len(ref.resolved) and all(d.index > ref.index for d in user)
 
 
 def _duplicate_reason(cands: list[Declaration]) -> str:
@@ -382,16 +430,17 @@ def _duplicate_reason(cands: list[Declaration]) -> str:
         return "the same declaration is included more than once"
     tables = [d.kind in _TABLE_KINDS for d in cands]
     if any(tables) and not all(tables):
-        return ("a table and another declaration share this spelling; whether tables and "
-                "variables are separate namespaces is not established here")
+        return (
+            "a table and another declaration share this spelling; whether tables and "
+            "variables are separate namespaces is not established here"
+        )
     return "duplicate global declarations"
 
 
 def _is_callable(d: Declaration) -> bool:
     if d.kind in _ROUTINE_KINDS:
         return True
-    return d.kind == "external" and d.external is not None and d.external.kind in ("function",
-                                                                                  "instruction")
+    return d.kind == "external" and d.external is not None and d.external.kind in ("function", "instruction")
 
 
 # ------------------------------------------------------------- token helpers
@@ -509,6 +558,7 @@ def segment_starts(logical_text: str) -> list[tuple[int, str]]:
     parser splits them. `Stmt.text` of a segment's statement equals the segment text (stripped
     for `Units`); an inline `If` body's text is a slice of its segment."""
     from .parser import _split_text_segments
+
     out, pos = [], 0
     for seg in _split_text_segments(logical_text):
         out.append((pos, seg))
@@ -524,7 +574,7 @@ class _Builder:
         self.ix = index
         self.decls: list[Declaration] = []
         self.refs: list[Reference] = []
-        self.order: list[tuple] = []             # (unit, record) in emission order
+        self.order: list[tuple] = []  # (unit, record) in emission order
         self.routine: S.SubDef | None = None
         self.struct: Declaration | None = None
         self.consttable: Declaration | None = None
@@ -545,18 +595,45 @@ class _Builder:
         for key in keys:
             self._occ(key)
 
-    def decl(self, stmt, name, kind, *, node=None, scope=None, routine="default", container=None,
-             type=None, quoted=False, unverified=False, count=True) -> Declaration:
+    def decl(
+        self,
+        stmt,
+        name,
+        kind,
+        *,
+        node=None,
+        scope=None,
+        routine="default",
+        container=None,
+        type=None,
+        quoted=False,
+        unverified=False,
+        count=True,
+    ) -> Declaration:
         if routine == "default":
             routine = self.routine
         if scope is None:
             scope = "routine" if routine is not None else "global"
         key = (name.upper(), "string" if quoted else "id")
         owner = routine if scope == "routine" and isinstance(routine, S.SubDef) else None
-        d = Declaration(name, kind, scope, owner, container,
-                        stmt.file, stmt.line, node, stmt, self.unit, self.idx,
-                        self._occ(key) if count else None, type, quoted,
-                        unverified_scope=unverified, tok_key=key)
+        d = Declaration(
+            name,
+            kind,
+            scope,
+            owner,
+            container,
+            stmt.file,
+            stmt.line,
+            node,
+            stmt,
+            self.unit,
+            self.idx,
+            self._occ(key) if count else None,
+            type,
+            quoted,
+            unverified_scope=unverified,
+            tok_key=key,
+        )
         if kind in _STRUCT_KINDS:
             d.members = {}
         self.decls.append(d)
@@ -565,9 +642,21 @@ class _Builder:
 
     def ref(self, stmt, name, role, node, *, member=False, base=None, write=False) -> Reference:
         key = (name.upper(), "member" if member else "id")
-        r = Reference(name, role, stmt.file, stmt.line, routine=self.routine, node=node, stmt=stmt,
-                      unit=self.unit, index=self.idx, occurrence=self._occ(key), base=base,
-                      is_write=write, tok_key=key)
+        r = Reference(
+            name,
+            role,
+            stmt.file,
+            stmt.line,
+            routine=self.routine,
+            node=node,
+            stmt=stmt,
+            unit=self.unit,
+            index=self.idx,
+            occurrence=self._occ(key),
+            base=base,
+            is_write=write,
+            tok_key=key,
+        )
         self.refs.append(r)
         self.order.append((self.unit, r))
         return r
@@ -603,9 +692,9 @@ class _Builder:
             for item in e.items:
                 self.expr(item, stmt, READ)
             return None
-        for f in getattr(e, "__dataclass_fields__", {}):          # unknown node: walk its fields
+        for f in getattr(e, "__dataclass_fields__", {}):  # unknown node: walk its fields
             v = getattr(e, f)
-            for x in (v if isinstance(v, list) else [v]):
+            for x in v if isinstance(v, list) else [v]:
                 if isinstance(x, S.Expr):
                     self.expr(x, stmt, READ)
         return None
@@ -671,13 +760,27 @@ class _Builder:
     def declaration(self, st: S.Declaration) -> None:
         for v in st.vars:
             if st.kind == "STRUCTUREMEMBER":
-                d = self.decl(st, v.name, "structure_member", node=v, scope="structure",
-                              routine=None, container=self.struct, type=v.type)
+                d = self.decl(
+                    st,
+                    v.name,
+                    "structure_member",
+                    node=v,
+                    scope="structure",
+                    routine=None,
+                    container=self.struct,
+                    type=v.type,
+                )
                 if self.struct is not None and self.struct.members is not None:
                     self.struct.members.setdefault(v.name.upper(), []).append(d)
             else:
-                self.decl(st, v.name, st.kind.lower(), node=v, type=v.type,
-                          unverified=st.kind == "PUBLIC" and self.routine is not None)
+                self.decl(
+                    st,
+                    v.name,
+                    st.kind.lower(),
+                    node=v,
+                    type=v.type,
+                    unverified=st.kind == "PUBLIC" and self.routine is not None,
+                )
             for dim in v.dims:
                 self.expr(dim, st)
             self.type_ref(st, v.type, v)
@@ -686,8 +789,9 @@ class _Builder:
                 self.expr(e, st)
 
     def const(self, st: S.ConstDecl) -> None:
-        self.decl(st, st.name, "const", node=st, type=st.type,
-                  container=self.consttable if self.routine is None else None)
+        self.decl(
+            st, st.name, "const", node=st, type=st.type, container=self.consttable if self.routine is None else None
+        )
         self.type_ref(st, st.type, st)
         self.expr(st.value, st)
 
@@ -696,7 +800,7 @@ class _Builder:
         self.decl(st, st.name, kind, node=st, scope="global", routine=None, type=st.return_type)
         for p in st.params:
             self.decl(st, p.name, "param", node=p, scope="routine", routine=st, type=p.type)
-            for dim in p.dim_exprs:              # `p(sz)`: a read in the routine's scope
+            for dim in p.dim_exprs:  # `p(sz)`: a read in the routine's scope
                 self.expr(dim, st)
             self.type_ref(st, p.type, p)
             self.expr(p.string_size, st)
@@ -731,8 +835,7 @@ class _Builder:
             if isinstance(first, S.Name):
                 d = self.decl(st, first.name, dkind, node=first, scope="global", routine=None)
             elif isinstance(first, S.String) and first.value and kw in ("DATATABLE", "CONSTTABLE"):
-                d = self.decl(st, first.value, dkind, node=first, scope="global", routine=None,
-                              quoted=True)
+                d = self.decl(st, first.value, dkind, node=first, scope="global", routine=None, quoted=True)
             else:
                 d = None
                 self.expr(first, st, ARGUMENT)
@@ -767,26 +870,26 @@ def _add_data_table_fields(ix: BindingIndex, program, statements, decls, failure
         var_info[v.name.upper()] = tables._make_var_info(v, env)
         var_info[v.name.upper()].struct = scanned["struct_types"].get((v.type or "").upper())
     _, by_display, by_base = tables._build_public_table(
-        scanned["publics"], var_info, scanned["alias_stmts"], scanned["units_stmts"],
-        scanned["readonly_names"])
+        scanned["publics"], var_info, scanned["alias_stmts"], scanned["units_stmts"], scanned["readonly_names"]
+    )
     pos = {id(st): i for i, st in enumerate(statements)}
     added: list[Declaration] = []
-    anon_groups, anon_build = [0], [0]   # two passes over the tables, each with its own `Anonymous<n>` count
+    anon_groups, anon_build = [0], [0]  # two passes over the tables, each with its own `Anonymous<n>` count
     for dt in scanned["data_tables"]:
         head = statements[pos[id(dt.body[0])] - 1] if dt.body and id(dt.body[0]) in pos else None
         table = tbl_decls.get(id(head))
         try:
             groups = _field_groups(dt, env, var_info, by_display, by_base, anon_groups)
             tdf, _ = tables._build_data_table(dt, env, var_info, by_display, scanned["called"], by_base, anon_build)
-            for f in tdf.fields:               # a later `Sample(1, Table.Field, ...)` source
+            for f in tdf.fields:  # a later `Sample(1, Table.Field, ...)` source
                 if f.type != 11:
                     var_info[f"{dt.name}.{f.name}".upper()] = tables.VarInfo(
-                        f.type, list(f.subdims) or ([f.dimension] if f.dimension > 1 else []),
-                        name=f.name)
+                        f.type, list(f.subdims) or ([f.dimension] if f.dimension > 1 else []), name=f.name
+                    )
             derived = [of.name for _, _, fs in groups for of in fs]
             if table is None or derived != [of.name for of in getattr(tdf, "_dup_fields") if not of.name_only]:
                 continue
-        except Exception as e:                      # never raise out of the index
+        except Exception as e:  # never raise out of the index
             failures.append(IndexFailure(-1, "", dt.line, f"fields of {dt.name}: {type(e).__name__}: {e}"))
             continue
         out = ix._fields.setdefault(id(table), [])
@@ -798,9 +901,24 @@ def _add_data_table_fields(ix: BindingIndex, program, statements, decls, failure
                     unit, tok_key, occ, site = fn, (str(arg.value).upper(), "string"), 0, "fieldnames"
                 else:
                     unit, tok_key, occ, site = instr, (), None, "instruction"
-                d = Declaration(of.name, "field", "table", None, table, unit.file, unit.line, instr,
-                                unit, unit, pos[id(unit)], occ, None, fn is not None,
-                                tok_key=tok_key, site=site)
+                d = Declaration(
+                    of.name,
+                    "field",
+                    "table",
+                    None,
+                    table,
+                    unit.file,
+                    unit.line,
+                    instr,
+                    unit,
+                    unit,
+                    pos[id(unit)],
+                    occ,
+                    None,
+                    fn is not None,
+                    tok_key=tok_key,
+                    site=site,
+                )
                 added.append(d)
                 out.append(d)
                 ix._field_names.setdefault((id(table), of.name.upper()), []).append(d)
@@ -866,7 +984,7 @@ def build(program, profile) -> BindingIndex:
     ix = BindingIndex(prof)
     try:
         _build(ix, program)
-    except Exception as e:                                   # never raise out of the index
+    except Exception as e:  # never raise out of the index
         ix.failures += (IndexFailure(-1, "", 0, f"internal error: {e!r}"),)
     return ix
 
@@ -890,8 +1008,9 @@ def _build(ix: BindingIndex, program) -> None:
         except Exception as e:
             del b.decls[d0:], b.refs[r0:], b.order[o0:]
             b.routine, b.struct, b.consttable = saved
-            failures.append(IndexFailure(i, getattr(st, "file", ""), getattr(st, "line", 0),
-                                         f"{type(e).__name__}: {e}"))
+            failures.append(
+                IndexFailure(i, getattr(st, "file", ""), getattr(st, "line", 0), f"{type(e).__name__}: {e}")
+            )
         if closes_routine(st):
             b.routine = None
     ix.declarations = tuple(b.decls)
@@ -904,13 +1023,12 @@ def _build(ix: BindingIndex, program) -> None:
         failures.append(IndexFailure(-1, "", 0, f"table fields: {type(e).__name__}: {e}"))
     for unit, rec in b.order:
         ix._by_unit.setdefault(id(unit), []).append(rec)
-    for ref in b.refs:                                       # emission order: bases before members
+    for ref in b.refs:  # emission order: bases before members
         try:
             ix._finish_reference(ref)
         except Exception as e:
             ref.resolved, ref.ambiguity, ref.container = (), "", ()
-            failures.append(IndexFailure(ref.index, ref.file, ref.line,
-                                         f"resolve {ref.name}: {type(e).__name__}: {e}"))
+            failures.append(IndexFailure(ref.index, ref.file, ref.line, f"resolve {ref.name}: {type(e).__name__}: {e}"))
         for d in ref.resolved:
             ix._refs_to.setdefault(id(d), []).append(ref)
     ix.failures = tuple(failures)

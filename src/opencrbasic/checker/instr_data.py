@@ -53,36 +53,36 @@ from . import symbols
 # below not yet recognising `FFT` as a field producer, before `FFT` was added here too) and is
 # included as `FFT`.
 TABLE_ONLY_INSTRUCTIONS: dict[str, str] = {
-    "CARDOUT": "CardOut",              # checked with the oracle
+    "CARDOUT": "CardOut",  # checked with the oracle
     "MQTTPUBLISHTABLE": "MQTTPublishTable",
     "GOESTABLE": "GoesTable",
-    "GOESFIELD": "GoesTable",          # oracle, all four loggers, 2026-10-12 (r16_goes_field)
-    "TABLEFILE": "TableFile",          # checked with the oracle
-    "TOTALIZE": "Totalize",            # checked with the oracle
-    "AVERAGE": "Average",              # checked with the oracle (also a saved fuzz reproducer)
-    "MAXIMUM": "Max",                  # checked with the oracle
-    "MINIMUM": "Min",                  # a saved fuzz reproducer (5b5ae86fd087.json); not
+    "GOESFIELD": "GoesTable",  # oracle, all four loggers, 2026-10-12 (r16_goes_field)
+    "TABLEFILE": "TableFile",  # checked with the oracle
+    "TOTALIZE": "Totalize",  # checked with the oracle
+    "AVERAGE": "Average",  # checked with the oracle (also a saved fuzz reproducer)
+    "MAXIMUM": "Max",  # checked with the oracle
+    "MINIMUM": "Min",  # a saved fuzz reproducer (5b5ae86fd087.json); not
     # independently re-confirmed with a fresh scratch probe this round
-    "SAMPLEMAXMIN": "SampleMaxMin",    # checked with the oracle
-    "STDDEV": "StdDev",                # checked with the oracle
+    "SAMPLEMAXMIN": "SampleMaxMin",  # checked with the oracle
+    "STDDEV": "StdDev",  # checked with the oracle
     "MOMENT": "Moment",
-    "SAMPLE": "Sample",                # checked with the oracle (also a saved fuzz reproducer, on
+    "SAMPLE": "Sample",  # checked with the oracle (also a saved fuzz reproducer, on
     # all four loggers)
-    "HISTOGRAM": "Histogram",          # checked with the oracle
+    "HISTOGRAM": "Histogram",  # checked with the oracle
     "HISTOGRAM4D": "Histogram4D",
     "COVARIANCE": "Covariance",
-    "RAINFLOW": "RainFlow",            # checked with the oracle
+    "RAINFLOW": "RainFlow",  # checked with the oracle
     "LEVELCROSSING": "LevelCrossing",  # checked with the oracle
-    "WINDVECTOR": "WindVector",        # checked with the oracle
-    "MEDIAN": "Median",                # checked with the oracle
+    "WINDVECTOR": "WindVector",  # checked with the oracle
+    "MEDIAN": "Median",  # checked with the oracle
     "SAMPLEFIELDCAL": "SampleFieldCal",
-    "FILLSTOP": "FillStop",            # checked with the oracle
-    "DATATIME": "DataTime",            # checked with the oracle
-    "OPENINTERVAL": "OpenInterval",    # checked with the oracle
-    "DATAINTERVAL": "DataInterval",    # a saved fuzz reproducer (1ded68266aec.json/5b5ae86fd087.json)
-    "FFT": "FFT",                      # checked with the oracle (also two saved CHM corpus files,
+    "FILLSTOP": "FillStop",  # checked with the oracle
+    "DATATIME": "DataTime",  # checked with the oracle
+    "OPENINTERVAL": "OpenInterval",  # checked with the oracle
+    "DATAINTERVAL": "DataInterval",  # a saved fuzz reproducer (1ded68266aec.json/5b5ae86fd087.json)
+    "FFT": "FFT",  # checked with the oracle (also two saved CHM corpus files,
     # `fft_1.CR6`/`covspa_1.CR6`, whose `DataTable` bodies contain only `FFT(...)` calls)
-    "DATAEVENT": "DataEvent",          # decompiled call site only -- a from-scratch probe placing
+    "DATAEVENT": "DataEvent",  # decompiled call site only -- a from-scratch probe placing
     # a bare `DataEvent(...)` outside any table crashes the real compiler under Wine rather than
     # printing this text (a real-compiler-side crash, the same class `docs/checker.md`'s
     # `pointervariable_2.CR6` entry already documents as unmatchable; not chased further, since our
@@ -90,9 +90,9 @@ TABLE_ONLY_INSTRUCTIONS: dict[str, str] = {
     # is *not* oracle-confirmed by its own message text, only by the decompiled call site plus the
     # fact that every corpus/fuzz use of `DataEvent` this project has seen is always correctly
     # placed inside a table.
-    "TABLEHIDE": "TableHide",          # checked with the oracle
-    "ETSZ": "Et",                      # checked with the oracle, all four loggers (2026-10-12):
-    "ETCLEARSKY": "Et",                # the unlabelled `"Et"` call site; docs/instructions.md
+    "TABLEHIDE": "TableHide",  # checked with the oracle
+    "ETSZ": "Et",  # checked with the oracle, all four loggers (2026-10-12):
+    "ETCLEARSKY": "Et",  # the unlabelled `"Et"` call site; docs/instructions.md
 }
 
 # `FieldNames` was checked directly (a bare `FieldNames("X")` with no enclosing `DataTable` at all)
@@ -116,12 +116,30 @@ TABLE_ONLY_INSTRUCTIONS: dict[str, str] = {
 # that either alone (with no `Sample`/`GOESField` alongside it, an unseen real-world shape) counts as
 # a field producer by itself: if that lenient guess is ever wrong, the failure mode is under-
 # reporting (a table this rule should flag but doesn't), never a false reject.
-_FIELD_PRODUCING_INSTRUCTIONS = frozenset({
-    "SAMPLE", "AVERAGE", "TOTALIZE", "STDDEV", "MAXIMUM", "MINIMUM", "MEDIAN", "MOMENT",
-    "SAMPLEMAXMIN", "COVARIANCE", "WINDVECTOR", "HISTOGRAM", "HISTOGRAM4D", "RAINFLOW",
-    "LEVELCROSSING", "SAMPLEFIELDCAL", "MQTTPUBLISHTABLE", "FFT",
-    "ETSZ", "ETCLEARSKY",
-})
+_FIELD_PRODUCING_INSTRUCTIONS = frozenset(
+    {
+        "SAMPLE",
+        "AVERAGE",
+        "TOTALIZE",
+        "STDDEV",
+        "MAXIMUM",
+        "MINIMUM",
+        "MEDIAN",
+        "MOMENT",
+        "SAMPLEMAXMIN",
+        "COVARIANCE",
+        "WINDVECTOR",
+        "HISTOGRAM",
+        "HISTOGRAM4D",
+        "RAINFLOW",
+        "LEVELCROSSING",
+        "SAMPLEFIELDCAL",
+        "MQTTPUBLISHTABLE",
+        "FFT",
+        "ETSZ",
+        "ETCLEARSKY",
+    }
+)
 
 
 def _table_name(stmt: S.Instruction) -> str | None:
@@ -258,14 +276,18 @@ def unknown_table_references(program: S.Program, profile: Profile | None = None)
     """`(statement, message, ends pass 2)` for each `TABLE_REFERENCES` statement whose table is not
     a `DataTable` closed before it (declared later, unclosed, or the table's own body, like
     `CallTable`; oracle, CR6/CR1000X, round 58) nor a `ConstTable`."""
-    return [(stmt, spec[1].format(name), spec[2])
-            for stmt, name, spec in _unknown_table_references(program, profile)]
+    return [(stmt, spec[1].format(name), spec[2]) for stmt, name, spec in _unknown_table_references(program, profile)]
 
 
 def _unknown_table_references(program: S.Program, profile: Profile | None = None):
-    const_tables = {st.args[0].name.upper() for st in _with_inline(program.statements)
-                    if isinstance(st, S.Instruction) and st.keyword.upper() == "CONSTTABLE"
-                    and st.args and isinstance(st.args[0], S.Name)}
+    const_tables = {
+        st.args[0].name.upper()
+        for st in _with_inline(program.statements)
+        if isinstance(st, S.Instruction)
+        and st.keyword.upper() == "CONSTTABLE"
+        and st.args
+        and isinstance(st.args[0], S.Name)
+    }
     closed: set[str] = set()
     pending: str | None = None
     out = []
@@ -287,6 +309,7 @@ def _unknown_table_references(program: S.Program, profile: Profile | None = None
         arg = stmt.args[spec[0]]
         if stmt.keyword.upper() in ("SENDDATA", "SENDTABLEDEF"):
             from . import expressions
+
             name = expressions._arg_text(stmt, spec[0]).strip()
         elif isinstance(arg, S.Name):
             name = arg.name
@@ -294,13 +317,25 @@ def _unknown_table_references(program: S.Program, profile: Profile | None = None
             name = arg.value
         else:
             continue
-        if kw == "GETRECORD" and profile is not None and name.upper() in closed and (
-                fields := _getrecord_short(stmt, name, program, profile)) is not None:
-            out.append((stmt, name, (spec[0], f"Destination array not large enough for the {fields} "
-                                     "fields in a record\n" + spec[1], spec[2])))
+        if (
+            kw == "GETRECORD"
+            and profile is not None
+            and name.upper() in closed
+            and (fields := _getrecord_short(stmt, name, program, profile)) is not None
+        ):
+            out.append(
+                (
+                    stmt,
+                    name,
+                    (
+                        spec[0],
+                        f"Destination array not large enough for the {fields} fields in a record\n" + spec[1],
+                        spec[2],
+                    ),
+                )
+            )
             continue
-        if not name or name.upper() in closed or name.upper() in const_tables or \
-                name.upper() in _SPECIAL_TABLES:
+        if not name or name.upper() in closed or name.upper() in const_tables or name.upper() in _SPECIAL_TABLES:
             continue
         out.append((stmt, name, spec))
     return out
@@ -312,6 +347,7 @@ def _getrecord_short(stmt: S.Instruction, table: str, program: S.Program, profil
     (oracle, all four loggers, round 65, docs/instructions.md#getrecord-destination-size)."""
     from .. import consteval, tables
     from . import var_types
+
     dest = stmt.args[0] if stmt.args else None
     if not isinstance(dest, (S.Name, S.Index)):
         return None
@@ -322,24 +358,22 @@ def _getrecord_short(stmt: S.Instruction, table: str, program: S.Program, profil
     try:
         built, _, _ = tables.build_tables(program, profile, dict(program.consts))
     except Exception:
-        return None   # the tables cannot be built: nothing is checked (like `_data_table_fields`)
+        return None  # the tables cannot be built: nothing is checked (like `_data_table_fields`)
     record = next((t for t in built if t.name.upper() == table.upper()), None)
     if record is None:
         return None
-    count = sum((math.prod(f.subdims[:-1]) if f.subdims else 1) if f.type == 11 else f.dimension
-                for f in record.fields)
+    count = sum((math.prod(f.subdims[:-1]) if f.subdims else 1) if f.type == 11 else f.dimension for f in record.fields)
     dims = symbols.declared_all_dims(program, consteval.Env(profile, dict(program.consts))).get(var)
     if dims is None:
         return None
     return count if math.prod(dims) < count else None
 
 
-def check_unclosed_calltable(program: S.Program, diags: Diagnostics,
-                             profile: Profile | None = None) -> None:
+def check_unclosed_calltable(program: S.Program, diags: Diagnostics, profile: Profile | None = None) -> None:
     refs = unknown_table_references(program, profile)
     first = next(iter(unknown_calltables(program)), None)
     ending = [(stmt, message) for stmt, message, ends in refs if ends]
-    stopper = None     # the earliest statement that ends the walk and prints its message
+    stopper = None  # the earliest statement that ends the walk and prints its message
     if ending and (first is None or (ending[0][0].file, ending[0][0].line) <= (first[0].file, first[0].line)):
         stopper = ending[0]
     elif first is not None:
@@ -347,8 +381,16 @@ def check_unclosed_calltable(program: S.Program, diags: Diagnostics,
     for stmt, message, ends in refs:
         if ends or (stopper is not None and stmt.line > stopper[0].line):
             continue
-        at = next((i for i, d in enumerate(diags.items) if d.line == stmt.line and d.file == stmt.file
-                   and d.message.endswith("illegally occurs before BeginProg.")), len(diags.items))
+        at = next(
+            (
+                i
+                for i, d in enumerate(diags.items)
+                if d.line == stmt.line
+                and d.file == stmt.file
+                and d.message.endswith("illegally occurs before BeginProg.")
+            ),
+            len(diags.items),
+        )
         diags.items.insert(at, Diagnostic("error", stmt.line, message, stmt.file))
     if stopper is not None:
         # only the first one is printed (oracle, all four loggers, 2026-10-03); a short `GetRecord`
@@ -361,8 +403,7 @@ def check_unclosed_calltable(program: S.Program, diags: Diagnostics,
 # instruction are read by that instruction's builder (docs/checker.md "FieldNames owner line");
 # `SampleFieldCal` was probed not to read them, the other three exclusions are unprobed.
 _FIELD_METADATA = frozenset({"FIELDNAMES", "FIELDCLASSIFY", "FIELDORIGIN"})
-_FIELDNAMES_OWNERS = _FIELD_PRODUCING_INSTRUCTIONS - {
-    "SAMPLEFIELDCAL", "ETSZ", "ETCLEARSKY", "MQTTPUBLISHTABLE"}
+_FIELDNAMES_OWNERS = _FIELD_PRODUCING_INSTRUCTIONS - {"SAMPLEFIELDCAL", "ETSZ", "ETCLEARSKY", "MQTTPUBLISHTABLE"}
 _FIRST_WORD = re.compile(r"\s*([A-Za-z_]\w*)")
 
 
@@ -402,8 +443,11 @@ def move_fieldnames_symbol_errors(program: S.Program, items: list[Diagnostic]):
     for st in program.statements:
         if id(st) not in owners:
             continue
-        mine = [d for d in items if (d.file, d.line) == (st.file, st.line)
-                and d.message.startswith("Invalid symbol in expression")]
+        mine = [
+            d
+            for d in items
+            if (d.file, d.line) == (st.file, st.line) and d.message.startswith("Invalid symbol in expression")
+        ]
         if not mine:
             continue
         items[:] = [d for d in items if not any(d is m for m in mine)]
@@ -413,12 +457,23 @@ def move_fieldnames_symbol_errors(program: S.Program, items: list[Diagnostic]):
             continue
         moved = [dataclasses.replace(d, line=owner.line, file=owner.file) for d in mine]
         replaced.update((id(d), n) for d, n in zip(mine, moved))
-        pair = [Diagnostic("error", owner.line, message, owner.file, show_file=False)
-                for message in ("FieldNames cannot be a variable.", "FieldNames canot be NULL")]
+        pair = [
+            Diagnostic("error", owner.line, message, owner.file, show_file=False)
+            for message in ("FieldNames cannot be a variable.", "FieldNames canot be NULL")
+        ]
         added += pair
-        at = next_at.get(id(owner), next((
-            i for i, d in enumerate(items) if (d.file, d.line) == (owner.file, owner.line)
-            and d.message.startswith("Invalid symbol in expression")), len(items)))
+        at = next_at.get(
+            id(owner),
+            next(
+                (
+                    i
+                    for i, d in enumerate(items)
+                    if (d.file, d.line) == (owner.file, owner.line)
+                    and d.message.startswith("Invalid symbol in expression")
+                ),
+                len(items),
+            ),
+        )
         items[at:at] = moved + pair
         next_at[id(owner)] = at + len(moved) + len(pair)
     return replaced, added
@@ -455,8 +510,7 @@ def check_fieldnames(program: S.Program, profile: Profile, diags: Diagnostics, e
             diags.error(line, "FieldNames canot be NULL", file)
 
 
-def check_table_structure(program: S.Program, profile: Profile,
-                          diags: Diagnostics) -> tuple[str | None, int] | None:
+def check_table_structure(program: S.Program, profile: Profile, diags: Diagnostics) -> tuple[str | None, int] | None:
     """`%s must be used inside a table declaration.` for an output-processing instruction (see
     `TABLE_ONLY_INSTRUCTIONS`) found outside any `DataTable...EndTable` block,
     `EndTable without DataTable.` for an orphan/extra `EndTable` (oracle-confirmed at the `EndTable`
@@ -491,8 +545,8 @@ def check_table_structure(program: S.Program, profile: Profile,
     in_table = False
     table_name = ""
     has_field = False
-    goes_seen = False        # a `GOESTable` was declared (CR300/CR350 keep it across tables)
-    goes_orphans = 0         # `GOESField`s in this table without it
+    goes_seen = False  # a `GOESTable` was declared (CR300/CR350 keep it across tables)
+    goes_orphans = 0  # `GOESField`s in this table without it
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
             if isinstance(stmt, S.Unparsed):
@@ -513,7 +567,7 @@ def check_table_structure(program: S.Program, profile: Profile,
             if not has_field and table_name:
                 diags.error(stmt.line, f"Table {table_name} declared with no output fields.", stmt.file)
                 return (stmt.file, stmt.line)
-            for _ in range(goes_orphans):   # one per such `GOESField`
+            for _ in range(goes_orphans):  # one per such `GOESField`
                 diags.error(stmt.line, "GoesField declared without a GoesTable declaration.", stmt.file)
             in_table = False
             continue
@@ -536,13 +590,37 @@ def check_table_structure(program: S.Program, profile: Profile,
 # copies of these 32 field names (oracle-observed through the duplicate-name messages,
 # `docs/checker.md` "Duplicate field names").
 _CH400_FIELDS = (
-    "ChargeAVoltage", "ChargeACurrent", "ChargeBVoltage", "ChargeBCurrent", "InputChargeStatus",
-    "InputCurrentLimit", "BattAVoltage", "BattACurrent", "BattAChargeStatus", "BattASetVoltage",
-    "BattACurrentLimit", "BattADepthofDischarge", "BattBVoltage", "BattBCurrent",
-    "BattBChargeStatus", "BattBSetVoltage", "BattBCurrentLimit", "BattBDepthofDischarge",
-    "SystemVoltage", "SystemCurrent", "AlwaysOn12Voltage", "AlwaysOn12Current",
-    "Switched12Voltage", "Switched12Current", "Switched24Voltage", "Switched24Current",
-    "PowerSwitchState", "MaxBoardTemp", "MinBoardTemp", "PanelTemp", "BattAProbeTemp",
+    "ChargeAVoltage",
+    "ChargeACurrent",
+    "ChargeBVoltage",
+    "ChargeBCurrent",
+    "InputChargeStatus",
+    "InputCurrentLimit",
+    "BattAVoltage",
+    "BattACurrent",
+    "BattAChargeStatus",
+    "BattASetVoltage",
+    "BattACurrentLimit",
+    "BattADepthofDischarge",
+    "BattBVoltage",
+    "BattBCurrent",
+    "BattBChargeStatus",
+    "BattBSetVoltage",
+    "BattBCurrentLimit",
+    "BattBDepthofDischarge",
+    "SystemVoltage",
+    "SystemCurrent",
+    "AlwaysOn12Voltage",
+    "AlwaysOn12Current",
+    "Switched12Voltage",
+    "Switched12Current",
+    "Switched24Voltage",
+    "Switched24Current",
+    "PowerSwitchState",
+    "MaxBoardTemp",
+    "MinBoardTemp",
+    "PanelTemp",
+    "BattAProbeTemp",
     "BattBProbeTemp",
 )
 
@@ -586,7 +664,7 @@ def check_duplicate_fields(program: S.Program, result, diags: Diagnostics) -> No
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "DATATABLE":
             name = _table_name(stmt)
             if name:
-                name = _const_table_name(name, program)   # (as `tables.py` names it, round 67)
+                name = _const_table_name(name, program)  # (as `tables.py` names it, round 67)
             if name and name.upper() not in user_tables:
                 user_tables.append(name.upper())
     by_upper = {t.name.upper(): t for t in tables}
@@ -628,15 +706,18 @@ def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics
     `Dim D` that no table uses compiles; `Const`s, undeclared names, `Sub` parameters,
     `StructureType`-typed variables and table field names (`P_Avg`) are all rejected; the name
     is echoed as written, the base name for `Units Nope(1)`."""
-    struct_types = {st.args[0].name.upper() for st in program.statements
-                    if isinstance(st, S.Instruction)
-                    and st.keyword.upper() in ("STRUCTURETYPE", "OBJECTTYPE")
-                    and st.args and isinstance(st.args[0], S.Name)}
+    struct_types = {
+        st.args[0].name.upper()
+        for st in program.statements
+        if isinstance(st, S.Instruction)
+        and st.keyword.upper() in ("STRUCTURETYPE", "OBJECTTYPE")
+        and st.args
+        and isinstance(st.args[0], S.Name)
+    }
     allowed: set[str] = set()
     for st in program.statements:
         if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
-            allowed |= {v.name.upper() for v in st.vars
-                        if not (v.type and v.type in struct_types)}
+            allowed |= {v.name.upper() for v in st.vars if not (v.type and v.type in struct_types)}
         elif isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS":
             allowed |= {a.name.upper() for a in st.args[1:] if isinstance(a, S.Name)}
     in_struct = False
@@ -650,12 +731,20 @@ def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics
             continue  # inside a `StructureType`, `Units` names a member (`structuretype_1.CR6`)
         for extra in getattr(st, "extra_targets", ()):
             if extra.name.upper() not in allowed:
-                diags.error(st.line, f"Can't assign units to {extra.name}, it must be declared "
-                            "Public or referenced as a source in a Data Table.", st.file)
+                diags.error(
+                    st.line,
+                    f"Can't assign units to {extra.name}, it must be declared "
+                    "Public or referenced as a source in a Data Table.",
+                    st.file,
+                )
         target = st.args[0]
         if isinstance(target, (S.Name, S.Index)) and target.name.upper() not in allowed:
-            diags.error(st.line, f"Can't assign units to {target.name}, it must be declared Public "
-                        "or referenced as a source in a Data Table.", st.file)
+            diags.error(
+                st.line,
+                f"Can't assign units to {target.name}, it must be declared Public "
+                "or referenced as a source in a Data Table.",
+                st.file,
+            )
         elif isinstance(target, S.Name):
             assigned.setdefault(target.name.upper(), []).append(st)
         elif isinstance(target, S.Index):
@@ -677,13 +766,16 @@ def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics
 
 
 _SEQUENCE_OPENERS = frozenset({"DIALSEQUENCE", "MODEMHANGUP"})
-_SEQUENCE_CLOSERS = {"ENDDIALSEQUENCE": ("Missing DialSequence().", "DIALSEQUENCE"),
-                     "ENDMODEMHANGUP": ("Missing ModemHangup().", "MODEMHANGUP"),
-                     "ENDVOICE": ("EndVoice without Voice", None)}
+_SEQUENCE_CLOSERS = {
+    "ENDDIALSEQUENCE": ("Missing DialSequence().", "DIALSEQUENCE"),
+    "ENDMODEMHANGUP": ("Missing ModemHangup().", "MODEMHANGUP"),
+    "ENDVOICE": ("EndVoice without Voice", None),
+}
 
 
-def check_table_and_menu_placement(program: S.Program, profile: Profile,
-                                   diags: Diagnostics, env=None) -> tuple[str, int] | None:
+def check_table_and_menu_placement(
+    program: S.Program, profile: Profile, diags: Diagnostics, env=None
+) -> tuple[str, int] | None:
     """Pass 2 (oracle, suppressed by a pass-1 error): a second `DataInterval` in one table ->
     `Only one DataInterval allowed within DataTable..EndTable.` (all four loggers), and the display
     menu structure (CR6/CR1000X; CR300/CR350 have no menus), following the decompiled menu builder
@@ -693,7 +785,7 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
     intervals = 0
     has_maxmin = False
     menus = submenus = 0
-    open_list = False      # the builder's insertion point; an empty `SubMenu` clears it
+    open_list = False  # the builder's insertion point; an empty `SubMenu` clears it
     levels: list[list[str]] = []
     table_consts: set[str] = set()
     in_const_table = False
@@ -704,13 +796,14 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
         elif in_const_table and isinstance(st, S.ConstDecl):
             table_consts.add(st.name.upper())
     item_const: str | None = None  # the current `MenuItem`'s ConstTable constant, if it is one
-    item_plain = False             # the current `MenuItem` names a `Const` outside the ConstTable
-    has_const_table = any(isinstance(st, S.Instruction) and st.keyword.upper() == "CONSTTABLE"
-                          for st in program.statements)
-    item_bool = False              # the current `MenuItem`/`MenuRecompile` variable is Boolean
-    item_kind: str | None = None   # "int" / "float" / "string": what its `MenuPick` values must be
+    item_plain = False  # the current `MenuItem` names a `Const` outside the ConstTable
+    has_const_table = any(
+        isinstance(st, S.Instruction) and st.keyword.upper() == "CONSTTABLE" for st in program.statements
+    )
+    item_bool = False  # the current `MenuItem`/`MenuRecompile` variable is Boolean
+    item_kind: str | None = None  # "int" / "float" / "string": what its `MenuPick` values must be
     first_is_const = False
-    sequences: dict[str, int] = {}   # open DialSequence / ModemHangup blocks
+    sequences: dict[str, int] = {}  # open DialSequence / ModemHangup blocks
     variables = symbols.declared_variable_names(program)
     types = symbols.declared_variable_types(program)
     if env is None:
@@ -719,8 +812,7 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
     def within(st: S.Instruction, kw: str) -> bool:
         if menus and open_list:
             return True
-        diags.error(st.line, f"{profile.instructions[kw]['name']} must be used within "
-                    "DisplayMenu..EndMenu.", st.file)
+        diags.error(st.line, f"{profile.instructions[kw]['name']} must be used within DisplayMenu..EndMenu.", st.file)
         return False
 
     for st in program.statements:
@@ -729,7 +821,7 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
         kw = st.keyword.upper()
         if kw == "DATATABLE":
             in_table, intervals, has_maxmin = True, 0, False
-            if not profile.single_pass:   # CR300/CR350: `finalize_illegal_table_names`
+            if not profile.single_pass:  # CR300/CR350: `finalize_illegal_table_names`
                 diags.items += _illegal_table_name(st)
         elif kw == "ENDTABLE":
             in_table = False
@@ -740,16 +832,17 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
             # drop it when the same statement has an excess, missing or empty-last argument
             # (2026-10-10/12, docs/checker.md "Round 13")
             from . import instr_rules
+
             need = len(instr_rules._real_params(profile.instructions[kw]["params"]))
-            if profile.single_pass and (len(st.args) < need or st.args[need - 1] is None
-                                        or any(a is not None for a in st.args[need:])):
+            if profile.single_pass and (
+                len(st.args) < need or st.args[need - 1] is None or any(a is not None for a in st.args[need:])
+            ):
                 continue
             diags.error(st.line, "Maximum() or Minimum() must precede SampleMaxMin().", st.file)
         elif kw == "DATAINTERVAL" and in_table:
             intervals += 1
             if intervals == 2:
-                diags.error(st.line, "Only one DataInterval allowed within DataTable..EndTable.",
-                            st.file)
+                diags.error(st.line, "Only one DataInterval allowed within DataTable..EndTable.", st.file)
         elif kw not in profile.instructions:
             continue
         elif not profile.single_pass and kw in _SEQUENCE_CLOSERS:
@@ -774,27 +867,35 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
             if within(st, kw):
                 levels[-1].append(kw)
                 target = st.args[1] if kw == "MENUITEM" and len(st.args) > 1 else None
-                item_const = target.name.upper() if isinstance(target, S.Name) and \
-                    target.name.upper() in table_consts else None
-                item_plain = isinstance(target, S.Name) and target.name.upper() not in table_consts \
-                    and target.name.upper() in {str(c).upper() for c in program.consts} \
+                item_const = (
+                    target.name.upper() if isinstance(target, S.Name) and target.name.upper() in table_consts else None
+                )
+                item_plain = (
+                    isinstance(target, S.Name)
+                    and target.name.upper() not in table_consts
+                    and target.name.upper() in {str(c).upper() for c in program.consts}
                     and target.name.upper() not in variables
-                target = st.args[1] if kw in ("MENUITEM", "MENURECOMPILE") and len(st.args) > 1 \
-                    else None
-                item_bool = isinstance(target, (S.Name, S.Index)) and \
-                    types.get(target.name.upper()) == "BOOLEAN"
+                )
+                target = st.args[1] if kw in ("MENUITEM", "MENURECOMPILE") and len(st.args) > 1 else None
+                item_bool = isinstance(target, (S.Name, S.Index)) and types.get(target.name.upper()) == "BOOLEAN"
                 item_kind = None
                 if kw == "MENUITEM" and isinstance(target, (S.Name, S.Index)):
                     if item_const:
                         value = env.consts.get(item_const)
                         # a non-finite float (`Const F=1e999`) is a float item (real: any numeric pick)
-                        item_kind = ("string" if isinstance(value, str) else "int"
-                                     if isinstance(value, int) and not isinstance(value, bool)
-                                     else "float" if isinstance(value, float)
-                                     and (not math.isfinite(value) or value != int(value)) else None)
+                        item_kind = (
+                            "string"
+                            if isinstance(value, str)
+                            else "int"
+                            if isinstance(value, int) and not isinstance(value, bool)
+                            else "float"
+                            if isinstance(value, float) and (not math.isfinite(value) or value != int(value))
+                            else None
+                        )
                     else:
                         item_kind = {"LONG": "int", "FLOAT": "float", "STRING": "string"}.get(
-                            types.get(target.name.upper(), ""))
+                            types.get(target.name.upper(), "")
+                        )
                 first_is_const = False
                 if kw == "SUBMENU":
                     levels.append([])
@@ -811,10 +912,14 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
                     # the item names a `Const` outside the ConstTable (oracle, CR6/CR1000X,
                     # 2026-10-12): with a ConstTable anywhere in the program every pick list is
                     # the ConstTable message, even `MenuPick(D,1,2)`; without one, its own message
-                    diags.error(st.line, "When using a ConstTable constant in MenuPick, the constant "
-                                "name must be the first parameter." if has_const_table else
-                                "Value in preceding MenuItem must be a variable or a Const within "
-                                "ConstTable..EndConstTable.", st.file)
+                    diags.error(
+                        st.line,
+                        "When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+                        if has_const_table
+                        else "Value in preceding MenuItem must be a variable or a Const within "
+                        "ConstTable..EndConstTable.",
+                        st.file,
+                    )
                     continue
                 elif levels[-1][-1] == "MENUITEM" and item_const:
                     first = st.args[0] if st.args else None
@@ -822,19 +927,29 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
                     if first_is_const:
                         levels[-1].append(kw)
                     else:
-                        diags.error(st.line, "When using a ConstTable constant in MenuPick, the "
-                                    "constant name must be the first parameter.", st.file)
-                bad = next((a for a in st.args if isinstance(a, S.Name)
-                            and a.name.upper() in variables), None)
+                        diags.error(
+                            st.line,
+                            "When using a ConstTable constant in MenuPick, the "
+                            "constant name must be the first parameter.",
+                            st.file,
+                        )
+                bad = next((a for a in st.args if isinstance(a, S.Name) and a.name.upper() in variables), None)
                 if item_bool and levels[-1] and levels[-1][-1] in ("MENUITEM", "MENURECOMPILE"):
                     _check_boolean_picklist(st, env, diags)
                 elif after_item and (item_kind is not None or item_const):
                     # a ConstTable item whose first parameter is not a constant checks every
                     # value as a plain `Const` (oracle, 2026-10-10)
                     wrong_first = item_const and not first_is_const
-                    _check_pick_consts(st, "float" if wrong_first else item_kind, env, program,
-                                       profile, variables, diags,
-                                       skip_first=bool(item_const) and first_is_const)
+                    _check_pick_consts(
+                        st,
+                        "float" if wrong_first else item_kind,
+                        env,
+                        program,
+                        profile,
+                        variables,
+                        diags,
+                        skip_first=bool(item_const) and first_is_const,
+                    )
                 elif bad is not None:
                     # `MenuPick (Y)` for `Public Y` (oracle, 2026-10-01)
                     diags.error(st.line, f"{bad.name} must be declared as a Const.", st.file)
@@ -950,8 +1065,12 @@ def _pick_value_bad(token: str, kind: str, env, program, profile, variables) -> 
             value = consteval._lookup(inner, env)
         except consteval.NotConstant:
             from .expressions import _known_names
-            if inner.upper() in variables or inner.upper() not in _known_names(program, profile) \
-                    or (kind == "int" and inner.upper() == "NAN"):
+
+            if (
+                inner.upper() in variables
+                or inner.upper() not in _known_names(program, profile)
+                or (kind == "int" and inner.upper() == "NAN")
+            ):
                 return inner
             return None
         if kind == "int" and (isinstance(value, str) or value != value or value != int(value)):
@@ -980,8 +1099,18 @@ def _check_pick_consts(stmt, kind, env, program, profile, variables, diags, skip
 _MENU_ITEMS = ("SUBMENU", "MENUITEM", "DISPLAYVALUE", "MENURECOMPILE", "DISPLAYLINE")
 
 
-_TABLE_OUTPUT = ("TOTALIZE", "AVERAGE", "MAXIMUM", "MINIMUM", "SAMPLEMAXMIN", "STDDEV", "MOMENT",
-                 "SAMPLE", "COVARIANCE", "MEDIAN")
+_TABLE_OUTPUT = (
+    "TOTALIZE",
+    "AVERAGE",
+    "MAXIMUM",
+    "MINIMUM",
+    "SAMPLEMAXMIN",
+    "STDDEV",
+    "MOMENT",
+    "SAMPLE",
+    "COVARIANCE",
+    "MEDIAN",
+)
 _OWN_VARIABLE_CHECK = ("ADDPRECISE", "MOVEPRECISE")  # `instr_rules.check_precision_variable`
 _INT32_MIN = -2147483648
 
@@ -1002,10 +1131,10 @@ def constant_destination(expr, env, variables) -> bool:
     `Invalid Variable or Array`: a literal, a `Const` or predefined name, or an expression of
     them (`Battery(K+1)`, `PanelTemp(ComRS232,15000)`; oracle, round 59)."""
     from .expressions import _variable_refs
+
     if expr is None or isinstance(expr, S.String):
         return False
-    return not _has_names(expr) or (consteval.is_constant(expr, env)
-                                    and not _variable_refs(expr, variables))
+    return not _has_names(expr) or (consteval.is_constant(expr, env) and not _variable_refs(expr, variables))
 
 
 def _reps_value(expr, env) -> int | None:
@@ -1020,9 +1149,9 @@ def _reps_value(expr, env) -> int | None:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
     if isinstance(value, float) and not math.isfinite(value):
-        return _INT32_MIN   # `Sample(1e309,...)`: outside the range like any huge count (round 69)
+        return _INT32_MIN  # `Sample(1e309,...)`: outside the range like any huge count (round 69)
     value = int(value)
-    return value if -2**31 <= value < 2**31 else _INT32_MIN
+    return value if -(2**31) <= value < 2**31 else _INT32_MIN
 
 
 def check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env) -> bool:
@@ -1052,14 +1181,16 @@ def check_table_reps_late(program: S.Program, profile: Profile, diags: Diagnosti
         _check_stage2a(program, profile, diags, env, destinations=False)
 
 
-def _report_undefined_source(st: S.Instruction, record: dict, known: set[str], profile: Profile,
-                             diags: Diagnostics) -> bool:
+def _report_undefined_source(
+    st: S.Instruction, record: dict, known: set[str], profile: Profile, diags: Diagnostics
+) -> bool:
     """CR300/CR350: an undefined name in a table-output source (`Sample (1,Nope,FP2)` -> `Nope is
     not defined.`, and `Dimensions not declared: Nope(2).` for `Nope(2)`), late and only the first
     (oracle, 2026-09-27; CR6/CR1000X: `structure._undefined_table_source`)."""
     from . import expressions
+
     kinds = expressions._type_code_kinds()
-    for i, code in enumerate(record["params"][:len(st.args)]):
+    for i, code in enumerate(record["params"][: len(st.args)]):
         arg = st.args[i]
         if arg is None or kinds.get(code % 100 if code >= 100 else code) != "deferred_text":
             continue
@@ -1067,21 +1198,31 @@ def _report_undefined_source(st: S.Instruction, record: dict, known: set[str], p
         if not names:
             continue
         for name in names:
-            diags.error(st.line, profile.unresolved_symbol_message.format(name=name), st.file,
-                        show_file=False)
+            diags.error(st.line, profile.unresolved_symbol_message.format(name=name), st.file, show_file=False)
         if expressions._has_undefined_index(arg, known):
-            diags.error(st.line, expressions.dimensions_message(
-                expressions._arg_text(st, i).strip(), profile, False), st.file)
+            diags.error(
+                st.line, expressions.dimensions_message(expressions._arg_text(st, i).strip(), profile, False), st.file
+            )
         return True
     return False
 
 
 def _is_struct_typed(program: S.Program, name: str) -> bool:
-    types = {st.args[0].name.upper() for st in program.statements
-             if isinstance(st, S.Instruction) and st.keyword.upper() == "STRUCTURETYPE"
-             and st.args and isinstance(st.args[0], S.Name)}
-    return any((v.type or "").upper() in types for d in program.statements
-               if isinstance(d, S.Declaration) for v in d.vars if v.name.upper() == name.upper())
+    types = {
+        st.args[0].name.upper()
+        for st in program.statements
+        if isinstance(st, S.Instruction)
+        and st.keyword.upper() == "STRUCTURETYPE"
+        and st.args
+        and isinstance(st.args[0], S.Name)
+    }
+    return any(
+        (v.type or "").upper() in types
+        for d in program.statements
+        if isinstance(d, S.Declaration)
+        for v in d.vars
+        if v.name.upper() == name.upper()
+    )
 
 
 def _short_array(arg, reps: int, dims: dict, env) -> bool:
@@ -1103,16 +1244,20 @@ def _alias_sources(program: S.Program, tables, env) -> dict[str, tuple[str, str,
     backing variable when the alias starts at its first element (oracle, CR6/CR1000X, round 57,
     docs/checker.md#alias-sources-of-table-output-round-57)."""
     out: dict[str, tuple[str, str, int]] = {}
-    declared = {v.name.upper(): v.name for d in program.statements if isinstance(d, S.Declaration)
-                for v in d.vars}
+    declared = {v.name.upper(): v.name for d in program.statements if isinstance(d, S.Declaration) for v in d.vars}
     depth = 0
     for st in program.statements:
         if isinstance(st, S.SubDef):
             depth += 1
         elif S.ends_routine(st):
             depth -= 1
-        if depth or not isinstance(st, S.Instruction) or st.keyword.upper() != "ALIAS" or \
-                len(st.args) < 2 or not isinstance(target := st.args[0], (S.Name, S.Index)):
+        if (
+            depth
+            or not isinstance(st, S.Instruction)
+            or st.keyword.upper() != "ALIAS"
+            or len(st.args) < 2
+            or not isinstance(target := st.args[0], (S.Name, S.Index))
+        ):
             continue
         shape = tables(st).dims.get(target.name.upper())
         if shape is None:
@@ -1126,8 +1271,11 @@ def _alias_sources(program: S.Program, tables, env) -> dict[str, tuple[str, str,
         for alias in st.args[1:]:
             if not isinstance(alias, S.Name) or not 0 <= offset < total:
                 break
-            out[alias.name.upper()] = (declared.get(target.name.upper(), target.name) if offset == 0
-                                       else alias.name, alias.name, total - offset)
+            out[alias.name.upper()] = (
+                declared.get(target.name.upper(), target.name) if offset == 0 else alias.name,
+                alias.name,
+                total - offset,
+            )
             offset += 1
     return out
 
@@ -1140,11 +1288,13 @@ WIND_SUBINTERVAL = "WindVector: non-zero SubInterval only valid for output modes
 
 def _wind_options(st: S.Instruction, reps: int | None, env, diags: Diagnostics) -> bool:
     """Report the SubInterval and output-option errors; whether the walk ends here."""
+
     def long_arg(i: int) -> int | None:
         try:
             return consteval.to_long(consteval.value_of(st.args[i], env))
-        except (consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError):
+        except consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError:
             return None
+
     sub, option = long_arg(5), long_arg(7)
     mode = option & 0xFF if option is not None else None
     if mode in (1, 3) and sub not in (None, 0):
@@ -1160,17 +1310,17 @@ def _wind_options(st: S.Instruction, reps: int | None, env, diags: Diagnostics) 
     return False
 
 
-def check_constant_destinations(program: S.Program, profile: Profile, diags: Diagnostics,
-                                env) -> None:
+def check_constant_destinations(program: S.Program, profile: Profile, diags: Diagnostics, env) -> None:
     """CR6/CR1000X pass 1: a constant where a destination variable is required (type codes 8, 27,
     29) -> `Invalid Variable or Array: %s.`, a one-line If's statement too. Reported beside every
     other pass-1 error in line order, and so hiding the stage-2a `Reps`/bounds checks and pass 2
     (oracle, round 59, docs/checker.md#constant-destinations-are-pass-1-round-59)."""
     from . import expressions
+
     if profile.name not in ("cr6", "cr1000x"):
         return
     variables = symbols.declared_variable_names(program)
-    in_const_table = False   # its constants are settable at run time (`MenuRecompile("x",C)`)
+    in_const_table = False  # its constants are settable at run time (`MenuRecompile("x",C)`)
     for st in program.statements:
         if isinstance(st, S.Instruction) and st.keyword.upper() in ("CONSTTABLE", "ENDCONSTTABLE"):
             in_const_table = st.keyword.upper() == "CONSTTABLE"
@@ -1180,19 +1330,18 @@ def check_constant_destinations(program: S.Program, profile: Profile, diags: Dia
         record = profile.instructions.get(st.keyword.upper()) if isinstance(st, S.Instruction) else None
         if not record or st.keyword.upper() in _OWN_VARIABLE_CHECK:
             continue
-        for i, code in enumerate(record["params"][:len(st.args)]):
+        for i, code in enumerate(record["params"][: len(st.args)]):
             if code in (8, 27, 29) and constant_destination(st.args[i], env, variables):
                 # (27/29: `Erase(5)`, `RealTime(5)`, 2026-10-01)
-                diags.error(st.line, f"Invalid Variable or Array: {expressions._arg_text(st, i).strip()}.",
-                            st.file)
+                diags.error(st.line, f"Invalid Variable or Array: {expressions._arg_text(st, i).strip()}.", st.file)
 
 
-def drop_unreached_destinations(program: S.Program, profile: Profile, diags: Diagnostics,
-                                env) -> None:
+def drop_unreached_destinations(program: S.Program, profile: Profile, diags: Diagnostics, env) -> None:
     """A `Variable illegal in Parameter` on an earlier argument ends the statement, so a constant
     destination after it is not reported (oracle, CR6/CR1000X, round 59: `CDM_PanelTemp(CDM_A108,
     PTemp,1,1,15000)`, `Matrix(A, 0, R)`); one before it still is (`PanelTemp(15000,Nope)`)."""
     from . import expressions
+
     if profile.name not in ("cr6", "cr1000x"):
         return
     variables = symbols.declared_variable_names(program)
@@ -1202,35 +1351,40 @@ def drop_unreached_destinations(program: S.Program, profile: Profile, diags: Dia
         if not record:
             continue
         here = [d for d in diags.items if (d.line, d.file) == (st.line, st.file)]
-        texts = [expressions._arg_text(st, i).strip() if a is not None else None
-                 for i, a in enumerate(st.args)]
-        first_bad = next((j for j, text in enumerate(texts) if text is not None and any(
-            d.message == f"Variable illegal in Parameter: {text}." for d in here)), None)
+        texts = [expressions._arg_text(st, i).strip() if a is not None else None for i, a in enumerate(st.args)]
+        first_bad = next(
+            (
+                j
+                for j, text in enumerate(texts)
+                if text is not None and any(d.message == f"Variable illegal in Parameter: {text}." for d in here)
+            ),
+            None,
+        )
         if first_bad is None:
             continue
-        for i, code in enumerate(record["params"][:len(st.args)]):
+        for i, code in enumerate(record["params"][: len(st.args)]):
             if i > first_bad and code in (8, 27, 29) and constant_destination(st.args[i], env, variables):
                 drop += [d for d in here if d.message == f"Invalid Variable or Array: {texts[i]}."]
     diags.items[:] = [d for d in diags.items if not any(d is x for x in drop)]
 
 
-def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env,
-                   destinations: bool) -> bool:
+def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env, destinations: bool) -> bool:
     from . import expressions
+
     reported = False
     tables = symbols.scope_tables(program, env)
     aliases = _alias_sources(program, tables, env) if destinations and not profile.single_pass else {}
     known = expressions._known_names(program, profile)
     source_vars = None
     in_table = False
-    sources_ok = True   # CR6/CR1000X: an undefined table source ends the table checks (round 38)
+    sources_ok = True  # CR6/CR1000X: an undefined table source ends the table checks (round 38)
     top_level = {id(st) for st in program.statements}
     for st in _with_inline(program.statements):
         if not isinstance(st, S.Instruction):
             continue
         dims = tables(st).dims
         kw = st.keyword.upper()
-        inline = id(st) not in top_level   # a one-line If's statement: only the destination check (round 52)
+        inline = id(st) not in top_level  # a one-line If's statement: only the destination check (round 52)
         if destinations and not inline and kw == "ENDTABLE" and not in_table:
             # an orphan `EndTable` ends this walk; tier C reports it (oracle, CR6/CR1000X, round 58,
             # docs/checker.md#orphan-endtable-in-the-table-walk-round-58)
@@ -1247,11 +1401,11 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             if reps is not None and _INT32_MIN < reps < 0:
                 diags.error(st.line, "Out of memory.", st.file)
                 return True
-            if destinations and in_table and len(st.args) >= 8 and \
-                    _wind_options(st, reps, env, diags):
+            if destinations and in_table and len(st.args) >= 8 and _wind_options(st, reps, env, diags):
                 return True
         if kw == "DEBUG" and not inline:
             from .instr_rules import debug_history_oom
+
             if debug_history_oom(st, env, profile, program):
                 diags.error(st.line, "Out of memory.", st.file)
                 return True
@@ -1259,14 +1413,21 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             continue
         if destinations and in_table and kw in _TABLE_OUTPUT and sources_ok:
             from .structure import _undefined_table_source
+
             sources_ok = _undefined_table_source(st, profile, known) is None
         wind_reps = _reps_value(st.args[0], env) if kw == "WINDVECTOR" and st.args else None
         if wind_reps == _INT32_MIN:
             # an overflowing count: the direction bounds, then `Illegal Reps -2147483648` (oracle,
             # CR6/CR1000X, round 64, docs/checker.md#overflowing-windvector-reps-round-64)
             wind_reps = 2**31
-        wind = kw == "WINDVECTOR" and destinations and in_table and len(st.args) >= 3 and \
-            isinstance(st.args[1], (S.Name, S.Index)) and (wind_reps or 0) >= 1
+        wind = (
+            kw == "WINDVECTOR"
+            and destinations
+            and in_table
+            and len(st.args) >= 3
+            and isinstance(st.args[1], (S.Name, S.Index))
+            and (wind_reps or 0) >= 1
+        )
         if wind and _short_array(st.args[2], wind_reps or 0, dims, env):
             # the direction first, one line (oracle, round 56, docs/checker.md#round-56-fuzz-rules)
             diags.error(st.line, f"Variable {getattr(st.args[2], 'name', '')} out of bounds.", st.file)
@@ -1281,19 +1442,25 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             source = st.args[1]
             if kw == "SAMPLE" and len(st.args) > 2:
                 from .. import tables as output_tables
+
                 if output_tables._dtype_code(st.args[2], env) == 11:
                     if source_vars is None:
-                        source_vars = {v.name.upper(): output_tables._make_var_info(v, env)
-                                       for v in output_tables._scan_program(program)["all_vars"]}
-                    if output_tables._is_anonymous_source(source, source_vars, env) and \
-                            output_tables._string_stored_len(output_tables._anonymous_string_len(
-                                source, source_vars, env)) <= 0:
+                        source_vars = {
+                            v.name.upper(): output_tables._make_var_info(v, env)
+                            for v in output_tables._scan_program(program)["all_vars"]
+                        }
+                    if (
+                        output_tables._is_anonymous_source(source, source_vars, env)
+                        and output_tables._string_stored_len(
+                            output_tables._anonymous_string_len(source, source_vars, env)
+                        )
+                        <= 0
+                    ):
                         diags.error(st.line, "Out of memory.", st.file)
                         return True
             if reps is not None and reps > 1 and not isinstance(source, (S.Name, S.Index)):
                 diags.error(st.line, "Reps must be 1 when the source is an expression.", st.file)
-                diags.error(st.line, f"Variable Anonymous1, index 1, reps {reps}, out of bounds.",
-                            st.file)
+                diags.error(st.line, f"Variable Anonymous1, index 1, reps {reps}, out of bounds.", st.file)
                 return True
             if reps is None or not isinstance(source, (S.Name, S.Index)):
                 continue
@@ -1304,8 +1471,7 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
                     if in_table and not wind and (message := _odd_pair_reps(st, env)):
                         diags.error(st.line, message, st.file)
                     diags.error(st.line, f"Variable {first} out of bounds.", st.file)
-                    diags.error(st.line, f"Variable {alias_name}, index 1, reps {reps}, out of bounds.",
-                                st.file)
+                    diags.error(st.line, f"Variable {alias_name}, index 1, reps {reps}, out of bounds.", st.file)
                     return True
                 continue
             if shape is None:
@@ -1328,16 +1494,23 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             total = math.prod(shape)
             if offset + reps > total:
                 if destinations and in_table and (message := _odd_pair_reps(st, env)):
-                    diags.error(st.line, message, st.file)   # (first on the line, round 38)
-                name = next((v.name for d in program.statements if isinstance(d, S.Declaration)
-                             for v in d.vars if v.name.upper() == source.name.upper()), source.name)
+                    diags.error(st.line, message, st.file)  # (first on the line, round 38)
+                name = next(
+                    (
+                        v.name
+                        for d in program.statements
+                        if isinstance(d, S.Declaration)
+                        for v in d.vars
+                        if v.name.upper() == source.name.upper()
+                    ),
+                    source.name,
+                )
                 if not isinstance(source, S.Index) or all(isinstance(a, S.Number) for a in source.args):
                     diags.error(st.line, f"Variable {name} out of bounds.", st.file)
                 if empty:
                     diags.error(st.line, "Invalid, or out of place expression: ().", st.file)
                 if start + reps - 1 > total:
-                    diags.error(st.line, f"Variable {name}, index {start}, reps {reps}, out of bounds.",
-                                st.file)
+                    diags.error(st.line, f"Variable {name}, index {start}, reps {reps}, out of bounds.", st.file)
                     return True
     return reported
 
@@ -1363,10 +1536,12 @@ def check_eventcount_tables(program: S.Program, profile: Profile, diags: Diagnos
         for expr in _statement_exprs(st):
             for node in _members(expr):
                 base = node.base
-                if isinstance(base, S.Name) and node.member.upper() == "EVENTCOUNT" and \
-                        tables.get(base.name.upper()) is False:
-                    diags.error(st.line, f"DataTable {base.name} must have DataEvent() to "
-                                "request EventCount.", st.file)
+                if (
+                    isinstance(base, S.Name)
+                    and node.member.upper() == "EVENTCOUNT"
+                    and tables.get(base.name.upper()) is False
+                ):
+                    diags.error(st.line, f"DataTable {base.name} must have DataEvent() to request EventCount.", st.file)
                     break
             else:
                 continue
@@ -1418,7 +1593,7 @@ def _declared_table_name(st: S.Instruction) -> str | None:
     if isinstance(first, S.String) and re.fullmatch(r"[0-9A-Za-z_.]+", first.value):
         return first.value
     if isinstance(first, S.Binary) and st.arg_spans and (span := st.arg_spans[0]):
-        text = st.text[span[0]:span[1]].strip()
+        text = st.text[span[0] : span[1]].strip()
         if text.startswith("(") and text.endswith(")"):
             text = text[1:-1]
         if _EXPR_NAME.match(text):
@@ -1436,8 +1611,9 @@ def _illegal_table_name(st: S.Instruction) -> list[Diagnostic]:
     if len(name) > _TABLE_NAME_LIMIT:
         text = f"DataTable name {name} is {len(name) - _TABLE_NAME_LIMIT} chars too long."
     elif name[:1] in "0123456789.":
-        text = (f"DataTable name {name} is illegal." if "." in name
-                else f"Table name {name} illegal, starts with a number.")
+        text = (
+            f"DataTable name {name} is illegal." if "." in name else f"Table name {name} illegal, starts with a number."
+        )
     else:
         return []
     return [Diagnostic("error", st.line, text, st.file, cascade=False)]
@@ -1448,7 +1624,8 @@ def is_table_name_diag(d: Diagnostic) -> bool:
     validation, `Sample must be used inside a table declaration.`, `Table T declared with no
     output fields.`) from running (oracle, cr6, 2026-10-12)."""
     return d.message.startswith(("Table name ", "DataTable name ")) and d.message.endswith(
-        ("starts with a number.", "is illegal.", "chars too long."))
+        ("starts with a number.", "is illegal.", "chars too long.")
+    )
 
 
 def finalize_illegal_table_names(program: S.Program, profile: Profile, diags: Diagnostics) -> None:
@@ -1457,9 +1634,12 @@ def finalize_illegal_table_names(program: S.Program, profile: Profile, diags: Di
     docs/checker.md "Table names starting with a digit"). Errors outside table bodies and
     unknown-statement errors inside them come first and hide it; an undefined name inside a table
     body (`Zed is not defined.`) races it in file order, the first one wins and ends the rest."""
-    marks = [d for st in program.statements
-             if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE"
-             for d in _illegal_table_name(st)][:1]
+    marks = [
+        d
+        for st in program.statements
+        if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE"
+        for d in _illegal_table_name(st)
+    ][:1]
     if not marks:
         return
     bodies: list[tuple[str, int, int]] = []
@@ -1472,18 +1652,24 @@ def finalize_illegal_table_names(program: S.Program, profile: Profile, diags: Di
             bodies.append((start.file, start.line, st.line))
             start = None
     if start is not None:
-        bodies.append((start.file, start.line, 10 ** 9))
+        bodies.append((start.file, start.line, 10**9))
     unparsed = {(st.file, st.line) for st in program.statements if isinstance(st, S.Unparsed)}
 
-    def late(d) -> bool:   # resolved after the table names: `CallTable T9`, an unclosed table
-        return d.message.startswith("Could not find DataTable ") or d.message in (
-            "DataTable ... EndTable not matched.", "No BeginProg in Program.") or \
-            d.message.endswith(("must be used inside a table declaration.", "declared with no output fields.")) or \
-            d.message.startswith("Invalid port specified ")
+    def late(d) -> bool:  # resolved after the table names: `CallTable T9`, an unclosed table
+        return (
+            d.message.startswith("Could not find DataTable ")
+            or d.message in ("DataTable ... EndTable not matched.", "No BeginProg in Program.")
+            or d.message.endswith(("must be used inside a table declaration.", "declared with no output fields."))
+            or d.message.startswith("Invalid port specified ")
+        )
 
     def stage_b(d) -> bool:
-        return late(d) or d.message.endswith(" is not defined.") and (d.file, d.line) not in unparsed and \
-            any(f == d.file and a < d.line <= b for f, a, b in bodies)
+        return (
+            late(d)
+            or d.message.endswith(" is not defined.")
+            and (d.file, d.line) not in unparsed
+            and any(f == d.file and a < d.line <= b for f, a, b in bodies)
+        )
 
     others = [d for d in diags.items if d.severity == "error"]
     if any(not stage_b(d) for d in others):
@@ -1502,15 +1688,22 @@ def finalize_illegal_table_names(program: S.Program, profile: Profile, diags: Di
 # `declared with no output fields` (docs/checker.md#output-data-type-codes-round-36).
 _CR6_ILLEGAL = frozenset(range(128)) - {1, 2, 3, 6, 7, 9, 11, 14, 17, 18, 20, 24, 25, 28}
 _FIELDLESS_DATA_TYPES = frozenset({0, 16, *range(29, 44), *range(48, 57), *range(60, 64), 94})
-_SILENT_FIELDLESS = frozenset({*range(156, 160), *range(180, 184), *range(204, 212),
-                               *range(220, 224), *range(236, 240), *range(252, 256)})
+_SILENT_FIELDLESS = frozenset(
+    {*range(156, 160), *range(180, 184), *range(204, 212), *range(220, 224), *range(236, 240), *range(252, 256)}
+)
 _ILLEGAL_DATA_TYPES = {
     "cr6": _CR6_ILLEGAL,
     "cr1000x": _CR6_ILLEGAL,
     "cr300": frozenset({2, 3, 4, 5, 8, 10, 12, 13, 14, 15, 19, 26, 27}),
     "cr350": frozenset({2, 3, 4, 5, 8, 10, 12, 13, 14, 15, 19, 26, 27}),
 }
-_DATA_TYPE_ARG = {"SAMPLE": 2, "AVERAGE": 2, "MAXIMUM": 2, "MINIMUM": 2, "WINDVECTOR": 3}   # WindVector: round 36, Minimum: 56
+_DATA_TYPE_ARG = {
+    "SAMPLE": 2,
+    "AVERAGE": 2,
+    "MAXIMUM": 2,
+    "MINIMUM": 2,
+    "WINDVECTOR": 3,
+}  # WindVector: round 36, Minimum: 56
 
 
 def _constant_data_type(stmt: S.Instruction, pos: int, env: consteval.Env) -> int | None:
@@ -1526,14 +1719,12 @@ def _constant_data_type(stmt: S.Instruction, pos: int, env: consteval.Env) -> in
 
 def _fieldless(stmt: S.Instruction, profile: Profile, env: consteval.Env) -> bool:
     pos = _DATA_TYPE_ARG.get(stmt.keyword.upper())
-    if profile.name not in ("cr6", "cr1000x") or pos is None or pos >= len(stmt.args) \
-            or stmt.args[pos] is None:
+    if profile.name not in ("cr6", "cr1000x") or pos is None or pos >= len(stmt.args) or stmt.args[pos] is None:
         return False
     return _constant_data_type(stmt, pos, env) in _FIELDLESS_DATA_TYPES | _SILENT_FIELDLESS
 
 
-def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnostics,
-                          env: consteval.Env) -> None:
+def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
     """A constant `DataType` that is no data type: `Sample(1,X,(1+2))` on CR300/CR350,
     `Sample(1,X,4)` everywhere -> `Illegal data type parameter 3 in Sample instruction.` (the value
     truncated: `2.5` is 2). Reported like `instr_rules.check_avgrun_options` (with pass 2 on
@@ -1541,7 +1732,7 @@ def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnosti
     bad = _ILLEGAL_DATA_TYPES.get(profile.name)
     if not bad:
         return
-    in_table = False   # outside a table, `must be used inside a table declaration` wins
+    in_table = False  # outside a table, `must be used inside a table declaration` wins
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
             continue
@@ -1553,16 +1744,20 @@ def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnosti
         value = _constant_data_type(stmt, pos, env)
         if value is not None and value in bad:
             name = profile.instructions[stmt.keyword.upper()]["name"]
-            diags.error(stmt.line, f"Illegal data type parameter {int(value)} in {name} instruction.",
-                        stmt.file)
+            diags.error(stmt.line, f"Illegal data type parameter {int(value)} in {name} instruction.", stmt.file)
 
 
 def _odd_pair_reps(stmt: S.Instruction, env: consteval.Env) -> str | None:
     """CR6/CR1000X: UINT1 / BOOL8 pack bits or bytes in pairs, so odd constant Reps is illegal
     after integer conversion (rounds 36/60); the message, or None."""
     pos = _DATA_TYPE_ARG.get(stmt.keyword.upper())
-    if pos is None or pos >= len(stmt.args) or stmt.args[pos] is None or stmt.args[0] is None \
-            or _constant_data_type(stmt, pos, env) not in (1, 17):
+    if (
+        pos is None
+        or pos >= len(stmt.args)
+        or stmt.args[pos] is None
+        or stmt.args[0] is None
+        or _constant_data_type(stmt, pos, env) not in (1, 17)
+    ):
         return None
     reps = _reps_value(stmt.args[0], env)
     if reps is not None and reps > 0 and reps % 2:
@@ -1570,18 +1765,23 @@ def _odd_pair_reps(stmt: S.Instruction, env: consteval.Env) -> str | None:
     return None
 
 
-def check_odd_pair_reps(program: S.Program, profile: Profile, diags: Diagnostics,
-                        env: consteval.Env) -> None:
+def check_odd_pair_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
     """`_odd_pair_reps` inside a table, with pass 2 but printed first on its line (oracle, round 38:
     ahead of `Invalid symbol in expression: Nope.` in `Sample(9,Nope,UINT1)`)."""
     if profile.name not in ("cr6", "cr1000x"):
         return
     in_table = False
-    types = {v.name.upper(): v.type or "FLOAT" for st in program.statements
-             if isinstance(st, S.Declaration) for v in st.vars}
-    for st in program.statements:   # an `Alias` has its target's type
-        if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS" and len(st.args) > 1 \
-                and isinstance(st.args[0], (S.Name, S.Index)) and isinstance(st.args[1], S.Name):
+    types = {
+        v.name.upper(): v.type or "FLOAT" for st in program.statements if isinstance(st, S.Declaration) for v in st.vars
+    }
+    for st in program.statements:  # an `Alias` has its target's type
+        if (
+            isinstance(st, S.Instruction)
+            and st.keyword.upper() == "ALIAS"
+            and len(st.args) > 1
+            and isinstance(st.args[0], (S.Name, S.Index))
+            and isinstance(st.args[1], S.Name)
+        ):
             types.setdefault(st.args[1].name.upper(), types.get(st.args[0].name.upper(), "UINT1"))
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction):
@@ -1590,7 +1790,13 @@ def check_odd_pair_reps(program: S.Program, profile: Profile, diags: Diagnostics
             if in_table and (message := _odd_pair_reps(stmt, env)):
                 diags.error(stmt.line, message, stmt.file)
             # (oracle, round 56: `Sample(1,X,UINT1)` with a Float or Long X)
-            if in_table and kw == "SAMPLE" and len(stmt.args) > 2 and stmt.args[2] is not None \
-                    and _constant_data_type(stmt, 2, env) == 1 and isinstance(stmt.args[1], (S.Name, S.Index)) \
-                    and types.get(stmt.args[1].name.upper(), "UINT1") != "UINT1":
+            if (
+                in_table
+                and kw == "SAMPLE"
+                and len(stmt.args) > 2
+                and stmt.args[2] is not None
+                and _constant_data_type(stmt, 2, env) == 1
+                and isinstance(stmt.args[1], (S.Name, S.Index))
+                and types.get(stmt.args[1].name.upper(), "UINT1") != "UINT1"
+            ):
                 diags.error(stmt.line, "Sample type UINT1 can only sample a variable of type UINT1.", stmt.file)

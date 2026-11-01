@@ -19,9 +19,23 @@ from typing import NamedTuple
 
 from . import bindings, positions
 
-__all__ = ["Location", "Highlight", "SemanticToken", "Site", "Navigation", "navigation", "definition",
-           "references", "references_across", "declaration_sites", "document_highlights",
-           "semantic_tokens", "path_keys", "TOKEN_TYPES", "TOKEN_MODIFIERS"]
+__all__ = [
+    "Location",
+    "Highlight",
+    "SemanticToken",
+    "Site",
+    "Navigation",
+    "navigation",
+    "definition",
+    "references",
+    "references_across",
+    "declaration_sites",
+    "document_highlights",
+    "semantic_tokens",
+    "path_keys",
+    "TOKEN_TYPES",
+    "TOKEN_MODIFIERS",
+]
 
 # Semantic-token legend (indices into these tuples are the LSP wire values; the server declares
 # them in this order).
@@ -29,24 +43,41 @@ TOKEN_TYPES = ("variable", "parameter", "function", "property", "namespace", "st
 TOKEN_MODIFIERS = ("declaration", "readonly")
 
 _KIND_TYPE = {
-    "public": "variable", "dim": "variable", "static": "variable", "alias": "variable",
-    "const": "variable", "param": "parameter", "sub": "function", "function": "function",
-    "structure_member": "property", "datatable": "namespace", "consttable": "namespace",
-    "structuretype": "struct", "objecttype": "type",
+    "public": "variable",
+    "dim": "variable",
+    "static": "variable",
+    "alias": "variable",
+    "const": "variable",
+    "param": "parameter",
+    "sub": "function",
+    "function": "function",
+    "structure_member": "property",
+    "datatable": "namespace",
+    "consttable": "namespace",
+    "structuretype": "struct",
+    "objecttype": "type",
 }
-_READ_ROLES = {bindings.READ, bindings.CALL, bindings.MEMBER_BASE, bindings.MEMBER,
-               bindings.TABLE_REF, bindings.ALIAS_TARGET, bindings.TYPE, bindings.INSTRUCTION}
+_READ_ROLES = {
+    bindings.READ,
+    bindings.CALL,
+    bindings.MEMBER_BASE,
+    bindings.MEMBER,
+    bindings.TABLE_REF,
+    bindings.ALIAS_TARGET,
+    bindings.TYPE,
+    bindings.INSTRUCTION,
+}
 _KIND_RANK = {"write": 3, "read": 2, "text": 1}
 
 
 @dataclass(frozen=True)
 class Location:
-    path: Path | None               # the file (None when the occurrence has no resolved path)
-    file: str                       # compiler display name
-    line: int                       # physical, 0-based
-    start: int                      # decoded column, inclusive
-    end: int                        # decoded column, exclusive
-    occurrences: tuple[int, ...]    # `Occurrence.id` of each load of the file that gives this range
+    path: Path | None  # the file (None when the occurrence has no resolved path)
+    file: str  # compiler display name
+    line: int  # physical, 0-based
+    start: int  # decoded column, inclusive
+    end: int  # decoded column, exclusive
+    occurrences: tuple[int, ...]  # `Occurrence.id` of each load of the file that gives this range
 
 
 @dataclass(frozen=True)
@@ -54,19 +85,20 @@ class Highlight:
     line: int
     start: int
     end: int
-    kind: str                       # "write" | "read" | "text"
+    kind: str  # "write" | "read" | "text"
 
 
 class SemanticToken(NamedTuple):
     line: int
     start: int
     length: int
-    type: str                       # one of TOKEN_TYPES
-    modifiers: tuple[str, ...]      # subset of TOKEN_MODIFIERS
+    type: str  # one of TOKEN_TYPES
+    modifiers: tuple[str, ...]  # subset of TOKEN_MODIFIERS
 
 
 class Site(NamedTuple):
     """The exact physical range of one declaration or reference (`rec`) of an analysis."""
+
     rec: bindings.Declaration | bindings.Reference
     path: Path | None
     file: str
@@ -124,7 +156,7 @@ class Navigation:
         ll, seg = origin
         text = unit.text
         shift = None
-        for cand in (0, len(ll.text[seg:]) - len(ll.text[seg:].lstrip())):    # `Units` text is stripped
+        for cand in (0, len(ll.text[seg:]) - len(ll.text[seg:].lstrip())):  # `Units` text is stripped
             if ll.text.startswith(text, seg + cand):
                 shift = cand
                 break
@@ -137,8 +169,7 @@ class Navigation:
         r = positions.exact_range(ll, start, end)
         if r is None or r.end_col <= r.start_col:
             return None
-        return Site(rec, paths.get(r.occurrence), r.file, r.occurrence, r.line - 1, r.start_col,
-                     r.end_col)
+        return Site(rec, paths.get(r.occurrence), r.file, r.occurrence, r.line - 1, r.start_col, r.end_col)
 
     def _build(self) -> list[Site]:
         if self._sites is not None:
@@ -149,7 +180,7 @@ class Navigation:
             for rec in (*self.index.declarations, *self.index.references):
                 try:
                     site = self._site(rec, paths)
-                except Exception:                       # never raise out of navigation
+                except Exception:  # never raise out of navigation
                     site = None
                 if site is None:
                     continue
@@ -186,7 +217,7 @@ class Navigation:
                     seen.add(id(s))
                     hits.append(s)
         inside = [s for s in hits if col < s.end]
-        return inside or hits               # a position just after a name still counts
+        return inside or hits  # a position just after a name still counts
 
     def site_of(self, record) -> Site | None:
         """The site of a declaration or reference of this analysis, `None` when its range is not
@@ -224,8 +255,11 @@ class Navigation:
     def declaration_at(self, path, line: int, start: int, end: int) -> list[bindings.Declaration]:
         """The declarations whose own token is exactly at that range: how the same declaration is
         found in another analysis that reads the same file (LSP-R4a)."""
-        return [s.rec for s in self.sites_at(path, line, start)
-                if isinstance(s.rec, bindings.Declaration) and (s.start, s.end) == (start, end)]
+        return [
+            s.rec
+            for s in self.sites_at(path, line, start)
+            if isinstance(s.rec, bindings.Declaration) and (s.start, s.end) == (start, end)
+        ]
 
     def _reference_sites(self, targets, include_declaration: bool) -> list[Site]:
         sites: list[Site] = []
@@ -290,14 +324,13 @@ def _locations(sites) -> list[Location]:
         entry = merged.setdefault(key, [s, []])
         if s.occurrence not in entry[1]:
             entry[1].append(s.occurrence)
-    out = [Location(s.path, s.file, s.line, s.start, s.end, tuple(sorted(occ)))
-           for s, occ in merged.values()]
+    out = [Location(s.path, s.file, s.line, s.start, s.end, tuple(sorted(occ))) for s, occ in merged.values()]
     return sorted(out, key=lambda l: (str(l.path or ""), l.file, l.line, l.start))
 
 
 # ------------------------------------------------------------------ module functions
 
-_last: tuple | None = None            # (result, index argument, Navigation): the latest analysis
+_last: tuple | None = None  # (result, index argument, Navigation): the latest analysis
 
 
 def navigation(result, index: bindings.BindingIndex | None = None) -> Navigation:
@@ -316,8 +349,7 @@ def definition(result, path, line: int, col: int, *, index=None) -> list[Locatio
     return navigation(result, index).definition(path, line, col)
 
 
-def references(result, path, line: int, col: int, include_declaration: bool = True, *,
-               index=None) -> list[Location]:
+def references(result, path, line: int, col: int, include_declaration: bool = True, *, index=None) -> list[Location]:
     """Every reference to the declaration(s) of the name at the position, in every file."""
     return navigation(result, index).references(path, line, col, include_declaration)
 
@@ -336,8 +368,7 @@ def declaration_sites(navs, path, line: int, col: int) -> list[Site]:
     return list(out.values())
 
 
-def references_across(navs, path, line: int, col: int,
-                      include_declaration: bool = True) -> list[Location]:
+def references_across(navs, path, line: int, col: int, include_declaration: bool = True) -> list[Location]:
     """References over several analyses (LSP-R4a): the name at the position is resolved in every
     nav that reads `path`; each resolved declaration with an exact range is then found in every
     nav by its token's file and position (`Navigation.declaration_at`), and the references of all

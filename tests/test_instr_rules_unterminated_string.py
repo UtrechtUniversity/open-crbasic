@@ -34,13 +34,7 @@ def messages(text: str) -> list[tuple[int, str]]:
 
 
 def test_unterminated_string_in_httpout_reports_missing_parameter():
-    text = (
-        "Public Commands As String * 10\n"
-        "BeginProg\n"
-        '  HTTPOut("<title>CR1000X\n'
-        'Datalogger</title>")\n'
-        "EndProg\n"
-    )
+    text = 'Public Commands As String * 10\nBeginProg\n  HTTPOut("<title>CR1000X\nDatalogger</title>")\nEndProg\n'
     assert messages(text) == [(3, "Invalid or missing parameter.")]
 
 
@@ -54,9 +48,9 @@ def test_unterminated_string_repeats_once_per_occurrence():
         "Public Commands As String * 10\n"
         "BeginProg\n"
         '  HTTPOut("<title>A\n'
-        "Cont</title>\")\n"
+        'Cont</title>")\n'
         '  HTTPOut("<title>B\n'
-        "Cont</title>\")\n"
+        'Cont</title>")\n'
         "EndProg\n"
     )
     assert messages(text) == [

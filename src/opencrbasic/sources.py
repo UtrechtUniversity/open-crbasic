@@ -48,8 +48,7 @@ class OverlaySource:
 
     def __init__(self, base: SourceProvider, overlays: Mapping[Path, bytes] | None = None):
         self.base = base
-        self.overlays: dict[Path, bytes] = {Path(p).absolute(): bytes(b)
-                                            for p, b in (overlays or {}).items()}
+        self.overlays: dict[Path, bytes] = {Path(p).absolute(): bytes(b) for p, b in (overlays or {}).items()}
 
     def read(self, path: Path) -> bytes | None:
         data = self.overlays.get(Path(path).absolute())
@@ -90,7 +89,7 @@ class LimitedSource:
                 self.oversized[Path(path)] = info.st_size
                 return None
             data = self.inner.read(path)
-        if data is not None and len(data) > self.limit:       # an overlay, or a file that grew
+        if data is not None and len(data) > self.limit:  # an overlay, or a file that grew
             self.oversized[Path(path)] = len(data)
             return None
         return data

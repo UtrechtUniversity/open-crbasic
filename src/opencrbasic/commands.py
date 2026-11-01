@@ -15,9 +15,9 @@ from .sources import DiskSource, LimitedSource, OverlaySource, SourceProvider
 
 @dataclass(frozen=True)
 class CompilerOutput:
-    text: str                   # exactly what `crbc` prints to stdout (newline-terminated)
+    text: str  # exactly what `crbc` prints to stdout (newline-terminated)
     ok: bool
-    program_name: str           # the name in the header line (the entry's file name)
+    program_name: str  # the name in the header line (the entry's file name)
     # files over `max_file_bytes` (path -> size): when not empty, `text` is "" (no output)
     oversized: Mapping[Path, int] = field(default_factory=dict)
 
@@ -27,7 +27,7 @@ class FieldInfo:
     name: str
     type: str
     units: str | None
-    process: str | None         # the TDF processing text (`Average`, `Sample`, ...); None: empty
+    process: str | None  # the TDF processing text (`Average`, `Sample`, ...); None: empty
     dimension: int = 1
 
 
@@ -35,12 +35,12 @@ class FieldInfo:
 class TableInfo:
     name: str
     fields: tuple[FieldInfo, ...]
-    interval: str | None        # as `-l` prints it ("5 MIN"); None: no interval
+    interval: str | None  # as `-l` prints it ("5 MIN"); None: no interval
 
 
-def compiler_output(entry: Path, logger: str = "cr6",
-                    overlays: Mapping[Path, bytes] | None = None,
-                    max_file_bytes: int | None = None) -> CompilerOutput:
+def compiler_output(
+    entry: Path, logger: str = "cr6", overlays: Mapping[Path, bytes] | None = None, max_file_bytes: int | None = None
+) -> CompilerOutput:
     """The text `crbc [--logger LOGGER] --no-message-file ENTRY` prints, with `overlays` (path ->
     encoded unsaved buffer) on top of the disk. An entry that neither exists nor is overlaid gives
     the CLI's "No Program File" text. With `max_file_bytes`, a file larger than that (the entry or
@@ -62,8 +62,19 @@ def compiler_output(entry: Path, logger: str = "cr6",
     return CompilerOutput("\n".join(result.result_lines()) + "\n", result.ok, result.program)
 
 
-_TYPE_NAMES = {1: "UINT1", 2: "UINT2", 3: "UINT4", 6: "LONG", 7: "FP2", 9: "IEEE4", 11: "String",
-               14: "NSEC", 17: "BOOL8", 18: "IEEE8", 28: "Boolean"}
+_TYPE_NAMES = {
+    1: "UINT1",
+    2: "UINT2",
+    3: "UINT4",
+    6: "LONG",
+    7: "FP2",
+    9: "IEEE4",
+    11: "String",
+    14: "NSEC",
+    17: "BOOL8",
+    18: "IEEE8",
+    28: "Boolean",
+}
 
 
 def table_fields(result) -> list[TableInfo]:
@@ -74,6 +85,7 @@ def table_fields(result) -> list[TableInfo]:
     if program is None or not result.ok:
         return []
     from .tables import _seconds_to_display, build_tables
+
     profile = profiles.get(result.request.logger)
     try:
         tables, _, _ = build_tables(program, profile, dict(program.consts))
@@ -89,9 +101,12 @@ def table_fields(result) -> list[TableInfo]:
         elif t.interval != (0, 0):
             value, unit = _seconds_to_display(t.interval[0])
             interval = f"{value} {unit}"
-        fields = tuple(FieldInfo(f.name, _TYPE_NAMES.get(f.type, f"type {f.type}"),
-                                 f.units or None, f.processing or None, f.dimension)
-                       for f in t.fields)
+        fields = tuple(
+            FieldInfo(
+                f.name, _TYPE_NAMES.get(f.type, f"type {f.type}"), f.units or None, f.processing or None, f.dimension
+            )
+            for f in t.fields
+        )
         out.append(TableInfo(t.name, fields, interval))
     return out
 

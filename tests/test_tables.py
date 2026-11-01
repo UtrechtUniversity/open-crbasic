@@ -38,10 +38,7 @@ def _try_oracle():
     if sys.platform != "win32":
         import shutil
 
-        wine = (
-            Path.home() / ".local" / "wine" / "Wine Devel.app" / "Contents" / "Resources"
-            / "wine" / "bin" / "wine"
-        )
+        wine = Path.home() / ".local" / "wine" / "Wine Devel.app" / "Contents" / "Resources" / "wine" / "bin" / "wine"
         if not wine.is_file() and not shutil.which("wine"):
             return None
     return tdftest
@@ -63,9 +60,9 @@ def _expected(path: Path):
     if fixture.is_file():
         rec = json.loads(fixture.read_text())
         import tdftest
+
         if rec.get("source_sha256") != tdftest.source_hash(path, CRBASIC_DIR):
-            pytest.skip("cached fixture is stale: refresh with tools/tdftest.py --group repo "
-                        "--write-fixtures")
+            pytest.skip("cached fixture is stale: refresh with tools/tdftest.py --group repo --write-fixtures")
         return base64.b64decode(rec["tdf_b64"]), base64.b64decode(rec["lst_b64"])
     return None, None
 
@@ -153,10 +150,10 @@ def test_scan_weights_never_crashes_on_a_non_numeric_interval():
     # `ValueError: could not convert string to float: 'fuzz'` inside `_scan_weights`, reachable for
     # *any* `Scan` block regardless of whether a table is even called inside it.
     text = (
-        'DataTable (T,-1,-1)\n  Sample (1,X,FP2)\nEndTable\n'
-        'Public X As Float\nBeginProg\n'
+        "DataTable (T,-1,-1)\n  Sample (1,X,FP2)\nEndTable\n"
+        "Public X As Float\nBeginProg\n"
         '  Scan("fuzz",Sec,0,0)\n    CallTable T\n  NextScan\n'
-        'EndProg\n'
+        "EndProg\n"
     )
     program, diags = parser.parse_text(text, "t.CR6")
     tables, table_list_text, _ = build_tables(program, profiles.get("cr6"), dict(program.consts))

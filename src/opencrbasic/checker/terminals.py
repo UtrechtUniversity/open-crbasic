@@ -77,7 +77,7 @@ def _evaluate(value: float, kind: dict) -> tuple[bool, bool, int]:
         # range -> -2147483648, which is what the message shows) and any v >= 201 with v mod 200
         # in 0..12 is accepted besides C1..C16/U1..U12 (400, 1000, 1001, 3012 compile; 200, 213,
         # 413, 1100 do not).
-        v = int(v) if -2**31 <= v < 2**31 else -2**31
+        v = int(v) if -(2**31) <= v < 2**31 else -(2**31)
         in_range = _in_range(v, kind) or (v >= 201 and v % 200 <= 12)
         return in_range, True, v
     in_range = _in_range(v, kind)
@@ -95,14 +95,18 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
     if not checked_instructions:
         return
     from .instr_data import _with_inline
-    for stmt in _with_inline(program.statements):   # a one-line If's statement too (round 58)
+
+    for stmt in _with_inline(program.statements):  # a one-line If's statement too (round 58)
         if not isinstance(stmt, S.Instruction):
             continue
         positions = checked_instructions.get(stmt.keyword.upper())
         if not positions:
             continue
-        if stmt.keyword.upper() == "ACPOWER" and profile.name == "cr6" and _check_acpower(
-                stmt, channels[positions[0][1]], env, diags):
+        if (
+            stmt.keyword.upper() == "ACPOWER"
+            and profile.name == "cr6"
+            and _check_acpower(stmt, channels[positions[0][1]], env, diags)
+        ):
             continue
         for pos, kind_name, *extra in positions:
             # optional third and fourth items: the Reps position and the channels per repetition;
@@ -116,8 +120,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
             if reps is not None and "span" in kind:
                 _check_arg(stmt, pos, kind, env, diags, reps=reps, width=width)
             else:  # CR300/CR350: the last channel used is tested and shown
-                _check_arg(stmt, pos, kind, env, diags,
-                           max(reps, 1) * width - 1 if reps is not None else 0)
+                _check_arg(stmt, pos, kind, env, diags, max(reps, 1) * width - 1 if reps is not None else 0)
 
 
 def _const_int(stmt: S.Instruction, pos: int, env: consteval.Env, truncate: bool = False) -> int | None:
@@ -153,8 +156,16 @@ def _check_acpower(stmt: S.Instruction, kind: dict, env: consteval.Env, diags: D
     return True
 
 
-def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, diags: Diagnostics,
-               span: int = 0, reps: int | None = None, width: int = 1) -> None:
+def _check_arg(
+    stmt: S.Instruction,
+    pos: int,
+    kind: dict,
+    env: consteval.Env,
+    diags: Diagnostics,
+    span: int = 0,
+    reps: int | None = None,
+    width: int = 1,
+) -> None:
     idx = pos - 1
     if idx >= len(stmt.args) or stmt.args[idx] is None:
         return
@@ -169,7 +180,7 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
         except consteval.NotConstant:
             folded = None
         if isinstance(folded, (int, float)) and not isinstance(folded, bool) and math.isfinite(folded):
-            huge = not -2**31 < int(folded) < 2**31   # (INT_MIN itself too: `abs` keeps it)
+            huge = not -(2**31) < int(folded) < 2**31  # (INT_MIN itself too: `abs` keeps it)
             if "overflow_add" in kind and (huge or abs(int(folded)) + kind["overflow_add"] > 2**31 - 1):
                 return
     if (isinstance(arg, S.String) or huge) and kind.get("string_int_min" if not huge else "huge_int_min"):
@@ -177,12 +188,15 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
         # four loggers, 2026-10-12)
         value = -2147483648
         in_range, odd_ok, _ = _evaluate(value, kind)
-        shown = value   # (`abs` of INT_MIN is INT_MIN in C: CR1000X `VoltSe(X,1,mV1000,"abc",...)`)
+        shown = value  # (`abs` of INT_MIN is INT_MIN in C: CR1000X `VoltSe(X,1,mV1000,"abc",...)`)
         if not in_range:
             diags.error(stmt.line, kind["message"].format(v=shown), stmt.file)
             if kind.get("secondary_when_invalid") and (not odd_ok or "allowed" in kind):
-                diags.error(stmt.line, (kind["odd_message"] if not odd_ok else kind["allowed_message"]
-                                        ).format(v=shown), stmt.file)
+                diags.error(
+                    stmt.line,
+                    (kind["odd_message"] if not odd_ok else kind["allowed_message"]).format(v=shown),
+                    stmt.file,
+                )
         return
     if not consteval.is_constant(arg, env):
         return  # a variable here is already rejected by the generic const-expr parameter (type
@@ -232,5 +246,4 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
         last = start + (reps - 1) * width * spec.get("step", 1)
         end = next(hi for lo, hi in _ranges(kind) if lo <= start <= hi)
         if last > end or not _in_range(last, spec if "ranges" in spec else kind):
-            diags.error(stmt.line, spec["message"].format(v=int(end) + 1 + spec.get("shift", 0)),
-                        stmt.file)
+            diags.error(stmt.line, spec["message"].format(v=int(end) + 1 + spec.get("shift", 0)), stmt.file)

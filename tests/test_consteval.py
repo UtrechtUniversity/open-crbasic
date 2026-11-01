@@ -17,14 +17,14 @@ def const_value(expr_text: str):
 @pytest.mark.parametrize(
     "expr,expected",
     [
-        ("2 + 3 * 4", 14),           # `*` tighter than `+`
-        ("10 - 4 - 3", 3),           # `-` left-associative
-        ("2^3^2", 64),               # `^` left-associative
-        ("-2^2", -4),                # unary minus looser than `^`
-        ("1 OR 0 AND 0", 0),         # AND/OR same precedence, left-to-right (oracle-verified;
+        ("2 + 3 * 4", 14),  # `*` tighter than `+`
+        ("10 - 4 - 3", 3),  # `-` left-associative
+        ("2^3^2", 64),  # `^` left-associative
+        ("-2^2", -4),  # unary minus looser than `^`
+        ("1 OR 0 AND 0", 0),  # AND/OR same precedence, left-to-right (oracle-verified;
         # classic "AND binds tighter than OR" would give -1 here -- see docs/frontend.md)
-        ("2 \\ 3", 0),               # integer division
-        ("7 INTDV 2", 3),            # `INTDV` is a word spelling of `\\`
+        ("2 \\ 3", 0),  # integer division
+        ("7 INTDV 2", 3),  # `INTDV` is a word spelling of `\\`
         ("5 MOD 3", 2),
         ("TRUE", -1),
         ("FALSE", 0),
@@ -37,7 +37,7 @@ def const_value(expr_text: str):
         ('"a" + "b"', "ab"),
         ("ABS(-5)", 5),
         ("INT(3.7)", 3.0),
-        ("LEN(\"hello\")", 5),
+        ('LEN("hello")', 5),
         ("CHR(65)", "A"),
     ],
 )
@@ -73,12 +73,36 @@ def test_huge_integer_is_not_foldable_as_float(sign):
         consteval._num(sign * 10**309)
 
 
-@pytest.mark.parametrize("expr", [
-    "+H", "-H", "Not H", "Chr(H)", "Abs(H)", "Int(H)", "Sqr(H)",
-    'H & ""', 'H + ""', "1 To H", "H + 1", "H - 1", "H * 1", "H / 1",
-    "H \\ 1", "H ^ 1", "H Mod 1", "H << 1", "H >> 1", "H And 1", "H Or 1",
-    "H Xor 1", "H Eqv 1", "H Imp 1", "H = 1",
-])
+@pytest.mark.parametrize(
+    "expr",
+    [
+        "+H",
+        "-H",
+        "Not H",
+        "Chr(H)",
+        "Abs(H)",
+        "Int(H)",
+        "Sqr(H)",
+        'H & ""',
+        'H + ""',
+        "1 To H",
+        "H + 1",
+        "H - 1",
+        "H * 1",
+        "H / 1",
+        "H \\ 1",
+        "H ^ 1",
+        "H Mod 1",
+        "H << 1",
+        "H >> 1",
+        "H And 1",
+        "H Or 1",
+        "H Xor 1",
+        "H Eqv 1",
+        "H Imp 1",
+        "H = 1",
+    ],
+)
 def test_huge_integer_numeric_callers_stop_folding(expr):
     prog, diags = parser.parse_text(f"Const H = {'1' + '0' * 309}\nConst R = {expr}\n", "t.cr6")
     assert not diags.errors

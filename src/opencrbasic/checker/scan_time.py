@@ -20,7 +20,7 @@ from .. import syntax as S
 from ..profiles import Profile
 
 _US_PER_UNIT = {0: 1, 1: 1_000, 2: 1_000_000, 3: 60_000_000, 4: 3_600_000_000, 5: 86_400_000_000}
-UNIT_FACTOR = {1: 10, 2: 10_000, 3: 600_000, 4: 36_000_000, 5: 864_000_000}   # 100 us per unit
+UNIT_FACTOR = {1: 10, 2: 10_000, 3: 600_000, 4: 36_000_000, 5: 864_000_000}  # 100 us per unit
 UNIT_NAMES = {0: "uSec", 1: "mSec", 2: "Sec", 3: "Min", 4: "Hr", 5: "Day"}
 SCAN_UNITS = (1, 2, 3)
 
@@ -30,7 +30,7 @@ def delay_us(value: float, unit: int) -> int:
     modulo 2^32; outside the Long range the interval is a Double whose low word is read as a
     float32, and a non-finite one counts as 2^31 (oracle, CR6/CR1000X, round 57,
     docs/checker.md#task-memory-overflow-of-long-delays-round-57)."""
-    if not -2**31 <= value < 2**31:
+    if not -(2**31) <= value < 2**31:
         value = struct.unpack("<f", struct.pack("<d", float(value))[:4])[0]
         if not math.isfinite(value):
             return 2**31
@@ -51,17 +51,27 @@ def task_memory_overflow(us: int) -> bool:
 def amount(excess: int, unit: int) -> int:
     """`FUN_0046c5c0`: an excess in 100 us units as a count of `unit`, rounded up (uSec: x100)."""
     return excess * 100 if unit == 0 else -(-excess // UNIT_FACTOR[unit])
+
+
 _OPENERS = frozenset({"SELECT", "WHILE"})
 _CLOSERS = frozenset({"ENDIF", "ENDSELECT", "WEND"})
 # measurement ranges (FUN_00514690): code -> (gain index, open-detect "C" variant)
-_RANGES = {800: (0, False), 802: (1, False), 804: (2, False), 810: (3, False),
-           820: (0, True), 822: (1, True), 824: (2, True), 830: (3, True)}
+_RANGES = {
+    800: (0, False),
+    802: (1, False),
+    804: (2, False),
+    810: (3, False),
+    820: (0, True),
+    822: (1, True),
+    824: (2, True),
+    830: (3, True),
+}
 
 
 def _f32(x: float) -> float:
     try:
         return struct.unpack("f", struct.pack("f", x))[0]
-    except OverflowError:   # (a C float cast overflows to infinity: fN1 `1E300`, round 31)
+    except OverflowError:  # (a C float cast overflows to infinity: fN1 `1E300`, round 31)
         return math.copysign(math.inf, x)
 
 
@@ -72,7 +82,7 @@ def i32(x: int) -> int:
 
 def _cint(x: float) -> int:
     """x87 float -> int: truncated; out of range gives -2147483648."""
-    return int(x) if -2**31 <= x < 2**31 else -2**31
+    return int(x) if -(2**31) <= x < 2**31 else -(2**31)
 
 
 def _cdiv(a: int, b: int) -> int:
@@ -84,16 +94,17 @@ def _cdiv(a: int, b: int) -> int:
 @dataclass(frozen=True)
 class Model:
     """The constants of one compiler's time accounting (from its measurement code generator)."""
-    overhead: int      # first analog measurement of a scan
-    refund: int        # taken back when less than 50 ms of slack remains
-    integ_num: float   # integration code = int(integ_num / fN1 + 0.5)
-    integ_zero: int    # ... for fN1 = 0
-    default_settle: int    # documentation only
-    round_up: int      # added before the final division by 100
-    busy_extra: int    # added to the longest integration time (units) for the calibration gap
+
+    overhead: int  # first analog measurement of a scan
+    refund: int  # taken back when less than 50 ms of slack remains
+    integ_num: float  # integration code = int(integ_num / fN1 + 0.5)
+    integ_zero: int  # ... for fN1 = 0
+    default_settle: int  # documentation only
+    round_up: int  # added before the final division by 100
+    busy_extra: int  # added to the longest integration time (units) for the calibration gap
 
     def integ_code(self, fnotch: float) -> int | None:
-        if _f32(fnotch) == 0:   # (`1E-50` is a float zero, round 31)
+        if _f32(fnotch) == 0:  # (`1E-50` is a float zero, round 31)
             return self.integ_zero
         if not math.isfinite(fnotch) or fnotch <= 0:
             return None
@@ -102,7 +113,7 @@ class Model:
             return None
         return code or 1
 
-    def integ_time(self, k: int) -> int:           # microseconds-ish, before settling
+    def integ_time(self, k: int) -> int:  # microseconds-ish, before settling
         raise NotImplementedError
 
     def settle_code(self, settling: int) -> int:
@@ -159,9 +170,19 @@ MODELS = {
 }
 
 
-def analog_units(m: Model, reps: int, gain: int, fnotch: float, settling: int, single_ended: bool,
-                 meas_off: bool = False, reverse: bool = False, excite: bool = False,
-                 open_detect: bool = False, groups: int = 1) -> int | None:
+def analog_units(
+    m: Model,
+    reps: int,
+    gain: int,
+    fnotch: float,
+    settling: int,
+    single_ended: bool,
+    meas_off: bool = False,
+    reverse: bool = False,
+    excite: bool = False,
+    open_detect: bool = False,
+    groups: int = 1,
+) -> int | None:
     """Time of one analog measurement call. `meas_off` (single-ended) adds one more measurement,
     `reverse` (differential) and `excite` double the total, autorange (gain 3) settles twice, the
     open-detect ranges settle longer and add 50 per rep. Any settling time counts as converted
@@ -203,16 +224,16 @@ def battery_units(m: Model) -> int:
 class Budget:
     scan: S.Instruction
     end: S.Instruction
-    value: int                    # Scan interval argument
-    unit: int                     # its Units code
-    interval: int                 # 100 us units
-    msg_unit: int                 # the unit the messages count in (a SubScan can leave its own)
-    total: int = 0                # after the analog adjustment
+    value: int  # Scan interval argument
+    unit: int  # its Units code
+    interval: int  # 100 us units
+    msg_unit: int  # the unit the messages count in (a SubScan can leave its own)
+    total: int = 0  # after the analog adjustment
     analog: bool = False
-    pulse_only: bool = True       # nothing but PulseCount adds time (such a scan never warns)
-    max_integ: int = 0            # longest integration time (units) of an analog call
+    pulse_only: bool = True  # nothing but PulseCount adds time (such a scan never warns)
+    max_integ: int = 0  # longest integration time (units) of an analog call
     partial: bool = False
-    sub_short: list = field(default_factory=list)   # (NextSubScan statement, amount, unit)
+    sub_short: list = field(default_factory=list)  # (NextSubScan statement, amount, unit)
 
 
 def _value(expr: S.Expr | None, env: consteval.Env) -> object | None:
@@ -226,8 +247,7 @@ def _value(expr: S.Expr | None, env: consteval.Env) -> object | None:
 
 def _num(expr: S.Expr | None, env: consteval.Env) -> float | None:
     v = _value(expr, env)
-    return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) \
-        else None
+    return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) else None
 
 
 def _long(expr: S.Expr | None, env: consteval.Env) -> int | None:
@@ -249,8 +269,10 @@ def _settling(expr: S.Expr | None, env: consteval.Env) -> int | None:
 # keyword -> (reps position, range position, flag position, settle position, fnotch position,
 #             single-ended)
 _ANALOG = {
-    "VOLTSE": (2, 3, 5, 6, 7, True), "VOLTDIFF": (2, 3, 5, 6, 7, False),
-    "TCSE": (2, 3, 7, 8, 9, True), "TCDIFF": (2, 3, 7, 8, 9, False),
+    "VOLTSE": (2, 3, 5, 6, 7, True),
+    "VOLTDIFF": (2, 3, 5, 6, 7, False),
+    "TCSE": (2, 3, 7, 8, 9, True),
+    "TCDIFF": (2, 3, 7, 8, 9, False),
     "CURRENTSE": (2, 3, 5, 6, 7, True),
 }
 # bridges (round 31): keyword -> (ranges, channel, MeasPEx, RevEx, RevDiff, settle, fnotch positions,
@@ -262,11 +284,10 @@ _BRIDGE = {
     "BRHALF4W": ((3, 4), 5, 7, 9, 10, 11, 12, False, 2),
     "BRFULL6W": ((3, 4), 5, 7, 9, 10, 11, 12, False, 2),
 }
-_PLAIN = ((0, False), (1, False), (2, False))   # fixed ranges without open detect
+_PLAIN = ((0, False), (1, False), (2, False))  # fixed ranges without open detect
 
 
-def _bridge_units(m: Model, args: list, env: consteval.Env, spec: tuple
-                  ) -> tuple[int, bool, int] | None:
+def _bridge_units(m: Model, args: list, env: consteval.Env, spec: tuple) -> tuple[int, bool, int] | None:
     """One analog call per MeasPEx group of reps (one call when MeasPEx equals Reps); each doubles
     per RevEx, RevDiff (differential) and second measurement group. Autorange and open-detect
     ranges of the two-group bridges, burst channels and Reps above 100000 are not modelled
@@ -278,22 +299,42 @@ def _bridge_units(m: Model, args: list, env: consteval.Env, spec: tuple
     revdiff = _long(args[dp - 1], env) if dp else 0
     rngs = [_long(args[i - 1], env) for i in ranges]
     settling, fn = _settling(args[sp - 1], env), _num(args[ip - 1], env)
-    if reps is None or chan is None or meas is None or revex is None or revdiff is None or settling is None or fn is None:
+    if (
+        reps is None
+        or chan is None
+        or meas is None
+        or revex is None
+        or revdiff is None
+        or settling is None
+        or fn is None
+    ):
         return None
     if None in rngs:
         return None
     rngs = cast(list[int], rngs)
-    if chan <= 0 or \
-            not 1 <= reps <= 100_000 or any(r not in _RANGES for r in rngs) or \
-            (groups > 1 and any(_RANGES[r] not in _PLAIN for r in rngs)):
+    if (
+        chan <= 0
+        or not 1 <= reps <= 100_000
+        or any(r not in _RANGES for r in rngs)
+        or (groups > 1 and any(_RANGES[r] not in _PLAIN for r in rngs))
+    ):
         return None
     meas = max(meas, 1)
     chunks = [reps] if meas == reps else [meas] * (reps // meas) + ([reps % meas] if reps % meas else [])
     total = 0
     for n in chunks:
-        units = analog_units(m, n, _RANGES[rngs[0]][0], fn, settling, single,
-                             excite=(revex & 0xFF) != 0, reverse=(revdiff & 0xFF) != 0,
-                             open_detect=_RANGES[rngs[0]][1], groups=groups)
+        units = analog_units(
+            m,
+            n,
+            _RANGES[rngs[0]][0],
+            fn,
+            settling,
+            single,
+            excite=(revex & 0xFF) != 0,
+            reverse=(revdiff & 0xFF) != 0,
+            open_detect=_RANGES[rngs[0]][1],
+            groups=groups,
+        )
         if units is None:
             return None
         total = i32(total + units)
@@ -303,8 +344,7 @@ def _bridge_units(m: Model, args: list, env: consteval.Env, spec: tuple
     return total, True, m.integ_time(code) // 100
 
 
-def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile
-                      ) -> tuple[int, bool, int] | None:
+def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile) -> tuple[int, bool, int] | None:
     """`(units, analog, integration time in units)` the instruction adds, or None when not modelled / not
     readable."""
     kw = stmt.keyword.upper()
@@ -313,15 +353,14 @@ def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile
         if len(args) != 3:
             return None
         option, value, unit = (_num(a, env) for a in args)
-        if option is None or int(option) != 0 or value is None or unit is None \
-                or int(unit) not in _US_PER_UNIT:
+        if option is None or int(option) != 0 or value is None or unit is None or int(unit) not in _US_PER_UNIT:
             return None
         if 0 <= value < 1:
             return None
         micro = delay_us(value, int(unit))
         if micro == 0 or task_memory_overflow(micro):
             return None
-        if micro >= 2**31:   # rounded up instead (an empirical fit, round 57; mechanism not derived)
+        if micro >= 2**31:  # rounded up instead (an empirical fit, round 57; mechanism not derived)
             return -(-micro // 100), False, 0
         return (2 * (micro // 2) + 100) // 100, False, 0
     if kw == "EXCITEV":
@@ -342,7 +381,7 @@ def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile
     if kw == "PORTGET" or (kw == "BATTERY" and profile.name == "cr6"):
         return 0, False, 0
     if kw == "BATTERY":
-        return battery_units(m), True, 0     # only the floor (oracle, CR1000X Scan(3,mSec))
+        return battery_units(m), True, 0  # only the floor (oracle, CR1000X Scan(3,mSec))
     if kw == "PANELTEMP" and len(args) == 2:
         fn = _num(args[1], env)
         units = panel_units(m, fn) if fn is not None else None
@@ -357,7 +396,7 @@ def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile
         if (reps is None or rng is None or flag is None or settling is None or fn is None) or rng not in _RANGES:
             return None
         gain, open_detect = _RANGES[rng]
-        cr6_current = kw == "CURRENTSE" and profile.name == "cr6"   # MeasOff and "C" ignored
+        cr6_current = kw == "CURRENTSE" and profile.name == "cr6"  # MeasOff and "C" ignored
         on = (flag & 0xFF) != 0 and not cr6_current
         open_detect = open_detect and not cr6_current
         flags = dict(meas_off=on and single, reverse=on and not single, open_detect=open_detect)
@@ -381,10 +420,13 @@ def instruction_units(stmt: S.Instruction, env: consteval.Env, profile: Profile
 def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_zero: bool = False):
     """One `Budget` per main-sequence `Scan` with a constant mSec/Sec/Min interval, in order."""
     from .instr_rules import _scan_raw
+
     model = MODELS.get(profile.name) or MODELS["cr6"]
     slow = False
     cur: Budget | None = None
-    frames: list[tuple[int, int, int, int | None, int] | None] = []   # open SubScans: (start, count, interval, unit, saved unit)
+    frames: list[
+        tuple[int, int, int, int | None, int] | None
+    ] = []  # open SubScans: (start, count, interval, unit, saved unit)
     total = 0
     for stmt in program.statements:
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
@@ -399,8 +441,13 @@ def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_ze
             raw = _scan_raw(stmt, env)
             if include_zero and len(stmt.args) > 1:
                 v, u = _value(stmt.args[0], env), _value(stmt.args[1], env)
-                if u in (2, 3) and not isinstance(u, bool) and isinstance(v, (int, float)) \
-                        and not isinstance(v, bool) and (0 <= v < 1 or v > 2147483647):
+                if (
+                    u in (2, 3)
+                    and not isinstance(u, bool)
+                    and isinstance(v, (int, float))
+                    and not isinstance(v, bool)
+                    and (0 <= v < 1 or v > 2147483647)
+                ):
                     raw = (0, u)
             if raw and raw[1] in SCAN_UNITS:
                 value, unit = raw
@@ -434,8 +481,11 @@ def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_ze
                     step = int(args[0]) * u // 100
             if not ok:
                 cur.partial = True
-            sub_unit = args[1] if ok and isinstance(args[1], int) and not isinstance(args[1], bool) \
-                and args[1] in UNIT_NAMES else None
+            sub_unit = (
+                args[1]
+                if ok and isinstance(args[1], int) and not isinstance(args[1], bool) and args[1] in UNIT_NAMES
+                else None
+            )
             if ok and sub_unit is None:
                 cur.partial = True
             frames.append((total, cast(int, count), step, sub_unit, cur.msg_unit) if ok else None)
@@ -455,7 +505,7 @@ def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_ze
                 total += (count - 1) * body
             elif step - body > 1:
                 total += (count - 1) * step
-                restore = False      # the real compiler returns before restoring the unit
+                restore = False  # the real compiler returns before restoring the unit
             else:
                 total += (count - 1) * body
             if restore:
@@ -475,14 +525,56 @@ def budgets(program: S.Program, env: consteval.Env, profile: Profile, include_ze
 
 
 # of those, the ones that take the analog-measurement overhead
-_ANALOG_KINDS = frozenset({
-    "VOLTSE", "VOLTDIFF", "TCSE", "TCDIFF", "PANELTEMP", "THERM107", "THERM108", "THERM109",
-    "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W", "RESISTANCE", "CURRENTSE",
-})
+_ANALOG_KINDS = frozenset(
+    {
+        "VOLTSE",
+        "VOLTDIFF",
+        "TCSE",
+        "TCDIFF",
+        "PANELTEMP",
+        "THERM107",
+        "THERM108",
+        "THERM109",
+        "BRHALF",
+        "BRHALF3W",
+        "BRHALF4W",
+        "BRFULL",
+        "BRFULL6W",
+        "RESISTANCE",
+        "CURRENTSE",
+    }
+)
 # instructions that add time but are not modelled (a scan holding one has a lower-bound total)
-_KNOWN_TIMED = frozenset({
-    "VOLTSE", "VOLTDIFF", "TCSE", "TCDIFF", "PANELTEMP", "THERM107", "THERM108", "THERM109",
-    "CS616", "DELAY", "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W", "RESISTANCE",
-    "CURRENTSE", "PERIODAVG", "AM25T", "THERMISTOR", "VIBRATINGWIRE", "EXCITEV", "EXCITEI",
-    "CALIBRATE", "PANELTEMP2", "RESISTANCE3W", "RESISTANCE2W", "TCPSYC", "MUXSELECT",
-})
+_KNOWN_TIMED = frozenset(
+    {
+        "VOLTSE",
+        "VOLTDIFF",
+        "TCSE",
+        "TCDIFF",
+        "PANELTEMP",
+        "THERM107",
+        "THERM108",
+        "THERM109",
+        "CS616",
+        "DELAY",
+        "BRHALF",
+        "BRHALF3W",
+        "BRHALF4W",
+        "BRFULL",
+        "BRFULL6W",
+        "RESISTANCE",
+        "CURRENTSE",
+        "PERIODAVG",
+        "AM25T",
+        "THERMISTOR",
+        "VIBRATINGWIRE",
+        "EXCITEV",
+        "EXCITEI",
+        "CALIBRATE",
+        "PANELTEMP2",
+        "RESISTANCE3W",
+        "RESISTANCE2W",
+        "TCPSYC",
+        "MUXSELECT",
+    }
+)

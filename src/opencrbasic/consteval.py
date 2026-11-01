@@ -30,6 +30,7 @@ class NotConstant(Exception):
 class DivideByZero(NotConstant):
     """A `/` whose divisor folds to 0; `numerator` is the folded dividend. Every folded value is a
     float, so a caller that must tell `1/0` from `1/0.0` looks at the source text."""
+
     numerator: object = None
 
 
@@ -56,8 +57,13 @@ class Env:
         not established."""
         if is_float and isinstance(value, float):
             value = CFloat(value)
-        elif is_float is False and isinstance(value, float) and value == value and abs(value) < 2**63 \
-                and value == int(value):
+        elif (
+            is_float is False
+            and isinstance(value, float)
+            and value == value
+            and abs(value) < 2**63
+            and value == int(value)
+        ):
             value = int(value)
         self.consts[name.upper()] = value
 
@@ -72,7 +78,7 @@ def _fn_chr(args: list[S.ConstValue]) -> str:
     # any numeric argument is accepted by the real compilers (CHR(-1), CHR(1e300) probed 2026-10-10).
     # A NUL byte adds nothing: CHR(256), CHR(0)+"A"+CHR(0)+"B" are "", "AB" (round 10, see checker.md)
     v = _num(args[0])
-    code = int(v) & 0xFF if v == v and abs(v) != float('inf') else 0
+    code = int(v) & 0xFF if v == v and abs(v) != float("inf") else 0
     return chr(code) if code else ""
 
 
@@ -83,6 +89,7 @@ def _fn_abs(args: list[S.ConstValue]) -> float:
 def _fn_int(args: list[S.ConstValue]) -> float:
     v = _num(args[0])
     import math
+
     return float(math.floor(v))
 
 
@@ -100,8 +107,7 @@ def _fn_len(args: list[S.ConstValue]) -> int:
     return len(v)
 
 
-_BUILTINS = {"CHR": _fn_chr, "CHR$": _fn_chr, "ABS": _fn_abs, "INT": _fn_int, "SQR": _fn_sqr,
-             "LEN": _fn_len}
+_BUILTINS = {"CHR": _fn_chr, "CHR$": _fn_chr, "ABS": _fn_abs, "INT": _fn_int, "SQR": _fn_sqr, "LEN": _fn_len}
 
 
 def _num(v: object) -> float:
@@ -183,8 +189,11 @@ def _value_of(expr: S.Expr | None, env: Env) -> S.ConstValue:
         except (ZeroDivisionError, OverflowError) as exc:
             # not foldable; only `/` is modelled (the real compiler reports it where an instruction
             # argument is folded, `checker/expressions.py` `check_splitstr_whole_array`)
-            err = DivideByZero(f"{expr.op!r} cannot be folded: {exc}") if expr.op == "/" and \
-                isinstance(exc, ZeroDivisionError) else NotConstant(f"{expr.op!r}: {exc}")
+            err = (
+                DivideByZero(f"{expr.op!r} cannot be folded: {exc}")
+                if expr.op == "/" and isinstance(exc, ZeroDivisionError)
+                else NotConstant(f"{expr.op!r}: {exc}")
+            )
             if isinstance(err, DivideByZero):
                 err.numerator = left
             raise err from exc
@@ -308,5 +317,11 @@ def _binary(op: str, left: S.ConstValue, right: S.ConstValue) -> S.ConstValue:
 
 
 def _compare[T: (str, float)](op: str, left: T, right: T) -> bool:
-    return {"=": left == right, "<>": left != right, "<": left < right, ">": left > right,
-            "<=": left <= right, ">=": left >= right}[op]
+    return {
+        "=": left == right,
+        "<>": left != right,
+        "<": left < right,
+        ">": left > right,
+        "<=": left <= right,
+        ">=": left >= right,
+    }[op]

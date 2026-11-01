@@ -75,16 +75,7 @@ def test_bare_calltable_missing_identifier_reports_too_few_parameters():
 
 
 def test_bare_histogram_missing_deferred_text_reports_too_few_parameters():
-    text = (
-        "Public X\n"
-        "DataTable(T,1,100)\n"
-        "  Histogram\n"
-        "EndTable\n"
-        "BeginProg\n"
-        "  Scan(1,Sec,0,0)\n"
-        "  NextScan\n"
-        "EndProg\n"
-    )
+    text = "Public X\nDataTable(T,1,100)\n  Histogram\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n"
     assert messages(text) == [(3, "Too few parameters in instruction.")]
 
 

@@ -33,9 +33,13 @@ def _const_int(expr: S.Expr | None, env: consteval.Env) -> int | None:
         value = consteval.value_of(expr, env)
     except consteval.NotConstant:
         return None
-    if not isinstance(value, (int, float)) or isinstance(value, bool) or value != value \
-            or value in (float("inf"), float("-inf")):
-        return None                 # (`String * 1e999`: no implementation exception, round 29)
+    if (
+        not isinstance(value, (int, float))
+        or isinstance(value, bool)
+        or value != value
+        or value in (float("inf"), float("-inf"))
+    ):
+        return None  # (`String * 1e999`: no implementation exception, round 29)
     return int(value)
 
 
@@ -68,10 +72,10 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                 continue
             spelling, kind, total, size = have
             if kind != required:
-                diags.error(stmt.line, f"ESS variable {spelling} must be declared as "
-                            f"{required.capitalize()}", stmt.file)
+                diags.error(
+                    stmt.line, f"ESS variable {spelling} must be declared as {required.capitalize()}", stmt.file
+                )
             elif required == "STRING" and size is not None and size != 255:
                 diags.error(stmt.line, "ESS variable of type string must be of size 255", stmt.file)
             elif total is not None and total != row["count"]:
-                diags.error(stmt.line, f"ESS variable {spelling} must be dimensioned as "
-                            f"{row['count']}", stmt.file)
+                diags.error(stmt.line, f"ESS variable {spelling} must be dimensioned as {row['count']}", stmt.file)

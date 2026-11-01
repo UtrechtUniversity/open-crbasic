@@ -16,10 +16,7 @@ def compile_lines(text: str, logger: str) -> list[str]:
 
 
 def simple(scan: str, delay: str) -> str:
-    return (
-        "Public X\nBeginProg\n"
-        f"  Scan ({scan},0,0)\n    Delay(0,{delay})\n  NextScan\nEndProg\n"
-    )
+    return f"Public X\nBeginProg\n  Scan ({scan},0,0)\n    Delay(0,{delay})\n  NextScan\nEndProg\n"
 
 
 def short(by: str, line: int = 5) -> list[str]:
@@ -64,20 +61,24 @@ def test_subscan_delay():
 
 def test_delay_in_if_not_counted():
     text = (
-        "Public X\nBeginProg\n  Scan (1,Sec,3,0)\n    If X Then\n"
-        "      Delay(0,1,Sec)\n    EndIf\n  NextScan\nEndProg\n"
+        "Public X\nBeginProg\n  Scan (1,Sec,3,0)\n    If X Then\n      Delay(0,1,Sec)\n    EndIf\n  NextScan\nEndProg\n"
     )
     assert not [x for x in compile_lines(text, "cr6") if "too short" in x]
 
 
-CALIBRATION = ["line 6: Warning: When Main Sequence Scan 1 is running, background calibration "
-               "will be disabled."]
+CALIBRATION = ["line 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."]
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x"])
-@pytest.mark.parametrize("delay,expected", [
-    ("98,mSec", CALIBRATION), ("99,mSec", CALIBRATION), ("97,mSec", []), ("92,mSec", []),
-])
+@pytest.mark.parametrize(
+    "delay,expected",
+    [
+        ("98,mSec", CALIBRATION),
+        ("99,mSec", CALIBRATION),
+        ("97,mSec", []),
+        ("92,mSec", []),
+    ],
+)
 def test_little_spare_time_disables_background_calibration(delay, expected, logger):
     # oracle, 2026-10-01: under 3 mSec spare in a 100 mSec scan
     assert compile_lines(simple("100,mSec", delay), logger) == expected

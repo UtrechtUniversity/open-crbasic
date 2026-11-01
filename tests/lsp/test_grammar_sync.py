@@ -1,4 +1,3 @@
-
 import json
 import re
 import subprocess
@@ -18,8 +17,12 @@ def _load() -> dict:
 
 
 def test_generator_check_passes():
-    done = subprocess.run([sys.executable, str(GEN), "--check"], capture_output=True, text=True,
-                          env={**__import__("os").environ, "PYTHONPATH": str(ROOT / "src")})
+    done = subprocess.run(
+        [sys.executable, str(GEN), "--check"],
+        capture_output=True,
+        text=True,
+        env={**__import__("os").environ, "PYTHONPATH": str(ROOT / "src")},
+    )
     assert done.returncode == 0, done.stderr
 
 
@@ -56,6 +59,7 @@ def _rules(grammar: dict):
         elif isinstance(node, list):
             for v in node:
                 yield from walk(v)
+
     return walk(grammar)
 
 
@@ -89,6 +93,7 @@ def _flat_rules(grammar: dict):
             else:
                 assert "match" in p, "tiny matcher supports match rules only"
                 yield p
+
     return list(expand(grammar["patterns"]))
 
 
@@ -116,57 +121,78 @@ def tokenize(line: str) -> list[tuple[str, str]]:
     return out
 
 
-@pytest.mark.parametrize("line,expected", [
-    ("BeginProg", [("keyword.control.crbasic", "BeginProg")]),
-    ("  voltse(Temp,1,mV5000,U1,1,1,0,True,0,_60Hz,1,0)", [
-        ("support.function.instruction.crbasic", "voltse"),
-        ("constant.numeric.decimal.crbasic", "1"),
-        ("support.constant.crbasic", "mV5000"),
-        ("support.constant.crbasic", "U1"),
-        ("constant.numeric.decimal.crbasic", "1"),
-        ("constant.numeric.decimal.crbasic", "1"),
-        ("constant.numeric.decimal.crbasic", "0"),
-        ("support.constant.crbasic", "True"),
-        ("constant.numeric.decimal.crbasic", "0"),
-        ("support.constant.crbasic", "_60Hz"),
-        ("constant.numeric.decimal.crbasic", "1"),
-        ("constant.numeric.decimal.crbasic", "0"),
-    ]),
-    ("x = Len(\"a\"\"b\") ' note", [
-        ("support.function.builtin.crbasic", "Len"),
-        ("string.quoted.double.crbasic", '"a""b"'),
-        ("comment.line.apostrophe.crbasic", "' note"),
-    ]),
-    ("s = \"it's\" & Chr$(65)", [
-        ("string.quoted.double.crbasic", '"it\'s"'),
-        ("support.function.builtin.crbasic", "Chr$"),
-        ("constant.numeric.decimal.crbasic", "65"),
-    ]),
-    ("#If LoggerType = CR6", [
-        ("keyword.control.directive.crbasic", "#If"),
-        ("support.constant.crbasic", "LoggerType"),
-        ("support.constant.crbasic", "CR6"),
-    ]),
-    ("  #ElseIf X", [("keyword.control.directive.crbasic", "#ElseIf")]),
-    ("v = &H1F + &b101 + .5 + 1.5E-3 + 42 + 2.15R", [
-        ("constant.numeric.hex.crbasic", "&H1F"),
-        ("constant.numeric.binary.crbasic", "&b101"),
-        ("constant.numeric.decimal.crbasic", ".5"),
-        ("constant.numeric.decimal.crbasic", "1.5E-3"),
-        ("constant.numeric.decimal.crbasic", "42"),
-        ("constant.numeric.decimal.crbasic", "2.15R"),
-    ]),
-    ("If a <> b And Not c Then", [
-        ("keyword.control.crbasic", "If"),
-        ("keyword.operator.word.crbasic", "And"),
-        ("keyword.operator.word.crbasic", "Not"),
-        ("keyword.control.crbasic", "Then"),
-    ]),
-    ("x += 1", [("keyword.operator.crbasic", "+="), ("constant.numeric.decimal.crbasic", "1")]),
-    ("x = a << 2", [("constant.numeric.decimal.crbasic", "2")]),   # `<<` is no builtin function
-    ("Scan1 = Tmp.001", []),   # identifiers that merely contain a keyword or end in digits
-    ("MyIf = 3", [("constant.numeric.decimal.crbasic", "3")]),
-])
+@pytest.mark.parametrize(
+    "line,expected",
+    [
+        ("BeginProg", [("keyword.control.crbasic", "BeginProg")]),
+        (
+            "  voltse(Temp,1,mV5000,U1,1,1,0,True,0,_60Hz,1,0)",
+            [
+                ("support.function.instruction.crbasic", "voltse"),
+                ("constant.numeric.decimal.crbasic", "1"),
+                ("support.constant.crbasic", "mV5000"),
+                ("support.constant.crbasic", "U1"),
+                ("constant.numeric.decimal.crbasic", "1"),
+                ("constant.numeric.decimal.crbasic", "1"),
+                ("constant.numeric.decimal.crbasic", "0"),
+                ("support.constant.crbasic", "True"),
+                ("constant.numeric.decimal.crbasic", "0"),
+                ("support.constant.crbasic", "_60Hz"),
+                ("constant.numeric.decimal.crbasic", "1"),
+                ("constant.numeric.decimal.crbasic", "0"),
+            ],
+        ),
+        (
+            'x = Len("a""b") \' note',
+            [
+                ("support.function.builtin.crbasic", "Len"),
+                ("string.quoted.double.crbasic", '"a""b"'),
+                ("comment.line.apostrophe.crbasic", "' note"),
+            ],
+        ),
+        (
+            's = "it\'s" & Chr$(65)',
+            [
+                ("string.quoted.double.crbasic", '"it\'s"'),
+                ("support.function.builtin.crbasic", "Chr$"),
+                ("constant.numeric.decimal.crbasic", "65"),
+            ],
+        ),
+        (
+            "#If LoggerType = CR6",
+            [
+                ("keyword.control.directive.crbasic", "#If"),
+                ("support.constant.crbasic", "LoggerType"),
+                ("support.constant.crbasic", "CR6"),
+            ],
+        ),
+        ("  #ElseIf X", [("keyword.control.directive.crbasic", "#ElseIf")]),
+        (
+            "v = &H1F + &b101 + .5 + 1.5E-3 + 42 + 2.15R",
+            [
+                ("constant.numeric.hex.crbasic", "&H1F"),
+                ("constant.numeric.binary.crbasic", "&b101"),
+                ("constant.numeric.decimal.crbasic", ".5"),
+                ("constant.numeric.decimal.crbasic", "1.5E-3"),
+                ("constant.numeric.decimal.crbasic", "42"),
+                ("constant.numeric.decimal.crbasic", "2.15R"),
+            ],
+        ),
+        (
+            "If a <> b And Not c Then",
+            [
+                ("keyword.control.crbasic", "If"),
+                ("keyword.operator.word.crbasic", "And"),
+                ("keyword.operator.word.crbasic", "Not"),
+                ("keyword.control.crbasic", "Then"),
+            ],
+        ),
+        ("x += 1", [("keyword.operator.crbasic", "+="), ("constant.numeric.decimal.crbasic", "1")]),
+        ("x = a << 2", [("constant.numeric.decimal.crbasic", "2")]),  # `<<` is no builtin function
+        ("Scan1 = Tmp.001", []),  # identifiers that merely contain a keyword or end in digits
+        ("MyIf = 3", [("constant.numeric.decimal.crbasic", "3")]),
+    ],
+)
 def test_tokenize_samples(line, expected):
     got = tokenize(line)
     # symbol operators (`=`, `&`, `+=`, ...) are left out of the expectations

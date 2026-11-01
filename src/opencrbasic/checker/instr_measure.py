@@ -26,6 +26,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
     file_reported = False  # only the first bad `FileManage`/`RunProgram` file name is reported
     sequential: bool | None = None
     from .instr_data import _with_inline
+
     # a one-line If's statement too (oracle, CR6/CR1000X, round 58, docs/checker.md#one-line-if-statements-in-tier-c-round-58)
     slow = False
     for stmt in _with_inline(program.statements):
@@ -41,8 +42,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
             _check_delay(stmt, measure["delay"], env, diags, sequential, slow)
         if kw == "EXCITEV" and measure.get("delay", {}).get("task_memory") and len(stmt.args) == 3:
             delay = _int_value(stmt.args[2], env)
-            if delay is not None and scan_time.task_memory_overflow(
-                    max(scan_time.excite_delay_us(delay) - 10, 0)):
+            if delay is not None and scan_time.task_memory_overflow(max(scan_time.excite_delay_us(delay) - 10, 0)):
                 _task_memory_full(stmt, diags)
         if kw == "CS616" and "cs616_min_reps_pos" in measure:
             _check_cs616_reps(stmt, measure, env, diags)
@@ -55,8 +55,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if kw == "CH400STATUS" and "CH400STATUS" in profile.instructions:
             _check_ch400status(stmt, env, diags)
         if kw == "FFT" and "FFT" in profile.instructions:
-            _check_fft_source(stmt, symbols.declared_all_dims(symbols.scoped_view(program, stmt), env),
-                              env, diags)
+            _check_fft_source(stmt, symbols.declared_all_dims(symbols.scoped_view(program, stmt), env), env, diags)
         if kw == "SDI12RECORDER" and profile.single_pass:
             _check_sdi12_structure_dest(stmt, program, diags)
         if kw == "TABLEFILE" and "tablefile" in measure:
@@ -78,15 +77,16 @@ def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: co
     if not by_instr:
         return
     from .instr_rules import cdm_null_module, cdm_unsupported_module
+
     names = longconv.float_names(flat), longconv.literal_names(flat)
     for stmt in flat:
         if not isinstance(stmt, S.Instruction):
             continue
-        if stmt.keyword.upper().startswith("CDM_") and (cdm_null_module(stmt, env)
-                                                         or cdm_unsupported_module(stmt, env)):
+        if stmt.keyword.upper().startswith("CDM_") and (
+            cdm_null_module(stmt, env) or cdm_unsupported_module(stmt, env)
+        ):
             continue
-        tccomp = bool(stmt.args) and stmt.keyword.upper() == "CDM_TCCOMP" and \
-            _int_value(stmt.args[0], env) == 224
+        tccomp = bool(stmt.args) and stmt.keyword.upper() == "CDM_TCCOMP" and _int_value(stmt.args[0], env) == 224
         for rule in by_instr.get(stmt.keyword.upper(), ()):
             if tccomp and rule["pos"] == 5:
                 _tccomp_before_channel(stmt, env, profile, names, diags)
@@ -129,17 +129,17 @@ def _apply_cdm_channel(stmt, rule, env, profile, names, diags) -> None:
     value = _long_arg(stmt, rule["pos"], rule, env, profile, names)
     if last is None or value is None:
         return
-    int_min = -2 ** 31
+    int_min = -(2**31)
     magnitude = -value if int_min < value < 0 else value
     role = rule["role"]
     if role == "ic":
         if value == int_min or magnitude < 1 or magnitude > last:
-            diags.error(stmt.line, rule["message"].format(value=magnitude if value != int_min else value,
-                                                        max=last), stmt.file)
+            diags.error(
+                stmt.line, rule["message"].format(value=magnitude if value != int_min else value, max=last), stmt.file
+            )
     elif role == "rc":
         reps = _long_arg(stmt, 4, rule, env, profile, names) if len(stmt.args) >= 4 else None
-        if value > last or (1 <= value and reps is not None and 1 <= reps <= 65536
-                            and value - 1 + reps > last):
+        if value > last or (1 <= value and reps is not None and 1 <= reps <= 65536 and value - 1 + reps > last):
             diags.error(stmt.line, rule["message"], stmt.file)
     elif role == "tm" and int_min < value < 0 and magnitude > last:
         diags.error(stmt.line, rule["message"], stmt.file)
@@ -194,15 +194,14 @@ def _matches_invalid_raw(value: object, invalid: dict) -> bool:
     return value in invalid.get("values", ())
 
 
-def _long_arg(stmt: S.Instruction, pos: int, rule: dict, env: consteval.Env, profile: Profile,
-              names) -> int | None:
+def _long_arg(stmt: S.Instruction, pos: int, rule: dict, env: consteval.Env, profile: Profile, names) -> int | None:
     value = _raw_arg(stmt, pos, env)
     if value is None:
         return None
     if rule.get("string_zero") and isinstance(value, str):
         return 0
     if rule.get("inf_max") and isinstance(value, (int, float)) and value >= 2**128 - 2**103:
-        return 2147483647   # (a Settling time that is a float infinity, `1E39`/`INF`, round 31)
+        return 2147483647  # (a Settling time that is a float infinity, `1E39`/`INF`, round 31)
     if not rule.get("wrap16"):
         # The profile-aware conversion (`checker/longconv.py`) where it covers the expression;
         # `to_long` for the forms it does not (function calls, `TRUE`).
@@ -214,18 +213,16 @@ def _long_arg(stmt: S.Instruction, pos: int, rule: dict, env: consteval.Env, pro
         return 0
     if abs(value) == float("inf"):
         return None
-    if abs(value) >= 2 ** 31:
+    if abs(value) >= 2**31:
         return rule["overflow"]
     return int(value) & 0xFFFF
 
 
 def _raw_arg(stmt: S.Instruction, pos: int, env: consteval.Env):
-    return _fnotch_value(stmt.args[pos - 1], env) if pos <= len(stmt.args) and \
-        stmt.args[pos - 1] is not None else None
+    return _fnotch_value(stmt.args[pos - 1], env) if pos <= len(stmt.args) and stmt.args[pos - 1] is not None else None
 
 
-def _check_string_prefix(stmt: S.Instruction, rule: dict, env: consteval.Env,
-                         diags: Diagnostics) -> bool:
+def _check_string_prefix(stmt: S.Instruction, rule: dict, env: consteval.Env, diags: Diagnostics) -> bool:
     """A constant file name's drive (`prefixes`) and, for `FileManage`/`RunProgram` (`ext`), its
     extension: with option bits 2 or 4 set the text after the last `.` must start with `crb` or
     the logger's own program extension, else `FileManage name <name> invalid extension.`
@@ -241,7 +238,7 @@ def _check_string_prefix(stmt: S.Instruction, rule: dict, env: consteval.Env,
         diags.error(stmt.line, rule["message"].format(drive=drive), stmt.file)
         return True
     option = _int_value(stmt.args[1], env) if "ext" in rule and len(stmt.args) > 1 else None
-    if option is not None and abs(option) < 2 ** 31 and option & 6:
+    if option is not None and abs(option) < 2**31 and option & 6:
         ext = value.strip().rpartition(".")[2].upper() if "." in value else ""
         if not ext.startswith(("CRB", rule["ext"])):
             diags.error(stmt.line, f"FileManage name {value} invalid extension.", stmt.file)
@@ -258,8 +255,7 @@ def _check_ch400status(stmt: S.Instruction, env: consteval.Env, diags: Diagnosti
     if value is None or not isinstance(unit, (int, float)) or int(unit) not in _DELAY_US_PER_UNIT:
         return
     if value * _DELAY_US_PER_UNIT[int(unit)] % 1_000_000:
-        diags.error(stmt.line, "CH400Status update interval must be an integer multiple of 1 second.",
-                    stmt.file)
+        diags.error(stmt.line, "CH400Status update interval must be an integer multiple of 1 second.", stmt.file)
 
 
 def _check_fft_source(stmt: S.Instruction, dims: dict, env: consteval.Env, diags: Diagnostics) -> None:
@@ -284,15 +280,19 @@ def _check_sdi12_structure_dest(stmt: S.Instruction, program: S.Program, diags: 
         return
     type_name = symbols.declared_variable_types(program).get(dest.name.upper())
     if type_name is not None and any(
-            isinstance(st, S.Instruction) and st.keyword.upper() == "STRUCTURETYPE" and st.args and
-            isinstance(st.args[0], S.Name) and st.args[0].name.upper() == type_name
-            for st in program.statements):
+        isinstance(st, S.Instruction)
+        and st.keyword.upper() == "STRUCTURETYPE"
+        and st.args
+        and isinstance(st.args[0], S.Name)
+        and st.args[0].name.upper() == type_name
+        for st in program.statements
+    ):
         from .expressions import _arg_text
+
         diags.error(stmt.line, f"Could not find DataTable {_arg_text(stmt, 0)}.", stmt.file)
 
 
-def _check_tablefile(stmt: S.Instruction, cfg: dict, env: consteval.Env,
-                     diags: Diagnostics) -> None:
+def _check_tablefile(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diagnostics) -> None:
     """`TableFile` file name drive and file-type option; docs/instructions.md#tablefile-drive."""
     name = _name_text(stmt.args[0], env) if stmt.args else None
     if not name:
@@ -310,8 +310,12 @@ def _check_tablefile(stmt: S.Instruction, cfg: dict, env: consteval.Env,
 
 def _name_text(arg: S.Expr | None, env: consteval.Env) -> str | None:
     """A constant file name; `Status.SerialNumber` folds to the empty string (oracle)."""
-    if isinstance(arg, S.Member) and isinstance(arg.base, S.Name) and arg.args is None and \
-            (arg.base.name.upper(), arg.member.upper()) == ("STATUS", "SERIALNUMBER"):
+    if (
+        isinstance(arg, S.Member)
+        and isinstance(arg.base, S.Name)
+        and arg.args is None
+        and (arg.base.name.upper(), arg.member.upper()) == ("STATUS", "SERIALNUMBER")
+    ):
         return ""
     if isinstance(arg, S.Binary) and arg.op in ("+", "&"):
         left, right = _name_text(arg.left, env), _name_text(arg.right, env)
@@ -320,8 +324,9 @@ def _name_text(arg: S.Expr | None, env: consteval.Env) -> str | None:
     return value if isinstance(value, str) else None
 
 
-def _check_structure_members(stmt: S.Instruction, program: S.Program, cfg: dict,
-                             env: consteval.Env, diags: Diagnostics) -> None:
+def _check_structure_members(
+    stmt: S.Instruction, program: S.Program, cfg: dict, env: consteval.Env, diags: Diagnostics
+) -> None:
     """Data-driven checks on members of a StructureType used as an instruction destination."""
     rules = cfg.get("structure_members", ())
     if not rules or not stmt.args:
@@ -349,8 +354,11 @@ def _structure_members(program: S.Program, type_name: str) -> dict[str, S.VarDec
         if isinstance(candidate, S.Instruction):
             kw = candidate.keyword.upper()
             if kw == "STRUCTURETYPE":
-                active = bool(candidate.args and isinstance(candidate.args[0], S.Name) and
-                              candidate.args[0].name.upper() == type_name)
+                active = bool(
+                    candidate.args
+                    and isinstance(candidate.args[0], S.Name)
+                    and candidate.args[0].name.upper() == type_name
+                )
                 continue
             if kw == "ENDSTRUCTURETYPE" and active:
                 break
@@ -359,22 +367,25 @@ def _structure_members(program: S.Program, type_name: str) -> dict[str, S.VarDec
     return members
 
 
-def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics,
-                       env: consteval.Env) -> None:
+def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
     """CR6/CR1000X pass 1 value checks on const-family positions: `Range` code, then `fN1`
     (position order within one statement). Oracle: both are reported next to an earlier pass-1
     error (`Dim Z banana`, `Delay(0,5,Foo)`), unlike the tier-C checks of `check`
     (`docs/instructions.md` "fN1 / fnotch"). A statement that already has an error on its line
     (unresolved name, variable in a constant position) is abandoned before these run."""
     from . import expressions, scan_time
+
     measure = profile.measure
     fnotch = profile.fnotch
     ranges = measure.get("range_code_instructions", {}) if measure else {}
     fn_pos = fnotch.get("instructions", {}) if fnotch and "min_hz" in fnotch else {}
     if not ranges and not fn_pos:
         return
-    variable_names = frozenset(name for name in symbols.declared_variable_names(program)
-                               if not symbols.is_reserved_predefined_name(name, profile))
+    variable_names = frozenset(
+        name
+        for name in symbols.declared_variable_names(program)
+        if not symbols.is_reserved_predefined_name(name, profile)
+    )
     earlier = {(d.line, d.file) for d in diags.items if d.severity == "error"}
     flat = []
     for st in program.statements:
@@ -389,9 +400,12 @@ def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics,
             continue
         if (stmt.line, stmt.file) in earlier:
             continue
-        if any(expressions._find_arity_problem(a, profile) or
-               expressions._find_bare_function_ref(a, profile, variable_names)
-               for a in stmt.args if a is not None):
+        if any(
+            expressions._find_arity_problem(a, profile)
+            or expressions._find_bare_function_ref(a, profile, variable_names)
+            for a in stmt.args
+            if a is not None
+        ):
             continue
         if kw in ranges:
             # a bridge checks its one Range twice, `BrHalf4W`/`BrFull6W` each of their two
@@ -399,8 +413,7 @@ def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics,
             for pos in ranges[kw] if isinstance(ranges[kw], list) else [ranges[kw]]:
                 _check_range_code(stmt, measure, pos, env, diags)
         if kw in fn_pos:
-            _check_fnotch_min(stmt, fnotch, fn_pos[kw], env, diags,
-                              scan_time.MODELS[profile.name].integ_num)
+            _check_fnotch_min(stmt, fnotch, fn_pos[kw], env, diags, scan_time.MODELS[profile.name].integ_num)
 
 
 _INF_NAMES = {"INF": float("inf"), "NAN": float("nan")}
@@ -411,19 +424,20 @@ def _fnotch_value(arg: S.Expr | None, env: consteval.Env):
     inner, sign = arg, 1.0
     while isinstance(inner, S.Unary) and inner.op == "-":
         inner, sign = inner.operand, -sign
-    if isinstance(inner, S.Name) and inner.name.upper() in _INF_NAMES and \
-            inner.name.upper() not in env.consts:
+    if isinstance(inner, S.Name) and inner.name.upper() in _INF_NAMES and inner.name.upper() not in env.consts:
         return sign * _INF_NAMES[inner.name.upper()]
     return _const_value(arg, env)
 
 
-def _check_fnotch_min(stmt: S.Instruction, cfg: dict, pos: int, env: consteval.Env,
-                      diags: Diagnostics, integ_num: float) -> None:
+def _check_fnotch_min(
+    stmt: S.Instruction, cfg: dict, pos: int, env: consteval.Env, diags: Diagnostics, integ_num: float
+) -> None:
     """`Invalid fnotch, minimum allowed is N Hz.` (CR6 2, CR1000X .5; docs/instructions.md). Zero
     (also as a float, `1E-50`) and +-INF pass, NAN, strings and values under the logger's minimum
     fail; there is no maximum. A negative value fails when its integration code
     `int(integ_num / fN1 + 0.5)` is negative, so a large one passes (CR6 `-1E5`, round 31)."""
     from .scan_time import _f32
+
     idx = pos - 1
     if idx >= len(stmt.args) or stmt.args[idx] is None:
         return
@@ -435,8 +449,11 @@ def _check_fnotch_min(stmt: S.Instruction, cfg: dict, pos: int, env: consteval.E
     else:
         value = float(value)
         f = _f32(value)
-        bad = f != f or (f != 0 and abs(f) != float("inf") and (
-            value < cfg["min_hz"] if f > 0 else _f32(_f32(integ_num) / f) <= -1.5))
+        bad = f != f or (
+            f != 0
+            and abs(f) != float("inf")
+            and (value < cfg["min_hz"] if f > 0 else _f32(_f32(integ_num) / f) <= -1.5)
+        )
     if bad:
         times = 2 if stmt.keyword.upper() in cfg.get("twice", ()) else 1
         for _ in range(times):
@@ -457,13 +474,12 @@ def _const_value(arg: S.Expr | None, env: consteval.Env):
 
 def _int_value(arg: S.Expr | None, env: consteval.Env) -> int | None:
     v = _const_value(arg, env)
-    if isinstance(v, int):   # (a huge integer literal: `math.isfinite` would overflow, round 69)
+    if isinstance(v, int):  # (a huge integer literal: `math.isfinite` would overflow, round 69)
         return v
     return int(v) if isinstance(v, float) and math.isfinite(v) else None
 
 
-def _check_gps_nmea(stmt: S.Instruction, program: S.Program, env: consteval.Env,
-                    diags: Diagnostics) -> None:
+def _check_gps_nmea(stmt: S.Instruction, program: S.Program, env: consteval.Env, diags: Diagnostics) -> None:
     """`GPS`'s optional fifth argument must be a String variable of at least 96 characters
     (declared size; 24 when none is given); docs/instructions.md#gps-ports."""
     if len(stmt.args) < 5 or stmt.args[4] is None:
@@ -472,9 +488,16 @@ def _check_gps_nmea(stmt: S.Instruction, program: S.Program, env: consteval.Env,
     if isinstance(arg, S.String):
         bad = True
     elif isinstance(arg, (S.Name, S.Index)):
-        decl = next((v for st in reversed(symbols.scoped_view(program, stmt).statements) if isinstance(st, S.Declaration)
-                     and st.kind in ("PUBLIC", "DIM", "STATIC") for v in st.vars
-                     if v.name.upper() == arg.name.upper()), None)
+        decl = next(
+            (
+                v
+                for st in reversed(symbols.scoped_view(program, stmt).statements)
+                if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC")
+                for v in st.vars
+                if v.name.upper() == arg.name.upper()
+            ),
+            None,
+        )
         if decl is None:
             return
         if (decl.type or "FLOAT").upper() != "STRING":
@@ -488,12 +511,10 @@ def _check_gps_nmea(stmt: S.Instruction, program: S.Program, env: consteval.Env,
     else:
         return
     if bad:
-        diags.error(stmt.line, "Optional parameter must be an array of type string of length >= 100",
-                    stmt.file)
+        diags.error(stmt.line, "Optional parameter must be an array of type string of length >= 100", stmt.file)
 
 
-def _check_gps_port(stmt: S.Instruction, cfg: dict, env: consteval.Env,
-                    diags: Diagnostics) -> None:
+def _check_gps_port(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diagnostics) -> None:
     """GPS port sign selects PPS or NMEA synchronization; docs/instructions.md#gps-ports."""
     if len(stmt.args) < 2:
         return
@@ -533,7 +554,7 @@ def _check_sw12(stmt: S.Instruction, measure: dict, env: consteval.Env, diags: D
         return
     value = _int_value(stmt.args[0], env)
     if isinstance(stmt.args[0], S.String) and measure.get("string_port_int_min"):
-        value = -2147483648   # (`SW12("x",0)`, oracle CR6/CR350 2026-10-12: a string folds to INT_MIN)
+        value = -2147483648  # (`SW12("x",0)`, oracle CR6/CR350 2026-10-12: a string folds to INT_MIN)
     if value is None:
         return
     if value not in measure["sw12_ports"]:
@@ -565,7 +586,7 @@ def _delay_option_byte(value: int) -> int:
     255 for exactly 2147483648."""
     if value > 3.4028235e38:
         return 255
-    if not -2**31 <= value < 2**31:
+    if not -(2**31) <= value < 2**31:
         return 0
     return value % 256
 
@@ -580,8 +601,9 @@ def _task_memory_full(stmt: S.Instruction, diags: Diagnostics) -> None:
         diags.error(stmt.line, "Program too big for task memory", stmt.file)
 
 
-def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diagnostics,
-                 sequential: bool = False, slow: bool = False) -> None:
+def _check_delay(
+    stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diagnostics, sequential: bool = False, slow: bool = False
+) -> None:
     args = stmt.args
     option_arg = args[0] if len(args) > 0 else None
     interval_arg = args[1] if len(args) > 1 else None
@@ -606,9 +628,14 @@ def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diag
             diags.error(stmt.line, "Measurement delay must have constant interval.", stmt.file)
             return
         unit = _const_value(units_arg, env)
-        if not isinstance(interval_value, (int, float)) or isinstance(interval_value, bool) \
-                or not math.isfinite(interval_value) or not isinstance(unit, int) or isinstance(unit, bool) \
-                or unit not in _DELAY_US_PER_UNIT:
+        if (
+            not isinstance(interval_value, (int, float))
+            or isinstance(interval_value, bool)
+            or not math.isfinite(interval_value)
+            or not isinstance(unit, int)
+            or isinstance(unit, bool)
+            or unit not in _DELAY_US_PER_UNIT
+        ):
             return
         # the unsigned 32-bit microsecond count, so a negative interval is too long as well
         # (oracle, CR6/CR1000X, rounds 35 and 57; docs/checker.md#task-memory-overflow-of-long-delays-round-57)
@@ -624,7 +651,7 @@ def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diag
     elif option == 2 and cfg.get("option2_constant", True):
         if interval_arg is not None and not consteval.is_constant(interval_arg, env):
             diags.error(stmt.line, "SDM Delay interval must be constant.", stmt.file)
-        elif interval_value == 0 and cfg.get("option0_limit"):   # (CR6/CR1000X data only)
+        elif interval_value == 0 and cfg.get("option0_limit"):  # (CR6/CR1000X data only)
             # `Delay(2,0,Sec)` (oracle, CR6/CR1000X, 2026-10-25, round 35; 1 and -1 compile)
             diags.error(stmt.line, "Invalid time specified.", stmt.file)
         elif slow and cfg.get("sdm_slow_sequence"):
@@ -639,7 +666,7 @@ def _delay_interval_us(interval_arg, units_arg, env: consteval.Env) -> float | N
     unit = _const_value(units_arg, env)
     if not consteval.is_finite_number(value) or not consteval.is_finite_number(unit) or value < 0:
         return None
-    if value >= 2**31:   # outside the Long range: no limit applies (oracle, CR6/CR1000X, round 16)
+    if value >= 2**31:  # outside the Long range: no limit applies (oracle, CR6/CR1000X, round 16)
         return None
     us_per_unit = _DELAY_US_PER_UNIT.get(int(unit))
     return value * us_per_unit if us_per_unit is not None else None
@@ -680,15 +707,24 @@ def is_sequential(program: S.Program, profile: Profile, env: consteval.Env) -> b
     """`mode.decide` == "Sequential"; a failure is left for the compile's own `mode.decide` call
     to record (here it reads as Pipeline)."""
     from .. import mode
+
     try:
-        return mode.decide(program.statements, profile, lambda e: consteval.is_constant(e, env),
-                           lambda e: consteval.value_of(e, env)) == "Sequential"
+        return (
+            mode.decide(
+                program.statements,
+                profile,
+                lambda e: consteval.is_constant(e, env),
+                lambda e: consteval.value_of(e, env),
+            )
+            == "Sequential"
+        )
     except Exception:
         return False
 
 
-def check_scan_delay_budget(program: S.Program, profile: Profile, diags: Diagnostics,
-                            env: consteval.Env, zero: bool = False) -> None:
+def check_scan_delay_budget(
+    program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env, zero: bool = False
+) -> None:
     """CR6/CR1000X: the measurement time of a main `Scan` (`checker/scan_time.py`, 100 us units)
     above its interval -> `Scan interval too short for measurement by %d %s.` at `NextScan`, the
     excess rounded up to the scan's own unit (`Scan(50,mSec)` + `Delay(0,1,Sec)` -> `by 951 mSec`;
@@ -702,6 +738,7 @@ def check_scan_delay_budget(program: S.Program, profile: Profile, diags: Diagnos
     if profile.name not in ("cr6", "cr1000x"):
         return
     from . import scan_time
+
     # SequentialMode never reports it (oracle, CR6/CR1000X, 2026-10-08; docs/fuzz-findings.md).
     if is_sequential(program, profile, env):
         return
@@ -709,16 +746,21 @@ def check_scan_delay_budget(program: S.Program, profile: Profile, diags: Diagnos
         if (b.interval == 0) != zero:
             continue
         for stmt, amount, unit in b.sub_short:
-            diags.error(stmt.line, f"SubScan interval too short for measurement by {amount} "
-                        f"{scan_time.UNIT_NAMES[unit]}.", stmt.file)
-        if b.total % 2**32 > b.interval:   # unsigned: a negative total also fails (round 31)
+            diags.error(
+                stmt.line,
+                f"SubScan interval too short for measurement by {amount} {scan_time.UNIT_NAMES[unit]}.",
+                stmt.file,
+            )
+        if b.total % 2**32 > b.interval:  # unsigned: a negative total also fails (round 31)
             amount = scan_time.amount(scan_time.i32(b.total - b.interval), b.msg_unit)
-            diags.error(b.end.line, f"Scan interval too short for measurement by {amount} "
-                        f"{scan_time.UNIT_NAMES[b.msg_unit]}.", b.end.file)
+            diags.error(
+                b.end.line,
+                f"Scan interval too short for measurement by {amount} {scan_time.UNIT_NAMES[b.msg_unit]}.",
+                b.end.file,
+            )
 
 
-def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics,
-                   env: consteval.Env) -> None:
+def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
     """CR6/CR1000X: a `Scan` shorter than the CPI measurement time of a module -> `Insufficient
     time (%d ms) for measurements from CPI address %d (needs at least %d ms).`, on the program's
     last line, only when the compile has no other error (docs/instructions.md "CPI measurement
@@ -736,25 +778,33 @@ def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics,
     if profile.name not in ("cr6", "cr1000x") or not program.statements:
         return
     from .instr_rules import _US_PER_UNIT, _scan_raw
-    scans: list[dict] = []      # {"ms": interval, "times": {addr: 100 us units}, "short": [(addr, by)]}
-    order: list[int] = []       # CPI addresses in order of first use
+
+    scans: list[dict] = []  # {"ms": interval, "times": {addr: 100 us units}, "short": [(addr, by)]}
+    order: list[int] = []  # CPI addresses in order of first use
     scan: dict | None = None
-    sub: tuple[int, int] | None = None   # open SubScan: (count, interval in 100 us units)
+    sub: tuple[int, int] | None = None  # open SubScan: (count, interval in 100 us units)
     sub_start: dict[int, int] = {}
     sequential = is_sequential(program, profile, env)
-    depth = 0                            # open If/For/Do/Select blocks
+    depth = 0  # open If/For/Do/Select blocks
     items: list[tuple[S.Stmt, bool]] = []
     for stmt in program.statements:
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
         text = stmt.text or ""
-        if isinstance(stmt, S.For) or (isinstance(stmt, S.DoLoop) and stmt.keyword == "DO") or \
-                (isinstance(stmt, S.If) and stmt.inline is None) or kw in _OPENERS:
+        if (
+            isinstance(stmt, S.For)
+            or (isinstance(stmt, S.DoLoop) and stmt.keyword == "DO")
+            or (isinstance(stmt, S.If) and stmt.inline is None)
+            or kw in _OPENERS
+        ):
             items.append((stmt, depth > 0))
             depth += 1
             continue
-        if (kw == "NEXT" and not re.match(r"(?i)\s*Next\s+(Sub)?Scan\b", text)) or \
-                (isinstance(stmt, S.DoLoop) and stmt.keyword == "LOOP") or kw in _CLOSERS - {"NEXTSUBSCAN"} \
-                or (kw == "END" and re.match(r"(?i)\s*End\s+(If|Select)\b", text)):
+        if (
+            (kw == "NEXT" and not re.match(r"(?i)\s*Next\s+(Sub)?Scan\b", text))
+            or (isinstance(stmt, S.DoLoop) and stmt.keyword == "LOOP")
+            or kw in _CLOSERS - {"NEXTSUBSCAN"}
+            or (kw == "END" and re.match(r"(?i)\s*End\s+(If|Select)\b", text))
+        ):
             depth = max(depth - 1, 0)
         items.append((stmt, depth > 0))
         if isinstance(stmt, S.If):
@@ -791,9 +841,9 @@ def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics,
                 if unit is None or not consteval.is_finite_number(args[0]) or args[0] <= 0:
                     return
                 step = int(args[0]) * unit // 100
-                if sequential and step <= 10:   # "SequentialMode SubScan interval must be > 1 mS."
+                if sequential and step <= 10:  # "SequentialMode SubScan interval must be > 1 mS."
                     return
-                if step * count > scan["ms"] * 10:   # "Product of SubScan interval and iterations ..."
+                if step * count > scan["ms"] * 10:  # "Product of SubScan interval and iterations ..."
                     return
             sub = (count, step)
             sub_start = dict(scan["times"])
@@ -809,32 +859,33 @@ def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics,
                     scan["times"][addr] = units + (step or length) * (count - 1)
             sub = None
         elif isinstance(stmt, S.Instruction) and (kw == "CDM_TCCOMP"):
-            module, addr, reps = (_int_value(stmt.args[i], env) if i < len(stmt.args) else None
-                                  for i in (0, 1, 3))
+            module, addr, reps = (_int_value(stmt.args[i], env) if i < len(stmt.args) else None for i in (0, 1, 3))
             if module != 224 or addr is None or not 1 <= addr <= 120 or reps is None or reps < 1:
                 return
-            if conditional and not sequential:   # "not allowed inside of a conditional statement"
+            if conditional and not sequential:  # "not allowed inside of a conditional statement"
                 return
             if addr not in order:
                 order.append(addr)
             scan["times"][addr] = scan["times"].get(addr, 0) + -(-(reps * 430 + 275) // 100)
     last = program.statements[-1].line
-    leader: dict[int, tuple[int, int]] = {}   # scan index -> (ms needed, address)
+    leader: dict[int, tuple[int, int]] = {}  # scan index -> (ms needed, address)
     for addr in order:
         for i, sc in enumerate(scans):
             if not sc["times"]:
                 continue
             for a, by in sc["short"]:
                 if a == addr:
-                    diags.error(last, f"SubScan interval too short for measurements from CPI "
-                                f"address {a} by {by} uSec.")
+                    diags.error(last, f"SubScan interval too short for measurements from CPI address {a} by {by} uSec.")
             need = -(-sc["times"].get(addr, 0) // 10)
             if need > leader.get(i, (0, 0))[0]:
                 leader[i] = (need, addr)
         for i, sc in enumerate(scans):
             if i in leader and sc["ms"] < leader[i][0]:
-                diags.error(last, f"Insufficient time ({sc['ms']} ms) for measurements from CPI "
-                            f"address {leader[i][1]} (needs at least {leader[i][0]} ms).")
+                diags.error(
+                    last,
+                    f"Insufficient time ({sc['ms']} ms) for measurements from CPI "
+                    f"address {leader[i][1]} (needs at least {leader[i][0]} ms).",
+                )
 
 
 def _value(expr: S.Expr | None, env: consteval.Env) -> object | None:
@@ -855,25 +906,94 @@ def _value(expr: S.Expr | None, env: consteval.Env) -> object | None:
 # CR300/CR350 (round 31): all of these check the destination like VoltSe (round 30); Reps <= 0
 # is `Invalid reps %d, must be > 0.`, except a negative Reps on Therm/PeriodAvg, which instead
 # (with PulseCount) overruns the destination.
-_SINGLE_PASS_REPS = frozenset({"VOLTSE", "VOLTDIFF", "TCSE", "TCDIFF", "BRHALF", "BRHALF3W",
-                               "BRHALF4W", "BRFULL", "BRFULL6W", "THERM107", "THERM108", "THERM109",
-                               "CURRENTSE", "PERIODAVG", "PULSECOUNT"})
+_SINGLE_PASS_REPS = frozenset(
+    {
+        "VOLTSE",
+        "VOLTDIFF",
+        "TCSE",
+        "TCDIFF",
+        "BRHALF",
+        "BRHALF3W",
+        "BRHALF4W",
+        "BRFULL",
+        "BRFULL6W",
+        "THERM107",
+        "THERM108",
+        "THERM109",
+        "CURRENTSE",
+        "PERIODAVG",
+        "PULSECOUNT",
+    }
+)
 _NEGATIVE_REPS_SILENT = frozenset({"THERM107", "THERM108", "THERM109", "PERIODAVG"})
 _NEGATIVE_REPS_DEST = frozenset({"THERM107", "THERM108", "THERM109", "PERIODAVG", "PULSECOUNT"})
 _REPS_CHECKED = {
-    "cr6": frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "BRHALF", "BRHALF3W", "BRHALF4W",
-                      "BRFULL", "BRFULL6W", "RESISTANCE", "RESISTANCE2W", "RESISTANCE3W",
-                      "PULSECOUNT", "CS616", "PERIODAVG", "CURRENTSE", "THERM107", "THERM108",
-                      "THERM109"}),
-    "cr1000x": frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "CURRENTSE", "PERIODAVG",
-                          "PULSECOUNT", "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W",
-                          "CS616", "THERM107", "THERM108", "THERM109"}),
+    "cr6": frozenset(
+        {
+            "VOLTSE",
+            "VOLTDIFF",
+            "TCDIFF",
+            "TCSE",
+            "BRHALF",
+            "BRHALF3W",
+            "BRHALF4W",
+            "BRFULL",
+            "BRFULL6W",
+            "RESISTANCE",
+            "RESISTANCE2W",
+            "RESISTANCE3W",
+            "PULSECOUNT",
+            "CS616",
+            "PERIODAVG",
+            "CURRENTSE",
+            "THERM107",
+            "THERM108",
+            "THERM109",
+        }
+    ),
+    "cr1000x": frozenset(
+        {
+            "VOLTSE",
+            "VOLTDIFF",
+            "TCDIFF",
+            "TCSE",
+            "CURRENTSE",
+            "PERIODAVG",
+            "PULSECOUNT",
+            "BRHALF",
+            "BRHALF3W",
+            "BRHALF4W",
+            "BRFULL",
+            "BRFULL6W",
+            "CS616",
+            "THERM107",
+            "THERM108",
+            "THERM109",
+        }
+    ),
     "cr300": _SINGLE_PASS_REPS,
     "cr350": _SINGLE_PASS_REPS,
 }
-_REPS_DEST_SIZE = frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "CURRENTSE", "PERIODAVG",
-                             "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W", "RESISTANCE",
-                             "RESISTANCE2W", "RESISTANCE3W", "PULSECOUNT", "CS616"})
+_REPS_DEST_SIZE = frozenset(
+    {
+        "VOLTSE",
+        "VOLTDIFF",
+        "TCDIFF",
+        "TCSE",
+        "CURRENTSE",
+        "PERIODAVG",
+        "BRHALF",
+        "BRHALF3W",
+        "BRHALF4W",
+        "BRFULL",
+        "BRFULL6W",
+        "RESISTANCE",
+        "RESISTANCE2W",
+        "RESISTANCE3W",
+        "PULSECOUNT",
+        "CS616",
+    }
+)
 
 
 def _measurement_output_count(stmt: S.Instruction, reps: int, env: consteval.Env) -> int:
@@ -883,14 +1003,12 @@ def _measurement_output_count(stmt: S.Instruction, reps: int, env: consteval.Env
     Bridges return one extra value per repetition; resistance returns one extra value overall.
     """
     kw = stmt.keyword.upper()
-    option_index = {"BRHALF4W": 14, "BRFULL6W": 14, "RESISTANCE": 13,
-                    "RESISTANCE2W": 10, "RESISTANCE3W": 10}.get(kw)
+    option_index = {"BRHALF4W": 14, "BRFULL6W": 14, "RESISTANCE": 13, "RESISTANCE2W": 10, "RESISTANCE3W": 10}.get(kw)
     if option_index is None or len(stmt.args) <= option_index:
         return reps
     if _int_value(stmt.args[option_index], env) != 1:
         return reps
     return reps * 2 if kw in {"BRHALF4W", "BRFULL6W"} else reps + 1
-
 
 
 def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
@@ -914,8 +1032,11 @@ def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
             continue
         scope = tables(st)
         shape = scope.dims.get(target.name.upper())
-        param = next((p for p in routine.params if p.name.upper() == target.name.upper()), None) \
-            if routine is not None else None
+        param = (
+            next((p for p in routine.params if p.name.upper() == target.name.upper()), None)
+            if routine is not None
+            else None
+        )
         if param is not None and (param.type or "FLOAT").upper() == "FLOAT":
             # a Float parameter's own header shape backs the alias (round 30 review, `Sub S(P(4))`)
             shape = tuple(_int_value(d, env) for d in param.dim_exprs) or (1,)
@@ -940,30 +1061,36 @@ def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
         else:
             offset = 0
         total = math.prod(shape)
-        declared_names = {v.name.upper(): v.name
-                          for decl in symbols.scoped_view(program, st).statements
-                          if isinstance(decl, S.Declaration) for v in decl.vars}
+        declared_names = {
+            v.name.upper(): v.name
+            for decl in symbols.scoped_view(program, st).statements
+            if isinstance(decl, S.Declaration)
+            for v in decl.vars
+        }
         entries = {}
         for alias in st.args[1:]:
             if not isinstance(alias, (S.Name, S.Index)):
                 break
-            size = 1 if isinstance(alias, S.Name) else (
-                _int_value(alias.args[0], env) if len(alias.args) == 1 else None)
+            size = (
+                1 if isinstance(alias, S.Name) else (_int_value(alias.args[0], env) if len(alias.args) == 1 else None)
+            )
             if size is None or size < 1 or not 0 <= offset < total:
                 break
-            entries[alias.name.upper()] = (total, offset,
-                                           declared_names.get(target.name.upper(), target.name)
-                                           if offset == 0 else alias.name,
-                                           None if isinstance(alias, S.Name) else size)
+            entries[alias.name.upper()] = (
+                total,
+                offset,
+                declared_names.get(target.name.upper(), target.name) if offset == 0 else alias.name,
+                None if isinstance(alias, S.Name) else size,
+            )
             offset += size
         aliases[id(st)] = entries
     cache = {}
-    parameters = {id(tables(st)): {p.name.upper() for p in st.params}
-                  for st in program.statements if isinstance(st, S.SubDef)}
+    parameters = {
+        id(tables(st)): {p.name.upper() for p in st.params} for st in program.statements if isinstance(st, S.SubDef)
+    }
 
     def lookup(stmt, dest):
-        if dest.name.upper() in tables(stmt).dims or \
-                dest.name.upper() in parameters.get(id(tables(stmt)), set()):
+        if dest.name.upper() in tables(stmt).dims or dest.name.upper() in parameters.get(id(tables(stmt)), set()):
             return None
         key = id(tables(stmt))
         if key not in cache:
@@ -979,8 +1106,7 @@ def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
     return lookup
 
 
-def _alias_overrun(stmt: S.Instruction, dest, alias, count: int, profile: Profile,
-                   env: consteval.Env) -> bool:
+def _alias_overrun(stmt: S.Instruction, dest, alias, count: int, profile: Profile, env: consteval.Env) -> bool:
     """An alias destination's explicit index must lie within its declared size; the outputs
     must then fit the backing storage from the destination element (round 30). CR6/CR1000X
     count from the alias's own start, CR300/CR350 from the backing variable's start."""
@@ -1002,11 +1128,11 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
     if not checked:
         return
     from . import symbols
+
     tables = symbols.scope_tables(program, env, scalars=True, parameters=True)
     alias_storage = _measurement_aliases(program, tables, env)
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in checked or \
-                len(stmt.args) < 2:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in checked or len(stmt.args) < 2:
             continue
         scope = tables(stmt)
         reps = _int_value(stmt.args[1], env)
@@ -1016,8 +1142,8 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
             reps = 0 if profile.single_pass else -2147483648
         if reps is None:
             continue
-        if not profile.single_pass and not -2**31 <= reps < 2**31:
-            reps = -2147483648   # outside the Long range (oracle, CR1000X, round 67)
+        if not profile.single_pass and not -(2**31) <= reps < 2**31:
+            reps = -2147483648  # outside the Long range (oracle, CR1000X, round 67)
         if profile.single_pass:
             # before this line's other diagnostics, e.g. its fnotch warning (oracle, CR300, fuzz
             # `84bd80cc420c`); destination bounds: rounds 30-31
@@ -1026,10 +1152,10 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
             if reps == 0 or (reps < 0 and kw not in _NEGATIVE_REPS_SILENT):
                 messages.append(f"Invalid reps {reps}, must be > 0.")
             if reps > 0 or (reps < 0 and kw in _NEGATIVE_REPS_DEST):
-                messages.append(_dest_overrun(stmt, stmt.args[0], reps, profile, env, alias_storage,
-                                              scope))
-            at = next((i for i, d in enumerate(diags.items)
-                       if (d.line, d.file) == (stmt.line, stmt.file)), len(diags.items))
+                messages.append(_dest_overrun(stmt, stmt.args[0], reps, profile, env, alias_storage, scope))
+            at = next(
+                (i for i, d in enumerate(diags.items) if (d.line, d.file) == (stmt.line, stmt.file)), len(diags.items)
+            )
             diags.items[at:at] = [Diagnostic("error", stmt.line, m, stmt.file) for m in messages if m]
             continue
         if reps <= 0 and stmt.keyword.upper() != "CS616":  # (CS616: `_check_cs616_reps`)
@@ -1054,12 +1180,16 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
 
 
 # CR6 bridges: (channel, ExChan, MeasPEx argument indexes, measurement groups, channel stride)
-_BRIDGE_SPAN = {"BRHALF": (3, 4, 5, 1, 1), "BRHALF3W": (3, 4, 5, 2, 1), "BRFULL": (3, 4, 5, 1, 2),
-                "BRHALF4W": (4, 5, 6, 2, 2), "BRFULL6W": (4, 5, 6, 2, 2)}
+_BRIDGE_SPAN = {
+    "BRHALF": (3, 4, 5, 1, 1),
+    "BRHALF3W": (3, 4, 5, 2, 1),
+    "BRFULL": (3, 4, 5, 1, 2),
+    "BRHALF4W": (4, 5, 6, 2, 2),
+    "BRFULL6W": (4, 5, 6, 2, 2),
+}
 
 
-def _check_bridge_span(program: S.Program, profile: Profile, diags: Diagnostics,
-                       env: consteval.Env) -> None:
+def _check_bridge_span(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
     """CR6 bridge span validator (round 31, docs/checker.md "Bridge channel spans"): an excitation
     start inside the measurement span -> `Measurement channels and excitation channels overlap.`;
     the first excitation, else (Reps > 1) measurement, channel past U12 -> `Channel %d exceeds
@@ -1074,14 +1204,18 @@ def _check_bridge_span(program: S.Program, profile: Profile, diags: Diagnostics,
         if len(stmt.args) <= mp:
             continue
         reps, chan, ex, meas = (_int_value(stmt.args[i], env) for i in (1, cp, xp, mp))
-        if (reps is None or chan is None or ex is None or meas is None) or reps < 1 or not (201 <= chan <= 212 and 201 <= ex <= 212) \
-                or (stride == 2 and chan % 2 == 0):
+        if (
+            (reps is None or chan is None or ex is None or meas is None)
+            or reps < 1
+            or not (201 <= chan <= 212 and 201 <= ex <= 212)
+            or (stride == 2 and chan % 2 == 0)
+        ):
             continue
         s, e, meas = chan - 201, ex - 201, max(meas, 1)
         meas_last = s + (reps - 1) * groups * stride + (groups - 1) * stride
         ex_last = e + -(-reps // meas) - 1
         found = []
-        if s < e <= meas_last:   # (the binary's other branch, e < s, cannot fire for Reps >= 1)
+        if s < e <= meas_last:  # (the binary's other branch, e < s, cannot fire for Reps >= 1)
             found.append("Measurement channels and excitation channels overlap.")
         past = next((c for c in range(e + 1, ex_last + 1) if c + 1 > 12), None)
         if past is None and ex_last <= 11 and reps > 1:
@@ -1093,29 +1227,28 @@ def _check_bridge_span(program: S.Program, profile: Profile, diags: Diagnostics,
 
 def _insert_in_line_order(diags: Diagnostics, stmt: S.Instruction, texts: list[str]) -> None:
     """After this tier's errors on earlier lines and on this line, before later lines."""
-    at = next((i for i, d in enumerate(diags.items) if d.severity == "error" and
-               d.file == stmt.file and d.line > stmt.line), len(diags.items))
+    at = next(
+        (i for i, d in enumerate(diags.items) if d.severity == "error" and d.file == stmt.file and d.line > stmt.line),
+        len(diags.items),
+    )
     diags.items[at:at] = [Diagnostic("error", stmt.line, text, stmt.file) for text in texts]
 
 
 def _pulse_index(code: int) -> tuple[int, int] | None:
     """(port index, highest index Reps may reach) of a CR6 PulseCount channel (round 31). From
     201 up, the port converter keeps `code % 200` (`412` is U12, `400` C4; docs/checker.md)."""
-    idx = code - 101 if 101 <= code <= 116 else code % 200 + 3 \
-        if code >= 201 and code % 200 <= 12 else None
-    return None if idx is None else (idx, 4 if idx < 4 else 16)   # one past C4 / U12
+    idx = code - 101 if 101 <= code <= 116 else code % 200 + 3 if code >= 201 and code % 200 <= 12 else None
+    return None if idx is None else (idx, 4 if idx < 4 else 16)  # one past C4 / U12
 
 
-def _check_pulse_span(program: S.Program, profile: Profile, diags: Diagnostics,
-                      env: consteval.Env) -> None:
+def _check_pulse_span(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
     """CR6 `PulseCount`: Reps channels from the start must stay in its terminal family ->
     `Invalid PulseCount reps.` after the destination bounds error (round 31, docs/checker.md
     "Bridge channel spans"; CR1000X: the `pulse_chan_cr1000x` terminal span)."""
     if profile.name != "cr6":
         return
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "PULSECOUNT" or \
-                len(stmt.args) < 3:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "PULSECOUNT" or len(stmt.args) < 3:
             continue
         reps, chan = _int_value(stmt.args[1], env), _int_value(stmt.args[2], env)
         port = _pulse_index(chan) if chan is not None else None
@@ -1132,8 +1265,7 @@ def _dest_overrun(stmt, dest, reps, profile, env, alias_storage, scope) -> str |
     count = _measurement_output_count(stmt, reps, env)
     alias = alias_storage(stmt, dest)
     if alias is not None:
-        return f"Variable {alias[2]} out of bounds." if _alias_overrun(
-            stmt, dest, alias, count, profile, env) else None
+        return f"Variable {alias[2]} out of bounds." if _alias_overrun(stmt, dest, alias, count, profile, env) else None
     if scope.types.get(dest.name.upper()) != "FLOAT" or dest.name.upper() not in scope.dims:
         return None
     shape = scope.dims[dest.name.upper()]
@@ -1144,24 +1276,24 @@ def _dest_overrun(stmt, dest, reps, profile, env, alias_storage, scope) -> str |
     return f"Variable {dest.name} out of bounds." if count < 0 or count > total - offset else None
 
 
-def _check_bridge_burst(program: S.Program, profile: Profile, diags: Diagnostics,
-                        env: consteval.Env) -> None:
+def _check_bridge_burst(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
     """The shared bridge builder checks burst MeasPEx after resolving its destination."""
     if profile.name not in {"cr6", "cr1000x"}:
         return
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in {
-                "BRHALF4W", "BRFULL6W"} or len(stmt.args) < 7:
+        if (
+            not isinstance(stmt, S.Instruction)
+            or stmt.keyword.upper() not in {"BRHALF4W", "BRFULL6W"}
+            or len(stmt.args) < 7
+        ):
             continue
         reps, channel, meas = (_int_value(stmt.args[i], env) for i in (1, 4, 6))
         if reps is None or channel is None or meas is None or meas < 1:
             continue
         # Only valid burst channels: invalid channels have their own conversion diagnostics.
-        valid = (-211 <= channel <= -201 and channel % 2 != 0) if profile.name == "cr6" \
-            else -8 <= channel <= -1
+        valid = (-211 <= channel <= -201 and channel % 2 != 0) if profile.name == "cr6" else -8 <= channel <= -1
         if valid and meas != reps:
-            diags.error(stmt.line,
-                        "When channel < 0, measurements per excitation must equal reps.", stmt.file)
+            diags.error(stmt.line, "When channel < 0, measurements per excitation must equal reps.", stmt.file)
 
 
 # Destination size rules (oracle, 2026-10-02; docs/checker.md#destination-bounds): elements the
@@ -1169,22 +1301,37 @@ def _check_bridge_burst(program: S.Program, profile: Profile, diags: Diagnostics
 # Reps argument (index 1); `REALTIME` needs a fixed nine (Therm107-109: `check_reps`, round 31).
 # Only CalFile also rejects negative Reps.
 _DEST_FIXED = {"REALTIME": 9}
-_DEST_PER_REP = {"CALFILE": 1, "AVGRUN": 1, "MOVE": 1, "MINRUN": 1, "MAXRUN": 1, "TOTALRUN": 1,
-                 "STDDEVRUN": 1,   # (the other running statistics: oracle, CR6/CR1000X, round 35)
-                 "PRTCALC": 1}     # (oracle, CR6/CR1000X, round 57)
+_DEST_PER_REP = {
+    "CALFILE": 1,
+    "AVGRUN": 1,
+    "MOVE": 1,
+    "MINRUN": 1,
+    "MAXRUN": 1,
+    "TOTALRUN": 1,
+    "STDDEVRUN": 1,  # (the other running statistics: oracle, CR6/CR1000X, round 35)
+    "PRTCALC": 1,
+}  # (oracle, CR6/CR1000X, round 57)
 _DEST_NEGATIVE_OOB = frozenset({"CALFILE", "PRTCALC"})
-_RUNNING_STATS = frozenset({"MINRUN", "MAXRUN", "TOTALRUN", "STDDEVRUN"})   # (AvgRun not probed)
+_RUNNING_STATS = frozenset({"MINRUN", "MAXRUN", "TOTALRUN", "STDDEVRUN"})  # (AvgRun not probed)
 
 
 # Element counts the CR6 instruction builders pass to the shared destination resolver, read from the
 # decompiled builders and confirmed on the real compilers (docs/checker.md "Builder destination counts").
 # Arguments the builder stores in a byte are reduced modulo 256 (`_byte`).
-_SDM_MODE_VALUES = {"CS7500": (2, 2, 4, 3, 11, 3, 4, 4), "LI7200": (2, 5, 10, 12, 10, 5, 1, 5),
-                    "LI7700": (3, 5, 9, 13, 17, 3, 7, 9)}
+_SDM_MODE_VALUES = {
+    "CS7500": (2, 2, 4, 3, 11, 3, 4, 4),
+    "LI7200": (2, 5, 10, 12, 10, 5, 1, 5),
+    "LI7700": (3, 5, 9, 13, 17, 3, 7, 9),
+}
 _TGA_VALUES = ((2, 3, 4), (5, 7, 9), (8, 10, 12), (19, 25, 31), (21, 27, 33))
 _EC100_VALUES = (8, 12, 13, 15, 36)
-_BUILDER_FIXED = {"CSAT3B": ((0, 5),), "CSAT3BMONITOR": ((0, 4),), "HYDRAPROBE": ((0, 11), (1, 4)),
-                  "GOESGPS": ((0, 6), (1, 7)), "RECTPOLAR": ((0, 2), (1, 2))}
+_BUILDER_FIXED = {
+    "CSAT3B": ((0, 5),),
+    "CSAT3BMONITOR": ((0, 4),),
+    "HYDRAPROBE": ((0, 11), (1, 4)),
+    "GOESGPS": ((0, 6), (1, 7)),
+    "RECTPOLAR": ((0, 2), (1, 2)),
+}
 
 
 def _byte(value: int) -> int:
@@ -1193,8 +1340,10 @@ def _byte(value: int) -> int:
 
 def _builder_counts(kw: str, args: list, env: consteval.Env) -> list[tuple[int, int]]:
     """`(argument, elements)` pairs a destination or source must hold from its start."""
+
     def arg(i: int) -> int | None:
         return _int_value(args[i], env) if i < len(args) else None
+
     if kw in _BUILDER_FIXED:
         return [(i, n) for i, n in _BUILDER_FIXED[kw] if i < len(args)]
     if kw == "SDMGENERIC":
@@ -1235,14 +1384,13 @@ def _builder_counts(kw: str, args: list, env: consteval.Env) -> list[tuple[int, 
 _SPA_DEST = {"MAXSPA": (2, 0), "MINSPA": (2, 0), "SORTSPA": (0, 1), "SORTSPAINDEXED": (0, 2)}
 # (oracle, round 56: `MaxSpa(L,...)` -> `Dest type must be Float.`, `SortSpa(LongDest,6,Float)` ->
 # `Source and Dest types must be the same.`)
-_SPA_TYPED = frozenset({"MAXSPA", "MINSPA", "SORTSPA"})   # (SortSpaIndexed: expressions.py)
-_SPA_SOURCE = frozenset({"AVGSPA", "MAXSPA", "MINSPA", "RMSSPA", "STDDEVSPA", "SORTSPA",
-                         "SORTSPAINDEXED"})
+_SPA_TYPED = frozenset({"MAXSPA", "MINSPA", "SORTSPA"})  # (SortSpaIndexed: expressions.py)
+_SPA_SOURCE = frozenset({"AVGSPA", "MAXSPA", "MINSPA", "RMSSPA", "STDDEVSPA", "SORTSPA", "SORTSPAINDEXED"})
 
 
-def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
-                      env: consteval.Env) -> None:
+def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
     from . import symbols
+
     tables = symbols.scope_tables(program, env, scalars=True)
     # the running statistics also bound a routine's scalar parameter (`Sub R(Q)` / `MinRun(Q,2,...)`
     # is `Variable Q out of bounds.`; oracle, CR6/CR1000X, 2026-10-25, round 35)
@@ -1251,8 +1399,7 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
     types: dict[str, str] = {}
     arrays: set[str] = set()
 
-    def overruns(arg: S.Expr | None, need: int, negative: bool,
-                 kinds: tuple[str, ...]) -> TypeGuard[S.Name | S.Index]:
+    def overruns(arg: S.Expr | None, need: int, negative: bool, kinds: tuple[str, ...]) -> TypeGuard[S.Name | S.Index]:
         if not isinstance(arg, (S.Name, S.Index)):
             return False
         shape = dims.get(arg.name.upper())
@@ -1273,16 +1420,19 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
     for stmt in program.statements:
         scope = tables(stmt)
         dims, types, arrays = scope.dims, scope.types, scope.arrays
-        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CDM_TCCOMP" and \
-                len(stmt.args) > 3 and isinstance(stmt.args[2], (S.Name, S.Index)):
+        if (
+            isinstance(stmt, S.Instruction)
+            and stmt.keyword.upper() == "CDM_TCCOMP"
+            and len(stmt.args) > 3
+            and isinstance(stmt.args[2], (S.Name, S.Index))
+        ):
             # Reps (fourth) of the destination (third); negative Reps overruns too (oracle, CR6/
             # CR1000X, 2026-10-10; docs/instructions.md "CPI measurement time")
             reps = longconv.long_value(stmt.args[3], env, profile, *names)
             if reps is not None and overruns(stmt.args[2], reps, reps < 0, ("FLOAT",)):
                 diags.error(stmt.line, f"Variable {stmt.args[2].name} out of bounds.", stmt.file)
             continue
-        if not isinstance(stmt, S.Instruction) or not stmt.args or \
-                not isinstance(stmt.args[0], (S.Name, S.Index)):
+        if not isinstance(stmt, S.Instruction) or not stmt.args or not isinstance(stmt.args[0], (S.Name, S.Index)):
             continue
         kw = stmt.keyword.upper()
         if kw in _RUNNING_STATS:
@@ -1295,25 +1445,38 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
             swath = _int_value(stmt.args[1], env)
             if swath is not None:
                 fixed, per = _SPA_DEST.get(kw, (0, 0))
-                if (fixed or per) and overruns(dest, fixed + per * swath, per > 0 and swath < 0,
-                                               ("FLOAT", "LONG")):   # (Long too, round 56)
+                if (fixed or per) and overruns(
+                    dest, fixed + per * swath, per > 0 and swath < 0, ("FLOAT", "LONG")
+                ):  # (Long too, round 56)
                     bad.append(dest)
                 if overruns(source := stmt.args[2], swath, swath < 0, ("FLOAT", "LONG")):
                     bad.append(source)
         elif kw == "SPLITSTR":  # a scalar destination takes one value (Reps > 1 overruns it)
             reps = _int_value(stmt.args[3], env) if len(stmt.args) > 3 else None
-            if isinstance(dest, S.Name) and name in dims and name not in arrays and \
-                    reps is not None and reps > 1 and \
-                    types.get(name) in ("FLOAT", "STRING"):  # a structure takes Reps 3
+            if (
+                isinstance(dest, S.Name)
+                and name in dims
+                and name not in arrays
+                and reps is not None
+                and reps > 1
+                and types.get(name) in ("FLOAT", "STRING")
+            ):  # a structure takes Reps 3
                 bad.append(dest)
-        elif kw == "CSAT3" and len(stmt.args) > 1 and (reps := _int_value(stmt.args[1], env)) is not None and \
-                _byte(reps) >= 128:
+        elif (
+            kw == "CSAT3"
+            and len(stmt.args) > 1
+            and (reps := _int_value(stmt.args[1], env)) is not None
+            and _byte(reps) >= 128
+        ):
             # a negative signed-byte Reps fails the builder's allocation before the destination
             # is resolved; the compile ends there (round 31, docs/checker.md "Bridge channel spans")
             diags.error(stmt.line, "Out of memory.", stmt.file)
             return
-        elif kw in _BUILDER_FIXED or kw in ("SDMGENERIC", "SDMSW8A", "SDMCD16AC", "CSAT3",
-                                              "PEAKVALLEY", "TGA", "EC100") or kw in _SDM_MODE_VALUES:
+        elif (
+            kw in _BUILDER_FIXED
+            or kw in ("SDMGENERIC", "SDMSW8A", "SDMCD16AC", "CSAT3", "PEAKVALLEY", "TGA", "EC100")
+            or kw in _SDM_MODE_VALUES
+        ):
             # SDMGeneric checks any non-String destination, including a negative count
             kinds = ("FLOAT", "LONG", "BOOLEAN") if kw == "SDMGENERIC" else ("FLOAT",)
             for i, need in _builder_counts(kw, stmt.args, env):
@@ -1338,11 +1501,13 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
             elif overruns(dest, need, negative, ("FLOAT",)):
                 bad.append(dest)
         # single-pass loggers: before this line's warnings and channel errors (oracle)
-        for arg in (reversed(bad) if profile.single_pass else bad):
+        for arg in reversed(bad) if profile.single_pass else bad:
             diag = Diagnostic("error", stmt.line, f"Variable {arg.name} out of bounds.", stmt.file)
             if profile.single_pass:
-                at = next((i for i, d in enumerate(diags.items)
-                           if (d.line, d.file) == (stmt.line, stmt.file)), len(diags.items))
+                at = next(
+                    (i for i, d in enumerate(diags.items) if (d.line, d.file) == (stmt.line, stmt.file)),
+                    len(diags.items),
+                )
                 diags.items.insert(at, diag)
             else:
                 diags.items.append(diag)

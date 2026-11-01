@@ -46,6 +46,7 @@ def check(program: S.Program, result, diags: Diagnostics) -> None:
             name = _table_arg_name(stmt)
             if name:
                 from .instr_data import _const_table_name
+
                 name = _const_table_name(name, program)
                 declared[name.upper()] = name
 
@@ -56,11 +57,13 @@ def check(program: S.Program, result, diags: Diagnostics) -> None:
     # that matches a declared table counts as a use -- a table name is not reused as an ordinary
     # variable, so this is a safe superset of the real "called" set.
     from .instr_data import _const_table_name
+
     called = {
         name
         for stmt in _with_inline_branches(program.statements)
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() != "DATATABLE"
-        for arg in stmt.args if isinstance(arg, S.Name)
+        for arg in stmt.args
+        if isinstance(arg, S.Name)
         # (a String `Const` names the table its value spells, round 67)
         for name in (arg.name.upper(), _const_table_name(arg.name, program).upper())
         if name in declared
@@ -101,8 +104,11 @@ def _check_uint1_dims(program: S.Program, profile: Profile, diags: Diagnostics, 
                 count *= size
             else:
                 if count % 4:
-                    diags.warning(stmt.line, "Adjusting dimensionality of UINT1 so number of bytes "
-                                             "evenly divisible by 4", stmt.file)
+                    diags.warning(
+                        stmt.line,
+                        "Adjusting dimensionality of UINT1 so number of bytes evenly divisible by 4",
+                        stmt.file,
+                    )
 
 
 def check_early(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -135,13 +141,28 @@ def _kw(stmt: S.Stmt) -> str:
 # `StructureType`/`ObjectType` bodies are all silent; `BeginProg`/`EndProg` themselves were never
 # observed flagged either). `SLOWSEQUENCE` is handled separately (it *resets* reachability, see
 # below, rather than merely being skipped).
-_NON_EXECUTABLE_KEYWORDS = frozenset({
-    "BEGINPROG", "ENDPROG", "DATATABLE", "ENDTABLE", "ALIAS", "UNITS",
-    "CONSTTABLE", "ENDCONSTTABLE", "STRUCTURE", "ENDSTRUCTURE",
-    "STRUCTURETYPE", "ENDSTRUCTURETYPE", "OBJECTTYPE", "ENDOBJECTTYPE",
-    "DATA", "DATALONG",  # (oracle, 2026-10-01: `Data 1,2` after `NextScan` is not flagged)
-    "SEQUENTIALMODE", "PIPELINEMODE",  # (oracle, CR6, 2026-10-02: not flagged after `NextScan`)
-})
+_NON_EXECUTABLE_KEYWORDS = frozenset(
+    {
+        "BEGINPROG",
+        "ENDPROG",
+        "DATATABLE",
+        "ENDTABLE",
+        "ALIAS",
+        "UNITS",
+        "CONSTTABLE",
+        "ENDCONSTTABLE",
+        "STRUCTURE",
+        "ENDSTRUCTURE",
+        "STRUCTURETYPE",
+        "ENDSTRUCTURETYPE",
+        "OBJECTTYPE",
+        "ENDOBJECTTYPE",
+        "DATA",
+        "DATALONG",  # (oracle, 2026-10-01: `Data 1,2` after `NextScan` is not flagged)
+        "SEQUENTIALMODE",
+        "PIPELINEMODE",  # (oracle, CR6, 2026-10-02: not flagged after `NextScan`)
+    }
+)
 
 
 def _is_program_end(stmt: S.Stmt) -> bool:
@@ -150,8 +171,9 @@ def _is_program_end(stmt: S.Stmt) -> bool:
     endless `Scan` warns only for `a = 1`)."""
     if not (isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "END"):
         return False
-    return not stmt.args or (len(stmt.args) == 1 and isinstance(stmt.args[0], S.Name)
-                             and stmt.args[0].name.upper() == "PROG")
+    return not stmt.args or (
+        len(stmt.args) == 1 and isinstance(stmt.args[0], S.Name) and stmt.args[0].name.upper() == "PROG"
+    )
 
 
 def _display_name(stmt: S.Stmt, profile: Profile) -> str:
@@ -173,7 +195,7 @@ def _display_name(stmt: S.Stmt, profile: Profile) -> str:
         record = profile.instructions.get(keyword)
         return record["name"] if record else keyword
     if isinstance(stmt, S.Call):
-        return "Call"   # `Call S(1)`, `S(1)`: oracle, CR6/CR300, 2026-10-08 (docs/fuzz-findings.md)
+        return "Call"  # `Call S(1)`, `S(1)`: oracle, CR6/CR300, 2026-10-08 (docs/fuzz-findings.md)
     return "Expr"
 
 
@@ -208,9 +230,11 @@ def _scan_span(statements: list[S.Stmt], start: int) -> tuple[int, bool]:
         elif kw == "NEXTSCAN":
             depth -= 1
         elif kw == "EXITSCAN" or any(
-                _kw(x) == "EXITSCAN" for x in (getattr(statements[j], "inline", None) or [])
-                + (getattr(statements[j], "inline_else", None) or [])):
-            has_exit = True     # (also in a one-line `If X Then ExitScan`, oracle 2026-10-10)
+            _kw(x) == "EXITSCAN"
+            for x in (getattr(statements[j], "inline", None) or [])
+            + (getattr(statements[j], "inline_else", None) or [])
+        ):
+            has_exit = True  # (also in a one-line `If X Then ExitScan`, oracle 2026-10-10)
         j += 1
     return j, has_exit
 
@@ -251,8 +275,11 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
     sub_depth = 0
     begun = False
     tasks = profile.pipeline_tasks["tasks"]
-    pipeline_delays = {id(st) for st, _ in structure.pipeline_task_errors(program, profile)
-                       if _kw(st) == "DELAY" or tasks.get(_kw(st), {}).get("hides_unreached")}
+    pipeline_delays = {
+        id(st)
+        for st, _ in structure.pipeline_task_errors(program, profile)
+        if _kw(st) == "DELAY" or tasks.get(_kw(st), {}).get("hides_unreached")
+    }
     i = 0
     while i < n:
         stmt = statements[i]
@@ -293,14 +320,16 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             count_is_zero = _scan_count_is_zero(stmt, env)
             dead = bool(count_is_zero) and not has_exit
             if not begun and profile.name in ("cr6", "cr1000x"):
-                dead = False   # `Scan illegally occurs before BeginProg.`: the scan is not
+                dead = False  # `Scan illegally occurs before BeginProg.`: the scan is not
                 # compiled, so nothing after it is unreachable (oracle, 2026-10-12, fuzz R15)
             closer = statements[j - 1] if j <= n and j > i + 1 else None
             if dead and closer is not None and hasattr(closer, "hoisted_last"):
                 # `If C Then NextScan` closes the endless `Scan` from inside a one-line `If`: the
                 # `If`'s own end is the first thing after it (oracle, all four loggers, 2026-10-12);
                 # more statements after the `NextScan` in the body silence the check
-                if closer.hoisted_last and not (j < n and (statements[j].line, statements[j].file) == (closer.line, closer.file)):
+                if closer.hoisted_last and not (
+                    j < n and (statements[j].line, statements[j].file) == (closer.line, closer.file)
+                ):
                     diags.warning(closer.line, "EndIf never reached at run time.", closer.file)
                 return
             open_depth = _open_conditional(statements, i, j)
@@ -330,13 +359,18 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             # Scan.` and no warning), unlike `ContinueScan`.
             is_declaration = (
                 isinstance(stmt, (S.Declaration, S.ConstDecl, S.Label))
-                or kw in _NON_EXECUTABLE_KEYWORDS or kw == "EXITSCAN"
+                or kw in _NON_EXECUTABLE_KEYWORDS
+                or kw == "EXITSCAN"
                 or _is_program_end(stmt)
             )
             if not is_declaration:
                 name = _display_name(stmt, profile)
-                if isinstance(stmt, S.Call) and not stmt.explicit and not stmt.tail_ignored and \
-                        profile.name in ("cr6", "cr1000x"):
+                if (
+                    isinstance(stmt, S.Call)
+                    and not stmt.explicit
+                    and not stmt.tail_ignored
+                    and profile.name in ("cr6", "cr1000x")
+                ):
                     # a bare `Nope`/`Nope(x)`/`Abs(x)` that is no Sub or Function is `Expr`; a
                     # variable gives no warning at all (oracle, CR6/CR1000X, 2026-10-12, fuzz R15)
                     routines = {st.name.upper() for st in statements if isinstance(st, S.SubDef)}
@@ -395,6 +429,7 @@ def check_background_calibration(program: S.Program, profile: Profile, diags: Di
     # 98000/97900). Such a scan never uses the empty-scan interval threshold above.
     from . import scan_time
     from .instr_measure import is_sequential
+
     # Not in SequentialMode (oracle, CR6, 2026-10-10: not even for `Scan(1,mSec)`).
     if is_sequential(program, profile, env):
         return
@@ -419,12 +454,10 @@ def check_background_calibration(program: S.Program, profile: Profile, diags: Di
             continue
         main_scan_index += 1
         interval_ms = _scan_interval_ms(stmt, env)
-        if id(stmt) in busy or (id(stmt) not in timed and interval_ms is not None
-                                and interval_ms < threshold_ms):
+        if id(stmt) in busy or (id(stmt) not in timed and interval_ms is not None and interval_ms < threshold_ms):
             diags.warning(
                 last_line,
-                f"When Main Sequence Scan {main_scan_index} is running, "
-                "background calibration will be disabled.",
+                f"When Main Sequence Scan {main_scan_index} is running, background calibration will be disabled.",
             )
 
 
@@ -447,11 +480,12 @@ def check_slow_scan_skips(program: S.Program, profile: Profile, diags: Diagnosti
     if not tasks:
         return
     from .instr_measure import is_sequential
+
     if is_sequential(program, profile, env):
         return
     rules = profile.pipeline_tasks["tasks"]
     mains: list[float | None] = []
-    slows: list[list] = []   # [sequence, scan, interval ms or None, has a task]
+    slows: list[list] = []  # [sequence, scan, interval ms or None, has a task]
     seq = scan_no = 0
     cur: list | None = None
     for stmt in _with_inline_branches(program.statements):
@@ -471,21 +505,26 @@ def check_slow_scan_skips(program: S.Program, profile: Profile, diags: Diagnosti
         elif kw == "NEXTSCAN":
             cur = None
         elif cur is not None and kw in tasks and isinstance(stmt, S.Instruction):
-            constants = rules.get(kw, {}).get("constant_values", {})   # (`Delay` option 0 only)
+            constants = rules.get(kw, {}).get("constant_values", {})  # (`Delay` option 0 only)
             # (`Delay(0,0,...)` and `PortSet(...,1)` start no task, oracle round 55)
             no_task = profile.pipeline_tasks.get("slow_scan_no_task", {}).get(kw, {})
             try:
-                cur[3] = cur[3] or all(consteval.value_of(stmt.args[int(p) - 1], env) in allowed
-                                       for p, allowed in constants.items()) and not any(
-                    _value_in(stmt.args, int(p), vals, env) for p, vals in no_task.items())
-            except (consteval.NotConstant, IndexError):
+                cur[3] = (
+                    cur[3]
+                    or all(
+                        consteval.value_of(stmt.args[int(p) - 1], env) in allowed for p, allowed in constants.items()
+                    )
+                    and not any(_value_in(stmt.args, int(p), vals, env) for p, vals in no_task.items())
+                )
+            except consteval.NotConstant, IndexError:
                 pass
     last_line = program.statements[-1].line if program.statements else 1
     for seq_no, scan_no, interval, has_task in slows:
         for main_no, main_interval in enumerate(mains, 1):
             if has_task and interval is not None and main_interval is not None and interval <= main_interval:
-                diags.warning(last_line, f"Slow Seq {seq_no}, Scan {scan_no}, may skip scans if "
-                                         f"running with Scan {main_no}.")
+                diags.warning(
+                    last_line, f"Slow Seq {seq_no}, Scan {scan_no}, may skip scans if running with Scan {main_no}."
+                )
 
 
 def _scan_interval_ms(stmt: S.Instruction, env: consteval.Env) -> float | None:
@@ -541,7 +580,11 @@ def _check_fnotch(program: S.Program, profile: Profile, diags: Diagnostics, env:
 
 _TRUNCATE_CALLS = {"IFTIME": 3, "TIMEINTOINTERVAL": 3}
 _TRUNCATE_CALL_RE = re.compile(r"(?i)\b(IfTime|TimeIntoInterval)\s*\(")
-_ARITY_ERROR_PREFIXES = ("Expression expects , :", "No Matching, or out of place )", "Invalid, or out of place expression:")
+_ARITY_ERROR_PREFIXES = (
+    "Expression expects , :",
+    "No Matching, or out of place )",
+    "Invalid, or out of place expression:",
+)
 
 
 def _call_args(text: str, start: int) -> list[str] | None:
@@ -553,7 +596,7 @@ def _call_args(text: str, start: int) -> list[str] | None:
             j = text.find('"', i + 1)
             if j < 0:
                 return None
-            cur += text[i:j + 1]
+            cur += text[i : j + 1]
             i = j + 1
             continue
         if ch in "({":
@@ -592,12 +635,27 @@ def add_truncate_warnings(program: S.Program, profile, diags: Diagnostics) -> No
         need = _TRUNCATE_CALLS[m.group(1).upper()]
         if len(args) == need:
             continue
-        with_vars = sum(1 for a in args if any(w.upper() in variables for w in re.findall(r"[A-Za-z_]\w*", re.sub(r'"[^"]*"', "", a))))
+        with_vars = sum(
+            1
+            for a in args
+            if any(w.upper() in variables for w in re.findall(r"[A-Za-z_]\w*", re.sub(r'"[^"]*"', "", a)))
+        )
         count = max(need - len(args), 0) + with_vars
         key = (stmt.file, stmt.line)
-        at = next((j for j, d in enumerate(diags.items) if (d.file, d.line) == key and d.severity == "error"
-                   and d.message.startswith(_ARITY_ERROR_PREFIXES) and m.group(1).lower() in d.message.lower()), None)
+        at = next(
+            (
+                j
+                for j, d in enumerate(diags.items)
+                if (d.file, d.line) == key
+                and d.severity == "error"
+                and d.message.startswith(_ARITY_ERROR_PREFIXES)
+                and m.group(1).lower() in d.message.lower()
+            ),
+            None,
+        )
         if at is None or not count:
             continue
-        diags.items[at:at] = [Diagnostic("warning", stmt.line, "Parameter will truncate to the nearest integer.", stmt.file)
-                              for _ in range(count)]
+        diags.items[at:at] = [
+            Diagnostic("warning", stmt.line, "Parameter will truncate to the nearest integer.", stmt.file)
+            for _ in range(count)
+        ]

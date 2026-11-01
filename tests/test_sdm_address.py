@@ -17,21 +17,26 @@ def lines(body: str, logger: str) -> list[str]:
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x"])
-@pytest.mark.parametrize("body,expected", [
-    ("    CSAT3B(V(),0,99,0)\n", ["line 4: Invalid SDM Address: 99, must be 0 - 14."]),
-    ("    CSAT3BMonitor(V(),0,99)\n", ["line 4: Invalid SDM Address: 99, must be 0 - 14."]),
-    ("    SDMX50 (15,4)\n", ["line 4: Invalid SDM Address: 15, must be 0 - 14."]),
-    ("    SDMX50 (-1,4)\n", ["line 4: Invalid SDM Address: 255, must be 0 - 14."]),
-    ("    SDMX50 (14,4)\n", []),
-    ("    SDMX50 (256,4)\n", []),
-    ("    SDMX50 (X,4)\n", ["line 4: Variable illegal in Parameter: X."]),
-    ("    SDMX50 (99,4)\n    SDMX50 (98,4)\n",
-     ["line 4: Invalid SDM Address: 99, must be 0 - 14.",
-      "line 5: Invalid SDM Address: 98, must be 0 - 14."]),
-    ("    X = Q\n    SDMX50 (99,4)\n",
-     ["line 4: Invalid symbol in expression:     X = Q.",
-      "line 5: Invalid SDM Address: 99, must be 0 - 14."]),
-])
+@pytest.mark.parametrize(
+    "body,expected",
+    [
+        ("    CSAT3B(V(),0,99,0)\n", ["line 4: Invalid SDM Address: 99, must be 0 - 14."]),
+        ("    CSAT3BMonitor(V(),0,99)\n", ["line 4: Invalid SDM Address: 99, must be 0 - 14."]),
+        ("    SDMX50 (15,4)\n", ["line 4: Invalid SDM Address: 15, must be 0 - 14."]),
+        ("    SDMX50 (-1,4)\n", ["line 4: Invalid SDM Address: 255, must be 0 - 14."]),
+        ("    SDMX50 (14,4)\n", []),
+        ("    SDMX50 (256,4)\n", []),
+        ("    SDMX50 (X,4)\n", ["line 4: Variable illegal in Parameter: X."]),
+        (
+            "    SDMX50 (99,4)\n    SDMX50 (98,4)\n",
+            ["line 4: Invalid SDM Address: 99, must be 0 - 14.", "line 5: Invalid SDM Address: 98, must be 0 - 14."],
+        ),
+        (
+            "    X = Q\n    SDMX50 (99,4)\n",
+            ["line 4: Invalid symbol in expression:     X = Q.", "line 5: Invalid SDM Address: 99, must be 0 - 14."],
+        ),
+    ],
+)
 def test_sdm_address(body, expected, logger):
     assert lines(body, logger) == expected
 

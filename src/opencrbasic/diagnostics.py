@@ -28,39 +28,102 @@ _DRIVE_RE = re.compile(r"^(CPU|USR|CRD|USB):", re.IGNORECASE)
 # has, not modelled). Observed per logger family on corpus programs split around `BeginProg`
 # (`docs/checker.md` "Prefix by message kind"); a family with any prefixed observation is absent.
 _DEFERRED_COMMON = (
-    r".+ illegally occurs before BeginProg\.$", r"Could not find ", r"Cannot find DataTable",
-    r"Cannot autoallocate memory for DataTable", r"Duplicate Sub ", r"EndTable without DataTable",
-    r"Table \S+ declared with no output fields", r"Table with DataInterval must be called",
-    r"Sample must be used inside a table", r"Illegal Matrix", r"END IF without IF",
-    r"Else with no If", r"LOOP without DO", r"EndSub without Sub", r"NEXT without FOR", r"NextScan with no Scan",
-    r"Scan without NextScan", r"Missing NextScan", r"FOR NEXT statement illegally has",
-    r"IF or SELECT statement illegally has", r"LOOP statement illegally has", r"Variable .* out of bounds",
-    r"FileManage ", r"Out of memory\.", r"Illegal Semaphore",
+    r".+ illegally occurs before BeginProg\.$",
+    r"Could not find ",
+    r"Cannot find DataTable",
+    r"Cannot autoallocate memory for DataTable",
+    r"Duplicate Sub ",
+    r"EndTable without DataTable",
+    r"Table \S+ declared with no output fields",
+    r"Table with DataInterval must be called",
+    r"Sample must be used inside a table",
+    r"Illegal Matrix",
+    r"END IF without IF",
+    r"Else with no If",
+    r"LOOP without DO",
+    r"EndSub without Sub",
+    r"NEXT without FOR",
+    r"NextScan with no Scan",
+    r"Scan without NextScan",
+    r"Missing NextScan",
+    r"FOR NEXT statement illegally has",
+    r"IF or SELECT statement illegally has",
+    r"LOOP statement illegally has",
+    r"Variable .* out of bounds",
+    r"FileManage ",
+    r"Out of memory\.",
+    r"Illegal Semaphore",
 )
 _DEFERRED_PATTERNS = {
-    False: _DEFERRED_COMMON + (  # CR6 / CR1000X
-        r"Case with no Select", r"Next SubScan without SubScan", r"Delay not allowed outside",
-        r"Scan \S+ invalid", r"Scan interval too short", r"Scan (Interval|BufferOption|Count) parameter",
-        r"Slow Scan interval", r"MenuRecompile must be used", r"MenuPick must", r"EndMenu must be used",
-        r"Invalid channel ", r"Invalid port ", r"Invalid reps ", r"Invalid SDM Address", r"Illegal table name",
-        r"Table name .* illegal", r"DataTable name .* too long", r"DNP Variable must be",
-        r"Can't assign units to", r"\S+ already assigned Units", r"PanelTemp channel out of range",
-        r"Input channel", r"Reps cycle input", r"SPIOpen must precede", r"Illegal PakBus address",
-        r"Insufficient ", r"CPI Address must", r"Bridge parameter must", r"Optional Count parameter",
-        r"Source and Dest types", r"Unable to find Dest", r"multiply result illegal",
-        r"Destination variable must", r"Legal configuration is", r"Sig\d+ must be of length",
-        r"Number of bytes ", r"number of averages ", r"SampleFieldCal with no FieldCal",
-        r"CDM_PulsePort instruction not supported", r"CH\d+Status update interval",
-        r".+ is not a Settings Field Name", r"GoesTable not active", r"Missing DialSequence",
-        r"Boolean picklist must", r"\S+ must be declared as a integer Const",
-        r"If source and destination are of type STRING", r"DataInterval TintoInt",
-        r"Multiple BeginProgs", r"Sub .* EndSub not matched", r"IF or SELECT without EndIf",
+    False: _DEFERRED_COMMON
+    + (  # CR6 / CR1000X
+        r"Case with no Select",
+        r"Next SubScan without SubScan",
+        r"Delay not allowed outside",
+        r"Scan \S+ invalid",
+        r"Scan interval too short",
+        r"Scan (Interval|BufferOption|Count) parameter",
+        r"Slow Scan interval",
+        r"MenuRecompile must be used",
+        r"MenuPick must",
+        r"EndMenu must be used",
+        r"Invalid channel ",
+        r"Invalid port ",
+        r"Invalid reps ",
+        r"Invalid SDM Address",
+        r"Illegal table name",
+        r"Table name .* illegal",
+        r"DataTable name .* too long",
+        r"DNP Variable must be",
+        r"Can't assign units to",
+        r"\S+ already assigned Units",
+        r"PanelTemp channel out of range",
+        r"Input channel",
+        r"Reps cycle input",
+        r"SPIOpen must precede",
+        r"Illegal PakBus address",
+        r"Insufficient ",
+        r"CPI Address must",
+        r"Bridge parameter must",
+        r"Optional Count parameter",
+        r"Source and Dest types",
+        r"Unable to find Dest",
+        r"multiply result illegal",
+        r"Destination variable must",
+        r"Legal configuration is",
+        r"Sig\d+ must be of length",
+        r"Number of bytes ",
+        r"number of averages ",
+        r"SampleFieldCal with no FieldCal",
+        r"CDM_PulsePort instruction not supported",
+        r"CH\d+Status update interval",
+        r".+ is not a Settings Field Name",
+        r"GoesTable not active",
+        r"Missing DialSequence",
+        r"Boolean picklist must",
+        r"\S+ must be declared as a integer Const",
+        r"If source and destination are of type STRING",
+        r"DataInterval TintoInt",
+        r"Multiple BeginProgs",
+        r"Sub .* EndSub not matched",
+        r"IF or SELECT without EndIf",
     ),
-    True: _DEFERRED_COMMON + (  # CR300 / CR350
-        r"FOR without NEXT", r"Scans > ", r"DNP\d+Statics and/or", r"Destination variable cannot",
-        r"Illegal option", r"Illegal dimension", r"Illegal message type", r"Only one DataInterval allowed",
-        r"Settling time ", r"\S+ must be of length", r"Invalid drive or no drive", r"Invalid file type option",
-        r"\S+ is not a Status or Settings Field Name", r"DataTable name .* too long",
+    True: _DEFERRED_COMMON
+    + (  # CR300 / CR350
+        r"FOR without NEXT",
+        r"Scans > ",
+        r"DNP\d+Statics and/or",
+        r"Destination variable cannot",
+        r"Illegal option",
+        r"Illegal dimension",
+        r"Illegal message type",
+        r"Only one DataInterval allowed",
+        r"Settling time ",
+        r"\S+ must be of length",
+        r"Invalid drive or no drive",
+        r"Invalid file type option",
+        r"\S+ is not a Status or Settings Field Name",
+        r"DataTable name .* too long",
     ),
 }
 _DEFERRED = {k: re.compile("|".join(f"(?:{p})" for p in v)) for k, v in _DEFERRED_PATTERNS.items()}
@@ -68,14 +131,14 @@ _DEFERRED = {k: re.compile("|".join(f"(?:{p})" for p in v)) for k, v in _DEFERRE
 
 @dataclass(frozen=True)
 class Diagnostic:
-    severity: str           # "error" or "warning"
-    line: int               # 0 when the message has no line (e.g. "No BeginProg in Program.")
-    message: str            # without the "line N: " / "Warning: " prefix
-    file: str = ""          # originating file, for our own richer output
+    severity: str  # "error" or "warning"
+    line: int  # 0 when the message has no line (e.g. "No BeginProg in Program.")
+    message: str  # without the "line N: " / "Warning: " prefix
+    file: str = ""  # originating file, for our own richer output
     show_file: bool | str = True  # whether an origin outside `main_file` gets a `<file>` prefix:
     # True always, False never, "cr3xx" only on CR300/CR350 (pass-2 on CR6/CR1000X, pass-1 there);
     # see this module's docstring.
-    cascade: bool = True    # CR300/CR350: may start the `Too many parameters` cascade (`cr3xx`)
+    cascade: bool = True  # CR300/CR350: may start the `Too many parameters` cascade (`cr3xx`)
     trigger: bool = field(default=False, compare=False)  # starts it whatever the message (`cr3xx`)
     stmt: int = field(default=0, compare=False)  # id() of the statement that raised it, when tagged
 
@@ -100,8 +163,7 @@ class Diagnostic:
             show = drive_prefix
         if show and _DEFERRED[drive_prefix].match(self.message):
             show = False
-        if show and name and (name.lower() != main_file.lower()
-                                         or _DRIVE_RE.match(self.file)):
+        if show and name and (name.lower() != main_file.lower() or _DRIVE_RE.match(self.file)):
             # An included file prints as written in its `Include`: CR6/CR1000X without the drive
             # (`<lib.CRB>` for `"cpu:lib.CRB"`), CR300/CR350 with it, `cpu:` added when none was
             # written (`<cpu:Lib.crb>`) -- oracle, 2026-09-27, `docs/loggers.md`.
@@ -116,8 +178,7 @@ class Diagnostics(LoadProvenance):
     items: list[Diagnostic] = field(default_factory=list)
     cascade_gone: set[str] = field(default_factory=set)  # CR300/CR350 names a declaration cascade left unregistered
 
-    def error(self, line: int, message: str, file: str = "", show_file: bool | str = True,
-              stmt: object = None) -> None:
+    def error(self, line: int, message: str, file: str = "", show_file: bool | str = True, stmt: object = None) -> None:
         self.items.append(Diagnostic("error", line, message, file, show_file, stmt=id(stmt) if stmt else 0))
 
     def warning(self, line: int, message: str, file: str = "") -> None:

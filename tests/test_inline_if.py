@@ -18,39 +18,49 @@ def lines(body: str, logger: str) -> list[str]:
 
 
 ROWS = [
-    ('    If X Then Y = 1\n',
-     ['line 4: Invalid, or out of place expression: Y = 1.'],
-     ['line 4: Y is not defined.']),
-    ('    If X Then X = Q\n',
-     ['line 4: Invalid symbol in expression: X = Q.'],
-     ['line 4: Q is not defined.']),
-    ('    If X Then Battery(Q)\n',
-     ['line 4: Invalid symbol in expression: Q.'],
-     ['line 4: Q is not defined.']),
-    ('    If X Then foo bar\n',
-     ['line 4: Invalid, or out of place expression: foo bar.'],
-     ['line 4: foo is not defined.', 'line 4: bar is not defined.', 'line 4: Invalid, or out of place expression: foo bar.']),
-    ('    If X Then X = 1 Else Y = 2\n',
-     ['line 4: Invalid, or out of place expression: Y = 2.'],
-     ['line 4: Y is not defined.']),
-    ('    If X Then Battery(X) Else X = Q\n',
-     ['line 4: Invalid symbol in expression: X = Q.'],
-     ['line 4: Q is not defined.']),
-    ('    If X Then Y = 1\n    X = Q2\n',
-     ['line 4: Invalid, or out of place expression: Y = 1.', 'line 5: Invalid symbol in expression:     X = Q2.'],
-     ['line 4: Y is not defined.', 'line 5: Q2 is not defined.']),
-    ('    If X Then X = Q\n    X = Q2\n',
-     ['line 4: Invalid symbol in expression: X = Q.', 'line 5: Invalid symbol in expression:     X = Q2.'],
-     ['line 4: Q is not defined.', 'line 5: Q2 is not defined.']),
-    ('    If X > 1 Then X=Q+1\n',
-     ['line 4: Invalid symbol in expression: X=Q+1.'],
-     ['line 4: Q is not defined.']),
-    ('    If X Then Y(1) = 1\n',
-     ['line 4: Invalid, or out of place expression: Y(1) = 1.'],
-     ['line 4: Y is not defined.', 'line 4: Invalid, or out of place expression: Y(1) = 1.']),
-    ('    If X Then Battery(Q) Else Battery(Q2)\n',
-     ['line 4: Invalid symbol in expression: Q.', 'line 4: Invalid symbol in expression: Q2.'],
-     ['line 4: Q is not defined.', 'line 4: Q2 is not defined.']),
+    ("    If X Then Y = 1\n", ["line 4: Invalid, or out of place expression: Y = 1."], ["line 4: Y is not defined."]),
+    ("    If X Then X = Q\n", ["line 4: Invalid symbol in expression: X = Q."], ["line 4: Q is not defined."]),
+    ("    If X Then Battery(Q)\n", ["line 4: Invalid symbol in expression: Q."], ["line 4: Q is not defined."]),
+    (
+        "    If X Then foo bar\n",
+        ["line 4: Invalid, or out of place expression: foo bar."],
+        [
+            "line 4: foo is not defined.",
+            "line 4: bar is not defined.",
+            "line 4: Invalid, or out of place expression: foo bar.",
+        ],
+    ),
+    (
+        "    If X Then X = 1 Else Y = 2\n",
+        ["line 4: Invalid, or out of place expression: Y = 2."],
+        ["line 4: Y is not defined."],
+    ),
+    (
+        "    If X Then Battery(X) Else X = Q\n",
+        ["line 4: Invalid symbol in expression: X = Q."],
+        ["line 4: Q is not defined."],
+    ),
+    (
+        "    If X Then Y = 1\n    X = Q2\n",
+        ["line 4: Invalid, or out of place expression: Y = 1.", "line 5: Invalid symbol in expression:     X = Q2."],
+        ["line 4: Y is not defined.", "line 5: Q2 is not defined."],
+    ),
+    (
+        "    If X Then X = Q\n    X = Q2\n",
+        ["line 4: Invalid symbol in expression: X = Q.", "line 5: Invalid symbol in expression:     X = Q2."],
+        ["line 4: Q is not defined.", "line 5: Q2 is not defined."],
+    ),
+    ("    If X > 1 Then X=Q+1\n", ["line 4: Invalid symbol in expression: X=Q+1."], ["line 4: Q is not defined."]),
+    (
+        "    If X Then Y(1) = 1\n",
+        ["line 4: Invalid, or out of place expression: Y(1) = 1."],
+        ["line 4: Y is not defined.", "line 4: Invalid, or out of place expression: Y(1) = 1."],
+    ),
+    (
+        "    If X Then Battery(Q) Else Battery(Q2)\n",
+        ["line 4: Invalid symbol in expression: Q.", "line 4: Invalid symbol in expression: Q2."],
+        ["line 4: Q is not defined.", "line 4: Q2 is not defined."],
+    ),
 ]
 
 
@@ -96,8 +106,7 @@ CR300_ECHO_ROWS = [
 
 @pytest.mark.parametrize("stmt,echo", CR300_ECHO_ROWS)
 def test_inline_if_call_echo_cr300_no_newline(stmt, echo):
-    expected = ["line 4: Foo is not defined.",
-                f"line 4: Invalid, or out of place expression: {echo}."]
+    expected = ["line 4: Foo is not defined.", f"line 4: Invalid, or out of place expression: {echo}."]
     assert lines(f"    {stmt}\n", "cr300") == expected
 
 

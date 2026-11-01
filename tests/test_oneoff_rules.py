@@ -18,24 +18,25 @@ def messages(text: str, logger: str = "cr6") -> list[str]:
 
 
 def prog(line: str, table: str = TABLE) -> str:
-    return (f"Public X, Y\n{table}BeginProg\n  Scan (1,Sec,0,0)\n{line}\n    CallTable T\n"
-            "  NextScan\nEndProg\n")
+    return f"Public X, Y\n{table}BeginProg\n  Scan (1,Sec,0,0)\n{line}\n    CallTable T\n  NextScan\nEndProg\n"
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x"])
-@pytest.mark.parametrize("line,expected", [
-    ("    X = Int()", "Invalid, or out of place expression:     X = Int()."),
-    ("    X = Sin() + 1", "Invalid, or out of place expression:     X = Sin() + 1."),
-    ("    MenuRecompile(\"a\",X)", "MenuRecompile must be used within DisplayMenu..EndMenu."),
-    ("    NextSubScan", "Next SubScan without SubScan."),
-])
+@pytest.mark.parametrize(
+    "line,expected",
+    [
+        ("    X = Int()", "Invalid, or out of place expression:     X = Int()."),
+        ("    X = Sin() + 1", "Invalid, or out of place expression:     X = Sin() + 1."),
+        ('    MenuRecompile("a",X)', "MenuRecompile must be used within DisplayMenu..EndMenu."),
+        ("    NextSubScan", "Next SubScan without SubScan."),
+    ],
+)
 def test_statement_rules(line, expected, logger):
     assert messages(prog(line), logger) == [expected]
 
 
 def test_cr300_empty_parens_keeps_the_newline():
-    assert messages(prog("    X = Int()"), "cr300") == [
-        "Invalid, or out of place expression:     X = Int()\n."]
+    assert messages(prog("    X = Int()"), "cr300") == ["Invalid, or out of place expression:     X = Int()\n."]
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x", "cr300"])
@@ -46,29 +47,36 @@ def test_datatable_too_many_parameters(logger):
 
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x", "cr300"])
 def test_second_datainterval(logger):
-    table = ("DataTable (T,1,-1)\n  DataInterval(0,1,sec,1)\n  DataInterval(0,1,sec,1)\n"
-             "  Sample (1,X,FP2)\nEndTable\n")
-    assert messages(prog("    X = 1", table), logger) == [
-        "Only one DataInterval allowed within DataTable..EndTable."]
+    table = "DataTable (T,1,-1)\n  DataInterval(0,1,sec,1)\n  DataInterval(0,1,sec,1)\n  Sample (1,X,FP2)\nEndTable\n"
+    assert messages(prog("    X = 1", table), logger) == ["Only one DataInterval allowed within DataTable..EndTable."]
 
 
 def test_menupick_outside_displaymenu():
-    text = "Public X, Y\nMenuPick(TRUE,FALSE)\n" + TABLE + \
-        "BeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+    text = (
+        "Public X, Y\nMenuPick(TRUE,FALSE)\n"
+        + TABLE
+        + "BeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+    )
     assert messages(text) == ["MenuPick must be used within DisplayMenu..EndMenu."]
 
 
-@pytest.mark.parametrize("alias", ["Alias CD16(29) = Spare2_1  3", "Alias CD16(29) = Sp x y",
-                                   "Alias CD16(29) = Sp + 1", "Alias CD16(29) = Sp, Q2",
-                                   "Alias Q = Sp As Long"])
+@pytest.mark.parametrize(
+    "alias",
+    [
+        "Alias CD16(29) = Spare2_1  3",
+        "Alias CD16(29) = Sp x y",
+        "Alias CD16(29) = Sp + 1",
+        "Alias CD16(29) = Sp, Q2",
+        "Alias Q = Sp As Long",
+    ],
+)
 def test_alias_ignores_text_after_the_name(alias):
     text = f"Public CD16(32), Q\n{alias}\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n"
     assert messages(text) == []
 
 
 def test_alias_comma_names_are_all_declared():
-    text = ("Public CD16(32)\nAlias CD16(1) = A1, B1\nBeginProg\n  Scan (1,Sec,0,0)\n    B1 = 2\n"
-            "  NextScan\nEndProg\n")
+    text = "Public CD16(32)\nAlias CD16(1) = A1, B1\nBeginProg\n  Scan (1,Sec,0,0)\n    B1 = 2\n  NextScan\nEndProg\n"
     assert messages(text) == []
 
 
@@ -87,24 +95,28 @@ def test_no_beginprog_on_the_last_physical_line(text, line):
 
 def test_no_beginprog_does_not_hide_pass2_errors():
     assert messages("Public X\nY=EXP()\n") == [
-        "Invalid, or out of place expression: Y=EXP().", "Expr illegally occurs before BeginProg."]
+        "Invalid, or out of place expression: Y=EXP().",
+        "Expr illegally occurs before BeginProg.",
+    ]
 
 
 TAIL = "BeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n"
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr300"])
-@pytest.mark.parametrize("pre,expected", [
-    ("If X Then\nEndIf\n", ["If illegally occurs before BeginProg."]),
-    ("If X Then X = 1\n", ["If illegally occurs before BeginProg."]),
-    ("For I = 1 To 2\nNext\n", ["FOR illegally occurs before BeginProg."]),
-    ("Do\nLoop\n", ["Do illegally occurs before BeginProg."]),
-    ("Select Case X\nCase 1\nEndSelect\n", ["SELECT illegally occurs before BeginProg."]),
-    ("EndIf\n", ["END IF without IF or END SELECT without SELECT.",
-                 "EndIf illegally occurs before BeginProg."]),
-    ("Loop\n", ["LOOP without DO.", "Loop illegally occurs before BeginProg."]),
-    ("Next\n", ["NEXT without FOR.", "NEXT illegally occurs before BeginProg."]),
-    ("Sub S\n  If X Then\n  EndIf\nEndSub\n", []),
-])
+@pytest.mark.parametrize(
+    "pre,expected",
+    [
+        ("If X Then\nEndIf\n", ["If illegally occurs before BeginProg."]),
+        ("If X Then X = 1\n", ["If illegally occurs before BeginProg."]),
+        ("For I = 1 To 2\nNext\n", ["FOR illegally occurs before BeginProg."]),
+        ("Do\nLoop\n", ["Do illegally occurs before BeginProg."]),
+        ("Select Case X\nCase 1\nEndSelect\n", ["SELECT illegally occurs before BeginProg."]),
+        ("EndIf\n", ["END IF without IF or END SELECT without SELECT.", "EndIf illegally occurs before BeginProg."]),
+        ("Loop\n", ["LOOP without DO.", "Loop illegally occurs before BeginProg."]),
+        ("Next\n", ["NEXT without FOR.", "NEXT illegally occurs before BeginProg."]),
+        ("Sub S\n  If X Then\n  EndIf\nEndSub\n", []),
+    ],
+)
 def test_control_statements_before_beginprog(pre, expected, logger):
     assert messages(f"Public X, I\n{pre}{TAIL}", logger) == expected

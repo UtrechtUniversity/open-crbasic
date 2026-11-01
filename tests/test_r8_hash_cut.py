@@ -6,9 +6,12 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-CASES = [c for f in ("r8_hash_cut",)
-         if (Path(__file__).parent / "fixtures" / f"{f}.json").exists()
-         for c in json.loads((Path(__file__).parent / "fixtures" / f"{f}.json").read_text(encoding="utf-8"))["cases"]]
+CASES = [
+    c
+    for f in ("r8_hash_cut",)
+    if (Path(__file__).parent / "fixtures" / f"{f}.json").exists()
+    for c in json.loads((Path(__file__).parent / "fixtures" / f"{f}.json").read_text(encoding="utf-8"))["cases"]
+]
 
 
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])

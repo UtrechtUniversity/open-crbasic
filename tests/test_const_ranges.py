@@ -1,5 +1,6 @@
 """Constant-parameter range checks. Expected output is the real compilers' verbatim output; the
 fixture records each compiler's sha256 and the observation date."""
+
 import json
 from pathlib import Path
 

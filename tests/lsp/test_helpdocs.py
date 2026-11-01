@@ -45,22 +45,24 @@ def test_normal_page(prov):
 def test_parameter_description_includes_option_table(tmp_path, linked):
     instructions = tmp_path / "Instructions"
     instructions.mkdir()
-    description = ('<p>Filters noise; common options are:</p>'
-                   '<table><thead><tr>\n<th>Option</th>\n<th>Description</th>\n</tr></thead><tbody>'
-                   '<tr>\n<td>60</td>\n<td><p>Filter <b>60 Hz</b>.</p></td>\n</tr>'
-                   '<tr><td>50</td><td>Filter 50 Hz.</td></tr></tbody></table>'
-                   '<p>Type: Constant</p><p>Other</p><p>Other description.</p>')
+    description = (
+        "<p>Filters noise; common options are:</p>"
+        "<table><thead><tr>\n<th>Option</th>\n<th>Description</th>\n</tr></thead><tbody>"
+        "<tr>\n<td>60</td>\n<td><p>Filter <b>60 Hz</b>.</p></td>\n</tr>"
+        "<tr><td>50</td><td>Filter 50 Hz.</td></tr></tbody></table>"
+        "<p>Type: Constant</p><p>Other</p><p>Other description.</p>"
+    )
     (instructions / "foolist.htm").write_text(
-        '<h1>FooList</h1><h2>Syntax</h2>'
+        "<h1>FooList</h1><h2>Syntax</h2>"
         '<p>FooList(<a href="../parameters/fn.htm">fN1</a>, Other)</p>'
-        + ('' if linked else '<h2>Parameters</h2><p>f<sub>N1</sub></p>' + description))
+        + ("" if linked else "<h2>Parameters</h2><p>f<sub>N1</sub></p>" + description)
+    )
     if linked:
         (tmp_path / "parameters").mkdir()
-        (tmp_path / "parameters" / "fn.htm").write_text('<h1>fN1</h1>' + description)
+        (tmp_path / "parameters" / "fn.htm").write_text("<h1>fN1</h1>" + description)
     h = HelpProvider(tmp_path).lookup("FooList")
     assert h is not None
-    expected = ("Filters noise; common options are:\nOption | Description\n"
-                "60 | Filter 60 Hz.\n50 | Filter 50 Hz.")
+    expected = "Filters noise; common options are:\nOption | Description\n60 | Filter 60 Hz.\n50 | Filter 50 Hz."
     assert h.params[0].description == expected
     assert "Filter 50 Hz." in helpdocs.render_markdown(h, pair_signature("FooList", [1, 2], h))
     assert h.params[1].description == ("" if linked else "Other description.")
@@ -77,26 +79,37 @@ def test_multi_name_page(prov):
     assert a.names == b.names == ("FOOSTART", "FOOSTOP")
     assert [p.name for p in a.params] == ["Dest", "Reps"]
     assert b.params == () and b.syntax.startswith("FooStop")
-    assert a.params[0].description == ""    # no Parameters section; linked page absent
+    assert a.params[0].description == ""  # no Parameters section; linked page absent
 
 
 def test_split_glued_and_unlinked_names(prov):
     h = prov.lookup("FooSplit")
     assert [p.name for p in h.params] == [
-        "Dest", "Mult", "Offset", "Delay", "Count", "TotalCalls", "Module", '"quoted, text"', "Size"]
+        "Dest",
+        "Mult",
+        "Offset",
+        "Delay",
+        "Count",
+        "TotalCalls",
+        "Module",
+        '"quoted, text"',
+        "Size",
+    ]
     links = {p.name: p.link for p in h.params}
-    assert links["Mult"] == links["Offset"] == "../parameters/foomult.htm"   # one link, two names
-    assert links["Delay"] == "../parameters/foodelay.htm"                   # word glued after </a>
+    assert links["Mult"] == links["Offset"] == "../parameters/foomult.htm"  # one link, two names
+    assert links["Delay"] == "../parameters/foodelay.htm"  # word glued after </a>
     assert links["Count"] == "../parameters/foocount.htm"
-    assert links["TotalCalls"] == "../parameters/foototal.htm"              # no comma between links
-    assert links["Module"] is None and links['"quoted, text"'] is None     # unlinked; comma in quotes
+    assert links["TotalCalls"] == "../parameters/foototal.htm"  # no comma between links
+    assert links["Module"] is None and links['"quoted, text"'] is None  # unlinked; comma in quotes
     assert [p.optional for p in h.params] == [False] * 3 + [True] + [False] * 4 + [True]
 
 
 def test_link_overlap_takes_name_text(prov):
     h = prov.lookup("FooSep")
     assert [(p.name, p.link, p.optional) for p in h.params] == [
-        ("Gain", "../parameters/foomult.htm", False), ("Return", "../parameters/fooret.htm", True)]
+        ("Gain", "../parameters/foomult.htm", False),
+        ("Return", "../parameters/fooret.htm", True),
+    ]
 
 
 def test_trailing_prose_after_form_is_ignored(prov):
@@ -122,9 +135,9 @@ def test_bare_brackets_mark_optional_and_others_stay_as_written(prov):
     h = prov.lookup("FooBracket")
     assert [(p.name, p.link, p.optional) for p in h.params] == [
         ("Dest", "../parameters/foodest.htm", False),
-        ("Mode [A,B,C]", None, False),                    # choice list: one parameter, not optional
+        ("Mode [A,B,C]", None, False),  # choice list: one parameter, not optional
         ("FooInit", "../parameters/foolinked.htm", True),  # `[ X ]` around one name
-        ("Last", None, True),                              # `Name [optional]`
+        ("Last", None, True),  # `Name [optional]`
     ]
 
 
@@ -133,20 +146,22 @@ def test_optional_marker_item_applies_to_preceding_parameter(prov):
     assert [(p.name, p.link, p.optional) for p in h.params] == [
         ("Dest", "../parameters/foodest.htm", False),
         ("Mode", "../parameters/foomode.htm", False),
-        ("FileOption", "../parameters/foofileopt.htm", True),   # `FileOption, [optional],`
-        ("TimeOut", "../parameters/footimeout.htm", True),      # `TimeOut [optional]`
-        ("Tail", "../parameters/footail.htm", True),            # `Tail, (optional)`
+        ("FileOption", "../parameters/foofileopt.htm", True),  # `FileOption, [optional],`
+        ("TimeOut", "../parameters/footimeout.htm", True),  # `TimeOut [optional]`
+        ("Tail", "../parameters/footail.htm", True),  # `Tail, (optional)`
     ]
     sig = pair_signature("FooOpt", [1, 2, 3, 4, 5], h)
     assert sig.matched
     assert helpdocs.render_signature_label(sig) == (
-        "FooOpt(Dest, Mode, FileOption (optional), TimeOut (optional), Tail (optional))")
+        "FooOpt(Dest, Mode, FileOption (optional), TimeOut (optional), Tail (optional))"
+    )
 
 
 def test_leading_optional_marker_creates_nothing(tmp_path):
     (tmp_path / "Instructions").mkdir()
     (tmp_path / "Instructions" / "x.htm").write_text(
-        '<h1>FooLead</h1><h2>Syntax</h2><p>FooLead ( [optional], <a href="../parameters/foodest.htm">Dest</a> )</p>')
+        '<h1>FooLead</h1><h2>Syntax</h2><p>FooLead ( [optional], <a href="../parameters/foodest.htm">Dest</a> )</p>'
+    )
     h = HelpProvider(tmp_path).lookup("FooLead")
     assert h is not None
     assert [(p.name, p.optional) for p in h.params] == [("Dest", False)]
@@ -168,10 +183,8 @@ def test_trailing_ellipsis_is_one_repeatable_parameter(prov):
 
 
 def test_ellipsis_collapses_only_its_numbered_run(prov):
-    assert [(p.name, p.repeatable) for p in prov.lookup("FooMix").params] == [
-        ("Item1", False), ("Mode", True)]
-    assert [(p.name, p.repeatable) for p in prov.lookup("FooRest").params] == [
-        ("Dest", False), ("Extra", True)]
+    assert [(p.name, p.repeatable) for p in prov.lookup("FooMix").params] == [("Item1", False), ("Mode", True)]
+    assert [(p.name, p.repeatable) for p in prov.lookup("FooRest").params] == [("Dest", False), ("Extra", True)]
 
 
 def test_pairing_labels_repeatable_with_ellipsis(prov):
@@ -179,7 +192,7 @@ def test_pairing_labels_repeatable_with_ellipsis(prov):
     sig = pair_signature("FooMenu", [1, 2], h)
     assert sig.matched and [p.repeatable for p in sig.params] == [False, True]
     assert helpdocs.render_signature_label(sig) == "FooMenu(Dest, Item...)"
-    sig = pair_signature("FooMenu", [1], h)     # counts disagree: no pairing, no guessing
+    sig = pair_signature("FooMenu", [1], h)  # counts disagree: no pairing, no guessing
     assert not sig.matched and not any(p.repeatable for p in sig.params)
 
 
@@ -193,7 +206,10 @@ def test_missing_parameters_section_uses_linked_page(prov):
 def test_syntax_without_links(prov):
     h = prov.lookup("FooNoLinks")
     assert [(p.name, p.link, p.optional) for p in h.params] == [
-        ("First", None, False), ("Second", None, True), ("Third", None, False)]
+        ("First", None, False),
+        ("Second", None, True),
+        ("Third", None, False),
+    ]
 
 
 def test_entities_decoded(prov):
@@ -205,7 +221,7 @@ def test_entities_decoded(prov):
 
 def test_malformed_pages_never_raise(prov):
     for name in ("FooBroken", "FooGarbage", "FooEmpty"):
-        prov.lookup(name)    # None or a partial result, but no exception
+        prov.lookup(name)  # None or a partial result, but no exception
     assert prov.lookup("FooEmpty") is None
     assert prov.lookup("FooGarbage") is None
 
@@ -226,7 +242,8 @@ def test_link_escape_is_ignored(tmp_path):
     (tmp_path / "Instructions").mkdir()
     (tmp_path / "secret.htm").write_text("<p>Dest</p><p>leaked</p>")
     (tmp_path / "Instructions" / "x.htm").write_text(
-        '<h1>FooX</h1><h2>Syntax</h2><p>FooX(<a href="../parameters/../../secret.htm">Dest</a>)</p>')
+        '<h1>FooX</h1><h2>Syntax</h2><p>FooX(<a href="../parameters/../../secret.htm">Dest</a>)</p>'
+    )
     assert required(required(HelpProvider(tmp_path)).lookup("FooX")).params[0].description == ""
 
 
@@ -265,7 +282,7 @@ def test_rendering(prov):
     assert "x \\< y" in md and "- `Dest`:" in md
     plain = helpdocs.render_plain(h, sig)
     assert plain.splitlines()[0] == "FooEntities (A & B)" and "Dest: x < y && y > z" in plain
-    assert "FooEntities ( Dest )" in helpdocs.render_plain(h)    # unpaired: help syntax text
+    assert "FooEntities ( Dest )" in helpdocs.render_plain(h)  # unpaired: help syntax text
 
 
 def test_coverage_report_on_fixtures(prov):
@@ -276,6 +293,7 @@ def test_coverage_report_on_fixtures(prov):
             "FOONOLINKS": {"params": [1, 1, 1]},
             "ABSENT": {"params": []},
         }
+
     r = coverage_report(P, prov)
     assert (r.total, r.with_help, r.matching) == (4, 3, 2)
     assert r.mismatches == (("FOOMEASURE", 5, 6),)
@@ -286,12 +304,13 @@ def test_function_coverage_on_fixtures(prov):
     class P:
         instructions = {}
         functions = {
-            "FOOSTART": {"nargs": 2},                 # two help parameters: match
-            "FOOMEASURE": {"nargs": 6},               # five help parameters: mismatch
-            "FOOMENU": {"nargs": 2},                  # `Item1..., Item...` folds to two: match
-            "FOONOLINKS": {},                         # help, no nargs: unchecked
-            "ABSENT": {"nargs": 0},                   # no help page
+            "FOOSTART": {"nargs": 2},  # two help parameters: match
+            "FOOMEASURE": {"nargs": 6},  # five help parameters: mismatch
+            "FOOMENU": {"nargs": 2},  # `Item1..., Item...` folds to two: match
+            "FOONOLINKS": {},  # help, no nargs: unchecked
+            "ABSENT": {"nargs": 0},  # no help page
         }
+
     r = function_coverage_report(P, prov)
     assert (r.total, r.with_nargs, r.with_help, r.checked, r.matching) == (5, 4, 4, 3, 2)
     assert r.mismatches == (("FOOMEASURE", 5, 6),)
@@ -303,15 +322,18 @@ def test_function_coverage_on_fixtures(prov):
 def test_function_arg_count_classes_on_fixtures(prov):
     class P:
         functions = {
-            "FOOSTART": {"nargs": 2},                 # match: not listed
-            "FOOMEASURE": {"nargs": 6},               # 5 help parameters, nargs at the packing cap
-            "FOOMENU": {"nargs": 1},                  # 2 help, 2 required: other
-            "FOONOLINKS": {},                         # no nargs: not listed
-            "ABSENT": {"nargs": 0},                   # no help: not listed
+            "FOOSTART": {"nargs": 2},  # match: not listed
+            "FOOMEASURE": {"nargs": 6},  # 5 help parameters, nargs at the packing cap
+            "FOOMENU": {"nargs": 1},  # 2 help, 2 required: other
+            "FOONOLINKS": {},  # no nargs: not listed
+            "ABSENT": {"nargs": 0},  # no help: not listed
         }
+
     rows = function_arg_count_classes(P, prov)
     assert [(r.name, r.help_count, r.help_required, r.nargs, r.category) for r in rows] == [
-        ("FOOMEASURE", 5, 5, 6, "packing_cap"), ("FOOMENU", 2, 2, 1, "other")]
+        ("FOOMEASURE", 5, 5, 6, "packing_cap"),
+        ("FOOMENU", 2, 2, 1, "other"),
+    ]
 
 
 @pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
@@ -321,8 +343,20 @@ def test_local_corpus_function_arg_count_classes():
     assert by == {
         "packing_cap": ["EMAILRECV", "EMAILSEND", "FTPCLIENT", "UDPDATAGRAM", "XMLPARSE"],
         "optional_tail": ["HTTPGET", "SERIALOPEN", "TCPOPEN", "UDPOPEN"],
-        "other": ["CHECKSUM", "CTYPE", "EMAILRELAY", "GZIP", "HTTPPOST", "HTTPPUT", "IFTIME",
-                  "NETWORKTIMEPROTOCOL", "PPPOPEN", "SPRINTF", "TIMEINTOINTERVAL"]}
+        "other": [
+            "CHECKSUM",
+            "CTYPE",
+            "EMAILRELAY",
+            "GZIP",
+            "HTTPPOST",
+            "HTTPPUT",
+            "IFTIME",
+            "NETWORKTIMEPROTOCOL",
+            "PPPOPEN",
+            "SPRINTF",
+            "TIMEINTOINTERVAL",
+        ],
+    }
     ftp = next(r for r in rows if r.name == "FTPCLIENT")
     assert (ftp.help_count, ftp.help_required, ftp.nargs) == (11, 6, 6)
 
@@ -332,7 +366,16 @@ def test_local_corpus_voltse_parameters():
     h = HelpProvider(CORPUS).lookup("VoltSE")
     assert h is not None
     assert [p.name for p in h.params] == [
-        "Dest", "Reps", "Range", "SEChan", "MeasOff", "SettlingTime", "fN1", "Mult", "Offset"]
+        "Dest",
+        "Reps",
+        "Range",
+        "SEChan",
+        "MeasOff",
+        "SettlingTime",
+        "fN1",
+        "Mult",
+        "Offset",
+    ]
 
 
 @pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
@@ -343,12 +386,16 @@ def test_local_corpus_documented_syntax_rules():
     assert menu is not None
     assert [(x.name, x.repeatable) for x in menu.params] == [("Item", True)]
     assert pair_signature("MenuPick", [1], menu).matched
-    for name, optional in (("ModbusSlave", "ModbusOption"), ("ModbusServer", "ModbusOption"),
-                           ("FFTSpa", "FFTSpaInit"), ("SortSpa", "Dimension")):
+    for name, optional in (
+        ("ModbusSlave", "ModbusOption"),
+        ("ModbusServer", "ModbusOption"),
+        ("FFTSpa", "FFTSpaInit"),
+        ("SortSpa", "Dimension"),
+    ):
         assert [x.name for x in required(p.lookup(name)).params if x.optional] == [optional]
     display = p.lookup("DisplayMenu")
     assert display is not None
-    assert [x.name for x in display.params] == ['"MenuName"', "AddToSystem", "Cursor"]    # quotes kept
+    assert [x.name for x in display.params] == ['"MenuName"', "AddToSystem", "Cursor"]  # quotes kept
     assert [x.name for x in display.params if x.optional] == ["Cursor"]
 
 
@@ -368,7 +415,7 @@ def test_local_corpus_parses_structurally():
     p = HelpProvider(CORPUS)
     n_pages = 0
     for f in sorted((CORPUS / "Instructions").glob("*.htm")):
-        page = helpdocs._parse_page(f)    # must not raise
+        page = helpdocs._parse_page(f)  # must not raise
         n_pages += page is not None
     assert n_pages > 100
     cat = profiles.get("cr6")
@@ -401,7 +448,10 @@ def test_local_corpus_function_coverage_and_instructions_unchanged():
 @pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
 def test_local_corpus_function_signature_labels():
     p = HelpProvider(CORPUS)
-    labels = {n: required(hover.signature_help(n, 0, "cr6", p)).label for n in ("SIN", "PWR", "INSTR", "FILEOPEN", "SERIALOUT")}
+    labels = {
+        n: required(hover.signature_help(n, 0, "cr6", p)).label
+        for n in ("SIN", "PWR", "INSTR", "FILEOPEN", "SERIALOUT")
+    }
     assert labels == {
         "SIN": "SIN(angle)",
         "PWR": "PWR(X, Y)",
@@ -411,5 +461,6 @@ def test_local_corpus_function_signature_labels():
     }
     tcp = hover.signature_help("TCPOPEN", 0, "cr6", p)
     assert tcp is not None
-    assert tcp.paired and tcp.label == ("TCPOPEN(IPAddr, TCPPort, IPBuffer, IPTimeOut (optional), "
-                                        "ConnectHandle (optional), MaxConnect (optional))")
+    assert tcp.paired and tcp.label == (
+        "TCPOPEN(IPAddr, TCPPort, IPBuffer, IPTimeOut (optional), ConnectHandle (optional), MaxConnect (optional))"
+    )

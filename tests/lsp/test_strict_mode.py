@@ -6,5 +6,5 @@ import os
 
 def test_strict_mode_is_active_in_this_process():
     assert os.environ.get("OPENCRBASIC_STRICT") == "1", (
-        "OPENCRBASIC_STRICT is not 1 in "
-        f"{os.environ.get('PYTEST_XDIST_WORKER', 'the main process')}")
+        f"OPENCRBASIC_STRICT is not 1 in {os.environ.get('PYTEST_XDIST_WORKER', 'the main process')}"
+    )

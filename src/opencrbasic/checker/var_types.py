@@ -20,8 +20,10 @@ _NUMERIC = ("FLOAT", "LONG")
 # built-in functions returning a String (`kind` 312, docs/binary.md), the same on all four loggers;
 # `CType` returns the type its second argument names (oracle, round 67)
 _STRING_FUNCTIONS = frozenset(
-    f["name"] for f in json.loads((Path(__file__).resolve().parents[1] / "data" / "functions.json")
-                                  .read_text()) if f.get("kind") == 312) - {"CTYPE"}
+    f["name"]
+    for f in json.loads((Path(__file__).resolve().parents[1] / "data" / "functions.json").read_text())
+    if f.get("kind") == 312
+) - {"CTYPE"}
 
 
 def _types(program: S.Program) -> tuple[dict[str, str], dict[str, str]]:
@@ -29,8 +31,12 @@ def _types(program: S.Program) -> tuple[dict[str, str], dict[str, str]]:
     types = symbols.declared_variable_types(program)
     alias: dict[str, str] = {}
     for st in program.statements:
-        if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS" and st.args and \
-                isinstance(st.args[0], (S.Name, S.Index)):
+        if (
+            isinstance(st, S.Instruction)
+            and st.keyword.upper() == "ALIAS"
+            and st.args
+            and isinstance(st.args[0], (S.Name, S.Index))
+        ):
             for a in st.args[1:]:
                 if isinstance(a, S.Name):
                     alias[a.name.upper()] = st.args[0].name.upper()
@@ -40,11 +46,12 @@ def _types(program: S.Program) -> tuple[dict[str, str], dict[str, str]]:
 class _Typer:
     def __init__(self, program: S.Program):
         self.types, self.alias = _types(program)
-        self.consts = {st.name.upper(): st for st in program.statements
-                       if isinstance(st, S.ConstDecl)}
-        self.function_types = {st.name.upper(): st.return_type.split("*")[0].strip().upper()
-                               for st in program.statements if isinstance(st, S.SubDef)
-                               and st.keyword.upper() == "FUNCTION" and st.return_type}
+        self.consts = {st.name.upper(): st for st in program.statements if isinstance(st, S.ConstDecl)}
+        self.function_types = {
+            st.name.upper(): st.return_type.split("*")[0].strip().upper()
+            for st in program.statements
+            if isinstance(st, S.SubDef) and st.keyword.upper() == "FUNCTION" and st.return_type
+        }
 
     def base(self, name: str) -> str:
         return self.alias.get(name.upper(), name.upper())
@@ -72,10 +79,17 @@ class _Typer:
             # a String-returning built-in or Function, or an `IIF` with a String arm (oracle, all
             # four loggers, round 65, docs/instructions.md#string-operands)
             name = expr.name.upper()
-            if name in _STRING_FUNCTIONS or self.function_types.get(name) == "STRING" or (
-                    name == "IIF" and len(expr.args) > 1 and self.of(expr.args[1], depth + 1) == "STRING") or (
-                    name == "CTYPE" and len(expr.args) > 1 and isinstance(expr.args[1], S.Name)
-                    and expr.args[1].name.upper() == "STRING"):
+            if (
+                name in _STRING_FUNCTIONS
+                or self.function_types.get(name) == "STRING"
+                or (name == "IIF" and len(expr.args) > 1 and self.of(expr.args[1], depth + 1) == "STRING")
+                or (
+                    name == "CTYPE"
+                    and len(expr.args) > 1
+                    and isinstance(expr.args[1], S.Name)
+                    and expr.args[1].name.upper() == "STRING"
+                )
+            ):
                 return "STRING"
         if isinstance(expr, S.Name):
             if expr.name.upper() in ("TRUE", "FALSE"):
@@ -89,12 +103,11 @@ class _Typer:
                 return const.type.upper()
             return self.of(const.value, depth + 1)
         if isinstance(expr, S.Unary) and expr.op in ("-", "+"):
-            return self.of(expr.operand, depth + 1) if \
-                self.of(expr.operand, depth + 1) in _NUMERIC else None
+            return self.of(expr.operand, depth + 1) if self.of(expr.operand, depth + 1) in _NUMERIC else None
         if isinstance(expr, S.Binary) and expr.op in ("+", "-", "*", "/", "&"):
             left, right = self.of(expr.left, depth + 1), self.of(expr.right, depth + 1)
             if "STRING" in (left, right) and expr.op in ("+", "&"):
-                return "STRING"   # `2000 + Mid(...)` concatenates (round 65)
+                return "STRING"  # `2000 + Mid(...)` concatenates (round 65)
             if left in _NUMERIC and right in _NUMERIC:
                 return "LONG" if left == right == "LONG" and expr.op != "/" else "FLOAT"
         return None
@@ -110,7 +123,7 @@ _SNMP_ALLOWED = {"FLOAT": {"FLOAT"}, "STRING": {"STRING", "FLOAT"}}
 # Operators that reject a String operand (oracle, all four loggers): the logical and shift
 # operators with one shared message, `* / MOD` with one message per String side.
 _STRING_ILLEGAL_OPS = {"AND", "OR", "XOR", "IMP", "EQV", "<<", ">>"}
-_STRING_ARITH_OPS = {"*", "/", "\\", "MOD"}   # `\` is also `INTDV` (round 36)
+_STRING_ARITH_OPS = {"*", "/", "\\", "MOD"}  # `\` is also `INTDV` (round 36)
 
 
 def _subexpressions(expr: S.Expr | None):
@@ -183,15 +196,19 @@ def _string_operand_messages(typer: _Typer, stmt: S.Stmt) -> list[str]:
             elif node.op in _STRING_ILLEGAL_OPS and (left or right):
                 found.append("String is illegal here")
             elif node.op in _STRING_ARITH_OPS and (left or right):
-                found += (["Illegal String operand"] if left else []) + \
-                    (["Illegal operand of type STRING"] if right else [])
+                found += (["Illegal String operand"] if left else []) + (
+                    ["Illegal operand of type STRING"] if right else []
+                )
     return found
 
 
 def _snmp_mismatch(typer: _Typer, name: S.Expr | None, snmp_type: str) -> bool:
     var = typer.variable(name)
-    return var is not None and snmp_type.upper() in _SNMP_TYPES and \
-        snmp_type.upper() not in _SNMP_ALLOWED.get(typer.types[var], _SNMP_TYPES - {"STRING"})
+    return (
+        var is not None
+        and snmp_type.upper() in _SNMP_TYPES
+        and snmp_type.upper() not in _SNMP_ALLOWED.get(typer.types[var], _SNMP_TYPES - {"STRING"})
+    )
 
 
 def _same_type(dest: str, source: str) -> bool:
@@ -210,9 +227,11 @@ def _indexed_past_first(typer: _Typer, dest: S.Expr | None, env: consteval.Env) 
     if not isinstance(dest, S.Index):
         return False
     for a in dest.args:
-        if isinstance(a, (S.Binary, S.String)) or \
-                (isinstance(a, S.Name) and typer.variable(a) is not None) \
-                or (isinstance(a, S.Number) and a.value >= 2):
+        if (
+            isinstance(a, (S.Binary, S.String))
+            or (isinstance(a, S.Name) and typer.variable(a) is not None)
+            or (isinstance(a, S.Number) and a.value >= 2)
+        ):
             return True
         if isinstance(a, S.Name):
             try:
@@ -244,8 +263,11 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             in_prog = True
         if isinstance(stmt, S.Unparsed):  # a dotted OID is not an expression
             m = _SNMP_RE.match(stmt.text)
-            if m and "SNMPVARIABLE" in profile.instructions and \
-                    _snmp_mismatch(typer, S.Name(stmt.line, name=m.group(1)), m.group(2)):
+            if (
+                m
+                and "SNMPVARIABLE" in profile.instructions
+                and _snmp_mismatch(typer, S.Name(stmt.line, name=m.group(1)), m.group(2))
+            ):
                 diags.error(stmt.line, "Miss match of types", stmt.file)
             continue
         if not isinstance(stmt, S.Instruction):
@@ -271,23 +293,23 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             elif kind == "LONG" and in_prog:
                 message = "TimesOfInstructions() must be declared before BeginProg."
         elif kw == "ARGOSERROR" and args:
-            if typer.variable(args[0]) is not None and typer.of(args[0]) not in (None, "STRING") \
-                    or isinstance(args[0], (S.String, S.Number, S.Binary, S.Unary)):
+            if (
+                typer.variable(args[0]) is not None
+                and typer.of(args[0]) not in (None, "STRING")
+                or isinstance(args[0], (S.String, S.Number, S.Binary, S.Unary))
+            ):
                 # (also a literal or an expression: `ArgosError("fuzz")`, `ArgosError((1+2))`,
                 # oracle CR6/CR1000X 2026-10-12)
                 message = "A string variable destination is required"
         elif kw == "SORTSPAINDEXED" and len(args) > 2:
             dest, source = typer.of(args[0]), typer.of(args[2])
-            if typer.variable(args[0]) is not None and dest and source and \
-                    not _same_type(dest, source):
+            if typer.variable(args[0]) is not None and dest and source and not _same_type(dest, source):
                 message = "Source and Dest types must be the same."
-        elif kw == "SAMPLE" and len(args) > 2 and isinstance(args[2], S.Name) and \
-                args[2].name.upper() == "NSEC":
+        elif kw == "SAMPLE" and len(args) > 2 and isinstance(args[2], S.Name) and args[2].name.upper() == "NSEC":
             source = typer.of(args[1])
             if source in ("STRING", "BOOLEAN", "DOUBLE"):
                 message = "Source type must be either LONG or FLOAT or NSEC for data type NSEC"
-            elif source == "FLOAT" and not any((d.line, d.file) == (stmt.line, stmt.file)
-                                              for d in diags.errors):
+            elif source == "FLOAT" and not any((d.line, d.file) == (stmt.line, stmt.file) for d in diags.errors):
                 size = _array_size(typer, tables(stmt).dims, args[1])
                 try:
                     reps = consteval.value_of(args[0], env)
@@ -296,21 +318,30 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                 if size is not None and isinstance(reps, int) and reps >= 1 and size < 7 * reps:
                     message = "Float to NSEC expects source array size >= 7"
         elif kw in ("SDMCD16MASK", "SDMCD16AC") and args:
-            if kw == "SDMCD16MASK" and any(typer.types.get(typer.variable(a) or "", "") == "BOOLEAN"
-                                           for a in args[:2]):
+            if kw == "SDMCD16MASK" and any(typer.types.get(typer.variable(a) or "", "") == "BOOLEAN" for a in args[:2]):
                 message = "Source and Mask type must be LONG."
-            if isinstance(args[0], S.Number) or (isinstance(args[0], S.Name) and
-                                                 args[0].name.upper() in typer.consts):
+            if isinstance(args[0], S.Number) or (isinstance(args[0], S.Name) and args[0].name.upper() in typer.consts):
                 extra = "Invalid Source."
-        elif kw == "SNMPVARIABLE" and len(args) > 2 and isinstance(args[2], S.Name) and \
-                _snmp_mismatch(typer, args[0], args[2].name):
+        elif (
+            kw == "SNMPVARIABLE"
+            and len(args) > 2
+            and isinstance(args[2], S.Name)
+            and _snmp_mismatch(typer, args[0], args[2].name)
+        ):
             message = "Miss match of types"
-        elif kw == "MENURECOMPILE" and len(args) > 1 and \
-                isinstance(args[1], (S.Name, S.Index)) and typer.of(args[1]) == "STRING":
+        elif (
+            kw == "MENURECOMPILE"
+            and len(args) > 1
+            and isinstance(args[1], (S.Name, S.Index))
+            and typer.of(args[1]) == "STRING"
+        ):
             message = "String type variable not allowed."
-        elif kw == "SDMGENERIC" and len(args) > 6 and \
-                typer.of(args[0]) == typer.of(args[4]) == "STRING" and \
-                consteval.is_constant(args[6], env):
+        elif (
+            kw == "SDMGENERIC"
+            and len(args) > 6
+            and typer.of(args[0]) == typer.of(args[4]) == "STRING"
+            and consteval.is_constant(args[6], env)
+        ):
             try:
                 bytes_per_value = consteval.value_of(args[6], env)
             except consteval.NotConstant:
@@ -347,6 +378,7 @@ def _ctype_illegal(node: S.Index, env, legal: frozenset, known: set | None) -> b
         return False
     kind = args[1]
     from . import expressions
+
     if known is not None and expressions._undefined_names(args[0], known):
         return True
     if isinstance(kind, S.Name) and kind.name.upper() in _CTYPE_NAMES:
@@ -362,15 +394,18 @@ def check_ctype(program: S.Program, profile, diags: Diagnostics) -> None:
     if "CTYPE" not in profile.functions:
         return
     env = consteval.Env(profile, dict(program.consts))
-    legal = frozenset(v for n in ("UINT1", "IEEE4", "IEEE8")
-                      if isinstance(v := _symbol_value(env, n), int))
+    legal = frozenset(v for n in ("UINT1", "IEEE4", "IEEE8") if isinstance(v := _symbol_value(env, n), int))
     from . import expressions
+
     known = None if profile.single_pass else expressions._known_names(program, profile)
     for stmt in program.statements:
         for top in _statement_expressions(stmt):
             for node in _subexpressions(top):
-                if isinstance(node, S.Index) and node.name.upper() == "CTYPE" and \
-                        _ctype_illegal(node, env, legal, known):
+                if (
+                    isinstance(node, S.Index)
+                    and node.name.upper() == "CTYPE"
+                    and _ctype_illegal(node, env, legal, known)
+                ):
                     diags.error(stmt.line, "Illegal type", stmt.file)
 
 
@@ -400,6 +435,7 @@ def _dereference_names(top: S.Expr | None):
 def _routine_scopes(program: S.Program):
     """`stmt id -> {UPPER name: (declared name, type)}` for the variables visible at a statement:
     the globals, then the statement's own routine's locals and parameters (a local shadows)."""
+
     def declarations(stmts):
         out: dict[str, tuple[str, str]] = {}
         clash: set[str] = set()
@@ -442,6 +478,7 @@ def check_pointer_deref(program: S.Program, profile, diags: Diagnostics) -> None
     if profile.single_pass:
         return
     from . import expressions, structure
+
     scopes = _routine_scopes(program)
 
     def offender(scope, tops):
@@ -458,17 +495,29 @@ def check_pointer_deref(program: S.Program, profile, diags: Diagnostics) -> None
     known = expressions._known_names(program, profile)
     for stmt in program.statements:
         scope = scopes[id(stmt)]
-        derefs = [n if n and re.search(rf"!\s*{re.escape(n)}\b", stmt.text or "", re.I) else None
-                  for top in expressions._stmt_exprs(stmt) for n in _dereference_names(top)]
+        derefs = [
+            n if n and re.search(rf"!\s*{re.escape(n)}\b", stmt.text or "", re.I) else None
+            for top in expressions._stmt_exprs(stmt)
+            for n in _dereference_names(top)
+        ]
         if any(n and n.upper() not in scope and n.upper() not in known for n in derefs):
             # `!` on an undeclared name, once per statement; an assignment to a non-pointer whose
             # first `!` operand is that name also gets the pointer message (oracle, CR6/CR1000X,
             # round 59, docs/checker.md#dereferencing-an-undeclared-name-round-59)
             diags.error(stmt.line, "Illegal ! operation", stmt.file)
-            entry = scope.get(stmt.target.name.upper()) if isinstance(stmt, S.Assignment) and \
-                isinstance(stmt.target, (S.Name, S.Index)) else None
-            if entry and entry[1] and not entry[1].endswith("!") and derefs[0] and \
-                    derefs[0].upper() not in scope and derefs[0].upper() not in known:
+            entry = (
+                scope.get(stmt.target.name.upper())
+                if isinstance(stmt, S.Assignment) and isinstance(stmt.target, (S.Name, S.Index))
+                else None
+            )
+            if (
+                entry
+                and entry[1]
+                and not entry[1].endswith("!")
+                and derefs[0]
+                and derefs[0].upper() not in scope
+                and derefs[0].upper() not in known
+            ):
                 diags.error(stmt.line, POINTER_MESSAGE.format(name=entry[0]), stmt.file)
                 diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol), stmt.file)
             continue
@@ -481,8 +530,12 @@ def check_pointer_deref(program: S.Program, profile, diags: Diagnostics) -> None
             name = offender(scope, [target, stmt.value])
             echo = structure._out_of_place(profile, stmt.text, stmt.at_eol)
         elif isinstance(stmt, S.Unparsed):
-            if (m := re.fullmatch(r"\s*!\s*(\w+)(?:\s+\w+)?\s*", stmt.text or "")) and \
-                    (entry := scope.get(m.group(1).upper())) and entry[1] and not entry[1].endswith("!"):
+            if (
+                (m := re.fullmatch(r"\s*!\s*(\w+)(?:\s+\w+)?\s*", stmt.text or ""))
+                and (entry := scope.get(m.group(1).upper()))
+                and entry[1]
+                and not entry[1].endswith("!")
+            ):
                 name, echo = entry[0], structure._out_of_place(profile, stmt.text, stmt.at_eol)
         elif isinstance(stmt, (S.If, S.ElseIf)):
             text = expressions._if_condition_text(stmt)
@@ -490,14 +543,21 @@ def check_pointer_deref(program: S.Program, profile, diags: Diagnostics) -> None
                 continue
             name = offender(scope, [stmt.cond])
             echo = f"Invalid, or out of place expression: {text}."
-        elif isinstance(stmt, S.Call) or (isinstance(stmt, S.Instruction) and
-                                          stmt.keyword.upper() in _POINTER_ARG_INSTRUCTIONS):
+        elif isinstance(stmt, S.Call) or (
+            isinstance(stmt, S.Instruction) and stmt.keyword.upper() in _POINTER_ARG_INSTRUCTIONS
+        ):
             for i, arg in enumerate(stmt.args):
                 if (found := offender(scope, [arg])) is not None:
                     name = found
-                    echo = "Invalid, or out of place expression: " + (
-                        expressions._arg_text(stmt, i) if isinstance(stmt, S.Instruction)
-                        else expressions._call_arg_text(stmt.text, i)) + "."
+                    echo = (
+                        "Invalid, or out of place expression: "
+                        + (
+                            expressions._arg_text(stmt, i)
+                            if isinstance(stmt, S.Instruction)
+                            else expressions._call_arg_text(stmt.text, i)
+                        )
+                        + "."
+                    )
                     break
         if name is not None and echo is not None and re.search(rf"!\s*{re.escape(name)}\b", stmt.text or "", re.I):
             diags.error(stmt.line, POINTER_MESSAGE.format(name=name), stmt.file)

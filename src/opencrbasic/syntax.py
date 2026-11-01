@@ -36,7 +36,7 @@ class Expr(Node):
 @dataclass
 class Number(Expr):
     value: float | int = 0
-    text: str = ""              # source spelling, e.g. "&H1F", "1.5E3"
+    text: str = ""  # source spelling, e.g. "&H1F", "1.5E3"
 
 
 @dataclass
@@ -47,19 +47,22 @@ class String(Expr):
 @dataclass
 class Name(Expr):
     """A bare identifier: variable, constant, predefined symbol, table name, ..."""
+
     name: str = ""
 
 
 @dataclass
 class Index(Expr):
     """`name(i, j, k)`: array element, or a call when `name` is a builtin function / Function."""
+
     name: str = ""
-    args: list[Expr | None] = field(default_factory=list)   # None marks an empty argument slot
+    args: list[Expr | None] = field(default_factory=list)  # None marks an empty argument slot
 
 
 @dataclass
 class Member(Expr):
     """`Table.Field`, `Status.Battery(1)`, `Struct.member`."""
+
     base: Expr | None = None
     member: str = ""
     args: list[Expr | None] | None = None
@@ -67,13 +70,14 @@ class Member(Expr):
 
 @dataclass
 class Unary(Expr):
-    op: str = ""                # "-", "+", "NOT"
+    op: str = ""  # "-", "+", "NOT"
     operand: Expr | None = None
 
 
 @dataclass
 class ArrayLiteral(Expr):
     """`{a, b, c}`: a `Const` array value, or an array initialiser in a `Public`/`Dim`."""
+
     items: list[Expr | None] = field(default_factory=list)
 
 
@@ -85,7 +89,7 @@ class Juxtaposed(ArrayLiteral):
 
 @dataclass
 class Binary(Expr):
-    op: str = ""                # upper-case operator text: + - * / \ ^ & MOD AND OR XOR IMP EQV = <> < > <= >= << >>
+    op: str = ""  # upper-case operator text: + - * / \ ^ & MOD AND OR XOR IMP EQV = <> < > <= >= << >>
     left: Expr | None = None
     right: Expr | None = None
 
@@ -95,6 +99,7 @@ class Binary(Expr):
 
 class _StatementMetadata:
     """Parser-attached details; annotations preserve the absence of unset attributes."""
+
     origin: tuple[LogicalLine, int]
     dropped_tail: list[Token]
     grouped: bool
@@ -107,8 +112,8 @@ class _StatementMetadata:
 
 @dataclass
 class Stmt(Node, _StatementMetadata):
-    text: str = ""              # the logical line as written (for diagnostics that echo it)
-    at_eol: bool = True         # `text` (this statement's own `:`-separated segment) reaches the
+    text: str = ""  # the logical line as written (for diagnostics that echo it)
+    at_eol: bool = True  # `text` (this statement's own `:`-separated segment) reaches the
     # true end of its physical source line -- no `'` comment and no further `:`-segment cut it
     # short. Set by `parser.py`'s `_parse_line`; used only by `checker/structure.py`'s
     # `_out_of_place` to decide whether CR300/CR350 print the fallback's closing `.` on its own
@@ -123,12 +128,14 @@ class _DeclarationMetadata:
 @dataclass
 class VarDecl(_DeclarationMetadata):
     name: str
-    dims: list[Expr] = field(default_factory=list)          # up to 3
-    type: str | None = None     # upper-case: FLOAT LONG BOOLEAN STRING DOUBLE UINT1 UINT2 UINT4 BOOL8 NSEC or a StructureType name
-    string_size: Expr | None = None                         # `As String * n`
-    init: list[Expr | None] | None = None                   # `= value` or `= {a, b, c}`
+    dims: list[Expr] = field(default_factory=list)  # up to 3
+    type: str | None = (
+        None  # upper-case: FLOAT LONG BOOLEAN STRING DOUBLE UINT1 UINT2 UINT4 BOOL8 NSEC or a StructureType name
+    )
+    string_size: Expr | None = None  # `As String * n`
+    init: list[Expr | None] | None = None  # `= value` or `= {a, b, c}`
     units: str | None = None
-    dim0_span: tuple[int, int] | None = None                # (start, end) columns of the first
+    dim0_span: tuple[int, int] | None = None  # (start, end) columns of the first
     # dimension expression's own source text within the enclosing `Declaration.text` -- lets
     # `checker/structure.py` echo it verbatim for `Variable %s dimension exceeds max of %d.`
     # (oracle-confirmed to always name the *first* dimension, `docs/checker.md`), without the
@@ -141,6 +148,7 @@ class VarDecl(_DeclarationMetadata):
 @dataclass
 class Declaration(Stmt):
     """Public / Dim / Static (keyword upper-case in `kind`)."""
+
     kind: str = ""
     vars: list[VarDecl] = field(default_factory=list)
 
@@ -160,7 +168,7 @@ class ConstDecl(Stmt):
 class Assignment(Stmt):
     target: Expr | None = None  # Name, Index or Member
     value: Expr | None = None
-    compound: bool = False      # `X += 1`, stored as `X = X + 1`
+    compound: bool = False  # `X += 1`, stored as `X = X + 1`
 
 
 @dataclass
@@ -171,9 +179,10 @@ class Instruction(Stmt):
     `SAMPLE`, `ENDIF`, `CALLTABLE`, ...). `args` are the comma-separated arguments, None for an
     empty slot. Statements that need extra structure use the dedicated classes below.
     """
+
     keyword: str = ""
     args: list[Expr | None] = field(default_factory=list)
-    arg_spans: list[tuple[int, int] | None] = field(default_factory=list)   # (start, end) columns
+    arg_spans: list[tuple[int, int] | None] = field(default_factory=list)  # (start, end) columns
     # of each argument's own raw source text within this statement's `text` (`None` for an empty
     # slot); lets a checker echo an argument's *verbatim* spelling (e.g. `1+2`, not a re-derived
     # `3` or a spacing-normalised `1 + 2`) without reconstructing it from the parsed `Expr` tree.
@@ -182,6 +191,7 @@ class Instruction(Stmt):
 @dataclass
 class If(Stmt):
     """`If cond Then` (block form, `inline` None) or `If cond Then stmt [Else stmt]`."""
+
     cond: Expr | None = None
     inline: list[Stmt] | None = None
     inline_else: list[Stmt] | None = None
@@ -203,18 +213,19 @@ class For(Stmt):
 @dataclass
 class DoLoop(Stmt):
     """`Do [While|Until cond]` or `Loop [While|Until cond]`; `keyword` is DO or LOOP."""
+
     keyword: str = ""
-    cond_kind: str | None = None    # WHILE / UNTIL
+    cond_kind: str | None = None  # WHILE / UNTIL
     cond: Expr | None = None
 
 
-type CaseItem = (tuple[Literal["value"], Expr] | tuple[Literal["range"], Expr, Expr]
-                 | tuple[Literal["is"], str, Expr])
+type CaseItem = tuple[Literal["value"], Expr] | tuple[Literal["range"], Expr, Expr] | tuple[Literal["is"], str, Expr]
 
 
 @dataclass
 class Case(Stmt):
     """`Case a, b To c, Is > d, Else`; each item is ("value", e) / ("range", lo, hi) / ("is", op, e)."""
+
     items: list[CaseItem] = field(default_factory=list)
     is_else: bool = False
 
@@ -222,11 +233,11 @@ class Case(Stmt):
 @dataclass
 class Param:
     name: str
-    by_ref: bool | None = None      # None when not written
+    by_ref: bool | None = None  # None when not written
     type: str | None = None
     string_size: Expr | None = None
-    dims: int = 0                   # `x()` style array parameter
-    default: Expr | None = None     # `Optional x = 1`
+    dims: int = 0  # `x()` style array parameter
+    default: Expr | None = None  # `Optional x = 1`
     # Parsed expressions inside `x(...)`, in source order; alias declaration validation and
     # editor bindings use these. They take no part in equality or repr.
     dim_exprs: list[Expr] = field(default_factory=list, compare=False, repr=False)
@@ -235,6 +246,7 @@ class Param:
 @dataclass
 class SubDef(Stmt):
     """`Sub name(params)` or `Function name(params) [As type]`; `keyword` SUB or FUNCTION."""
+
     keyword: str = ""
     name: str = ""
     params: list[Param] = field(default_factory=list)
@@ -246,13 +258,14 @@ class SubDef(Stmt):
 @dataclass
 class Call(Stmt):
     """`Call name(args)` or a bare `name(args)` / `name args` invocation of a Sub."""
+
     name: str = ""
     args: list[Expr | None] = field(default_factory=list)
-    explicit: bool = False          # written with `Call`
-    tail_ignored: bool = False      # `S()` followed by ignored trailing text
+    explicit: bool = False  # written with `Call`
+    tail_ignored: bool = False  # `S()` followed by ignored trailing text
     tail_expr: Expr | None = None  # a `Function` call statement continued as one expression
     juxtaposed: list[Expr] | None = None  # operands of a juxtaposed tail: `Fn(1) 1`
-    juxt_opaque: bool = False        # tail starts with `,` or `(`: `Fn(1),Zork`
+    juxt_opaque: bool = False  # tail starts with `,` or `(`: `Fn(1),Zork`
 
 
 @dataclass
@@ -263,6 +276,7 @@ class Label(Stmt):
 @dataclass
 class Unparsed(Stmt):
     """A line the parser could not handle; carries the reason for diagnostics."""
+
     reason: str = ""
     expr: Expr | None = None  # the expression of a statement the parser took apart but cannot compile
 
@@ -276,8 +290,12 @@ def ends_routine(stmt: Stmt) -> bool:
     kw = stmt.keyword.upper()
     if kw in ("ENDSUB", "ENDFUNCTION"):
         return True
-    return kw == "END" and bool(stmt.args) and isinstance(stmt.args[0], Name) and \
-        stmt.args[0].name.upper() in ("SUB", "FUNCTION")
+    return (
+        kw == "END"
+        and bool(stmt.args)
+        and isinstance(stmt.args[0], Name)
+        and stmt.args[0].name.upper() in ("SUB", "FUNCTION")
+    )
 
 
 def hash_statement(st: Stmt) -> Unparsed | None:
@@ -309,11 +327,11 @@ def cut_after_hash(st: Stmt) -> Stmt:
 class Program(LoadProvenance):
     name: str
     statements: list[Stmt] = field(default_factory=list)
-    last_line: int = 0      # `EndProg`'s line, else the main file's last physical line
+    last_line: int = 0  # `EndProg`'s line, else the main file's last physical line
     hash_cut: int | None = None  # parser diagnostics kept: those before the first `#...` statement ends
     unclosed_if: bool = False  # a `#If` still open at the end of the file (before any `EndProg`)
     include_error_at: list[int] = field(default_factory=list)  # statement count when each reported
     # include error (extension, nested include) was read: where the CR300/CR350 cascade starts
-    consts: dict[str, ConstValue] = field(default_factory=dict)   # name (upper) -> resolved value,
+    consts: dict[str, ConstValue] = field(default_factory=dict)  # name (upper) -> resolved value,
     # for every `Const` the parser could constant-fold in an active branch; `checker.py` reuses
     # this (via `consteval.Env`) instead of re-walking the program to rebuild it.

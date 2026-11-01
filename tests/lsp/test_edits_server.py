@@ -75,12 +75,11 @@ def apply(text: str, edits: list[dict]) -> str:
     """Apply wire edits (ASCII documents: utf-16 characters equal indexes)."""
     assert text.isascii()
     lines = text.split("\n")
-    for e in sorted(edits, key=lambda e: (e["range"]["start"]["line"],
-                                          e["range"]["start"]["character"]), reverse=True):
+    for e in sorted(edits, key=lambda e: (e["range"]["start"]["line"], e["range"]["start"]["character"]), reverse=True):
         start, end = e["range"]["start"], e["range"]["end"]
         assert start["line"] == end["line"]
         line = lines[start["line"]]
-        lines[start["line"]] = line[:start["character"]] + e["newText"] + line[end["character"]:]
+        lines[start["line"]] = line[: start["character"]] + e["newText"] + line[end["character"] :]
     return "\n".join(lines)
 
 
@@ -88,14 +87,17 @@ def rename_at(client: LspClient, path: Path, line: int, character: int, new_name
     return client.at("textDocument/rename", path, line, character, newName=new_name)
 
 
-def error_of(client: LspClient, method: str, path: Path, line: int, character: int,
-             **extra) -> dict:
-    msg = client.response(client.send_request(method, {
-        "textDocument": {"uri": path.as_uri()},
-        "position": {"line": line, "character": character}, **extra}), 60, method)
+def error_of(client: LspClient, method: str, path: Path, line: int, character: int, **extra) -> dict:
+    msg = client.response(
+        client.send_request(
+            method,
+            {"textDocument": {"uri": path.as_uri()}, "position": {"line": line, "character": character}, **extra},
+        ),
+        60,
+        method,
+    )
     assert "error" in msg, msg
     return msg["error"]
-
 
 
 # ---- capabilities -------------------------------------------------------------------------
@@ -121,17 +123,19 @@ def test_rename_across_a_library_and_two_entries(make_client, tmp_path):
     client.open(lib, LIB, version=7)
     client.open(a, ENTRY, version=3)
     prepared = client.at("textDocument/prepareRename", lib, 0, 9)
-    assert prepared == {"range": {"start": {"line": 0, "character": 7},
-                                  "end": {"line": 0, "character": 12}}, "placeholder": "lib_v"}
+    assert prepared == {
+        "range": {"start": {"line": 0, "character": 7}, "end": {"line": 0, "character": 12}},
+        "placeholder": "lib_v",
+    }
     edit = rename_at(client, lib, 0, 9, "lib_w")
     changes = edit["documentChanges"]
     by_uri = {c["textDocument"]["uri"]: c for c in changes}
     assert set(by_uri) == {lib.as_uri(), a.as_uri(), b.as_uri()}
-    assert by_uri[lib.as_uri()]["textDocument"]["version"] == 7      # open: its version
+    assert by_uri[lib.as_uri()]["textDocument"]["version"] == 7  # open: its version
     assert by_uri[a.as_uri()]["textDocument"]["version"] == 3
-    assert by_uri[b.as_uri()]["textDocument"]["version"] is None     # closed: no version
+    assert by_uri[b.as_uri()]["textDocument"]["version"] is None  # closed: no version
     assert len(by_uri[lib.as_uri()]["edits"]) == 1
-    for c in changes:                                  # one edit per use, none duplicated
+    for c in changes:  # one edit per use, none duplicated
         assert all(e["newText"] == "lib_w" for e in c["edits"])
     new_lib = apply(LIB, by_uri[lib.as_uri()]["edits"])
     new_a = apply(ENTRY, by_uri[a.as_uri()]["edits"])
@@ -141,13 +145,16 @@ def test_rename_across_a_library_and_two_entries(make_client, tmp_path):
     # apply the edit the way a client would: the library first, so both entries fail, then the rest
     client.change(lib, new_lib, 8)
     for path in (a, b):
-        client.wait_diagnostics(path, lambda d: any("lib_v" in x["message"] or "Invalid symbol"
-                                                    in x["message"] for x in d))
+        client.wait_diagnostics(
+            path, lambda d: any("lib_v" in x["message"] or "Invalid symbol" in x["message"] for x in d)
+        )
     client.change(a, new_a, 4)
     b.write_text(new_b, encoding="utf-8")
     client.watched((b, 2))
-    client.wait_for(lambda: required(client.latest(a))["version"] == 4 and required(client.latest(a))["diagnostics"] == [],
-                    what="A clean")
+    client.wait_for(
+        lambda: required(client.latest(a))["version"] == 4 and required(client.latest(a))["diagnostics"] == [],
+        what="A clean",
+    )
     client.wait_for(lambda: required(client.latest(b))["diagnostics"] == [], what="B clean")
     again = client.at("textDocument/prepareRename", lib, 0, 9)
     assert again["placeholder"] == "lib_w"
@@ -159,14 +166,16 @@ SHARED_USE = 'Include "Lib.crb"\n{extra}BeginProg\nsharedValue = 1\nEndProg\n'
 
 def test_rename_from_a_use_in_one_entry_edits_every_entry(make_client, tmp_path):
     """LSP-R3a (review A1): a use in A of a declaration in a library B includes too."""
-    root = project(tmp_path, A_CR6=SHARED_USE.format(extra=""), B_CR6=SHARED_USE.format(extra=""),
-                   Lib_crb="Public sharedValue\n")
+    root = project(
+        tmp_path, A_CR6=SHARED_USE.format(extra=""), B_CR6=SHARED_USE.format(extra=""), Lib_crb="Public sharedValue\n"
+    )
     a, b, lib = root / "A.CR6", root / "B.CR6", root / "Lib.crb"
     client = started(make_client, root)
     client.open(a)
     client.open(b)
-    edits = [rename_at(client, path, line, ch, "renamedValue")
-             for path, line, ch in ((a, 2, 3), (b, 2, 3), (lib, 0, 9))]
+    edits = [
+        rename_at(client, path, line, ch, "renamedValue") for path, line, ch in ((a, 2, 3), (b, 2, 3), (lib, 0, 9))
+    ]
     assert edits[0] == edits[1] == edits[2]
     by_uri = {c["textDocument"]["uri"]: c["edits"] for c in edits[0]["documentChanges"]}
     assert set(by_uri) == {a.as_uri(), b.as_uri(), lib.as_uri()}
@@ -177,9 +186,12 @@ def test_rename_from_a_use_in_one_entry_edits_every_entry(make_client, tmp_path)
 
 
 def test_rename_collision_only_in_another_entry_is_refused(make_client, tmp_path):
-    root = project(tmp_path, A_CR6=SHARED_USE.format(extra=""),
-                   B_CR6=SHARED_USE.format(extra="Public renamedValue\n"),
-                   Lib_crb="Public sharedValue\n")
+    root = project(
+        tmp_path,
+        A_CR6=SHARED_USE.format(extra=""),
+        B_CR6=SHARED_USE.format(extra="Public renamedValue\n"),
+        Lib_crb="Public sharedValue\n",
+    )
     a = root / "A.CR6"
     client = started(make_client, root)
     client.open(a)
@@ -230,7 +242,7 @@ def test_rename_waits_for_the_analysis_of_a_changed_document(make_client, tmp_pa
     client.open(a, ENTRY, version=1)
     client.on_file("textDocument/documentSymbol", a)
     changed = ENTRY.replace("x = x + lib_v", "x = x + lib_v + lib_v")
-    client.change(a, changed, 2)                       # the analysis of version 2 is pending
+    client.change(a, changed, 2)  # the analysis of version 2 is pending
     edit = rename_at(client, lib, 0, 9, "lib_w")
     by_uri = {c["textDocument"]["uri"]: c for c in edit["documentChanges"]}
     assert by_uri[a.as_uri()]["textDocument"]["version"] == 2
@@ -252,8 +264,10 @@ def test_rename_refuses_while_an_entry_is_unanalysed(make_client, tmp_path):
 
 
 def test_rename_edit_columns_use_the_negotiated_encoding(make_client, tmp_path):
-    text = 'Public s As String * 20\nPublic y As Long\nBeginProg\n  Scan(1,Sec,0,0)\n' \
-           '    s = "é😀" : y = 1\n  NextScan\nEndProg\n'
+    text = (
+        "Public s As String * 20\nPublic y As Long\nBeginProg\n  Scan(1,Sec,0,0)\n"
+        '    s = "é😀" : y = 1\n  NextScan\nEndProg\n'
+    )
     root = project(tmp_path, U_CR6=text)
     u = root / "U.CR6"
     for encoding in ("utf-16", "utf-8", "utf-32"):
@@ -289,8 +303,7 @@ def test_formatting_an_indented_copy(make_client, tmp_path):
     assert got == want
     assert "\n    x = x + lib_v\n" in got and "\n      If x > 3 Then\n" not in got
     assert got.count("\n") == MESSY.count("\n")
-    tabs = edited_text(client, a, MESSY, "textDocument/formatting",
-                       options={"tabSize": 4, "insertSpaces": False})
+    tabs = edited_text(client, a, MESSY, "textDocument/formatting", options={"tabSize": 4, "insertSpaces": False})
     assert "\n\t\tx = x + lib_v\n" in tabs
     assert client.shutdown() == 0
 
@@ -302,9 +315,14 @@ def test_range_formatting_touches_only_the_lines_asked(make_client, tmp_path):
     client.open(a, MESSY)
     first, last = MESSY.split("\n").index("Scan(1,Sec,0,0)"), MESSY.split("\n").index("x = x + lib_v")
     # the range ends at character 0 of the line after `last`: that line is not included
-    got = edited_text(client, a, MESSY, "textDocument/rangeFormatting", options={
-        "tabSize": 2, "insertSpaces": True}, range={
-        "start": {"line": first, "character": 3}, "end": {"line": last + 1, "character": 0}})
+    got = edited_text(
+        client,
+        a,
+        MESSY,
+        "textDocument/rangeFormatting",
+        options={"tabSize": 2, "insertSpaces": True},
+        range={"start": {"line": first, "character": 3}, "end": {"line": last + 1, "character": 0}},
+    )
     want = formatting.apply_edits(MESSY, formatting.format_range(MESSY, first, last, "cr6", "  "))
     assert got == want != MESSY
     changed = [n for n, (p, q) in enumerate(zip(MESSY.split("\n"), got.split("\n"))) if p != q]
@@ -318,12 +336,15 @@ def test_formatting_a_file_with_errors_is_refused_with_a_message(make_client, tm
     a = root / "A.CR6"
     client = started(make_client, root)
     client.open(a, broken)
-    edits = client.request("textDocument/formatting", {
-        "textDocument": {"uri": a.as_uri()}, "options": {"tabSize": 2, "insertSpaces": True}}, 60)
+    edits = client.request(
+        "textDocument/formatting",
+        {"textDocument": {"uri": a.as_uri()}, "options": {"tabSize": 2, "insertSpaces": True}},
+        60,
+    )
     assert edits == []
-    shown = client.wait_for(lambda: [m for m in client.messages
-                                     if m.get("method") == "window/showMessage"],
-                            what="showMessage")
+    shown = client.wait_for(
+        lambda: [m for m in client.messages if m.get("method") == "window/showMessage"], what="showMessage"
+    )
     assert shown[-1]["params"]["type"] == 3
     assert "errors" in shown[-1]["params"]["message"]
     assert client.shutdown() == 0
@@ -335,8 +356,7 @@ def test_formatting_a_library_follows_every_entry_that_reads_it(make_client, tmp
     client = started(make_client, root)
     path = root / "Lib.crb"
     client.open(path, lib)
-    got = edited_text(client, path, lib, "textDocument/formatting",
-                      options={"tabSize": 2, "insertSpaces": True})
+    got = edited_text(client, path, lib, "textDocument/formatting", options={"tabSize": 2, "insertSpaces": True})
     assert got == "Public lib_v As Long\nSub Bump\n  lib_v = 1\nEndSub\n"
     assert client.shutdown() == 0
 
@@ -352,9 +372,11 @@ def test_quick_fix_for_a_misspelled_name_is_applied_and_clean(make_client, tmp_p
     client.open(a, typo, version=5)
     published = client.wait_diagnostics(a, lambda d: any("Invalid symbol" in x["message"] for x in d))
     diags = published["diagnostics"]
-    actions = client.request("textDocument/codeAction", {
-        "textDocument": {"uri": a.as_uri()},
-        "range": diags[0]["range"], "context": {"diagnostics": diags}}, 60)
+    actions = client.request(
+        "textDocument/codeAction",
+        {"textDocument": {"uri": a.as_uri()}, "range": diags[0]["range"], "context": {"diagnostics": diags}},
+        60,
+    )
     assert actions and actions[0]["kind"] == "quickfix"
     assert actions[0]["title"] == "Change to `lib_v`"
     assert actions[0]["diagnostics"] == [diags[0]]
@@ -378,12 +400,12 @@ def test_code_actions_ignore_other_diagnostics_and_kinds(make_client, tmp_path):
     diags = client.wait_diagnostics(a, lambda d: bool(d))["diagnostics"]
     base = {"textDocument": {"uri": a.as_uri()}, "range": diags[0]["range"]}
     foreign = [{**diags[0], "source": "other"}]
-    assert client.request("textDocument/codeAction", {
-        **base, "context": {"diagnostics": foreign}}, 60) == []
-    assert client.request("textDocument/codeAction", {
-        **base, "context": {"diagnostics": diags, "only": ["refactor"]}}, 60) == []
-    assert client.request("textDocument/codeAction", {
-        **base, "context": {"diagnostics": []}}, 60) == []
+    assert client.request("textDocument/codeAction", {**base, "context": {"diagnostics": foreign}}, 60) == []
+    assert (
+        client.request("textDocument/codeAction", {**base, "context": {"diagnostics": diags, "only": ["refactor"]}}, 60)
+        == []
+    )
+    assert client.request("textDocument/codeAction", {**base, "context": {"diagnostics": []}}, 60) == []
     assert client.shutdown() == 0
 
 
@@ -396,7 +418,7 @@ def test_display_text_redecodes_with_the_editor_encoding():
     assert display_text(mojibake, "utf-8") == "Cannot open include file  CPU:É space.crb."
     assert display_text("plain ASCII", "utf-8") == "plain ASCII"
     assert display_text("café".encode("cp1252").decode("latin-1"), "cp1252") == "café"
-    assert display_text("beyond ’", "utf-8") == "beyond ’"        # not compiler text
+    assert display_text("beyond ’", "utf-8") == "beyond ’"  # not compiler text
     assert display_text("x", "no-such-codec") == "x"
 
 
@@ -427,7 +449,7 @@ def test_feature_rename_reads_freshness_through_the_given_source(tmp_path):
     entry = root / "A.CR6"
     result = analyze(AnalysisRequest(entry))
     ctx = features.Ctx("cr6", "utf-16", "utf-8", {}, {})
-    at = types.Position(8, 8)                                        # `x` in `x = x + lib_v`
+    at = types.Position(8, 8)  # `x` in `x = x + lib_v`
     plain = features.rename_edit(ctx, [result], entry, at, "y", {})
     assert plain[1] is None
     fresh = OverlaySource(DiskSource(), {root / "Lib.crb": b"Public lib_v As Long\n"})

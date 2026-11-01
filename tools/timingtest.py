@@ -76,8 +76,7 @@ def first_difference(ours: str | None, theirs: str | None) -> str:
 def _siblings_key(siblings: Path | None):
     if siblings is None:
         return []
-    return sorted((e.relative_to(siblings).as_posix(), e.read_bytes())
-                  for e in siblings.rglob("*") if e.is_file())
+    return sorted((e.relative_to(siblings).as_posix(), e.read_bytes()) for e in siblings.rglob("*") if e.is_file())
 
 
 def theirs_times(path: Path, siblings: Path | None, exe: Path) -> str | None:
@@ -103,8 +102,9 @@ def theirs_times(path: Path, siblings: Path | None, exe: Path) -> str | None:
         shutil.copy2(path, tmp_dir / path.name)
         argv, env = oracle._runner_command(exe)
         try:
-            proc = subprocess.run(argv + ["-t", path.name, "out.msg"], cwd=tmp_dir, env=env,
-                                  capture_output=True, timeout=60)
+            proc = subprocess.run(
+                argv + ["-t", path.name, "out.msg"], cwd=tmp_dir, env=env, capture_output=True, timeout=60
+            )
         except (OSError, subprocess.TimeoutExpired) as exc:
             raise oracle.OracleError(f"runner failed: {exc}") from exc
         msg_file = tmp_dir / "out.msg"
@@ -173,16 +173,26 @@ def main() -> int:
     rows = []
     for (group, path, _), (theirs, error) in zip(work, reals):
         if error is not None:
-            rows.append({"group": group, "file": display_path(path), "status": "oracle_error",
-                         "ours": None, "theirs": error})
+            rows.append(
+                {"group": group, "file": display_path(path), "status": "oracle_error", "ours": None, "theirs": error}
+            )
             continue
         ours = ours_times(path, args.logger)
-        rows.append({"group": group, "file": display_path(path), "status": classify(ours, theirs),
-                     "ours": ours, "theirs": theirs})
+        rows.append(
+            {
+                "group": group,
+                "file": display_path(path),
+                "status": classify(ours, theirs),
+                "ours": ours,
+                "theirs": theirs,
+            }
+        )
 
     for group, s in summarise(rows).items():
-        print(f"{args.logger} {group}: {sum(s.values())} programs, exact {s['exact']}, "
-              f"mismatch {s['mismatch']}, oracle_error {s['oracle_error']}")
+        print(
+            f"{args.logger} {group}: {sum(s.values())} programs, exact {s['exact']}, "
+            f"mismatch {s['mismatch']}, oracle_error {s['oracle_error']}"
+        )
     shown = 0
     for r in rows:
         if r["status"] != "exact" and shown < args.show:

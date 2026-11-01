@@ -26,21 +26,44 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SELFDIFF_BASE = "scratch/lsp/selfdiff-base.json"
 
-COMPILER = ("src/opencrbasic/source.py", "src/opencrbasic/parser.py", "src/opencrbasic/lexer.py",
-            "src/opencrbasic/preprocess.py", "src/opencrbasic/consteval.py",
-            "src/opencrbasic/compiler.py", "src/opencrbasic/checker/**",
-            "src/opencrbasic/tables*.py", "src/opencrbasic/tdf.py", "src/opencrbasic/timing.py",
-            "src/opencrbasic/signature.py", "src/opencrbasic/mode.py",
-            "src/opencrbasic/profiles.py", "src/opencrbasic/diagnostics.py",
-            "src/opencrbasic/syntax.py", "src/opencrbasic/cli.py", "src/opencrbasic/data/**",
-            "src/opencrbasic/__init__.py", "src/opencrbasic/__main__.py")
-LSP_ONLY = ("src/opencrbasic/analysis.py", "src/opencrbasic/sources.py",
-            "src/opencrbasic/positions.py", "src/opencrbasic/editing.py",
-            "src/opencrbasic/hover.py", "src/opencrbasic/navigation.py",
-            "src/opencrbasic/bindings.py", "src/opencrbasic/catalog.py",
-            "src/opencrbasic/helpdocs.py", "src/opencrbasic/rename.py",
-            "src/opencrbasic/formatting.py", "src/opencrbasic/quickfix.py",
-            "src/opencrbasic/lsp/**", "tests/lsp/**", "tools/lsp_*.py")
+COMPILER = (
+    "src/opencrbasic/source.py",
+    "src/opencrbasic/parser.py",
+    "src/opencrbasic/lexer.py",
+    "src/opencrbasic/preprocess.py",
+    "src/opencrbasic/consteval.py",
+    "src/opencrbasic/compiler.py",
+    "src/opencrbasic/checker/**",
+    "src/opencrbasic/tables*.py",
+    "src/opencrbasic/tdf.py",
+    "src/opencrbasic/timing.py",
+    "src/opencrbasic/signature.py",
+    "src/opencrbasic/mode.py",
+    "src/opencrbasic/profiles.py",
+    "src/opencrbasic/diagnostics.py",
+    "src/opencrbasic/syntax.py",
+    "src/opencrbasic/cli.py",
+    "src/opencrbasic/data/**",
+    "src/opencrbasic/__init__.py",
+    "src/opencrbasic/__main__.py",
+)
+LSP_ONLY = (
+    "src/opencrbasic/analysis.py",
+    "src/opencrbasic/sources.py",
+    "src/opencrbasic/positions.py",
+    "src/opencrbasic/editing.py",
+    "src/opencrbasic/hover.py",
+    "src/opencrbasic/navigation.py",
+    "src/opencrbasic/bindings.py",
+    "src/opencrbasic/catalog.py",
+    "src/opencrbasic/helpdocs.py",
+    "src/opencrbasic/rename.py",
+    "src/opencrbasic/formatting.py",
+    "src/opencrbasic/quickfix.py",
+    "src/opencrbasic/lsp/**",
+    "tests/lsp/**",
+    "tools/lsp_*.py",
+)
 DOCS = ("docs/**", "*.md")
 
 
@@ -81,8 +104,7 @@ def pyrefly_includes(pyproject_text: str, force_fallback: bool = False) -> list[
         if tomllib is not None:
             table = tomllib.loads(pyproject_text).get("tool", {}).get("pyrefly", {})
             return list(table.get("project-includes", []))
-    section = re.search(r"^\[tool\.pyrefly\][ \t]*(?:#[^\n]*)?\n(.*?)(?=^\[|\Z)", pyproject_text,
-                        re.S | re.M)
+    section = re.search(r"^\[tool\.pyrefly\][ \t]*(?:#[^\n]*)?\n(.*?)(?=^\[|\Z)", pyproject_text, re.S | re.M)
     if not section:
         return []
     array = re.search(r"^project-includes\s*=\s*\[(.*?)\]", section.group(1), re.S | re.M)
@@ -103,34 +125,39 @@ def classify(paths, includes=()) -> list[tuple[str, str]]:
             tiers["docs"] = True
         elif p == "pyproject.toml" or p.startswith("scratch/"):
             continue
-        else:       # compiler modules, the tests and tools around them, and anything unclassified
+        else:  # compiler modules, the tests and tools around them, and anything unclassified
             tiers["compiler"] = True
     gates: list[tuple[str, str]] = []
     if tiers["compiler"]:
-        gates.append(("full suite (compiler or unclassified change; includes every LSP tier)",
-                      "uv run --no-sync pytest -q -n {jobs}"))
+        gates.append(
+            (
+                "full suite (compiler or unclassified change; includes every LSP tier)",
+                "uv run --no-sync pytest -q -n {jobs}",
+            )
+        )
         gates.append(("selfdiff", f"uv run --no-sync python tools/selfdiff.py --compare {SELFDIFF_BASE}"))
     elif tiers["lsp"]:
         gates.append(("selfdiff", f"uv run --no-sync python tools/selfdiff.py --compare {SELFDIFF_BASE}"))
-        gates.append(("LSP tests, fast and slow tiers once",
-                      "uv run --no-sync pytest tests/lsp -q -n {jobs}"))
+        gates.append(("LSP tests, fast and slow tiers once", "uv run --no-sync pytest tests/lsp -q -n {jobs}"))
     py_changed = [p for p in local if p == "pyproject.toml" or matches(p, includes)]
     if py_changed:
-        gates.append(("pyrefly (LSP modules; error count not judged here)",
-                      "uv run --no-sync pyrefly check"))
+        gates.append(("pyrefly (LSP modules; error count not judged here)", "uv run --no-sync pyrefly check"))
     if tiers["docs"] and not (tiers["compiler"] or tiers["lsp"]):
         markdown = sorted(p for p in local if matches(p, DOCS) and p.endswith(".md"))
-        if markdown:    # evidence assets (images, JSON, logs) are docs but have no links to read
-            gates.append(("documentation links", "uv run --no-sync python tools/lsp_gate.py "
-                          f"--check-links {' '.join(markdown)}"))
+        if markdown:  # evidence assets (images, JSON, logs) are docs but have no links to read
+            gates.append(
+                ("documentation links", f"uv run --no-sync python tools/lsp_gate.py --check-links {' '.join(markdown)}")
+            )
     return gates
 
 
 def changed_files(base: str) -> list[str]:
     """Repository-relative paths changed since `base` (merge base with HEAD) or in the tree."""
+
     def git(*args: str) -> list[str]:
         out = subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True, check=True)
         return [line for line in out.stdout.splitlines() if line]
+
     names = set(git("diff", "--name-only", f"{base}...HEAD"))
     names |= set(git("diff", "--name-only", "HEAD"))
     names |= set(git("ls-files", "--others", "--exclude-standard", "--full-name"))
@@ -162,8 +189,11 @@ def check_links(files) -> list[str]:
             dest = (path.parent / file_part) if file_part else path
             if not dest.exists():
                 broken.append(f"{name}: {target} (no such file)")
-            elif anchor and dest.suffix == ".md" and anchor.lower() not in heading_anchors(
-                    dest.read_text(encoding="utf-8")):
+            elif (
+                anchor
+                and dest.suffix == ".md"
+                and anchor.lower() not in heading_anchors(dest.read_text(encoding="utf-8"))
+            ):
                 broken.append(f"{name}: {target} (no such heading)")
     return broken
 
@@ -173,7 +203,9 @@ def main(argv=None) -> int:
     ap.add_argument("--base", default="HEAD", help="revision the change starts from (default HEAD: working tree only)")
     ap.add_argument("--run", action="store_true", help="run the gates instead of printing them")
     ap.add_argument("--jobs", type=int, default=4, help="pytest-xdist workers (-n)")
-    ap.add_argument("--check-links", nargs="+", metavar="FILE", help="check relative links of these markdown files and exit")
+    ap.add_argument(
+        "--check-links", nargs="+", metavar="FILE", help="check relative links of these markdown files and exit"
+    )
     args = ap.parse_args(argv)
     if args.check_links:
         broken = check_links(args.check_links)

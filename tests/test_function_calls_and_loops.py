@@ -19,30 +19,110 @@ def lines(text: str, logger: str) -> list[str]:
 
 
 CASES = [
-    ('f1', 'Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = One()\n  NextScan\nEndProg\n',
-     {'cr6': ['line 10: Call argument required.', 'line 10: Invalid, or out of place expression:     X = One().'], 'cr300': ['line 10: Call argument required.', 'line 10: Invalid, or out of place expression:     X = One()', '.']}),
-    ('f2', 'Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = One() + 1\n  NextScan\nEndProg\n',
-     {'cr6': ['line 10: Call argument required.', 'line 10: Invalid, or out of place expression:     X = One() + 1.'], 'cr300': ['line 10: Call argument required.', 'line 10: Invalid, or out of place expression:     X = One() + 1', '.']}),
-    ('f3', 'Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Two(1)\n  NextScan\nEndProg\n',
-     {'cr6': ['line 10: Call argument required.', 'line 10: Invalid, or out of place expression:     X = Two(1).'], 'cr300': ['line 10: Call argument required.', 'line 10: Invalid, or out of place expression:     X = Two(1)', '.']}),
-    ('f4', 'Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = One(1,2)\n  NextScan\nEndProg\n',
-     {'cr6': ['line 10: No Matching, or out of place ) in expression:     X = One(1,2).'], 'cr300': ['line 10: No Matching, or out of place ) in expression:     X = One(1,2)', '.']}),
-    ('f5', 'Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Two(1,2,3)\n  NextScan\nEndProg\n',
-     {'cr6': ['line 10: No Matching, or out of place ) in expression:     X = Two(1,2,3).'], 'cr300': ['line 10: No Matching, or out of place ) in expression:     X = Two(1,2,3)', '.']}),
-    ('f6', 'Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    If One() > 1 Then X = 1\n  NextScan\nEndProg\n',
-     {'cr6': ['line 10: Call argument required.', 'line 10: Invalid, or out of place expression: One() > 1 .'], 'cr300': ['line 10: Call argument required.', 'line 10: Invalid, or out of place expression: One() > 1 .']}),
-    ('f7', 'Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = One()\n    X = Q\n  NextScan\nEndProg\n',
-     {'cr6': ['line 10: Call argument required.', 'line 10: Invalid, or out of place expression:     X = One().'], 'cr300': ['line 10: Call argument required.', 'line 10: Invalid, or out of place expression:     X = One()', '.', 'line 11: Q is not defined.']}),
-    ('f8', 'Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n    Loop Until (Nope <> 1)\n  NextScan\nEndProg\n',
-     {'cr6': ['line 11: Invalid symbol in expression: (Nope <> 1).'], 'cr300': ['line 11: Nope is not defined.']}),
-    ('f9', 'Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    Do While Nope\n    Loop\n  NextScan\nEndProg\n',
-     {'cr6': ['line 10: Invalid symbol in expression: Nope.'], 'cr300': ['line 10: Nope is not defined.']}),
-    ('f11', 'Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = One\n  NextScan\nEndProg\n',
-     {'cr6': [], 'cr300': []}),
-    ('g1', 'Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n    Loop Until (Nope <> 1)   \n  NextScan\nEndProg\n',
-     {'cr6': ['line 5: Invalid symbol in expression: (Nope <> 1)   .'], 'cr300': ['line 5: Nope is not defined.']}),
-    ('g2', "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    Do While Nope  'c\n    Loop\n  NextScan\nEndProg\n",
-     {'cr6': ['line 4: Invalid symbol in expression: Nope  .'], 'cr300': ['line 4: Nope is not defined.']}),
+    (
+        "f1",
+        "Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = One()\n  NextScan\nEndProg\n",
+        {
+            "cr6": ["line 10: Call argument required.", "line 10: Invalid, or out of place expression:     X = One()."],
+            "cr300": [
+                "line 10: Call argument required.",
+                "line 10: Invalid, or out of place expression:     X = One()",
+                ".",
+            ],
+        },
+    ),
+    (
+        "f2",
+        "Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = One() + 1\n  NextScan\nEndProg\n",
+        {
+            "cr6": [
+                "line 10: Call argument required.",
+                "line 10: Invalid, or out of place expression:     X = One() + 1.",
+            ],
+            "cr300": [
+                "line 10: Call argument required.",
+                "line 10: Invalid, or out of place expression:     X = One() + 1",
+                ".",
+            ],
+        },
+    ),
+    (
+        "f3",
+        "Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Two(1)\n  NextScan\nEndProg\n",
+        {
+            "cr6": [
+                "line 10: Call argument required.",
+                "line 10: Invalid, or out of place expression:     X = Two(1).",
+            ],
+            "cr300": [
+                "line 10: Call argument required.",
+                "line 10: Invalid, or out of place expression:     X = Two(1)",
+                ".",
+            ],
+        },
+    ),
+    (
+        "f4",
+        "Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = One(1,2)\n  NextScan\nEndProg\n",
+        {
+            "cr6": ["line 10: No Matching, or out of place ) in expression:     X = One(1,2)."],
+            "cr300": ["line 10: No Matching, or out of place ) in expression:     X = One(1,2)", "."],
+        },
+    ),
+    (
+        "f5",
+        "Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Two(1,2,3)\n  NextScan\nEndProg\n",
+        {
+            "cr6": ["line 10: No Matching, or out of place ) in expression:     X = Two(1,2,3)."],
+            "cr300": ["line 10: No Matching, or out of place ) in expression:     X = Two(1,2,3)", "."],
+        },
+    ),
+    (
+        "f6",
+        "Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    If One() > 1 Then X = 1\n  NextScan\nEndProg\n",
+        {
+            "cr6": ["line 10: Call argument required.", "line 10: Invalid, or out of place expression: One() > 1 ."],
+            "cr300": ["line 10: Call argument required.", "line 10: Invalid, or out of place expression: One() > 1 ."],
+        },
+    ),
+    (
+        "f7",
+        "Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = One()\n    X = Q\n  NextScan\nEndProg\n",
+        {
+            "cr6": ["line 10: Call argument required.", "line 10: Invalid, or out of place expression:     X = One()."],
+            "cr300": [
+                "line 10: Call argument required.",
+                "line 10: Invalid, or out of place expression:     X = One()",
+                ".",
+                "line 11: Q is not defined.",
+            ],
+        },
+    ),
+    (
+        "f8",
+        "Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n    Loop Until (Nope <> 1)\n  NextScan\nEndProg\n",
+        {"cr6": ["line 11: Invalid symbol in expression: (Nope <> 1)."], "cr300": ["line 11: Nope is not defined."]},
+    ),
+    (
+        "f9",
+        "Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    Do While Nope\n    Loop\n  NextScan\nEndProg\n",
+        {"cr6": ["line 10: Invalid symbol in expression: Nope."], "cr300": ["line 10: Nope is not defined."]},
+    ),
+    (
+        "f11",
+        "Public X\nFunction One (A)\n  Return A\nEndFunction\nFunction Two (A, B)\n  Return A + B\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = One\n  NextScan\nEndProg\n",
+        {"cr6": [], "cr300": []},
+    ),
+    (
+        "g1",
+        "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n    Loop Until (Nope <> 1)   \n  NextScan\nEndProg\n",
+        {"cr6": ["line 5: Invalid symbol in expression: (Nope <> 1)   ."], "cr300": ["line 5: Nope is not defined."]},
+    ),
+    (
+        "g2",
+        "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    Do While Nope  'c\n    Loop\n  NextScan\nEndProg\n",
+        {"cr6": ["line 4: Invalid symbol in expression: Nope  ."], "cr300": ["line 4: Nope is not defined."]},
+    ),
 ]
 
 

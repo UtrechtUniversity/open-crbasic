@@ -24,8 +24,7 @@ def body(line: str) -> str:
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x", "cr300", "cr350"])
-@pytest.mark.parametrize("line", ["  )", "  ))", "  (", "  ((((", "  )(", "  ( )", "  ),",
-                                  "  ) ) )", "  )  'comment"])
+@pytest.mark.parametrize("line", ["  )", "  ))", "  (", "  ((((", "  )(", "  ( )", "  ),", "  ) ) )", "  )  'comment"])
 def test_paren_only_line_is_silent(line, logger):
     assert messages(body(line), logger) == []
 

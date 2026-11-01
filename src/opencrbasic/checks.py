@@ -13,19 +13,26 @@ from . import syntax as S
 from .checker import symbols, var_types
 
 # Built-in default severity per check code; also the code set the configuration validates against.
-DEFAULT_SEVERITY = {"OCB001": "error", "OCB002": "warning", "OCB003": "warning", "OCB004": "warning",
-                    "OCB005": "info", "OCB006": "info", "OCB007": "warning"}
-SCHEMA_VERSION = 2   # 2: `notices` (M4)
+DEFAULT_SEVERITY = {
+    "OCB001": "error",
+    "OCB002": "warning",
+    "OCB003": "warning",
+    "OCB004": "warning",
+    "OCB005": "info",
+    "OCB006": "info",
+    "OCB007": "warning",
+}
+SCHEMA_VERSION = 2  # 2: `notices` (M4)
 
 
 @dataclass
 class Finding:
     code: str
-    severity: str        # "error" | "warning" | "info"
+    severity: str  # "error" | "warning" | "info"
     line: int
     file: str
     message: str
-    reason: str = ""     # the suppression's reason, on `CompileResult.suppressed` only
+    reason: str = ""  # the suppression's reason, on `CompileResult.suppressed` only
 
     def text(self, program: str) -> str:
         return f"{self.file or program} line {self.line}: {self.severity} {self.code}: {self.message}"
@@ -35,8 +42,7 @@ class Finding:
 # 2026-10-11 `alias_predefined_name.json` and 2026-10-24 `r33_geus_false_rejects.json`, all four
 # loggers). Predefined constants (`Sec`, `mV5000`, `FP2`, `String`) are reference errors instead.
 _SYSTEM_TABLES = {"PUBLIC", "STATUS", "SETTINGS"}
-_KEYWORDS = {"THEN", "ELSE", "TO", "STEP", "AS", "ENDIF", "NEXT", "DIM", "AND", "OR", "NOT", "XOR",
-             "MOD"}
+_KEYWORDS = {"THEN", "ELSE", "TO", "STEP", "AS", "ENDIF", "NEXT", "DIM", "AND", "OR", "NOT", "XOR", "MOD"}
 _SPECIAL_VALUES = {"NAN", "INF"}
 
 
@@ -70,8 +76,15 @@ def _alias_keyword(program: S.Program, profile) -> list[Finding]:
             continue
         for arg in st.args[1:]:
             if isinstance(arg, (S.Name, S.Index)) and (kind := _reserved_kind(arg.name, profile)):
-                out.append(Finding("OCB001", "error", st.line, st.file,
-                                   f"Alias name {arg.name} is also {kind}; choose another name."))
+                out.append(
+                    Finding(
+                        "OCB001",
+                        "error",
+                        st.line,
+                        st.file,
+                        f"Alias name {arg.name} is also {kind}; choose another name.",
+                    )
+                )
     return out
 
 
@@ -88,8 +101,12 @@ def _statements(program: S.Program):
 
 def _declared_names(program: S.Program) -> list[str]:
     """Every declared variable and routine parameter name, upper case, once per declaration."""
-    names = [v.name.upper() for st in program.statements
-             if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC") for v in st.vars]
+    names = [
+        v.name.upper()
+        for st in program.statements
+        if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC")
+        for v in st.vars
+    ]
     return names + [p.name.upper() for st in program.statements if isinstance(st, S.SubDef) for p in st.params]
 
 
@@ -136,8 +153,7 @@ def _numeric_concatenation(program: S.Program, profile) -> list[Finding]:
     into a number's text (`X = HexStr(6) + "." + HexStr(7)`, GEUS programs) are deliberate."""
     typer, out, ambiguous = var_types._Typer(program), [], _ambiguous_names(program)
     for st in _statements(program):
-        if not isinstance(st, S.Assignment) or not isinstance(st.value, S.Binary) \
-                or st.value.op not in ("+", "&"):
+        if not isinstance(st, S.Assignment) or not isinstance(st.value, S.Binary) or st.value.op not in ("+", "&"):
             continue
         if isinstance(st.target, (S.Name, S.Index)) and st.target.name.upper() in ambiguous:
             continue
@@ -152,13 +168,20 @@ def _numeric_concatenation(program: S.Program, profile) -> list[Finding]:
             else:
                 operands.append("SCOPED" if _names_in(node) & ambiguous else typer.of(node))
         if "SCOPED" in operands:
-            continue   # an operand's type needs scope resolution
+            continue  # an operand's type needs scope resolution
         if "STRING" not in operands or not any(t in _NUMERIC_TYPES for t in operands):
-            continue   # `HexStr(6) + "." + HexStr(7)` builds a number's text on purpose (GEUS)
+            continue  # `HexStr(6) + "." + HexStr(7)` builds a number's text on purpose (GEUS)
         name = st.target.name if isinstance(st.target, (S.Name, S.Index)) else var
-        out.append(Finding("OCB002", "warning", st.line, st.file,
-                           f"`{st.value.op}` with a String operand concatenates; {name} "
-                           "receives the converted text. Convert the String to a number first."))
+        out.append(
+            Finding(
+                "OCB002",
+                "warning",
+                st.line,
+                st.file,
+                f"`{st.value.op}` with a String operand concatenates; {name} "
+                "receives the converted text. Convert the String to a number first.",
+            )
+        )
     return out
 
 
@@ -188,11 +211,21 @@ def _negative_delays(program: S.Program, profile) -> list[Finding]:
             continue
         # at least one whole microsecond below zero: `ExciteV(U1,0,-0.9)` compiles on CR6 where
         # `-1` is a reference error, so a fraction is not shown to wrap (oracle, 2026-10-30)
-        if isinstance(value, (int, float)) and not isinstance(value, bool) and unit in _US_PER_UNIT \
-                and value * _US_PER_UNIT[unit] <= -1:
-            out.append(Finding("OCB003", "warning", st.line, st.file,
-                               f"{st.keyword} delay {value:g} is negative; the logger does not "
-                               "wait the written time."))
+        if (
+            isinstance(value, (int, float))
+            and not isinstance(value, bool)
+            and unit in _US_PER_UNIT
+            and value * _US_PER_UNIT[unit] <= -1
+        ):
+            out.append(
+                Finding(
+                    "OCB003",
+                    "warning",
+                    st.line,
+                    st.file,
+                    f"{st.keyword} delay {value:g} is negative; the logger does not wait the written time.",
+                )
+            )
     return out
 
 
@@ -224,8 +257,7 @@ def _zero_divisors(program: S.Program, profile) -> list[Finding]:
                 except consteval.NotConstant:
                     continue
                 if isinstance(divisor, (int, float)) and not isinstance(divisor, bool) and divisor == 0:
-                    out.append(Finding("OCB004", "warning", st.line, st.file,
-                                       "Division by a constant zero."))
+                    out.append(Finding("OCB004", "warning", st.line, st.file, "Division by a constant zero."))
     return out
 
 
@@ -233,11 +265,20 @@ def _unsized_string_parameters(program: S.Program, profile) -> list[Finding]:
     """OCB005: a `Sub`/`Function` String parameter without `* size`. It holds 23 characters (24
     bytes with the terminator) and a longer argument is cut (hardware, `knowledge/crbasic/
     lessons.md` "Default string parameter size"). Information only: a short argument is fine."""
-    return [Finding("OCB005", "info", st.line, st.file,
-                    f"String parameter {p.name} of {st.name} has no size and holds 23 characters; "
-                    "give it a size (As String * n) if a longer value can be passed.")
-            for st in program.statements if isinstance(st, S.SubDef)
-            for p in st.params if (p.type or "").upper() == "STRING" and p.string_size is None]
+    return [
+        Finding(
+            "OCB005",
+            "info",
+            st.line,
+            st.file,
+            f"String parameter {p.name} of {st.name} has no size and holds 23 characters; "
+            "give it a size (As String * n) if a longer value can be passed.",
+        )
+        for st in program.statements
+        if isinstance(st, S.SubDef)
+        for p in st.params
+        if (p.type or "").upper() == "STRING" and p.string_size is None
+    ]
 
 
 def _unaligned_intervals(program: S.Program, profile) -> list[Finding]:
@@ -258,9 +299,16 @@ def _unaligned_intervals(program: S.Program, profile) -> list[Finding]:
         us = value * _US_PER_UNIT[unit]
         if us <= 0 or us != int(us) or 3_600_000_000 % int(us) == 0 or 86_400_000_000 % int(us) == 0:
             continue
-        out.append(Finding("OCB006", "info", st.line, st.file,
-                           "DataInterval divides neither an hour nor a day; its records are phased "
-                           "from the start hour and may not align with midnight."))
+        out.append(
+            Finding(
+                "OCB006",
+                "info",
+                st.line,
+                st.file,
+                "DataInterval divides neither an hour nor a day; its records are phased "
+                "from the start hour and may not align with midnight.",
+            )
+        )
     return out
 
 
@@ -278,8 +326,7 @@ def _long_string_literals(program: S.Program, profile) -> list[Finding]:
         if not (isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC")):
             continue
         for v in st.vars:
-            if (v.type or "").upper() != "STRING" or v.paren_dim or len(v.dims) > 2 \
-                    or v.name.upper() in ambiguous:
+            if (v.type or "").upper() != "STRING" or v.paren_dim or len(v.dims) > 2 or v.name.upper() in ambiguous:
                 continue
             try:
                 size = 23 if v.string_size is None else consteval.value_of(v.string_size, env)
@@ -290,29 +337,52 @@ def _long_string_literals(program: S.Program, profile) -> list[Finding]:
             size = int(size)
             decls[v.name.upper()] = (1 if size == 1 else 4 * -(-max(4, size + 1) // 4) - 1, len(v.dims))
     for st in _statements(program):
-        if not (isinstance(st, S.Assignment) and isinstance(st.value, S.String)
-                and isinstance(st.target, (S.Name, S.Index))):
+        if not (
+            isinstance(st, S.Assignment) and isinstance(st.value, S.String) and isinstance(st.target, (S.Name, S.Index))
+        ):
             continue
         capacity, rank = decls.get(st.target.name.upper(), (None, 0))
         if capacity is None or (isinstance(st.target, S.Index) and len(st.target.args) > rank):
             continue
         if len(st.value.value) > capacity:
-            out.append(Finding("OCB007", "warning", st.line, st.file,
-                               f"String literal of {len(st.value.value)} characters is longer than "
-                               f"{st.target.name} holds ({capacity}); it is cut."))
+            out.append(
+                Finding(
+                    "OCB007",
+                    "warning",
+                    st.line,
+                    st.file,
+                    f"String literal of {len(st.value.value)} characters is longer than "
+                    f"{st.target.name} holds ({capacity}); it is cut.",
+                )
+            )
     return out
 
 
 def run(program: S.Program | None, profile) -> list[Finding]:
     if program is None:
         return []
-    return [f for check in (_alias_keyword, _numeric_concatenation, _negative_delays, _zero_divisors,
-                                        _unsized_string_parameters, _unaligned_intervals, _long_string_literals)
-            for f in check(program, profile)]
+    return [
+        f
+        for check in (
+            _alias_keyword,
+            _numeric_concatenation,
+            _negative_delays,
+            _zero_divisors,
+            _unsized_string_parameters,
+            _unaligned_intervals,
+            _long_string_literals,
+        )
+        for f in check(program, profile)
+    ]
 
 
-def analyze(result, entry: Path, config: checkconfig.Config | None = None,
-            cli: dict[str, str] | None = None, lsp: dict[str, str] | None = None) -> None:
+def analyze(
+    result,
+    entry: Path,
+    config: checkconfig.Config | None = None,
+    cli: dict[str, str] | None = None,
+    lsp: dict[str, str] | None = None,
+) -> None:
     """Run the checks on a compiled `result` and store them, after severity and suppression
     configuration, in `result.findings` / `result.suppressed` (never in `result.diagnostics`, so
     `result.ok` is unchanged). `cli` and `lsp` are severity maps (`checkconfig.parse_overrides`)."""
@@ -323,18 +393,23 @@ def analyze(result, entry: Path, config: checkconfig.Config | None = None,
     def rel(p: Path) -> str:
         try:
             return Path(os.path.relpath(p, root)).as_posix().lower()
-        except ValueError:   # another Windows drive: no relative path, so no entry or glob matches
+        except ValueError:  # another Windows drive: no relative path, so no entry or glob matches
             return p.as_posix().lower()
 
     for f in run(result.program_ast, result.profile):
-        sev = checkconfig.severity(cfg, f.code, DEFAULT_SEVERITY[f.code], result.profile.name,
-                                   rel(entry), cli or {}, lsp or {})
+        sev = checkconfig.severity(
+            cfg, f.code, DEFAULT_SEVERITY[f.code], result.profile.name, rel(entry), cli or {}, lsp or {}
+        )
         if sev == "off":
             continue
         f = replace(f, severity=sev)
         # an included file is named as written in the `Include` (drive prefix and all), relative
         # to the entry file's directory; the entry itself by its name
-        file = entry if f.file in ("", entry.name) else entry.parent / re.sub(r"^[A-Za-z]+:", "", f.file).replace("\\", "/")
+        file = (
+            entry
+            if f.file in ("", entry.name)
+            else entry.parent / re.sub(r"^[A-Za-z]+:", "", f.file).replace("\\", "/")
+        )
         if s := checkconfig.suppression(cfg, f.code, rel(file), f.line):
             result.suppressed.append(replace(f, reason=s.reason))
         else:
@@ -342,9 +417,11 @@ def analyze(result, entry: Path, config: checkconfig.Config | None = None,
 
 
 # Where each check's evidence is (`AnalysisFinding.link`); repository-relative.
-EVIDENCE = {"OCB001": "docs/checker.md#alias-names-that-are-crbasic-names-round-33",
-            **{f"OCB00{n}": "docs/checker.md#opencrbasic-checks-ocb002-ocb007-m3" for n in range(2, 8)},
-            "notice": "docs/inventory.md#coverage-notices"}
+EVIDENCE = {
+    "OCB001": "docs/checker.md#alias-names-that-are-crbasic-names-round-33",
+    **{f"OCB00{n}": "docs/checker.md#opencrbasic-checks-ocb002-ocb007-m3" for n in range(2, 8)},
+    "notice": "docs/inventory.md#coverage-notices",
+}
 
 
 @functools.cache
@@ -369,8 +446,7 @@ def report(result, program: str, strict: bool, config_file: Path | None, config_
     """The `crbc --report` document (`docs/checker.md` "Check configuration and report file")."""
 
     def item(f: Finding) -> dict:
-        return {"code": f.code, "severity": f.severity, "file": f.file or program, "line": f.line,
-                "message": f.message}
+        return {"code": f.code, "severity": f.severity, "file": f.file or program, "line": f.line, "message": f.message}
 
     return {
         "schema_version": SCHEMA_VERSION,
@@ -379,15 +455,19 @@ def report(result, program: str, strict: bool, config_file: Path | None, config_
         "reference": {
             "ok": result.ok,
             "mode": result.mode,
-            "diagnostics": [{"severity": d.severity, "file": d.file or program, "line": d.line,
-                             "message": d.message} for d in result.diagnostics.items],
+            "diagnostics": [
+                {"severity": d.severity, "file": d.file or program, "line": d.line, "message": d.message}
+                for d in result.diagnostics.items
+            ],
         },
         "strict": strict,
         "config": {"file": str(config_file) if config_file else None, "error": config_error},
         "findings": [item(f) for f in result.findings],
         "suppressed": [{**item(f), "reason": f.reason} for f in result.suppressed],
-        "notices": [{**n, "file": n["file"] or program}
-                    for n in (notices(result.program_ast, result.profile) if result.ok else [])],
+        "notices": [
+            {**n, "file": n["file"] or program}
+            for n in (notices(result.program_ast, result.profile) if result.ok else [])
+        ],
     }
 
 
@@ -398,9 +478,11 @@ def missing_program_report(program: str, logger: str, strict: bool) -> dict:
         "schema_version": SCHEMA_VERSION,
         "program": program,
         "logger": logger,
-        "reference": {"ok": False, "mode": None,
-                      "diagnostics": [{"severity": "error", "file": program, "line": None,
-                                       "message": "No Program File"}]},
+        "reference": {
+            "ok": False,
+            "mode": None,
+            "diagnostics": [{"severity": "error", "file": program, "line": None, "message": "No Program File"}],
+        },
         "strict": strict,
         "config": {"file": None, "error": None},
         "findings": [],

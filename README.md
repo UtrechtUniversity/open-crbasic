@@ -120,7 +120,7 @@ from opencrbasic.compiler import compile_file
 result = compile_file(Path("Main.CR6"), profiles.get("cr6"))
 result.ok, result.mode, result.signature
 [d.cr6comp() for d in result.diagnostics.items]
-result.tables          # list of tdf.TdfTable (Status, DataTables, DataTableInfo, ConstTable, Public)
+result.tables  # list of tdf.TdfTable (Status, DataTables, DataTableInfo, ConstTable, Public)
 ```
 
 `parser.parse_file()` gives the syntax tree (`syntax.py`) for other tools.

@@ -25,15 +25,14 @@ from . import instr_rules
 _FUNCTIONS = frozenset({"TIMEINTOINTERVAL", "IFTIME"})
 # Functions whose integer-typed constant arguments draw `Parameter must be integral.`, with the
 # argument positions checked (`docs/checker.md` "Integral parameters").
-_INTEGRAL_ARGS = {"TIMEINTOINTERVAL": (0, 1, 2), "IFTIME": (0, 1, 2), "SERIALOPEN": (1,),
-                  "TIMER": (0,)}
+_INTEGRAL_ARGS = {"TIMEINTOINTERVAL": (0, 1, 2), "IFTIME": (0, 1, 2), "SERIALOPEN": (1,), "TIMER": (0,)}
 _MONTH = 6
 # The trailing `TimeOut` of `HTTPPut` (9th argument) and `FTPClient` (11th): see `timeout_gate`.
 _TIMEOUT_ARG = {"HTTPPUT": 8, "FTPCLIENT": 10}
 _MODE_RE = re.compile(r"(?i)\b(IfTime|TimeIntoInterval|Timer|SerialOpen|HTTPPut|FTPClient)\b\s*\(")
 _LITERAL_RE = re.compile(r"\"[^\"]*\"|'.*$")
 NOT_INTEGRAL = "Parameter must be integral."
-_INT_MIN, _INT_MAX = -2**31, 2**31 - 1
+_INT_MIN, _INT_MAX = -(2**31), 2**31 - 1
 _F32_MAX = 3.4028234663852886e38
 
 
@@ -44,7 +43,7 @@ def gate_text(stmt) -> str | None:
     text = getattr(stmt, "text", None)
     if isinstance(stmt, S.If) and stmt.inline is not None and text:
         m = re.search(r"(?i)\bThen\b", _LITERAL_RE.sub('""', text))
-        return _LITERAL_RE.sub('""', text)[:m.start()] if m else text
+        return _LITERAL_RE.sub('""', text)[: m.start()] if m else text
     return text
 
 
@@ -74,6 +73,7 @@ def timeout_gate(seen: bool, text: str | None) -> tuple[bool | None, bool]:
 
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     from . import expressions, instr_data
+
     wide = wide_constants(program, profile)
     known = expressions._known_names(program, profile)
     positions = {id(st): i for i, st in enumerate(program.statements)}
@@ -105,19 +105,25 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                 continue
             if call.name.upper() == "TIMER":
                 owner, before = _timer_context(stmt, call, known, profile.single_pass)
-                table_only = isinstance(owner, S.Instruction) and \
-                    owner.keyword.upper() in instr_data.TABLE_ONLY_INSTRUCTIONS
-                if before or blocked_table or (table_only and not in_table) or (
-                        not profile.single_pass and _timer_shadowed(program, stmt, positions, diags)):
+                table_only = (
+                    isinstance(owner, S.Instruction) and owner.keyword.upper() in instr_data.TABLE_ONLY_INSTRUCTIONS
+                )
+                if (
+                    before
+                    or blocked_table
+                    or (table_only and not in_table)
+                    or (not profile.single_pass and _timer_shadowed(program, stmt, positions, diags))
+                ):
                     continue
-            bad = [i for i in _INTEGRAL_ARGS[call.name.upper()][:len(call.args)]
-                   if not_integral(call.args[i], env, profile, wide)
-                   or _nonfinite_literal(call.args[i], env)]
+            bad = [
+                i
+                for i in _INTEGRAL_ARGS[call.name.upper()][: len(call.args)]
+                if not_integral(call.args[i], env, profile, wide) or _nonfinite_literal(call.args[i], env)
+            ]
             for _ in bad:
                 diags.error(stmt.line, NOT_INTEGRAL, stmt.file)
             if not bad and call.name.upper() in _FUNCTIONS:
-                _check_call(call, scan, stmt, diags, env,
-                            any(d.line < stmt.line for d in diags.errors))
+                _check_call(call, scan, stmt, diags, env, any(d.line < stmt.line for d in diags.errors))
 
 
 def _put_get_option(call, env: consteval.Env) -> int | None:
@@ -131,13 +137,16 @@ def _put_get_option(call, env: consteval.Env) -> int | None:
         value = consteval.value_of(call.args[5], env)
     except consteval.NotConstant:
         return None
-    if isinstance(value, (bool, str)) or not isinstance(value, (int, float)) or (
-            isinstance(value, float) and not math.isfinite(value)):
-        return None   # (a huge integer literal is a Python int: `math.isfinite` would overflow)
+    if (
+        isinstance(value, (bool, str))
+        or not isinstance(value, (int, float))
+        or (isinstance(value, float) and not math.isfinite(value))
+    ):
+        return None  # (a huge integer literal is a Python int: `math.isfinite` would overflow)
     if value < _INT_MIN:
-        return None   # below the Long range: compiles (`-2147483649`, `-1e39`; oracle, round 67)
+        return None  # below the Long range: compiles (`-2147483649`, `-1e39`; oracle, round 67)
     if value > _F32_MAX:
-        option = _INT_MAX   # beyond float32 (+inf): 2147483647 (oracle, round 67)
+        option = _INT_MAX  # beyond float32 (+inf): 2147483647 (oracle, round 67)
     else:
         option = int(value) if value <= _INT_MAX else _INT_MIN
     return option if abs(option) >= 30 else None
@@ -146,6 +155,7 @@ def _put_get_option(call, env: consteval.Env) -> int | None:
 def _timer_context(stmt, call, known, single_pass):
     """Owner and an earlier unresolved name in the expression that contains this call."""
     from . import expressions, symbols
+
     if stmt is call:
         return stmt, False
     before = False
@@ -165,17 +175,20 @@ def _timer_context(stmt, call, known, single_pass):
 def _timer_shadowed(program, stmt, positions, diags):
     """CR6/CR1000X resolve earlier visible storage named Timer before the built-in."""
     from . import symbols
+
     for decl in symbols.scoped_view(program, stmt).statements:
         if positions[id(decl)] > positions[id(stmt)]:
             continue
         if isinstance(decl, S.SubDef) and any(p.name.upper() == "TIMER" for p in decl.params):
             return True
-        if isinstance(decl, S.Declaration) and decl.kind == "DIM" and any(
-                v.name.upper() == "TIMER" for v in decl.vars):
+        if isinstance(decl, S.Declaration) and decl.kind == "DIM" and any(v.name.upper() == "TIMER" for v in decl.vars):
             return True
-        if isinstance(decl, S.Instruction) and decl.keyword.upper() == "ALIAS" and not any(
-                d.line == decl.line and d.file == decl.file for d in diags.errors) and any(
-                isinstance(a, (S.Name, S.Index)) and a.name.upper() == "TIMER" for a in decl.args[1:]):
+        if (
+            isinstance(decl, S.Instruction)
+            and decl.keyword.upper() == "ALIAS"
+            and not any(d.line == decl.line and d.file == decl.file for d in diags.errors)
+            and any(isinstance(a, (S.Name, S.Index)) and a.name.upper() == "TIMER" for a in decl.args[1:])
+        ):
             return True
     return False
 
@@ -185,8 +198,7 @@ def _nonfinite_literal(expr: S.Expr | None, env) -> bool:
     # resolver reads them as such even beside aliases or parameters of that name (round 46).
     while isinstance(expr, S.Unary) and expr.op in ("+", "-"):
         expr = expr.operand
-    return isinstance(expr, S.Name) and expr.name.upper() in ("NAN", "INF") and \
-        expr.name.upper() not in env.consts
+    return isinstance(expr, S.Name) and expr.name.upper() in ("NAN", "INF") and expr.name.upper() not in env.consts
 
 
 def _check_timeout_value(stmt: S.Stmt, diags: Diagnostics, env, profile, wide, program) -> None:
@@ -217,9 +229,9 @@ def _negative_timeout(call, env, profile, wide, program) -> bool:
 def _undefined_sibling(call: S.Index, i: int, program: S.Program, profile) -> bool:
     """Whether another argument of `call` (not position `i`) names an undefined symbol."""
     from . import expressions  # lazy: `expressions` imports this module's package
+
     known = expressions._known_names(program, profile)
-    return any(a is not None and expressions._undefined_names(a, known)
-               for j, a in enumerate(call.args) if j != i)
+    return any(a is not None and expressions._undefined_names(a, known) for j, a in enumerate(call.args) if j != i)
 
 
 def _needs_integer_fold(arg) -> bool:
@@ -249,6 +261,7 @@ def fold_timeout_expressions(program: S.Program, profile, diags: Diagnostics, en
     finding goes after the other errors of its line.
     """
     from . import expressions  # lazy: `expressions` imports this module's package
+
     stmts = program.statements
     neg_lines: dict = {}
     for d in diags.items:
@@ -277,8 +290,11 @@ def fold_timeout_expressions(program: S.Program, profile, diags: Diagnostics, en
     added: list = []
     for k, stmt in enumerate(stmts):
         gate, seen = timeout_gate(seen, gate_text(stmt))
-        inline = {id(c) for inner in (getattr(stmt, "inline", None) or []) + (
-            getattr(stmt, "inline_else", None) or []) for c in _calls(inner, _TIMEOUT_ARG)}
+        inline = {
+            id(c)
+            for inner in (getattr(stmt, "inline", None) or []) + (getattr(stmt, "inline_else", None) or [])
+            for c in _calls(inner, _TIMEOUT_ARG)
+        }
         for call in _calls(stmt, _TIMEOUT_ARG):
             if id(call) in inline or (isinstance(call, S.Call) and call.explicit):
                 continue
@@ -293,22 +309,34 @@ def fold_timeout_expressions(program: S.Program, profile, diags: Diagnostics, en
             value = timeout_value(arg, env, profile, wide)
             if _needs_integer_fold(arg) and value is not None and value[0] == "int":
                 line_first = first[(stmt.file or "", stmt.line)]
-                counted = [d for d in diags.items if d.severity == "error" and d.line
-                           and d.message != _TIMEOUT_NEGATIVE and not any(d is a for a in added)
-                           and (profile.single_pass or any(d is r for r in reported))]
-                before = family_error or any(position(d) < line_first for d in counted) or (
-                    k > line_first and any(position(d) == line_first for d in counted))
+                counted = [
+                    d
+                    for d in diags.items
+                    if d.severity == "error"
+                    and d.line
+                    and d.message != _TIMEOUT_NEGATIVE
+                    and not any(d is a for a in added)
+                    and (profile.single_pass or any(d is r for r in reported))
+                ]
+                before = (
+                    family_error
+                    or any(position(d) < line_first for d in counted)
+                    or (k > line_first and any(position(d) == line_first for d in counted))
+                )
                 if not before and profile.single_pass:
                     known = known or expressions._known_names(program, profile)
-                    before = any(a is not None and expressions._undefined_names(a, known)
-                                 for a in call.args[:i])
+                    before = any(a is not None and expressions._undefined_names(a, known) for a in call.args[:i])
                 if before and gate is not None:
                     if own is not None:
                         diags.items.remove(own)
                     if not gate:
-                        diags.error(stmt.line, expressions._arity_message(
-                            "constint", stmt.text, profile, stmt.at_eol, whole_statement=True),
-                            stmt.file)
+                        diags.error(
+                            stmt.line,
+                            expressions._arity_message(
+                                "constint", stmt.text, profile, stmt.at_eol, whole_statement=True
+                            ),
+                            stmt.file,
+                        )
                         added.append(diags.items[-1])
                         family_error = True
                     continue
@@ -331,10 +359,14 @@ def order_timeout_negative(diags: Diagnostics, profile, program: S.Program) -> N
         mine = next((n for n, st in enumerate(same) if id(st) == d.stmt), len(same))
         after = []
         for j, o in enumerate(items):
-            if o is d or o.severity != "error" or (o.file, o.line) != (d.file, d.line) \
-                    or not o.message.endswith(" is not defined."):
+            if (
+                o is d
+                or o.severity != "error"
+                or (o.file, o.line) != (d.file, d.line)
+                or not o.message.endswith(" is not defined.")
+            ):
                 continue
-            name = re.compile(r"(?i)\b" + re.escape(o.message[:-len(" is not defined.")]) + r"\b")
+            name = re.compile(r"(?i)\b" + re.escape(o.message[: -len(" is not defined.")]) + r"\b")
             owner = next((n for n, st in enumerate(same) if name.search(st.text or "")), 0)
             if owner <= mine:
                 after.append(j)
@@ -356,10 +388,11 @@ def _check_timeout(stmt: S.Stmt, diags: Diagnostics, env, profile, wide) -> None
         arg = call.args[i]
         if isinstance(arg, S.String):
             diags.warning(stmt.line, "Parameter will truncate to the nearest integer.", stmt.file)
-        elif (isinstance(arg, S.Name) and arg.name.upper() == "NAN") or (
-                not_integral(arg, env, profile, wide)
-                and (not profile.single_pass or _float_typed(arg, env, wide))) or (
-                timeout_value(arg, env, profile, wide) == ("wide", 0)):
+        elif (
+            (isinstance(arg, S.Name) and arg.name.upper() == "NAN")
+            or (not_integral(arg, env, profile, wide) and (not profile.single_pass or _float_typed(arg, env, wide)))
+            or (timeout_value(arg, env, profile, wide) == ("wide", 0))
+        ):
             diags.error(stmt.line, NOT_INTEGRAL, stmt.file)
 
 
@@ -369,15 +402,18 @@ def wide_constants(program: S.Program, profile) -> frozenset[str]:
     `Const KB = 999999999999` -> `KB`, `-KB` and `KB-1` all draw the error, while the computed
     `Const KC = 2147483647+1` and `Const KM = -2147483649` wrap silently)."""
     return frozenset(
-        st.name.upper() for st in program.statements
-        if isinstance(st, S.ConstDecl) and isinstance(st.value, S.Number)
-        and not st.value.text.startswith("&") and _out_of_range(st.value.value, profile))
+        st.name.upper()
+        for st in program.statements
+        if isinstance(st, S.ConstDecl)
+        and isinstance(st.value, S.Number)
+        and not st.value.text.startswith("&")
+        and _out_of_range(st.value.value, profile)
+    )
 
 
 def _out_of_range(value, profile) -> bool:
     if profile.name in ("cr300", "cr350"):
-        rounded = struct.unpack("<f", struct.pack("<f", float(value)))[0] \
-            if abs(value) < 3.4e38 else float("inf")
+        rounded = struct.unpack("<f", struct.pack("<f", float(value)))[0] if abs(value) < 3.4e38 else float("inf")
         return not _INT_MIN <= rounded <= 2**31
     return not _INT_MIN <= value <= _INT_MAX
 
@@ -412,8 +448,7 @@ def _plain(expr: S.Expr | None) -> bool:
     if isinstance(expr, S.Unary):
         return expr.op in ("-", "+") and _plain(expr.operand)
     if isinstance(expr, S.Binary):
-        return expr.op in ("+", "-", "*", "/", "^", "\\", "MOD") and _plain(expr.left) and \
-            _plain(expr.right)
+        return expr.op in ("+", "-", "*", "/", "^", "\\", "MOD") and _plain(expr.left) and _plain(expr.right)
     return False
 
 
@@ -432,8 +467,7 @@ def _float_typed(expr: S.Expr | None, env: consteval.Env, wide) -> bool:
     if isinstance(expr, S.Unary):
         return _float_typed(expr.operand, env, wide)
     if isinstance(expr, S.Binary):
-        return expr.op in ("/", "^") or _float_typed(expr.left, env, wide) or \
-            _float_typed(expr.right, env, wide)
+        return expr.op in ("/", "^") or _float_typed(expr.left, env, wide) or _float_typed(expr.right, env, wide)
     return False
 
 
@@ -505,7 +539,7 @@ def _timeout_literal(lit: S.Number, sign: int, profile):
     if text.startswith("&"):
         return None
     if "." in text or "E" in text:
-        return ("wide", 0)   # a float literal
+        return ("wide", 0)  # a float literal
     if not text.isdigit():
         return None
     return _decimal(int(text), sign, profile, literal=True)
@@ -529,8 +563,8 @@ def _decimal(magnitude: int, sign: int, profile, literal: bool):
         return ("wide", 0)
     return ("int", sign * magnitude)
 
-def _check_call(call: S.Index | S.Call, scan, stmt: S.Stmt, diags: Diagnostics, env,
-                after_error: bool = False) -> None:
+
+def _check_call(call: S.Index | S.Call, scan, stmt: S.Stmt, diags: Diagnostics, env, after_error: bool = False) -> None:
     values = [v for a in call.args[:3] if (v := _int(a, env)) is not None]
     if len(call.args) != 3 or len(values) != 3 or values[2] == _MONTH or _INT_MIN in values[:2]:
         return
@@ -546,8 +580,11 @@ def _check_call(call: S.Index | S.Call, scan, stmt: S.Stmt, diags: Diagnostics, 
     elif t_sec < 0:
         t_sec += i_sec
     if i_sec < 0 or i_us < 0 or t_sec < 0 or i_sec < t_sec or (t_sec == i_sec and i_us <= t_us):
-        diags.error(stmt.line, f"Interval ({interval_raw}) must be > 0 and TimeInto Interval "
-                    f"({tinto_raw}) must be < Interval.", stmt.file)
+        diags.error(
+            stmt.line,
+            f"Interval ({interval_raw}) must be > 0 and TimeInto Interval ({tinto_raw}) must be < Interval.",
+            stmt.file,
+        )
     if scan is None:
         return
     if i_sec < 3601:
@@ -556,11 +593,11 @@ def _check_call(call: S.Index | S.Call, scan, stmt: S.Stmt, diags: Diagnostics, 
     else:
         interval, tinto, step = i_sec, t_sec, scan[0]
         if i_us or t_us:
-            diags.error(stmt.line, "Illegal sub seconds in time into and/or interval when "
-                        "interval > 3600 secs.", stmt.file)
+            diags.error(
+                stmt.line, "Illegal sub seconds in time into and/or interval when interval > 3600 secs.", stmt.file
+            )
     if step and (_cmod(interval, step) or _cmod(tinto, step)):
-        diags.error(stmt.line, "Scan interval must be integrally divisible into interval.",
-                    stmt.file)
+        diags.error(stmt.line, "Scan interval must be integrally divisible into interval.", stmt.file)
 
 
 def _scan_step(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | None:

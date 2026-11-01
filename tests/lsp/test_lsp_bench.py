@@ -55,11 +55,20 @@ def test_stress_program_is_generated_and_compiles(tmp_path):
 
 @pytest.mark.slow
 def test_smoke_report(tmp_path):
-    cfg = bench.Config(programs=(bench.MAIN,), cold_repeats=1, warm_runs=2, positions=5,
-                       memory_iterations=4, stress_lines=120, edits=2, debounce_ms=50,
-                       help_dir=HELP, label="smoke")
+    cfg = bench.Config(
+        programs=(bench.MAIN,),
+        cold_repeats=1,
+        warm_runs=2,
+        positions=5,
+        memory_iterations=4,
+        stress_lines=120,
+        edits=2,
+        debounce_ms=50,
+        help_dir=HELP,
+        label="smoke",
+    )
     report = bench.run_benchmark(cfg)
-    json.dumps(report)                                           # serialisable
+    json.dumps(report)  # serialisable
 
     host = report["host"]
     assert host["cpu_count"] and host["python"] and host["package"].endswith("__init__.py")
@@ -75,8 +84,7 @@ def test_smoke_report(tmp_path):
     for name in ("completion", "hover", "definition", "document_symbols", "folding_ranges"):
         assert positions[name]["n"] == 5
     assert positions["signature_help"]["n"] == positions["signature_positions"] <= 5
-    for name in ("completion", "hover", "signature_help", "definition", "document_symbols",
-                 "folding_ranges"):
+    for name in ("completion", "hover", "signature_help", "definition", "document_symbols", "folding_ranges"):
         assert positions[name]["hits"] <= positions[name]["n"]
 
     memory = report["memory"]
@@ -94,7 +102,12 @@ def test_smoke_report(tmp_path):
     assert server["didchange_to_publish"]["n"] == 2
 
     markdown = bench.render_markdown(report)
-    for heading in ("## Cold and warm analysis", "## Warm editor operations", "## Repeated-edit memory",
-                    "## Stdio server", "## Targets"):
+    for heading in (
+        "## Cold and warm analysis",
+        "## Warm editor operations",
+        "## Repeated-edit memory",
+        "## Stdio server",
+        "## Targets",
+    ):
         assert heading in markdown
     assert "Label: **smoke**" in markdown

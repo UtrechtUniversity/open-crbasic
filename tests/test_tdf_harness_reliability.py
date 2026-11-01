@@ -1,4 +1,3 @@
-
 import base64
 import json
 from types import SimpleNamespace
@@ -30,10 +29,16 @@ def test_valid_historical_cache_infers_success_exit(staged, monkeypatch):
     program, compiler, siblings = staged
     path = cache_path(program, compiler, siblings)
     path.parent.mkdir()
-    path.write_text(json.dumps({
-        "ok": True, "stdout": "case.CR6 -- Compiled OK.",
-        "tdf": base64.b64encode(b"tdf").decode(), "lst": base64.b64encode(b"lst").decode(),
-    }))
+    path.write_text(
+        json.dumps(
+            {
+                "ok": True,
+                "stdout": "case.CR6 -- Compiled OK.",
+                "tdf": base64.b64encode(b"tdf").decode(),
+                "lst": base64.b64encode(b"lst").decode(),
+            }
+        )
+    )
     monkeypatch.setattr(tdftest.subprocess, "run", lambda *a, **k: pytest.fail("runner called"))
     got = tdftest.run_oracle_tdf(program, siblings, compiler)
     assert got["exit"] == 0 and got["tdf"] == b"tdf" and got["lst"] == b"lst"
@@ -69,9 +74,9 @@ def test_invalid_old_cache_reruns_and_replaces_with_exit_stderr(staged, monkeypa
 
 def test_invalid_new_result_raises_and_is_not_cached(staged, monkeypatch):
     program, compiler, siblings = staged
-    monkeypatch.setattr(tdftest.subprocess, "run", lambda *a, **k: SimpleNamespace(
-        returncode=5, stdout=b"", stderr=b"Wine debugger"
-    ))
+    monkeypatch.setattr(
+        tdftest.subprocess, "run", lambda *a, **k: SimpleNamespace(returncode=5, stdout=b"", stderr=b"Wine debugger")
+    )
     with pytest.raises(oracle.OracleError, match="no usable compiler verdict"):
         tdftest.run_oracle_tdf(program, siblings, compiler)
     assert not cache_path(program, compiler, siblings).exists()
@@ -79,8 +84,7 @@ def test_invalid_new_result_raises_and_is_not_cached(staged, monkeypatch):
 
 @pytest.mark.parametrize("gate", ["report", "exact"])
 def test_no_compares_fails_every_gate(gate):
-    assert tdftest.gate_failed(gate, compared=0, mismatches=0, missing_artifacts=0,
-                               oracle_errors=0)
+    assert tdftest.gate_failed(gate, compared=0, mismatches=0, missing_artifacts=0, oracle_errors=0)
 
 
 def test_exact_gate_checks_mismatch_and_missing_artifact():

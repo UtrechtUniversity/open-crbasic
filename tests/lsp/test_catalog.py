@@ -1,4 +1,3 @@
-
 import json
 from pathlib import Path
 
@@ -23,8 +22,7 @@ def _rows(logger: str, table: str) -> list[dict]:
 @pytest.mark.parametrize("logger", LOGGERS)
 def test_counts_equal_profile_data(logger):
     cat = InstructionCatalog.for_profile(logger)
-    for kind, table in (("instruction", "instructions"), ("function", "functions"),
-                        ("symbol", "symbols")):
+    for kind, table in (("instruction", "instructions"), ("function", "functions"), ("symbol", "symbols")):
         rows = _rows(logger, table)
         assert len({r["name"].upper() for r in rows}) == len(rows), "table names are unique"
         assert len(cat.names(kind)) == len(rows)
@@ -65,12 +63,20 @@ def test_dollar_suffix_names():
 def test_entry_fields():
     cat = InstructionCatalog.for_profile("cr6")
     assert cat is not None
-    assert required(cat.get("U1")).kind == "symbol" and required(cat.get("U1")).value == profiles.get("cr6").symbols["U1"]["value"]
+    assert (
+        required(cat.get("U1")).kind == "symbol"
+        and required(cat.get("U1")).value == profiles.get("cr6").symbols["U1"]["value"]
+    )
     fn = cat.get("JSONVALUE")
     assert fn is not None
     row = profiles.get("cr6").functions["JSONVALUE"]
     assert (fn.code, fn.func_kind, fn.argspec, fn.nargs, fn.argtypes) == (
-        row["code"], row["kind"], row["argspec"], row["nargs"], tuple(row["argtypes"]))
+        row["code"],
+        row["kind"],
+        row["argspec"],
+        row["nargs"],
+        tuple(row["argtypes"]),
+    )
     assert required(cat.get("NOT")).nargs is None
     with pytest.raises(Exception):
         setattr(fn, "name", "x")  # exercise the frozen field at runtime
@@ -90,9 +96,11 @@ def test_kinds_and_documented_overlaps():
     multi = {n: k - {"keyword"} for n, k in seen.items() if len(k - {"keyword"}) > 1}
     assert multi, "the CR6 tables do overlap (If, Select, Case, ...)"
     assert {"IF", "SELECT", "CASE", "SUB", "FUNCTION", "SCAN", "DO", "FOR"} <= set(multi)
-    assert {frozenset(k) for k in multi.values()} <= {frozenset({"instruction", "symbol"}),
-                                                       frozenset({"function", "symbol"}),
-                                                       frozenset({"instruction", "function"})}
+    assert {frozenset(k) for k in multi.values()} <= {
+        frozenset({"instruction", "symbol"}),
+        frozenset({"function", "symbol"}),
+        frozenset({"instruction", "function"}),
+    }
     # get() priority: instruction, function, symbol, keyword
     assert required(cat.get("If")).kind == "instruction"
     assert required(cat.get("If", "symbol")).kind == "symbol"

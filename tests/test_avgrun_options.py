@@ -96,9 +96,7 @@ def test_pass_count_type_before_symbol_error_full(logger):
 
 @pytest.mark.parametrize("logger,channel", [("cr6", "U1..U12"), ("cr1000x", "1..16")])
 def test_pass_count_type_before_channel_error_full(logger, channel):
-    assert lines(
-        ["AvgRun (A1,1,CF,100,R,CF)", "VoltSe(A1,1,mV1000,99,True,0,15000,1,0)"], logger
-    ) == [
+    assert lines(["AvgRun (A1,1,CF,100,R,CF)", "VoltSe(A1,1,mV1000,99,True,0,15000,1,0)"], logger) == [
         COUNT_TYPE,
         f"line 6: Invalid channel 99, must use {channel}.",
     ]

@@ -58,7 +58,7 @@ def test_units_target_present_no_eq_embeds_newline_before_period():
     # `EndProg` -> `line 3: Need '=' in units definition: x\n.` (line 2 never reported -- pass 1
     # only fires the `Units` error here, matching the existing "ran off the end of the line"
     # family's own reporting shape).
-    text = "Public x\nfoo bar baz\nUnits x\n" "BeginProg\nEndProg\n"
+    text = "Public x\nfoo bar baz\nUnits x\nBeginProg\nEndProg\n"
     assert messages(text) == ["Need '=' in units definition: x\n."]
 
 
@@ -104,7 +104,11 @@ def test_alias_target_indexed_array_element():
 
 # ------------------------------------------------------------------ corpus regression
 
-@pytest.mark.skipif(not (Path(__file__).parent / "corpus" / "chm" / "realtime_1.CR6").is_file(), reason="CRBasic help examples not extracted; see tests/corpus/README.md")
+
+@pytest.mark.skipif(
+    not (Path(__file__).parent / "corpus" / "chm" / "realtime_1.CR6").is_file(),
+    reason="CRBasic help examples not extracted; see tests/corpus/README.md",
+)
 def test_realtime_1_first_message_matches_oracle():
     # `tests/corpus/chm/realtime_1.CR6` line 4 is `Alias rTime(1)` with `= Year` on line 5 --
     # this was the corpus case that first surfaced the quirk (`docs/checker.md`).

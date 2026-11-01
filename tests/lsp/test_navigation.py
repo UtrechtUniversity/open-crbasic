@@ -68,7 +68,7 @@ def sample(tmp_path):
 
 def test_global_local_shadowing(sample):
     p, r = sample
-    glob_decl = pos(p, "a", 0, 0)                     # "Public a"
+    glob_decl = pos(p, "a", 0, 0)  # "Public a"
     # reference in BeginProg resolves to the global
     line, col = pos(p, "    a = Arr")[0], 4
     d = N.definition(r, p, line, col)
@@ -86,8 +86,8 @@ def test_global_local_shadowing(sample):
 
 def test_parameter_and_constant(sample):
     p, r = sample
-    assert where(N.definition(r, p, 4, 6)) == [("m.CR6", 2, 8, 9)]            # p -> parameter
-    refs = N.references(r, p, 1, 6)                                            # Const K
+    assert where(N.definition(r, p, 4, 6)) == [("m.CR6", 2, 8, 9)]  # p -> parameter
+    refs = N.references(r, p, 1, 6)  # Const K
     assert [(l.line, l.start) for l in refs] == [(1, 6), (4, 10), (8, 17)]
     hl = N.document_highlights(r, p, 1, 6)
     assert [(h.line, h.start, h.kind) for h in hl] == [(1, 6, "write"), (4, 10, "read"), (8, 17, "read")]
@@ -95,7 +95,7 @@ def test_parameter_and_constant(sample):
 
 def test_highlight_kinds(sample):
     p, r = sample
-    hl = N.document_highlights(r, p, 8, 4)                                     # global a
+    hl = N.document_highlights(r, p, 8, 4)  # global a
     kinds = {(h.line, h.start): h.kind for h in hl}
     assert kinds[(0, 7)] == "write" and kinds[(8, 4)] == "write"
     assert kinds[(9, 8)] in ("read", "text")
@@ -103,8 +103,8 @@ def test_highlight_kinds(sample):
 
 def test_position_just_after_name_and_off_name(sample):
     p, r = sample
-    assert where(N.definition(r, p, 8, 5)) == [("m.CR6", 0, 7, 8)]            # end of `a`
-    assert N.definition(r, p, 8, 6) == []                                      # on the space/`=`
+    assert where(N.definition(r, p, 8, 5)) == [("m.CR6", 0, 7, 8)]  # end of `a`
+    assert N.definition(r, p, 8, 6) == []  # on the space/`=`
 
 
 def test_semantic_tokens_legend(sample):
@@ -121,9 +121,11 @@ def test_semantic_tokens_legend(sample):
 
 def test_cross_include_definition_and_references(tmp_path):
     inc = write(tmp_path, "inc.CR6", "Public shared\nSub Helper()\nEndSub\n")
-    m = write(tmp_path, "m.CR6",
-              'Include "inc.CR6"\nBeginProg\n  Scan(1,Sec,0,0)\n    shared = 1\n    Helper()\n'
-              '  NextScan\nEndProg\n')
+    m = write(
+        tmp_path,
+        "m.CR6",
+        'Include "inc.CR6"\nBeginProg\n  Scan(1,Sec,0,0)\n    shared = 1\n    Helper()\n  NextScan\nEndProg\n',
+    )
     r = run(m)
     d = N.definition(r, m, 3, 6)
     assert where(d) == [("inc.CR6", 0, 7, 13)]
@@ -131,14 +133,16 @@ def test_cross_include_definition_and_references(tmp_path):
     refs = N.references(r, inc, 0, 8)
     assert where(refs) == [("inc.CR6", 0, 7, 13), ("m.CR6", 3, 4, 10)]
     assert where(N.definition(r, m, 4, 5)) == [("inc.CR6", 1, 4, 10)]
-    hl = N.document_highlights(r, inc, 0, 8)                                   # same file only
+    hl = N.document_highlights(r, inc, 0, 8)  # same file only
     assert [(h.line, h.start) for h in hl] == [(0, 7)]
-    assert [(t.line, t.start, t.type) for t in N.semantic_tokens(r, inc)] == [
-        (0, 7, "variable"), (1, 4, "function")]
+    assert [(t.line, t.start, t.type) for t in N.semantic_tokens(r, inc)] == [(0, 7, "variable"), (1, 4, "function")]
 
 
 def test_alias_and_table_and_structure(tmp_path):
-    m = write(tmp_path, "m.CR6", """StructureType Pt
+    m = write(
+        tmp_path,
+        "m.CR6",
+        """StructureType Pt
   X As Float
   Y As Float
 EndStructureType
@@ -156,34 +160,41 @@ BeginProg
     CallTable Tab
   NextScan
 EndProg
-""")
+""",
+    )
     r = run(m)
-    assert where(N.definition(r, m, 14, 4)) == [("m.CR6", 6, 12, 16)]         # alias declared name
+    assert where(N.definition(r, m, 14, 4)) == [("m.CR6", 6, 12, 16)]  # alias declared name
     refs = N.references(r, m, 6, 13, include_declaration=False)
     assert [(l.line, l.start) for l in refs] == [(14, 4)]
-    assert where(N.definition(r, m, 15, 15)) == [("m.CR6", 8, 10, 13)]         # table
-    assert where(N.definition(r, m, 13, 6)) == [("m.CR6", 1, 2, 3)]            # member X
+    assert where(N.definition(r, m, 15, 15)) == [("m.CR6", 8, 10, 13)]  # table
+    assert where(N.definition(r, m, 13, 6)) == [("m.CR6", 1, 2, 3)]  # member X
     assert [(l.line, l.start) for l in N.references(r, m, 1, 2)] == [(1, 2), (9, 13), (13, 6)]
     types = {(t.line, t.start): t.type for t in N.semantic_tokens(r, m)}
     assert types[(0, 14)] == "struct" and types[(1, 2)] == "property"
     assert types[(8, 10)] == "namespace" and types[(4, 7)] == "variable"
     # catalog names have no location
-    assert N.definition(r, m, 15, 6) == []                                     # CallTable
-    assert N.definition(r, m, 12, 4) == []                                     # Scan
+    assert N.definition(r, m, 15, 6) == []  # CallTable
+    assert N.definition(r, m, 12, 4) == []  # Scan
 
 
 def test_alias_junk_token_is_not_the_declaration(tmp_path):
-    m = write(tmp_path, "m.CR6", "Public arr(2)\nAlias arr(1) = a1 a2, a2\nBeginProg\n"
-              "  Scan(1,Sec,0,0)\n    a2 = 1\n  NextScan\nEndProg\n")
+    m = write(
+        tmp_path,
+        "m.CR6",
+        "Public arr(2)\nAlias arr(1) = a1 a2, a2\nBeginProg\n  Scan(1,Sec,0,0)\n    a2 = 1\n  NextScan\nEndProg\n",
+    )
     r = run(m)
     assert where(N.definition(r, m, *pos(m, "a2 = 1"))) == [("m.CR6", 1, 22, 24)]
-    assert [(h.line, h.start) for h in N.document_highlights(r, m, *pos(m, "a2 = 1"))] == \
-        [(1, 22), (4, 4)]
+    assert [(h.line, h.start) for h in N.document_highlights(r, m, *pos(m, "a2 = 1"))] == [(1, 22), (4, 4)]
 
 
 def test_continued_line(tmp_path):
-    m = write(tmp_path, "m.CR6", "Public alpha, _\n  beta, _\n  gamma\nBeginProg\n  Scan(1,Sec,0,0)\n"
-              "    gamma = beta + _\n      alpha\n  NextScan\nEndProg\n")
+    m = write(
+        tmp_path,
+        "m.CR6",
+        "Public alpha, _\n  beta, _\n  gamma\nBeginProg\n  Scan(1,Sec,0,0)\n"
+        "    gamma = beta + _\n      alpha\n  NextScan\nEndProg\n",
+    )
     r = run(m)
     assert where(N.definition(r, m, 5, 4)) == [("m.CR6", 2, 2, 7)]
     assert where(N.definition(r, m, 5, 12)) == [("m.CR6", 1, 2, 6)]
@@ -214,7 +225,7 @@ def test_file_included_twice_distinguishes_occurrences(tmp_path):
     m = write(tmp_path, "m.CR6", 'Include "inc.CR6"\nInclude "inc.CR6"\nBeginProg\n  twice = 1\nEndProg\n')
     r = run(m)
     d = N.definition(r, m, 3, 3)
-    assert where(d) == [("inc.CR6", 0, 7, 12)]            # one editor range, two loads
+    assert where(d) == [("inc.CR6", 0, 7, 12)]  # one editor range, two loads
     assert d[0].occurrences == (1, 2)
     refs = N.references(r, inc, 0, 8)
     assert where(refs) == [("inc.CR6", 0, 7, 12), ("m.CR6", 3, 2, 7)]
@@ -223,12 +234,13 @@ def test_file_included_twice_distinguishes_occurrences(tmp_path):
 
 
 def test_inactive_if_name_gives_nothing(tmp_path):
-    m = write(tmp_path, "m.CR6", "Public a\n#If False\n  Public hidden\n  hidden = a\n#EndIf\nBeginProg\n"
-              "  a = 1\nEndProg\n")
+    m = write(
+        tmp_path, "m.CR6", "Public a\n#If False\n  Public hidden\n  hidden = a\n#EndIf\nBeginProg\n  a = 1\nEndProg\n"
+    )
     r = run(m)
     assert N.definition(r, m, 2, 9) == []
     assert N.definition(r, m, 3, 4) == []
-    assert N.definition(r, m, 3, 13) == []                # `a` in the inactive branch: not indexed
+    assert N.definition(r, m, 3, 13) == []  # `a` in the inactive branch: not indexed
     assert N.definition(r, m, 6, 2) != []
 
 
@@ -243,18 +255,21 @@ def test_unresolved_and_nonsense_positions(sample):
 
 @pytest.mark.parametrize("newline", ["\n", "\r\n"])
 def test_crlf_and_non_ascii_before_token(tmp_path, newline):
-    m = write(tmp_path, "m.CR6",
-              'Public s As String * 8\nPublic caf\nBeginProg\n  s = "é" : caf = 1 + caf\nEndProg\n',
-              newline)
+    m = write(
+        tmp_path,
+        "m.CR6",
+        'Public s As String * 8\nPublic caf\nBeginProg\n  s = "é" : caf = 1 + caf\nEndProg\n',
+        newline,
+    )
     r = run(m)
-    line, col = pos(m, "caf", 1)                           # first `caf` in the code line
-    assert (line, col) == (3, 13)                          # byte column: `é` is two bytes
+    line, col = pos(m, "caf", 1)  # first `caf` in the code line
+    assert (line, col) == (3, 13)  # byte column: `é` is two bytes
     assert where(N.definition(r, m, line, col)) == [("m.CR6", 1, 7, 10)]
     refs = N.references(r, m, line, col)
     assert [(l.line, l.start) for l in refs] == [(1, 7), (3, 13), (3, 23)]
     data = m.read_bytes()
     (l0, c0), (l1, c1) = positions.lsp_range(data, positions.PhysicalRange("m.CR6", 0, 4, 13, 16))
-    assert (l0, c0, c1) == (3, 12, 15)                     # editor column is one less than the byte column
+    assert (l0, c0, c1) == (3, 12, 15)  # editor column is one less than the byte column
 
 
 def test_no_program_returns_empty(tmp_path):
@@ -288,27 +303,27 @@ def test_never_raises_over_crbasic(tmp_path):
             if s.path == p and not isinstance(s.rec, N.bindings.Declaration) and s.rec.resolved:
                 resolved += 1
                 got = nav.definition(p, s.line, s.start)
-                assert got or all(d.scope == "predefined" or id(d) not in nav._site_of
-                                  for d in s.rec.resolved)
+                assert got or all(d.scope == "predefined" or id(d) not in nav._site_of for d in s.rec.resolved)
                 # the range holds the record's own spelling
                 text = p.read_bytes().replace(b"\r\n", b"\n").split(b"\n")[s.line]
-                assert text[s.start:s.end].decode("latin-1").upper() == s.rec.name.upper() or \
-                    s.rec.name.upper() in ("", )
+                assert text[s.start : s.end].decode("latin-1").upper() == s.rec.name.upper() or s.rec.name.upper() in (
+                    "",
+                )
     assert declared > 100 and resolved > 100
 
 
 @pytest.mark.parametrize("end", ["EndSub", "End Sub"])
 def test_two_word_end_sub_scopes_the_main_program_name(tmp_path, end):
-    src = (f"Public x\nSub S()\n Dim x\n x=1\n{end}\nPublic z\n"
-           "BeginProg\n Scan(1,Sec,0,0)\n  x=2\n NextScan\nEndProg\n")
+    src = f"Public x\nSub S()\n Dim x\n x=1\n{end}\nPublic z\nBeginProg\n Scan(1,Sec,0,0)\n  x=2\n NextScan\nEndProg\n"
     p = write(tmp_path, "m.CR6", src)
     r = run(p)
     assert where(N.definition(r, p, 8, 2)) == [("m.CR6", 0, 7, 8)]
 
 
 def test_instruction_token_has_no_user_definition(tmp_path):
-    p = write(tmp_path, "m.CR6", "Public PanelTemp,T\nBeginProg\n Scan(1,Sec,0,0)\n"
-                                 "  PanelTemp(T,15000)\n NextScan\nEndProg\n")
+    p = write(
+        tmp_path, "m.CR6", "Public PanelTemp,T\nBeginProg\n Scan(1,Sec,0,0)\n  PanelTemp(T,15000)\n NextScan\nEndProg\n"
+    )
     assert N.definition(run(p), p, 3, 3) == []
 
 
@@ -328,7 +343,7 @@ def test_references_across_entries_of_a_shared_library(tmp_path):
         assert where(N.references_across(navs, path, line, col)) == want
         assert where(N.references_across(list(reversed(navs)), path, line, col)) == want
         assert where(N.references_across(navs, path, line, col, False)) == want[:2]
-    assert where(N.references_across(navs[:1], b, 2, 3)) == []             # A does not read B
+    assert where(N.references_across(navs[:1], b, 2, 3)) == []  # A does not read B
     assert where(N.references(navs[0].result, a, 2, 3)) == [want[0], want[2]]  # one entry: unchanged
     sites = N.declaration_sites(navs, a, 2, 3)
     assert [(required(s.path).name, s.line, s.start, s.end) for s in sites] == [("Lib.crb", 0, 7, 18)]

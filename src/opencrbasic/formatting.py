@@ -24,8 +24,8 @@ __all__ = ["TextEdit", "apply_edits", "format_indentation", "format_range", "for
 
 _UNITS_RE = re.compile(r"\s*Units\b", re.I)
 _MID_WORDS = frozenset({"CASE", "ELSE", "ELSEIF"})
-_CASE = "CASE"          # a virtual frame: the body of one `Case` of a `Select Case`
-_IMPLICIT_END = "SLOWSEQUENCE"      # editing._IMPLICIT_END: ends at the next one or at EndProg
+_CASE = "CASE"  # a virtual frame: the body of one `Case` of a `Select Case`
+_IMPLICIT_END = "SLOWSEQUENCE"  # editing._IMPLICIT_END: ends at the next one or at EndProg
 
 
 @dataclass(frozen=True)
@@ -33,6 +33,7 @@ class TextEdit:
     """Replace `text[line][start:end]` by `new_text`. `line` is 0-based; columns are decoded
     (Latin-1) columns, i.e. byte offsets into the physical line, before LSP position conversion.
     Every edit of this module has `start == 0`."""
+
     line: int
     start: int
     end: int
@@ -43,7 +44,7 @@ def apply_edits(text: str, edits: list[TextEdit]) -> str:
     """`text` with `edits` applied (edits must not overlap; any order)."""
     lines = text.split("\n")
     for e in edits:
-        lines[e.line] = lines[e.line][:e.start] + e.new_text + lines[e.line][e.end:]
+        lines[e.line] = lines[e.line][: e.start] + e.new_text + lines[e.line][e.end :]
     return "\n".join(lines)
 
 
@@ -51,8 +52,7 @@ def format_refusal(result) -> str | None:
     """Why formatting must not be offered for the file behind an `AnalysisResult` (or
     `CompileResult`): it has errors. None: formatting may be offered. Formatting itself works on
     text alone and never reads a result; this is the policy gate for the server."""
-    if getattr(result, "implementation_failures", None) or getattr(
-            result, "implementation_exceptions", None):
+    if getattr(result, "implementation_failures", None) or getattr(result, "implementation_exceptions", None):
         return "the analysis failed internally"
     if not result.ok:
         return "the program has errors; fix them before formatting"
@@ -64,12 +64,12 @@ def format_refusal(result) -> str | None:
 
 class _Frame(NamedTuple):
     family: str
-    last: int       # last physical line of the opener statement (0-based)
+    last: int  # last physical line of the opener statement (0-based)
 
 
 class _Dir(NamedTuple):
-    base: list          # block stack at the `#If`
-    ends: list          # block stack at the end of each earlier branch
+    base: list  # block stack at the `#If`
+    ends: list  # block stack at the end of each earlier branch
     first: int
     last: int
     has_else: bool
@@ -79,9 +79,9 @@ class _Group(NamedTuple):
     first: int
     last: int
     level: int
-    enter: int          # block depth before the statement
+    enter: int  # block depth before the statement
     directive: bool
-    skip: bool          # edits suppressed (the statement is left alone)
+    skip: bool  # edits suppressed (the statement is left alone)
 
 
 def _load(text: str) -> tuple[list[source.LogicalLine], int | None]:
@@ -109,8 +109,7 @@ def _inside_string(ll: source.LogicalLine) -> bool:
     """True when the text cannot be read as tokens, a continuation line starts inside a string, or
     a continued line holds a `Units` segment (its label is verbatim text, blanks included): changing
     the leading blanks of a continuation line would change the program."""
-    if _phys(ll)[1] > _phys(ll)[0] and any(
-            _UNITS_RE.match(seg) for seg in _split_text_segments(ll.text)):
+    if _phys(ll)[1] > _phys(ll)[0] and any(_UNITS_RE.match(seg) for seg in _split_text_segments(ll.text)):
         return True
     try:
         tokens = lexer.tokenize(ll.text)
@@ -144,9 +143,9 @@ def _plan(text: str, profile: str) -> tuple[dict[int, int], int]:
 
     def drop(k: int) -> None:
         nonlocal limit
-        for f in stack[k + 1:]:
+        for f in stack[k + 1 :]:
             if f.family not in (_IMPLICIT_END, _CASE):
-                limit = min(limit, f.last + 1)      # never closed: nothing after it is edited
+                limit = min(limit, f.last + 1)  # never closed: nothing after it is edited
         del stack[k:]
 
     def close(family: str, first: int) -> None:
@@ -155,7 +154,7 @@ def _plan(text: str, profile: str) -> tuple[dict[int, int], int]:
             if stack[k].family == family:
                 drop(k)
                 return
-        limit = min(limit, first)                   # a closer with no opener
+        limit = min(limit, first)  # a closer with no opener
 
     halted = False
     for ll in logical:
@@ -181,7 +180,7 @@ def _plan(text: str, profile: str) -> tuple[dict[int, int], int]:
                 if all([f.family for f in e] == [f.family for f in ends[0]] for e in ends):
                     stack[:] = ends[-1]
                 else:
-                    limit = min(limit, last + 1)    # branches leave different blocks open
+                    limit = min(limit, last + 1)  # branches leave different blocks open
             groups.append(_Group(first, last, 0, enter, True, False))
             continue
         evs = [e for e in events.get(first, [])]
@@ -219,13 +218,12 @@ def _plan(text: str, profile: str) -> tuple[dict[int, int], int]:
             else:
                 close(family, first)
         if ll.kind == "code" and not dirs and not stack and lead == ("close", "BEGINPROG"):
-            halted = True                           # the compiler stops reading at EndProg
+            halted = True  # the compiler stops reading at EndProg
             limit = min(limit, last + 1)
-        groups.append(_Group(first, last, level, enter, False, _inside_string(ll)
-                             if ll.kind == "code" else False))
+        groups.append(_Group(first, last, level, enter, False, _inside_string(ll) if ll.kind == "code" else False))
     for f in stack:
         if f.family not in (_IMPLICIT_END, _CASE):
-            limit = min(limit, f.last + 1)          # still open at the end of the text
+            limit = min(limit, f.last + 1)  # still open at the end of the text
     for dr in dirs:
         limit = min(limit, dr.last + 1)
 
@@ -235,7 +233,7 @@ def _plan(text: str, profile: str) -> tuple[dict[int, int], int]:
             continue
         levels[g.first] = g.level
         for k in range(g.first + 1, g.last + 1):
-            levels[k] = g.level + 1                 # continuation lines (and pulled lines)
+            levels[k] = g.level + 1  # continuation lines (and pulled lines)
     levels = {n: v for n, v in levels.items() if n < limit}
     covered = {k for g in groups for k in range(g.first, g.last + 1)}
     starts = [g.first for g in groups]
@@ -261,8 +259,7 @@ def format_indentation(text: str, profile: str = "cr6", indent: str = "  ") -> l
     return _format(text, profile, indent, 0, None)
 
 
-def format_range(text: str, start_line: int, end_line: int, profile: str = "cr6",
-                 indent: str = "  ") -> list[TextEdit]:
+def format_range(text: str, start_line: int, end_line: int, profile: str = "cr6", indent: str = "  ") -> list[TextEdit]:
     """`format_indentation` restricted to the 0-based physical lines `start_line..end_line`
     (inclusive). Levels are computed from the whole text, so the range needs no context."""
     return _format(text, profile, indent, start_line, end_line)
@@ -279,7 +276,7 @@ def _format(text: str, profile: str, indent: str, lo: int, hi: int | None) -> li
             continue
         body = lines[n].removesuffix("\r")
         if not body.strip(" \t"):
-            continue                                # blank lines keep their (trailing) blanks
+            continue  # blank lines keep their (trailing) blanks
         width = _leading(body)
         want = indent * level
         if body[:width] != want:

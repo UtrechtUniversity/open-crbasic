@@ -11,9 +11,16 @@ from opencrbasic.compiler import compile_file
 CASES = json.loads((Path(__file__).parent / "fixtures" / "r71_const_order.json").read_text())["cases"]
 
 
-@pytest.mark.parametrize("case", [
-    pytest.param(case, marks=pytest.mark.xfail(reason=case["not_modelled"], strict=True))
-    if "not_modelled" in case else case for case in CASES], ids=lambda case: case["id"])
+@pytest.mark.parametrize(
+    "case",
+    [
+        pytest.param(case, marks=pytest.mark.xfail(reason=case["not_modelled"], strict=True))
+        if "not_modelled" in case
+        else case
+        for case in CASES
+    ],
+    ids=lambda case: case["id"],
+)
 def test_const_order_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
     program.write_text(case["source"], encoding="utf-8")

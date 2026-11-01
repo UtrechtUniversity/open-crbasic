@@ -6,8 +6,7 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-FIXTURE = json.loads((Path(__file__).parent / "fixtures" /
-                      "sub_placement_boundaries.json").read_text())
+FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "sub_placement_boundaries.json").read_text())
 
 
 @pytest.mark.parametrize("case", FIXTURE["cases"], ids=lambda case: case["id"])

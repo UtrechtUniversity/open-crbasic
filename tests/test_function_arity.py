@@ -73,9 +73,7 @@ def test_too_many_args_in_bare_call():
 
 def test_too_many_args_in_assignment():
     result = compile_text(wrapped("    X = Round(X,1,2)\n"))
-    assert messages_of(result) == [
-        "No Matching, or out of place ) in expression:     X = Round(X,1,2)."
-    ]
+    assert messages_of(result) == ["No Matching, or out of place ) in expression:     X = Round(X,1,2)."]
 
 
 # ------------------------------------------------------------------ pass-1 tier

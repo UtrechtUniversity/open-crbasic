@@ -22,10 +22,22 @@ FALSE_ACCEPT = "false accept"
 FALSE_REJECT = "false reject"
 OPERATIONAL = "operational failure"
 
-CLASSES = [EXACT, LATER, ORDER, MESSAGE, MISSED, EARLIER, NO_DIAG, WARNINGS, MODE, FALSE_ACCEPT,
-           FALSE_REJECT, OPERATIONAL]
+CLASSES = [
+    EXACT,
+    LATER,
+    ORDER,
+    MESSAGE,
+    MISSED,
+    EARLIER,
+    NO_DIAG,
+    WARNINGS,
+    MODE,
+    FALSE_ACCEPT,
+    FALSE_REJECT,
+    OPERATIONAL,
+]
 FIRST_ERROR_OK = {EXACT, LATER, ORDER, WARNINGS, MODE}  # first error equal (or both accept)
-GATED_LOGGERS = ("cr6", "cr1000x")   # human decision 2026-10-24; CR300/CR350 are best effort
+GATED_LOGGERS = ("cr6", "cr1000x")  # human decision 2026-10-24; CR300/CR350 are best effort
 
 _LINE = re.compile(r"^(?:<([^>]+)>\s*)?line (\d+):\s*(.*)$")
 
@@ -55,9 +67,12 @@ def impact_class(row: dict) -> str:
     the `fuzz.classify` result as `now_class` (replay) or `class` (difftest)."""
     ours, theirs = row.get("our_exit"), row.get("their_exit")
     cls = row.get("now_class", row.get("class", ""))
-    if theirs not in (0, 1) or ours not in (0, 1) or cls in (
-            "oracle_error", "recorded_runner_failure", "stale_recording", "implementation_exception",
-            "crash", "hang"):
+    if (
+        theirs not in (0, 1)
+        or ours not in (0, 1)
+        or cls
+        in ("oracle_error", "recorded_runner_failure", "stale_recording", "implementation_exception", "crash", "hang")
+    ):
         return OPERATIONAL
     if cls is None:
         return EXACT
@@ -91,8 +106,7 @@ def table(rows: list[dict]) -> str:
     for cls in CLASSES:
         counts = [by[(lg, cls)] for lg in loggers]
         if any(counts):
-            lines.append(cls.ljust(52) + "".join(str(n).rjust(9) for n in counts)
-                         + str(sum(counts)).rjust(9))
+            lines.append(cls.ljust(52) + "".join(str(n).rjust(9) for n in counts) + str(sum(counts)).rjust(9))
     return "\n".join(lines)
 
 
@@ -114,8 +128,10 @@ def regressions(baseline: list[dict], rows: list[dict], loggers=GATED_LOGGERS) -
 
 
 if __name__ == "__main__":
+
     def row(oe, o, te, t):
         return {"our_exit": oe, "ours": o, "their_exit": te, "theirs": t}
+
     F = "t -- Compile Failed!\n\n"
     assert impact_class(row(0, "t -- Compiled in PipelineMode.", 1, F + "line 2: x.")) == FALSE_ACCEPT
     assert impact_class(row(0, "t -- Compiled in PipelineMode.", 0, "t -- Compiled in SequentialMode.")) == MODE

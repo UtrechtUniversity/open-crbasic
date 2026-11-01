@@ -26,11 +26,11 @@ import struct
 
 from .. import syntax as S
 
-_POOL_PAGES = {"cr300": 2560, "cr350": 12800}   # 0xA00000 / 0x3200000 bytes, in 4 KiB pages
+_POOL_PAGES = {"cr300": 2560, "cr350": 12800}  # 0xA00000 / 0x3200000 bytes, in 4 KiB pages
 _PAGE = 4096
-_BLOCK_BYTES = 496                              # a DataInterval table's block: 496 // bytes per record
+_BLOCK_BYTES = 496  # a DataInterval table's block: 496 // bytes per record
 _INT_MIN = -(1 << 31)
-_BASE = 0x600000                                 # start of the table area
+_BASE = 0x600000  # start of the table area
 
 MSG_ALLOC = "Unable to allocate enough data table space to manage flash write cycle limits."
 MSG_STORAGE = "Not enough storage area for DataTables."
@@ -83,16 +83,24 @@ def _min_recs(sp: dict, k: int, cc: int) -> int:
             period = float(cc * 5000)
     elif sp["W"] == 0:
         period = 50.0
-        for lim, val in ((2, 2000.0), (4, 5000.0), (8, 10000.0), (12, 20000.0), (16, 30000.0),
-                         (20, 60000.0), (23, 120000.0)):
+        for lim, val in (
+            (2, 2000.0),
+            (4, 5000.0),
+            (8, 10000.0),
+            (12, 20000.0),
+            (16, 30000.0),
+            (20, 60000.0),
+            (23, 120000.0),
+        ):
             if cc > lim:
                 period = val
     else:
         period = _f32(_f32(sp["W"]) * 1000.0)
     den = _f32(max(float(10 - cc), 1.0))
     try:
-        wear = _f32(_f32(_f32(_f32(3600000.0 / period) * 24.0) / _f32(float(k)))
-                    / _f32(_f32(100000.0) / _f32(den * 365.0)))
+        wear = _f32(
+            _f32(_f32(_f32(3600000.0 / period) * 24.0) / _f32(float(k))) / _f32(_f32(100000.0) / _f32(den * 365.0))
+        )
     except ZeroDivisionError:
         return _INT_MIN
     return _cvt_int(wear)
@@ -102,7 +110,7 @@ def preserve_charge(a: int, d: int, q_arg: int, min_tick: int, tick: int, public
     """Pool bytes taken by the variable-preservation store, `cr300comp` `FUN_005b4dd0(A, D, q_arg,
     minimum)` (float32 at each step). `tick` is the smallest scan interval in 100 us units."""
     t = max(tick, min_tick)
-    q = max(public_bytes // d, 1) if q_arg == 0 else q_arg   # q = 0 charges as q = 1 (oracle, T = 10 s)
+    q = max(public_bytes // d, 1) if q_arg == 0 else q_arg  # q = 0 charges as q = 1 (oracle, T = 10 s)
     wear = _f32(_f32(_f32(3600000.0 / _f32(t / 10.0)) * 24.0) / 27.0)
     recs = _f32(_f32(_f32(_f32(q * 0.6) * wear) + q) + 2.0)
     n = _cvt_int(max(recs, 5.0))
@@ -123,8 +131,15 @@ def allocate(specs: list[dict], pool: int) -> dict:
     "msg2": bool}` (sizes are the final record counts of the last pass)."""
     st = []
     for sp in specs:
-        st.append({"N": sp["n"], "k": 0, "R": 0, "lapses": sp["lapses"], **{
-            x: sp[x] for x in ("called", "flagged", "B", "card", "own_ms", "W", "fillstop", "kone", "day")}})
+        st.append(
+            {
+                "N": sp["n"],
+                "k": 0,
+                "R": 0,
+                "lapses": sp["lapses"],
+                **{x: sp[x] for x in ("called", "flagged", "B", "card", "own_ms", "W", "fillstop", "kone", "day")},
+            }
+        )
     e4 = pool
     ok_exit = False
     for cc in range(26):
@@ -239,6 +254,7 @@ def pool_bytes(profile_name: str, n_declared: int, has_public: bool, n_named_con
 def spec_of(m: dict) -> dict:
     """The allocator input of one data table from its `tables._build_data_table` meta."""
     from .. import tables as T
+
     cls = T.size_class(m["size_raw"])
     flagged = False
     if cls is None:
@@ -253,11 +269,20 @@ def spec_of(m: dict) -> dict:
     else:
         n, flagged = cls[1], cls[2]
     di = bool(m["interval_seconds"]) or m["zero_interval"]
-    return {"called": m["called"], "n": n, "flagged": flagged, "B": m["bytes_per_record"],
-            "lapses": (m["lapses"] if m["lapses"] < 1 << 31 else _INT_MIN) if di else 0, "card": False,   # TableFile does not skip the Lapses term here
-            "own_ms": int(round(m["interval_seconds"] * 1000)) if m["interval_seconds"] else 0,
-            "W": m["call_w"], "fillstop": m.get("fillstop", False), "kone": False, "day": False,
-            "zero_interval": m["zero_interval"]}
+    return {
+        "called": m["called"],
+        "n": n,
+        "flagged": flagged,
+        "B": m["bytes_per_record"],
+        "lapses": (m["lapses"] if m["lapses"] < 1 << 31 else _INT_MIN) if di else 0,
+        "card": False,  # TableFile does not skip the Lapses term here
+        "own_ms": int(round(m["interval_seconds"] * 1000)) if m["interval_seconds"] else 0,
+        "W": m["call_w"],
+        "fillstop": m.get("fillstop", False),
+        "kone": False,
+        "day": False,
+        "zero_interval": m["zero_interval"],
+    }
 
 
 def run(metas: list[dict], pool: int) -> dict | None:
@@ -271,7 +296,7 @@ def run(metas: list[dict], pool: int) -> dict | None:
     return allocate(specs, pool)
 
 
-_MAX_ALLOC = 0x8000000                   # CR6/CR1000X: largest single allocation request, 128 MiB
+_MAX_ALLOC = 0x8000000  # CR6/CR1000X: largest single allocation request, 128 MiB
 MSG_OOM = "Out of memory."
 
 
@@ -284,28 +309,29 @@ def cr6_table_oom(m: dict, auto_n: int | None = None, name: str = "") -> str | N
     `MSG_ALLOC_TABLE`, else `None`. `auto_n` is the resolved record count of an auto (or negative)
     size, only modelled without CardOut/TableFile; a beyond-range size is left alone."""
     from .. import tables as T
+
     cls = T.size_class(m["size_raw"])
     auto = False
     if cls is None:
         n = 1
     elif cls[0] == "fixed" and not cls[2]:
         n = cls[1]
-    elif cls[0] == "auto" or (cls[0] == "fixed" and cls[2]):   # CR6/CR1000X size every negative size as auto
+    elif cls[0] == "auto" or (cls[0] == "fixed" and cls[2]):  # CR6/CR1000X size every negative size as auto
         if auto_n is None or not (-1 << 31) < auto_n < 1 << 31 or auto_n in (0, 1) or m.get("has_card"):
-            return None                     # a CardOut/TableFile table is not modelled
+            return None  # a CardOut/TableFile table is not modelled
         n = auto_n
         auto = True
     else:
         return None
     b = m["bytes_per_record"]
     if not b or not m["called"] or b > 2147483647:
-        return None     # (a String field past INT_MAX compiles; oracle, 2026-10-25, round 35)
+        return None  # (a String field past INT_MAX compiles; oracle, 2026-10-25, round 35)
     lap = (m["lapses"] if m["lapses"] < 1 << 31 else _INT_MIN) if m["display_interval"] else 0
     a = _tdiv(_wrap32(abs(lap) * 16 if lap != _INT_MIN else 0), b) + 1 if lap else 0
     mm = _wrap32(n + a)
     k = 1
     if lap:
-        k = 1008 // b if auto else min(1008 // b, mm)    # an auto table's block is fixed before its count is known
+        k = 1008 // b if auto else min(1008 // b, mm)  # an auto table's block is fixed before its count is known
         if k < 2:
             k = 1
     r = k * b + 16
@@ -313,7 +339,7 @@ def cr6_table_oom(m: dict, auto_n: int | None = None, name: str = "") -> str | N
         c = r
     else:
         c = _wrap32((2048 // r + _tdiv(mm, k) + (1 if r < 1024 else 3)) * r)
-    if c > _MAX_ALLOC or c < 0:         # a wrapped negative request fails the host allocation
+    if c > _MAX_ALLOC or c < 0:  # a wrapped negative request fails the host allocation
         return MSG_OOM
     return MSG_ALLOC_TABLE.format(name) if auto and c == 0 else None
 
@@ -323,6 +349,7 @@ def _var_words(program: S.Program, env, kinds: tuple) -> list[tuple[int, int]]:
     is one word, a Double two, a String its padded length / 4; any other type is not counted, so
     the total can only be too small)."""
     from .. import tables as T
+
     out = []
     for st in program.statements:
         if not isinstance(st, S.Declaration) or st.kind not in kinds:
@@ -333,11 +360,11 @@ def _var_words(program: S.Program, env, kinds: tuple) -> list[tuple[int, int]]:
                 continue
             dims = [T._as_int(T._fold(d, env), default=1) for d in v.dims]
             if len(dims) > 3 or any(not 1 <= d <= 2147483647 for d in dims):
-                continue                    # `Illegally dimension`: never allocated
+                continue  # `Illegally dimension`: never allocated
             info = T._make_var_info(v, env)
-            stored = info.stored_len or 0   # (set for every String)
+            stored = info.stored_len or 0  # (set for every String)
             if t == "STRING" and stored > 2147483647:
-                continue    # the length wraps negative: compiles (oracle, 2026-10-25, round 35)
+                continue  # the length wraps negative: compiles (oracle, 2026-10-25, round 35)
             n = 1
             for d in dims:
                 n *= d
@@ -360,7 +387,8 @@ def variables_oom(program: S.Program, profile, env) -> bool:
     """CR6/CR1000X end of pass 1: a `Dim` or a `Public` segment too large to allocate (reported at
     the program's last statement, ends the compile before pass 2)."""
     return profile.name in ("cr6", "cr1000x") and any(
-        _segment_oom(_var_words(program, env, (k,))) for k in ("DIM", "PUBLIC"))
+        _segment_oom(_var_words(program, env, (k,))) for k in ("DIM", "PUBLIC")
+    )
 
 
 def string_length_oom_line(program: S.Program, diags) -> int | None:
@@ -402,11 +430,16 @@ def check(program: S.Program, profile, result, diags) -> None:
     """Reports the storage-limit pair of messages (pass 2, only on an otherwise clean program)."""
     if profile.name in ("cr6", "cr1000x") and not diags.errors:
         from .. import consteval
+
         if public_table_oom(program, consteval.Env(profile, dict(program.consts))):
             diags.error(0, MSG_OOM)
         else:
-            msgs = [cr6_table_oom(t._storage, t._storage.get("_n_raw"), t.name) for t in result.tables or [] if hasattr(t, "_storage")]
-            if MSG_OOM in msgs:                 # one message; a plain `Out of memory.` wins over a table's zero request
+            msgs = [
+                cr6_table_oom(t._storage, t._storage.get("_n_raw"), t.name)
+                for t in result.tables or []
+                if hasattr(t, "_storage")
+            ]
+            if MSG_OOM in msgs:  # one message; a plain `Out of memory.` wins over a table's zero request
                 diags.error(0, MSG_OOM)
             elif any(msgs):
                 diags.error(0, next(m for m in msgs if m))

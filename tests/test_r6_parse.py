@@ -7,8 +7,11 @@ from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
 NAMES = ["func_expr_stmt", "sub_tail_nested", "stmt_scope_suppress", "closer_public_lexical"]
-CASES = [c for n in NAMES
-         for c in json.loads((Path(__file__).parent / "fixtures" / f"{n}.json").read_text(encoding="utf-8"))["cases"]]
+CASES = [
+    c
+    for n in NAMES
+    for c in json.loads((Path(__file__).parent / "fixtures" / f"{n}.json").read_text(encoding="utf-8"))["cases"]
+]
 
 
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])

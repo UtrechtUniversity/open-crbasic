@@ -20,8 +20,7 @@ from . import bindings, navigation, positions, profiles
 from .catalog import InstructionCatalog
 from .sources import DiskSource, OverlaySource, SourceProvider
 
-__all__ = ["Edit", "CodeAction", "code_actions", "apply_edits", "edit_distance",
-           "MAX_ACTIONS", "FAMILIES"]
+__all__ = ["Edit", "CodeAction", "code_actions", "apply_edits", "edit_distance", "MAX_ACTIONS", "FAMILIES"]
 
 MAX_ACTIONS = 5
 
@@ -35,9 +34,16 @@ FAMILIES = (
     ("missing-include", re.compile(r"^Cannot open include file  (?P<n>.*)\.$", re.S), "n"),
 )
 
-_NAME_ROLES = (bindings.READ, bindings.WRITE, bindings.CALL, bindings.ARGUMENT,
-               bindings.MEMBER_BASE, bindings.TABLE_REF, bindings.ALIAS_TARGET,
-               bindings.UNITS_TARGET)
+_NAME_ROLES = (
+    bindings.READ,
+    bindings.WRITE,
+    bindings.CALL,
+    bindings.ARGUMENT,
+    bindings.MEMBER_BASE,
+    bindings.TABLE_REF,
+    bindings.ALIAS_TARGET,
+    bindings.UNITS_TARGET,
+)
 _VARIABLES = ("public", "dim", "static", "param", "alias")
 _TABLES = ("datatable", "consttable")
 _EXTERNAL = {"instruction", "function", "symbol"}
@@ -45,9 +51,9 @@ _EXTERNAL = {"instruction", "function", "symbol"}
 
 class Edit(NamedTuple):
     path: Path
-    line: int                       # physical, 0-based
-    start: int                      # decoded column, inclusive
-    end: int                        # decoded column, exclusive
+    line: int  # physical, 0-based
+    start: int  # decoded column, inclusive
+    end: int  # decoded column, exclusive
     new_text: str
 
 
@@ -82,8 +88,9 @@ def edit_distance(a: str, b: str) -> int:
             if a[i - 1] == b[j - 1]:
                 cost = 0
                 last_match = j
-            d[i + 1][j + 1] = min(d[i][j] + cost, d[i + 1][j] + 1, d[i][j + 1] + 1,
-                                  d[i1][j1] + (i - i1 - 1) + 1 + (j - j1 - 1))
+            d[i + 1][j + 1] = min(
+                d[i][j] + cost, d[i + 1][j] + 1, d[i][j + 1] + 1, d[i1][j1] + (i - i1 - 1) + 1 + (j - j1 - 1)
+            )
         last[a[i - 1]] = i
     return d[len(a) + 1][len(b) + 1]
 
@@ -97,11 +104,12 @@ def apply_edits(data: bytes, edits) -> bytes:
     lines = data.split(b"\n")
     for e in sorted(edits, key=lambda e: (e.line, e.start), reverse=True):
         text = lines[e.line].decode("latin-1")
-        lines[e.line] = (text[:e.start] + e.new_text + text[e.end:]).encode("latin-1")
+        lines[e.line] = (text[: e.start] + e.new_text + text[e.end :]).encode("latin-1")
     return b"\n".join(lines)
 
 
 # ------------------------------------------------------------------ names
+
 
 def _profile_name(profile) -> str:
     return profiles.get(profile if isinstance(profile, str) else profile.name).name
@@ -125,18 +133,20 @@ def _kind_ok(role: str, explicit_call: bool, decl) -> bool:
     read = kind in _VARIABLES + ("const", "function") or (external and kind == "symbol")
     if role == bindings.ARGUMENT:
         return read or kind in _TABLES
-    return read                                                    # READ
+    return read  # READ
 
 
 def _pool(index: bindings.BindingIndex, catalog: InstructionCatalog) -> dict[str, str]:
     """upper-case name -> spelling: declared names (first spelling wins) and catalog names."""
     pool: dict[str, str] = {}
     for d in index.declarations:
-        if d.kind in ("field", "structure_member", "label", "external", "system_table") \
-                or d.scope in ("structure", "table"):
+        if d.kind in ("field", "structure_member", "label", "external", "system_table") or d.scope in (
+            "structure",
+            "table",
+        ):
             continue
         pool.setdefault(d.name.upper(), d.name)
-    used: dict[str, str] = {}               # a catalog name keeps the spelling the program uses
+    used: dict[str, str] = {}  # a catalog name keeps the spelling the program uses
     for r in index.references:
         if len(r.resolved) == 1 and r.resolved[0].kind == "external":
             used.setdefault(r.name.upper(), r.name)
@@ -148,8 +158,12 @@ def _pool(index: bindings.BindingIndex, catalog: InstructionCatalog) -> dict[str
     return pool
 
 
-def suggest(index: bindings.BindingIndex, catalog: InstructionCatalog, ref: bindings.Reference,
-            pool: dict[str, str] | None = None) -> list[str]:
+def suggest(
+    index: bindings.BindingIndex,
+    catalog: InstructionCatalog,
+    ref: bindings.Reference,
+    pool: dict[str, str] | None = None,
+) -> list[str]:
     """Up to `MAX_ACTIONS` spellings for the unresolved reference `ref`: Damerau-Levenshtein <= 2
     (<= 1 for a name of up to 3 characters; a distance of 2 needs the same first letter),
     case-insensitive, nearest first, then user-declared
@@ -172,10 +186,12 @@ def suggest(index: bindings.BindingIndex, catalog: InstructionCatalog, ref: bind
         if not all(_kind_ok(ref.role, explicit, c) for c in res.candidates):
             continue
         user = any(c.kind != "external" for c in res.candidates)
-        if (not user and ref.role in (bindings.READ, bindings.ARGUMENT)
-                and (catalog.get(spelling, "instruction") or catalog.get(spelling, "keyword")
-                     or upper == "TO")):
-            continue            # `Do`, `For`, `Scan`, `To`: a statement word, not the value meant
+        if (
+            not user
+            and ref.role in (bindings.READ, bindings.ARGUMENT)
+            and (catalog.get(spelling, "instruction") or catalog.get(spelling, "keyword") or upper == "TO")
+        ):
+            continue  # `Do`, `For`, `Scan`, `To`: a statement word, not the value meant
         ranked.append((dist, not user, upper, spelling))
     ranked.sort()
     return [r[3] for r in ranked[:MAX_ACTIONS]]
@@ -183,7 +199,7 @@ def suggest(index: bindings.BindingIndex, catalog: InstructionCatalog, ref: bind
 
 # ------------------------------------------------------------------ entry point
 
-_cache: tuple | None = None            # (result, profile name, index, navigation)
+_cache: tuple | None = None  # (result, profile name, index, navigation)
 
 
 def _tools(result, profile_name: str, index):
@@ -201,8 +217,9 @@ def _norm(path) -> str:
     return os.path.normcase(str(Path(path).absolute()))
 
 
-def code_actions(result, path, diagnostic, profile, *, index=None,
-                 source: SourceProvider | None = None) -> list[CodeAction]:
+def code_actions(
+    result, path, diagnostic, profile, *, index=None, source: SourceProvider | None = None
+) -> list[CodeAction]:
     """Quick fixes for `diagnostic` (an `AnalysisDiagnostic` of `result`) in the file `path`.
     Empty for any message outside `FAMILIES` or when no exact range exists. `profile` is a profile
     name or `Profile`. `source` (default: the disk plus `result.request.overlays`) is read for the
@@ -224,7 +241,7 @@ def _code_actions(result, path: Path, diag, profile_name: str, index, source) ->
     if family is None:
         return []
     if family == "missing-include":
-        assert name is not None             # its pattern always captures the include spec
+        assert name is not None  # its pattern always captures the include spec
         return _include_actions(result, path, diag, name, source)
     if getattr(result, "program", None) is None:
         return []
@@ -244,8 +261,7 @@ def _code_actions(result, path: Path, diag, profile_name: str, index, source) ->
             continue
         if name is not None and ref.name.upper() != name.upper():
             continue
-        if family in ("undefined-sub", "undefined-call") and ref.role not in (
-                bindings.CALL, bindings.WRITE):
+        if family in ("undefined-sub", "undefined-call") and ref.role not in (bindings.CALL, bindings.WRITE):
             continue
         site = nav._site_of.get(id(ref))
         if site is None or site.path is None or _norm(site.path) != here:
@@ -282,8 +298,7 @@ def _include_actions(result, path: Path, diag, spec: str, source) -> list[CodeAc
     entry = Path(result.request.entry).absolute().name.lower()
     ranked = []
     for fname in listing:
-        if fname.lower() == entry or not fname.lower().endswith(_INCLUDE_EXTENSIONS) \
-                or fname == wanted:
+        if fname.lower() == entry or not fname.lower().endswith(_INCLUDE_EXTENSIONS) or fname == wanted:
             continue
         dist = edit_distance(wanted, fname)
         if dist <= _max_distance(wanted):
@@ -305,8 +320,12 @@ def _include_actions(result, path: Path, diag, spec: str, source) -> list[CodeAc
             if at < m.start(1):
                 continue
             for _, _, fname in ranked[:MAX_ACTIONS]:
-                actions.append(CodeAction(f"Change to `{fname}`",
-                                          (Edit(path, lineno - 1, at, at + len(wanted), fname),),
-                                          family="missing-include"))
+                actions.append(
+                    CodeAction(
+                        f"Change to `{fname}`",
+                        (Edit(path, lineno - 1, at, at + len(wanted), fname),),
+                        family="missing-include",
+                    )
+                )
             return actions
     return actions

@@ -9,10 +9,14 @@ from opencrbasic import cli, profiles
 from opencrbasic.compiler import compile_file
 
 EXTENSION_CASES = [
-    (".CR6", "cr6"), (".cr6", "cr6"),
-    (".CR1X", "cr1000x"), (".cr1x", "cr1000x"),
-    (".CR300", "cr300"), (".cr300", "cr300"),
-    (".CR350", "cr350"), (".cr350", "cr350"),
+    (".CR6", "cr6"),
+    (".cr6", "cr6"),
+    (".CR1X", "cr1000x"),
+    (".cr1x", "cr1000x"),
+    (".CR300", "cr300"),
+    (".cr300", "cr300"),
+    (".CR350", "cr350"),
+    (".cr350", "cr350"),
 ]
 
 
@@ -70,8 +74,9 @@ def test_compile_file_uses_requested_profile(tmp_path: Path, name: str) -> None:
         assert line.endswith("Compiled OK.")
 
 
-@pytest.mark.parametrize("ext, expected", [(".CR6", "cr6"), (".CR1X", "cr1000x"),
-                                            (".CR300", "cr300"), (".CR350", "cr350")])
+@pytest.mark.parametrize(
+    "ext, expected", [(".CR6", "cr6"), (".CR1X", "cr1000x"), (".CR300", "cr300"), (".CR350", "cr350")]
+)
 def test_compile_file_defaults_profile_from_extension(tmp_path: Path, ext: str, expected: str) -> None:
     path = tmp_path / ("t" + ext)
     path.write_text(MINIMAL_PROGRAM)

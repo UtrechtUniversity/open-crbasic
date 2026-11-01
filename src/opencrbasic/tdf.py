@@ -75,8 +75,20 @@ def parse(data: bytes) -> tuple[int, list[TdfTable]]:
                 if sd == 0:
                     break
                 subdims.append(sd)
-            table.fields.append(TdfField(ftype & 0x7F, bool(ftype & 0x80), fname, aliases, processing,
-                                         units, description, begin, dim, subdims))
+            table.fields.append(
+                TdfField(
+                    ftype & 0x7F,
+                    bool(ftype & 0x80),
+                    fname,
+                    aliases,
+                    processing,
+                    units,
+                    description,
+                    begin,
+                    dim,
+                    subdims,
+                )
+            )
         pos += 1
         tables.append(table)
     return version, tables
@@ -117,11 +129,14 @@ def dump(data: bytes) -> str:
             for key in ("processing", "units", "description"):
                 if getattr(f, key):
                     extra.append(f"{key}={getattr(f, key)!r}")
-            lines.append(f"  {f.name} type={f.type}{ro} begin={f.begin_index} dim={f.dimension} "
-                         f"subdims={f.subdims} {' '.join(extra)}".rstrip())
+            lines.append(
+                f"  {f.name} type={f.type}{ro} begin={f.begin_index} dim={f.dimension} "
+                f"subdims={f.subdims} {' '.join(extra)}".rstrip()
+            )
     return "\n".join(lines)
 
 
 if __name__ == "__main__":
     import sys
+
     print(dump(open(sys.argv[1], "rb").read()))

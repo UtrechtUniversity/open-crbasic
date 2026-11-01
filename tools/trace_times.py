@@ -39,8 +39,12 @@ def build() -> Path:
     pe = pefile.PE(data=bytes(data))
     base = getattr(pe.OPTIONAL_HEADER, "ImageBase")
     text = next(s for s in pe.sections if s.Name.startswith(b".text\0"))
-    iat = {i.name: i.address for e in getattr(pe, "DIRECTORY_ENTRY_IMPORT") for i in e.imports
-           if i.name in (b"GetStdHandle", b"WriteFile")}
+    iat = {
+        i.name: i.address
+        for e in getattr(pe, "DIRECTORY_ENTRY_IMPORT")
+        for i in e.imports
+        if i.name in (b"GetStdHandle", b"WriteFile")
+    }
     slack_off = text.PointerToRawData + text.Misc_VirtualSize
     cave_va = base + text.VirtualAddress + text.Misc_VirtualSize
     foff = text.PointerToRawData + (TARGET_VA - base - text.VirtualAddress)
@@ -62,7 +66,9 @@ def trace(program: Path) -> dict:
         tmp = Path(tmp)
         shutil.copy2(program, tmp / program.name)
         shutil.copy2(exe, tmp / exe.name)
-        env = dict(os.environ, WINEDEBUG="-all", WINEPREFIX=os.environ.get("WINEPREFIX", str(Path.home() / ".wine-cr6")))
+        env = dict(
+            os.environ, WINEDEBUG="-all", WINEPREFIX=os.environ.get("WINEPREFIX", str(Path.home() / ".wine-cr6"))
+        )
         env.setdefault("WINEDLLOVERRIDES", "winemac.drv,winex11.drv,winewayland.drv=d")
         r = subprocess.run([str(te.WINE), exe.name, program.name], cwd=tmp, env=env, capture_output=True, timeout=120)
     recs = []
@@ -71,8 +77,13 @@ def trace(program: Path) -> dict:
         if len(blk) < 48:
             continue
         w = struct.unpack("<12I", blk)
-        recs.append({"units": struct.unpack("<i", struct.pack("<I", w[1]))[0], "ret": hex(w[3]),
-                     "frames": [hex(x) for x in w[4:] if x]})
+        recs.append(
+            {
+                "units": struct.unpack("<i", struct.pack("<I", w[1]))[0],
+                "ret": hex(w[3]),
+                "frames": [hex(x) for x in w[4:] if x],
+            }
+        )
     out = re.sub(r"\r+", "\r", r.stdout.decode("utf-8", "replace")).replace("\r\n", "\n").replace("\r", "\n")
     return {"stdout": out.rstrip("\n"), "records": recs}
 

@@ -125,7 +125,9 @@ def trace(logger: str, program: Path, siblings: Path | None = None) -> dict:
                     shutil.copy2(f, tmp / f.name)
         shutil.copy2(program, tmp / program.name)
         shutil.copy2(exe, tmp / exe.name)
-        env = dict(os.environ, WINEDEBUG="-all", WINEPREFIX=os.environ.get("WINEPREFIX", str(Path.home() / ".wine-cr6")))
+        env = dict(
+            os.environ, WINEDEBUG="-all", WINEPREFIX=os.environ.get("WINEPREFIX", str(Path.home() / ".wine-cr6"))
+        )
         env.setdefault("WINEDLLOVERRIDES", "winemac.drv,winex11.drv,winewayland.drv=d")
         r = subprocess.run([str(WINE), exe.name, program.name], cwd=tmp, env=env, capture_output=True, timeout=120)
     recs = []
@@ -141,8 +143,14 @@ def trace(logger: str, program: Path, siblings: Path | None = None) -> dict:
             if not x:
                 break
             frames.append(hex(x))
-        recs.append({"kind": "error" if w[1] == 1 else "warning" if w[1] == 0 else str(w[1]),
-                     "fmt": _cstr(pe, raw, w[2]), "reporter_ret": hex(w[3]), "frames": frames})
+        recs.append(
+            {
+                "kind": "error" if w[1] == 1 else "warning" if w[1] == 0 else str(w[1]),
+                "fmt": _cstr(pe, raw, w[2]),
+                "reporter_ret": hex(w[3]),
+                "frames": frames,
+            }
+        )
     out = re.sub(r"\r+", "\r", r.stdout.decode("utf-8", "replace")).replace("\r\n", "\n").replace("\r", "\n")
     return {"stdout": out.rstrip("\n"), "records": recs}
 

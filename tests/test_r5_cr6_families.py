@@ -6,8 +6,11 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-_CASES = [c for f in sorted((Path(__file__).parent / "fixtures").glob("r5cr6_*.json"))
-          for c in json.loads(f.read_text(encoding="utf-8"))["cases"]]
+_CASES = [
+    c
+    for f in sorted((Path(__file__).parent / "fixtures").glob("r5cr6_*.json"))
+    for c in json.loads(f.read_text(encoding="utf-8"))["cases"]
+]
 
 
 @pytest.mark.parametrize("case", _CASES, ids=lambda case: case["id"])

@@ -1,4 +1,5 @@
 """Oracle-backed instruction-value and GPS-structure range observations."""
+
 import json
 from pathlib import Path
 

@@ -6,9 +6,11 @@ import pytest
 from opencrbasic import checker, parser, profiles
 from opencrbasic.compiler import CompileResult
 
-DECLS = ("Public P, PA(3)\nDim D, DA(3)\nConst K = 3\nAlias P = AP\n"
-         "StructureType ST\n  a As Float\n  Units a = m\nEndStructureType\nPublic V As ST\n"
-         "Sub S(Arg)\nEndSub\n")
+DECLS = (
+    "Public P, PA(3)\nDim D, DA(3)\nConst K = 3\nAlias P = AP\n"
+    "StructureType ST\n  a As Float\n  Units a = m\nEndStructureType\nPublic V As ST\n"
+    "Sub S(Arg)\nEndSub\n"
+)
 
 
 def messages(units: str, logger: str = "cr6") -> list[str]:
@@ -20,20 +22,25 @@ def messages(units: str, logger: str = "cr6") -> list[str]:
 
 
 def cannot(name: str) -> str:
-    return (f"Can't assign units to {name}, it must be declared Public or referenced as a source "
-            "in a Data Table.")
+    return f"Can't assign units to {name}, it must be declared Public or referenced as a source in a Data Table."
 
 
-@pytest.mark.parametrize("units", ["Units P = m", "Units D = m", "Units AP = m",
-                                   "Units DA = m", "Units PA(1) = m"])
+@pytest.mark.parametrize("units", ["Units P = m", "Units D = m", "Units AP = m", "Units DA = m", "Units PA(1) = m"])
 def test_declared_variables_and_aliases_accept_units(units):
     assert messages(units) == []
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x", "cr300", "cr350"])
-@pytest.mark.parametrize("units,name", [("Units K = m", "K"), ("Units Nope = m", "Nope"),
-                                        ("Units nope(1) = m", "nope"), ("Units Arg = m", "Arg"),
-                                        ("Units V = m", "V")])
+@pytest.mark.parametrize(
+    "units,name",
+    [
+        ("Units K = m", "K"),
+        ("Units Nope = m", "Nope"),
+        ("Units nope(1) = m", "nope"),
+        ("Units Arg = m", "Arg"),
+        ("Units V = m", "V"),
+    ],
+)
 def test_other_targets_are_rejected(units, name, logger):
     assert messages(units, logger) == [cannot(name)]
 

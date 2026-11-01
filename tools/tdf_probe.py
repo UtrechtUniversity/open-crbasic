@@ -74,8 +74,13 @@ def main() -> int:
     ap.add_argument("--keep", action="store_true", help="print the temp dir path instead of deleting it")
     ap.add_argument("--raw", action="store_true", help="also print the -l table-list text verbatim")
     ap.add_argument("--extra", action="append", default=[], help="extra CR6Comp.exe option(s), e.g. --extra -s")
-    ap.add_argument("--sibling", action="append", default=[], metavar="PATH",
-                     help="extra file to copy into the temp dir (e.g. an Include'd .crb); repeatable")
+    ap.add_argument(
+        "--sibling",
+        action="append",
+        default=[],
+        metavar="PATH",
+        help="extra file to copy into the temp dir (e.g. an Include'd .crb); repeatable",
+    )
     args = ap.parse_args()
 
     if args.snippet == "-":
@@ -111,6 +116,7 @@ def main() -> int:
 
     if tdf_path.is_file() and tdf_path.stat().st_size:
         from opencrbasic.tdf import dump
+
         print("=== TDF dump (-z) ===")
         print(dump(tdf_path.read_bytes()))
     else:

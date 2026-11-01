@@ -37,16 +37,16 @@ def test_client_kill_includes_pool_workers(monkeypatch, platform):
     proc.wait.assert_called_once_with()
 
 
-@pytest.mark.parametrize("platform, directory, suffix", [
-    ("win32", "Scripts", ".exe"), ("darwin", "bin", ""), ("linux", "bin", "")])
+@pytest.mark.parametrize(
+    "platform, directory, suffix", [("win32", "Scripts", ".exe"), ("darwin", "bin", ""), ("linux", "bin", "")]
+)
 @pytest.mark.parametrize("name", ["python", "crbc", "crbc-lsp"])
 def test_venv_executable(monkeypatch, tmp_path, platform, directory, suffix, name):
     monkeypatch.setattr(lsp_install_check.sys, "platform", platform)
     assert lsp_install_check.venv_executable(tmp_path, name) == tmp_path / directory / (name + suffix)
 
 
-@pytest.mark.parametrize("root_uri", ["file:///C:/Users/Test%20%C3%89",
-                                     "file:///c%3A/Users/Test%20%C3%89/"])
+@pytest.mark.parametrize("root_uri", ["file:///C:/Users/Test%20%C3%89", "file:///c%3A/Users/Test%20%C3%89/"])
 def test_unopened_windows_file_uri_uses_client_root(root_uri):
     # PureWindowsPath exercises Windows drive matching on any host, without pretending
     # the Windows filesystem exists. Publishing is independent of filesystem access.
@@ -59,7 +59,7 @@ def test_unopened_windows_file_uri_uses_client_root(root_uri):
     session._publish({path})
     assert published[0][0] == root_uri.rstrip("/") + "/sub/A%20%23%C3%A9.CR6"
     session._uris[path] = "file:///C:/Users/Test%20%C3%89/sub/./A%20%23%C3%A9.CR6"
-    assert session.uri(path) == session._uris[path]           # opened spelling still wins
+    assert session.uri(path) == session._uris[path]  # opened spelling still wins
 
 
 @pytest.mark.parametrize("overlapping", [True, False])
@@ -75,7 +75,8 @@ def test_unopened_diagnostics_clear_previous_folder_spelling(overlapping):
     session._publish({path})
     assert published == [("file:///C:/x/sub/Bad.CR6", None, diags)]
     session.folder_uris[root / "sub" if overlapping else root] = (
-        "file:///c%3A/x/sub" if overlapping else "file:///c%3A/x")
+        "file:///c%3A/x/sub" if overlapping else "file:///c%3A/x"
+    )
     diags.clear()
     session._publish({path})
     assert published[-1] == ("file:///C:/x/sub/Bad.CR6", None, [])
@@ -85,31 +86,35 @@ def test_unopened_diagnostics_clear_previous_folder_spelling(overlapping):
 
 @pytest.mark.server
 @pytest.mark.parametrize("workspace_folders", [True, False])
-def test_unopened_diagnostics_and_folder_removal_keep_client_root(make_client, tmp_path,
-                                                               workspace_folders):
+def test_unopened_diagnostics_and_folder_removal_keep_client_root(make_client, tmp_path, workspace_folders):
     root = tmp_path / "proj"
     root.mkdir()
     entry = root / "Bad.CR6"
     entry.write_text("BeginProg\nx = unknown\nEndProg\n")
     uri = root.as_uri().replace("/proj", "/%70roj")
     client = make_client()
-    client.request("initialize", {
-        "processId": None, "rootUri": uri, "capabilities": {},
-        "initializationOptions": FAST,
-        "workspaceFolders": [{"uri": uri, "name": "proj"}] if workspace_folders else None})
+    client.request(
+        "initialize",
+        {
+            "processId": None,
+            "rootUri": uri,
+            "capabilities": {},
+            "initializationOptions": FAST,
+            "workspaceFolders": [{"uri": uri, "name": "proj"}] if workspace_folders else None,
+        },
+    )
     client.notify("initialized", {})
     expected = uri + "/Bad.CR6"
-    client.wait_for(lambda: any(p["uri"] == expected and p["diagnostics"]
-                               for p in client.publishes()))
-    client.notify("workspace/didChangeWorkspaceFolders", {"event": {
-        "added": [], "removed": [{"uri": uri, "name": "proj"}]}})
-    client.wait_for(lambda: any(p["uri"] == expected and not p["diagnostics"]
-                               for p in client.publishes()))
+    client.wait_for(lambda: any(p["uri"] == expected and p["diagnostics"] for p in client.publishes()))
+    client.notify(
+        "workspace/didChangeWorkspaceFolders", {"event": {"added": [], "removed": [{"uri": uri, "name": "proj"}]}}
+    )
+    client.wait_for(lambda: any(p["uri"] == expected and not p["diagnostics"] for p in client.publishes()))
     # Adding a workspace root also registers its spelling before discovery publishes.
-    client.notify("workspace/didChangeWorkspaceFolders", {"event": {
-        "added": [{"uri": uri, "name": "proj"}], "removed": []}})
-    client.wait_for(lambda: len([p for p in client.publishes()
-                                if p["uri"] == expected and p["diagnostics"]]) == 2)
+    client.notify(
+        "workspace/didChangeWorkspaceFolders", {"event": {"added": [{"uri": uri, "name": "proj"}], "removed": []}}
+    )
+    client.wait_for(lambda: len([p for p in client.publishes() if p["uri"] == expected and p["diagnostics"]]) == 2)
     assert all(p["uri"] == expected for p in client.publishes())
     assert client.shutdown() == 0
 
@@ -125,7 +130,7 @@ def test_protocol_streams_leave_posix_unchanged(monkeypatch):
 def test_windows_protocol_fds_with_simulated_win32_handles():
     # Real descriptor operations in an isolated subprocess; only SetStdHandle and
     # get_osfhandle are simulated. This cannot reproduce Windows' pipe startup stall.
-    script = '''
+    script = """
 import ctypes, os, sys
 from types import SimpleNamespace
 from opencrbasic.lsp.server import protocol_streams
@@ -146,9 +151,10 @@ with protocol_streams() as (reader, writer):
     writer.flush()
     sys.stderr.write("stderr unchanged")
 assert reader.closed and writer.closed
-'''
-    result = lspclient.subprocess.run([lspclient.sys.executable, "-c", script],
-                                      input=b"protocol\n", capture_output=True)
+"""
+    result = lspclient.subprocess.run(
+        [lspclient.sys.executable, "-c", script], input=b"protocol\n", capture_output=True
+    )
     assert result.returncode == 0, result.stderr
     assert result.stdout == b"protocol\n"
     assert result.stderr == b"stderr unchanged"
@@ -168,4 +174,3 @@ def test_main_detaches_streams_before_building_server(monkeypatch):
     assert events == ["streams", "build"]
     fake.start_io.assert_called_once_with("in", "out")
     fake.session.close.assert_called_once_with()
-

@@ -6,6 +6,7 @@
 Errors are reported through FUN_005089c0 (error) and FUN_00508a00 (warning); see docs/binary.md.
 Output columns: kind, function containing the call, format string.
 """
+
 import re
 import sys
 from pathlib import Path

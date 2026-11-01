@@ -22,10 +22,17 @@ def test_m5_artifacts(case, tmp_path):
     args = [case["program"] if a == "P" else a for a in case["args"]]
     env = {**os.environ, "PYTHONPATH": str(ROOT / "src")}
     env.pop("OPENCRBASIC_STRICT", None)
-    run = subprocess.run([sys.executable, "-m", "opencrbasic", "--logger", case["logger"], *args],
-                         cwd=tmp_path, capture_output=True, env=env)
+    run = subprocess.run(
+        [sys.executable, "-m", "opencrbasic", "--logger", case["logger"], *args],
+        cwd=tmp_path,
+        capture_output=True,
+        env=env,
+    )
     stdout = re.sub(r"\r+", "\r", run.stdout.decode("latin-1")).replace("\r\n", "\n").rstrip("\n")
     assert (run.returncode, stdout) == (case["expected_exit"], case["expected_stdout"])
-    written = {f.name: base64.b64encode(f.read_bytes()).decode()
-               for f in tmp_path.iterdir() if f.name not in {case["program"], *case.get("siblings", {})}}
+    written = {
+        f.name: base64.b64encode(f.read_bytes()).decode()
+        for f in tmp_path.iterdir()
+        if f.name not in {case["program"], *case.get("siblings", {})}
+    }
     assert written == case["expected_files"]

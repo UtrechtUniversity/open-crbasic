@@ -21,11 +21,11 @@ from collections.abc import Iterator
 from pathlib import Path
 from typing import Any, BinaryIO
 
-EXPECTED_API_VERSION = 2       # the `analysis.API_VERSION` this server was written for
+EXPECTED_API_VERSION = 2  # the `analysis.API_VERSION` this server was written for
 SECTION = "opencrbasic"
 WATCH_ID = "opencrbasic-watch"
-DELETE_PATTERN = "**/*"         # VS Code reports a deleted folder only as its own URI
-CHECKS_PATTERN = "**/opencrbasic.toml"   # the check configuration (`checkconfig.FILE_NAME`)
+DELETE_PATTERN = "**/*"  # VS Code reports a deleted folder only as its own URI
+CHECKS_PATTERN = "**/opencrbasic.toml"  # the check configuration (`checkconfig.FILE_NAME`)
 CONFIG_PULL_TIMEOUT = 10.0
 COMMAND_COMPILER_OUTPUT = "opencrbasic.showCompilerOutput"
 COMMAND_TABLE_FIELDS = "opencrbasic.showTableFields"
@@ -36,9 +36,13 @@ def _git_revision(src_dir: Path) -> str | None:
     `src_dir` is not that checkout's `src/opencrbasic` or `opencrbasic/src/opencrbasic` (a wheel
     installed inside some other repository)."""
     try:
-        out = subprocess.run(["git", "-C", str(src_dir), "rev-parse", "--show-toplevel",
-                              "--short", "HEAD"], capture_output=True, text=True, timeout=5)
-    except (OSError, subprocess.SubprocessError):
+        out = subprocess.run(
+            ["git", "-C", str(src_dir), "rev-parse", "--show-toplevel", "--short", "HEAD"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except OSError, subprocess.SubprocessError:
         return None
     lines = out.stdout.split()
     if out.returncode != 0 or len(lines) != 2:
@@ -46,8 +50,7 @@ def _git_revision(src_dir: Path) -> str | None:
     top, rev = Path(lines[0]), lines[1]
     try:
         here = src_dir.resolve()
-        ours = any((top / sub).resolve() == here
-                   for sub in ("src/opencrbasic", "opencrbasic/src/opencrbasic"))
+        ours = any((top / sub).resolve() == here for sub in ("src/opencrbasic", "opencrbasic/src/opencrbasic"))
     except OSError:
         return None
     return rev if ours else None
@@ -60,8 +63,7 @@ def startup_line() -> str:
 
     where = Path(opencrbasic.__file__).resolve()
     rev = _git_revision(where.parent)
-    return (f"opencrbasic-lsp: opencrbasic={where} api_version={analysis.API_VERSION} "
-            f"git={rev or 'unknown'}")
+    return f"opencrbasic-lsp: opencrbasic={where} api_version={analysis.API_VERSION} git={rev or 'unknown'}"
 
 
 def check_api_version() -> str | None:
@@ -69,8 +71,10 @@ def check_api_version() -> str | None:
     from .. import analysis
 
     if analysis.API_VERSION != EXPECTED_API_VERSION:
-        return (f"opencrbasic-lsp: refusing to start: opencrbasic.analysis.API_VERSION is "
-                f"{analysis.API_VERSION}, this server was written for {EXPECTED_API_VERSION}")
+        return (
+            f"opencrbasic-lsp: refusing to start: opencrbasic.analysis.API_VERSION is "
+            f"{analysis.API_VERSION}, this server was written for {EXPECTED_API_VERSION}"
+        )
     return None
 
 
@@ -86,22 +90,33 @@ def build_server():
     from .config import Config, parse_config, watch_pattern
     from .session import CHANGED, CREATED, DELETED, Diag, ServerError, Session
 
-    server = LanguageServer(SECTION, __version__,
-                            text_document_sync_kind=types.TextDocumentSyncKind.Full)
-    severities = {"error": types.DiagnosticSeverity.Error,
-                  "warning": types.DiagnosticSeverity.Warning,
-                  "information": types.DiagnosticSeverity.Information,
-                  "hint": types.DiagnosticSeverity.Hint}
+    server = LanguageServer(SECTION, __version__, text_document_sync_kind=types.TextDocumentSyncKind.Full)
+    severities = {
+        "error": types.DiagnosticSeverity.Error,
+        "warning": types.DiagnosticSeverity.Warning,
+        "information": types.DiagnosticSeverity.Information,
+        "hint": types.DiagnosticSeverity.Hint,
+    }
 
     def publish(uri: str, version: int | None, diags: list[Diag]) -> None:
-        server.text_document_publish_diagnostics(types.PublishDiagnosticsParams(
-            uri=uri, version=version,
-            diagnostics=[types.Diagnostic(
-                range=types.Range(types.Position(d.line, 0), types.Position(d.end_line, d.end)),
-                message=d.message, severity=severities[d.severity], source=d.source,
-                code=d.code, code_description=types.CodeDescription(d.link) if d.link else None,
-                data=dict(d.data) if d.data else None)
-                for d in diags]))
+        server.text_document_publish_diagnostics(
+            types.PublishDiagnosticsParams(
+                uri=uri,
+                version=version,
+                diagnostics=[
+                    types.Diagnostic(
+                        range=types.Range(types.Position(d.line, 0), types.Position(d.end_line, d.end)),
+                        message=d.message,
+                        severity=severities[d.severity],
+                        source=d.source,
+                        code=d.code,
+                        code_description=types.CodeDescription(d.link) if d.link else None,
+                        data=dict(d.data) if d.data else None,
+                    )
+                    for d in diags
+                ],
+            )
+        )
 
     session = Session(publish)
     state: dict[str, Any] = {"init_options": None}
@@ -109,14 +124,15 @@ def build_server():
 
     def send_message(message: str) -> None:
         if not state.get("shutdown"):
-            server.window_log_message(types.LogMessageParams(
-                type=types.MessageType.Warning, message=f"opencrbasic-lsp: {message}"))
+            server.window_log_message(
+                types.LogMessageParams(type=types.MessageType.Warning, message=f"opencrbasic-lsp: {message}")
+            )
 
     session.on_message = send_message
 
     def fs_path(uri: str) -> Path:
         fs = to_fs_path(uri)
-        if fs is None:                      # not a `file:` URI (was a TypeError from Path(None))
+        if fs is None:  # not a `file:` URI (was a TypeError from Path(None))
             raise ValueError(f"not a file URI: {uri!r}")
         return Path(fs).absolute()
 
@@ -137,9 +153,12 @@ def build_server():
 
     async def pull_settings() -> Any:
         try:
-            result = await asyncio.wait_for(server.workspace_configuration_async(
-                types.ConfigurationParams(items=[types.ConfigurationItem(section=SECTION)])),
-                CONFIG_PULL_TIMEOUT)
+            result = await asyncio.wait_for(
+                server.workspace_configuration_async(
+                    types.ConfigurationParams(items=[types.ConfigurationItem(section=SECTION)])
+                ),
+                CONFIG_PULL_TIMEOUT,
+            )
             return result[0] if result else None
         except Exception as exc:
             session.log(f"workspace/configuration failed: {type(exc).__name__}: {exc}")
@@ -172,8 +191,7 @@ def build_server():
     @server.feature(types.INITIALIZED)
     async def on_initialized(params: types.InitializedParams) -> None:
         # Also an Info log message: clients show stderr at error level, which would mark a good start as an error.
-        server.window_log_message(types.LogMessageParams(type=types.MessageType.Info,
-                                                         message=startup_line()))
+        server.window_log_message(types.LogMessageParams(type=types.MessageType.Info, message=startup_line()))
         await reload(pull=True, first=True)
         task = asyncio.get_running_loop().create_task(register_watchers())
         background.add(task)
@@ -186,37 +204,55 @@ def build_server():
         workspace = server.client_capabilities.workspace
         support = workspace.did_change_watched_files if workspace else None
         if not (support and support.dynamic_registration):
-            session.log("client does not support watched-file registration; changes to closed "
-                        "files are noticed when a document is saved, opened or closed")
+            session.log(
+                "client does not support watched-file registration; changes to closed "
+                "files are noticed when a document is saved, opened or closed"
+            )
             return
         try:
-            await asyncio.wait_for(server.client_register_capability_async(
-                types.RegistrationParams(registrations=[types.Registration(
-                    id=WATCH_ID, method=types.WORKSPACE_DID_CHANGE_WATCHED_FILES,
-                    register_options=types.DidChangeWatchedFilesRegistrationOptions(
-                        watchers=[types.FileSystemWatcher(glob_pattern=watch_pattern()),
-                                  types.FileSystemWatcher(glob_pattern=CHECKS_PATTERN),
-                                  types.FileSystemWatcher(glob_pattern=DELETE_PATTERN,
-                                                          kind=types.WatchKind.Delete)]))])),
-                CONFIG_PULL_TIMEOUT)
+            await asyncio.wait_for(
+                server.client_register_capability_async(
+                    types.RegistrationParams(
+                        registrations=[
+                            types.Registration(
+                                id=WATCH_ID,
+                                method=types.WORKSPACE_DID_CHANGE_WATCHED_FILES,
+                                register_options=types.DidChangeWatchedFilesRegistrationOptions(
+                                    watchers=[
+                                        types.FileSystemWatcher(glob_pattern=watch_pattern()),
+                                        types.FileSystemWatcher(glob_pattern=CHECKS_PATTERN),
+                                        types.FileSystemWatcher(
+                                            glob_pattern=DELETE_PATTERN, kind=types.WatchKind.Delete
+                                        ),
+                                    ]
+                                ),
+                            )
+                        ]
+                    )
+                ),
+                CONFIG_PULL_TIMEOUT,
+            )
         except Exception as exc:
             session.log(f"watched-file registration failed: {type(exc).__name__}: {exc}")
 
-    kinds = {types.FileChangeType.Created: CREATED, types.FileChangeType.Changed: CHANGED,
-             types.FileChangeType.Deleted: DELETED}
+    kinds = {
+        types.FileChangeType.Created: CREATED,
+        types.FileChangeType.Changed: CHANGED,
+        types.FileChangeType.Deleted: DELETED,
+    }
 
     @server.feature(types.WORKSPACE_DID_CHANGE_WATCHED_FILES)
     async def on_watched_files(params: types.DidChangeWatchedFilesParams) -> None:
-        await session.files_changed([(fs_path(e.uri), kinds[e.type]) for e in params.changes
-                                     if e.type in kinds])
+        await session.files_changed([(fs_path(e.uri), kinds[e.type]) for e in params.changes if e.type in kinds])
 
     @server.feature(types.WORKSPACE_DID_CHANGE_WORKSPACE_FOLDERS)
     async def on_folders(params: types.DidChangeWorkspaceFoldersParams) -> None:
         for folder in params.event.removed or []:
             session.folder_uris.pop(fs_path(folder.uri), None)
         session.folder_uris.update({fs_path(f.uri): f.uri for f in params.event.added or []})
-        await session.set_folders([fs_path(f.uri) for f in params.event.added or []],
-                                  [fs_path(f.uri) for f in params.event.removed or []])
+        await session.set_folders(
+            [fs_path(f.uri) for f in params.event.added or []], [fs_path(f.uri) for f in params.event.removed or []]
+        )
 
     @server.feature(types.WORKSPACE_DID_CHANGE_CONFIGURATION)
     async def on_config(params: types.DidChangeConfigurationParams) -> None:
@@ -236,8 +272,7 @@ def build_server():
         if not changes or hasattr(changes[-1], "range"):
             session.log("ignoring a non-full document change (full sync is advertised)")
             return
-        session.did_change(fs_path(params.text_document.uri), params.text_document.version,
-                           changes[-1].text)
+        session.did_change(fs_path(params.text_document.uri), params.text_document.version, changes[-1].text)
 
     @server.feature(types.TEXT_DOCUMENT_DID_SAVE)
     def on_save(params: types.DidSaveTextDocumentParams) -> None:
@@ -260,9 +295,14 @@ def build_server():
 
     async def make_ctx() -> features.Ctx:
         await session.configured()
-        return features.Ctx(session.config.logger, position_encoding(), session.config.encoding,
-                            session.blobs(), {p: d.uri for p, d in session.docs.items()},
-                            session.help_provider())
+        return features.Ctx(
+            session.config.logger,
+            position_encoding(),
+            session.config.encoding,
+            session.blobs(),
+            {p: d.uri for p, d in session.docs.items()},
+            session.help_provider(),
+        )
 
     async def prepared(uri: str, wait: bool, first: bool = False):
         """(path, Analysed or None, AnalysisResult or None) for a request about `uri`."""
@@ -273,40 +313,40 @@ def build_server():
 
     def guarded(name: str, empty: Any):
         """A request never fails: an internal error is logged and answered with `empty`."""
+
         def wrap(handler):
             async def run(params):
                 try:
                     return await handler(params)
-                except (asyncio.CancelledError, JsonRpcException):
+                except asyncio.CancelledError, JsonRpcException:
                     raise
                 except Exception:
                     session.log(f"{name} failed:\n{traceback.format_exc()}")
                     return empty() if callable(empty) else empty
+
             run.__name__ = handler.__name__
             return run
+
         return wrap
 
-    @server.feature(types.TEXT_DOCUMENT_COMPLETION,
-                    types.CompletionOptions(trigger_characters=["."]))
+    @server.feature(types.TEXT_DOCUMENT_COMPLETION, types.CompletionOptions(trigger_characters=["."]))
     @guarded("completion", lambda: types.CompletionList(False, []))
     async def on_completion(params: types.CompletionParams):
         path, ana, result = await prepared(params.text_document.uri, wait=False, first=True)
-        return await asyncio.to_thread(features.completion, await make_ctx(), ana, result, path,
-                                       params.position)
+        return await asyncio.to_thread(features.completion, await make_ctx(), ana, result, path, params.position)
 
     @server.feature(types.TEXT_DOCUMENT_HOVER)
     @guarded("hover", None)
     async def on_hover(params: types.HoverParams):
         path, ana, result = await prepared(params.text_document.uri, wait=False)
-        return await asyncio.to_thread(features.hover, await make_ctx(), ana, result, path,
-                                       params.position)
+        return await asyncio.to_thread(features.hover, await make_ctx(), ana, result, path, params.position)
 
-    @server.feature(types.TEXT_DOCUMENT_SIGNATURE_HELP,
-                    types.SignatureHelpOptions(trigger_characters=["(", ","]))
+    @server.feature(types.TEXT_DOCUMENT_SIGNATURE_HELP, types.SignatureHelpOptions(trigger_characters=["(", ","]))
     @guarded("signatureHelp", None)
     async def on_signature_help(params: types.SignatureHelpParams):
-        return await asyncio.to_thread(features.signature_help, await make_ctx(),
-                                       fs_path(params.text_document.uri), params.position)
+        return await asyncio.to_thread(
+            features.signature_help, await make_ctx(), fs_path(params.text_document.uri), params.position
+        )
 
     @server.feature(types.TEXT_DOCUMENT_DOCUMENT_SYMBOL)
     @guarded("documentSymbol", list)
@@ -317,8 +357,7 @@ def build_server():
     @server.feature(types.TEXT_DOCUMENT_FOLDING_RANGE)
     @guarded("foldingRange", list)
     async def on_folding_range(params: types.FoldingRangeParams):
-        return await asyncio.to_thread(features.folding_ranges, await make_ctx(),
-                                       fs_path(params.text_document.uri))
+        return await asyncio.to_thread(features.folding_ranges, await make_ctx(), fs_path(params.text_document.uri))
 
     @server.feature(types.TEXT_DOCUMENT_DOCUMENT_LINK)
     @guarded("documentLink", list)
@@ -330,8 +369,7 @@ def build_server():
     @guarded("definition", list)
     async def on_definition(params: types.DefinitionParams):
         path, ana, result = await prepared(params.text_document.uri, wait=True)
-        return await asyncio.to_thread(features.definition, await make_ctx(), ana, result, path,
-                                       params.position)
+        return await asyncio.to_thread(features.definition, await make_ctx(), ana, result, path, params.position)
 
     @server.feature(types.TEXT_DOCUMENT_REFERENCES)
     @guarded("references", list)
@@ -355,19 +393,20 @@ def build_server():
             return [(a, r) for _, a, r in sorted(analyses.values(), key=lambda t: str(t[0]))]
 
         pairs = await add(session.current_readers(path))
-        files = await asyncio.to_thread(features.declaration_files, ctx, pairs, path,
-                                        params.position)
+        files = await asyncio.to_thread(features.declaration_files, ctx, pairs, path, params.position)
         for f in sorted(files):
             pairs = await add(session.current_readers(f))
-        return await asyncio.to_thread(features.references_across, ctx, pairs, path,
-                                       params.position, params.context.include_declaration)
+        return await asyncio.to_thread(
+            features.references_across, ctx, pairs, path, params.position, params.context.include_declaration
+        )
 
     @server.feature(types.TEXT_DOCUMENT_DOCUMENT_HIGHLIGHT)
     @guarded("documentHighlight", list)
     async def on_document_highlight(params: types.DocumentHighlightParams):
         path, ana, result = await prepared(params.text_document.uri, wait=True)
-        return await asyncio.to_thread(features.document_highlights, await make_ctx(), ana, result,
-                                       path, params.position)
+        return await asyncio.to_thread(
+            features.document_highlights, await make_ctx(), ana, result, path, params.position
+        )
 
     @server.feature(types.TEXT_DOCUMENT_SEMANTIC_TOKENS_FULL, features.LEGEND)
     @guarded("semanticTokens", lambda: types.SemanticTokens(data=[]))
@@ -379,6 +418,7 @@ def build_server():
 
     class Refused(JsonRpcException):
         """A refusal of an edit request: an LSP error carrying the reason (`data.reason`)."""
+
         CODE = int(types.LSPErrorCodes.RequestFailed)
 
     class QuietRefusals(logging.Filter):
@@ -402,9 +442,14 @@ def build_server():
 
     def context_now() -> features.Ctx:
         """The request context from the documents as they are now (no await in between)."""
-        return features.Ctx(session.config.logger, position_encoding(), session.config.encoding,
-                            session.blobs(), {p: d.uri for p, d in session.docs.items()},
-                            session.help_provider())
+        return features.Ctx(
+            session.config.logger,
+            position_encoding(),
+            session.config.encoding,
+            session.blobs(),
+            {p: d.uri for p, d in session.docs.items()},
+            session.help_provider(),
+        )
 
     def locked(entries, function, *args):
         """Runs in a thread: `function` with the core-call guard of every entry's program held
@@ -423,8 +468,12 @@ def build_server():
             raise refuse(what, "no_entry", "no configured entry program includes this file")
         for entry in entries:
             if not session.current(entry):
-                raise refuse(what, "pending", f"the analysis of {entry.path.name} is not current "
-                             "(pending, failed or timed out); try again when it has finished")
+                raise refuse(
+                    what,
+                    "pending",
+                    f"the analysis of {entry.path.name} is not current "
+                    "(pending, failed or timed out); try again when it has finished",
+                )
         return entries
 
     async def prepare_or_rename(uri: str, position, new_name: str | None, what: str):
@@ -439,15 +488,13 @@ def build_server():
                 for e in await current_entries(f, what):
                     entries[e.path] = e
             entries = [entries[k] for k in sorted(entries)]
-            found, hashes, versions, touched = await rename_with(entries, path, position, new_name,
-                                                                 what)
+            found, hashes, versions, touched = await rename_with(entries, path, position, new_name, what)
             if touched <= files:
                 break
             files |= touched
-        for p, digest in hashes.items():        # an open document must still be what was renamed
+        for p, digest in hashes.items():  # an open document must still be what was renamed
             doc = session.docs.get(p)
-            if doc is not None and (doc.version != versions.get(p)
-                                    or hashlib.sha256(doc.data).hexdigest() != digest):
+            if doc is not None and (doc.version != versions.get(p) or hashlib.sha256(doc.data).hexdigest() != digest):
                 raise refuse(what, "stale", f"{p.name} changed while the rename was computed")
         return found
 
@@ -455,8 +502,12 @@ def build_server():
         """One core call over `entries`: (result, hashes, document versions, touched files)."""
         unknown = session.unknown_entries()
         if unknown:
-            raise refuse(what, "unanalysed", f"the analysis of {unknown[0].path.name} failed or "
-                         "has not finished, so it is unknown whether it depends on this file")
+            raise refuse(
+                what,
+                "unanalysed",
+                f"the analysis of {unknown[0].path.name} failed or "
+                "has not finished, so it is unknown whether it depends on this file",
+            )
         results = [await session.load(e.analysed) for e in entries]
         if any(r is None for r in results):
             raise refuse(what, "no_program", "a parsed program is not available")
@@ -465,15 +516,16 @@ def build_server():
             raise refuse(what, "pending", "a document changed while the request was prepared")
         ctx = context_now()
         versions = {p: d.version for p, d in session.docs.items()}
-        source = OverlaySource(DiskSource(), session.blobs())      # buffers as the analyses read them
+        source = OverlaySource(DiskSource(), session.blobs())  # buffers as the analyses read them
         if new_name is None:
             found, refusal, touched = await asyncio.to_thread(
-                locked, entries, features.prepare_rename, ctx, results, path, position, source)
+                locked, entries, features.prepare_rename, ctx, results, path, position, source
+            )
             hashes = {}
         else:
             found, refusal, hashes = await asyncio.to_thread(
-                locked, entries, features.rename_edit, ctx, results, path, position, new_name,
-                versions, source)
+                locked, entries, features.rename_edit, ctx, results, path, position, new_name, versions, source
+            )
             touched = set(hashes)
         if refusal is not None:
             raise refuse(what, refusal.code, refusal.message)
@@ -482,18 +534,17 @@ def build_server():
     @server.feature(types.TEXT_DOCUMENT_PREPARE_RENAME)
     @guarded("prepareRename", None)
     async def on_prepare_rename(params: types.PrepareRenameParams):
-        return await prepare_or_rename(params.text_document.uri, params.position, None,
-                                       "Cannot rename")
+        return await prepare_or_rename(params.text_document.uri, params.position, None, "Cannot rename")
 
     @server.feature(types.TEXT_DOCUMENT_RENAME, types.RenameOptions(prepare_provider=True))
     @guarded("rename", None)
     async def on_rename(params: types.RenameParams):
-        return await prepare_or_rename(params.text_document.uri, params.position,
-                                       params.new_name, "Cannot rename")
+        return await prepare_or_rename(params.text_document.uri, params.position, params.new_name, "Cannot rename")
 
     def show_info(message: str) -> None:
-        server.window_show_message(types.ShowMessageParams(
-            type=types.MessageType.Info, message=f"opencrbasic: {message}"))
+        server.window_show_message(
+            types.ShowMessageParams(type=types.MessageType.Info, message=f"opencrbasic: {message}")
+        )
 
     async def format_document(params, where):
         path = fs_path(params.text_document.uri)
@@ -522,8 +573,9 @@ def build_server():
     async def on_range_formatting(params: types.DocumentRangeFormattingParams):
         return await format_document(params, params.range)
 
-    @server.feature(types.TEXT_DOCUMENT_CODE_ACTION,
-                    types.CodeActionOptions(code_action_kinds=[types.CodeActionKind.QuickFix]))
+    @server.feature(
+        types.TEXT_DOCUMENT_CODE_ACTION, types.CodeActionOptions(code_action_kinds=[types.CodeActionKind.QuickFix])
+    )
     @guarded("codeAction", list)
     async def on_code_action(params: types.CodeActionParams):
         only = params.context.only
@@ -543,13 +595,20 @@ def build_server():
         doc = session.docs.get(path)
         ctx = context_now()
         return await asyncio.to_thread(
-            locked, entries, features.code_actions, ctx, sources, path,
-            list(params.context.diagnostics), doc.version if doc else None)
+            locked,
+            entries,
+            features.code_actions,
+            ctx,
+            sources,
+            path,
+            list(params.context.diagnostics),
+            doc.version if doc else None,
+        )
 
     def refresh(supported, send) -> None:
         if supported and not state.get("shutdown"):
             pending = send(None)
-            pending.add_done_callback(lambda f: f.cancelled() or f.exception())   # answer unused
+            pending.add_done_callback(lambda f: f.cancelled() or f.exception())  # answer unused
 
     def refresh_semantic_tokens() -> None:
         """New programs change the tokens of unchanged documents: ask the client to re-request."""
@@ -577,7 +636,7 @@ def build_server():
         if not session.config.inlay_parameter_names:
             return []
         path, ana, result = await prepared(params.text_document.uri, wait=True)
-        if result is None or not session.fresh(path, ana):    # a stale program has stale lines
+        if result is None or not session.fresh(path, ana):  # a stale program has stale lines
             return []
         ctx = await make_ctx()
         first, last = ctx.decoded(path, params.range.start), ctx.decoded(path, params.range.end)
@@ -612,7 +671,7 @@ def build_server():
     async def on_compiler_output(*args):
         what = "Cannot show compiler output"
         _, entry = await command_entry(args, what)
-        out = await session.compiler_output(entry)        # worker pool, analysis bounds
+        out = await session.compiler_output(entry)  # worker pool, analysis bounds
         if isinstance(out, ServerError):
             raise refuse(what, out.reason, str(out))
         return session.display(out.text)
@@ -622,14 +681,17 @@ def build_server():
         what = "Cannot show table fields"
         _, entry = await command_entry(args, what)
         if not session.current(entry):
-            raise refuse(what, "pending", f"the analysis of {entry.path.name} is not current "
-                         "(pending, failed or timed out); try again when it has finished")
+            raise refuse(
+                what,
+                "pending",
+                f"the analysis of {entry.path.name} is not current "
+                "(pending, failed or timed out); try again when it has finished",
+            )
         result = await session.load(entry.analysed)
         if result is None:
             raise refuse(what, "no_program", "a parsed program is not available")
         tables = await asyncio.to_thread(locked, [entry], commands.table_fields, result)
         return session.display(commands.render_table_fields(tables))
-
 
     server.session = session  # type: ignore[attr-defined]
     server.state = state  # type: ignore[attr-defined]
@@ -676,4 +738,4 @@ def main() -> None:
         finally:
             server.session.close()  # type: ignore[attr-defined]
     if not server.state.get("shutdown"):  # type: ignore[attr-defined]
-        sys.exit(1)             # LSP: `exit` without a prior `shutdown`
+        sys.exit(1)  # LSP: `exit` without a prior `shutdown`

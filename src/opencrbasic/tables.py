@@ -22,8 +22,17 @@ from .tdf import TdfField, TdfTable
 
 # `TableName.<property>` members of a data (or Status) table that are not fields
 # (extracted_chm/Info/datatableaccess.htm "Data Table Access").
-TABLE_PROPERTIES = ("BytesPerRecord", "EventCount", "EventEnd", "Output", "Record", "TableBytes",
-                    "TableFull", "TableSize", "TimeStamp")
+TABLE_PROPERTIES = (
+    "BytesPerRecord",
+    "EventCount",
+    "EventEnd",
+    "Output",
+    "Record",
+    "TableBytes",
+    "TableFull",
+    "TableSize",
+    "TimeStamp",
+)
 
 DATA = Path(__file__).resolve().parent / "data"
 
@@ -33,9 +42,19 @@ DATA = Path(__file__).resolve().parent / "data"
 # 17 BOOL8, 18 IEEE8, 28 BOOLEAN. UINT4=3 oracle-confirmed, UINT1 a guess (never produced; see
 # docs/tdf-rules.md open question 12).
 TYPE_CODES = {
-    "FLOAT": 9, "IEEE4": 9, "FP2": 7, "LONG": 6, "BOOLEAN": 28, "BOOL8": 17,
-    "STRING": 11, "DOUBLE": 18, "IEEE8": 18, "UINT2": 2, "NSEC": 14,
-    "UINT1": 1, "UINT4": 3,
+    "FLOAT": 9,
+    "IEEE4": 9,
+    "FP2": 7,
+    "LONG": 6,
+    "BOOLEAN": 28,
+    "BOOL8": 17,
+    "STRING": 11,
+    "DOUBLE": 18,
+    "IEEE8": 18,
+    "UINT2": 2,
+    "NSEC": 14,
+    "UINT1": 1,
+    "UINT4": 3,
 }
 
 
@@ -47,9 +66,16 @@ def _dtype_code(expr: S.Expr | None, env: consteval.Env) -> int:
     v = _fold(expr, env, None)
     return int(v) if isinstance(v, (int, float)) and v in TYPE_CODES.values() else 9
 
+
 _UNIT_SECONDS = {"USEC": 1e-6, "MSEC": 1e-3, "SEC": 1, "MIN": 60, "HR": 3600, "DAY": 86400}
-_UNIT_NS = {"USEC": 1_000, "MSEC": 1_000_000, "SEC": 1_000_000_000,
-            "MIN": 60_000_000_000, "HR": 3_600_000_000_000, "DAY": 86_400_000_000_000}
+_UNIT_NS = {
+    "USEC": 1_000,
+    "MSEC": 1_000_000,
+    "SEC": 1_000_000_000,
+    "MIN": 60_000_000_000,
+    "HR": 3_600_000_000_000,
+    "DAY": 86_400_000_000_000,
+}
 # Numeric Scan units (`checker/scan_time.UNIT_NAMES`), keyed by the predefined symbol value.
 _UNIT_NAME_BY_VALUE = {0: "USEC", 1: "MSEC", 2: "SEC", 3: "MIN", 4: "HR", 5: "DAY"}
 
@@ -91,7 +117,7 @@ def size_class(raw):
     if isinstance(raw, bool) or not isinstance(raw, (int, float)):
         return None
     if isinstance(raw, int) and -_TWO31 <= raw < _TWO31:
-        v = raw                                  # an integer literal that fits is kept exactly
+        v = raw  # an integer literal that fits is kept exactly
     else:
         f = _f32_safe(raw)
         if f != f:
@@ -171,7 +197,7 @@ def _as_int(v, default=0) -> int:
         return default
     try:
         return int(round(float(v)))
-    except (TypeError, ValueError, OverflowError):
+    except TypeError, ValueError, OverflowError:
         return default
 
 
@@ -203,10 +229,8 @@ def _const_is_int(expr: S.Expr | None, env: consteval.Env, int_names: dict) -> b
         if expr.op == "/":
             return False
         if expr.op in ("+", "-", "*"):
-            return (_const_is_int(expr.left, env, int_names)
-                    and _const_is_int(expr.right, env, int_names))
-        if expr.op in ("\\", "MOD", "AND", "OR", "XOR", "=", "<>", "<", ">", "<=", ">=",
-                       "EQV", "IMP", "<<", ">>"):
+            return _const_is_int(expr.left, env, int_names) and _const_is_int(expr.right, env, int_names)
+        if expr.op in ("\\", "MOD", "AND", "OR", "XOR", "=", "<>", "<", ">", "<=", ">=", "EQV", "IMP", "<<", ">>"):
             return True
         return False  # "^" and anything else: unverified, assume float
     return True
@@ -221,11 +245,11 @@ class VarInfo:
     resolving DataTable output instructions' `Source` arrays (§3, §8, §9)."""
 
     type_code: int
-    shape: list[int] = field(default_factory=list)   # declared array dims, e.g. [10] or [2,3]
-    stored_len: int | None = None                     # STRING only: rounded storage length
+    shape: list[int] = field(default_factory=list)  # declared array dims, e.g. [10] or [2,3]
+    stored_len: int | None = None  # STRING only: rounded storage length
     units: str = ""
-    struct: dict | None = None                         # StructureType body when typed as one
-    name: str = ""                                     # declared spelling (CRBasic is
+    struct: dict | None = None  # StructureType body when typed as one
+    name: str = ""  # declared spelling (CRBasic is
     # case-insensitive; a `Source` reference may use different casing than the declaration, but
     # the default output field name follows the declaration -- oracle-confirmed, ftpclient_4.CR6:
     # `Public Count As Long` + `Sample(1,count,LONG)` -> field name `Count`, not `count`).
@@ -335,14 +359,14 @@ def _scan_program(program: S.Program) -> _Scanned:
     DataTable and ConstTable bodies do not nest (CRBasic), so simple non-nested pairing suffices.
     """
     publics: list[S.VarDecl] = []
-    all_vars: list[S.VarDecl] = []          # Public + Dim (+ Static), for Source lookups
+    all_vars: list[S.VarDecl] = []  # Public + Dim (+ Static), for Source lookups
     const_tables: list[ConstTableDecl] = []
     data_tables: list[DataTableDecl] = []
     alias_stmts: list[S.Instruction] = []
     units_stmts: list[S.Instruction] = []
     readonly_names: set[str] = set()
     slow_seq_count = 0
-    struct_types: dict[str, dict] = {}   # NAME -> {"members": [VarDecl], "units": {}, "ro": set}
+    struct_types: dict[str, dict] = {}  # NAME -> {"members": [VarDecl], "units": {}, "ro": set}
 
     stmts = program.statements
     n = len(stmts)
@@ -359,7 +383,9 @@ def _scan_program(program: S.Program) -> _Scanned:
                 m = stmts[i]
                 if isinstance(m, S.Declaration):
                     st["members"].extend(m.vars)
-                elif isinstance(m, S.Instruction) and (_kw(m) == "UNITS" and len(m.args) > 1 and isinstance(m.args[1], S.String)):
+                elif isinstance(m, S.Instruction) and (
+                    _kw(m) == "UNITS" and len(m.args) > 1 and isinstance(m.args[1], S.String)
+                ):
                     st["units"][getattr(m.args[0], "name", "").upper()] = m.args[1].value
                 elif isinstance(m, S.Instruction) and (_kw(m) == "READONLY"):
                     st["ro"].update(a.name.upper() for a in m.args if isinstance(a, S.Name))
@@ -391,7 +417,7 @@ def _scan_program(program: S.Program) -> _Scanned:
             name = args[0].name if args and isinstance(args[0], S.Name) else ""
             value = (program.consts or {}).get(name.upper()) if name else None
             if isinstance(value, str) and value:
-                name = value   # a String `Const` names the table its value spells (oracle, round 67)
+                name = value  # a String `Const` names the table its value spells (oracle, round 67)
             trig = args[1] if len(args) > 1 else None
             size_expr = args[2] if len(args) > 2 else None
             j = i + 1
@@ -438,9 +464,20 @@ def _scan_program(program: S.Program) -> _Scanned:
     uses_ch400 = any(_kw(s) == "CH400STATUS" for s in stmts)
     uses_cpi = any(_kw(s).startswith("CDM_") or _kw(s) == "CPIFILESEND" for s in stmts)
 
-    return _Scanned(uses_ch400=uses_ch400, struct_types=struct_types, uses_cpi=uses_cpi, publics=publics, all_vars=all_vars, const_tables=const_tables,
-                data_tables=data_tables, alias_stmts=alias_stmts, units_stmts=units_stmts,
-                readonly_names=readonly_names, slow_seq_count=slow_seq_count, called=called)
+    return _Scanned(
+        uses_ch400=uses_ch400,
+        struct_types=struct_types,
+        uses_cpi=uses_cpi,
+        publics=publics,
+        all_vars=all_vars,
+        const_tables=const_tables,
+        data_tables=data_tables,
+        alias_stmts=alias_stmts,
+        units_stmts=units_stmts,
+        readonly_names=readonly_names,
+        slow_seq_count=slow_seq_count,
+        called=called,
+    )
 
 
 def _flat(ss):
@@ -482,7 +519,9 @@ def _scan_weights(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, float]:
         elif kw == "NEXTSCAN":
             if stack:
                 stack.pop()
-        elif isinstance(s, S.Instruction) and (kw == "CALLTABLE" and s.args and isinstance(s.args[0], S.Name) and stack):
+        elif isinstance(s, S.Instruction) and (
+            kw == "CALLTABLE" and s.args and isinstance(s.args[0], S.Name) and stack
+        ):
             weights[s.args[0].name.upper()] = stack[-1]
     return weights
 
@@ -549,9 +588,20 @@ _STATUS_INSERTIONS = [
 def _status_table(slow_seq_count: int) -> TdfTable:
     fields = []
     for f in _STATUS_JSON["fields"]:
-        fields.append(TdfField(f["type"], f["read_only"], f["name"], list(f["aliases"]),
-                                f["processing"], f["units"], f["description"], f["begin"],
-                                f["dim"], list(f["subdims"])))
+        fields.append(
+            TdfField(
+                f["type"],
+                f["read_only"],
+                f["name"],
+                list(f["aliases"]),
+                f["processing"],
+                f["units"],
+                f["description"],
+                f["begin"],
+                f["dim"],
+                list(f["subdims"]),
+            )
+        )
     if slow_seq_count >= 1:
         if slow_seq_count == 1:
             dim, subdims = 1, []
@@ -561,8 +611,14 @@ def _status_table(slow_seq_count: int) -> TdfTable:
             new_field = TdfField(type_code, ro, name, [], "", units, "", 1, dim, list(subdims))
             idx = next(k for k, existing in enumerate(fields) if existing.name == after)
             fields.insert(idx + 1, new_field)
-    return TdfTable("Status", 1, _STATUS_JSON["time_type"], tuple(_STATUS_JSON["time_into"]),
-                     tuple(_STATUS_JSON["interval"]), fields)
+    return TdfTable(
+        "Status",
+        1,
+        _STATUS_JSON["time_type"],
+        tuple(_STATUS_JSON["time_into"]),
+        tuple(_STATUS_JSON["interval"]),
+        fields,
+    )
 
 
 def _build_struct_tables(all_vars: list[S.VarDecl], struct_types: dict, env: consteval.Env):
@@ -580,8 +636,20 @@ def _build_struct_tables(all_vars: list[S.VarDecl], struct_types: dict, env: con
         for m in st["members"]:
             info = _make_var_info(m, env)
             dim, subdims = info.collapsed()
-            fields.append(TdfField(info.type_code, m.name.upper() in st["ro"], m.name, [], "",
-                                    st["units"].get(m.name.upper(), ""), "", 1, dim, subdims))
+            fields.append(
+                TdfField(
+                    info.type_code,
+                    m.name.upper() in st["ro"],
+                    m.name,
+                    [],
+                    "",
+                    st["units"].get(m.name.upper(), ""),
+                    "",
+                    1,
+                    dim,
+                    subdims,
+                )
+            )
         out.append(TdfTable(v.name, size, 14, (0, 0), (0, 0), fields))
     return out
 
@@ -591,32 +659,32 @@ _DEG_C = "\xef\xbf\xbdC"
 # temperature units are the bytes EF BF BD 'C' (a UTF-8 replacement character, then C) -- reproduced
 # as latin-1 text.
 _CH400_FIELDS = (
-    ("ChargeAVoltage", 'Volts'),
-    ("ChargeACurrent", 'Amps'),
-    ("ChargeBVoltage", 'Volts'),
-    ("ChargeBCurrent", 'Amps'),
+    ("ChargeAVoltage", "Volts"),
+    ("ChargeACurrent", "Amps"),
+    ("ChargeBVoltage", "Volts"),
+    ("ChargeBCurrent", "Amps"),
     ("InputChargeStatus", None),
-    ("InputCurrentLimit", 'Amps'),
-    ("BattAVoltage", 'Volts'),
-    ("BattACurrent", 'Amps'),
+    ("InputCurrentLimit", "Amps"),
+    ("BattAVoltage", "Volts"),
+    ("BattACurrent", "Amps"),
     ("BattAChargeStatus", None),
-    ("BattASetVoltage", 'Volts'),
-    ("BattACurrentLimit", 'Amps'),
-    ("BattADepthofDischarge", '%'),
-    ("BattBVoltage", 'Volts'),
-    ("BattBCurrent", 'Amps'),
+    ("BattASetVoltage", "Volts"),
+    ("BattACurrentLimit", "Amps"),
+    ("BattADepthofDischarge", "%"),
+    ("BattBVoltage", "Volts"),
+    ("BattBCurrent", "Amps"),
     ("BattBChargeStatus", None),
-    ("BattBSetVoltage", 'Volts'),
-    ("BattBCurrentLimit", 'Amps'),
-    ("BattBDepthofDischarge", '%'),
-    ("SystemVoltage", 'Volts'),
-    ("SystemCurrent", 'Amps'),
-    ("AlwaysOn12Voltage", 'Volts'),
-    ("AlwaysOn12Current", 'Amps'),
-    ("Switched12Voltage", 'Volts'),
-    ("Switched12Current", 'Amps'),
-    ("Switched24Voltage", 'Volts'),
-    ("Switched24Current", 'Amps'),
+    ("BattBSetVoltage", "Volts"),
+    ("BattBCurrentLimit", "Amps"),
+    ("BattBDepthofDischarge", "%"),
+    ("SystemVoltage", "Volts"),
+    ("SystemCurrent", "Amps"),
+    ("AlwaysOn12Voltage", "Volts"),
+    ("AlwaysOn12Current", "Amps"),
+    ("Switched12Voltage", "Volts"),
+    ("Switched12Current", "Amps"),
+    ("Switched24Voltage", "Volts"),
+    ("Switched24Current", "Amps"),
     ("PowerSwitchState", None),
     ("MaxBoardTemp", _DEG_C),
     ("MinBoardTemp", _DEG_C),
@@ -624,19 +692,27 @@ _CH400_FIELDS = (
     ("BattAProbeTemp", _DEG_C),
     ("BattBProbeTemp", _DEG_C),
 )
+
+
 def _ch400status_table() -> TdfTable:
-    fields = [TdfField(11 if u is None else 9, True, n, [], "", u or "", "", 1,
-                        28 if u is None else 1, [28] if u is None else [])
-              for n, u in _CH400_FIELDS]
+    fields = [
+        TdfField(
+            11 if u is None else 9, True, n, [], "", u or "", "", 1, 28 if u is None else 1, [28] if u is None else []
+        )
+        for n, u in _CH400_FIELDS
+    ]
     return TdfTable("CH400Status", 1, 14, (0, 0), (0, 0), fields)
 
 
 def _cpistatus_table() -> TdfTable:
     """docs/tdf-rules.md §2: present iff a `CDM_*` instruction or `CPIFileSend` is used."""
+
     def f(t: int, ro: bool, name: str, dim: int = 1, sub: tuple[int, ...] = ()) -> TdfField:
         return TdfField(t, ro, name, [], "", "", "", 1, dim, list(sub))
-    fields = [f(9, True, "BusLoad")] + [f(6, False, n) for n in (
-        "ModuleReportCount", "ActiveModules", "BuffErr", "RxErrMax", "TxErrMax", "FrameErr")]
+
+    fields = [f(9, True, "BusLoad")] + [
+        f(6, False, n) for n in ("ModuleReportCount", "ActiveModules", "BuffErr", "RxErrMax", "TxErrMax", "FrameErr")
+    ]
     fields.append(f(11, False, "ModuleInfo", 6400, (50, 128)))
     return TdfTable("CPIStatus", 1, 14, (0, 0), (0, 0), fields)
 
@@ -656,7 +732,7 @@ def _resolve_alias_target(expr: S.Expr | None, var_info: dict | None = None) -> 
             flat = 0
             for k, a in enumerate(numbers):
                 stride = 1
-                for d in info.shape[k + 1:]:
+                for d in info.shape[k + 1 :]:
                     stride *= d
                 flat += (_as_int(a.value) - 1) * stride
             return expr.name.upper(), flat + 1
@@ -669,9 +745,13 @@ def _resolve_alias_target(expr: S.Expr | None, var_info: dict | None = None) -> 
     return "", None
 
 
-def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
-                         alias_stmts: list[S.Instruction], units_stmts: list[S.Instruction],
-                         readonly_names: set[str]):
+def _build_public_table(
+    publics: list[S.VarDecl],
+    var_info: dict[str, VarInfo],
+    alias_stmts: list[S.Instruction],
+    units_stmts: list[S.Instruction],
+    readonly_names: set[str],
+):
     """Returns (TdfTable('Public') or None, display_name -> TdfField, base_name -> [TdfField])."""
     if not publics:
         return None, {}, {}
@@ -707,11 +787,12 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
             full_shape = info.full_shape()
             group: list[TdfField] = []
             pos = 1
-            es = info.stored_len or 1   # String elements are stored_len bytes (docs/tdf-rules.md §9a)
+            es = info.stored_len or 1  # String elements are stored_len bytes (docs/tdf-rules.md §9a)
             while pos <= array_size:
                 if pos in elements:
-                    f = TdfField(info.type_code, ro, elements[pos], [], "", "", "", 1, es,
-                                 [es] if info.stored_len else [])
+                    f = TdfField(
+                        info.type_code, ro, elements[pos], [], "", "", "", 1, es, [es] if info.stored_len else []
+                    )
                     f.alias_elem = True  # type: ignore[attr-defined]
                     f.alias_of = (v.name, pos)  # type: ignore[attr-defined]
                     group.append(f)
@@ -721,8 +802,18 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
                     while pos <= array_size and pos not in elements:
                         pos += 1
                     run_len = pos - run_start
-                    f = TdfField(info.type_code, ro, v.name, [], "", "", "",
-                                 (run_start - 1) * es + 1, run_len * es, list(full_shape))
+                    f = TdfField(
+                        info.type_code,
+                        ro,
+                        v.name,
+                        [],
+                        "",
+                        "",
+                        "",
+                        (run_start - 1) * es + 1,
+                        run_len * es,
+                        list(full_shape),
+                    )
                     group.append(f)
             fields.extend(group)
             for f in group:
@@ -746,7 +837,7 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
         elif isinstance(target, (S.Name, S.Index)):
             nm = target.name.upper()
             if nm in by_base:
-                targets = by_base[nm]   # Units on the declared name covers every alias split too
+                targets = by_base[nm]  # Units on the declared name covers every alias split too
             elif nm in by_display:
                 targets = [by_display[nm]]
         for f in targets:
@@ -775,8 +866,7 @@ def _build_const_tables(const_tables: list[ConstTableDecl], env: consteval.Env) 
                 fields.append(TdfField(type_code, False, c.name, [], "", "", "", 1, dim, subdims))
                 int_names[c.name.upper()] = type_code == TYPE_CODES["LONG"]
             elif is_str:
-                fields.append(TdfField(TYPE_CODES["STRING"], False, c.name, [], "", "", "",
-                                        1, 80, [80]))
+                fields.append(TdfField(TYPE_CODES["STRING"], False, c.name, [], "", "", "", 1, 80, [80]))
                 int_names[c.name.upper()] = True
             else:
                 is_int = _const_is_int(c.value, env, int_names)
@@ -785,8 +875,7 @@ def _build_const_tables(const_tables: list[ConstTableDecl], env: consteval.Env) 
                 fields.append(TdfField(type_code, False, c.name, [], "", "", "", 1, 1, []))
         if ct.name is None:
             continue  # bare ConstTable: no TDF table (§7)
-        fields.append(TdfField(TYPE_CODES["BOOLEAN"], False, "ApplyAndRestart", [], "", "", "",
-                                1, 1, []))
+        fields.append(TdfField(TYPE_CODES["BOOLEAN"], False, "ApplyAndRestart", [], "", "", "", 1, 1, []))
         tables.append(TdfTable(ct.name, 1, 14, (0, 0), (0, 0), fields))
     return tables
 
@@ -798,15 +887,19 @@ def _datatableinfo_table(n: int) -> TdfTable:
     def dims(n):
         return [] if n == 1 else [n]
 
-    fields = [] if n == 0 else [
-        TdfField(11, True, "DataTableName", [], "", "", "", 1, 24 * n, [n, 24]),
-        TdfField(6, False, "SkippedRecord", [], "", "", "", 1, n, dims(n)),
-        TdfField(6, True, "DataRecordSize", [], "", "records", "", 1, 2 * n, [n, 2]),
-        TdfField(9, True, "SecsPerRecord", [], "", "", "", 1, n, dims(n)),
-        TdfField(9, True, "DataFillDays", [], "", "days", "", 1, 2 * n, [n, 2]),
-        TdfField(11, True, "DataFilled", [], "", "", "", 1, 64 * n, [n, 2, 32]),
-        TdfField(14, True, "LastPublish", [], "", "", "", 1, n, dims(n)),
-    ]
+    fields = (
+        []
+        if n == 0
+        else [
+            TdfField(11, True, "DataTableName", [], "", "", "", 1, 24 * n, [n, 24]),
+            TdfField(6, False, "SkippedRecord", [], "", "", "", 1, n, dims(n)),
+            TdfField(6, True, "DataRecordSize", [], "", "records", "", 1, 2 * n, [n, 2]),
+            TdfField(9, True, "SecsPerRecord", [], "", "", "", 1, n, dims(n)),
+            TdfField(9, True, "DataFillDays", [], "", "days", "", 1, 2 * n, [n, 2]),
+            TdfField(11, True, "DataFilled", [], "", "", "", 1, 64 * n, [n, 2, 32]),
+            TdfField(14, True, "LastPublish", [], "", "", "", 1, n, dims(n)),
+        ]
+    )
     return TdfTable("DataTableInfo", 1, 14, (0, 0), (0, 0), fields)
 
 
@@ -838,8 +931,7 @@ def _is_anonymous_source(expr: S.Expr | None, var_info: dict, env: consteval.Env
     if isinstance(expr, S.Index):
         return expr.name.upper() not in var_info
     if isinstance(expr, S.Name):
-        return expr.name.upper() not in var_info and (
-            _fold(expr, env, None) is not None or expr.name.upper() == "NAN")
+        return expr.name.upper() not in var_info and (_fold(expr, env, None) is not None or expr.name.upper() == "NAN")
     return expr is not None and not isinstance(expr, S.Member)
 
 
@@ -848,6 +940,7 @@ def _anonymous_string_len(expr: S.Expr | None, var_info: dict, env: consteval.En
     a String variable its stored length, `+`/`&` of those the sum. String functions propagate a
     temporary buffer length, not the length of their runtime result. Unknown/numeric sources
     retain the 20-character conversion default (stored 24)."""
+
     def known(e):
         v = _fold(e, env, None)
         if isinstance(v, str):
@@ -881,12 +974,14 @@ def _anonymous_string_len(expr: S.Expr | None, var_info: dict, env: consteval.En
             l, r = known(e.left), known(e.right)
             return None if l is None or r is None else l + r
         return None
+
     n = known(expr)
     return 20 if n is None else n
 
 
-def _number_anonymous(fields: list, src: S.Expr | None, var_info: dict, env: consteval.Env,
-                      anon: list[int] | None) -> None:
+def _number_anonymous(
+    fields: list, src: S.Expr | None, var_info: dict, env: consteval.Env, anon: list[int] | None
+) -> None:
     """Give the fields derived from a non-variable Source its `Anonymous<n>` name; `anon[0]` is the
     program-wide count so far (one number per such Source, FieldNames or not)."""
     if anon is None or not _is_anonymous_source(src, var_info, env):
@@ -895,11 +990,12 @@ def _number_anonymous(fields: list, src: S.Expr | None, var_info: dict, env: con
     raw = _source_name(src, var_info)
     for f in fields:
         if f.name.startswith(raw):
-            f.name = f"Anonymous{anon[0]}" + f.name[len(raw):]
+            f.name = f"Anonymous{anon[0]}" + f.name[len(raw) :]
 
 
-def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], env: consteval.Env,
-                   reps: int) -> tuple[int, list[int]]:
+def _source_shape(
+    expr: S.Expr | None, var_info: dict[str, VarInfo], env: consteval.Env, reps: int
+) -> tuple[int, list[int]]:
     """(begin, subdims) for an output field's Source, per §3: subdims are the *declared* shape of the
     source array whatever `reps` is; begin is the 1-based row-major flat index of the first element."""
     if isinstance(expr, S.Member) and isinstance(expr.base, (S.Name, S.Index)):
@@ -908,8 +1004,7 @@ def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], env: conste
             return 1, list(info.shape)
     if isinstance(expr, (S.Index, S.Name)):
         info = var_info.get(expr.name.upper())
-        if isinstance(expr, S.Index) and info is None and (
-                len(expr.args) != 1 or isinstance(expr.args[0], S.String)):
+        if isinstance(expr, S.Index) and info is None and (len(expr.args) != 1 or isinstance(expr.args[0], S.String)):
             # The source-name parser accepts a single integer subscript, even on a function,
             # but not a comma-separated argument list or a quoted string (§9c).
             return 1, []
@@ -925,7 +1020,7 @@ def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], env: conste
                 begin = 0
                 for k, v in enumerate(idx):
                     stride = 1
-                    for d in info.shape[k + 1:]:
+                    for d in info.shape[k + 1 :]:
                         stride *= d
                     begin += (v - 1) * stride
                 begin += 1
@@ -935,8 +1030,7 @@ def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], env: conste
     return 1, []
 
 
-def _units_for_source(expr: S.Expr | None, var_info: dict[str, VarInfo],
-                       by_display: dict[str, TdfField]) -> str:
+def _units_for_source(expr: S.Expr | None, var_info: dict[str, VarInfo], by_display: dict[str, TdfField]) -> str:
     if isinstance(expr, S.Member) and isinstance(expr.base, (S.Name, S.Index)):
         info = var_info.get(expr.base.name.upper())
         if info is not None and info.struct is not None:
@@ -970,10 +1064,10 @@ class _OutField:
     ch400: bool = False
     placeholder: bool = False
     rng: tuple[int, int] | None = None
-    unit_list: list | None = None   # per-element units when a FieldNames split must differ
+    unit_list: list | None = None  # per-element units when a FieldNames split must differ
     elem: int = 1  # bytes per element when splittable (a stored String element is stored_len)
     splittable: bool = False  # dim == Reps * element size: follows the Source's alias decomposition
-    struct_members: int = 0   # >0: field of a StructureType source (members per element)
+    struct_members: int = 0  # >0: field of a StructureType source (members per element)
     member: str = ""
 
 
@@ -1007,8 +1101,7 @@ def _elem_size(f: _OutField, info: VarInfo) -> int:
     return info.stored_len if (info.stored_len and f.type_code == 11) else 1
 
 
-def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict,
-                    env: consteval.Env) -> list[_OutField]:
+def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict, env: consteval.Env) -> list[_OutField]:
     """docs/tdf-rules.md §9a: an output field over an array that has element `Alias`es follows the
     Public table's field decomposition: one scalar field per aliased element (alias name + the
     instruction suffix, the alias' units), one field per un-aliased run (source name, `begin` =
@@ -1027,7 +1120,7 @@ def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict,
         if f.name_only or f.renamed or not f.name.startswith(declared):
             out.append(f)
             continue
-        suffix = f.name[len(declared):].lstrip("0123456789")  # drop the flat-index digits (_idx_suffix)
+        suffix = f.name[len(declared) :].lstrip("0123456789")  # drop the flat-index digits (_idx_suffix)
         es = _elem_size(f, var_info[base])
         lo, hi = f.begin, f.begin + f.dim - 1
         if not f.splittable:
@@ -1053,28 +1146,62 @@ def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict,
             if ghi < lo or glo > hi:
                 continue
             if getattr(g, "alias_elem", False):
-                out.append(_OutField(g.name + suffix, f.type_code, f.read_only, f.processing, 1, es,
-                                      list(g.subdims), g.units, rng=(glo, ghi)))
+                out.append(
+                    _OutField(
+                        g.name + suffix,
+                        f.type_code,
+                        f.read_only,
+                        f.processing,
+                        1,
+                        es,
+                        list(g.subdims),
+                        g.units,
+                        rng=(glo, ghi),
+                    )
+                )
             else:
                 a, b = max(lo, glo), min(hi, ghi)
-                out.append(_OutField(f.name, f.type_code, f.read_only, f.processing, a, b - a + 1,
-                                      list(g.subdims), f.units, rng=(a, b)))
+                out.append(
+                    _OutField(
+                        f.name,
+                        f.type_code,
+                        f.read_only,
+                        f.processing,
+                        a,
+                        b - a + 1,
+                        list(g.subdims),
+                        f.units,
+                        rng=(a, b),
+                    )
+                )
     return out
 
 
-def _fft_field(s: S.Instruction, var_info: dict, by_display: dict, env: consteval.Env,
-               anon: list[int] | None = None) -> _OutField:
+def _fft_field(
+    s: S.Instruction, var_info: dict, by_display: dict, env: consteval.Env, anon: list[int] | None = None
+) -> _OutField:
     """`FFT(Source, DataType, N, Tint, Units, Option)` (docs/tdf-rules.md §9b): one read-only field
     `<Source>[<flat element index if > 1>]_FFT`; layout by `Option mod 10`, description `FFT,N,<Tint seconds %.4e>,<Option mod 100>`.
     A `Table.Field` Source this module cannot resolve stays a name-only placeholder (no TDF field);
     any other non-variable Source is a field named `Anonymous<n>_FFT` (§9c)."""
     a = s.args
     src = a[0] if a else None
-    placeholder = src is None or (isinstance(src, S.Member) and not var_info.get(
-        f"{getattr(src.base, 'name', '')}.{src.member}".upper()))
+    placeholder = src is None or (
+        isinstance(src, S.Member) and not var_info.get(f"{getattr(src.base, 'name', '')}.{src.member}".upper())
+    )
     if placeholder:
-        return _OutField("Anonymous", 9, True, "FFT", 1, _FFT_UNBOUNDED, [], name_only=True,
-                          placeholder=True, rng=(1, _FFT_UNBOUNDED))
+        return _OutField(
+            "Anonymous",
+            9,
+            True,
+            "FFT",
+            1,
+            _FFT_UNBOUNDED,
+            [],
+            name_only=True,
+            placeholder=True,
+            rng=(1, _FFT_UNBOUNDED),
+        )
     n = _as_int(_fold(a[2], env, 1), 1) if len(a) > 2 else 1
     tint = _fold(a[3], env, 0) if len(a) > 3 else 0
     unit = str(getattr(a[4], "name", "")).upper() if len(a) > 4 else "SEC"
@@ -1093,9 +1220,17 @@ def _fft_field(s: S.Instruction, var_info: dict, by_display: dict, env: consteva
     if dim == 1:
         subdims = shape
     proc = "FFT,%d,%.4e,%d" % (n, float(tint) * _UNIT_SECONDS.get(unit, 1), opt % 100)
-    out = _OutField(_source_name(src, var_info) + (str(first) if first > 1 else "") + "_FFT", (_dtype_code(a[1], env) if len(a) > 1 else 9), True,
-                    proc, 1, dim, subdims, _units_for_source(src, var_info, by_display),
-                    rng=(1, _FFT_UNBOUNDED))
+    out = _OutField(
+        _source_name(src, var_info) + (str(first) if first > 1 else "") + "_FFT",
+        (_dtype_code(a[1], env) if len(a) > 1 else 9),
+        True,
+        proc,
+        1,
+        dim,
+        subdims,
+        _units_for_source(src, var_info, by_display),
+        rng=(1, _FFT_UNBOUNDED),
+    )
     _number_anonymous([out], src, var_info, env, anon)
     return out
 
@@ -1108,8 +1243,12 @@ def _idx_suffix(src: S.Expr | None, var_info: dict, env: consteval.Env) -> str:
 
 
 def _alias_source(instr: S.Instruction, var_info: dict, by_display: dict, by_base: dict | None):
-    if (by_base and len(instr.args) > 1 and isinstance(instr.args[1], S.Name)
-            and instr.args[1].name.upper() not in var_info):
+    if (
+        by_base
+        and len(instr.args) > 1
+        and isinstance(instr.args[1], S.Name)
+        and instr.args[1].name.upper() not in var_info
+    ):
         # a Source that names an element Alias is that element of its array (docs/tdf-rules.md §9a)
         target = by_display.get(instr.args[1].name.upper())
         of = getattr(target, "alias_of", None)
@@ -1122,9 +1261,14 @@ def _alias_source(instr: S.Instruction, var_info: dict, by_display: dict, by_bas
     return instr
 
 
-def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
-                         env: consteval.Env, by_base: dict | None = None,
-                         anon: list[int] | None = None) -> list[_OutField]:
+def _emit_output_fields(
+    instr: S.Instruction,
+    var_info: dict,
+    by_display: dict,
+    env: consteval.Env,
+    by_base: dict | None = None,
+    anon: list[int] | None = None,
+) -> list[_OutField]:
     instr = _alias_source(instr, var_info, by_display, by_base)
     fields = _emit_struct_fields(instr, var_info, env)
     if fields is None:
@@ -1137,8 +1281,12 @@ def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
                     f.elem = _elem_size(f, info)
                     f.splittable = f.dim == int(reps) * f.elem
     src = instr.args[1] if len(instr.args) > 1 else None
-    if instr.keyword.upper() == "SAMPLE" and isinstance(src, S.Name) \
-            and src.name.upper() == "CH400STATUS" and "CH400STATUS" not in var_info:
+    if (
+        instr.keyword.upper() == "SAMPLE"
+        and isinstance(src, S.Name)
+        and src.name.upper() == "CH400STATUS"
+        and "CH400STATUS" not in var_info
+    ):
         for f in fields:
             f.ch400 = True
     for f in fields:
@@ -1149,8 +1297,13 @@ def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
     return fields
 
 
-_STRUCT_SUFFIX = {"SAMPLE": ("", "Smp"), "AVERAGE": ("_Avg", "Avg"), "TOTALIZE": ("_Tot", "Tot"),
-                  "MAXIMUM": ("_Max", "Max"), "MINIMUM": ("_Min", "Min")}
+_STRUCT_SUFFIX = {
+    "SAMPLE": ("", "Smp"),
+    "AVERAGE": ("_Avg", "Avg"),
+    "TOTALIZE": ("_Tot", "Tot"),
+    "MAXIMUM": ("_Max", "Max"),
+    "MINIMUM": ("_Min", "Min"),
+}
 
 
 def _emit_struct_fields(instr: S.Instruction, var_info: dict, env: consteval.Env):
@@ -1175,14 +1328,26 @@ def _emit_struct_fields(instr: S.Instruction, var_info: dict, env: consteval.Env
         for m in st["members"]:
             mi = _make_var_info(m, env)
             dim, subdims = mi.collapsed()
-            out.append(_OutField(m.name + suffix, mi.type_code, m.name.upper() in st["ro"], tag, 1,
-                                  dim, subdims, st["units"].get(m.name.upper(), ""),
-                                  struct_members=len(st["members"]), member=m.name))
+            out.append(
+                _OutField(
+                    m.name + suffix,
+                    mi.type_code,
+                    m.name.upper() in st["ro"],
+                    tag,
+                    1,
+                    dim,
+                    subdims,
+                    st["units"].get(m.name.upper(), ""),
+                    struct_members=len(st["members"]),
+                    member=m.name,
+                )
+            )
     return out
 
 
-def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: dict,
-                             env: consteval.Env) -> list[_OutField]:
+def _emit_output_fields_raw(
+    instr: S.Instruction, var_info: dict, by_display: dict, env: consteval.Env
+) -> list[_OutField]:
     kw = instr.keyword.upper()
     a = instr.args
 
@@ -1216,19 +1381,42 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
             # a non-variable String source is as wide as its value (docs/tdf-rules.md §9c)
             dim = _string_stored_len(_anonymous_string_len(src, var_info, env))
             subdims = [dim]
-            begin = ((begin - 1) * dim + 1) & 0xffffffff
-            return [_OutField(_source_name(src, var_info), tcode, True, "Smp", begin, dim, subdims,
-                              units, placeholder=True, elem=dim, splittable=True)]
-        return [_OutField(_source_name(src, var_info), tcode, True, "Smp", begin, dim, subdims,
-                          units, placeholder=not isinstance(src, (S.Name, S.Index)) and info is None)]
+            begin = ((begin - 1) * dim + 1) & 0xFFFFFFFF
+            return [
+                _OutField(
+                    _source_name(src, var_info),
+                    tcode,
+                    True,
+                    "Smp",
+                    begin,
+                    dim,
+                    subdims,
+                    units,
+                    placeholder=True,
+                    elem=dim,
+                    splittable=True,
+                )
+            ]
+        return [
+            _OutField(
+                _source_name(src, var_info),
+                tcode,
+                True,
+                "Smp",
+                begin,
+                dim,
+                subdims,
+                units,
+                placeholder=not isinstance(src, (S.Name, S.Index)) and info is None,
+            )
+        ]
 
     if kw in ("AVERAGE", "TOTALIZE", "STDDEV"):
         reps = reps_of()
         src = a[1] if len(a) > 1 else None
         tcode = type_of(2)
         begin, subdims, units = shaped(src, reps)
-        suffix, tag = {"AVERAGE": ("_Avg", "Avg"), "TOTALIZE": ("_Tot", "Tot"),
-                       "STDDEV": ("_Std", "Std")}[kw]
+        suffix, tag = {"AVERAGE": ("_Avg", "Avg"), "TOTALIZE": ("_Tot", "Tot"), "STDDEV": ("_Std", "Std")}[kw]
         name = _source_name(src, var_info) + suffix
         return [_OutField(name, tcode, True, tag, begin, reps, subdims, units)]
 
@@ -1241,12 +1429,10 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
         if len(a) > 4:
             time_flag = str(getattr(a[4], "name", "")).upper() == "TRUE"
         base = _source_name(src, var_info)
-        vsuf, vtag, tsuf, ttag = (("_Max", "Max", "_TMx", "TMx") if kw == "MAXIMUM"
-                                   else ("_Min", "Min", "_TMn", "TMn"))
+        vsuf, vtag, tsuf, ttag = ("_Max", "Max", "_TMx", "TMx") if kw == "MAXIMUM" else ("_Min", "Min", "_TMn", "TMn")
         out = [_OutField(base + vsuf, tcode, True, vtag, begin, reps, subdims, units)]
         if time_flag:
-            out.append(_OutField(base + tsuf, 14, True, ttag, 1, reps,
-                                  [] if reps == 1 else [reps], units))
+            out.append(_OutField(base + tsuf, 14, True, ttag, 1, reps, [] if reps == 1 else [reps], units))
         return out
 
     if kw == "MEDIAN":
@@ -1275,8 +1461,18 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
         tcode = type_of(2)
         n_cov = _as_int(_fold(a[4], env, 1), 1) if len(a) > 4 else 1
         units = _units_for_source(src, var_info, by_display)
-        return [_OutField(_source_name(src, var_info) + _idx_suffix(src, var_info, env) + "_Cov", tcode, True, "Cov", 1, n_cov,
-                           [] if n_cov == 1 else [n_cov], units)]
+        return [
+            _OutField(
+                _source_name(src, var_info) + _idx_suffix(src, var_info, env) + "_Cov",
+                tcode,
+                True,
+                "Cov",
+                1,
+                n_cov,
+                [] if n_cov == 1 else [n_cov],
+                units,
+            )
+        ]
 
     if kw == "WINDVECTOR":
         speed = a[1] if len(a) > 1 else None
@@ -1285,10 +1481,23 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
         dim = {0: 3, 1: 2, 2: 4, 3: 1, 4: 2}.get(output_opt, 3)
         units = _units_for_source(speed, var_info, by_display)
         # per-element units by Output option (docs/tdf-rules.md §9a): speed units, then "Deg"
-        ulist = {0: [units, "Deg", "Deg"], 1: [units, "Deg"], 2: [units, units, "Deg", "Deg"],
-                 3: ["Deg"], 4: ["Deg", "Deg"]}.get(output_opt, [units] * dim)
-        f = _OutField(_source_name(speed, var_info) + _idx_suffix(speed, var_info, env) + "_WVc", tcode, True, "WVc", 1, dim,
-                      [] if dim == 1 else [dim], ulist[0])
+        ulist = {
+            0: [units, "Deg", "Deg"],
+            1: [units, "Deg"],
+            2: [units, units, "Deg", "Deg"],
+            3: ["Deg"],
+            4: ["Deg", "Deg"],
+        }.get(output_opt, [units] * dim)
+        f = _OutField(
+            _source_name(speed, var_info) + _idx_suffix(speed, var_info, env) + "_WVc",
+            tcode,
+            True,
+            "WVc",
+            1,
+            dim,
+            [] if dim == 1 else [dim],
+            ulist[0],
+        )
         f.unit_list = ulist
         return [f]
 
@@ -1301,8 +1510,18 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
         uplim = _fold(a[7], env, 0.0) if len(a) > 7 else 0.0
         tag = f"Hst,{bins},{float(wtval):.4e},{float(lolim):.4e},{float(uplim):.4e}"
         units = _units_for_source(bin_select, var_info, by_display)
-        return [_OutField(_source_name(bin_select, var_info) + _idx_suffix(bin_select, var_info, env) + "_Hst", tcode, True, tag, 1, bins,
-                           [] if bins == 1 else [bins], units)]
+        return [
+            _OutField(
+                _source_name(bin_select, var_info) + _idx_suffix(bin_select, var_info, env) + "_Hst",
+                tcode,
+                True,
+                tag,
+                1,
+                bins,
+                [] if bins == 1 else [bins],
+                units,
+            )
+        ]
 
     return []
 
@@ -1361,16 +1580,42 @@ def _apply_fieldnames(fields: list[_OutField], arg: str, profile_name: str = "")
                 proc = base.processing + (":" + desc if desc else "")
                 rng = None if base.rng is None else (base.rng[0] + i * es, base.rng[0] + (i + 1) * es - 1)
                 u = base.unit_list[i] if base.unit_list and i < len(base.unit_list) else base.units
-                out.append(_OutField(name.strip(), base.type_code, base.read_only, proc,
-                                      1, es, [es] if es > 1 else [], u, renamed=True,
-                                      name_only=base.name_only, placeholder=False, rng=rng))
+                out.append(
+                    _OutField(
+                        name.strip(),
+                        base.type_code,
+                        base.read_only,
+                        proc,
+                        1,
+                        es,
+                        [es] if es > 1 else [],
+                        u,
+                        renamed=True,
+                        name_only=base.name_only,
+                        placeholder=False,
+                        rng=rng,
+                    )
+                )
             remaining = base.dim - n_named * es
             if remaining > 0:
                 rng = None if base.rng is None else (base.rng[0] + n_named * es, base.rng[1])
-                out.append(_OutField(base.name, base.type_code, base.read_only, base.processing,
-                                      base.begin + n_named * es, remaining, base.subdims, base.units,
-                                      name_only=base.name_only, placeholder=base.placeholder, rng=rng,
-                                      splittable=base.splittable, elem=base.elem))
+                out.append(
+                    _OutField(
+                        base.name,
+                        base.type_code,
+                        base.read_only,
+                        base.processing,
+                        base.begin + n_named * es,
+                        remaining,
+                        base.subdims,
+                        base.units,
+                        name_only=base.name_only,
+                        placeholder=base.placeholder,
+                        rng=rng,
+                        splittable=base.splittable,
+                        elem=base.elem,
+                    )
+                )
         return out
     for f, part in zip(fields, parts):
         name, _, desc = part.partition(":")
@@ -1385,8 +1630,20 @@ def _apply_fieldnames(fields: list[_OutField], arg: str, profile_name: str = "")
 # ---------------------------------------------------------------- user DataTable header (§5)
 
 _TIME_KEYWORDS = {"DATAINTERVAL", "DATAEVENT"}
-_OUTPUT_KEYWORDS = {"SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM", "TOTALIZE", "STDDEV", "MEDIAN",
-                    "MOMENT", "SAMPLEMAXMIN", "HISTOGRAM", "WINDVECTOR", "COVARIANCE"}
+_OUTPUT_KEYWORDS = {
+    "SAMPLE",
+    "AVERAGE",
+    "MAXIMUM",
+    "MINIMUM",
+    "TOTALIZE",
+    "STDDEV",
+    "MEDIAN",
+    "MOMENT",
+    "SAMPLEMAXMIN",
+    "HISTOGRAM",
+    "WINDVECTOR",
+    "COVARIANCE",
+}
 
 
 _UNIT_MON = 6  # predefined `MON`; a DataInterval unit only (`Scan` has no month)
@@ -1418,9 +1675,15 @@ def _interval_from_args(args: list, env: consteval.Env, into_idx: int, val_idx: 
     return into, interval, float(interval_val or 0), unit_name
 
 
-def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
-                       by_display: dict, called: set[str], by_base: dict | None = None,
-                       anon: list[int] | None = None) -> tuple[TdfTable, dict]:
+def _build_data_table(
+    dt: DataTableDecl,
+    env: consteval.Env,
+    var_info: dict,
+    by_display: dict,
+    called: set[str],
+    by_base: dict | None = None,
+    anon: list[int] | None = None,
+) -> tuple[TdfTable, dict]:
     """Returns (TdfTable, meta) where meta carries auto-sizing inputs (bytes_per_record,
     interval_seconds, has_interval, has_card) for tables whose declared Size is -1.
     """
@@ -1435,7 +1698,7 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
 
     out_fields: list[_OutField] = []
     pending: list[_OutField] = []
-    pending_src = None   # Source of `pending` when it is eligible for alias splitting (after FieldNames)
+    pending_src = None  # Source of `pending` when it is eligible for alias splitting (after FieldNames)
 
     def split_pending():
         if pending_src is not None and by_base:
@@ -1487,8 +1750,10 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
         elif kw in ("ETSZ", "ETCLEARSKY"):
             if pending:
                 out_fields.extend(split_pending())
-            pending, pending_src = [_OutField(n, 7, True, n, 1, 1, [], name_only=True, rng=(1, _FFT_UNBOUNDED))
-                                    for n in ("ETrs", "Rso")], None   # name-only: the TDF fields are not derived
+            pending, pending_src = (
+                [_OutField(n, 7, True, n, 1, 1, [], name_only=True, rng=(1, _FFT_UNBOUNDED)) for n in ("ETrs", "Rso")],
+                None,
+            )  # name-only: the TDF fields are not derived
     if pending:
         out_fields.extend(split_pending())
 
@@ -1496,8 +1761,20 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
     for of in out_fields:
         if of.name_only:
             continue
-        fields.append(TdfField(of.type_code, of.read_only, of.name, [], of.processing, of.units,
-                                of.processing, of.begin, of.dim, of.subdims))
+        fields.append(
+            TdfField(
+                of.type_code,
+                of.read_only,
+                of.name,
+                [],
+                of.processing,
+                of.units,
+                of.processing,
+                of.begin,
+                of.dim,
+                of.subdims,
+            )
+        )
 
     size_raw = _fold(dt.size_expr, env, -1)
 
@@ -1509,12 +1786,20 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
         # fewer than 2 records fit the 1008-byte probe buffer: sized and stamped like a no-interval table
         into, interval, interval_seconds = (0, 0), (0, 0), None
 
-    meta = dict(own_weight=own_weight, lapses=lapses, zero_interval=zero_interval, size_val=size_val, size_raw=size_raw,
-                bytes_per_record=bytes_per_record,
-                has_event=any(_kw(s) == "DATAEVENT" for s in dt.body),
-                fillstop=any(_kw(s) == "FILLSTOP" for s in dt.body),
-                interval_seconds=interval_seconds, has_card=has_card,
-                display_interval=display_interval, called=dt.name.upper() in called)
+    meta = dict(
+        own_weight=own_weight,
+        lapses=lapses,
+        zero_interval=zero_interval,
+        size_val=size_val,
+        size_raw=size_raw,
+        bytes_per_record=bytes_per_record,
+        has_event=any(_kw(s) == "DATAEVENT" for s in dt.body),
+        fillstop=any(_kw(s) == "FILLSTOP" for s in dt.body),
+        interval_seconds=interval_seconds,
+        has_card=has_card,
+        display_interval=display_interval,
+        called=dt.name.upper() in called,
+    )
 
     table = TdfTable(dt.name, 1, 14, into, interval, fields)
     table._dup_fields = out_fields  # type: ignore[attr-defined]
@@ -1558,13 +1843,18 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
             dflt, lapses = 1, 0
         t8 = dflt * b + _DEFAULT_PROBE_OVERHEAD
         m.update(_w=w, _dflt=dflt, _t8=t8, _lapses=lapses)
-        m["_reserve"] = ((2 * _DEFAULT_PROBE_BUFFER_BYTES) // t8 + (1 if dflt == 1 else 0)
-                         + (1 if t8 < _DEFAULT_PROBE_BUFFER_BYTES else 3)) * t8
+        m["_reserve"] = (
+            (2 * _DEFAULT_PROBE_BUFFER_BYTES) // t8
+            + (1 if dflt == 1 else 0)
+            + (1 if t8 < _DEFAULT_PROBE_BUFFER_BYTES else 3)
+        ) * t8
         m["_rate"] = _f32(_f32(t8) / _f32(_f32(dflt) * w))
         # a CardOut/TableFile table (nonzero card size) skips the Lapses-buffer term
         reserved += m["_reserve"]
         if lapses and b and not m["has_card"]:
-            if 0 < lapses < 1 << 31:    # `Lapses * 16` wraps to 32 bits before the division (CR6/CR1000X `Out of memory.`)
+            if (
+                0 < lapses < 1 << 31
+            ):  # `Lapses * 16` wraps to 32 bits before the division (CR6/CR1000X `Out of memory.`)
                 w16 = (lapses * 16 + (1 << 31)) % (1 << 32) - (1 << 31)
                 reserved += (int(w16 / b) + 1) * b
             else:
@@ -1584,16 +1874,19 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
             t.size = 2
             continue
         records = int(_f32(duration / m["_w"])) if m["bytes_per_record"] else 0
-        m["_n_raw"] = records     # before the minimum: the count `checker/storage.cr6_table_oom` charges
+        m["_n_raw"] = records  # before the minimum: the count `checker/storage.cr6_table_oom` charges
         t.size = max(records, 2, m["_dflt"])
 
 
-def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: dict[str, float],
-                 resolve_auto: bool = True):
+def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: dict[str, float], resolve_auto: bool = True):
     for t, m in tables_meta:
         w = scan_weights.get(t.name.upper())
-        if (m["zero_interval"] and m["called"] and w
-                and 2 * m["bytes_per_record"] <= _DEFAULT_PROBE_BUFFER_BYTES - _DEFAULT_PROBE_OVERHEAD):
+        if (
+            m["zero_interval"]
+            and m["called"]
+            and w
+            and 2 * m["bytes_per_record"] <= _DEFAULT_PROBE_BUFFER_BYTES - _DEFAULT_PROBE_OVERHEAD
+        ):
             # DataInterval(0,0,...): the interval is the enclosing Scan's (docs/tdf-rules.md §5)
             ns = round(w * 1_000_000_000)
             t.interval = (ns // 1_000_000_000, ns % 1_000_000_000)
@@ -1642,8 +1935,8 @@ def build_tables(program: S.Program, profile, consts: dict):
     # Build the Public table first (source-variable units lookups for output fields need its
     # display-name map), but keep its position in the TDF (after DataTableInfo/ConstTables, §2).
     public_table, by_display, by_base = _build_public_table(
-        scanned["publics"], var_info, scanned["alias_stmts"], scanned["units_stmts"],
-        scanned["readonly_names"])
+        scanned["publics"], var_info, scanned["alias_stmts"], scanned["units_stmts"], scanned["readonly_names"]
+    )
 
     tables: list[TdfTable] = [_status_table(scanned["slow_seq_count"])]
     struct_tables = _build_struct_tables(scanned["all_vars"], scanned["struct_types"], env)
@@ -1655,7 +1948,7 @@ def build_tables(program: S.Program, profile, consts: dict):
         _register_table_sources(table, var_info)
 
     data_table_metas = []
-    anon = [0]   # program-wide `Anonymous<n>` counter (docs/tdf-rules.md §9c)
+    anon = [0]  # program-wide `Anonymous<n>` counter (docs/tdf-rules.md §9c)
     for dt in scanned["data_tables"]:
         table, meta = _build_data_table(dt, env, var_info, by_display, scanned["called"], by_base, anon)
         tables.append(table)
@@ -1682,15 +1975,19 @@ def build_tables(program: S.Program, profile, consts: dict):
     alloc = None
     if cr3xx and data_table_metas:
         from .checker import storage
-        pool = storage.pool_bytes(profile.name, len(data_table_metas), bool(scanned["publics"]),
-                                  sum(1 for c in scanned["const_tables"] if c.name)) \
-            - _preserve_deduction(program, env, scanned, var_info)
+
+        pool = storage.pool_bytes(
+            profile.name,
+            len(data_table_metas),
+            bool(scanned["publics"]),
+            sum(1 for c in scanned["const_tables"] if c.name),
+        ) - _preserve_deduction(program, env, scanned, var_info)
         metas = [m for _, m in data_table_metas]
         alloc = storage.run(metas, pool)
         if alloc:
             for (table, m), n in zip(data_table_metas, alloc["sizes"]):
                 if m["called"] and (m["size_val"] == -1 or n > table.size):
-                    table.size = n     # a fixed size is raised to the record block `k` (Sub-called)
+                    table.size = n  # a fixed size is raised to the record block `k` (Sub-called)
         else:
             for table, m in data_table_metas:
                 if m["called"] and m["size_val"] == -1:
@@ -1708,11 +2005,12 @@ def _preserve_deduction(program: S.Program, env, scanned, var_info) -> int:
     """CR300/CR350 pool bytes taken before the tables by `PreserveVariables` and
     `PreserveOneVariable` (docs/tdf-rules.md "Preserved variables"; `checker/storage.py`)."""
     from .checker import storage
+
     stmts = program.statements
     kws = [_kw(s) for s in stmts]
     if "PRESERVEVARIABLES" not in kws and "PRESERVEONEVARIABLE" not in kws:
         return 0
-    ticks = None          # smallest main-sequence Scan; SlowSequence scans only lift the 60 s cap
+    ticks = None  # smallest main-sequence Scan; SlowSequence scans only lift the 60 s cap
     slow = False
     for s in stmts:
         if _kw(s) == "SLOWSEQUENCE":
@@ -1735,7 +2033,7 @@ def _preserve_deduction(program: S.Program, env, scanned, var_info) -> int:
 
     total = 0
     if "PRESERVEVARIABLES" in kws:
-        pub = 16      # every Public, Dim and Sub-level Dim, plus each StructureType member once
+        pub = 16  # every Public, Dim and Sub-level Dim, plus each StructureType member once
         decls = [v for v in scanned["all_vars"] if (v.type or "").upper() not in scanned["struct_types"]]
         decls += [m for st in scanned["struct_types"].values() for m in st["members"]]
         pub += sum(w * n for w, n in map(size, decls))
@@ -1750,7 +2048,7 @@ def _preserve_deduction(program: S.Program, env, scanned, var_info) -> int:
         if v is None:
             continue
         w, n = size(v)
-        whole = not isinstance(a, S.Index) or not any(x is not None for x in a.args)   # `V()` is the whole array
+        whole = not isinstance(a, S.Index) or not any(x is not None for x in a.args)  # `V()` is the whole array
         payloads.append(w * n if whole else w)
     if payloads:
         top = max(payloads)
@@ -1855,8 +2153,7 @@ def render_table_list(tables: list[TdfTable]) -> str:
                 stored_len = f.subdims[-1]
                 total = f.dimension // stored_len if stored_len else 0
                 total = min(total, _MAX_EXPLODE_COUNT)
-                explode_iter = ((lin // stored_len + 1, lin % stored_len + 1)
-                                 for lin in range(total))
+                explode_iter = ((lin // stored_len + 1, lin % stored_len + 1) for lin in range(total))
             else:
                 explode_iter = _explode_indices(f.subdims, drop_last, f.begin_index, f.dimension)
             for idx in explode_iter:

@@ -1,4 +1,5 @@
 """`-t` [Times] text per logger against real-compiler observations (tests/fixtures/timing_r16.json)."""
+
 import io
 import json
 from contextlib import redirect_stdout

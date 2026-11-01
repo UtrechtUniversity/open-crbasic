@@ -87,9 +87,11 @@ def run_case(case: tuple[str, str, bool]) -> tuple[str, dict]:
                     code = cli.main(argv)
             except Exception as exc:  # recorded, so a new exception is a difference
                 code = f"exception {type(exc).__name__}: {exc}"
-            files = {name: _digest((Path(tmp) / name).read_bytes())
-                     for name in ("out.tdf", "out.lst", "out.pre", "msg.txt")
-                     if (Path(tmp) / name).is_file()}
+            files = {
+                name: _digest((Path(tmp) / name).read_bytes())
+                for name in ("out.tdf", "out.lst", "out.pre", "msg.txt")
+                if (Path(tmp) / name).is_file()
+            }
             out = stdout.getvalue().replace(str(target), "<program>")
             record[run] = {"exit": code, "stdout": out, "files": files}
     return key, record
@@ -117,9 +119,10 @@ def main() -> int:
         return 0
     base = json.loads(args.compare.read_text())
     differ = sorted(k for k in base.keys() | current.keys() if base.get(k) != current.get(k))
-    for key in differ[:args.show]:
-        print(f"DIFF {key}\n  base:    {json.dumps(base.get(key))[:600]}\n"
-              f"  current: {json.dumps(current.get(key))[:600]}")
+    for key in differ[: args.show]:
+        print(
+            f"DIFF {key}\n  base:    {json.dumps(base.get(key))[:600]}\n  current: {json.dumps(current.get(key))[:600]}"
+        )
     print(f"selfdiff: {len(current)} cases, {len(differ)} differ from {args.compare}")
     return 1 if differ else 0
 

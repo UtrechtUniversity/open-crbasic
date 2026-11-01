@@ -34,8 +34,7 @@ ROWS = [
     (
         "Public V(4)\nAlias V((1))=W\n" + BODY,
         [f"line 2: {PAREN} (1.", "line 2: Alias is illegally dimensioned."],
-        [f"line 2: {PAREN} (1.", "line 2: Alias is illegally dimensioned.",
-         "line 4: Too many parameters:  Sec."],
+        [f"line 2: {PAREN} (1.", "line 2: Alias is illegally dimensioned.", "line 4: Too many parameters:  Sec."],
     ),
     (
         "Const CRLF = CHR(13,1) + CHR(10)\n" + BODY,
@@ -50,8 +49,7 @@ ROWS = [
     (
         "Public X\nBeginProg\n  X = ATN2(1)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
         None,
-        ["line 3: Expression expects , :   X = ATN2(1)\n.",
-         "line 4: Too many parameters:  Sec."],
+        ["line 3: Expression expects , :   X = ATN2(1)\n.", "line 4: Too many parameters:  Sec."],
     ),
     (
         "Public X\nBeginProg\n  X = (1))\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",

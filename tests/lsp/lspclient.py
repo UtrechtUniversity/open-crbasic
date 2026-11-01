@@ -15,19 +15,22 @@ SRC = Path(__file__).resolve().parents[2] / "src"
 
 
 class LspClient:
-    def __init__(self, env: dict[str, str] | None = None, settings: Any = None,
-                 pull_configuration: bool = True):
+    def __init__(self, env: dict[str, str] | None = None, settings: Any = None, pull_configuration: bool = True):
         child_env = dict(os.environ)
         child_env.pop("OPENCRBASIC_STRICT", None)
         child_env["PYTHONPATH"] = str(SRC)
         child_env.update(env or {})
-        self.proc = subprocess.Popen([sys.executable, "-m", "opencrbasic.lsp"],
-                                     stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                     stderr=subprocess.PIPE, env=child_env,
-                                     start_new_session=True)
-        self.settings = settings            # answer to workspace/configuration (None: null)
+        self.proc = subprocess.Popen(
+            [sys.executable, "-m", "opencrbasic.lsp"],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env=child_env,
+            start_new_session=True,
+        )
+        self.settings = settings  # answer to workspace/configuration (None: null)
         self.pull_configuration = pull_configuration
-        self.messages: list[dict] = []      # every message the server sent, in order
+        self.messages: list[dict] = []  # every message the server sent, in order
         self.stderr_text = ""
         self._cond = threading.Condition()
         self._next_id = 0
@@ -115,13 +118,19 @@ class LspClient:
     def notify(self, method: str, params: Any = None) -> None:
         self._send({"jsonrpc": "2.0", "method": method, "params": params})
 
-    def initialize(self, folder: Path | None, options: dict | None = None,
-                   position_encodings: list[str] | None = None,
-                   semantic_refresh: bool = False, watched_files: bool = False,
-                   inlay_refresh: bool = False) -> dict:
-        caps: dict = {"workspace": {"configuration": self.pull_configuration,
-                                    "workspaceEdit": {"documentChanges": True}},
-                      "textDocument": {"rename": {"prepareSupport": True}}}
+    def initialize(
+        self,
+        folder: Path | None,
+        options: dict | None = None,
+        position_encodings: list[str] | None = None,
+        semantic_refresh: bool = False,
+        watched_files: bool = False,
+        inlay_refresh: bool = False,
+    ) -> dict:
+        caps: dict = {
+            "workspace": {"configuration": self.pull_configuration, "workspaceEdit": {"documentChanges": True}},
+            "textDocument": {"rename": {"prepareSupport": True}},
+        }
         if watched_files:
             caps["workspace"]["didChangeWatchedFiles"] = {"dynamicRegistration": True}
         if position_encodings is not None:
@@ -130,10 +139,13 @@ class LspClient:
             caps["workspace"]["semanticTokens"] = {"refreshSupport": True}
         if inlay_refresh:
             caps["workspace"]["inlayHint"] = {"refreshSupport": True}
-        params = {"processId": os.getpid(), "rootUri": folder.as_uri() if folder else None,
-                  "capabilities": caps, "initializationOptions": options,
-                  "workspaceFolders": [{"uri": folder.as_uri(), "name": folder.name}]
-                  if folder else None}
+        params = {
+            "processId": os.getpid(),
+            "rootUri": folder.as_uri() if folder else None,
+            "capabilities": caps,
+            "initializationOptions": options,
+            "workspaceFolders": [{"uri": folder.as_uri(), "name": folder.name}] if folder else None,
+        }
         result = self.request("initialize", params)
         self.notify("initialized", {})
         return result
@@ -141,53 +153,74 @@ class LspClient:
     def open(self, path: Path, text: str | None = None, version: int = 1) -> str:
         uri = path.as_uri()
         text = path.read_text(encoding="utf-8") if text is None else text
-        self.notify("textDocument/didOpen", {"textDocument": {
-            "uri": uri, "languageId": "crbasic", "version": version, "text": text}})
+        self.notify(
+            "textDocument/didOpen",
+            {"textDocument": {"uri": uri, "languageId": "crbasic", "version": version, "text": text}},
+        )
         return uri
 
     def change(self, path: Path, text: str, version: int) -> None:
-        self.notify("textDocument/didChange", {
-            "textDocument": {"uri": path.as_uri(), "version": version},
-            "contentChanges": [{"text": text}]})
+        self.notify(
+            "textDocument/didChange",
+            {"textDocument": {"uri": path.as_uri(), "version": version}, "contentChanges": [{"text": text}]},
+        )
 
     def save(self, path: Path) -> None:
         self.notify("textDocument/didSave", {"textDocument": {"uri": path.as_uri()}})
 
     def watched(self, *changes: tuple[Path, int]) -> None:
         """`workspace/didChangeWatchedFiles` (1 created, 2 changed, 3 deleted)."""
-        self.notify("workspace/didChangeWatchedFiles", {"changes": [
-            {"uri": path.as_uri(), "type": kind} for path, kind in changes]})
+        self.notify(
+            "workspace/didChangeWatchedFiles",
+            {"changes": [{"uri": path.as_uri(), "type": kind} for path, kind in changes]},
+        )
 
-    def change_folders(self, added: list[Path] | tuple[Path, ...] = (), removed: list[Path] | tuple[Path, ...] = ()) -> None:
+    def change_folders(
+        self, added: list[Path] | tuple[Path, ...] = (), removed: list[Path] | tuple[Path, ...] = ()
+    ) -> None:
         def folder(p: Path) -> dict:
             return {"uri": p.as_uri(), "name": p.name}
-        self.notify("workspace/didChangeWorkspaceFolders", {"event": {
-            "added": [folder(p) for p in added], "removed": [folder(p) for p in removed]}})
+
+        self.notify(
+            "workspace/didChangeWorkspaceFolders",
+            {"event": {"added": [folder(p) for p in added], "removed": [folder(p) for p in removed]}},
+        )
 
     def close(self, path: Path) -> None:
         self.notify("textDocument/didClose", {"textDocument": {"uri": path.as_uri()}})
 
     # ---- language features (text document requests) ----
 
-    def at(self, method: str, path: Path, line: int, character: int, timeout: float = 60,
-           **extra: Any) -> Any:
-        return self.request(method, {"textDocument": {"uri": path.as_uri()},
-                                     "position": {"line": line, "character": character},
-                                     **extra}, timeout)
+    def at(self, method: str, path: Path, line: int, character: int, timeout: float = 60, **extra: Any) -> Any:
+        return self.request(
+            method,
+            {"textDocument": {"uri": path.as_uri()}, "position": {"line": line, "character": character}, **extra},
+            timeout,
+        )
 
     def on_file(self, method: str, path: Path, timeout: float = 60) -> Any:
         return self.request(method, {"textDocument": {"uri": path.as_uri()}}, timeout)
 
-    def inlay_hints(self, path: Path, start: tuple[int, int] = (0, 0),
-                    end: tuple[int, int] = (100000, 0), timeout: float = 60) -> list[dict]:
-        return self.request("textDocument/inlayHint", {
-            "textDocument": {"uri": path.as_uri()},
-            "range": {"start": {"line": start[0], "character": start[1]},
-                      "end": {"line": end[0], "character": end[1]}}}, timeout) or []
+    def inlay_hints(
+        self, path: Path, start: tuple[int, int] = (0, 0), end: tuple[int, int] = (100000, 0), timeout: float = 60
+    ) -> list[dict]:
+        return (
+            self.request(
+                "textDocument/inlayHint",
+                {
+                    "textDocument": {"uri": path.as_uri()},
+                    "range": {
+                        "start": {"line": start[0], "character": start[1]},
+                        "end": {"line": end[0], "character": end[1]},
+                    },
+                },
+                timeout,
+            )
+            or []
+        )
 
     def execute(self, command: str, *arguments: Any, timeout: float = 60) -> Any:
-        return self.request("workspace/executeCommand",
-                            {"command": command, "arguments": list(arguments)}, timeout)
+        return self.request("workspace/executeCommand", {"command": command, "arguments": list(arguments)}, timeout)
 
     def server_requests(self, method: str) -> list[dict]:
         with self._cond:
@@ -200,12 +233,13 @@ class LspClient:
 
     def kill(self) -> None:
         if sys.platform == "win32":
-            subprocess.run(["taskkill", "/T", "/F", "/PID", str(self.proc.pid)],
-                           capture_output=True)         # include spawned pool workers
+            subprocess.run(
+                ["taskkill", "/T", "/F", "/PID", str(self.proc.pid)], capture_output=True
+            )  # include spawned pool workers
         else:
             try:
-                os.killpg(self.proc.pid, signal.SIGKILL)   # the server's own session
-            except (ProcessLookupError, PermissionError):
+                os.killpg(self.proc.pid, signal.SIGKILL)  # the server's own session
+            except ProcessLookupError, PermissionError:
                 pass
         if self.proc.poll() is None:
             self.proc.kill()
@@ -215,8 +249,7 @@ class LspClient:
 
     def publishes(self, path: Path | None = None) -> list[dict]:
         with self._cond:
-            msgs = [m["params"] for m in self.messages
-                    if m.get("method") == "textDocument/publishDiagnostics"]
+            msgs = [m["params"] for m in self.messages if m.get("method") == "textDocument/publishDiagnostics"]
         return [m for m in msgs if path is None or m["uri"] == path.as_uri()]
 
     def latest(self, path: Path) -> dict | None:
@@ -232,18 +265,23 @@ class LspClient:
                     return value
                 left = deadline - time.monotonic()
                 if left <= 0:
-                    raise TimeoutError(f"timed out waiting for {what or predicate}\n"
-                                       f"stderr:\n{self.stderr_text}\n"
-                                       f"publishes: {self.publishes()}")
+                    raise TimeoutError(
+                        f"timed out waiting for {what or predicate}\n"
+                        f"stderr:\n{self.stderr_text}\n"
+                        f"publishes: {self.publishes()}"
+                    )
                 self._cond.wait(min(left, 0.2))
 
-    def wait_diagnostics(self, path: Path, predicate: Callable[[list[dict]], bool] = lambda d: True,
-                         timeout: float = 60, after: int = 0) -> dict:
+    def wait_diagnostics(
+        self, path: Path, predicate: Callable[[list[dict]], bool] = lambda d: True, timeout: float = 60, after: int = 0
+    ) -> dict:
         """The first publish for `path` (index >= `after` in its publish list) whose diagnostics
         satisfy `predicate`."""
+
         def probe():
             for params in self.publishes(path)[after:]:
                 if predicate(params["diagnostics"]):
                     return params
             return None
+
         return self.wait_for(probe, timeout, f"diagnostics for {path.name}")

@@ -11,9 +11,16 @@ from opencrbasic.compiler import compile_file
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "r39_first_errors.json").read_text())
 
 
-@pytest.mark.parametrize("case", [
-    pytest.param(case, marks=pytest.mark.xfail(reason=case["not_modelled"], strict=True))
-    if "not_modelled" in case else case for case in FIXTURE["cases"]], ids=lambda case: case["id"])
+@pytest.mark.parametrize(
+    "case",
+    [
+        pytest.param(case, marks=pytest.mark.xfail(reason=case["not_modelled"], strict=True))
+        if "not_modelled" in case
+        else case
+        for case in FIXTURE["cases"]
+    ],
+    ids=lambda case: case["id"],
+)
 def test_r39_first_errors_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
     program.write_text(case["source"], encoding="utf-8")

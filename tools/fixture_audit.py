@@ -9,6 +9,7 @@ oracle cache; `--no-cache` ignores it (and stores nothing), so every case is a f
 timeout) is retried once, then reported as NO-VERDICT (exit 3 if nothing differs but some case
 has no verdict).
 """
+
 import argparse
 import json
 import sys
@@ -42,9 +43,7 @@ def audit_case(case, use_cache=True):
             program.write_text(case["source"], encoding="utf-8")
             exe = oracle.REPO_ROOT / "compiler" / profiles.get(case["logger"]).exe_name
             try:
-                return oracle.run_oracle(
-                    program, siblings_dir=Path(tmp), compiler_path=exe, use_cache=use_cache
-                )
+                return oracle.run_oracle(program, siblings_dir=Path(tmp), compiler_path=exe, use_cache=use_cache)
             except oracle.OracleError:
                 continue
     return None
@@ -69,7 +68,9 @@ def main(argv=None):
                     print(f"NO-VERDICT {fixture} {case['id']}")
                 elif differs(case, real):
                     fbad += 1
-                    print(f"DIFF {fixture} {case['id']}\n  fixture: {case['expected_stdout']!r}\n  real:    {real['stdout']!r}")
+                    print(
+                        f"DIFF {fixture} {case['id']}\n  fixture: {case['expected_stdout']!r}\n  real:    {real['stdout']!r}"
+                    )
             print(f"FIXTURE {fixture}: cases={len(cases)} differing={fbad} no-verdict={fnov}", flush=True)
             bad += fbad
             novert += fnov

@@ -74,12 +74,13 @@ def test_times_hidden_by_prose_before_beginprog(tmp_path):
     """Real exe output (CR6Comp under Wine) for this program is exactly the expected bytes: errors
     before `BeginProg` (and undefined symbols) suppress `[Times]` entries (docs/cli.md "-t")."""
     (tmp_path / "t.CR6").write_bytes(
-        b"Some prose line\r\nPublic x\r\nBeginProg\r\nScan(1,Sec,0,0)\r\nPanelTemp(x,15000)\r\n"
-        b"NextScan\r\nEndProg\r\n")
+        b"Some prose line\r\nPublic x\r\nBeginProg\r\nScan(1,Sec,0,0)\r\nPanelTemp(x,15000)\r\nNextScan\r\nEndProg\r\n"
+    )
     _run(tmp_path, ["-t", "t.CR6", "o.msg"])
     assert (tmp_path / "o.msg").read_bytes() == (
         b"[Times]t.CR6 -- Compile Failed!\r\n\nline 1: Invalid, or out of place expression: "
-        b"Some prose line.\r\nline 1: Expr illegally occurs before BeginProg.\r\n")
+        b"Some prose line.\r\nline 1: Expr illegally occurs before BeginProg.\r\n"
+    )
 
 
 def test_no_message_file_flag(tmp_path):
@@ -91,7 +92,7 @@ def test_no_message_file_flag(tmp_path):
 
 def test_stdout_echoes_source_bytes_like_message_file(tmp_path):
     # The exe echoes source bytes unchanged; a UTF-8 degree sign must not be re-encoded (round 52).
-    (tmp_path / "deg.CR6").write_bytes(b"BeginProg\r\n  x = \"\xc2\xb0\" +\r\nEndProg\r\n")
+    (tmp_path / "deg.CR6").write_bytes(b'BeginProg\r\n  x = "\xc2\xb0" +\r\nEndProg\r\n')
     out = _run(tmp_path, ["deg.CR6"]).stdout
     assert b"\xc2\xb0" in out and b"\xc3\x82" not in out
     assert out.replace(b"\r\n", b"\n") == (tmp_path / "CR6cmple.xxx").read_bytes().replace(b"\r\n", b"\n")

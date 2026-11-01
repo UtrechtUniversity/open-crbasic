@@ -15,20 +15,25 @@ def messages(text: str, logger: str = "cr6") -> list[str]:
 
 
 def prog(table: str, body: str = "") -> str:
-    return (f"Public X, Y, A(5)\nDataTable (T,1,-1)\n{table}\nEndTable\nBeginProg\n"
-            f"  Scan (1,Sec,0,0)\n{body}    CallTable T\n  NextScan\nEndProg\n")
+    return (
+        f"Public X, Y, A(5)\nDataTable (T,1,-1)\n{table}\nEndTable\nBeginProg\n"
+        f"  Scan (1,Sec,0,0)\n{body}    CallTable T\n  NextScan\nEndProg\n"
+    )
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x"])
-@pytest.mark.parametrize("table,expected", [
-    ("  Sample (0,X,FP2)", ["Illegal Reps 0"]),
-    ('  Sample ("fuzz",X,FP2)', ["Illegal Reps -2147483648"]),
-    ("  Maximum (999999999999,X,FP2,False,False)", ["Illegal Reps -2147483648"]),
-    ("  Sample (3,X,FP2)", ["Variable X out of bounds.", "Variable X, index 1, reps 3, out of bounds."]),
-    ("  Sample (3,A(4),FP2)", ["Variable A out of bounds.", "Variable A, index 4, reps 3, out of bounds."]),
-    ("  Sample (5,A(),FP2)", []),
-    ("  Sample (0,X,FP2)\n  Sample (3,A(4),FP2)", ["Illegal Reps 0"]),
-])
+@pytest.mark.parametrize(
+    "table,expected",
+    [
+        ("  Sample (0,X,FP2)", ["Illegal Reps 0"]),
+        ('  Sample ("fuzz",X,FP2)', ["Illegal Reps -2147483648"]),
+        ("  Maximum (999999999999,X,FP2,False,False)", ["Illegal Reps -2147483648"]),
+        ("  Sample (3,X,FP2)", ["Variable X out of bounds.", "Variable X, index 1, reps 3, out of bounds."]),
+        ("  Sample (3,A(4),FP2)", ["Variable A out of bounds.", "Variable A, index 4, reps 3, out of bounds."]),
+        ("  Sample (5,A(),FP2)", []),
+        ("  Sample (0,X,FP2)\n  Sample (3,A(4),FP2)", ["Illegal Reps 0"]),
+    ],
+)
 def test_table_reps_and_bounds(table, expected, logger):
     assert messages(prog(table), logger) == expected
 
@@ -37,7 +42,9 @@ def test_table_reps_and_bounds(table, expected, logger):
 def test_constant_destination(logger):
     body = "    Battery(5)\n    PanelTemp(3,15000)\n    Battery(X+1)\n"
     assert messages(prog("  Sample (1,X,FP2)", body), logger) == [
-        "Invalid Variable or Array: 5.", "Invalid Variable or Array: 3."]
+        "Invalid Variable or Array: 5.",
+        "Invalid Variable or Array: 3.",
+    ]
 
 
 def test_stage2a_suppresses_earlier_pass2_expression_errors():
@@ -60,5 +67,7 @@ def test_string_array_dimension(logger):
 def test_cr300_table_checks_run_late(logger):
     assert messages(prog("  Sample (0,X,FP2)\n  Sample (3,A(4),FP2)"), logger) == ["Illegal Reps 0"]
     assert messages(prog("  Sample (3,A(4),FP2)"), logger) == [
-        "Variable A out of bounds.", "Variable A, index 4, reps 3, out of bounds."]
+        "Variable A out of bounds.",
+        "Variable A, index 4, reps 3, out of bounds.",
+    ]
     assert messages(prog("  Sample (0,X,FP2)", "    X = Q\n"), logger) == ["Q is not defined."]

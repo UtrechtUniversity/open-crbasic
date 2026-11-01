@@ -51,9 +51,25 @@ class _Options(TypedDict):
 
 
 def _parse(argv: list[str]) -> tuple[_Options, list[str]]:
-    opts: _Options = {"s": False, "v": False, "d": False, "z": None, "l": None, "c": None, "p": None,
-            "i": False, "t": False, "b": None, "u": False, "logger": None, "message_file": True,
-            "strict": False, "report": None, "config": None, "check": []}
+    opts: _Options = {
+        "s": False,
+        "v": False,
+        "d": False,
+        "z": None,
+        "l": None,
+        "c": None,
+        "p": None,
+        "i": False,
+        "t": False,
+        "b": None,
+        "u": False,
+        "logger": None,
+        "message_file": True,
+        "strict": False,
+        "report": None,
+        "config": None,
+        "check": [],
+    }
     positional: list[str] = []
     i = 0
     while i < len(argv):
@@ -90,7 +106,7 @@ def _parse(argv: list[str]) -> tuple[_Options, list[str]]:
             while j < len(letters):
                 ch = letters[j].lower()
                 if ch in "zlcpib":
-                    rest = letters[j + 1:]
+                    rest = letters[j + 1 :]
                     if rest:
                         value = rest
                     else:
@@ -157,11 +173,17 @@ def _hides_times(program_ast, diags, main) -> bool:
         if S.ends_routine(st):
             in_sub = False
     for d in diags.errors:
-        if (d.message.startswith(_P1_HIDERS) or "must have valid program" in d.message
-                or d.message == "Expr illegally occurs before BeginProg."):
+        if (
+            d.message.startswith(_P1_HIDERS)
+            or "must have valid program" in d.message
+            or d.message == "Expr illegally occurs before BeginProg."
+        ):
             return True
-        if d.message.startswith(_SYMBOL) and (begin is None or d.file != begin.file
-                                              or d.line < begin.line) and (d.file, d.line) not in keep:
+        if (
+            d.message.startswith(_SYMBOL)
+            and (begin is None or d.file != begin.file or d.line < begin.line)
+            and (d.file, d.line) not in keep
+        ):
             return True
     return False
 
@@ -172,7 +194,8 @@ def _hides_times(program_ast, diags, main) -> bool:
 _SINGLE_PASS_KEEPS = re.compile(
     r"FileManage invalid drive|Invalid file type option|Illegal Semaphore|"
     r"Invalid drive or no drive specified|IF or SELECT without EndIf|Could not find \S+\.BytesPerRecord|"
-    r"Illegal dimension|exceeds number of valid channels|Settling time -?\d+ too (short|long)|Variable \S+ out of bounds|is not a (Status or )?Settings Field Name|Could not find DataTable (?!variables)")
+    r"Illegal dimension|exceeds number of valid channels|Settling time -?\d+ too (short|long)|Variable \S+ out of bounds|is not a (Status or )?Settings Field Name|Could not find DataTable (?!variables)"
+)
 
 
 def _pass1_ok(result, profile=None) -> bool:
@@ -188,7 +211,7 @@ def _pass1_ok(result, profile=None) -> bool:
 def main(argv: list[str] | None = None) -> int:
     from .compiler import compile_file
 
-    if argv is None:   # a process run: stdout carries the source bytes, like the message file
+    if argv is None:  # a process run: stdout carries the source bytes, like the message file
         cast(io.TextIOWrapper, sys.stdout).reconfigure(encoding="latin-1", errors="replace")
         argv = sys.argv[1:]
     opts, positional = _parse(argv)
@@ -203,8 +226,11 @@ def main(argv: list[str] | None = None) -> int:
     if len(positional) > 2:
         return 1
     # each compiler names its own message file: CR6cmple.xxx, CR1000Xcmple.xxx, ... (artifact matrix, M5)
-    message_path = Path(positional[1]) if len(positional) == 2 else Path(
-        f"{(profile or profiles.get('cr6')).name.upper()}cmple.xxx")
+    message_path = (
+        Path(positional[1])
+        if len(positional) == 2
+        else Path(f"{(profile or profiles.get('cr6')).name.upper()}cmple.xxx")
+    )
     if not positional:
         lines = [" -- Compile Failed!", "", "No Program File"]
         print("\n".join(lines))
@@ -224,19 +250,24 @@ def main(argv: list[str] | None = None) -> int:
             _write_message_file(message_path, lines)
         if opts["report"]:
             from . import checks
-            _write_report(opts["report"], checks.missing_program_report(
-                program.name, profile.name, opts["strict"]))
+
+            _write_report(opts["report"], checks.missing_program_report(program.name, profile.name, opts["strict"]))
         return 1
 
-    result = compile_file(program, profile, display_name=program.name, warn_unused=opts["u"],
-                          provenance=False)
+    result = compile_file(program, profile, display_name=program.name, warn_unused=opts["u"], provenance=False)
     if opts["p"]:
         from . import preprocess
         from .compiler import dropped_message
+
         dropped = dropped_message(result) if result.pass1_errors else None
-        stop = None if dropped is None or not dropped.line else (
-            re.sub(r"^[A-Za-z]+:", "", dropped.file or program.name).replace("\\", "/").rsplit("/", 1)[-1],
-            dropped.line)
+        stop = (
+            None
+            if dropped is None or not dropped.line
+            else (
+                re.sub(r"^[A-Za-z]+:", "", dropped.file or program.name).replace("\\", "/").rsplit("/", 1)[-1],
+                dropped.line,
+            )
+        )
         try:
             Path(opts["p"]).write_bytes(preprocess.preprocess(program, profile, expand_includes=opts["i"], stop=stop))
         except OSError:
@@ -249,14 +280,21 @@ def main(argv: list[str] | None = None) -> int:
     program_ast = None
     if opts["t"] or opts["b"]:
         from . import parser as parser_mod
+
         try:
             program_ast, _ = parser_mod.parse_file(program, profile=profile, provenance=False)
         except Exception:
             program_ast = None
 
     times_entries: list[str] = []
-    if opts["t"] and program_ast is not None and _pass1_ok(result, profile) and not _hides_times(program_ast, result.diagnostics, program.name):
+    if (
+        opts["t"]
+        and program_ast is not None
+        and _pass1_ok(result, profile)
+        and not _hides_times(program_ast, result.diagnostics, program.name)
+    ):
         from . import timing
+
         try:
             times_entries = timing.times_lines(program_ast, profile, program.name)
         except Exception:
@@ -279,7 +317,7 @@ def main(argv: list[str] | None = None) -> int:
             # a pass-1 error stops the compile before any CDM device is registered (oracle, CR6,
             # round 74, `docs/artifacts.md`)
             cdm_message = "No CDM devices used in this program "
-            print(cdm_message)   # before the result, as in the message file (artifact matrix, M5)
+            print(cdm_message)  # before the result, as in the message file (artifact matrix, M5)
     print("\n".join(lines))
 
     if opts["message_file"]:
@@ -302,6 +340,7 @@ def main(argv: list[str] | None = None) -> int:
     if result.ok:
         if opts["z"] and result.tables:
             from . import tdf
+
             Path(opts["z"]).write_bytes(tdf.serialize(result.tables))
         for key in ("l", "c"):
             if (listing := opts[key]) and result.table_list is not None:
@@ -324,6 +363,7 @@ def _run_checks(opts: _Options, result, program: Path, status: int) -> int:
     report file only, and the exit status moves from 0 only (3: a check error, 4: invalid check
     configuration, `--strict` only). Checks run only when the reference accepted the program."""
     from . import checkconfig, checks
+
     config_file, error = None, None
     try:
         config_file = Path(opts["config"]) if opts["config"] else checkconfig.find(program)

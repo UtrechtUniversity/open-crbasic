@@ -3,6 +3,7 @@
 usage: uv run --no-sync python tools/probe.py <template-file> <cases-file> [loggers...]
 template contains `$BODY$`; cases file has one case per line (`\\n` escapes allowed).
 """
+
 import hashlib
 import sys
 from pathlib import Path
@@ -29,7 +30,11 @@ for case in cases:
         prof = profiles.get(lg)
         theirs = oracle.run_oracle(path, compiler_path=ROOT / "compiler" / prof.exe_name)
         ours = compile_file(path, prof, provenance=False)
-        t = "\n".join(theirs["stdout"].splitlines()).replace(path.name + " -- ", "").strip() if isinstance(theirs, dict) else str(theirs)
+        t = (
+            "\n".join(theirs["stdout"].splitlines()).replace(path.name + " -- ", "").strip()
+            if isinstance(theirs, dict)
+            else str(theirs)
+        )
         o = "\n".join(ours.result_lines()).replace(path.name + " -- ", "").strip()
         mark = "==" if t == o else "!="
         print(f"[{lg}] {mark} {case!r}\n   T: {t.replace(chr(10), ' | ')}")

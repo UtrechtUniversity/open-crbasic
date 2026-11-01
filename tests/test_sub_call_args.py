@@ -7,8 +7,10 @@ import pytest
 from opencrbasic import checker, parser, profiles
 from opencrbasic.compiler import CompileResult
 
-HEAD = ("Public X\nSub Foo (A)\nEndSub\nSub Two (A, B)\nEndSub\nSub Msg (S As String)\nEndSub\n"
-        "BeginProg\n  Scan (1,Sec,0,0)\n")
+HEAD = (
+    "Public X\nSub Foo (A)\nEndSub\nSub Two (A, B)\nEndSub\nSub Msg (S As String)\nEndSub\n"
+    "BeginProg\n  Scan (1,Sec,0,0)\n"
+)
 
 
 def lines(body: str, logger: str) -> list[str]:
@@ -21,42 +23,46 @@ def lines(body: str, logger: str) -> list[str]:
 
 
 ROWS = [
-    ('    Call Foo(Q)\n',
-     ['line 10: Invalid symbol in expression: Q.'],
-     ['line 10: Q is not defined.']),
-    ('    Foo(X,1)\n',
-     ['line 10: Call to Foo with 2 parameters, requires 1 arguments.'],
-     ['line 10: Call to Foo with 2 parameters, requires 1 arguments.']),
-    ('    Foo(Q)\n    X = Q2\n',
-     ['line 10: Invalid symbol in expression: Q.', 'line 11: Invalid symbol in expression:     X = Q2.'],
-     ['line 10: Q is not defined.', 'line 11: Q2 is not defined.']),
-    ('    Two(Q, Q2)\n',
-     ['line 10: Invalid symbol in expression: Q.', 'line 10: Invalid symbol in expression: Q2.'],
-     ['line 10: Q is not defined.', 'line 10: Q2 is not defined.']),
-    ('    Foo(Q)\n',
-     ['line 10: Invalid symbol in expression: Q.'],
-     ['line 10: Q is not defined.']),
-    ('    Foo(Q+1)\n',
-     ['line 10: Invalid symbol in expression: Q+1.'],
-     ['line 10: Q is not defined.']),
-    ('    Foo(Sin(Q))\n',
-     ['line 10: Invalid symbol in expression: Sin(Q).'],
-     ['line 10: Q is not defined.']),
-    ('    Two(X, Q)\n',
-     ['line 10: Invalid symbol in expression: Q.'],
-     ['line 10: Q is not defined.']),
-    ('    Foo(Nope(1))\n',
-     ['line 10: Invalid symbol in expression: Nope(1).'],
-     ['line 10: Nope is not defined.', 'line 10: Dimensions not declared: Nope(1).']),
-    ('    Msg("a" + Nope)\n',
-     ['line 10: Invalid symbol in expression: "a" + Nope.'],
-     ['line 10: Nope is not defined.']),
-    ('    Msg("a","b")\n',
-     ['line 10: Call to Msg with 2 parameters, requires 1 arguments.'],
-     ['line 10: Call to Msg with 2 parameters, requires 1 arguments.']),
-    ('    Call Msg("a","b")\n',
-     ['line 10: Call to Msg with 2 parameters, requires 1 arguments.'],
-     ['line 10: Call to Msg with 2 parameters, requires 1 arguments.']),
+    ("    Call Foo(Q)\n", ["line 10: Invalid symbol in expression: Q."], ["line 10: Q is not defined."]),
+    (
+        "    Foo(X,1)\n",
+        ["line 10: Call to Foo with 2 parameters, requires 1 arguments."],
+        ["line 10: Call to Foo with 2 parameters, requires 1 arguments."],
+    ),
+    (
+        "    Foo(Q)\n    X = Q2\n",
+        ["line 10: Invalid symbol in expression: Q.", "line 11: Invalid symbol in expression:     X = Q2."],
+        ["line 10: Q is not defined.", "line 11: Q2 is not defined."],
+    ),
+    (
+        "    Two(Q, Q2)\n",
+        ["line 10: Invalid symbol in expression: Q.", "line 10: Invalid symbol in expression: Q2."],
+        ["line 10: Q is not defined.", "line 10: Q2 is not defined."],
+    ),
+    ("    Foo(Q)\n", ["line 10: Invalid symbol in expression: Q."], ["line 10: Q is not defined."]),
+    ("    Foo(Q+1)\n", ["line 10: Invalid symbol in expression: Q+1."], ["line 10: Q is not defined."]),
+    ("    Foo(Sin(Q))\n", ["line 10: Invalid symbol in expression: Sin(Q)."], ["line 10: Q is not defined."]),
+    ("    Two(X, Q)\n", ["line 10: Invalid symbol in expression: Q."], ["line 10: Q is not defined."]),
+    (
+        "    Foo(Nope(1))\n",
+        ["line 10: Invalid symbol in expression: Nope(1)."],
+        ["line 10: Nope is not defined.", "line 10: Dimensions not declared: Nope(1)."],
+    ),
+    (
+        '    Msg("a" + Nope)\n',
+        ['line 10: Invalid symbol in expression: "a" + Nope.'],
+        ["line 10: Nope is not defined."],
+    ),
+    (
+        '    Msg("a","b")\n',
+        ["line 10: Call to Msg with 2 parameters, requires 1 arguments."],
+        ["line 10: Call to Msg with 2 parameters, requires 1 arguments."],
+    ),
+    (
+        '    Call Msg("a","b")\n',
+        ["line 10: Call to Msg with 2 parameters, requires 1 arguments."],
+        ["line 10: Call to Msg with 2 parameters, requires 1 arguments."],
+    ),
 ]
 
 

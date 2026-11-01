@@ -7,8 +7,11 @@ from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
 _DIR = Path(__file__).parent / "fixtures"
-CASES = [c for name in ("epi_scan_buffers", "epi_scan_buffers_fft")
-         for c in json.loads((_DIR / f"{name}.json").read_text(encoding="utf-8"))["cases"]]
+CASES = [
+    c
+    for name in ("epi_scan_buffers", "epi_scan_buffers_fft")
+    for c in json.loads((_DIR / f"{name}.json").read_text(encoding="utf-8"))["cases"]
+]
 
 
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])

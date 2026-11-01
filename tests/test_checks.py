@@ -22,8 +22,26 @@ def _findings(tmp_path, name, logger="cr6"):
 
 # Each name compiles on the reference (oracle, 2026-10-24, docs/checker.md "Alias names that are
 # CRBasic names")
-@pytest.mark.parametrize("name", ["Public", "Status", "Settings", "Sin", "Battery", "VoltSe",
-                                  "DataTable", "INF", "Then", "AND", "Else", "Next", "Dim", "MOD", "Double"])
+@pytest.mark.parametrize(
+    "name",
+    [
+        "Public",
+        "Status",
+        "Settings",
+        "Sin",
+        "Battery",
+        "VoltSe",
+        "DataTable",
+        "INF",
+        "Then",
+        "AND",
+        "Else",
+        "Next",
+        "Dim",
+        "MOD",
+        "Double",
+    ],
+)
 def test_alias_keyword_fires(tmp_path, name):
     assert _findings(tmp_path, name) == (True, ["OCB001"])
 
@@ -40,9 +58,13 @@ def test_alias_keyword_profile_specific(tmp_path):
 
 
 def _crbc(tmp_path, *args):
-    return subprocess.run([sys.executable, "-m", "opencrbasic", *args], cwd=tmp_path,
-                          capture_output=True, text=True,
-                          env={"PYTHONPATH": str(Path(__file__).parents[1] / "src")})
+    return subprocess.run(
+        [sys.executable, "-m", "opencrbasic", *args],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        env={"PYTHONPATH": str(Path(__file__).parents[1] / "src")},
+    )
 
 
 def test_strict_output_contract(tmp_path):
@@ -54,8 +76,9 @@ def test_strict_output_contract(tmp_path):
     assert strict.stdout == plain.stdout == "t.CR6 -- Compiled in PipelineMode.\n"
     assert (tmp_path / "CR6cmple.xxx").read_bytes() == message
     assert plain.stderr == ""
-    assert strict.stderr == ("t.CR6 line 2: error OCB001: Alias name Status is also the Status "
-                             "system table; choose another name.\n")
+    assert strict.stderr == (
+        "t.CR6 line 2: error OCB001: Alias name Status is also the Status system table; choose another name.\n"
+    )
 
 
 def test_strict_keeps_reference_rejection(tmp_path):

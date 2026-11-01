@@ -6,10 +6,24 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-_CASES = [c for name in ("instr_junk_args", "instr_junk_top", "could_not_find_dot", "acpower_channels", "avgrun_subparam",
-                                      "double_literal_r", "paren_assign", "calltable_statement",
-                                      "exitscan_inline_if", "symbol_assignment", "const_as_only", "const_as_assign")
-          for c in json.loads((Path(__file__).parent / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))["cases"]]
+_CASES = [
+    c
+    for name in (
+        "instr_junk_args",
+        "instr_junk_top",
+        "could_not_find_dot",
+        "acpower_channels",
+        "avgrun_subparam",
+        "double_literal_r",
+        "paren_assign",
+        "calltable_statement",
+        "exitscan_inline_if",
+        "symbol_assignment",
+        "const_as_only",
+        "const_as_assign",
+    )
+    for c in json.loads((Path(__file__).parent / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))["cases"]
+]
 
 
 @pytest.mark.parametrize("case", _CASES, ids=lambda case: case["id"])

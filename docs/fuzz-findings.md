@@ -179,9 +179,7 @@ defined in `BenchLib.crb`'s `"Rail"` section, which was never included. Root cau
 `source.py`'s `_INCLUDE_SECTION_RE`,
 
 ```python
-_INCLUDE_SECTION_RE = re.compile(
-    r'^\s*IncludeSection\s*\(\s*"([^"]*)"\s*,\s*"([^"]*)"\s*\)\s*$', re.IGNORECASE
-)
+_INCLUDE_SECTION_RE = re.compile(r'^\s*IncludeSection\s*\(\s*"([^"]*)"\s*,\s*"([^"]*)"\s*\)\s*$', re.IGNORECASE)
 ```
 
 requires the statement to end (`\)\s*$`) right after the second quoted string, so a call with a

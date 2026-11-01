@@ -1,4 +1,3 @@
-
 import pytest
 
 from opencrbasic import mode, profiles, signature
@@ -22,9 +21,7 @@ def test_checker_pass_failure_rejects_the_compile(monkeypatch, tmp_path):
     result = compile_file(_program(tmp_path), profiles.get("cr6"))
 
     assert not result.ok
-    assert result.implementation_exceptions == [
-        "opencrbasic.checker.structure.broken: RuntimeError: test failure"
-    ]
+    assert result.implementation_exceptions == ["opencrbasic.checker.structure.broken: RuntimeError: test failure"]
     assert result.result_lines() == [
         "t.CR6 -- Compile Failed!",
         "",

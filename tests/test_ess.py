@@ -20,9 +20,7 @@ def lines(text: str, logger: str) -> list[str]:
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x"])
 def test_not_string(logger):
     text = "Public essNtcipSiteDescription As Long\nESSVariables Dim\n" + TAIL
-    assert lines(text, logger) == [
-        "line 2: ESS variable essNtcipSiteDescription must be declared as String"
-    ]
+    assert lines(text, logger) == ["line 2: ESS variable essNtcipSiteDescription must be declared as String"]
 
 
 def test_string_size():
@@ -31,10 +29,7 @@ def test_string_size():
 
 
 def test_second_dim_dimensions():
-    text = (
-        "Public essNtcipSiteDescription As String * 255\n"
-        "ESSVariables Dim\nESSVariables Dim\n" + TAIL
-    )
+    text = "Public essNtcipSiteDescription As String * 255\nESSVariables Dim\nESSVariables Dim\n" + TAIL
     assert lines(text, "cr6") == [
         "line 3: ESS variable moduleDeviceNode must be dimensioned as 20",
         "line 3: ESS variable dayPlanActionNumberOID must be dimensioned as 10",

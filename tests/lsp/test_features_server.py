@@ -26,12 +26,26 @@ CHM = ROOT / "extracted_chm"
 FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000}
 
 EXPECTED_CAPABILITIES = {
-    "completionProvider", "hoverProvider", "signatureHelpProvider", "documentSymbolProvider",
-    "foldingRangeProvider", "documentLinkProvider", "definitionProvider", "referencesProvider",
-    "documentHighlightProvider", "semanticTokensProvider", "textDocumentSync",
-    "positionEncoding", "executeCommandProvider", "workspace", "renameProvider",
-    "documentFormattingProvider", "documentRangeFormattingProvider", "codeActionProvider",
-    "inlayHintProvider"}
+    "completionProvider",
+    "hoverProvider",
+    "signatureHelpProvider",
+    "documentSymbolProvider",
+    "foldingRangeProvider",
+    "documentLinkProvider",
+    "definitionProvider",
+    "referencesProvider",
+    "documentHighlightProvider",
+    "semanticTokensProvider",
+    "textDocumentSync",
+    "positionEncoding",
+    "executeCommandProvider",
+    "workspace",
+    "renameProvider",
+    "documentFormattingProvider",
+    "documentRangeFormattingProvider",
+    "codeActionProvider",
+    "inlayHintProvider",
+}
 
 UNICODE = """Public x As Long
 Public y As Long
@@ -73,7 +87,7 @@ def slice_of(text: str, rng: dict, encoding: str = "utf-16") -> str:
     assert rng["start"]["line"] == rng["end"]["line"], rng
     line = lines[rng["start"]["line"]]
     boundaries = {units(line, n, encoding): n for n in range(len(line) + 1)}
-    return line[boundaries[rng["start"]["character"]]:boundaries[rng["end"]["character"]]]
+    return line[boundaries[rng["start"]["character"]] : boundaries[rng["end"]["character"]]]
 
 
 @pytest.fixture
@@ -174,8 +188,9 @@ def test_folding_ranges_match_the_core(shared):
     client, root, main, text, result = shared
     got = client.on_file("textDocument/foldingRange", main)
     want = editing.folding_ranges(text, "cr6")
-    assert [(f["startLine"], f["endLine"], f.get("kind")) for f in got] \
-        == [(f.start_line, f.end_line, f.kind) for f in want]
+    assert [(f["startLine"], f["endLine"], f.get("kind")) for f in got] == [
+        (f.start_line, f.end_line, f.kind) for f in want
+    ]
     assert got and {f.get("kind") for f in got} <= {"region", "comment"}
 
 
@@ -200,12 +215,12 @@ def test_semantic_tokens_decode_to_declared_names(shared):
     line = start = 0
     lines = text.split("\n")
     for i, tok in enumerate(want):
-        dl, ds, length, kind, mods = got[5 * i:5 * i + 5]
+        dl, ds, length, kind, mods = got[5 * i : 5 * i + 5]
         line, start = line + dl, (ds if dl else start + ds)
-        assert (line, start, length) == (tok.line, tok.start, tok.length)    # Main.CR6 is ASCII
+        assert (line, start, length) == (tok.line, tok.start, tok.length)  # Main.CR6 is ASCII
         assert navigation.TOKEN_TYPES[kind] == tok.type
         assert [m for j, m in enumerate(navigation.TOKEN_MODIFIERS) if mods >> j & 1] == list(tok.modifiers)
-        assert lines[line][start:start + length].isidentifier() or lines[line][start] == '"'
+        assert lines[line][start : start + length].isidentifier() or lines[line][start] == '"'
 
 
 def test_semantic_token_refresh_is_requested_after_an_analysis(shared):
@@ -232,7 +247,7 @@ def test_hover_instruction_and_declared_name(shared):
     assert slice_of(text, got["range"]) == "BeginProg"
     # a declared name: the first Public of the file, used again further down
     decl_line, decl_col = locate(text, "Public ")
-    name = text.split("\n")[decl_line][decl_col + 7:].split()[0].split("(")[0].rstrip(",")
+    name = text.split("\n")[decl_line][decl_col + 7 :].split()[0].split("(")[0].rstrip(",")
     hovered = client.at("textDocument/hover", main, decl_line, decl_col + 8)
     assert hovered and name in hovered["contents"]["value"]
 
@@ -249,8 +264,13 @@ def first_cross_file_name(result, main: Path):
     assert nav is not None
     for ref in required(nav.index).references:
         for decl in ref.resolved:
-            if decl.scope == "global" and decl.file != main.name and decl.file.endswith(".crb") \
-                    and ref.file.lower() == "main.cr6" and ref.status == "resolved":
+            if (
+                decl.scope == "global"
+                and decl.file != main.name
+                and decl.file.endswith(".crb")
+                and ref.file.lower() == "main.cr6"
+                and ref.status == "resolved"
+            ):
                 return ref.name
     return None
 
@@ -263,8 +283,11 @@ def test_definition_across_files(shared):
     for ln, row in enumerate(lines):
         code = row.split("'")[0]
         pos = code.find(name)
-        if pos >= 0 and (pos == 0 or not (code[pos - 1].isalnum() or code[pos - 1] in "_.")) \
-                and not code.lstrip().upper().startswith(("PUBLIC", "DIM", "INCLUDE")):
+        if (
+            pos >= 0
+            and (pos == 0 or not (code[pos - 1].isalnum() or code[pos - 1] in "_."))
+            and not code.lstrip().upper().startswith(("PUBLIC", "DIM", "INCLUDE"))
+        ):
             got = client.at("textDocument/definition", main, ln, pos + 1)
             if got:
                 break
@@ -280,19 +303,22 @@ def test_references_and_highlights_agree_with_the_core(shared):
     client, root, main, text, result = shared
     name = first_cross_file_name(result, main)
     assert name is not None
-    ln, col = next((ln, row.split("'")[0].find(name)) for ln, row in enumerate(text.split("\n"))
-                   if row.split("'")[0].find(name) >= 0
-                   and navigation.definition(result, main, ln, row.split("'")[0].find(name) + 1))
+    ln, col = next(
+        (ln, row.split("'")[0].find(name))
+        for ln, row in enumerate(text.split("\n"))
+        if row.split("'")[0].find(name) >= 0
+        and navigation.definition(result, main, ln, row.split("'")[0].find(name) + 1)
+    )
     refs = client.at("textDocument/references", main, ln, col + 1, context={"includeDeclaration": True})
     want = navigation.references(result, main, ln, col + 1, True)
     assert len(refs) == len(want) >= 2
-    no_decl = client.at("textDocument/references", main, ln, col + 1,
-                        context={"includeDeclaration": False})
+    no_decl = client.at("textDocument/references", main, ln, col + 1, context={"includeDeclaration": False})
     assert len(no_decl) < len(refs)
     lights = client.at("textDocument/documentHighlight", main, ln, col + 1)
     core = navigation.document_highlights(result, main, ln, col + 1)
-    assert [(h["range"]["start"]["line"], h["range"]["start"]["character"], h["kind"]) for h in lights] \
-        == [(h.line, h.start, {"text": 1, "read": 2, "write": 3}[h.kind]) for h in core]
+    assert [(h["range"]["start"]["line"], h["range"]["start"]["character"], h["kind"]) for h in lights] == [
+        (h.line, h.start, {"text": 1, "read": 2, "write": 3}[h.kind]) for h in core
+    ]
     for h in lights:
         assert slice_of(text, h["range"]).lower() == name.lower()
 
@@ -349,12 +375,12 @@ def test_completion_on_an_incomplete_edit(make_client, tmp_path):
     entry = root / "Small.CR6"
     client = started(make_client, root)
     client.open(entry, EDIT)
-    assert client.on_file("textDocument/documentSymbol", entry)          # analysis finished
+    assert client.on_file("textDocument/documentSymbol", entry)  # analysis finished
     line, col = locate(EDIT, "= Vo", inside=4)
     got = client.at("textDocument/completion", entry, line, col)
     labels = [i["label"] for i in got["items"]]
     assert "VoltSe" in labels and "VoltDiff" in labels and "Volts" in labels
-    assert labels.index("Volts") < labels.index("VoltSe")       # program names first
+    assert labels.index("Volts") < labels.index("VoltSe")  # program names first
     volt = next(i for i in got["items"] if i["label"] == "VoltSe")
     assert volt["kind"] == 3 and "parameters" in volt["detail"]
     assert slice_of(EDIT, volt["textEdit"]["range"]) == "Vo"
@@ -368,10 +394,9 @@ def test_completion_after_a_dot_offers_table_fields(make_client, tmp_path, table
     entry = root / "Small.CR6"
     client = started(make_client, root)
     client.open(entry, text)
-    assert client.on_file("textDocument/documentSymbol", entry)           # analysis finished
+    assert client.on_file("textDocument/documentSymbol", entry)  # analysis finished
     line, col = locate(text, f"{table}.", inside=len(table) + 1)
-    got = client.at("textDocument/completion", entry, line, col, context={
-        "triggerKind": 2, "triggerCharacter": "."})
+    got = client.at("textDocument/completion", entry, line, col, context={"triggerKind": 2, "triggerCharacter": "."})
     assert expected <= {i["label"] for i in got["items"]}
     assert {i["kind"] for i in got["items"]} == {5}
     assert all(i["textEdit"]["range"]["start"] == i["textEdit"]["range"]["end"] for i in got["items"])
@@ -419,8 +444,10 @@ def test_help_directory_setting_is_optional_and_relative_to_the_folder(make_clie
     # a configuration change back to none
     client.settings = {"helpDirectory": ""}
     client.notify("workspace/didChangeConfiguration", {"settings": {}})
-    hov = client.wait_for(lambda: _hover_says(client, entry, line, col, "No help directory configured"),
-                          what="hover without a help directory")
+    hov = client.wait_for(
+        lambda: _hover_says(client, entry, line, col, "No help directory configured"),
+        what="hover without a help directory",
+    )
     assert hov
 
 
@@ -446,8 +473,7 @@ def test_positions_follow_the_negotiated_encoding(make_client, tmp_path, encodin
     wire_col = units(lines[use_line], use_col, encoding)
     got = client.at("textDocument/definition", entry, use_line, wire_col + 0)
     assert len(got) == 1 and got[0]["range"]["start"] == {"line": 1, "character": 7}
-    refs = client.at("textDocument/references", entry, use_line, wire_col,
-                     context={"includeDeclaration": True})
+    refs = client.at("textDocument/references", entry, use_line, wire_col, context={"includeDeclaration": True})
     on_line = [r["range"] for r in refs if r["range"]["start"]["line"] == use_line]
     assert [slice_of(UNICODE, r, encoding) for r in on_line] == ["y"]
     assert on_line[0]["start"]["character"] == wire_col
@@ -459,11 +485,11 @@ def test_positions_follow_the_negotiated_encoding(make_client, tmp_path, encodin
     tokens = client.on_file("textDocument/semanticTokens/full", entry)["data"]
     seen, line, start = [], 0, 0
     for i in range(0, len(tokens), 5):
-        dl, ds, length, *_ = tokens[i:i + 5]
+        dl, ds, length, *_ = tokens[i : i + 5]
         line, start = line + dl, (ds if dl else start + ds)
         row = lines[line]
         boundaries = {units(row, n, encoding): n for n in range(len(row) + 1)}
-        seen.append((line, row[boundaries[start]:boundaries[start + length]]))
+        seen.append((line, row[boundaries[start] : boundaries[start + length]]))
     assert (3, "z") in seen and (0, "x") in seen
     assert client.shutdown() == 0
 
@@ -495,7 +521,7 @@ def test_requests_during_a_pending_first_analysis(make_client, tmp_path):
     client.open(entry, EDIT)
     line, col = locate(EDIT, "BeginProg", inside=2)
     began = time.monotonic()
-    hov = client.at("textDocument/hover", entry, line, col)           # text based: no waiting
+    hov = client.at("textDocument/hover", entry, line, col)  # text based: no waiting
     assert hov and "beginprog" in hov["contents"]["value"].lower()
     assert client.at("textDocument/completion", entry, line, col)["items"]
     assert client.on_file("textDocument/foldingRange", entry) is not None
@@ -518,7 +544,7 @@ def test_stale_program_is_used_while_a_newer_analysis_is_pending(make_client, tm
     began = time.monotonic()
     stale = client.on_file("textDocument/documentSymbol", entry)
     waited = time.monotonic() - began
-    assert 0.15 <= waited < 2.0, waited                     # bounded wait, then the last program
+    assert 0.15 <= waited < 2.0, waited  # bounded wait, then the last program
     assert [s["name"] for s in stale] == [s["name"] for s in first]
     # text based requests see the new text at once, and names from the old program
     line, col = locate(edited, "x = Vo", inside=6)
@@ -527,7 +553,10 @@ def test_stale_program_is_used_while_a_newer_analysis_is_pending(make_client, tm
     # once the new analysis lands the outline has the new declaration
     fresh = client.wait_for(
         lambda: (lambda s: s if any(i["name"] == "added_name" for i in s) else None)(
-            client.on_file("textDocument/documentSymbol", entry)), what="fresh outline")
+            client.on_file("textDocument/documentSymbol", entry)
+        ),
+        what="fresh outline",
+    )
     assert fresh
 
 
@@ -549,8 +578,7 @@ def test_feature_requests_survive_a_worker_crash(make_client, tmp_path):
 # ---- diagnostics use the negotiated encoding (review finding 3) ---------------------------
 
 DIAG_LINE = "x = Missing ' é😀"
-DIAG_TEXT = ("Public x As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    " + DIAG_LINE
-             + "\n  NextScan\nEndProg\n")
+DIAG_TEXT = "Public x As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    " + DIAG_LINE + "\n  NextScan\nEndProg\n"
 
 
 @pytest.mark.parametrize("encoding, expected", [("utf-16", 17), ("utf-8", 20), ("utf-32", 16)])
@@ -562,6 +590,5 @@ def test_diagnostic_end_uses_the_negotiated_encoding(make_client, tmp_path, enco
     assert result["capabilities"]["positionEncoding"] == encoding
     client.open(entry, DIAG_TEXT)
     params = client.wait_diagnostics(entry, lambda d: any(x["range"]["end"]["line"] == 3 for x in d))
-    ends = [x["range"]["end"]["character"] for x in params["diagnostics"]
-            if x["range"]["end"]["line"] == 3]
+    ends = [x["range"]["end"]["character"] for x in params["diagnostics"] if x["range"]["end"]["line"] == 3]
     assert ends and set(ends) == {4 + expected}, ends

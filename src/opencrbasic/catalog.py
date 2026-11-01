@@ -18,14 +18,50 @@ KINDS = ("instruction", "function", "symbol", "keyword")
 # as an ordinary instruction row such as `NextScan`, `EndTable`). A profile gets the entry only
 # when its own instruction table has the word, with the table's spelling.
 TABLE_KEYWORDS = (
-    "If", "ElseIf", "Else", "EndIf", "Select", "Case", "EndSelect",
-    "For", "Next", "Do", "Loop", "While", "WEnd",
-    "Exit", "ExitFor", "ExitDo", "ExitSub", "ExitFunction", "ExitScan", "ContinueScan", "Return",
-    "Sub", "EndSub", "Function", "EndFunction", "Call", "End",
-    "Const", "Public", "Dim", "Alias", "Units",
-    "Include", "IncludeSection",
-    "BeginProg", "EndProg", "Scan", "SubScan", "NextScan", "NextSubScan",
-    "DataTable", "EndTable", "ConstTable", "EndConstTable",
+    "If",
+    "ElseIf",
+    "Else",
+    "EndIf",
+    "Select",
+    "Case",
+    "EndSelect",
+    "For",
+    "Next",
+    "Do",
+    "Loop",
+    "While",
+    "WEnd",
+    "Exit",
+    "ExitFor",
+    "ExitDo",
+    "ExitSub",
+    "ExitFunction",
+    "ExitScan",
+    "ContinueScan",
+    "Return",
+    "Sub",
+    "EndSub",
+    "Function",
+    "EndFunction",
+    "Call",
+    "End",
+    "Const",
+    "Public",
+    "Dim",
+    "Alias",
+    "Units",
+    "Include",
+    "IncludeSection",
+    "BeginProg",
+    "EndProg",
+    "Scan",
+    "SubScan",
+    "NextScan",
+    "NextSubScan",
+    "DataTable",
+    "EndTable",
+    "ConstTable",
+    "EndConstTable",
 )
 
 # Language words the instruction table lacks. Each is matched by name in the parser
@@ -36,17 +72,17 @@ EXTRA_KEYWORDS = ("Then", "Step", "As", "Optional")
 
 @dataclass(frozen=True)
 class CatalogEntry:
-    name: str                       # the profile's spelling
-    kind: str                       # one of KINDS
-    profile: str                    # profile name ("cr6", ...)
-    source: str                     # "instructions.json" | "functions.json" | "symbols.json" |
-                                    # "keyword:table" | "keyword:parser"
-    params: tuple[int, ...] = ()    # instruction: type codes (docs/type-codes.md)
-    value: int | None = None        # symbol: the integer value
-    code: int | None = None         # function: table `code`
-    func_kind: int | None = None    # function: table `kind`
-    argspec: int | None = None      # function: table `argspec`
-    nargs: int | None = None        # function: present only for some rows
+    name: str  # the profile's spelling
+    kind: str  # one of KINDS
+    profile: str  # profile name ("cr6", ...)
+    source: str  # "instructions.json" | "functions.json" | "symbols.json" |
+    # "keyword:table" | "keyword:parser"
+    params: tuple[int, ...] = ()  # instruction: type codes (docs/type-codes.md)
+    value: int | None = None  # symbol: the integer value
+    code: int | None = None  # function: table `code`
+    func_kind: int | None = None  # function: table `kind`
+    argspec: int | None = None  # function: table `argspec`
+    nargs: int | None = None  # function: present only for some rows
     argtypes: tuple[int, ...] | None = None
 
 
@@ -54,17 +90,28 @@ def _build(name: str) -> tuple[CatalogEntry, ...]:
     prof = profiles.get(name)
     out: list[CatalogEntry] = []
     for row in prof.instructions.values():
-        out.append(CatalogEntry(row["name"], "instruction", prof.name, "instructions.json",
-                                params=tuple(row.get("params", ()))))
+        out.append(
+            CatalogEntry(
+                row["name"], "instruction", prof.name, "instructions.json", params=tuple(row.get("params", ()))
+            )
+        )
     for row in prof.functions.values():
         argtypes = row.get("argtypes")
-        out.append(CatalogEntry(row["name"], "function", prof.name, "functions.json",
-                                code=row.get("code"), func_kind=row.get("kind"),
-                                argspec=row.get("argspec"), nargs=row.get("nargs"),
-                                argtypes=None if argtypes is None else tuple(argtypes)))
+        out.append(
+            CatalogEntry(
+                row["name"],
+                "function",
+                prof.name,
+                "functions.json",
+                code=row.get("code"),
+                func_kind=row.get("kind"),
+                argspec=row.get("argspec"),
+                nargs=row.get("nargs"),
+                argtypes=None if argtypes is None else tuple(argtypes),
+            )
+        )
     for row in prof.symbols.values():
-        out.append(CatalogEntry(row["name"], "symbol", prof.name, "symbols.json",
-                                value=row.get("value")))
+        out.append(CatalogEntry(row["name"], "symbol", prof.name, "symbols.json", value=row.get("value")))
     for word in TABLE_KEYWORDS:
         row = prof.instructions.get(word.upper())
         if row is not None:

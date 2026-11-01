@@ -35,8 +35,8 @@ BeginProg
   NextScan
 EndProg
 """
-BAD_LINE = 8                        # 1-based line of `x = x + 1` in PROG
-UNDEFINED = {                       # the same unresolved name, worded per profile
+BAD_LINE = 8  # 1-based line of `x = x + 1` in PROG
+UNDEFINED = {  # the same unresolved name, worded per profile
     "cr1000x": "Invalid symbol in expression:     x = y + 1.",
     "cr300": "y is not defined.",
     "cr350": "y is not defined.",
@@ -45,18 +45,27 @@ UNDEFINED = {                       # the same unresolved name, worded per profi
 # `_bad_extension` / `_unloadable`, oracle fixtures r5cr6_include_ext and r9_cr3xx_include_ext).
 # `None`: the include loads; a message: the entry's own diagnostic at that include line.
 INCLUDE_RULES = {
-    "cr1000x": {"crb": None, "CR1X": None,
-                "CR6": "Include file CPU:Lib.CR6 must have valid program file extension.",
-                "CR300": "Include file CPU:Lib.CR300 must have valid program file extension.",
-                "CR350": "Include file CPU:Lib.CR350 must have valid program file extension."},
-    "cr300": {"crb": None, "CR300": None,
-              "CR1X": "Cannot open include file  CPU:Lib.CR1X.",
-              "CR6": "Include file CPU:Lib.CR6 must have valid program file extension.",
-              "CR350": "Include file CPU:Lib.CR350 must have valid program file extension."},
-    "cr350": {"crb": None, "CR350": None,
-              "CR1X": "Cannot open include file  CPU:Lib.CR1X.",
-              "CR6": "Include file CPU:Lib.CR6 must have valid program file extension.",
-              "CR300": "Include file CPU:Lib.CR300 must have valid program file extension."},
+    "cr1000x": {
+        "crb": None,
+        "CR1X": None,
+        "CR6": "Include file CPU:Lib.CR6 must have valid program file extension.",
+        "CR300": "Include file CPU:Lib.CR300 must have valid program file extension.",
+        "CR350": "Include file CPU:Lib.CR350 must have valid program file extension.",
+    },
+    "cr300": {
+        "crb": None,
+        "CR300": None,
+        "CR1X": "Cannot open include file  CPU:Lib.CR1X.",
+        "CR6": "Include file CPU:Lib.CR6 must have valid program file extension.",
+        "CR350": "Include file CPU:Lib.CR350 must have valid program file extension.",
+    },
+    "cr350": {
+        "crb": None,
+        "CR350": None,
+        "CR1X": "Cannot open include file  CPU:Lib.CR1X.",
+        "CR6": "Include file CPU:Lib.CR6 must have valid program file extension.",
+        "CR300": "Include file CPU:Lib.CR300 must have valid program file extension.",
+    },
 }
 INCLUDE_CASES = [(lg, ext) for lg in LOGGERS for ext in INCLUDE_RULES[lg]]
 
@@ -70,16 +79,14 @@ def severity_code(name: str) -> int:
 
 
 def summary(params: dict) -> list[tuple]:
-    return [(d["range"]["start"]["line"], d["severity"], d["source"], d["message"])
-            for d in params["diagnostics"]]
+    return [(d["range"]["start"]["line"], d["severity"], d["source"], d["message"]) for d in params["diagnostics"]]
 
 
 def expected_by_path(result) -> dict[Path, list[tuple]]:
     grouped: dict[Path, list[tuple]] = {}
     for d in result.diagnostics:
         assert d.path is not None, d
-        grouped.setdefault(d.path, []).append(
-            (max(d.line - 1, 0), severity_code(d.severity), "opencrbasic", d.message))
+        grouped.setdefault(d.path, []).append((max(d.line - 1, 0), severity_code(d.severity), "opencrbasic", d.message))
     return grouped
 
 
@@ -127,6 +134,7 @@ def wait_matches(client: LspClient, expected: dict[Path, list[tuple]]) -> None:
 
 # ---- clean program and invalid edit, per logger ---------------------------------------------
 
+
 @pytest.mark.parametrize("logger", LOGGERS)
 def test_clean_program_publishes_no_errors(make_client, tmp_path, logger):
     root = project(tmp_path, **{"Small.CR6": PROG, "Lib.crb": LIB})
@@ -160,12 +168,12 @@ def test_invalid_edit_matches_analysis(make_client, tmp_path, logger):
     assert diag["severity"] == 1 and diag["source"] == "opencrbasic"
     assert diag["message"] == only.message == UNDEFINED[logger]
     assert diag["range"]["start"] == {"line": BAD_LINE - 1, "character": 0}
-    assert diag["range"]["end"] == {"line": BAD_LINE - 1,
-                                    "character": len(broken.splitlines()[BAD_LINE - 1])}
+    assert diag["range"]["end"] == {"line": BAD_LINE - 1, "character": len(broken.splitlines()[BAD_LINE - 1])}
     assert client.shutdown() == 0
 
 
 # ---- include extensions, per logger -----------------------------------------------------------
+
 
 @pytest.mark.parametrize("logger,ext", INCLUDE_CASES)
 def test_include_extension_rules(make_client, tmp_path, logger, ext):
@@ -194,6 +202,7 @@ def test_include_extension_rules(make_client, tmp_path, logger, ext):
 
 # ---- entry discovery under a non-CR6 logger ---------------------------------------------------
 
+
 def test_discovered_cr6_entry_is_analysed_as_configured_logger(make_client, tmp_path):
     """Default `entries` finds `**/*.CR6` on disk; under cr300 the discovered entry is analysed
     with the cr300 rules and the cr300 wording, without being opened."""
@@ -201,12 +210,12 @@ def test_discovered_cr6_entry_is_analysed_as_configured_logger(make_client, tmp_
     good, broken = root / "Good.CR6", root / "Bad.CR6"
     client = started(make_client, root, "cr300")
     params = client.wait_diagnostics(broken, lambda d: bool(d))
-    time.sleep(1.0)                 # a clean entry that was never reported gets no publish
+    time.sleep(1.0)  # a clean entry that was never reported gets no publish
     assert all(not p["diagnostics"] for p in client.publishes(good))
     assert summary(params) == [(BAD_LINE - 1, 1, "opencrbasic", UNDEFINED["cr300"])]
     assert sorted(summary(params)) == sorted(
-        (max(d.line - 1, 0), 1, "opencrbasic", d.message)
-        for d in analyze(AnalysisRequest(broken, "cr300")).diagnostics)
+        (max(d.line - 1, 0), 1, "opencrbasic", d.message) for d in analyze(AnalysisRequest(broken, "cr300")).diagnostics
+    )
     assert client.shutdown() == 0
 
 

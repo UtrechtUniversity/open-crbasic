@@ -25,9 +25,7 @@ def menu_program(body: str) -> str:
 
 
 MUST_FOLLOW = "MenuPick must follow a MenuItem instruction."
-CONST_FIRST = (
-    "When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
-)
+CONST_FIRST = "When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
 
 MENU_ROWS = [
     ('MenuItem ("C",C) / MenuPick (C,1,2) / MenuPick (D)', [f"line 9: {MUST_FOLLOW}"]),

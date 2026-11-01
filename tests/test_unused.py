@@ -116,14 +116,7 @@ def test_unused_check_flags_genuinely_unused_names():
     from opencrbasic.checker import unused
     from opencrbasic.diagnostics import Diagnostics
 
-    text = (
-        "Public NeverUsed As Float\n"
-        "Const StillIgnored = 1\n"
-        "BeginProg\n"
-        "  Scan (1,Sec,0,0)\n"
-        "  NextScan\n"
-        "EndProg\n"
-    )
+    text = "Public NeverUsed As Float\nConst StillIgnored = 1\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n"
     program, diags = parser.parse_text(text, "t.CR6")
     assert not diags.errors
     out = Diagnostics()

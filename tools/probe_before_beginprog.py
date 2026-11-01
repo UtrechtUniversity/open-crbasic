@@ -29,8 +29,11 @@ REPO = ROOT
 
 def probes(logger: str, out: Path) -> dict[str, list[str]]:
     profile = profiles.get(logger)
-    accepted = [r["file"] for r in json.loads((ROOT / f"difftest-{logger}.json").read_text())
-                if r["their_exit"] == 0 and "/chm/" in r["file"]]
+    accepted = [
+        r["file"]
+        for r in json.loads((ROOT / f"difftest-{logger}.json").read_text())
+        if r["their_exit"] == 0 and "/chm/" in r["file"]
+    ]
     found: dict[str, list[str]] = {}
     for rel in accepted:
         path = REPO / rel
@@ -38,8 +41,10 @@ def probes(logger: str, out: Path) -> dict[str, list[str]]:
         if re.search(r"(?im)^\s*include", text):
             continue
         program, _ = parser.parse_file(path, profile=profile)
-        begin = next((s.line for s in program.statements if isinstance(s, S.Instruction)
-                      and s.keyword.upper() == "BEGINPROG"), None)
+        begin = next(
+            (s.line for s in program.statements if isinstance(s, S.Instruction) and s.keyword.upper() == "BEGINPROG"),
+            None,
+        )
         if begin is None:
             continue
         lines = text.split("\n")
@@ -50,12 +55,14 @@ def probes(logger: str, out: Path) -> dict[str, list[str]]:
             if kw not in profile.instructions or kw in ("SCAN", "NEXTSCAN", "ENDPROG", "BEGINPROG"):
                 continue
             src = lines[stmt.line - 1]
-            if not re.match(r"\s*" + re.escape(stmt.keyword) + r"\b", src, re.I) or \
-                    src.rstrip().endswith("_") or len(found.get(kw, [])) >= 2:
+            if (
+                not re.match(r"\s*" + re.escape(stmt.keyword) + r"\b", src, re.I)
+                or src.rstrip().endswith("_")
+                or len(found.get(kw, [])) >= 2
+            ):
                 continue
             name = f"{kw.lower()}_{len(found.get(kw, []))}.CR6"
-            (out / name).write_bytes("\n".join(lines[:begin - 1] + [src] + lines[begin - 1:])
-                                     .encode("latin-1"))
+            (out / name).write_bytes("\n".join(lines[: begin - 1] + [src] + lines[begin - 1 :]).encode("latin-1"))
             found.setdefault(kw, []).append(name)
     return found
 
@@ -78,8 +85,7 @@ def main() -> int:
 
     with ThreadPoolExecutor(4) as pool:
         results = list(pool.map(rejected, [(kw, n) for kw, names in found.items() for n in names]))
-    listed = sorted({kw for kw, bad in results if bad} - {kw for kw, bad in results if not bad}
-                    - {"ENDIF", "NEXT"})
+    listed = sorted({kw for kw, bad in results if bad} - {kw for kw, bad in results if not bad} - {"ENDIF", "NEXT"})
     print(f"{args.logger}: {len(found)} instructions probed, {len(listed)} rejected before BeginProg")
     if args.write:
         target = profile.data_dir / "before_beginprog.json"

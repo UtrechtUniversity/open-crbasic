@@ -35,8 +35,9 @@ def _numeric_constant(expr, is_constant: Callable, value_of: Callable) -> bool:
     if isinstance(expr, S.Unary):
         return _numeric_constant(expr.operand, is_constant, value_of)
     if isinstance(expr, S.Binary):
-        return (_numeric_constant(expr.left, is_constant, value_of)
-                and _numeric_constant(expr.right, is_constant, value_of))
+        return _numeric_constant(expr.left, is_constant, value_of) and _numeric_constant(
+            expr.right, is_constant, value_of
+        )
     return False
 
 
@@ -55,9 +56,9 @@ def decide(statements: list[S.Stmt], profile: Profile, is_constant: Callable, va
 
     sequential = False
     pipeline_forced = False
-    depth = 0           # open If/Select/For/While/Do since the last Scan
-    in_scan = 0         # Scan nesting (Scan ... NextScan)
-    in_slow = 0         # SlowSequence count
+    depth = 0  # open If/Select/For/While/Do since the last Scan
+    in_scan = 0  # Scan nesting (Scan ... NextScan)
+    in_slow = 0  # SlowSequence count
 
     def visit(stmt: S.Stmt) -> None:
         nonlocal sequential, pipeline_forced, depth, in_scan, in_slow
@@ -80,9 +81,10 @@ def decide(statements: list[S.Stmt], profile: Profile, is_constant: Callable, va
                 else:
                     sequential = True
             elif kw in nonconstant_arg:
-                sequential = any(_arg(args, i) is not None
-                                 and not _numeric_constant(_arg(args, i), is_constant, value_of)
-                                 for i in nonconstant_arg[kw])
+                sequential = any(
+                    _arg(args, i) is not None and not _numeric_constant(_arg(args, i), is_constant, value_of)
+                    for i in nonconstant_arg[kw]
+                )
             elif kw in ("FOR", "IF", "SELECT", "WHILE", "DO"):
                 depth += 1
             elif kw in ("NEXT", "ENDIF", "END", "WEND", "LOOP"):

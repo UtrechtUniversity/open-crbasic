@@ -2,7 +2,6 @@
 (`expressions.py`'s `check_function_call_counts`). Expected lines are verbatim oracle output,
 all four loggers (2026-10-02)."""
 
-
 from opencrbasic import checker, parser, profiles
 from opencrbasic.compiler import CompileResult
 
@@ -69,16 +68,16 @@ def test_bare_call_too_few_args_f1_needs_1():
     text = prog("    F1()\n")
     assert lines(text, "cr6") == [
         "line 13: Call argument required.",
-        "line 13: Invalid, or out of place expression:     F1()."
+        "line 13: Invalid, or out of place expression:     F1().",
     ]
     assert lines(text, "cr300") == [
         "line 13: Call argument required.",
         "line 13: Invalid, or out of place expression:     F1()",
-        "."
+        ".",
     ]
     assert lines(text, "cr1000x") == [
         "line 13: Call argument required.",
-        "line 13: Invalid, or out of place expression:     F1()."
+        "line 13: Invalid, or out of place expression:     F1().",
     ]
 
 
@@ -86,12 +85,12 @@ def test_bare_call_too_few_args_f2_needs_2():
     text = prog("    F2(1)\n")
     assert lines(text, "cr6") == [
         "line 13: Call argument required.",
-        "line 13: Invalid, or out of place expression:     F2(1)."
+        "line 13: Invalid, or out of place expression:     F2(1).",
     ]
     assert lines(text, "cr300") == [
         "line 13: Call argument required.",
         "line 13: Invalid, or out of place expression:     F2(1)",
-        "."
+        ".",
     ]
 
 

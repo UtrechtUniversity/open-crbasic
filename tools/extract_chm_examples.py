@@ -31,9 +31,27 @@ EXAMPLE_MARKER_RE = re.compile(r"^Examples?\s*:?$", re.IGNORECASE)
 # already has an internal line break (it came from a multi-line <p> using <br/>) or its first
 # word is one that only appears at statement-start in CRBasic source.
 _CODE_START_WORDS = {
-    "'", "public", "dim", "const", "beginprog", "datatable", "alias", "units", "slowsequence",
-    "sub", "function", "if", "for", "do", "while", "sequencefile", "consttable", "include",
-    "declare", "select", "'declare",
+    "'",
+    "public",
+    "dim",
+    "const",
+    "beginprog",
+    "datatable",
+    "alias",
+    "units",
+    "slowsequence",
+    "sub",
+    "function",
+    "if",
+    "for",
+    "do",
+    "while",
+    "sequencefile",
+    "consttable",
+    "include",
+    "declare",
+    "select",
+    "'declare",
 }
 _FIRST_WORD_RE = re.compile(r"^[A-Za-z_#][A-Za-z0-9_]*|^'")
 

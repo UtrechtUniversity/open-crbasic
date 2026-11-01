@@ -19,14 +19,14 @@ class Config:
     encoding: str = "utf-8"
     debounce_ms: int = 300
     analysis_timeout_ms: int = 10000
-    help_directory: str = ""            # "" : no help text
-    feature_wait_ms: int = 1500         # bounded wait for a fresh analysis (docs/lsp-api.md)
-    max_file_bytes: int = 2 * 1024 * 1024   # larger files are not analysed (docs/lsp-api.md "Bounds")
-    max_queued_jobs: int = 64           # entries with an analysis task at once; the rest wait
-    max_cache_mb: int = 256             # parsed programs kept for the language features
+    help_directory: str = ""  # "" : no help text
+    feature_wait_ms: int = 1500  # bounded wait for a fresh analysis (docs/lsp-api.md)
+    max_file_bytes: int = 2 * 1024 * 1024  # larger files are not analysed (docs/lsp-api.md "Bounds")
+    max_queued_jobs: int = 64  # entries with an analysis task at once; the rest wait
+    max_cache_mb: int = 256  # parsed programs kept for the language features
     inlay_parameter_names: bool = True  # `inlayHints.parameterNames`
-    checks: tuple[tuple[str, str], ...] = ()   # `checks`: severity per check code (LSP layer)
-    coverage_notices: bool = False      # `coverageNotices`: publish coverage notices as hints
+    checks: tuple[tuple[str, str], ...] = ()  # `checks`: severity per check code (LSP layer)
+    coverage_notices: bool = False  # `coverageNotices`: publish coverage notices as hints
 
     def analysis_key(self) -> tuple[str, str, int, tuple[tuple[str, str], ...], bool]:
         """What changes every entry's analysis input or outcome."""
@@ -34,8 +34,7 @@ class Config:
 
     def entry_suffixes(self) -> frozenset[str]:
         """Extensions (lower case) that make an opened file an entry program."""
-        return frozenset({".cr6"} | {ext for ext, name in profiles.EXTENSIONS.items()
-                                     if name == self.logger})
+        return frozenset({".cr6"} | {ext for ext, name in profiles.EXTENSIONS.items() if name == self.logger})
 
 
 def _str_list(value: Any) -> tuple[str, ...] | None:
@@ -81,12 +80,14 @@ def parse_config(options: Any, base: Config | None = None) -> tuple[Config, list
             changes["encoding"] = value
         except LookupError:
             warnings.append(f"ignoring 'encoding': unknown encoding {value!r}")
-    for key, attr, minimum in (("debounceMs", "debounce_ms", 0), ("analysisTimeoutMs",
-                                                                  "analysis_timeout_ms", 1),
-                                    ("featureWaitMs", "feature_wait_ms", 0),
-                                    ("maxFileBytes", "max_file_bytes", 1),
-                                    ("maxQueuedJobs", "max_queued_jobs", 1),
-                                    ("maxCacheMb", "max_cache_mb", 1)):
+    for key, attr, minimum in (
+        ("debounceMs", "debounce_ms", 0),
+        ("analysisTimeoutMs", "analysis_timeout_ms", 1),
+        ("featureWaitMs", "feature_wait_ms", 0),
+        ("maxFileBytes", "max_file_bytes", 1),
+        ("maxQueuedJobs", "max_queued_jobs", 1),
+        ("maxCacheMb", "max_cache_mb", 1),
+    ):
         if key in options:
             value = _int(options[key], minimum)
             if value is None:
@@ -106,9 +107,11 @@ def parse_config(options: Any, base: Config | None = None) -> tuple[Config, list
             warnings.append("ignoring 'inlayHints.parameterNames': expected a boolean")
     if "checks" in options:
         from .. import checkconfig, checks
+
         try:
-            changes["checks"] = tuple(sorted(checkconfig._severities(
-                options["checks"], checks.DEFAULT_SEVERITY, "'checks'").items()))
+            changes["checks"] = tuple(
+                sorted(checkconfig._severities(options["checks"], checks.DEFAULT_SEVERITY, "'checks'").items())
+            )
         except checkconfig.ConfigError as e:
             warnings.append(f"ignoring {e}")
     if "coverageNotices" in options:
@@ -176,13 +179,16 @@ def discover(folders: list[Path], entries: tuple[str, ...], exclude: tuple[str, 
         for root, dirs, files in os.walk(folder):
             rel_root = Path(root).relative_to(folder).as_posix()
             prefix = "" if rel_root == "." else rel_root + "/"
-            dirs[:] = sorted(d for d in dirs
-                             if not d.startswith(".") and d not in _SKIP_DIRS
-                             and not any(rx.fullmatch(f"{prefix}{d}/_") for rx in skip))
+            dirs[:] = sorted(
+                d
+                for d in dirs
+                if not d.startswith(".")
+                and d not in _SKIP_DIRS
+                and not any(rx.fullmatch(f"{prefix}{d}/_") for rx in skip)
+            )
             for name in sorted(files):
                 rel = prefix + name
-                if any(rx.fullmatch(rel) for rx in include) and \
-                        not any(rx.fullmatch(rel) for rx in skip):
+                if any(rx.fullmatch(rel) for rx in include) and not any(rx.fullmatch(rel) for rx in skip):
                     found[Path(root, name).absolute()] = None
     return sorted(found)
 

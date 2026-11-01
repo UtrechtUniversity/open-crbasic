@@ -7,8 +7,12 @@ from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
 FIXTURES = Path(__file__).parent / "fixtures"
-CASES = [c for name in ("r18_inline_calltable", "r18_oom_auto") if (FIXTURES / f"{name}.json").exists()
-         for c in json.loads((FIXTURES / f"{name}.json").read_text(encoding="utf-8"))["cases"]]
+CASES = [
+    c
+    for name in ("r18_inline_calltable", "r18_oom_auto")
+    if (FIXTURES / f"{name}.json").exists()
+    for c in json.loads((FIXTURES / f"{name}.json").read_text(encoding="utf-8"))["cases"]
+]
 
 
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])

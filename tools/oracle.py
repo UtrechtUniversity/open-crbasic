@@ -54,8 +54,7 @@ class OracleError(RuntimeError):
 def _valid_result(record: dict, program_name: str) -> bool:
     """A runner failure is not a compiler verdict, including in older caches."""
     return record.get("exit") in (0, 1) and any(
-        line.startswith(f"{program_name} -- ")
-        and ("Compiled" in line or "Compile Failed!" in line)
+        line.startswith(f"{program_name} -- ") and ("Compiled" in line or "Compile Failed!" in line)
         for line in record.get("stdout", "").splitlines()
     )
 
@@ -71,9 +70,7 @@ def _find_wine() -> str:
     found = shutil.which("wine")
     if found:
         return found
-    raise OracleError(
-        "no wine runner found: install wine, or set CR6_WINE, or set CR6COMP_RUNNER"
-    )
+    raise OracleError("no wine runner found: install wine, or set CR6_WINE, or set CR6COMP_RUNNER")
 
 
 def _runner_command(exe_path: Path) -> tuple[list[str], dict[str, str]]:
@@ -211,8 +208,7 @@ def run_oracle(
         if not _valid_result(record, program_path.name):
             detail = record["stderr"].strip() or stdout or "no compiler result line"
             raise OracleError(
-                f"{compiler_path.name} returned no usable compiler verdict "
-                f"(exit {result.returncode}): {detail[:1000]}"
+                f"{compiler_path.name} returned no usable compiler verdict (exit {result.returncode}): {detail[:1000]}"
             )
 
     if cache_path is not None:

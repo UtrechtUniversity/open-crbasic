@@ -57,15 +57,14 @@ def test_without_a_program_in_time_the_list_is_incomplete(make_client, tmp_path)
     # featureWaitMs bounds the wait; the empty answer then tells the client to ask again
     root = project(tmp_path, **{"E.CR6": VALID})
     entry = root / "E.CR6"
-    client = started(make_client, root, {"debounceMs": 3000, "featureWaitMs": 0,
-                                         "entries": ["E.CR6"]})
+    client = started(make_client, root, {"debounceMs": 3000, "featureWaitMs": 0, "entries": ["E.CR6"]})
     client.open(entry, VALID)
-    client.change(entry, with_member("Status"), 2)          # replaces the open's analysis
+    client.change(entry, with_member("Status"), 2)  # replaces the open's analysis
     start = time.monotonic()
     answer = complete_member(client, entry, "Status")
     assert time.monotonic() - start < 2.5
     assert answer["items"] == [] and answer["isIncomplete"] is True, answer
-    client.on_file("textDocument/documentSymbol", entry)     # waits for the first program
+    client.on_file("textDocument/documentSymbol", entry)  # waits for the first program
     answer = complete_member(client, entry, "Status")
     assert "SkippedScan" in [i["label"] for i in answer["items"]]
     assert answer["isIncomplete"] is False
@@ -78,10 +77,9 @@ def test_analysed_for_first_waits_only_for_a_missing_program(tmp_path):
 
     async def scenario() -> None:
         session = Session(lambda *_: None, workers=1)
-        await session.configure(Config(debounce_ms=0, analysis_timeout_ms=60000,
-                                       feature_wait_ms=30000), [root])
+        await session.configure(Config(debounce_ms=0, analysis_timeout_ms=60000, feature_wait_ms=30000), [root])
         session.did_open(entry, entry.as_uri(), 1, VALID)
-        assert await session.analysed_for(entry, wait=False) is None     # never waits
+        assert await session.analysed_for(entry, wait=False) is None  # never waits
         first = await session.analysed_for(entry, wait=False, first=True)
         assert first is not None and session.fresh(entry, first)
         # a program exists: a newer version pending is not waited for

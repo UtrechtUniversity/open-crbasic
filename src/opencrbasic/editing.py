@@ -30,8 +30,18 @@ from .parser import _DIRECTIVE_RE, _split_text_segments
 from .sources import DiskSource, OverlaySource
 
 __all__ = [
-    "Span", "Symbol", "FoldRange", "IncludeLink", "DeclaredName", "CompletionItem", "Completion",
-    "block_pairs", "document_symbols", "folding_ranges", "include_links", "declared_names",
+    "Span",
+    "Symbol",
+    "FoldRange",
+    "IncludeLink",
+    "DeclaredName",
+    "CompletionItem",
+    "Completion",
+    "block_pairs",
+    "document_symbols",
+    "folding_ranges",
+    "include_links",
+    "declared_names",
     "completion_candidates",
 ]
 
@@ -40,6 +50,7 @@ __all__ = [
 class Span:
     """0-based physical lines and decoded columns, before LSP position-encoding conversion.
     `end_col=None`: through the end of `end_line` (whole-line spans have `start_col == 0`)."""
+
     start_line: int
     start_col: int
     end_line: int
@@ -58,10 +69,18 @@ def _lines(first: int, last: int) -> Span:
 # `tests/lsp/test_editing.py`). All other pairs are derived from the catalog: an instruction row
 # `X` for which the row `EndX` also exists (If/EndIf, Select/EndSelect, Sub/EndSub, ...).
 _IRREGULAR_PAIRS = {
-    "FOR": "NEXT", "DO": "LOOP", "WHILE": "WEND", "DATATABLE": "ENDTABLE",
-    "BEGINPROG": "ENDPROG", "SCAN": "NEXTSCAN", "SUBSCAN": "NEXTSUBSCAN",
-    "SLOWSEQUENCE": "ENDSEQUENCE", "DISPLAYMENU": "ENDMENU", "WEBPAGEBEGIN": "WEBPAGEEND",
-    "SHUTDOWNBEGIN": "SHUTDOWNEND", "BEGINBURSTTRIGGER": "ENDBURSTTRIGGER",
+    "FOR": "NEXT",
+    "DO": "LOOP",
+    "WHILE": "WEND",
+    "DATATABLE": "ENDTABLE",
+    "BEGINPROG": "ENDPROG",
+    "SCAN": "NEXTSCAN",
+    "SUBSCAN": "NEXTSUBSCAN",
+    "SLOWSEQUENCE": "ENDSEQUENCE",
+    "DISPLAYMENU": "ENDMENU",
+    "WEBPAGEBEGIN": "WEBPAGEEND",
+    "SHUTDOWNBEGIN": "SHUTDOWNEND",
+    "BEGINBURSTTRIGGER": "ENDBURSTTRIGGER",
 }
 
 
@@ -69,8 +88,7 @@ _IRREGULAR_PAIRS = {
 def block_pairs(profile: str = "cr6") -> dict[str, str]:
     """Upper-case opener word -> closer word, for the blocks of `profile`'s instruction table."""
     cat = InstructionCatalog.for_profile(profile)
-    pairs = {o: c for o, c in _IRREGULAR_PAIRS.items()
-             if cat.get(o, "instruction") and cat.get(c, "instruction")}
+    pairs = {o: c for o, c in _IRREGULAR_PAIRS.items() if cat.get(o, "instruction") and cat.get(c, "instruction")}
     for entry in cat:
         if entry.kind == "instruction":
             opener = entry.name.upper()
@@ -86,8 +104,8 @@ _IMPLICIT_END = frozenset({"SLOWSEQUENCE"})
 
 
 class _Roles(NamedTuple):
-    openers: dict[str, str]     # opener -> closer
-    closers: dict[str, str]     # closer -> opener (the family name)
+    openers: dict[str, str]  # opener -> closer
+    closers: dict[str, str]  # closer -> opener (the family name)
 
 
 @functools.cache
@@ -134,7 +152,7 @@ def _tolerant_tokens(text: str) -> list[lexer.Token]:
         try:
             return lexer.tokenize(text)
         except lexer.LexError as e:
-            text = text[:e.col]
+            text = text[: e.col]
 
 
 def _logical_lines(text: str) -> list[tuple[source.LogicalLine, int, int]]:
@@ -168,17 +186,18 @@ class FoldRange:
     """Fold physical lines `start_line..end_line` (0-based, inclusive). A block's range ends on the
     line before its closer, so the closer stays visible. `kind` is an LSP folding kind: "region"
     for blocks and `#If`, "comment" for runs of comment lines."""
+
     start_line: int
     end_line: int
     kind: str = "region"
 
 
 class _Block(NamedTuple):
-    family: str              # opener word (`IF`, `SUB`, ...) or `#IF`
-    name: str | None         # the routine name for Sub / Function
-    start: int               # 0-based first physical line of the opener
-    header_end: int          # 0-based last physical line of the opener statement
-    end: int | None          # 0-based first physical line of the closer; None: never closed
+    family: str  # opener word (`IF`, `SUB`, ...) or `#IF`
+    name: str | None  # the routine name for Sub / Function
+    start: int  # 0-based first physical line of the opener
+    header_end: int  # 0-based last physical line of the opener statement
+    end: int | None  # 0-based first physical line of the closer; None: never closed
 
 
 def _block_events(text: str, profile: str):
@@ -186,7 +205,7 @@ def _block_events(text: str, profile: str):
     `text`, in order. Words inside strings and comments never appear (the loader strips comments,
     the lexer reads strings)."""
     roles = _roles(profile)
-    colon_if = profile in ("cr6", "cr1000x")    # `If c Then : stmt` is a one-line If (parser.py)
+    colon_if = profile in ("cr6", "cr1000x")  # `If c Then : stmt` is a one-line If (parser.py)
     for ll, first, last in _logical_lines(text):
         if ll.kind != "code":
             continue
@@ -218,9 +237,8 @@ def _block_events(text: str, profile: str):
                     elif depth == 0 and t.kind == "IDENT" and t.upper == "THEN":
                         then = k
                         break
-                if then is not None and (then < len(tokens) - 1 or (
-                        colon_if and idx < len(segments) - 1)):
-                    break       # a one-line If: the rest of the line belongs to it
+                if then is not None and (then < len(tokens) - 1 or (colon_if and idx < len(segments) - 1)):
+                    break  # a one-line If: the rest of the line belongs to it
             name = None
             if event[0] == "open" and event[1] in ("SUB", "FUNCTION") and second is not None:
                 name = tokens[1].text
@@ -250,7 +268,7 @@ def _scan_uncached(text: str, profile: str) -> list[_Block]:
     done: list[_Block] = []
 
     def close(k: int, first: int) -> None:
-        for lost in stack[k + 1:]:
+        for lost in stack[k + 1 :]:
             if lost.family in _IMPLICIT_END:
                 done.append(lost._replace(end=first))
             else:
@@ -263,7 +281,7 @@ def _scan_uncached(text: str, profile: str) -> list[_Block]:
             if family in _IMPLICIT_END:
                 for k in range(len(stack) - 1, -1, -1):
                     if stack[k].family == family:
-                        done.extend(stack[k + 1:])
+                        done.extend(stack[k + 1 :])
                         done.append(stack[k]._replace(end=first))
                         del stack[k:]
                         break
@@ -282,8 +300,11 @@ def folding_ranges(text: str, profile: str = "cr6") -> list[FoldRange]:
     that has an opener and a closer and at least one line between them, `#If`..`#EndIf` (inactive
     branches included: conditions are not evaluated), and runs of two or more comment-only lines.
     Unclosed blocks give no range. Sorted by start line, outer before inner."""
-    out = [FoldRange(b.start, b.end - 1, "region")
-           for b in _scan(text, profile) if b.end is not None and b.end - 1 > b.header_end]
+    out = [
+        FoldRange(b.start, b.end - 1, "region")
+        for b in _scan(text, profile)
+        if b.end is not None and b.end - 1 > b.header_end
+    ]
     run = None
     lines = source._split_physical_lines(text)
     for n, line in enumerate(lines + [""]):
@@ -304,6 +325,7 @@ def folding_ranges(text: str, profile: str = "cr6") -> list[FoldRange]:
 class IncludeLink:
     """One `Include` / `IncludeSection` statement. `range` is the file name inside the quotes;
     `target` is the file the compiler resolved (`Program.include_paths`), None when it did not."""
+
     file: Path
     range: Span
     spec: str
@@ -356,15 +378,31 @@ def include_links(result) -> list[IncludeLink]:
                 continue
             n, tok = strings[index]
             spec = str(tok.value)
-            out.append(IncludeLink(Path(path), Span(n, tok.col + 1, n, tok.col + len(tok.text) - 1),
-                                   spec, includes.get(spec.strip()), keyword))
+            out.append(
+                IncludeLink(
+                    Path(path),
+                    Span(n, tok.col + 1, n, tok.col + len(tok.text) - 1),
+                    spec,
+                    includes.get(spec.strip()),
+                    keyword,
+                )
+            )
     return out
 
 
 # ------------------------------------------------------------------ outline
 
-_SCOPE_FAMILIES = {"SUB", "FUNCTION", "DATATABLE", "CONSTTABLE", "STRUCTURETYPE",
-                   "BEGINPROG", "SCAN", "SUBSCAN", "SLOWSEQUENCE"}
+_SCOPE_FAMILIES = {
+    "SUB",
+    "FUNCTION",
+    "DATATABLE",
+    "CONSTTABLE",
+    "STRUCTURETYPE",
+    "BEGINPROG",
+    "SCAN",
+    "SUBSCAN",
+    "SLOWSEQUENCE",
+}
 _ROUTINES = {"SUB", "FUNCTION"}
 
 
@@ -374,6 +412,7 @@ class Symbol:
     the block is never closed); `selection` is the header. Both are whole-line spans. `occurrence`
     is the `source.Occurrence.id` of the load the symbol came from: a file included twice has one
     entry per occurrence, at the same physical lines."""
+
     name: str
     kind: str
     detail: str
@@ -414,11 +453,10 @@ def _locations(program, path: Path):
         if key not in ids:
             continue
         known = ids[key]
-        spans = [s for s in positions.reported_spans(program.line_map, stmt.file, stmt.line)
-                 if s.occurrence in known]
+        spans = [s for s in positions.reported_spans(program.line_map, stmt.file, stmt.line) if s.occurrence in known]
         if not spans:
             continue
-        st = state.setdefault(key, [0, 0])      # [index of the load, last reported line]
+        st = state.setdefault(key, [0, 0])  # [index of the load, last reported line]
         if stmt.line < st[1]:
             st[0] = min(st[0] + 1, len(known) - 1)
         st[1] = stmt.line
@@ -434,7 +472,7 @@ def _is_keyword(cat: InstructionCatalog, word: str) -> bool:
 def _outline(located, roles: _Roles, cat: InstructionCatalog, occ: int) -> list[Symbol]:
     root: list[Symbol] = []
     frames: list[_Frame] = []
-    prev_last = 0       # last physical line of the previous statement (implicit block ends)
+    prev_last = 0  # last physical line of the previous statement (implicit block ends)
 
     def leaf(name, kind, detail, first, last) -> Symbol:
         r = _lines(first, last)
@@ -443,7 +481,7 @@ def _outline(located, roles: _Roles, cat: InstructionCatalog, occ: int) -> list[
     def pop(k: int, end: int | None) -> None:
         """Close `frames[k]` through physical line `end` (None: header only); the frames opened
         inside it and never closed keep their header only."""
-        inner = frames[k + 1:]
+        inner = frames[k + 1 :]
         frame = frames[k]
         del frames[k:]
         for fr in inner:
@@ -453,15 +491,14 @@ def _outline(located, roles: _Roles, cat: InstructionCatalog, occ: int) -> list[
     def _symbol(fr: _Frame, end: int | None) -> Symbol:
         sym = fr.symbol
         r = sym["range"] if end is None else _lines(sym["first"], end)
-        return Symbol(sym["name"], sym["kind"], sym["detail"], r, sym["selection"], occ,
-                      tuple(fr.children))
+        return Symbol(sym["name"], sym["kind"], sym["detail"], r, sym["selection"], occ, tuple(fr.children))
 
     for stmt, first, last, _ in located:
         event = _ast_event(stmt, roles)
         if event and event[0] == "close":
             for k in range(len(frames) - 1, -1, -1):
                 if frames[k].family == event[1]:
-                    for j in range(len(frames) - 1, k, -1):     # unclosed SlowSequence inside
+                    for j in range(len(frames) - 1, k, -1):  # unclosed SlowSequence inside
                         if frames[j].family in _IMPLICIT_END:
                             pop(j, prev_last)
                     pop(k, last)
@@ -477,10 +514,16 @@ def _outline(located, roles: _Roles, cat: InstructionCatalog, occ: int) -> list[
                         break
             hdr = _lines(first, last)
             name, kind, detail = _header(stmt, family, cat)
-            children = ([Symbol(p.name, "parameter", p.type.title() if p.type else "", hdr, hdr, occ)
-                         for p in stmt.params] if isinstance(stmt, S.SubDef) else [])
-            frames.append(_Frame(family, dict(name=name, kind=kind, detail=detail, range=hdr,
-                                              selection=hdr, first=first), children))
+            children = (
+                [Symbol(p.name, "parameter", p.type.title() if p.type else "", hdr, hdr, occ) for p in stmt.params]
+                if isinstance(stmt, S.SubDef)
+                else []
+            )
+            frames.append(
+                _Frame(
+                    family, dict(name=name, kind=kind, detail=detail, range=hdr, selection=hdr, first=first), children
+                )
+            )
             prev_last = last
             continue
         prev_last = last
@@ -491,25 +534,38 @@ def _outline(located, roles: _Roles, cat: InstructionCatalog, occ: int) -> list[
         if scope == "DATATABLE":
             if isinstance(stmt, S.Instruction) and not _is_keyword(cat, stmt.keyword):
                 spelled = cat.get(stmt.keyword, "instruction")
-                container.append(leaf(spelled.name if spelled else stmt.keyword, "output",
-                                      " ".join(stmt.text.split())[:80], first, last))
+                container.append(
+                    leaf(
+                        spelled.name if spelled else stmt.keyword,
+                        "output",
+                        " ".join(stmt.text.split())[:80],
+                        first,
+                        last,
+                    )
+                )
             continue
         if scope == "STRUCTURETYPE":
             if isinstance(stmt, S.Declaration):
-                container.extend(leaf(v.name, "member", v.type.title() if v.type else "", first,
-                                      last) for v in stmt.vars)
+                container.extend(
+                    leaf(v.name, "member", v.type.title() if v.type else "", first, last) for v in stmt.vars
+                )
             continue
         if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
-            container.extend(leaf(v.name, stmt.kind.lower(),
-                                  (v.type.title() if v.type else "") + (" array" if v.dims else ""),
-                                  first, last) for v in stmt.vars)
+            container.extend(
+                leaf(
+                    v.name,
+                    stmt.kind.lower(),
+                    (v.type.title() if v.type else "") + (" array" if v.dims else ""),
+                    first,
+                    last,
+                )
+                for v in stmt.vars
+            )
         elif isinstance(stmt, S.ConstDecl):
-            container.append(leaf(stmt.name, "const", stmt.type.title() if stmt.type else "",
-                                  first, last))
+            container.append(leaf(stmt.name, "const", stmt.type.title() if stmt.type else "", first, last))
         elif isinstance(stmt, S.Instruction) and stmt.keyword == "ALIAS":
-            container.extend(leaf(a.name, "alias", "", first, last)
-                             for a in stmt.args[1:] if isinstance(a, S.Name))
-    while frames:       # never closed: header only
+            container.extend(leaf(a.name, "alias", "", first, last) for a in stmt.args[1:] if isinstance(a, S.Name))
+    while frames:  # never closed: header only
         pop(len(frames) - 1, None)
     return root
 
@@ -564,8 +620,9 @@ def document_symbols(result, path: Path, profile: str | None = None) -> list[Sym
 class DeclaredName(NamedTuple):
     """A name the program declares. `scope` is None for a global, else the Sub / Function it is
     local to (parameters and routine-level declarations)."""
+
     name: str
-    kind: str       # variable | constant | alias | sub | user_function | table | type | parameter
+    kind: str  # variable | constant | alias | sub | user_function | table | type | parameter
     scope: str | None
 
 
@@ -592,8 +649,7 @@ def declared_names(program, profile: str = "cr6") -> list[DeclaredName]:
         elif isinstance(stmt, S.Instruction):
             first = stmt.args[0] if stmt.args else None
             if stmt.keyword == "ALIAS":
-                out.extend(DeclaredName(a.name, "alias", routine) for a in stmt.args[1:]
-                           if isinstance(a, S.Name))
+                out.extend(DeclaredName(a.name, "alias", routine) for a in stmt.args[1:] if isinstance(a, S.Name))
             elif stmt.keyword in ("DATATABLE", "CONSTTABLE"):
                 table = _declared_name_arg(first, stmt.keyword)
                 if table is not None:
@@ -609,21 +665,21 @@ def declared_names(program, profile: str = "cr6") -> list[DeclaredName]:
 @dataclass(frozen=True)
 class CompletionItem:
     label: str
-    kind: str                   # instruction | function | symbol | keyword (catalog); variable |
+    kind: str  # instruction | function | symbol | keyword (catalog); variable |
     # constant | alias | sub | user_function | table | type | parameter (program); field (member)
-    source: str                 # "catalog" | "program" | "member"
+    source: str  # "catalog" | "program" | "member"
     detail: str = ""
-    param_count: int | None = None   # catalog instructions: number of table parameters; catalog
+    param_count: int | None = None  # catalog instructions: number of table parameters; catalog
     # functions: `nargs` / number of `argtypes` when the table has them; otherwise None
 
 
 @dataclass(frozen=True)
 class Completion:
     items: tuple[CompletionItem, ...]
-    replace: Span           # the identifier prefix before the cursor (empty at a word boundary)
+    replace: Span  # the identifier prefix before the cursor (empty at a word boundary)
     prefix: str
-    member_of: str | None = None    # the name before the `.` when completing a member
-    is_incomplete: bool = False     # True when more matches exist than `items` holds (COMPLETION_LIMIT)
+    member_of: str | None = None  # the name before the `.` when completing a member
+    is_incomplete: bool = False  # True when more matches exist than `items` holds (COMPLETION_LIMIT)
 
 
 # At most this many items per completion result, declared program names first. An empty prefix
@@ -643,12 +699,15 @@ def _catalog_items(profile: str) -> tuple[CompletionItem, ...]:
     best: dict[str, CompletionItem] = {}
     for entry in InstructionCatalog.for_profile(profile):
         if not _IDENT_RE.match(entry.name):
-            continue                    # `<<` and `>>` are catalog "functions", not names
+            continue  # `<<` and `>>` are catalog "functions", not names
         if entry.kind == "instruction":
             count = len(entry.params)
         elif entry.kind == "function":
-            count = entry.nargs if entry.nargs is not None else (
-                len(entry.argtypes) if entry.argtypes is not None else None)
+            count = (
+                entry.nargs
+                if entry.nargs is not None
+                else (len(entry.argtypes) if entry.argtypes is not None else None)
+            )
         else:
             count = None
         item = CompletionItem(entry.name, entry.kind, "catalog", "", count)
@@ -670,9 +729,10 @@ def _member_items(result, name: str, profile: str) -> list[CompletionItem]:
     if program is None or not hasattr(program, "statements"):
         return []
     from . import profiles, tables
+
     try:
         built = tables.build_tables(program, profiles.get(profile), getattr(program, "consts", {}))
-    except Exception:       # a half-edited program the table builder rejects: no members
+    except Exception:  # a half-edited program the table builder rejects: no members
         return []
     items = []
     for table in built[0]:
@@ -688,8 +748,7 @@ def _in_string_or_comment(lines: list[str], line: int, before: str) -> bool:
     string or a `'` comment. A string still open at the end of a `_`-continued line goes on in the
     next one, as the loader joins them."""
     first = line
-    while 0 < first <= len(lines) and source._is_continuation(
-            source._strip_comment(lines[first - 1]))[0]:
+    while 0 < first <= len(lines) and source._is_continuation(source._strip_comment(lines[first - 1]))[0]:
         first -= 1
     in_string = False
     for text in [*lines[first:line], before]:
@@ -703,7 +762,7 @@ def _scan_quotes(text: str, in_string: bool) -> tuple[bool, bool]:
     while i < n:
         ch = text[i]
         if ch == '"':
-            if in_string and text[i + 1:i + 2] == '"':
+            if in_string and text[i + 1 : i + 2] == '"':
                 i += 2
                 continue
             in_string = not in_string
@@ -713,8 +772,9 @@ def _scan_quotes(text: str, in_string: bool) -> tuple[bool, bool]:
     return in_string, False
 
 
-def completion_candidates(result, text: str, line: int, column: int, profile: str = "cr6",
-                          declared: Sequence[tuple] | None = None) -> Completion:
+def completion_candidates(
+    result, text: str, line: int, column: int, profile: str = "cr6", declared: Sequence[tuple] | None = None
+) -> Completion:
     """Completion at 0-based physical `line` and decoded `column` of the buffer `text` (Latin-1
     decoded, like the compiler). `result` is the last `analysis.AnalysisResult` or None; it may be
     stale, it only supplies names and table fields. `declared` replaces the names read from the
@@ -741,8 +801,7 @@ def completion_candidates(result, text: str, line: int, column: int, profile: st
     replace = Span(line, start, line, column)
     base = _BASE_RE.search(before[:start])
     if base is not None:
-        items = [i for i in _member_items(result, base.group(1), profile)
-                 if i.label.lower().startswith(prefix.lower())]
+        items = [i for i in _member_items(result, base.group(1), profile) if i.label.lower().startswith(prefix.lower())]
         items.sort(key=lambda i: i.label.lower())
         shown, incomplete = _limited(items)
         return Completion(shown, replace, prefix, base.group(1), incomplete)
@@ -754,7 +813,7 @@ def completion_candidates(result, text: str, line: int, column: int, profile: st
     for b in _scan(text, profile):
         if b.family in _ROUTINES and b.name and b.start <= line and (b.end is None or line <= b.end):
             routine = b.name.lower()
-    visible: dict[str, tuple[str, str, bool]] = {}          # upper-case label -> routine-scoped wins
+    visible: dict[str, tuple[str, str, bool]] = {}  # upper-case label -> routine-scoped wins
     for n, k, s in declared:
         if s is None or (routine is not None and s.lower() == routine):
             if n.upper() not in visible or (s is not None and not visible[n.upper()][2]):
@@ -763,7 +822,6 @@ def completion_candidates(result, text: str, line: int, column: int, profile: st
     program_items.sort(key=lambda i: (i.label.lower(), i.label))
     lower = prefix.lower()
     items = [i for i in program_items if i.label.lower().startswith(lower)]
-    items += [i for i in _catalog_items(profiles.get(profile).name)
-              if i.label.lower().startswith(lower)]
+    items += [i for i in _catalog_items(profiles.get(profile).name) if i.label.lower().startswith(lower)]
     shown, incomplete = _limited(items)
     return Completion(shown, replace, prefix, None, incomplete)

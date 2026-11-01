@@ -28,7 +28,7 @@ def _load(text: str, logger: str = "cr6", name: str | None = None, directory=Non
 
 
 def _slices(lines: list[bytes], ranges):
-    return ["".join(lines[r.line - 1].decode("latin-1")[r.start_col:r.end_col]) for r in ranges]
+    return ["".join(lines[r.line - 1].decode("latin-1")[r.start_col : r.end_col]) for r in ranges]
 
 
 def _find(ll, needle):
@@ -49,7 +49,7 @@ def test_continuation_two_lines_with_comment_and_blank():
     two = positions.logical_ranges(ll, *_find(ll, "2"))
     assert two == [positions.PhysicalRange("t.CR6", 0, 2, 3, 4)]
     assert _slices(plines, two) == ["2"]
-    spanning = positions.logical_ranges(ll, 4, 12)   # "1 +    2" crosses the join
+    spanning = positions.logical_ranges(ll, 4, 12)  # "1 +    2" crosses the join
     assert [(r.line, r.start_col, r.end_col) for r in spanning] == [(1, 4, 8), (2, 0, 4)]
     assert positions.exact_range(ll, 4, 12) is None
 
@@ -109,7 +109,7 @@ def test_pull_reported_line_differs_from_physical(logger, name):
     parts = positions.logical_ranges(a, a.text.index("A"), len(a.text))
     assert [(r.line, r.start_col, r.end_col) for r in parts] == [(1, 7, 8), (2, 2, 3)]
     assert positions.logical_ranges(a, 11, 11) == [positions.PhysicalRange(name, 0, 2, 2, 2)]
-    assert positions.logical_ranges(a, 10, 10) == []   # inside the inserted " = "
+    assert positions.logical_ranges(a, 10, 10) == []  # inside the inserted " = "
     # physical line 3 is reported at line 2; line 5 at 4
     prog = _parse(text, name, logger)
     assert positions.reported_spans(prog.line_map, name, 2) == [source.LineSpan(3, 3, 0)]
@@ -138,14 +138,14 @@ def test_unread_pull_in_inactive_if_keeps_physical_lines_mappable():
     spans = prog.line_map["t.CR6"]
     covered = sorted({n for ss in spans.values() for s in ss for n in range(s.first, s.last + 1)})
     assert covered == [1, 2, 3, 4, 5, 6]
-    assert positions.line_span(prog.line_map, "t.CR6", 2) == (2, 2)   # unread: not pulled
-    assert positions.line_span(prog.line_map, "t.CR6", 6) == (6, 6)   # no shift after it
+    assert positions.line_span(prog.line_map, "t.CR6", 2) == (2, 2)  # unread: not pulled
+    assert positions.line_span(prog.line_map, "t.CR6", 6) == (6, 6)  # no shift after it
 
 
 # ------------------------------------------------------------------ includes
 
 
-LIB = "Public LibVar\n#If Section = \"One\"\nPublic OnlyOne\n#EndIf\n"
+LIB = 'Public LibVar\n#If Section = "One"\nPublic OnlyOne\n#EndIf\n'
 
 
 def _write(tmp_path, entry: str, **files: str) -> Path:
@@ -157,8 +157,7 @@ def _write(tmp_path, entry: str, **files: str) -> Path:
 
 
 def test_include_lines_have_their_own_physical_lines(tmp_path):
-    path = _write(tmp_path, 'Include("CPU:Lib.crb")\nPublic X\nBeginProg\nEndProg\n',
-                  **{"Lib.crb": LIB})
+    path = _write(tmp_path, 'Include("CPU:Lib.crb")\nPublic X\nBeginProg\nEndProg\n', **{"Lib.crb": LIB})
     prog, _ = parser.parse_file(path)
     assert [o.file for o in prog.occurrences] == ["m.CR6", "CPU:Lib.crb"]
     lib = prog.occurrences[1]
@@ -169,8 +168,9 @@ def test_include_lines_have_their_own_physical_lines(tmp_path):
 
 
 def test_double_include_section_keeps_distinct_occurrences(tmp_path):
-    entry = ('IncludeSection("One", "CPU:Lib.crb")\n\nIncludeSection("Two", "CPU:Lib.crb")\n'
-             'Public X\nBeginProg\nEndProg\n')
+    entry = (
+        'IncludeSection("One", "CPU:Lib.crb")\n\nIncludeSection("Two", "CPU:Lib.crb")\nPublic X\nBeginProg\nEndProg\n'
+    )
     path = _write(tmp_path, entry, **{"Lib.crb": LIB})
     prog, _ = parser.parse_file(path)
     libs = [o for o in prog.occurrences if o.file == "CPU:Lib.crb"]
@@ -186,17 +186,22 @@ def test_double_include_section_keeps_distinct_occurrences(tmp_path):
 
 
 def test_nested_include_section_is_not_loaded(tmp_path):
-    path = _write(tmp_path, 'IncludeSection("A", "CPU:A.crb")\nBeginProg\nEndProg\n',
-                  **{"A.crb": '\nIncludeSection("B", "CPU:B.crb")\n', "B.crb": "Public V\n"})
+    path = _write(
+        tmp_path,
+        'IncludeSection("A", "CPU:A.crb")\nBeginProg\nEndProg\n',
+        **{"A.crb": '\nIncludeSection("B", "CPU:B.crb")\n', "B.crb": "Public V\n"},
+    )
     prog, diags = parser.parse_file(path)
     assert [o.file for o in prog.occurrences if o.file.startswith("CPU:")] == ["CPU:A.crb"]
     assert any("within an Include file" in d.message for d in diags.errors)
 
 
 def test_analysis_diagnostic_span_in_include_and_entry(tmp_path):
-    path = _write(tmp_path,
-                  'Include("CPU:Lib.crb")\nPublic A = \n 1\nPublic Q\nBeginProg\n  Q = Nope\nEndProg\n',
-                  **{"Lib.crb": "\n\nPublic Z\nBeginProg\n"})
+    path = _write(
+        tmp_path,
+        'Include("CPU:Lib.crb")\nPublic A = \n 1\nPublic Q\nBeginProg\n  Q = Nope\nEndProg\n',
+        **{"Lib.crb": "\n\nPublic Z\nBeginProg\n"},
+    )
     res = analyze(AnalysisRequest(path))
     by_msg = {d.message: d for d in res.diagnostics}
     entry_err = next(d for d in res.diagnostics if "Nope" in d.message)
@@ -209,8 +214,7 @@ def test_analysis_span_pull_reported_differs(tmp_path, logger, name):
     path = tmp_path / name
     path.write_bytes(b"Public A = \n 1\nPublic Q\nBeginProg\n  Q = Nope\n  Q = Nope2 + _\n   1\nEndProg\n")
     res = analyze(AnalysisRequest(path, logger))
-    spans = {("Nope2" if "Nope2" in d.message else "Nope"): (d.line, d.span)
-             for d in res.diagnostics}
+    spans = {("Nope2" if "Nope2" in d.message else "Nope"): (d.line, d.span) for d in res.diagnostics}
     assert spans["Nope"] == (4, (5, 5))
     assert spans["Nope2"] == (6, (6, 7))
 
@@ -253,10 +257,11 @@ def test_crlf_and_lf_give_identical_provenance_and_positions():
     assert positions.physical_lines(lf.encode()) == positions.physical_lines(crlf.encode())
     for enc in positions.POSITION_ENCODINGS:
         assert positions.lsp_position(lf.encode(), 3, 4, encoding=enc) == positions.lsp_position(
-            crlf.encode(), 3, 4, encoding=enc)
+            crlf.encode(), 3, 4, encoding=enc
+        )
 
 
-GRIN = "\U0001F600"   # non-BMP: 4 UTF-8 bytes, 2 UTF-16 units, 1 code point
+GRIN = "\U0001f600"  # non-BMP: 4 UTF-8 bytes, 2 UTF-16 units, 1 code point
 
 
 def test_non_ascii_comment_and_string_positions():
@@ -279,8 +284,8 @@ def test_non_ascii_comment_and_string_positions():
 def test_lsp_position_other_editor_encoding_and_bounds():
     data = "x = é;\n".encode("cp1252")
     assert positions.lsp_position(data, 1, 6, editor_encoding="cp1252") == (0, 6)
-    assert positions.lsp_position(data, 1, 6) == (0, 6)   # utf-8 reading: 0xE9 is replaced by U+FFFD
-    assert positions.lsp_position(data, 1, 5) == (0, 4)   # ... and an incomplete tail is dropped
+    assert positions.lsp_position(data, 1, 6) == (0, 6)  # utf-8 reading: 0xE9 is replaced by U+FFFD
+    assert positions.lsp_position(data, 1, 5) == (0, 4)  # ... and an incomplete tail is dropped
     assert positions.lsp_position(data, 1, 99, encoding="utf-32", editor_encoding="cp1252") == (0, 6)
     with pytest.raises(IndexError):
         positions.lsp_position(data, 5, 0)
@@ -324,7 +329,7 @@ def _check_program(path: Path, logger: str = "cr6") -> int:
             continue
         plines = files[ll.occurrence]
         whole = positions.logical_ranges(ll, 0, len(ll.text))
-        covered = "".join(ll.text[p.start:p.end] for p in ll.pieces)
+        covered = "".join(ll.text[p.start : p.end] for p in ll.pieces)
         assert "".join(_slices(plines, whole)) == covered, (path, ll.line)
         try:
             tokens = lexer.tokenize(ll.text)

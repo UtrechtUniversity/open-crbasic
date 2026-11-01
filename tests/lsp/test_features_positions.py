@@ -27,8 +27,7 @@ def test_round_trip_on_every_character_boundary(encoding):
             boundaries.append(boundaries[-1] + len(ch.encode("utf-8")))
         for col in boundaries:
             line0, character = positions.lsp_position(lines, number, col, encoding=encoding)
-            assert positions.decoded_position(lines, line0, character, encoding=encoding) \
-                == (number, col)
+            assert positions.decoded_position(lines, line0, character, encoding=encoding) == (number, col)
 
 
 def test_known_values():
@@ -43,15 +42,15 @@ def test_known_values():
 
 def test_inside_a_character_snaps_to_its_start():
     lines = positions.physical_lines(DATA)
-    assert positions.decoded_position(lines, 0, 4, encoding="utf-16") == (1, 5)   # mid surrogate pair
-    assert positions.decoded_position(lines, 0, 3, encoding="utf-8") == (1, 1)    # mid euro sign
+    assert positions.decoded_position(lines, 0, 4, encoding="utf-16") == (1, 5)  # mid surrogate pair
+    assert positions.decoded_position(lines, 0, 3, encoding="utf-8") == (1, 1)  # mid euro sign
 
 
 def test_clamps_and_errors():
     lines = positions.physical_lines(DATA)
     assert positions.decoded_position(lines, 1, 99) == (2, 5)
     assert positions.decoded_position(lines, 1, -3) == (2, 0)
-    assert positions.decoded_position(DATA, 0, 0) == (1, 0)           # bytes are accepted too
+    assert positions.decoded_position(DATA, 0, 0) == (1, 0)  # bytes are accepted too
     with pytest.raises(IndexError):
         positions.decoded_position(lines, 9, 0)
     with pytest.raises(ValueError):
@@ -87,7 +86,7 @@ def test_completion_reports_a_capped_list_as_incomplete(monkeypatch):
     real = editing.completion_candidates
 
     @dataclass(frozen=True)
-    class Capped:                       # stands for an `editing.Completion` with is_incomplete
+    class Capped:  # stands for an `editing.Completion` with is_incomplete
         inner: object
         is_incomplete: bool
 
@@ -95,8 +94,7 @@ def test_completion_reports_a_capped_list_as_incomplete(monkeypatch):
             return getattr(self.inner, name)
 
     for flag in (True, False):
-        monkeypatch.setattr(editing, "completion_candidates",
-                            lambda *a, _f=flag, **k: Capped(real(*a, **k), _f))
+        monkeypatch.setattr(editing, "completion_candidates", lambda *a, _f=flag, **k: Capped(real(*a, **k), _f))
         got = features.completion(ctx, None, object(), path, types.Position(1, 0))
         assert got.is_incomplete is flag and got.items
 
@@ -113,8 +111,7 @@ def test_completion_without_a_program_is_incomplete(tmp_path):
     ctx = Ctx("cr6", "utf-16", "utf-8", {path: text.encode()}, {})
     got = features.completion(ctx, None, None, path, types.Position(2, 13))
     assert got.is_incomplete is True and got.items == []
-    got = features.completion(ctx, None, analyze(AnalysisRequest(path)), path,
-                              types.Position(2, 13))
+    got = features.completion(ctx, None, analyze(AnalysisRequest(path)), path, types.Position(2, 13))
     assert got.is_incomplete is False and "SkippedScan" in [i.label for i in got.items]
 
 
@@ -129,7 +126,7 @@ def _apply(line: str, rng: dict, new: str) -> str:
     """The editor line after replacing the UTF-16 range `rng` with `new`."""
     raw = line.encode("utf-16-le")
     a, b = rng["start"]["character"], rng["end"]["character"]
-    return (raw[:2 * a] + new.encode("utf-16-le") + raw[2 * b:]).decode("utf-16-le")
+    return (raw[: 2 * a] + new.encode("utf-16-le") + raw[2 * b :]).decode("utf-16-le")
 
 
 def _started(make_client, tmp_path: Path, text: str) -> tuple[LspClient, Path]:
@@ -138,7 +135,7 @@ def _started(make_client, tmp_path: Path, text: str) -> tuple[LspClient, Path]:
     client = make_client()
     client.initialize(tmp_path, LATIN1)
     client.open(path, text)
-    client.at("textDocument/definition", path, 1, 8)     # waits for the first analysis
+    client.at("textDocument/definition", path, 1, 8)  # waits for the first analysis
     return client, path
 
 
@@ -161,7 +158,7 @@ def test_hover_and_highlights_after_emoji_use_editor_columns(make_client, tmp_pa
     client, path = _started(make_client, tmp_path, PROGRAM)
     hover = client.at("textDocument/hover", path, 3, 13)
     assert slice_of(PROGRAM, hover["range"]) == "oldName"
-    assert hover["range"]["start"]["character"] == 11                  # not 10
+    assert hover["range"]["start"]["character"] == 11  # not 10
     highlights = client.at("textDocument/documentHighlight", path, 3, 13)
     on_line = [h["range"] for h in highlights if h["range"]["start"]["line"] == 3]
     assert [slice_of(PROGRAM, r) for r in on_line] == ["oldName"]
@@ -170,9 +167,10 @@ def test_hover_and_highlights_after_emoji_use_editor_columns(make_client, tmp_pa
 @pytest.mark.server
 def test_rename_edits_after_emoji_use_editor_columns(make_client, tmp_path):
     client, path = _started(make_client, tmp_path, PROGRAM)
-    result = client.request("textDocument/rename", {
-        "textDocument": {"uri": path.as_uri()}, "position": {"line": 3, "character": 13},
-        "newName": "newName"})
+    result = client.request(
+        "textDocument/rename",
+        {"textDocument": {"uri": path.as_uri()}, "position": {"line": 3, "character": 13}, "newName": "newName"},
+    )
     edits = [e for change in result["documentChanges"] for e in change["edits"]]
     on_line = [e["range"] for e in edits if e["range"]["start"]["line"] == 3]
     assert [slice_of(PROGRAM, r) for r in on_line] == ["oldName"]
@@ -187,8 +185,10 @@ def test_replacement_warning_range_is_the_whole_editor_line(make_client, tmp_pat
     client, path = _started(make_client, tmp_path, text)
     publish = client.wait_diagnostics(path, lambda ds: any("replaced" in d["message"] for d in ds))
     diag = next(d for d in publish["diagnostics"] if "replaced" in d["message"])
-    assert diag["range"] == {"start": {"line": 0, "character": 0},
-                             "end": {"line": 0, "character": positions.units(first, "utf-16")}}
+    assert diag["range"] == {
+        "start": {"line": 0, "character": 0},
+        "end": {"line": 0, "character": positions.units(first, "utf-16")},
+    }
 
 
 def test_ctx_maps_an_open_document_through_its_editor_text():
@@ -225,4 +225,4 @@ def test_editor_bytes_pickle_as_plain_bytes():
     again = pickle.loads(pickle.dumps(data, 5))
     assert type(again) is bytes and again == data
     assert len(pickle.dumps(data, 5)) < len(pickle.dumps(bytes(data), 5)) + 100
-    assert data.text == text                               # the original keeps its text
+    assert data.text == text  # the original keeps its text

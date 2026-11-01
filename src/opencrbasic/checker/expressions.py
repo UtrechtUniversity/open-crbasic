@@ -29,10 +29,21 @@ _TYPE_CODES_PATH = Path(__file__).resolve().parent.parent / "data" / "type_codes
 # regression this session found during development (`crbasic/Main.CR6`'s
 # `ConstTable(GlobalConfigTable)`, kind `expr_marker`) is the concrete case that shape of bug
 # looks like.
-_RESOLVED_KINDS = frozenset({
-    "const_expr", "expr", "const_expr_only", "bool_expr", "variable_or_array", "expr_or_name",
-    "expr_typed", "expr_special", "expr_pair", "expr_list", "datatype_kw",
-})
+_RESOLVED_KINDS = frozenset(
+    {
+        "const_expr",
+        "expr",
+        "const_expr_only",
+        "bool_expr",
+        "variable_or_array",
+        "expr_or_name",
+        "expr_typed",
+        "expr_special",
+        "expr_pair",
+        "expr_list",
+        "datatype_kw",
+    }
+)
 
 # The compile-time-constant-only family (`docs/type-codes.md` codes 1/39, 5/38, 20 --
 # `FUN_004b8700`/its `const`-only wrappers) is checked in its own pass, ahead of every other
@@ -201,26 +212,56 @@ _VARIABLE_REQUIRED_KINDS = frozenset({"variable_or_array"})
 # its tenth argument before the eighth and ninth; `MoveBytes` 1,2,4,5,3). Positions are independent (subset probes).
 _MULTI_REPORT_ORDER: dict[str, tuple[int, ...]] = {
     "MOVE": (1, 0, 3, 2),
-    "RMSSPA": (1, 2, 0), "STDDEVSPA": (1, 2, 0), "MAXSPA": (1, 2, 0), "MINSPA": (1, 2, 0),
+    "RMSSPA": (1, 2, 0),
+    "STDDEVSPA": (1, 2, 0),
+    "MAXSPA": (1, 2, 0),
+    "MINSPA": (1, 2, 0),
     "AVGSPA": (1, 2, 0),
     "CPIFILESEND": (0, 1, 2, 3, 4),
     "GOESSETUP": (0, 1, 2, 3, 4, 5, 6, 9, 7, 8),
-    "GOESGPS": (0, 1), "CH400SENDOS": (0, 1),
-    "MOVEBYTES": (0, 1, 3, 4, 2), "READIO": (1, 0), "IPROUTE": (0, 1, 2),
+    "GOESGPS": (0, 1),
+    "CH400SENDOS": (0, 1),
+    "MOVEBYTES": (0, 1, 3, 4, 2),
+    "READIO": (1, 0),
+    "IPROUTE": (0, 1, 2),
     "MQTTPUBLISHMETA": (0, 1, 2, 3, 4, 5),
     # Round 14 (oracle sweep, `docs/checker.md` "Round 14 multi-report order"): positions listed
     # are those the real compiler reports, in its order; a replaced position missing here is not
     # reported (or not before another one).
-    "ARGOSDATAREPEAT": (0, 3), "AVGRUN": (0, 2, 4, 5), "AVW200": (4, 0), "PRT": (0, 2),
-    "STRAINCALC": (0, 2, 3), "CDM_TCSE": (7, 2), "DEBUG": (2, 3, 4),
-    "DEWPOINT": (0, 1, 2), "SENDVARIABLES": (0, 1, 8), "EC100CONFIGURE": (0, 3),
-    "GETVARIABLES": (0, 8), "GPS": (4, 0), "HYDRAPROBE": (0, 1), "MATRIX": (1, 2, 3),
-    "PEAKVALLEY": (0, 1, 3), "SATVP": (0, 1), "TIMEDCONTROL": (4, 5),
-    "SDMCD16MASK": (0, 1), "SDMGENERIC": (4, 0), "SDMIO16": (0, 1), "WETDRYBULB": (0, 1, 2, 3),
-    "SERIALINRECORD": (1, 5), "SORTSPA": (0, 2), "SORTSPAINDEXED": (0, 2), "SPLITSTR": (1, 0),
-    "TCPACTIVECONNECTIONS": (0, 1), "TOTALRUN": (0, 2, 4), "VAPORPRESSURE": (0, 1, 2),
-    "MODBUSCLIENT": (0, 5), "STDDEVRUN": (0, 2, 4, 5), "TCDIFF": (5, 0), "PORTBRIDGE": (1, 0),
-    "SDMAO4A": (0, 1), "FFTSPA": (2, 0),
+    "ARGOSDATAREPEAT": (0, 3),
+    "AVGRUN": (0, 2, 4, 5),
+    "AVW200": (4, 0),
+    "PRT": (0, 2),
+    "STRAINCALC": (0, 2, 3),
+    "CDM_TCSE": (7, 2),
+    "DEBUG": (2, 3, 4),
+    "DEWPOINT": (0, 1, 2),
+    "SENDVARIABLES": (0, 1, 8),
+    "EC100CONFIGURE": (0, 3),
+    "GETVARIABLES": (0, 8),
+    "GPS": (4, 0),
+    "HYDRAPROBE": (0, 1),
+    "MATRIX": (1, 2, 3),
+    "PEAKVALLEY": (0, 1, 3),
+    "SATVP": (0, 1),
+    "TIMEDCONTROL": (4, 5),
+    "SDMCD16MASK": (0, 1),
+    "SDMGENERIC": (4, 0),
+    "SDMIO16": (0, 1),
+    "WETDRYBULB": (0, 1, 2, 3),
+    "SERIALINRECORD": (1, 5),
+    "SORTSPA": (0, 2),
+    "SORTSPAINDEXED": (0, 2),
+    "SPLITSTR": (1, 0),
+    "TCPACTIVECONNECTIONS": (0, 1),
+    "TOTALRUN": (0, 2, 4),
+    "VAPORPRESSURE": (0, 1, 2),
+    "MODBUSCLIENT": (0, 5),
+    "STDDEVRUN": (0, 2, 4, 5),
+    "TCDIFF": (5, 0),
+    "PORTBRIDGE": (1, 0),
+    "SDMAO4A": (0, 1),
+    "FFTSPA": (2, 0),
 }
 
 _UNDEFINED_CHECK_EXEMPT_POSITIONS: dict[str, frozenset[int]] = {
@@ -238,10 +279,13 @@ _UNDEFINED_CHECK_EXEMPT_POSITIONS: dict[str, frozenset[int]] = {
 # text is never resolved (decompiled `FUN_004352e0`/`FUN_00434e80`/`FUN_00434e90`, oracle round 58,
 # docs/checker.md#arguments-that-are-never-resolved-round-58).
 _EXEMPT_WHOLE_ECHO: dict[str, frozenset[int]] = {
-    "MONITORCOMMS": frozenset({0, 1, 2}), "MODEMCALLBACK": frozenset({0}),
-    "IPNETPOWER": frozenset({1, 2}), "LOGIP": frozenset({0, 1}),
-    "NEWFILE": frozenset({2}), "STDDEVRUN": frozenset({8}),
-    "TIMEDCONTROL": frozenset({0, 1}),   # `check_timedcontrol_constants`
+    "MONITORCOMMS": frozenset({0, 1, 2}),
+    "MODEMCALLBACK": frozenset({0}),
+    "IPNETPOWER": frozenset({1, 2}),
+    "LOGIP": frozenset({0, 1}),
+    "NEWFILE": frozenset({2}),
+    "STDDEVRUN": frozenset({8}),
+    "TIMEDCONTROL": frozenset({0, 1}),  # `check_timedcontrol_constants`
 }
 
 # Built-in function call arity (this session, oracle-confirmed against `CR6Comp.exe`, byte-for-byte
@@ -308,44 +352,151 @@ _EXEMPT_WHOLE_ECHO: dict[str, frozenset[int]] = {
 # is *coerced* at the call site, not a compile-time type check, so there is no "wrong kind"
 # diagnostic to reproduce (AGENTS.md: never invent a rejection with no oracle evidence for it).
 _ARITY_MIN_SAFE = {
-    "CHECKSUM": 3, "DAYLIGHTSAVING": 8, "DIALMODEM": 4, "EMAILRECV": 6, "EMAILSEND": 6,
-    "ENCRYPTION": 7, "FILECOPY": 2, "FILELIST": 2, "FILEOPEN": 3, "FILEREAD": 3,
-    "FILEREADLINE": 3, "FILERENAME": 2, "FILEWRITE": 3, "FINDSPA": 4, "FORMATFLOAT": 2,
-    "FORMATLONG": 2, "FTPCLIENT": 6, "HTTPGET": 3, "IIF": 3, "INSTR": 4, "IPINFO": 2, "LEFT": 2,
-    "MID": 3, "MQTTPUBLISH": 4, "MQTTSUBSCRIBE": 4, "REPLACE": 3, "RIGHT": 2, "ROUND": 2,
-    "SECSSINCE1990": 2, "SERIALINBLOCK": 3, "SERIALOPEN": 5, "SERIALOUT": 5, "SMSRECV": 3,
-    "STRCOMP": 2, "TCPOPEN": 3, "TIMEISBETWEEN": 4, "UDPDATAGRAM": 6, "UDPOPEN": 3,
-    "WATCHDOGTIMER": 2, "XMLPARSE": 6,
+    "CHECKSUM": 3,
+    "DAYLIGHTSAVING": 8,
+    "DIALMODEM": 4,
+    "EMAILRECV": 6,
+    "EMAILSEND": 6,
+    "ENCRYPTION": 7,
+    "FILECOPY": 2,
+    "FILELIST": 2,
+    "FILEOPEN": 3,
+    "FILEREAD": 3,
+    "FILEREADLINE": 3,
+    "FILERENAME": 2,
+    "FILEWRITE": 3,
+    "FINDSPA": 4,
+    "FORMATFLOAT": 2,
+    "FORMATLONG": 2,
+    "FTPCLIENT": 6,
+    "HTTPGET": 3,
+    "IIF": 3,
+    "INSTR": 4,
+    "IPINFO": 2,
+    "LEFT": 2,
+    "MID": 3,
+    "MQTTPUBLISH": 4,
+    "MQTTSUBSCRIBE": 4,
+    "REPLACE": 3,
+    "RIGHT": 2,
+    "ROUND": 2,
+    "SECSSINCE1990": 2,
+    "SERIALINBLOCK": 3,
+    "SERIALOPEN": 5,
+    "SERIALOUT": 5,
+    "SMSRECV": 3,
+    "STRCOMP": 2,
+    "TCPOPEN": 3,
+    "TIMEISBETWEEN": 4,
+    "UDPDATAGRAM": 6,
+    "UDPOPEN": 3,
+    "WATCHDOGTIMER": 2,
+    "XMLPARSE": 6,
     # A second, smaller oracle sweep (this session, `docs/checker.md`) of every `argtypes is None`
     # entry (the uniform-float-argument math functions, `kind` 295) found the same rule holds for
     # its own `nargs>=2` members, `TIMER`'s own excepted below:
-    "AVE": 2, "PWR": 2, "ATN2": 2, "IFTIME": 3, "TIMEINTOINTERVAL": 3,
+    "AVE": 2,
+    "PWR": 2,
+    "ATN2": 2,
+    "IFTIME": 3,
+    "TIMEINTOINTERVAL": 3,
     # `TIMER(...)` at `nargs-1` gets `Parameter must be a constant integer: %s.` instead (its own
     # arguments are constant-integer-checked before arity would ever matter) -- deliberately not in
     # this map.
 }
 _ARITY_MAX_SAFE = {
-    "ARRAYINDEX": 1, "ASCII": 1, "CHECKPORT": 1, "CHR": 1, "CHR$": 1, "COMPORTISACTIVE": 1,
-    "DAYLIGHTSAVING": 8, "DAYLIGHTSAVINGUS": 1, "ENCRYPTION": 7, "FILECLOSE": 1, "FILECOPY": 2,
-    "FILEENCRYPT": 1, "FILELIST": 2, "FILEOPEN": 3, "FILEREAD": 3, "FILEREADLINE": 3,
-    "FILERENAME": 2, "FILESIZE": 1, "FILETIME": 1, "FILEWRITE": 3, "FINDSPA": 4,
-    "FORMATFLOAT": 2, "FORMATLONG": 2, "FORMATLONGLONG": 1, "HEX": 1, "HEXTODEC": 1, "IIF": 3,
-    "INSTR": 4, "IPINFO": 2, "IPTRACE": 1, "LEFT": 2, "LEN": 1, "LOADFIELDCAL": 1,
-    "LOWERCASE": 1, "LTRIM": 1, "MID": 3, "MQTTUNSUBSCRIBE": 1,
-    "NEWFIELDCAL": 0, "PINGIP": 3, "PPPCLOSE": 0, "REPLACE": 3, "RIGHT": 2, "ROUND": 2,
-    "ROUTE": 1, "RTRIM": 1, "SECSSINCE1990": 2, "SERIALCLOSE": 1, "SERIALFLUSH": 1,
-    "SERIALINBLOCK": 3, "SERIALINCHK": 1, "SERIALOUT": 5, "SMSRECV": 3, "STRCOMP": 2,
-    "TCPCLOSE": 1, "TIMEISBETWEEN": 4, "TRIM": 1, "UPPERCASE": 1, "VOICEKEY": 1,
-    "VOICENUMBER": 1, "WATCHDOGTIMER": 2,
+    "ARRAYINDEX": 1,
+    "ASCII": 1,
+    "CHECKPORT": 1,
+    "CHR": 1,
+    "CHR$": 1,
+    "COMPORTISACTIVE": 1,
+    "DAYLIGHTSAVING": 8,
+    "DAYLIGHTSAVINGUS": 1,
+    "ENCRYPTION": 7,
+    "FILECLOSE": 1,
+    "FILECOPY": 2,
+    "FILEENCRYPT": 1,
+    "FILELIST": 2,
+    "FILEOPEN": 3,
+    "FILEREAD": 3,
+    "FILEREADLINE": 3,
+    "FILERENAME": 2,
+    "FILESIZE": 1,
+    "FILETIME": 1,
+    "FILEWRITE": 3,
+    "FINDSPA": 4,
+    "FORMATFLOAT": 2,
+    "FORMATLONG": 2,
+    "FORMATLONGLONG": 1,
+    "HEX": 1,
+    "HEXTODEC": 1,
+    "IIF": 3,
+    "INSTR": 4,
+    "IPINFO": 2,
+    "IPTRACE": 1,
+    "LEFT": 2,
+    "LEN": 1,
+    "LOADFIELDCAL": 1,
+    "LOWERCASE": 1,
+    "LTRIM": 1,
+    "MID": 3,
+    "MQTTUNSUBSCRIBE": 1,
+    "NEWFIELDCAL": 0,
+    "PINGIP": 3,
+    "PPPCLOSE": 0,
+    "REPLACE": 3,
+    "RIGHT": 2,
+    "ROUND": 2,
+    "ROUTE": 1,
+    "RTRIM": 1,
+    "SECSSINCE1990": 2,
+    "SERIALCLOSE": 1,
+    "SERIALFLUSH": 1,
+    "SERIALINBLOCK": 3,
+    "SERIALINCHK": 1,
+    "SERIALOUT": 5,
+    "SMSRECV": 3,
+    "STRCOMP": 2,
+    "TCPCLOSE": 1,
+    "TIMEISBETWEEN": 4,
+    "TRIM": 1,
+    "UPPERCASE": 1,
+    "VOICEKEY": 1,
+    "VOICENUMBER": 1,
+    "WATCHDOGTIMER": 2,
     # Same second sweep, `nargs+1` this time: every plain single-float math function tried rejects
     # cleanly, plus the three shared with `_ARITY_MIN_SAFE` above and the two zero-argument
     # functions this specific pair happened to also reject cleanly (`Rnd`/`ClockChange`, unlike the
     # inconsistent zero-argument functions in the first sweep, `docs/checker.md`'s own top-of-file
     # comment) -- `Abs`, `Ave` (this direction only) and `Timer` excepted below.
-    "SIN": 1, "COS": 1, "LOG": 1, "LN": 1, "SQR": 1, "EXP": 1, "CSGN": 1, "INT": 1, "FRAC": 1,
-    "SGN": 1, "ATN": 1, "TAN": 1, "FIX": 1, "ASIN": 1, "ACOS": 1, "LOG10": 1, "SINH": 1,
-    "TANH": 1, "COSH": 1, "FLOOR": 1, "CEILING": 1, "RND": 0, "CLOCKCHANGE": 0,
-    "PWR": 2, "ATN2": 2, "IFTIME": 3, "TIMEINTOINTERVAL": 3,
+    "SIN": 1,
+    "COS": 1,
+    "LOG": 1,
+    "LN": 1,
+    "SQR": 1,
+    "EXP": 1,
+    "CSGN": 1,
+    "INT": 1,
+    "FRAC": 1,
+    "SGN": 1,
+    "ATN": 1,
+    "TAN": 1,
+    "FIX": 1,
+    "ASIN": 1,
+    "ACOS": 1,
+    "LOG10": 1,
+    "SINH": 1,
+    "TANH": 1,
+    "COSH": 1,
+    "FLOOR": 1,
+    "CEILING": 1,
+    "RND": 0,
+    "CLOCKCHANGE": 0,
+    "PWR": 2,
+    "ATN2": 2,
+    "IFTIME": 3,
+    "TIMEINTOINTERVAL": 3,
     # `Abs(x,y)` gets `Incomplete expression: %s.` instead (a different message, not modelled by
     # this rule); `Ave(x,y,z)` gets `Parameter must be a constant integer: %s.` (its own later
     # arguments are constant-integer-checked, same shape as `Timer`); `Timer` itself gets that same
@@ -395,15 +546,16 @@ def _timer_arg(arg, env, declared: frozenset[str]):
     """`("int", value)`, `"float"` (the constant-integer error) or `None` (not judged here).
     An integer past the signed 32-bit range is float on CR6/CR1000X; CR300/CR350 take it as out of
     range up to magnitude 2**32. `&H` and `&B` literals wrap (`&HFFFFFFFF` is -1)."""
+
     def wide(value: int):
-        return ("int", -2**31) if env.profile.name in ("cr300", "cr350") and abs(value) < 2**32 \
-            else "float"
+        return ("int", -(2**31)) if env.profile.name in ("cr300", "cr350") and abs(value) < 2**32 else "float"
+
     if isinstance(arg, S.Number):
         if isinstance(arg.value, float):
             return "float"
         if arg.text[:1] == "&":
             return ("int", (arg.value + 2**31) % 2**32 - 2**31)
-        return ("int", arg.value) if -2**31 <= arg.value < 2**31 else wide(arg.value)
+        return ("int", arg.value) if -(2**31) <= arg.value < 2**31 else wide(arg.value)
     if isinstance(arg, S.Name):
         name = arg.name.upper()
         if name in ("INF", "NAN"):
@@ -420,8 +572,7 @@ def _timer_arg(arg, env, declared: frozenset[str]):
             return "float"
         return wide(int(value)) if value > 2**31 - 1 else ("int", int(value))
     if isinstance(arg, S.Index):
-        return "float" if arg.name.upper() in declared or arg.name.upper() in env.profile.functions \
-            else None
+        return "float" if arg.name.upper() in declared or arg.name.upper() in env.profile.functions else None
     if isinstance(arg, S.Unary):
         inner = _timer_arg(arg.operand, env, declared)
         if inner is None or inner == "float":
@@ -445,6 +596,7 @@ def _timer_arg(arg, env, declared: frozenset[str]):
 def _timeout_wide(arg, profile) -> bool:
     """Whether a `TimeOut` argument is a float-classified constant (`intervals.timeout_value`)."""
     from . import intervals  # lazy: `intervals` imports this package's modules
+
     return intervals.timeout_value(arg, None, profile, _TIMEOUT_WIDE[0]) == ("wide", 0)
 
 
@@ -460,8 +612,10 @@ def _not_constant_integer(arg) -> bool:
     if isinstance(arg, S.Name):
         return arg.name.upper() == "NAN"
     if isinstance(arg, S.Number):
-        return isinstance(arg.value, float) or not -2**31 <= arg.value < 2**31
+        return isinstance(arg.value, float) or not -(2**31) <= arg.value < 2**31
     return False
+
+
 _INCOMPLETE_OVERFLOW = {"ABS": 1, "MQTTPUBLISH": 4}
 # Observed (min, max) argument counts where they differ from the table's `nargs`, keyed by that
 # profile `nargs` (oracle, 2026-10-03, all four loggers).
@@ -469,8 +623,12 @@ _INCOMPLETE_OVERFLOW = {"ABS": 1, "MQTTPUBLISH": 4}
 # 1 -> `Expression expects ,`, 3+ -> `No Matching, or out of place )`; absent on CR300/CR350).
 # `SerialOpen` (table nargs 5, CR350 6) takes 5 or 6 arguments, CR350 5 to 8 (oracle 2026-10-13: more is
 # `No Matching, or out of place )`, 4 or fewer `Expression expects ,`; CR350 accepted 4 or fewer).
-_ARITY_RANGE = {"NETWORKTIMEPROTOCOL": {5: (3, 4), 3: (3, 3)}, "GZIP": {1: (2, 2)},
-                "SERIALOPEN": {5: (5, 6), 6: (5, 8)}, "TIMER": {3: (3, 3)}}
+_ARITY_RANGE = {
+    "NETWORKTIMEPROTOCOL": {5: (3, 4), 3: (3, 3)},
+    "GZIP": {1: (2, 2)},
+    "SERIALOPEN": {5: (5, 6), 6: (5, 8)},
+    "TIMER": {3: (3, 3)},
+}
 # (`Timer` takes exactly 3: fewer `Expression expects ,`, more `No Matching, or out of place )`; oracle,
 # all four loggers, 2026-10-13, `N = Timer(1,sec)`, `Timer(1,2)`, `N = Timer(1,sec,0,0)`)
 # Argument counts a call accepts when they are not one range, keyed by profile `nargs` (oracle,
@@ -480,12 +638,20 @@ _ARITY_RANGE = {"NETWORKTIMEPROTOCOL": {5: (3, 4), 3: (3, 3)}, "GZIP": {1: (2, 2
 # `EmailSend` (table nargs 6) takes 9, 13 or 14; `EmailRecv` 9-13; `UDPDatagram` 6-8; `XMLParse` 8;
 # `HTTPGet` 3-4; `UDPOpen` 3-4; `TCPOpen` 3, 4 or 6; `HTTPPost` 4, 8 or 9; `CheckSum` 3, 4 or 6
 # (CR6 host sweep 2026-10-11, `tests/fixtures/r13_function_arity.json`; fewer is `few`, more `many`).
-_ARITY_ALLOWED = {"HTTPPUT": {5: frozenset({4, 8, 9})}, "FTPCLIENT": {6: frozenset({6, 10, 11})},
-                  "EMAILSEND": {6: frozenset({9, 13, 14})}, "EMAILRECV": {6: frozenset(range(9, 14))},
-                  "UDPDATAGRAM": {6: frozenset({6, 7, 8})}, "XMLPARSE": {6: frozenset({8})},
-                  "HTTPGET": {3: frozenset({3, 4})}, "UDPOPEN": {3: frozenset({3, 4})},
-                  "TCPOPEN": {3: frozenset({3, 4, 6})}, "HTTPPOST": {5: frozenset({4, 8, 9})},
-                  "CHECKSUM": {3: frozenset({3, 4, 6})}, "EMAILRELAY": {0: frozenset({4, 5, 9, 10})}}
+_ARITY_ALLOWED = {
+    "HTTPPUT": {5: frozenset({4, 8, 9})},
+    "FTPCLIENT": {6: frozenset({6, 10, 11})},
+    "EMAILSEND": {6: frozenset({9, 13, 14})},
+    "EMAILRECV": {6: frozenset(range(9, 14))},
+    "UDPDATAGRAM": {6: frozenset({6, 7, 8})},
+    "XMLPARSE": {6: frozenset({8})},
+    "HTTPGET": {3: frozenset({3, 4})},
+    "UDPOPEN": {3: frozenset({3, 4})},
+    "TCPOPEN": {3: frozenset({3, 4, 6})},
+    "HTTPPOST": {5: frozenset({4, 8, 9})},
+    "CHECKSUM": {3: frozenset({3, 4, 6})},
+    "EMAILRELAY": {0: frozenset({4, 5, 9, 10})},
+}
 # (`EmailRelay`, table nargs 0, takes 4, 5, 9 or 10; oracle, all four loggers, 2026-10-25)
 
 # CR300/CR350 echo this rule's messages with the offending statement's text followed by a literal
@@ -528,7 +694,7 @@ def _undefined_names(expr: S.Expr | None, known: set[str]) -> list[str]:
     out = _undefined_names_walk(expr, known)
     for i, n in enumerate(out):
         if not isinstance(n, DottedName):
-            return out[:i + 1] + [m for m in out[i + 1:] if not isinstance(m, DottedName)]
+            return out[: i + 1] + [m for m in out[i + 1 :] if not isinstance(m, DottedName)]
     return out
 
 
@@ -545,8 +711,7 @@ def _undefined_names_walk(expr: S.Expr | None, known: set[str]) -> list[str]:
     if expr is None:
         return []
     if isinstance(expr, S.Name):
-        if expr.name.endswith(".") and len(expr.name) > 1 and (
-                expr.name[0].isalpha() or expr.name[0] == "_"):
+        if expr.name.endswith(".") and len(expr.name) > 1 and (expr.name[0].isalpha() or expr.name[0] == "_"):
             return []  # `T.` / `X.` / `Zork.`: `check_digit_members` owns a trailing-dot name
         upper = expr.name.upper()
         if id(expr) in getattr(known, "out_of_scope", ()):
@@ -557,8 +722,7 @@ def _undefined_names_walk(expr: S.Expr | None, known: set[str]) -> list[str]:
     if isinstance(expr, S.Binary):
         return _undefined_names_walk(expr.left, known) + _undefined_names_walk(expr.right, known)
     if isinstance(expr, S.Index):
-        head = [] if expr.name.upper() in known and id(expr) not in getattr(
-            known, "out_of_scope", ()) else [expr.name]
+        head = [] if expr.name.upper() in known and id(expr) not in getattr(known, "out_of_scope", ()) else [expr.name]
         for a in expr.args:
             head += _undefined_names_walk(a, known)
         return head
@@ -566,9 +730,13 @@ def _undefined_names_walk(expr: S.Expr | None, known: set[str]) -> list[str]:
         # ... but its index arguments are (`Status.TimeStamp(Nope,1)`, oracle 2026-09-28). A
         # table name is fine as the base (`T.Field`).
         base = expr.base
-        out = [] if isinstance(base, S.Name) and base.name.upper() in known \
-            and id(base) not in getattr(known, "out_of_scope", ()) else \
-            _undefined_names_walk(base, known)
+        out = (
+            []
+            if isinstance(base, S.Name)
+            and base.name.upper() in known
+            and id(base) not in getattr(known, "out_of_scope", ())
+            else _undefined_names_walk(base, known)
+        )
         if out and isinstance(base, S.Name) and getattr(known, "dotted_tables", False):
             out = [DottedName(base.name)]
         for a in getattr(expr, "args", None) or []:
@@ -580,7 +748,6 @@ def _undefined_names_walk(expr: S.Expr | None, known: set[str]) -> list[str]:
             out += _undefined_names_walk(item, known)
         return out
     return []  # Number, String: nothing to resolve
-
 
 
 def _names_through_over_index(expr: S.Expr | None, known: set[str], dim_counts: dict) -> list[str]:
@@ -603,8 +770,11 @@ def _names_through_over_index(expr: S.Expr | None, known: set[str], dim_counts: 
                 if walk(a):
                     return True
             count = dim_counts.get(e.name.upper())
-            return count is not None and len(e.args) > count and not (
-                len(e.args) == 3 and e.name.upper() in getattr(dim_counts, "strings", ()))
+            return (
+                count is not None
+                and len(e.args) > count
+                and not (len(e.args) == 3 and e.name.upper() in getattr(dim_counts, "strings", ()))
+            )
         out.extend(_undefined_names_walk(e, known))
         return False
 
@@ -626,15 +796,17 @@ def _over_indexed(expr: S.Expr | None, dim_counts: dict[str, int], limit: int | 
         return False
     if isinstance(expr, S.Index):
         count = dim_counts.get(expr.name.upper())
-        if count is not None and len(expr.args) > (count if limit is None else limit) and not (
-                len(expr.args) == 3 and expr.name.upper() in getattr(dim_counts, "strings", ())):
+        if (
+            count is not None
+            and len(expr.args) > (count if limit is None else limit)
+            and not (len(expr.args) == 3 and expr.name.upper() in getattr(dim_counts, "strings", ()))
+        ):
             return True  # (a String takes three subscripts: CR300 accepts `S(1,2,3)`, 2026-10-01)
         return any(_over_indexed(a, dim_counts, limit) for a in expr.args)
     if isinstance(expr, S.Unary):
         return _over_indexed(expr.operand, dim_counts, limit)
     if isinstance(expr, S.Binary):
-        return _over_indexed(expr.left, dim_counts, limit) or \
-            _over_indexed(expr.right, dim_counts, limit)
+        return _over_indexed(expr.left, dim_counts, limit) or _over_indexed(expr.right, dim_counts, limit)
     if isinstance(expr, S.Member):
         return any(_over_indexed(a, dim_counts, limit) for a in (expr.args or []))
     return False
@@ -655,7 +827,7 @@ class DimsState:
     def __init__(self, var_dims: dict, before: dict | None = None, dim_counts: dict | None = None):
         self.var_dims = var_dims
         self.before = before or {}
-        self.dim_counts = dim_counts    # `symbols.declared_dim_counts(program, strings=True)`
+        self.dim_counts = dim_counts  # `symbols.declared_dim_counts(program, strings=True)`
 
 
 def _stmt_exprs(stmt: S.Stmt) -> list:
@@ -699,8 +871,7 @@ def dims_state(program: S.Program, known=_NO_NAMES) -> DimsState:
     for stmt in program.statements:
         ordered.append(stmt)
         if isinstance(stmt, S.If):
-            ordered.extend(st for st in (stmt.inline or []) + (stmt.inline_else or [])
-                           if id(st) not in present)
+            ordered.extend(st for st in (stmt.inline or []) + (stmt.inline_else or []) if id(st) not in present)
     before: dict[int, int | None] = {}
     state: list = [0]
     for stmt in ordered:
@@ -709,7 +880,6 @@ def dims_state(program: S.Program, known=_NO_NAMES) -> DimsState:
             if _dims_walk(expr, known, var_dims, state):
                 break
     return DimsState(var_dims, before, symbols.declared_dim_counts(program, strings=True))
-
 
 
 def _dims_walk(expr: S.Expr | None, known, var_dims: dict, state: list) -> bool:
@@ -736,18 +906,19 @@ def _dims_walk(expr: S.Expr | None, known, var_dims: dict, state: list) -> bool:
     if isinstance(expr, S.Unary):
         return _dims_walk(expr.operand, known, var_dims, state)
     if isinstance(expr, S.Binary):
-        return (_dims_walk(expr.left, known, var_dims, state)
-                or _dims_walk(expr.right, known, var_dims, state))
+        return _dims_walk(expr.left, known, var_dims, state) or _dims_walk(expr.right, known, var_dims, state)
     if isinstance(expr, S.Member):
-        return (_dims_walk(expr.base, known, var_dims, state)
-                or any(_dims_walk(a, known, var_dims, state) for a in expr.args or []))
+        return _dims_walk(expr.base, known, var_dims, state) or any(
+            _dims_walk(a, known, var_dims, state) for a in expr.args or []
+        )
     if isinstance(expr, S.ArrayLiteral):
         return any(_dims_walk(a, known, var_dims, state) for a in expr.items)
     return False
 
 
-def _has_undefined_index(expr: S.Expr | None, known: set[str], ds: DimsState | None = None,
-                         stmt: S.Stmt | None = None, prior: tuple = ()) -> bool:
+def _has_undefined_index(
+    expr: S.Expr | None, known: set[str], ds: DimsState | None = None, stmt: S.Stmt | None = None, prior: tuple = ()
+) -> bool:
     """Whether CR300/CR350 follow the unresolved-name lines with `Dimensions not declared: %s`:
     the walk over `prior` (the statement's earlier arguments, or the assignment target) then
     `expr`, starting from the count at `stmt`'s start (`DimsState`), meets an undefined name with
@@ -757,8 +928,9 @@ def _has_undefined_index(expr: S.Expr | None, known: set[str], ds: DimsState | N
     return any(_dims_walk(e, known, var_dims, state) for e in (*prior, expr))
 
 
-def _names_and_dims(known: set[str], ds: DimsState | None, stmt: S.Stmt | None, prior: tuple,
-                    *exprs: S.Expr | None) -> tuple[list[str], bool]:
+def _names_and_dims(
+    known: set[str], ds: DimsState | None, stmt: S.Stmt | None, prior: tuple, *exprs: S.Expr | None
+) -> tuple[list[str], bool]:
     """The undefined names of `exprs` and whether `Dimensions not declared` follows them
     (`_has_undefined_index`). When it does, the walk ends at the triggering subscripted name, so
     the names after it are not reported (oracle, CR300, 2026-10-03: `Battery(Nope(1)+Nope2(1))`
@@ -803,8 +975,9 @@ def _names_and_dims(known: set[str], ds: DimsState | None, stmt: S.Stmt | None, 
         elif isinstance(e, S.Binary):
             children = [e.left, e.right]
         elif isinstance(e, S.Member):
-            children = ([] if isinstance(e.base, S.Name) and e.base.name.upper() in known
-                        else [e.base]) + (e.args or [])
+            children = ([] if isinstance(e.base, S.Name) and e.base.name.upper() in known else [e.base]) + (
+                e.args or []
+            )
         elif isinstance(e, S.ArrayLiteral):
             children = e.items
         for child in children:
@@ -821,6 +994,7 @@ def _names_and_dims(known: set[str], ds: DimsState | None, stmt: S.Stmt | None, 
 def dimensions_message(text: str, profile, whole_statement: bool, at_eol: bool = True) -> str:
     sep = "\n" if whole_statement and profile.fallback_echo_newline and at_eol else ""
     return f"Dimensions not declared: {text}{sep}."
+
 
 def _arg_text(stmt: S.Instruction, i: int) -> str:
     """The argument's own verbatim source text (`Instruction.arg_spans`, `parser.py`), for the
@@ -839,7 +1013,6 @@ def _arg_text(stmt: S.Instruction, i: int) -> str:
         return stmt.text[start:end]
     arg = stmt.args[i]
     return arg.name if isinstance(arg, S.Name) else ""
-
 
 
 def _call_arg_text(text: str, index: int) -> str:
@@ -864,7 +1037,7 @@ def _call_arg_text(text: str, index: int) -> str:
     return ""
 
 
-_IF_COND_RE = re.compile(r"(?is)^\s*(?:Else)?If(?:\s|(?=\())(.*?)\bThen\b")   # `If(` too (round 36)
+_IF_COND_RE = re.compile(r"(?is)^\s*(?:Else)?If(?:\s|(?=\())(.*?)\bThen\b")  # `If(` too (round 36)
 
 
 def _if_condition_text(stmt: S.Stmt) -> str | None:
@@ -875,6 +1048,7 @@ def _if_condition_text(stmt: S.Stmt) -> str | None:
         # no `Then`: the condition runs to the end of the statement (oracle, 2026-10-08)
         m = re.match(r"(?is)^\s*If(?:\s|(?=\())(.*)$", stmt.text or "")
     return m.group(1) if m else None
+
 
 _IF_NO_THEN_RE = re.compile(r"(?is)^\s*If(?:\s|(?=\())([^'_]*)$")
 
@@ -894,8 +1068,7 @@ def _if_condition_text_no_then(stmt: S.Stmt) -> str | None:
 # `Battery`, argument positions) except the ones that are also functions (`Randomize`, which is in
 # `profile.functions` anyway) and the block keywords, whose real message is `Incomplete expression`
 # (oracle, all four loggers, 2026-10-08: every instruction name probed, `docs/checker.md`).
-_CONTROL_KEYWORDS = frozenset({"CASE", "DO", "FOR", "FUNCTION", "IF", "SCAN", "SELECT", "SUB",
-                               "SUBSCAN", "WHILE"})
+_CONTROL_KEYWORDS = frozenset({"CASE", "DO", "FOR", "FUNCTION", "IF", "SCAN", "SELECT", "SUB", "SUBSCAN", "WHILE"})
 
 
 def _known_names(program: S.Program, profile) -> KnownNames:
@@ -916,8 +1089,7 @@ def _known_names(program: S.Program, profile) -> KnownNames:
         | _EXTRA_PREDEFINED_SYMBOLS
     )
     known = symbols.declared_names(program) | resolvable
-    if any(isinstance(st, S.Instruction) and st.keyword.upper() == "CH400STATUS"
-           for st in program.statements):
+    if any(isinstance(st, S.Instruction) and st.keyword.upper() == "CH400STATUS" for st in program.statements):
         known.add("CH400STATUS")  # the instruction names the table `Sample(1, CH400Status, ...)` reads
     known -= _failed_consts(program, known, profile)
     if profile.single_pass:
@@ -931,52 +1103,77 @@ def _known_names(program: S.Program, profile) -> KnownNames:
         declared = symbols.declared_variable_names(program)
         failed, valid = set(), set(declared)
         for st in program.statements:
-            if not (isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
-                    and len(st.args) == 2 and isinstance(st.args[1], S.Name)
-                    and isinstance(st.args[0], (S.Name, S.Index))):
+            if not (
+                isinstance(st, S.Instruction)
+                and st.keyword.upper() == "ALIAS"
+                and len(st.args) == 2
+                and isinstance(st.args[1], S.Name)
+                and isinstance(st.args[0], (S.Name, S.Index))
+            ):
                 continue
             src = st.args[0]
             bad = src.name.upper() not in declared or (
-                isinstance(src, S.Index) and any(
-                    _undefined_names(a, known) for a in src.args if a is not None))
+                isinstance(src, S.Index) and any(_undefined_names(a, known) for a in src.args if a is not None)
+            )
             if not bad and src.name.upper() in declared:
                 # `Alias is illegally dimensioned.` (empty `Q()`, a parenthesised index item
                 # `Q((1+2))`) registers no name; the out-of-range
                 # `Illegally dimensioned aliased name` one does (oracle, CR300/CR350, 2026-10-12)
                 from . import structure
+
                 open_at = st.text.find("(")
                 items = structure._group_items(st.text, open_at) if open_at >= 0 else None
                 bad = (isinstance(src, S.Index) and not src.args) or bool(
-                    items and isinstance(src, S.Index) and any(
-                        i.strip().startswith("(") and i.strip().endswith(")") for i in items))
+                    items
+                    and isinstance(src, S.Index)
+                    and any(i.strip().startswith("(") and i.strip().endswith(")") for i in items)
+                )
             (failed if bad else valid).add(st.args[1].name.upper())
         # a dimensioned name from the one whose `Alias is illegally dimensioned.` ends the
         # statement on is not registered (round 30, `Alias X(3) = Y(9)` on `X(6)`); reuse the
         # declaration check over the preceding declarations of the alias's scope, with String
         # storage. The names it registered before stopping stay (round 30 review).
         from . import structure
+
         env = consteval.Env(profile, dict(program.consts))
         for pos, st in enumerate(program.statements):
-            if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS" and \
-                    any(isinstance(a, S.Index) for a in st.args[1:]):
-                view = symbols.scoped_view(S.Program("", program.statements[:pos + 1]), st)
+            if (
+                isinstance(st, S.Instruction)
+                and st.keyword.upper() == "ALIAS"
+                and any(isinstance(a, S.Index) for a in st.args[1:])
+            ):
+                view = symbols.scoped_view(S.Program("", program.statements[: pos + 1]), st)
                 scratch, registered = Diagnostics(), set()
                 structure._check_alias_dims(
-                    st, scratch, env, symbols.declared_dim0_sizes(view, env),
-                    symbols.declared_all_dims(view, env), registered, {}, None, profile,
-                    structure._alias_string_slots(view, env))
+                    st,
+                    scratch,
+                    env,
+                    symbols.declared_dim0_sizes(view, env),
+                    symbols.declared_all_dims(view, env),
+                    registered,
+                    {},
+                    None,
+                    profile,
+                    structure._alias_string_slots(view, env),
+                )
                 if any(d.message == "Alias is illegally dimensioned." for d in scratch.items):
                     failed |= {a.name.upper() for a in st.args[1:] if isinstance(a, S.Index)} - registered
         # a Const keeps its own binding (round 30 review, `Alias X = K(2)` with `Const K`)
         known -= failed - valid - set(program.consts)
     if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
         # a `Sub` is no value (`X = V`, `If V Then`, `Delay(1,V,mSec)`; oracle, CR6/CR1000X, round 71)
-        known -= {st.name.upper() for st in program.statements
-                  if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"} - \
-            symbols.declared_variable_names(program) - set(program.consts) - set(profile.symbols)
-    return KnownNames(known, tables=_value_less_tables(program, profile),
-                      dotted_tables=profile.single_pass,
-                      out_of_scope=symbols.out_of_scope_nodes(program, resolvable))
+        known -= (
+            {st.name.upper() for st in program.statements if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"}
+            - symbols.declared_variable_names(program)
+            - set(program.consts)
+            - set(profile.symbols)
+        )
+    return KnownNames(
+        known,
+        tables=_value_less_tables(program, profile),
+        dotted_tables=profile.single_pass,
+        out_of_scope=symbols.out_of_scope_nodes(program, resolvable),
+    )
 
 
 def _unclosed_structure_variables(program: S.Program) -> set[str]:
@@ -986,8 +1183,12 @@ def _unclosed_structure_variables(program: S.Program) -> set[str]:
     open_type = None
     unclosed: set[str] = set()
     for st in program.statements:
-        if isinstance(st, S.Instruction) and st.keyword.upper() == "STRUCTURETYPE" \
-                and st.args and isinstance(st.args[0], S.Name):
+        if (
+            isinstance(st, S.Instruction)
+            and st.keyword.upper() == "STRUCTURETYPE"
+            and st.args
+            and isinstance(st.args[0], S.Name)
+        ):
             open_type = st.args[0].name.upper()
         elif isinstance(st, S.Instruction) and st.keyword.upper() == "ENDSTRUCTURETYPE":
             open_type = None
@@ -1002,8 +1203,14 @@ class KnownNames(set[str]):
     """`_known_names`, plus the `DataTable` names that are known only as table references: a bare
     `T` used as a value is undefined (`X = T`, `Battery(T)`, `Foo(X, T)`; oracle, all four
     loggers, 2026-09-28) while `T.Field` and `CallTable T` resolve."""
-    def __init__(self, names=(), tables: frozenset = frozenset(), dotted_tables: bool = False,
-                 out_of_scope: frozenset = frozenset()):
+
+    def __init__(
+        self,
+        names=(),
+        tables: frozenset = frozenset(),
+        dotted_tables: bool = False,
+        out_of_scope: frozenset = frozenset(),
+    ):
         super().__init__(names)
         self.out_of_scope = out_of_scope  # `symbols.out_of_scope_nodes`: ids of other-routine `Dim` uses
         self.tables = tables
@@ -1016,26 +1223,38 @@ class KnownNames(set[str]):
 def _alias_names(program: S.Program) -> set[str]:
     """`Alias` names: a variable for the const-only positions (`Sample(1,IEEE4,Ux)` with
     `Alias A(1) = Ux` is `Variable illegal in Parameter: Ux.`; oracle, CR6/CR1000X, 2026-10-25)."""
-    return {a.name.upper() for st in program.statements
-            if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
-            for a in st.args[1:] if isinstance(a, S.Name)}
+    return {
+        a.name.upper()
+        for st in program.statements
+        if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
+        for a in st.args[1:]
+        if isinstance(a, S.Name)
+    }
 
 
 def _value_less_tables(program: S.Program, profile=None) -> frozenset:
-    tables = {st.args[0].name.upper() for st in program.statements
-              if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE"
-              and st.args and isinstance(st.args[0], S.Name)}
-    if profile is not None:   # `DataTable(True,...)` leaves `True` a value (oracle, round 54)
+    tables = {
+        st.args[0].name.upper()
+        for st in program.statements
+        if isinstance(st, S.Instruction)
+        and st.keyword.upper() == "DATATABLE"
+        and st.args
+        and isinstance(st.args[0], S.Name)
+    }
+    if profile is not None:  # `DataTable(True,...)` leaves `True` a value (oracle, round 54)
         tables -= {n.upper() for n in profile.symbols}
     # `Status` and `Public` as a bare value are undefined on all four loggers, `Settings` on CR300/
     # CR350 (oracle, 2026-10-08: `X = Status`, `Battery(Public)`; CR6/CR1000X accept `X = Settings`)
-    tables |= {"STATUS", "PUBLIC"} | ({"SETTINGS"} if profile is not None and profile.single_pass
-                                      else set())
+    tables |= {"STATUS", "PUBLIC"} | ({"SETTINGS"} if profile is not None and profile.single_pass else set())
     # An `Alias D(3)=Status` makes `Status` a value too, even above the `Alias` (oracle, all four
     # loggers, 2026-10-24; a GEUS false reject, `docs/checker.md` "Aliases named Status").
     aliases = _alias_names(program)
-    others = symbols.declared_variable_names(program) | {n.upper() for n in program.consts} | \
-        {st.name.upper() for st in program.statements if isinstance(st, S.SubDef)} | aliases
+    others = (
+        symbols.declared_variable_names(program)
+        | {n.upper() for n in program.consts}
+        | {st.name.upper() for st in program.statements if isinstance(st, S.SubDef)}
+        | aliases
+    )
     return frozenset(tables - others)
 
 
@@ -1085,8 +1304,11 @@ def _failed_consts(program: S.Program, known: set[str], profile=None) -> set[str
     if profile is not None:
         # a value with a bad built-in call (`4*ATN()`, `4*ATN(1,2)`) is a pass-1 error and the
         # constant is never declared (oracle, CR300/CR350, 2026-10-12)
-        failed |= {c.name.upper() for c in consts if _find_arity_problem(c.value, profile)
-                   or _find_bare_function_ref(c.value, profile, frozenset())}
+        failed |= {
+            c.name.upper()
+            for c in consts
+            if _find_arity_problem(c.value, profile) or _find_bare_function_ref(c.value, profile, frozenset())
+        }
     unready = _not_yet_declared(program, profile) if profile is not None else {}
     changed = True
     while changed:
@@ -1099,10 +1321,17 @@ def _failed_consts(program: S.Program, known: set[str], profile=None) -> set[str
     return failed
 
 
-def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set[str],
-                       variable_names: set[str], profile, diags: Diagnostics,
-                       families: str = "all", dim_counts: dict[str, int] | None = None,
-                       ds: DimsState | None = None) -> bool:
+def _report_statement(
+    stmt: S.Instruction,
+    positions: dict[int, str],
+    known: set[str],
+    variable_names: set[str],
+    profile,
+    diags: Diagnostics,
+    families: str = "all",
+    dim_counts: dict[str, int] | None = None,
+    ds: DimsState | None = None,
+) -> bool:
     """One statement's own undefined-symbol and constant-only-family checks, at every position
     `_position_kinds` marks as routed through the general expression/symbol resolver -- a full
     expression-tree walk (`_undefined_names`), not just a direct bare-`Name` argument (round 4,
@@ -1137,6 +1366,7 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
     itself (`Variable illegal in Parameter: %s.`) is oracle-confirmed uniform across all four
     loggers (`docs/checker.md`), so no per-logger branch for its own text.
     """
+
     def _check_position(i: int) -> bool:
         """Checks position `i`, reports at most one diagnostic (CR6/CR1000X) or up to two
         (CR300/CR350, see below), returns whether it reported anything.
@@ -1170,17 +1400,21 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
             names, dims = _names_and_dims(known, ds, stmt, tuple(stmt.args[:i]), arg)
         # CR300/CR350: an undefined name at a code-20 keyword slot is also `Variable illegal`
         # (oracle, 2026-10-01: `PanelTemp(X,Nope)`).
-        is_const_family = positions[i] in _CONST_ONLY_VARIABLE_REJECT_KINDS or (
-            bool(names) and not whole_echo and positions[i] == "datatype_kw") or (
-            # CR6/CR1000X `fN1` slot: a variable there is `Variable illegal in Parameter`
-            # (oracle, 2026-10-02, `docs/instructions.md` "fN1 / fnotch").
-            whole_echo and positions[i] == "datatype_kw" and
-            profile.fnotch.get("instructions", {}).get(stmt.keyword.upper()) == i + 1)
+        is_const_family = (
+            positions[i] in _CONST_ONLY_VARIABLE_REJECT_KINDS
+            or (bool(names) and not whole_echo and positions[i] == "datatype_kw")
+            or (
+                # CR6/CR1000X `fN1` slot: a variable there is `Variable illegal in Parameter`
+                # (oracle, 2026-10-02, `docs/instructions.md` "fN1 / fnotch").
+                whole_echo
+                and positions[i] == "datatype_kw"
+                and profile.fnotch.get("instructions", {}).get(stmt.keyword.upper()) == i + 1
+            )
+        )
 
         if names:
             if whole_echo:
-                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=_arg_text(stmt, i)),
-                            stmt.file)
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=_arg_text(stmt, i)), stmt.file)
                 return True
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
@@ -1188,14 +1422,15 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
                 # CR300/CR350: `SplitStr(ResultString(1),SearchString,...)` -> `Dimensions not
                 # declared: ResultString(1).` and the rest of the list collapses into `Too many
                 # parameters:  SearchString.`
-                diags.error(stmt.line, dimensions_message(_arg_text(stmt, i).strip(), profile, False),
-                            stmt.file)
+                diags.error(stmt.line, dimensions_message(_arg_text(stmt, i).strip(), profile, False), stmt.file)
                 if is_const_family:  # (oracle, CR300, 2026-10-03: `Delay(Nope(1),2,Sec)`)
-                    diags.error(stmt.line, f"Variable illegal in Parameter: {_arg_text(stmt, i)}.",
-                                stmt.file, stmt=stmt)
+                    diags.error(
+                        stmt.line, f"Variable illegal in Parameter: {_arg_text(stmt, i)}.", stmt.file, stmt=stmt
+                    )
                     return True
                 if i + 1 < len(stmt.args) and stmt.args[i + 1] is not None:
                     from .instr_rules import _next_simple_token
+
                     token = _next_simple_token(_arg_text(stmt, i + 1))
                     diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
                 return True
@@ -1210,11 +1445,14 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
             # list ends there (`SplitStr(S(1,2),T,...)` -> `Too many parameters:  T.`, 2026-10-01).
             # CR6/CR1000X: past three subscripts, no follow-up (`Delay(1,B(1,1,1,1),mSec)`, round 16)
             text = _arg_text(stmt, i)
-            diags.error(stmt.line, dimensions_message(
-                text if stmt.keyword.upper() == "SELECT" else text.strip(), profile, False),
-                        stmt.file)
+            diags.error(
+                stmt.line,
+                dimensions_message(text if stmt.keyword.upper() == "SELECT" else text.strip(), profile, False),
+                stmt.file,
+            )
             if not whole_echo and i + 1 < len(stmt.args) and stmt.args[i + 1] is not None:
                 from .instr_rules import _next_simple_token
+
                 token = _next_simple_token(_arg_text(stmt, i + 1)) or _arg_text(stmt, i + 1)
                 diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
             return True
@@ -1224,8 +1462,7 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
             # loggers, round 38: `Sample(1,B,Status.SerialNumber)`)
             var_refs = _variable_refs(arg, variable_names) or _has_dotted_field(arg)
             if names or var_refs:
-                diags.error(stmt.line, f"Variable illegal in Parameter: {_arg_text(stmt, i)}.", stmt.file,
-                            stmt=stmt)
+                diags.error(stmt.line, f"Variable illegal in Parameter: {_arg_text(stmt, i)}.", stmt.file, stmt=stmt)
                 return True
 
         return bool(names)
@@ -1270,9 +1507,9 @@ def _member_index_text(args: list | None) -> str:
     return ""
 
 
-def _table_member_problem(expr: S.Expr | None, const_tables: dict[str, set[str]],
-                          data_tables: set[str], absent: frozenset[str] = frozenset()
-                          ) -> tuple[str, str, str] | None:
+def _table_member_problem(
+    expr: S.Expr | None, const_tables: dict[str, set[str]], data_tables: set[str], absent: frozenset[str] = frozenset()
+) -> tuple[str, str, str] | None:
     if expr is None:
         return None
     if isinstance(expr, S.Member):
@@ -1301,8 +1538,9 @@ def _table_member_problem(expr: S.Expr | None, const_tables: dict[str, set[str]]
     elif isinstance(expr, S.Unary):
         return _table_member_problem(expr.operand, const_tables, data_tables, absent)
     elif isinstance(expr, S.Binary):
-        return _table_member_problem(expr.left, const_tables, data_tables, absent) or \
-            _table_member_problem(expr.right, const_tables, data_tables, absent)
+        return _table_member_problem(expr.left, const_tables, data_tables, absent) or _table_member_problem(
+            expr.right, const_tables, data_tables, absent
+        )
     elif isinstance(expr, S.ArrayLiteral):
         for item in expr.items:
             found = _table_member_problem(item, const_tables, data_tables, absent)
@@ -1320,26 +1558,32 @@ def _data_table_fields(program: S.Program, profile) -> dict[str, set[str]]:
     (`Tbl.NoSuchField` -> `Could not find Tbl.NoSuchField(1).`; oracle, all four loggers,
     2026-10-24, round 34). Empty when the tables cannot be built: nothing is then checked."""
     from .. import tables
+
     try:
         built, _, _ = tables.build_tables(program, profile, dict(program.consts))
     except Exception:
         return {}
     props = {p.upper() for p in tables.TABLE_PROPERTIES}
-    names = {st.args[0].name.upper() for st in program.statements
-             if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE" and st.args
-             and isinstance(st.args[0], S.Name)}
-    return {t.name.upper(): {f.name.upper() for f in t.fields} | props
-            for t in built if t.name.upper() in names}
+    names = {
+        st.args[0].name.upper()
+        for st in program.statements
+        if isinstance(st, S.Instruction)
+        and st.keyword.upper() == "DATATABLE"
+        and st.args
+        and isinstance(st.args[0], S.Name)
+    }
+    return {t.name.upper(): {f.name.upper() for f in t.fields} | props for t in built if t.name.upper() in names}
 
 
 def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None:
-    """Resolved ConstTable fields and, on CR6/CR1000X, DataTable fields (`_data_table_fields`).
-
-    """
+    """Resolved ConstTable fields and, on CR6/CR1000X, DataTable fields (`_data_table_fields`)."""
     const_tables = symbols.const_table_fields(program)
     data_tables = {
-        stmt.args[0].name.upper() for stmt in program.statements
-        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "DATATABLE" and stmt.args
+        stmt.args[0].name.upper()
+        for stmt in program.statements
+        if isinstance(stmt, S.Instruction)
+        and stmt.keyword.upper() == "DATATABLE"
+        and stmt.args
         and isinstance(stmt.args[0], S.Name)
     }
     if not const_tables and not data_tables:
@@ -1357,12 +1601,16 @@ def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None
             table = st.args[0].name.upper() if st.args and isinstance(st.args[0], S.Name) else None
         elif kw == "ENDTABLE":
             table = None
-        elif kw == "FIELDNAMES" and table and any(
-                isinstance(a, S.String) and "BYTESPERRECORD" in
-                (f.strip().upper() for f in a.value.split(",")) for a in st.args):
+        elif (
+            kw == "FIELDNAMES"
+            and table
+            and any(
+                isinstance(a, S.String) and "BYTESPERRECORD" in (f.strip().upper() for f in a.value.split(","))
+                for a in st.args
+            )
+        ):
             renamed.add(table)
-    absent = frozenset(f"{t}.BYTESPERRECORD" for t in data_tables - renamed) if profile.single_pass \
-        else frozenset()
+    absent = frozenset(f"{t}.BYTESPERRECORD" for t in data_tables - renamed) if profile.single_pass else frozenset()
     for stmt in program.statements:
         exprs: list[S.Expr | None] = []
         if isinstance(stmt, S.Assignment):
@@ -1387,8 +1635,11 @@ def _dotted_members(expr: S.Expr | None) -> list[tuple[str, S.Member | None]]:
     if expr is None:
         return []
     if isinstance(expr, S.Name):
-        return [(expr.name[:-1], None)] if expr.name.endswith(".") and len(expr.name) > 1 \
-            and (expr.name[0].isalpha() or expr.name[0] == "_") else []
+        return (
+            [(expr.name[:-1], None)]
+            if expr.name.endswith(".") and len(expr.name) > 1 and (expr.name[0].isalpha() or expr.name[0] == "_")
+            else []
+        )
     if isinstance(expr, S.Member):
         out = _dotted_members(expr.base)
         if isinstance(expr.base, S.Name) and not expr.base.name.endswith("."):
@@ -1411,13 +1662,15 @@ _TABLE_FIELDS = frozenset({"TIMESTAMP", "RECORD", "RECNUM"})
 
 
 def _unknown_status_member(m, profile) -> bool:
-    return not m.member[:1].isdigit() and bool(profile.status_members) and \
-        m.member.upper() not in profile.status_members
+    return (
+        not m.member[:1].isdigit() and bool(profile.status_members) and m.member.upper() not in profile.status_members
+    )
 
 
 def _unknown_setting(m, profile) -> bool:
     return not m.member[:1].isdigit() and m.member.upper() not in {
-        n.upper() for n in profile.settings_fields["settings"]}
+        n.upper() for n in profile.settings_fields["settings"]
+    }
 
 
 def _unknown_public_member(m, variables: set[str]) -> bool:
@@ -1430,8 +1683,9 @@ def check_status_member_reads_late(program: S.Program, profile, diags: Diagnosti
     hides `Status.CardBytesFree`); run from the late stage."""
     if not profile.single_pass:
         return
-    variables = {n for n in symbols.declared_variable_names(program)
-                 if not symbols.is_reserved_predefined_name(n, profile)}
+    variables = {
+        n for n in symbols.declared_variable_names(program) if not symbols.is_reserved_predefined_name(n, profile)
+    }
     for stmt in program.statements:
         if isinstance(stmt, S.Assignment):
             exprs, target = [stmt.target, stmt.value], len(_dotted_members(stmt.target))
@@ -1444,14 +1698,16 @@ def check_status_member_reads_late(program: S.Program, profile, diags: Diagnosti
         for k, (base, m) in enumerate(mm for e in exprs for mm in _dotted_members(e)):
             if m is None or k < target:
                 continue
-            if base.upper() == "STATUS" and _unknown_status_member(m, profile) or \
-                    base.upper() == "PUBLIC" and _unknown_public_member(m, variables):
-                diags.error(stmt.line, f"Could not find {base}.{m.member}{_member_index_text(m.args)}.",
-                            stmt.file)
+            if (
+                base.upper() == "STATUS"
+                and _unknown_status_member(m, profile)
+                or base.upper() == "PUBLIC"
+                and _unknown_public_member(m, variables)
+            ):
+                diags.error(stmt.line, f"Could not find {base}.{m.member}{_member_index_text(m.args)}.", stmt.file)
 
 
-def check_undefined_dotted_bases(program: S.Program, profile, diags: Diagnostics,
-                                 start: int) -> None:
+def check_undefined_dotted_bases(program: S.Program, profile, diags: Diagnostics, start: int) -> None:
     """CR6/CR1000X: a dotted reference whose base is not declared (`Tset1.X`, `Setings.PakBusAddress`,
     a misspelt structure variable `W.A`) is `Could not find Tset1.`, before the statement's other
     pass-2 lines (`diags.items[start:]`). The statement's `Invalid symbol` stays only for another
@@ -1462,28 +1718,34 @@ def check_undefined_dotted_bases(program: S.Program, profile, diags: Diagnostics
     known = _known_names(program, profile)
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS":
-            continue   # `Alias Foo = Zed.W` compiles (alias_name_lists.json)
+            continue  # `Alias Foo = Zed.W` compiles (alias_name_lists.json)
         exprs = _stmt_exprs(stmt)
-        bases = [b for e in exprs for b, m in _dotted_members(e)
-                 if m is not None and b.upper() not in known]
+        bases = [b for e in exprs for b, m in _dotted_members(e) if m is not None and b.upper() not in known]
         if not bases:
             continue
-        others = [n for e in exprs for n in _undefined_names_walk(e, known)
-                  if n.upper() not in {b.upper() for b in bases}]
+        others = [
+            n for e in exprs for n in _undefined_names_walk(e, known) if n.upper() not in {b.upper() for b in bases}
+        ]
         key = (stmt.line, stmt.file)
         generic = ("Invalid symbol in expression", "Invalid, or out of place expression")
         here = [d for d in diags.items[start:] if (d.line, d.file) == key]
         if any(d.severity == "error" and not d.message.startswith(generic) for d in here):
-            continue   # a placement error ends the statement first (`DisplayValue must be used within ...`)
+            continue  # a placement error ends the statement first (`DisplayValue must be used within ...`)
         if not others:
-            diags.items[start:] = [d for d in diags.items[start:] if not (
-                (d.line, d.file) == key and d.message.startswith(generic))]
+            diags.items[start:] = [
+                d for d in diags.items[start:] if not ((d.line, d.file) == key and d.message.startswith(generic))
+            ]
         new = [Diagnostic("error", stmt.line, f"Could not find {bases[0]}.", stmt.file)]
         if isinstance(stmt, S.Assignment) and _dotted_members(stmt.target):
-            new.append(Diagnostic("error", stmt.line, f"Invalid assignment in expression: {stmt.text}.",
-                                  stmt.file))
-        at = next((i for i, d in enumerate(diags.items) if i >= start and (d.line, d.file) == key
-                   and any(d is h for h in here)), len(diags.items))
+            new.append(Diagnostic("error", stmt.line, f"Invalid assignment in expression: {stmt.text}.", stmt.file))
+        at = next(
+            (
+                i
+                for i, d in enumerate(diags.items)
+                if i >= start and (d.line, d.file) == key and any(d is h for h in here)
+            ),
+            len(diags.items),
+        )
         diags.items[at:at] = new
 
 
@@ -1505,25 +1767,39 @@ def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None
 
     Statements that also name an undefined symbol and structure-typed bases are not touched."""
     from . import structs
-    variables = {n for n in symbols.declared_variable_names(program)
-                 if not symbols.is_reserved_predefined_name(n, profile)}
+
+    variables = {
+        n for n in symbols.declared_variable_names(program) if not symbols.is_reserved_predefined_name(n, profile)
+    }
     struct_types = structs._structure_members(program)
     kinds = structs._variable_kinds(program, struct_types)
     variables = {n for n in variables if not str(kinds.get(n, "")).startswith("STRUCT")}
     # (a `Sub S(C As Pt)` parameter keeps its members too; oracle, CR6/CR1000X, 2026-10-12)
-    variables -= {p.name.upper() for st in program.statements if isinstance(st, S.SubDef)
-                  for p in st.params if p.type and p.type.upper() in struct_types}
+    variables -= {
+        p.name.upper()
+        for st in program.statements
+        if isinstance(st, S.SubDef)
+        for p in st.params
+        if p.type and p.type.upper() in struct_types
+    }
     variables |= {str(n).upper() for n in program.consts}
     for stmt in program.statements:
-        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS" \
-                and len(stmt.args) == 2 and isinstance(stmt.args[1], S.Name) \
-                and stmt.args[1].name.upper() != "PUBLIC":   # `Public.X` still reads the table (2026-10-24)
+        if (
+            isinstance(stmt, S.Instruction)
+            and stmt.keyword.upper() == "ALIAS"
+            and len(stmt.args) == 2
+            and isinstance(stmt.args[1], S.Name)
+            and stmt.args[1].name.upper() != "PUBLIC"
+        ):  # `Public.X` still reads the table (2026-10-24)
             variables.add(stmt.args[1].name.upper())  # (`Alias Xal = X`: `Xal.Y` is `Could not find Xal.`)
         elif isinstance(stmt, S.SubDef) and stmt.keyword.upper() == "FUNCTION":
             variables.add(stmt.name.upper())
     data_tables = {
-        stmt.args[0].name.upper() for stmt in program.statements
-        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "DATATABLE" and stmt.args
+        stmt.args[0].name.upper()
+        for stmt in program.statements
+        if isinstance(stmt, S.Instruction)
+        and stmt.keyword.upper() == "DATATABLE"
+        and stmt.args
         and isinstance(stmt.args[0], S.Name)
     } | {"STATUS"}
     known = _known_names(program, profile)
@@ -1545,30 +1821,28 @@ def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None
         target = len(_dotted_members(stmt.target)) if isinstance(stmt, S.Assignment) else 0
         for k, (base, m) in enumerate(members):
             if k == target and lines:
-                break   # a bad member target ends the statement (`X.Q = X.R + 1`: one line)
+                break  # a bad member target ends the statement (`X.Q = X.R + 1`: one line)
             upper = base.upper()
             if m is None:
                 if upper not in data_tables:
-                    lines.append(f"Could not find DataTable {base}." if profile.single_pass
-                                 else f"Could not find {base}.")
+                    lines.append(
+                        f"Could not find DataTable {base}." if profile.single_pass else f"Could not find {base}."
+                    )
             elif upper == "SETTINGS" and not profile.single_pass and _unknown_setting(m, profile):
                 # `X = Settings.Nope`, `Settings.Nope = 1` (oracle, all four, 2026-10-24, round 34)
                 lines.append(f"Could not find Settings.{m.member}{_member_index_text(m.args)}.")
-            elif upper == "STATUS" and not profile.single_pass and \
-                    _unknown_status_member(m, profile):
+            elif upper == "STATUS" and not profile.single_pass and _unknown_status_member(m, profile):
                 # an unknown Status field read (`Y = Status.Nope`, `If Status.Nope`): oracle, all
                 # four loggers, 2026-10-12; the names: data/**/status_members.json
                 lines.append(f"Could not find Status.{m.member}{_member_index_text(m.args)}.")
             elif upper in data_tables:
                 if m.member[:1].isdigit():
                     lines.append(f"Could not find {base}.{m.member}{_member_index_text(m.args)}.")
-            elif upper == "PUBLIC" and k >= target and not profile.single_pass and \
-                    _unknown_public_member(m, variables):
+            elif upper == "PUBLIC" and k >= target and not profile.single_pass and _unknown_public_member(m, variables):
                 # `Y = Public.Nope(2)` -> `Could not find Public.Nope(2).` (oracle, all four, 2026-10-12)
                 lines.append(f"Could not find Public.{m.member}{_member_index_text(m.args)}.")
             elif upper in variables:
-                lines.append(f"Could not find DataTable {base}." if profile.single_pass
-                             else f"Could not find {base}.")
+                lines.append(f"Could not find DataTable {base}." if profile.single_pass else f"Could not find {base}.")
         if not lines:
             continue
         for line in lines:
@@ -1589,9 +1863,11 @@ def check_const_family_args(program: S.Program, profile, diags: Diagnostics) -> 
     if profile.name not in _WHOLE_EXPR_ECHO_LOGGERS:
         return
     known = _known_names(program, profile)
-    variable_names = {name for name in symbols.declared_variable_names(program)
-                      if not symbols.is_reserved_predefined_name(name, profile)} | {
-        name for name in _alias_names(program) if name not in profile.symbols}
+    variable_names = {
+        name
+        for name in symbols.declared_variable_names(program)
+        if not symbols.is_reserved_predefined_name(name, profile)
+    } | {name for name in _alias_names(program) if name not in profile.symbols}
     scopes = symbols.statement_scopes(program, profile)
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
@@ -1599,19 +1875,27 @@ def check_const_family_args(program: S.Program, profile, diags: Diagnostics) -> 
         record = profile.instructions.get(stmt.keyword.upper())
         if not record:
             continue
-        if any(_find_arity_problem(a, profile) or
-               _find_bare_function_ref(a, profile, frozenset(variable_names))
-               for a in stmt.args if a is not None):
+        if any(
+            _find_arity_problem(a, profile) or _find_bare_function_ref(a, profile, frozenset(variable_names))
+            for a in stmt.args
+            if a is not None
+        ):
             continue  # a parse error inside an argument owns the statement (`check_function_arity`)
         positions = _position_kinds(record["params"], stmt.keyword, profile)
         if positions:
             params, later = scopes[id(stmt)]
-            _report_statement(stmt, positions, known.without(later - params - variable_names), variable_names | params,
-                              profile, diags, families="const")
+            _report_statement(
+                stmt,
+                positions,
+                known.without(later - params - variable_names),
+                variable_names | params,
+                profile,
+                diags,
+                families="const",
+            )
 
 
-def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
-          skip: frozenset = frozenset()) -> None:
+def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, skip: frozenset = frozenset()) -> None:
     """Undefined-symbol checking at every `Instruction` argument position whose declared type code
     routes through the real expression/named-constant resolver (`_position_kinds`) -- a full
     expression-tree walk (`_undefined_names`), not restricted to a direct bare `Name` argument
@@ -1632,11 +1916,12 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
     """
     known = _known_names(program, profile)
     variable_names = symbols.declared_variable_names(program) | (
-        {n for n in _alias_names(program) if n not in profile.symbols}   # (`Alias X = Sec` fails)
-        if profile.name in _WHOLE_EXPR_ECHO_LOGGERS else set())
+        {n for n in _alias_names(program) if n not in profile.symbols}  # (`Alias X = Sec` fails)
+        if profile.name in _WHOLE_EXPR_ECHO_LOGGERS
+        else set()
+    )
     ds = program_dims(program, profile, known)
-    dim_counts = symbols.declared_dim_counts(
-        program, strings=True)
+    dim_counts = symbols.declared_dim_counts(program, strings=True)
     scopes = symbols.statement_scopes(program, profile)
 
     seen_avw200 = False
@@ -1650,7 +1935,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
             continue  # `SlowSequence junk` compiles: its argument is never resolved (oracle, 2026-10-10)
         positions = _position_kinds(record["params"], stmt.keyword, profile)
         if stmt.keyword.upper() == "SDMSIO4" and _sdmsio4_count(stmt, env) == 0:
-            positions.pop(0, None)   # no values: the destination is never resolved
+            positions.pop(0, None)  # no values: the destination is never resolved
         if stmt.keyword.upper() == "AVW200" and profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             if seen_avw200:
                 # after an earlier `AVW200` the ComPort and NeighborAddr are not resolved
@@ -1658,25 +1943,34 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
                 positions.pop(1, None)
                 positions.pop(2, None)
             seen_avw200 = True
-        if (positions and stmt.keyword.upper() == "SERIALOPEN" and stmt.args and stmt.args[0]
-                and profile.name in _WHOLE_EXPR_ECHO_LOGGERS
-                and _undefined_names(stmt.args[0], known)):
+        if (
+            positions
+            and stmt.keyword.upper() == "SERIALOPEN"
+            and stmt.args
+            and stmt.args[0]
+            and profile.name in _WHOLE_EXPR_ECHO_LOGGERS
+            and _undefined_names(stmt.args[0], known)
+        ):
             continue  # `ComPort 0 illegal.` replaces every `Invalid symbol` (`cr3xx.check`)
 
         if positions:
             # CR6/CR1000X: constant-family positions are pass 1 (`check_const_family_args`).
             reported = len(diags.items)
             here, here_variables = known, variable_names
-            if profile.single_pass:   # every position sees only earlier `Const`s (round 71)
+            if profile.single_pass:  # every position sees only earlier `Const`s (round 71)
                 params, later = scopes[id(stmt)]
                 here, here_variables = known.without(later - params - variable_names), variable_names | params
-            _report_statement(stmt, positions, here, here_variables, profile, diags,
-                              families="general", dim_counts=dim_counts, ds=ds)
-            if stmt.keyword.upper() == "MATRIX" and profile.name in ("cr6", "cr1000x") and \
-                    len(diags.items) > reported and all(
-                        d.message.startswith("Invalid symbol in expression: ")
-                        for d in diags.items[reported:]):
+            _report_statement(
+                stmt, positions, here, here_variables, profile, diags, families="general", dim_counts=dim_counts, ds=ds
+            )
+            if (
+                stmt.keyword.upper() == "MATRIX"
+                and profile.name in ("cr6", "cr1000x")
+                and len(diags.items) > reported
+                and all(d.message.startswith("Invalid symbol in expression: ") for d in diags.items[reported:])
+            ):
                 from . import instr_rules
+
                 rewritten = instr_rules.matrix_undefined_operands(stmt, program, env, known, profile)
                 if rewritten is not None:
                     del diags.items[reported:]
@@ -1744,9 +2038,11 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
         text = _if_condition_text(stmt)
         if text is None:
             text = _if_condition_text_no_then(stmt)
-        if text is not None and not names and \
-                _over_indexed(stmt.cond, symbols.declared_dim_counts(program, strings=True),
-                              _dim_limit(profile)):
+        if (
+            text is not None
+            and not names
+            and _over_indexed(stmt.cond, symbols.declared_dim_counts(program, strings=True), _dim_limit(profile))
+        ):
             # CR300/CR350: `If Q(1) Then` for a scalar `Q` (or `Public Q()`), `If Z(1,1) = 1 Then`
             # for `Public Z(3)` -> `Dimensions not declared: Q(1) .` (oracle, 2026-10-10)
             diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
@@ -1767,8 +2063,9 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
         if stmt.inline is not None:
             # the condition precedes the inline statements' own findings on the same line
             # (oracle, all four loggers, 2026-10-08)
-            at = next((i for i, d in enumerate(diags.items[:before])
-                       if (d.line, d.file) == (stmt.line, stmt.file)), None)
+            at = next(
+                (i for i, d in enumerate(diags.items[:before]) if (d.line, d.file) == (stmt.line, stmt.file)), None
+            )
             if at is not None:
                 moved = diags.items[before:]
                 del diags.items[before:]
@@ -1790,9 +2087,11 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
             continue
         names = _undefined_names(stmt.cond, known)
         m = re.search(r"(?i)\b(?:While|Until)\b\s*(.*)$", stmt.text or "")
-        if m and not names and \
-                _over_indexed(stmt.cond, symbols.declared_dim_counts(program, strings=True),
-                              _dim_limit(profile)):
+        if (
+            m
+            and not names
+            and _over_indexed(stmt.cond, symbols.declared_dim_counts(program, strings=True), _dim_limit(profile))
+        ):
             diags.error(stmt.line, dimensions_message(m.group(1), profile, False), stmt.file)
             continue
         if not names or not m:
@@ -1807,25 +2106,31 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
     _check_elseif_and_case(program, profile, diags, known)
     _check_function_statements(program, profile, diags, known)
 
-    dim_counts = symbols.declared_dim_counts(
-        program, strings=True)
+    dim_counts = symbols.declared_dim_counts(program, strings=True)
     struct_vars = _struct_var_names(program)
-    functions = {st.name.upper() for st in program.statements
-                 if isinstance(st, S.SubDef) and st.keyword.upper() == "FUNCTION"}
+    functions = {
+        st.name.upper() for st in program.statements if isinstance(st, S.SubDef) and st.keyword.upper() == "FUNCTION"
+    }
     for stmt in program.statements:
-        if (isinstance(stmt, S.Call) and not stmt.explicit and stmt.name.upper() in functions
-                and stmt.tail_expr is None and stmt.juxtaposed is None
-                and not any(_undefined_names(a, known) for a in stmt.args)
-                and any(_over_indexed(a, dim_counts, _dim_limit(profile)) for a in stmt.args)):
+        if (
+            isinstance(stmt, S.Call)
+            and not stmt.explicit
+            and stmt.name.upper() in functions
+            and stmt.tail_expr is None
+            and stmt.juxtaposed is None
+            and not any(_undefined_names(a, known) for a in stmt.args)
+            and any(_over_indexed(a, dim_counts, _dim_limit(profile)) for a in stmt.args)
+        ):
             # CR300/CR350: `Fn(X(1,2))` is checked like `Y = Fn(X(1,2))` (oracle, 2026-10-10)
-            diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
-                        stmt.file)
-        if (isinstance(stmt, S.Call) and stmt.tail_expr is not None
-                and not _undefined_names(stmt.tail_expr, known)
-                and _over_indexed(stmt.tail_expr, dim_counts, _dim_limit(profile))):
+            diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol), stmt.file)
+        if (
+            isinstance(stmt, S.Call)
+            and stmt.tail_expr is not None
+            and not _undefined_names(stmt.tail_expr, known)
+            and _over_indexed(stmt.tail_expr, dim_counts, _dim_limit(profile))
+        ):
             # CR300/CR350: `Fn(1)+X(1,2)` is checked like `Y = Fn(1)+X(1,2)` (oracle, 2026-10-10)
-            diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
-                        stmt.file)
+            diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol), stmt.file)
         if not isinstance(stmt, S.Assignment):
             continue
         if _undefined_names(stmt.target, known):
@@ -1839,28 +2144,29 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
         if _over_indexed(stmt.target, dim_counts, 3 if whole_echo else None):
             # `R(2,1) = 1` for `Public R(5)`: the fallback (CR6/CR1000X only past 3 subscripts)
             from . import structure
-            diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol),
-                        stmt.file, show_file="cr3xx")
+
+            diags.error(
+                stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol), stmt.file, show_file="cr3xx"
+            )
             continue
         if not names:
             if _over_indexed(stmt.value, dim_counts, _dim_limit(profile)):
                 # CR300/CR350: `X = R(2,1)` -> `Dimensions not declared:     X = R(2,1)` (oracle);
                 # CR6/CR1000X past three subscripts, round 16
-                diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
-                            stmt.file)
+                diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol), stmt.file)
             continue
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
-            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.text), stmt.file,
-                        stmt=stmt)
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.text), stmt.file, stmt=stmt)
         else:
             names, dims = _names_and_dims(known, ds, stmt, (stmt.target,), stmt.value)
             if not dims and _over_indexed(stmt.value, dim_counts):
                 names = _names_through_over_index(stmt.value, known, dim_counts)
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
-            if dims or _over_indexed(stmt.value, dim_counts):   # (names, then the over-indexed read: oracle, CR300, 2026-10-12)
-                diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
-                            stmt.file)
+            if dims or _over_indexed(
+                stmt.value, dim_counts
+            ):  # (names, then the over-indexed read: oracle, CR300, 2026-10-12)
+                diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol), stmt.file)
 
 
 # the `Const ... As` types the real compilers accept (see `structure._CONST_TYPES`)
@@ -1910,7 +2216,7 @@ def check_consts(program: S.Program, profile, diags: Diagnostics) -> None:
             continue  # a wrong-arity call read before the name wins (oracle, all four loggers, round 41)
         if whole_echo:
             if stmt.value_span is not None:
-                text = stmt.text[stmt.value_span[0]:stmt.value_span[1]]
+                text = stmt.text[stmt.value_span[0] : stmt.value_span[1]]
             else:  # defensive: only reached if a `Const` was built without a span
                 text = stmt.value.name if isinstance(stmt.value, S.Name) else names[0]
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=text), stmt.file)
@@ -1998,8 +2304,7 @@ def _data_param_text(stmt: S.Instruction, i: int) -> str:
     return text
 
 
-def _check_data_instruction(stmt: S.Instruction, known: set[str], profile,
-                             diags: Diagnostics) -> None:
+def _check_data_instruction(stmt: S.Instruction, known: set[str], profile, diags: Diagnostics) -> None:
     for i, arg in enumerate(stmt.args):
         if arg is None:
             continue
@@ -2010,12 +2315,10 @@ def _check_data_instruction(stmt: S.Instruction, known: set[str], profile,
         text = _data_param_text(stmt, i)
         if undefined:
             if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
-                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=text),
-                            stmt.file)
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=text), stmt.file)
             else:
                 for name in undefined:
-                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
-                                stmt.file)
+                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
         diags.error(stmt.line, f"Illegal Data parameter {text}.", stmt.file)
         return  # stop at the first bad parameter, see docstring above.
 
@@ -2031,14 +2334,14 @@ def _check_unparsed_data(stmt: S.Unparsed, diags: Diagnostics, profile, program)
     upper = stripped.upper()
     for kw in ("DATALONG", "DATA"):  # longer name first: "DATALONG" also starts with "DATA".
         if upper.startswith(kw) and len(stripped) > len(kw) and stripped[len(kw)].isspace():
-            text = stripped[len(kw):].lstrip() + "\n"
+            text = stripped[len(kw) :].lstrip() + "\n"
             if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
                 diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
             else:
                 from . import cr3xx
+
                 for name in cr3xx._leading_unknown_words(text, cr3xx.prose_known(program, profile)):
-                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
-                                stmt.file)
+                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
                 diags.error(stmt.line, f"Incomplete expression: {text}.", stmt.file)
             diags.error(stmt.line, f"Illegal Data parameter {text}.", stmt.file)
             return
@@ -2065,14 +2368,14 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     if nargs is None:
         return None
     upper = name.upper()
-    if any(i < len(args) and isinstance(args[i], S.String)
-           for i in _FUNCTION_CONST_INTEGER_STRING_ARGS.get(upper, ())):
+    if any(i < len(args) and isinstance(args[i], S.String) for i in _FUNCTION_CONST_INTEGER_STRING_ARGS.get(upper, ())):
         return "constint"
     if any(i < n and _not_constant_integer(args[i]) for i in _CONST_INTEGER_BAD_ARGS.get(upper, ())):
         return "constint"
     if _TIMEOUT_GATE[0] is False and any(
-            i < n and (_not_integer_type(args[i]) or _timeout_wide(args[i], profile))
-            for i in _CONST_INTEGER_TYPE_ARGS.get(upper, ())):
+        i < n and (_not_integer_type(args[i]) or _timeout_wide(args[i], profile))
+        for i in _CONST_INTEGER_TYPE_ARGS.get(upper, ())
+    ):
         return "constint"
     if any(i < n and _not_integer_type(args[i]) for i in _CONST_INTEGER_TYPE_ARGS_ALWAYS.get(upper, ())):
         return "constint"
@@ -2082,8 +2385,7 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
             return "constint"
         if kinds[1] is not None and not 0 <= kinds[1][1] <= 4:
             return "timer_option"
-    if (_CONST_INTEGER_OVERFLOW_STRING.get(upper) == nargs and len(args) == nargs + 1
-            and isinstance(args[-1], S.String)):
+    if _CONST_INTEGER_OVERFLOW_STRING.get(upper) == nargs and len(args) == nargs + 1 and isinstance(args[-1], S.String):
         return "constint"
     if _INCOMPLETE_OVERFLOW.get(upper) == nargs and len(args) == nargs + 1:
         return "incomplete"
@@ -2136,8 +2438,7 @@ def _find_arity_problem(expr: S.Expr | None, profile, known: set[str] | None = N
             # only names the parser reaches: a surplus argument is never read (`Right(S,10,Nope)`
             # keeps `No Matching`, round 38)
             read = expr.args
-            while direct != "few" and read and \
-                    _call_arity_problem(expr.name, read, profile) not in (None, "few"):
+            while direct != "few" and read and _call_arity_problem(expr.name, read, profile) not in (None, "few"):
                 read = read[:-1]
             if any(_undefined_names(a, known) for a in read):
                 return "deferred"
@@ -2169,20 +2470,17 @@ def _find_arity_problem(expr: S.Expr | None, profile, known: set[str] | None = N
     return None  # Number, Name, String: no call to check
 
 
-def _arity_message(kind: str, text: str, profile, at_eol: bool = True,
-                   whole_statement: bool = False) -> str:
+def _arity_message(kind: str, text: str, profile, at_eol: bool = True, whole_statement: bool = False) -> str:
     if kind == "timer_option":
         return "Legal options are 0..4"
     if kind in ("constint", "incomplete"):
-        verb = ("Parameter must be a constant integer: " if kind == "constint"
-                else "Incomplete expression: ")
+        verb = "Parameter must be a constant integer: " if kind == "constint" else "Incomplete expression: "
         sep = "\n" if profile.name in _ARITY_TRAILING_NEWLINE_LOGGERS and at_eol else ""
         return f"{verb}{text}{sep}."
     if kind == "empty":
         sep = "\n" if whole_statement and at_eol and profile.fallback_echo_newline else ""
         return f"Invalid, or out of place expression: {text}{sep}."
-    verb = ("Expression expects , : " if kind == "few"
-            else "No Matching, or out of place ) in expression: ")
+    verb = "Expression expects , : " if kind == "few" else "No Matching, or out of place ) in expression: "
     if profile.name in _ARITY_TRAILING_NEWLINE_LOGGERS and at_eol:  # not before a `'` comment
         return f"{verb}{text}\n."
     return f"{verb}{text}."
@@ -2242,8 +2540,9 @@ def _find_bare_function_ref(expr: S.Expr | None, profile, declared_variables: fr
     if isinstance(expr, S.Unary):
         return _find_bare_function_ref(expr.operand, profile, declared_variables)
     if isinstance(expr, S.Binary):
-        return (_find_bare_function_ref(expr.left, profile, declared_variables)
-                or _find_bare_function_ref(expr.right, profile, declared_variables))
+        return _find_bare_function_ref(expr.left, profile, declared_variables) or _find_bare_function_ref(
+            expr.right, profile, declared_variables
+        )
     if isinstance(expr, S.Member):
         return _find_bare_function_ref(expr.base, profile, declared_variables)
     if isinstance(expr, S.ArrayLiteral):
@@ -2266,11 +2565,11 @@ def _bare_function_message(text: str, profile, whole_statement: bool, at_eol: bo
 
 def _struct_var_names(program: S.Program) -> frozenset[str]:
     from . import structs  # lazy: structs imports this module
+
     types = structs._structure_members(program)
     if not types:
         return frozenset()
-    return frozenset(n for n, k in structs._variable_kinds(program, types).items()
-                     if k.startswith("STRUCT:"))
+    return frozenset(n for n, k in structs._variable_kinds(program, types).items() if k.startswith("STRUCT:"))
 
 
 def _multi_indexed_struct(expr: S.Expr | None, struct_vars: frozenset[str]) -> bool:
@@ -2281,15 +2580,16 @@ def _multi_indexed_struct(expr: S.Expr | None, struct_vars: frozenset[str]) -> b
         return False
     if isinstance(expr, S.Index):
         return (expr.name.upper() in struct_vars and len(expr.args) >= 2) or any(
-            _multi_indexed_struct(a, struct_vars) for a in expr.args)
+            _multi_indexed_struct(a, struct_vars) for a in expr.args
+        )
     if isinstance(expr, S.Unary):
         return _multi_indexed_struct(expr.operand, struct_vars)
     if isinstance(expr, S.Binary):
-        return (_multi_indexed_struct(expr.left, struct_vars)
-                or _multi_indexed_struct(expr.right, struct_vars))
+        return _multi_indexed_struct(expr.left, struct_vars) or _multi_indexed_struct(expr.right, struct_vars)
     if isinstance(expr, S.Member):
         return _multi_indexed_struct(expr.base, struct_vars) or any(
-            _multi_indexed_struct(a, struct_vars) for a in expr.args or [])
+            _multi_indexed_struct(a, struct_vars) for a in expr.args or []
+        )
     return False
 
 
@@ -2298,8 +2598,7 @@ def _hold(held: list | None, diags: Diagnostics, problem: str) -> None:
         held.append(diags.items[-1])
 
 
-def check_function_arity(program: S.Program, profile, diags: Diagnostics,
-                         held: list | None = None) -> None:
+def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: list | None = None) -> None:
     """Built-in function call arity (`Expression expects , : %s.` / `No Matching, or out of place )
     in expression: %s.`) *and* a bare function-name reference with no argument list at all
     (`Expression expects ( : %s.`, `_is_bare_reference_problem`/`_find_bare_function_ref`) --
@@ -2342,19 +2641,20 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
         declared_variables = declared_variables - frozenset(profile.functions)
     known: set[str] | None = None
     from . import intervals, structs, structure  # lazy: all import this module
+
     struct_types = structs._structure_members(program)
     kinds = structs._variable_kinds(program, struct_types) if struct_types else {}
     struct_vars = _struct_var_names(program)
-    sub_names = {st.name.upper() for st in program.statements
-                 if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"}
+    sub_names = {
+        st.name.upper() for st in program.statements if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"
+    }
     start = len(diags.items)
     mine: list = []
-    table_mine: list = []   # the `mine` entries from DataTable output instructions
+    table_mine: list = []  # the `mine` entries from DataTable output instructions
     in_table = False
     seen_timeint = False
     _TIMEOUT_WIDE[0] = intervals.wide_constants(program, profile)
-    _TIMER_CONTEXT[0] = (consteval.Env(profile, dict(program.consts)),
-                         frozenset(n.upper() for n in declared_variables))
+    _TIMER_CONTEXT[0] = (consteval.Env(profile, dict(program.consts)), frozenset(n.upper() for n in declared_variables))
     arity_known = _known_names(program, profile) if profile.name in _WHOLE_EXPR_ECHO_LOGGERS else None
 
     def arity(expr):
@@ -2372,8 +2672,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                 if arg is None:
                     continue
                 if not table_only and _multi_indexed_struct(arg, struct_vars):
-                    diags.error(stmt.line, _arity_message("many", _arg_text(stmt, i), profile, False),
-                                stmt.file)
+                    diags.error(stmt.line, _arity_message("many", _arg_text(stmt, i), profile, False), stmt.file)
                     mine.append(diags.items[-1])
                     if in_table:
                         table_mine.append(diags.items[-1])
@@ -2382,10 +2681,9 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                     msg = _bare_function_message(_arg_text(stmt, i), profile, whole_statement=False)
                     diags.error(stmt.line, msg, stmt.file)
                     break
-                problem = _find_arity_problem(arg, profile)   # (not deferred: `PanelTemp(X,Sin(Nope,1))`)
+                problem = _find_arity_problem(arg, profile)  # (not deferred: `PanelTemp(X,Sin(Nope,1))`)
                 if problem == "empty":
-                    diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile),
-                                stmt.file)
+                    diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile), stmt.file)
                     break
                 if problem in ("many_member", "constint", "timer_option") and table_only:
                     break  # the "must be used inside a table declaration" error wins
@@ -2401,22 +2699,33 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
             # for `(` recovers exactly that distinction without touching the parser (`docs/
             # checker.md`: `SerialOpen`/`TCPOpen`/`Timer`/`IPTrace` alone, each split from its
             # own argument list onto the next source line, all `Expression expects (`).
-            if (not stmt.args and "(" not in stmt.text
-                    and _is_bare_reference_problem(stmt.name, profile, declared_variables)):
-                diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol), stmt.file)
+            if (
+                not stmt.args
+                and "(" not in stmt.text
+                and _is_bare_reference_problem(stmt.name, profile, declared_variables)
+            ):
+                diags.error(
+                    stmt.line,
+                    _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol),
+                    stmt.file,
+                )
                 continue
             # a `Function` call statement continued as an expression (`Fn(1)+Sin`) is checked as
             # the whole expression, like `X = Fn(1)+Sin` (oracle, 2026-10-10)
             call_exprs = [stmt.tail_expr] if stmt.tail_expr is not None else stmt.args
             if any(_find_bare_function_ref(a, profile, declared_variables) for a in call_exprs):
-                diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol), stmt.file)
+                diags.error(
+                    stmt.line,
+                    _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol),
+                    stmt.file,
+                )
                 continue
-            bad = next((i for i, a in enumerate(stmt.args) if _multi_indexed_struct(a, struct_vars)),
-                       None)
+            bad = next((i for i, a in enumerate(stmt.args) if _multi_indexed_struct(a, struct_vars)), None)
             if bad is not None:
                 # `Foo(A(1,2).V)`: the argument is echoed alone (oracle, 2026-10-03)
-                diags.error(stmt.line, _arity_message("many", _call_arg_text(stmt.text, bad),
-                                                      profile, False), stmt.file)
+                diags.error(
+                    stmt.line, _arity_message("many", _call_arg_text(stmt.text, bad), profile, False), stmt.file
+                )
                 mine.append(diags.items[-1])
                 continue
             problem = _call_arity_problem(stmt.name, stmt.args, profile)
@@ -2427,27 +2736,38 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                     if problem:
                         # inside a `Sub` call the offending argument alone is echoed (oracle,
                         # 2026-10-13, all four loggers); a `Function` statement echoes it whole
-                        if stmt.tail_expr is None and stmt.juxtaposed is None and \
-                                stmt.name.upper() in sub_names:
+                        if stmt.tail_expr is None and stmt.juxtaposed is None and stmt.name.upper() in sub_names:
                             in_arg = k
                         break
             if problem:
-                if (problem == "constint" and any(
-                        d.line == stmt.line and d.file == stmt.file
-                        and d.message.startswith("Parameter must be a constant integer:")
-                        for d in diags.items)):
+                if problem == "constint" and any(
+                    d.line == stmt.line
+                    and d.file == stmt.file
+                    and d.message.startswith("Parameter must be a constant integer:")
+                    for d in diags.items
+                ):
                     continue
-                if not profile.single_pass and stmt.name.upper() == "SERIALOPEN" and stmt.args and any(
+                if (
+                    not profile.single_pass
+                    and stmt.name.upper() == "SERIALOPEN"
+                    and stmt.args
+                    and any(
                         d.line == stmt.line and d.file == stmt.file and d.message.startswith("ComPort ")
-                        for d in diags.items):
+                        for d in diags.items
+                    )
+                ):
                     continue  # the ComPort error ends the statement (oracle, CR6/CR1000X, round 37)
                 if in_arg is not None:
-                    diags.error(stmt.line, _arity_message(
-                        problem, _call_arg_text(stmt.text, in_arg).strip(), profile, False), stmt.file)
+                    diags.error(
+                        stmt.line,
+                        _arity_message(problem, _call_arg_text(stmt.text, in_arg).strip(), profile, False),
+                        stmt.file,
+                    )
                     _hold(held, diags, problem)
                     continue
-                diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol,
-                                                            whole_statement=True), stmt.file)
+                diags.error(
+                    stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol, whole_statement=True), stmt.file
+                )
                 _hold(held, diags, problem)
         elif isinstance(stmt, S.If):
             # All four loggers, pass 1 (oracle, 2026-09-27): `If TimeIsBetween(0,15,60,sec,1) Then`
@@ -2464,8 +2784,9 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
             elif problem == "constint" and text is not None:
                 diags.error(stmt.line, f"Parameter must be a constant integer: {text}.", stmt.file)
             elif problem and text is not None:
-                verb = ("Expression expects , : " if problem == "few"
-                        else "No Matching, or out of place ) in expression: ")
+                verb = (
+                    "Expression expects , : " if problem == "few" else "No Matching, or out of place ) in expression: "
+                )
                 diags.error(stmt.line, f"{verb}{text}.", stmt.file)
                 _hold(held, diags, problem)
                 if struct_cond:
@@ -2473,16 +2794,18 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
         elif isinstance(stmt, S.ConstDecl) and stmt.value_span:
             # `Const CRLF = CHR(13,1) + CHR(10)` -> `No Matching, or out of place ) in expression:
             # CHR(13,1) + CHR(10).`, the value echoed, all four loggers (oracle, 2026-10-01)
-            problem = arity(stmt.value)   # (deferred: round 41)
-            text = stmt.text[stmt.value_span[0]:stmt.value_span[1]]
+            problem = arity(stmt.value)  # (deferred: round 41)
+            text = stmt.text[stmt.value_span[0] : stmt.value_span[1]]
             if problem == "empty":
                 # `Const Pi = 4*ATN() 'c` -> `Invalid, or out of place expression: 4*ATN() .`,
                 # the value to the comment, no CR300 newline (oracle, 2026-10-01)
-                diags.error(stmt.line, "Invalid, or out of place expression: "
-                            f"{stmt.text[stmt.value_span[0]:]}.", stmt.file)
+                diags.error(
+                    stmt.line, f"Invalid, or out of place expression: {stmt.text[stmt.value_span[0] :]}.", stmt.file
+                )
             elif problem:
-                verb = ("Expression expects , : " if problem == "few"
-                        else "No Matching, or out of place ) in expression: ")
+                verb = (
+                    "Expression expects , : " if problem == "few" else "No Matching, or out of place ) in expression: "
+                )
                 diags.error(stmt.line, f"{verb}{text}.", stmt.file)
         elif isinstance(stmt, S.Assignment):
             if known is None:
@@ -2493,8 +2816,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                 continue
             if _multi_indexed_struct(stmt.target, struct_vars):
                 # a structure reference takes one index; oracle 2026-10-03, docs/checker.md
-                diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol),
-                            stmt.file)
+                diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol), stmt.file)
                 mine.append(diags.items[-1])
                 continue
             target_message = _function_target_message(stmt, profile, declared_variables)
@@ -2502,21 +2824,31 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                 diags.error(stmt.line, target_message, stmt.file)
                 continue
             if _find_bare_function_ref(stmt.value, profile, declared_variables):
-                diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol), stmt.file)
+                diags.error(
+                    stmt.line,
+                    _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol),
+                    stmt.file,
+                )
                 continue
             problem = arity(stmt.value)
             struct_value = not problem and _multi_indexed_struct(stmt.value, struct_vars)
             if struct_value:
                 problem = "many"
-                if (profile.single_pass and not stmt.compound and isinstance(stmt.value, S.Index)
-                        and structs._operand_kind(stmt.target, kinds, struct_types) == "S"):
-                    diags.items.append(Diagnostic("error", stmt.line, structs._WRONG_TYPE, stmt.file,
-                                                  cascade=False))
+                if (
+                    profile.single_pass
+                    and not stmt.compound
+                    and isinstance(stmt.value, S.Index)
+                    and structs._operand_kind(stmt.target, kinds, struct_types) == "S"
+                ):
+                    diags.items.append(Diagnostic("error", stmt.line, structs._WRONG_TYPE, stmt.file, cascade=False))
                     mine.append(diags.items[-1])
             if problem:
-                diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol,
-                                                            whole_statement=True), stmt.file,
-                            stmt=stmt)
+                diags.error(
+                    stmt.line,
+                    _arity_message(problem, stmt.text, profile, stmt.at_eol, whole_statement=True),
+                    stmt.file,
+                    stmt=stmt,
+                )
                 _hold(held, diags, problem)
                 if struct_value:
                     mine.append(diags.items[-1])
@@ -2553,13 +2885,15 @@ def _function_target_message(stmt: S.Assignment, profile, declared: frozenset[st
     if isinstance(target, S.Name):
         if _is_bare_reference_problem(target.name, profile, declared):
             return _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol)
-        return f"Invalid assignment in expression: {stmt.text}{sep}." \
-            if record.get("nargs") == 0 and not record.get("argspec") else None
+        return (
+            f"Invalid assignment in expression: {stmt.text}{sep}."
+            if record.get("nargs") == 0 and not record.get("argspec")
+            else None
+        )
     problem = _call_arity_problem(target.name, target.args, profile)
     if problem in ("few", "many", "empty"):
         return _arity_message(problem, stmt.text, profile, stmt.at_eol, whole_statement=True)
-    if problem is None and None not in target.args and record.get("nargs") == len(target.args) \
-            and record.get("nargs"):
+    if problem is None and None not in target.args and record.get("nargs") == len(target.args) and record.get("nargs"):
         return f"Invalid assignment in expression: {stmt.text}{sep}."
     return None
 
@@ -2571,8 +2905,10 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
     CR6/CR1000X (a later `X = Q` is not reported), all four loggers (oracle, 2026-09-28,
     `docs/checker.md` "Function argument counts")."""
     from . import structure
-    functions = {st.name.upper(): st for st in program.statements
-                 if isinstance(st, S.SubDef) and st.keyword == "FUNCTION"}
+
+    functions = {
+        st.name.upper(): st for st in program.statements if isinstance(st, S.SubDef) and st.keyword == "FUNCTION"
+    }
     if not functions:
         return
     known = _known_names(program, profile)
@@ -2591,8 +2927,7 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
                 for inner in _index_nodes(node):
                     f2 = functions.get(inner.name.upper())
                     if f2 is not None:
-                        missing[0] += max(0, sum(1 for p in f2.params if p.default is None)
-                                          - len(inner.args))
+                        missing[0] += max(0, sum(1 for p in f2.params if p.default is None) - len(inner.args))
                 return "few"
             if len(node.args) > len(fn.params):
                 return "many"
@@ -2600,10 +2935,13 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
 
     def report(stmt: S.Stmt, kind: str, echo: str, whole: bool) -> None:
         if kind == "few":
-            for _ in range(missing[0]):   # one per missing required argument (oracle, 2026-10-12)
+            for _ in range(missing[0]):  # one per missing required argument (oracle, 2026-10-12)
                 diags.error(stmt.line, "Call argument required.", stmt.file)
-            text = structure._out_of_place(profile, echo, stmt.at_eol) if whole else \
-                f"Invalid, or out of place expression: {echo}."
+            text = (
+                structure._out_of_place(profile, echo, stmt.at_eol)
+                if whole
+                else f"Invalid, or out of place expression: {echo}."
+            )
         else:
             sep = "\n" if whole and profile.fallback_echo_newline and stmt.at_eol else ""
             text = f"No Matching, or out of place ) in expression: {echo}{sep}."
@@ -2612,9 +2950,17 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
     def visit(stmt: S.Stmt) -> None:
         if isinstance(stmt, S.Assignment):
             kind = problem(stmt.target) or problem(stmt.value)
-            if kind and _undefined_names(stmt.target, known) and not (
-                    profile.single_pass and (isinstance(stmt.target, S.Name) or (
-                        isinstance(stmt.target, S.Index) and stmt.target.name.upper() in known))):
+            if (
+                kind
+                and _undefined_names(stmt.target, known)
+                and not (
+                    profile.single_pass
+                    and (
+                        isinstance(stmt.target, S.Name)
+                        or (isinstance(stmt.target, S.Index) and stmt.target.name.upper() in known)
+                    )
+                )
+            ):
                 kind = None  # an undefined target never reaches the value's call (oracle, all four
                 #              loggers, 2026-10-11, docs/checker.md "Function calls after an undefined target")
             if kind:
@@ -2646,16 +2992,16 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
                     if kind := problem(arg):
                         report(stmt, kind, _call_arg_text(stmt.text, i).strip(), False)
                         return
-            bare = not stmt.args and not (stmt.text or "").lstrip()[len(stmt.name):].lstrip().startswith("(")
+            bare = not stmt.args and not (stmt.text or "").lstrip()[len(stmt.name) :].lstrip().startswith("(")
             if not stmt.explicit and fn is not None and not bare:  # a bare `Fn` (no parentheses) is accepted (oracle)
                 required = sum(1 for p in fn.params if p.default is None)
-                kind = ("few" if len(stmt.args) < required
-                        else "many" if len(stmt.args) > len(fn.params) else None)
+                kind = "few" if len(stmt.args) < required else "many" if len(stmt.args) > len(fn.params) else None
                 missing[0] = max(1, required - len(stmt.args))
                 if kind:
                     report(stmt, kind, stmt.text, True)
-                elif (m := re.match(r"\s*" + re.escape(stmt.name) + r"\s*(?=\()", stmt.text or "", re.I)) \
-                        and structure._group_end(stmt.text, m.end()) is None:
+                elif (
+                    m := re.match(r"\s*" + re.escape(stmt.name) + r"\s*(?=\()", stmt.text or "", re.I)
+                ) and structure._group_end(stmt.text, m.end()) is None:
                     # a user `Function` called as a statement needs its `)` (a `Sub` call does
                     # not): oracle, 2026-10-13, all four loggers
                     report(stmt, "many", stmt.text, True)
@@ -2702,8 +3048,12 @@ def _check_for_headers(program: S.Program, profile, diags: Diagnostics, known) -
     ds = program_dims(program, profile, known)
     pending: list[tuple[S.For, str]] = []
     for stmt in program.statements:
-        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "NEXT" and pending and \
-                not re.match(r"(?i)\s*Next\s+(Sub)?Scan\b", stmt.text or ""):
+        if (
+            isinstance(stmt, S.Instruction)
+            and stmt.keyword.upper() == "NEXT"
+            and pending
+            and not re.match(r"(?i)\s*Next\s+(Sub)?Scan\b", stmt.text or "")
+        ):
             loop, var_text = pending.pop()
             if var_text:
                 diags.error(stmt.line, f"Invalid symbol in expression: {var_text}.", stmt.file)
@@ -2711,15 +3061,22 @@ def _check_for_headers(program: S.Program, profile, diags: Diagnostics, known) -
         if not isinstance(stmt, S.For):
             continue
         m = _FOR_HEADER_RE.match(stmt.text or "")
-        parts = [(stmt.var, m.group(1) if m else None), (stmt.start, m.group(2) if m else None),
-                 (stmt.end, m.group(3) if m else None), (stmt.step, m.group(4) if m else None)]
+        parts = [
+            (stmt.var, m.group(1) if m else None),
+            (stmt.start, m.group(2) if m else None),
+            (stmt.end, m.group(3) if m else None),
+            (stmt.step, m.group(4) if m else None),
+        ]
         whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
         var_text = ""
         for i, (expr, text) in enumerate(parts):
             names = _undefined_names(expr, known) if expr is not None else []
             if not names:
-                if i and text is not None and _over_indexed(
-                        expr, symbols.declared_dim_counts(program, strings=True), _dim_limit(profile)):
+                if (
+                    i
+                    and text is not None
+                    and _over_indexed(expr, symbols.declared_dim_counts(program, strings=True), _dim_limit(profile))
+                ):
                     # `For N = 1 To B(1,1,1,1)`: the header part echoed (oracle, 2026-10-13)
                     diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
                 continue
@@ -2732,8 +3089,7 @@ def _check_for_headers(program: S.Program, profile, diags: Diagnostics, known) -
                     diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
             else:
                 for name in names:
-                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
-                                stmt.file)
+                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
                 if i == 0 and text is not None and _has_undefined_index(expr, known, ds, stmt):
                     diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
         pending.append((stmt, var_text))
@@ -2754,11 +3110,18 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
         if isinstance(stmt, S.Instruction) and (kw == "SELECT"):
             # (an over-indexed selector opens no block either, on all four loggers)
-            orphans.append(bool(stmt.args) and (
-                (not whole_echo and bool(_undefined_names(stmt.args[0], known)))
-                or (not _undefined_names(stmt.args[0], known) and _over_indexed(
-                    stmt.args[0], symbols.declared_dim_counts(program, strings=True),
-                    _dim_limit(profile)))))
+            orphans.append(
+                bool(stmt.args)
+                and (
+                    (not whole_echo and bool(_undefined_names(stmt.args[0], known)))
+                    or (
+                        not _undefined_names(stmt.args[0], known)
+                        and _over_indexed(
+                            stmt.args[0], symbols.declared_dim_counts(program, strings=True), _dim_limit(profile)
+                        )
+                    )
+                )
+            )
             continue
         if kw == "ENDSELECT" or (kw == "END" and re.match(r"(?i)\s*End\s+Select\b", stmt.text or "")):
             if orphans and orphans.pop():
@@ -2773,9 +3136,11 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
                 continue  # `ElseIf Nope Then` with no `If`: only `Case with no Select.`
             names = _undefined_names(stmt.cond, known)
             text = _if_condition_text(stmt)
-            if text is not None and not names and _over_indexed(
-                    stmt.cond, symbols.declared_dim_counts(program, strings=True),
-                    _dim_limit(profile)):
+            if (
+                text is not None
+                and not names
+                and _over_indexed(stmt.cond, symbols.declared_dim_counts(program, strings=True), _dim_limit(profile))
+            ):
                 diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
                 continue
             if not names or text is None:
@@ -2784,13 +3149,11 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
                 diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
             else:
                 for name in names:
-                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
-                                stmt.file)
+                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
                 if _has_undefined_index(stmt.cond, known, ds, stmt):
                     diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
             continue
-        if not isinstance(stmt, S.Case) or stmt.is_else or \
-                re.match(r"(?i)\s*Case\s+Else", stmt.text or ""):
+        if not isinstance(stmt, S.Case) or stmt.is_else or re.match(r"(?i)\s*Case\s+Else", stmt.text or ""):
             continue  # (`Case Elsewhere` is a `Case Else`, `checker/structure.py`)
         if orphans and orphans[-1]:
             diags.error(stmt.line, "Case outside Select.", stmt.file)
@@ -2811,11 +3174,14 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
             cm = re.match(r"(?i)\s*Case\s(.*)$", stmt.text or "")
             if cm:
                 counts = symbols.declared_dim_counts(program, strings=True)
-                if any(_over_indexed(e, counts, _dim_limit(profile)) for item in stmt.items
-                       for e in item[1:] if isinstance(e, S.Expr)):
+                if any(
+                    _over_indexed(e, counts, _dim_limit(profile))
+                    for item in stmt.items
+                    for e in item[1:]
+                    if isinstance(e, S.Expr)
+                ):
                     # the whole item list after `Case ` is echoed (oracle, 2026-10-13)
-                    diags.error(stmt.line, dimensions_message(cm.group(1), profile, False),
-                                stmt.file)
+                    diags.error(stmt.line, dimensions_message(cm.group(1), profile, False), stmt.file)
             continue
         if whole_echo:
             m = re.match(r"(?i)\s*Case\s(.*)$", stmt.text or "")
@@ -2826,8 +3192,7 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
             diags.error(stmt.line, f"Invalid symbol in expression: {m.group(1)}.", stmt.file)
         else:
             for name in names:
-                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
-                            stmt.file)
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
 
 
 def _check_function_statements(program: S.Program, profile, diags: Diagnostics, known) -> None:
@@ -2845,15 +3210,19 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
         args = stmt.args
         if stmt.name.upper() == "SERIALOPEN" and profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             from .cr3xx import bare_unknown_delay
+
             if bare_unknown_delay(stmt, known):
-                args = args[:3] + args[4:]   # recovered by the parser (`cr3xx.check`)
+                args = args[:3] + args[4:]  # recovered by the parser (`cr3xx.check`)
         names = [n for a in args if a is not None for n in _undefined_names(a, known)]
         # (its own `Expr illegally occurs before BeginProg.` does not hide it, unless an earlier
         # statement of the line owns that placement error: `X = 1 : Timer(Nope,1,0)`)
-        if not names or any((d.line, d.file) == (stmt.line, stmt.file)
-                            and not (d.message == "Expr illegally occurs before BeginProg."
-                                     and first_on_line[(stmt.line, stmt.file)] is stmt)
-                            for d in diags.errors):
+        if not names or any(
+            (d.line, d.file) == (stmt.line, stmt.file)
+            and not (
+                d.message == "Expr illegally occurs before BeginProg." and first_on_line[(stmt.line, stmt.file)] is stmt
+            )
+            for d in diags.errors
+        ):
             continue  # (`SerialOpen(COMC1,...)` is already reported by `cr3xx.check`)
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, f"Invalid symbol in expression: {stmt.text}.", stmt.file)
@@ -2862,8 +3231,7 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
         for name in names:
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
         if dims:
-            diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
-                        stmt.file)
+            diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol), stmt.file)
 
 
 # Parameter codes whose plain array-element argument is bounds-checked, and instructions whose own
@@ -2872,15 +3240,26 @@ _BOUNDS_CHECKED_CODES = frozenset({2, 8, 24, 27, 28, 29, 41})
 _BOUNDS_UNCHECKED = frozenset({"ADDPRECISE", "MOVEPRECISE"})
 # Codes 27/29 only for oracle-probed instructions (2026-10-02, docs/checker.md "Destination bounds").
 _BOUNDS_PROBED = {
-    24: frozenset({"SDMIO16", "PORTPAIRCONFIG"}),   # (Float and Long, oracle 2026-10-12)
+    24: frozenset({"SDMIO16", "PORTPAIRCONFIG"}),  # (Float and Long, oracle 2026-10-12)
     27: frozenset({"MOVE", "ERASE", "GETRECORD", "SPLITSTR", "MOVEBYTES", "SDI12RECORDER"}),
-    29: frozenset({"REALTIME", "READIO", "PORTGET", "AVGSPA", "MAXSPA", "MINSPA", "RMSSPA",
-                   "STDDEVSPA", "SORTSPA", "SORTSPAINDEXED"}),
+    29: frozenset(
+        {
+            "REALTIME",
+            "READIO",
+            "PORTGET",
+            "AVGSPA",
+            "MAXSPA",
+            "MINSPA",
+            "RMSSPA",
+            "STDDEVSPA",
+            "SORTSPA",
+            "SORTSPAINDEXED",
+        }
+    ),
 }
 
 
-def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnostics,
-                                   env: consteval.Env) -> None:
+def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     """`Battery(A(9))` for `Public A(5)` -> `Variable A out of bounds.` (oracle, 2026-10-01): pass 2
     on CR6/CR1000X, the late stage on CR300/CR350 (only in a file with no other error). Only an
     argument that is itself an element of a Float array, indexed by number literals: index 0 or
@@ -2892,22 +3271,36 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
     padded = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
     tables = symbols.scope_tables(program, env, scalars=padded)
     for stmt in program.statements:
-        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "WHILE" and \
-                len(stmt.args) == 1 and isinstance(stmt.args[0], S.Index):
+        if (
+            isinstance(stmt, S.Instruction)
+            and stmt.keyword.upper() == "WHILE"
+            and len(stmt.args) == 1
+            and isinstance(stmt.args[0], S.Index)
+        ):
             candidates = [(2, stmt.args[0])]
         elif isinstance(stmt, (S.If, S.ElseIf, S.DoLoop)) and isinstance(stmt.cond, S.Index):
             # a condition that is one element (`If A(3) Then`, `While A(0)`, `ElseIf A(5) Then`):
             # checked like a code-2 argument (oracle, all four loggers, 2026-10-12; `If A(3) > 1`
             # and `Y = A(3)` compile)
             candidates = [(2, stmt.cond)]
-        elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() not in _BOUNDS_UNCHECKED \
-                and (record := profile.instructions.get(stmt.keyword.upper())):
-            candidates = [(record["params"][i] if i < len(record["params"]) else None, arg)
-                          for i, arg in enumerate(stmt.args)
-                          # (`FieldCal` options 0 and 4 never resolve `KnownVar`, oracle 2026-10-12:
-                          # `Meter(3)` of `Meter(2)` compiles)
-                          if not (stmt.keyword.upper() == "FIELDCAL" and i == 6 and stmt.args
-                                  and isinstance(stmt.args[0], S.Number) and stmt.args[0].value in (0, 4))]
+        elif (
+            isinstance(stmt, S.Instruction)
+            and stmt.keyword.upper() not in _BOUNDS_UNCHECKED
+            and (record := profile.instructions.get(stmt.keyword.upper()))
+        ):
+            candidates = [
+                (record["params"][i] if i < len(record["params"]) else None, arg)
+                for i, arg in enumerate(stmt.args)
+                # (`FieldCal` options 0 and 4 never resolve `KnownVar`, oracle 2026-10-12:
+                # `Meter(3)` of `Meter(2)` compiles)
+                if not (
+                    stmt.keyword.upper() == "FIELDCAL"
+                    and i == 6
+                    and stmt.args
+                    and isinstance(stmt.args[0], S.Number)
+                    and stmt.args[0].value in (0, 4)
+                )
+            ]
         else:
             continue
         scope = tables(stmt)
@@ -2915,15 +3308,25 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
         for code, arg in candidates:
             if code not in _BOUNDS_CHECKED_CODES or not isinstance(arg, S.Index) or not arg.args:
                 continue
-            if code in _BOUNDS_PROBED and isinstance(stmt, S.Instruction) and stmt.keyword.upper() not in _BOUNDS_PROBED[code]:
+            if (
+                code in _BOUNDS_PROBED
+                and isinstance(stmt, S.Instruction)
+                and stmt.keyword.upper() not in _BOUNDS_PROBED[code]
+            ):
                 continue
             name = arg.name.upper()
             shape = dims.get(name)
             # Code 27 (Move/Erase/GetRecord/SplitStr destinations) also checks Long and String
             # arrays (oracle, 2026-10-02); the other codes are only probed for Float.
-            if not shape or (types.get(name) != "FLOAT" and not (code == 27 and name in arrays) and
-                             not (code in (24, 29) and types.get(name) == "LONG")) or \
-                    not all(isinstance(a, S.Number) and isinstance(a.value, int) for a in arg.args):
+            if (
+                not shape
+                or (
+                    types.get(name) != "FLOAT"
+                    and not (code == 27 and name in arrays)
+                    and not (code in (24, 29) and types.get(name) == "LONG")
+                )
+                or not all(isinstance(a, S.Number) and isinstance(a.value, int) for a in arg.args)
+            ):
                 continue
             index = [cast(S.Number, a).value for a in arg.args]
             if len(index) == 1 and len(shape) > 1:
@@ -2945,16 +3348,24 @@ def check_splitstr_element_reps(program: S.Program, profile, diags: Diagnostics,
     all four loggers, 2026-10-12: `Public F(3)` with `F(1)`/Reps 6 or `F(2)`/Reps 3, Long arrays too,
     and `G((1+2)) As String * 10`, a parenthesised dimension making a Float array; a String array
     `T(3)` compiles with Reps 6)."""
-    strings = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration)
-               for v in st.vars if (v.type or "").upper() == "STRING" and not v.paren_dim}
+    strings = {
+        v.name.upper()
+        for st in program.statements
+        if isinstance(st, S.Declaration)
+        for v in st.vars
+        if (v.type or "").upper() == "STRING" and not v.paren_dim
+    }
     tables = symbols.scope_tables(program, env)
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SPLITSTR" \
-                or len(stmt.args) < 4:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SPLITSTR" or len(stmt.args) < 4:
             continue
         dest = stmt.args[0]
-        if not isinstance(dest, S.Index) or len(dest.args) != 1 or \
-                not isinstance(dest.args[0], S.Number) or not isinstance(dest.args[0].value, int):
+        if (
+            not isinstance(dest, S.Index)
+            or len(dest.args) != 1
+            or not isinstance(dest.args[0], S.Number)
+            or not isinstance(dest.args[0].value, int)
+        ):
             continue
         name = dest.name.upper()
         shape = tables(stmt).dims.get(name)
@@ -2962,7 +3373,7 @@ def check_splitstr_element_reps(program: S.Program, profile, diags: Diagnostics,
             continue
         try:
             reps = consteval.value_of(stmt.args[3], env)
-        except (consteval.NotConstant, consteval.DivideByZero):
+        except consteval.NotConstant, consteval.DivideByZero:
             continue
         if isinstance(reps, bool) or not isinstance(reps, (int, float)) or reps != int(reps) or reps < 1:
             continue
@@ -2976,7 +3387,7 @@ def _sdmsio4_count(stmt: S.Instruction, env) -> int | None:
         return None
     try:
         n = consteval.value_of(stmt.args[7], env)
-    except (consteval.NotConstant, consteval.DivideByZero):
+    except consteval.NotConstant, consteval.DivideByZero:
         return None
     return int(n) if isinstance(n, (int, float)) and not isinstance(n, bool) and n == int(n) else None
 
@@ -2997,8 +3408,7 @@ def check_sdmsio4_count(program: S.Program, profile, diags: Diagnostics, env) ->
             continue
         start = 1
         if isinstance(dest, S.Index):
-            if len(dest.args) != 1 or not isinstance(dest.args[0], S.Number) or \
-                    not isinstance(dest.args[0].value, int):
+            if len(dest.args) != 1 or not isinstance(dest.args[0], S.Number) or not isinstance(dest.args[0].value, int):
                 continue
             start = dest.args[0].value
         if start + n - 1 > shape[0]:
@@ -3016,8 +3426,7 @@ def check_timedcontrol_constants(program: S.Program, profile, diags: Diagnostics
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "TIMEDCONTROL":
             continue
         for i, what in ((0, "Size"), (1, "Interval")):
-            if i < len(stmt.args) and stmt.args[i] is not None and \
-                    _names_in(stmt.args[i]) - consts:
+            if i < len(stmt.args) and stmt.args[i] is not None and _names_in(stmt.args[i]) - consts:
                 diags.error(stmt.line, f"{what} must be a constant.", stmt.file)
 
 
@@ -3058,8 +3467,7 @@ def check_calibrate_size(program: S.Program, profile, diags: Diagnostics, env) -
             continue
         start = 1
         if isinstance(dest, S.Index) and dest.args:
-            if len(dest.args) != 1 or not isinstance(dest.args[0], S.Number) or \
-                    not isinstance(dest.args[0].value, int):
+            if len(dest.args) != 1 or not isinstance(dest.args[0], S.Number) or not isinstance(dest.args[0].value, int):
                 continue
             start = dest.args[0].value
         if shape[0] - start + 1 < need:
@@ -3078,8 +3486,7 @@ def check_splitstr_whole_array(program: S.Program, profile, diags: Diagnostics, 
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SPLITSTR":
             continue
         dims, arrays = tables(stmt).dims, tables(stmt).arrays
-        if not stmt.args or not isinstance(stmt.args[0], S.Index) or stmt.args[0].args \
-                or len(stmt.args) < 4:
+        if not stmt.args or not isinstance(stmt.args[0], S.Index) or stmt.args[0].args or len(stmt.args) < 4:
             continue
         dest = stmt.args[0]
         name = dest.name.upper()
@@ -3097,8 +3504,12 @@ def check_splitstr_whole_array(program: S.Program, profile, diags: Diagnostics, 
             text = _arg_text(stmt, 3).strip()
             if "." not in text and not profile.single_pass:
                 diags.error(stmt.line, f"Divide by zero in expression: {text}.", stmt.file)
-            elif isinstance(stmt.args[3], S.Binary) and stmt.args[3].op == "/" and \
-                    isinstance(exc.numerator, (int, float)) and exc.numerator > 0:
+            elif (
+                isinstance(stmt.args[3], S.Binary)
+                and stmt.args[3].op == "/"
+                and isinstance(exc.numerator, (int, float))
+                and exc.numerator > 0
+            ):
                 diags.error(stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
             continue
         except consteval.NotConstant:
@@ -3133,8 +3544,7 @@ def check_subcall_element_bounds(program: S.Program, profile, diags: Diagnostics
                 continue
             shape = dims.get(arg.name.upper())
             index = [a.value for a in arg.args if isinstance(a, S.Number) and not isinstance(a.value, float)]
-            if not shape or len(index) != len(arg.args) or len(index) != len(shape) or \
-                    any(k < 0 for k in index):
+            if not shape or len(index) != len(arg.args) or len(index) != len(shape) or any(k < 0 for k in index):
                 continue
             if any(not 1 <= k <= n for k, n in zip(index, shape)):
                 diags.error(stmt.line, f"Variable {arg.name} out of bounds.", stmt.file)
@@ -3150,9 +3560,10 @@ def check_recursive_functions(program: S.Program, profile, diags: Diagnostics) -
         if isinstance(stmt, S.SubDef):
             current = stmt.name.upper() if stmt.keyword == "FUNCTION" else None
             continue
-        if isinstance(stmt, S.Instruction) and (stmt.keyword.upper() in ("ENDFUNCTION", "ENDSUB")
-                                                or re.match(r"(?i)\s*End\s+(Function|Sub)\b",
-                                                            stmt.text or "")):
+        if isinstance(stmt, S.Instruction) and (
+            stmt.keyword.upper() in ("ENDFUNCTION", "ENDSUB")
+            or re.match(r"(?i)\s*End\s+(Function|Sub)\b", stmt.text or "")
+        ):
             current = None
             continue
         if current is None:

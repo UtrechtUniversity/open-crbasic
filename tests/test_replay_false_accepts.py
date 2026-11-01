@@ -1,4 +1,5 @@
 """Observations closing fuzz-replay false accepts; expected output is the real compilers'."""
+
 import json
 from pathlib import Path
 
@@ -7,8 +8,11 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-CASES = [case for name in ("ntp_arity",)
-         for case in json.loads((Path(__file__).parent / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))["cases"]]
+CASES = [
+    case
+    for name in ("ntp_arity",)
+    for case in json.loads((Path(__file__).parent / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))["cases"]
+]
 
 
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])

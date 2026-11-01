@@ -1,4 +1,3 @@
-
 import concurrent.futures
 import multiprocessing
 import os
@@ -50,8 +49,7 @@ def test_parallel_run_ours_compiles_tiny_programs_without_hanging(tmp_path):
             b"Public SearchString As String * 50\n"
             b"BeginProg\n",
             1,
-            "9df4271b08ac.CR6 -- Compile Failed!\n\n"
-            "line 3: SearchString already declared as a variable.",
+            "9df4271b08ac.CR6 -- Compile Failed!\n\nline 3: SearchString already declared as a variable.",
         ),
         (
             "afdfa27ff22f.CR6",
@@ -64,8 +62,7 @@ def test_parallel_run_ours_compiles_tiny_programs_without_hanging(tmp_path):
             b"  NextScan\n"
             b"EndProg\n",
             1,
-            "afdfa27ff22f.CR6 -- Compile Failed!\n\n"
-            "line 4: Scan illegally occurs before BeginProg.",
+            "afdfa27ff22f.CR6 -- Compile Failed!\n\nline 4: Scan illegally occurs before BeginProg.",
         ),
     ]
 

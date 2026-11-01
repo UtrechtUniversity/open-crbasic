@@ -24,8 +24,14 @@ CORPORA = {
     "fuzz replay reproducers": (ROOT / "tests" / "corpus" / "fuzz", ("**/*",)),
     "fixtures": (ROOT / "tests" / "fixtures", ("**/*",)),
 }
-FILES = ["tests/replay_baseline.json", "tests/artifact_baseline.json", "docs/inventory-cr6.json",
-         "src/opencrbasic/data/notices_cr6.json", "uv.lock", "vscode/package-lock.json"]
+FILES = [
+    "tests/replay_baseline.json",
+    "tests/artifact_baseline.json",
+    "docs/inventory-cr6.json",
+    "src/opencrbasic/data/notices_cr6.json",
+    "uv.lock",
+    "vscode/package-lock.json",
+]
 
 
 def tree_hash(base: Path, patterns: tuple[str, ...]) -> tuple[str, int]:
@@ -43,11 +49,18 @@ def main() -> None:
         "report_schema_version": checks.SCHEMA_VERSION,
         "python": platform.python_version(),
         "platform": platform.platform(),
-        "compilers": {name: {"exe": p.exe_name, "version": p.version,
-                             "sha256": hashlib.sha256((REPO / "compiler" / p.exe_name).read_bytes()).hexdigest()}
-                      for name, p in profiles.PROFILES.items()},
-        "corpora": {name: dict(zip(("sha256", "files"), tree_hash(base, patterns)))
-                    for name, (base, patterns) in CORPORA.items()},
+        "compilers": {
+            name: {
+                "exe": p.exe_name,
+                "version": p.version,
+                "sha256": hashlib.sha256((REPO / "compiler" / p.exe_name).read_bytes()).hexdigest(),
+            }
+            for name, p in profiles.PROFILES.items()
+        },
+        "corpora": {
+            name: dict(zip(("sha256", "files"), tree_hash(base, patterns)))
+            for name, (base, patterns) in CORPORA.items()
+        },
         "files": {f: hashlib.sha256((ROOT / f).read_bytes()).hexdigest() for f in FILES},
     }
     print(json.dumps(out, indent=1))

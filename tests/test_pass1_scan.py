@@ -93,6 +93,8 @@ def test_pass1_error_suppresses_earlier_pass2_errors():
 
 @pytest.mark.parametrize("line", ["  MySub bar", "  Tab bar", "  Then bar", "  Not bar"])
 def test_unknown_to_pass1_words_stay_pass2(line):
-    text = (f"{DECLS}Dim Z banana\nDataTable (Tab,1,-1)\nSample (1,Pi,FP2)\nEndTable\n"
-            f"Sub MySub\nEndSub\nBeginProg\n{line}\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n")
+    text = (
+        f"{DECLS}Dim Z banana\nDataTable (Tab,1,-1)\nSample (1,Pi,FP2)\nEndTable\n"
+        f"Sub MySub\nEndSub\nBeginProg\n{line}\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n"
+    )
     assert messages(text) == [PASS1_ERROR]

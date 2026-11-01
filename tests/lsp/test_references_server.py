@@ -16,9 +16,15 @@ COMMENTED = "' sharedValue in a comment\n" + USE
 
 
 def spots(locations: list[dict]) -> list[tuple[str, int, int, int]]:
-    return sorted((Path(l["uri"]).name, l["range"]["start"]["line"],
-                   l["range"]["start"]["character"], l["range"]["end"]["character"])
-                  for l in locations)
+    return sorted(
+        (
+            Path(l["uri"]).name,
+            l["range"]["start"]["line"],
+            l["range"]["start"]["character"],
+            l["range"]["end"]["character"],
+        )
+        for l in locations
+    )
 
 
 def shared(make_client, tmp_path, a_text: str = USE):
@@ -27,14 +33,15 @@ def shared(make_client, tmp_path, a_text: str = USE):
     client = started(make_client, root)
     client.open(a)
     client.open(b)
-    for path in (a, b):                     # each entry's program is fresh once this answers
+    for path in (a, b):  # each entry's program is fresh once this answers
         client.on_file("textDocument/documentSymbol", path)
     return client, a, b, lib
 
 
 def references(client, path: Path, line: int, character: int, declaration: bool = True):
-    return spots(client.at("textDocument/references", path, line, character,
-                           context={"includeDeclaration": declaration}))
+    return spots(
+        client.at("textDocument/references", path, line, character, context={"includeDeclaration": declaration})
+    )
 
 
 def test_references_from_any_entry_list_every_entry_of_the_declaration(make_client, tmp_path):
@@ -59,8 +66,7 @@ def test_definition_and_highlights_from_the_library(make_client, tmp_path):
 
 def test_rename_in_a_comment_line_names_the_cause(make_client, tmp_path):
     client, a, _, _ = shared(make_client, tmp_path, COMMENTED)
-    for method, extra in (("textDocument/prepareRename", {}),
-                          ("textDocument/rename", {"newName": "renamedValue"})):
+    for method, extra in (("textDocument/prepareRename", {}), ("textDocument/rename", {"newName": "renamedValue"})):
         err = error_of(client, method, a, 0, 4, **extra)
         assert err["code"] == REQUEST_FAILED and err["data"] == {"reason": "not_a_name"}
         assert "not in code any entry parses" in err["message"]

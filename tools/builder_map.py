@@ -41,8 +41,7 @@ def main() -> None:
         return va
 
     src = args.decomp.read_text(errors="replace")
-    heads = [(m.start(), int(m.group(1), 16))
-             for m in re.finditer(r"^// ==== \S+ @ ([0-9a-f]{8})\n", src, re.M)]
+    heads = [(m.start(), int(m.group(1), 16)) for m in re.finditer(r"^// ==== \S+ @ ([0-9a-f]{8})\n", src, re.M)]
     starts = [h[0] for h in heads]
     builders: dict[int, list[str]] = {}
     for record in json.loads((ROOT / "src" / "opencrbasic" / "data" / "instructions.json").read_text()):
@@ -51,7 +50,7 @@ def main() -> None:
     calls = set()
     for m in re.finditer(r"(?:thunk_)?" + re.escape(args.function) + r"\(([^;]*)\);", src):
         owner = heads[bisect.bisect_right(starts, m.start()) - 1][1]
-        if owner == own:   # its own definition
+        if owner == own:  # its own definition
             continue
         calls.add((owner, " ".join(m.group(1).split())))
     for owner, call_args in sorted(calls):

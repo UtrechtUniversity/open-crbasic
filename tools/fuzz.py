@@ -75,8 +75,7 @@ GEUS_DIR = REPO / "examples" / "Logger Programs"
 FUZZ_CORPUS = ROOT / "tests" / "corpus" / "fuzz"
 
 DEFAULT_COUNTS = {"cr6": 1500, "cr1000x": 300, "cr300": 300, "cr350": 300}
-CLASSES = ["crash", "hang", "implementation_exception", "false_reject", "false_accept",
-           "message_diff", "mode_diff"]
+CLASSES = ["crash", "hang", "implementation_exception", "false_reject", "false_accept", "message_diff", "mode_diff"]
 # Crashes, hangs and false rejects are the important ones; keep more exemplars of those.
 SIGNATURE_CAP_OVERRIDE = {"crash": 20, "hang": 20, "false_reject": 10}
 HANG_TIMEOUT = 8.0
@@ -92,7 +91,7 @@ def siblings_digest(directory: Path = CRBASIC_DIR) -> str:
     reference result is stale once they change (round 40)."""
     h = hashlib.sha256()
     for entry in sorted(directory.iterdir()):
-        if entry.is_file() and entry.suffix.lower() in SOURCE_SUFFIXES:   # not the compiler's *.xxx output
+        if entry.is_file() and entry.suffix.lower() in SOURCE_SUFFIXES:  # not the compiler's *.xxx output
             h.update(entry.name.encode() + b"\0" + entry.read_bytes() + b"\0")
     return h.hexdigest()
 
@@ -101,10 +100,11 @@ def siblings_digest(directory: Path = CRBASIC_DIR) -> str:
 # Seeds
 # --------------------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class Seed:
-    group: str            # "repo", "chm" or "geus"
-    path: Path            # the accepted source file
+    group: str  # "repo", "chm" or "geus"
+    path: Path  # the accepted source file
     siblings: Path | None  # directory to copy alongside it, or None
 
 
@@ -116,8 +116,7 @@ def _accepted(path: Path, siblings: Path | None, exe: Path) -> bool:
 
 
 def _names_used(path: Path, names: set[str]) -> set[str]:
-    text = "\n".join(line.split("'", 1)[0] for line in
-                     path.read_text(encoding="utf-8", errors="replace").splitlines())
+    text = "\n".join(line.split("'", 1)[0] for line in path.read_text(encoding="utf-8", errors="replace").splitlines())
     return {w.lower() for w in _IDENT_RE.findall(text)} & names
 
 
@@ -127,13 +126,17 @@ def relevant_names(profile: profiles.Profile) -> set[str]:
     names = {n.lower() for n in (*profile.instructions, *profile.functions)}
     files = [*CRBASIC_DIR.glob("*.CR6"), *CRBASIC_DIR.glob("*.crb")]
     if GEUS_DIR.is_dir():
-        files += [p for p in GEUS_DIR.rglob("*") if p.suffix.upper() in (".CR6", ".CR1X")
-                  and "Archive" not in p.relative_to(GEUS_DIR).parts]
+        files += [
+            p
+            for p in GEUS_DIR.rglob("*")
+            if p.suffix.upper() in (".CR6", ".CR1X") and "Archive" not in p.relative_to(GEUS_DIR).parts
+        ]
     return set().union(*(_names_used(p, names) for p in files))
 
 
-def load_seeds(profile: profiles.Profile, exe: Path, workers: int,
-               oracle_errors: list[dict] | None = None, relevant: bool = False) -> list[Seed]:
+def load_seeds(
+    profile: profiles.Profile, exe: Path, workers: int, oracle_errors: list[dict] | None = None, relevant: bool = False
+) -> list[Seed]:
     candidates: list[Seed] = []
     if CRBASIC_DIR.is_dir():
         for p in sorted(CRBASIC_DIR.glob("*.CR6")):
@@ -160,8 +163,10 @@ def load_seeds(profile: profiles.Profile, exe: Path, workers: int,
             if oracle_errors is None:
                 raise
             return False, {
-                "stage": "seed", "seed": f"{seed.group}/{seed.path.name}",
-                "source": _display_path(seed.path), "message": str(exc),
+                "stage": "seed",
+                "seed": f"{seed.group}/{seed.path.name}",
+                "source": _display_path(seed.path),
+                "message": str(exc),
             }
 
     with concurrent.futures.ThreadPoolExecutor(workers) as pool:
@@ -180,21 +185,61 @@ def load_seeds(profile: profiles.Profile, exe: Path, workers: int,
 
 _STRING_RE = re.compile(r'"(?:[^"]|"")*"')
 _NUMBER_RE = re.compile(
-    r'(?<![A-Za-z0-9_.])(&[Hh][0-9A-Fa-f]+|&[Bb][01]+|\d+\.\d+(?:[Ee][+-]?\d+)?'
-    r'|\.\d+(?:[Ee][+-]?\d+)?|\d+[Ee][+-]?\d+|\d+)(?![A-Za-z0-9_.])'
+    r"(?<![A-Za-z0-9_.])(&[Hh][0-9A-Fa-f]+|&[Bb][01]+|\d+\.\d+(?:[Ee][+-]?\d+)?"
+    r"|\.\d+(?:[Ee][+-]?\d+)?|\d+[Ee][+-]?\d+|\d+)(?![A-Za-z0-9_.])"
 )
-_IDENT_RE = re.compile(r'\b[A-Za-z_][A-Za-z0-9_]*\$?\b')
-_CALL_RE = re.compile(r'([A-Za-z_][A-Za-z0-9_]*\$?)\s*\(([^()]*)\)')
+_IDENT_RE = re.compile(r"\b[A-Za-z_][A-Za-z0-9_]*\$?\b")
+_CALL_RE = re.compile(r"([A-Za-z_][A-Za-z0-9_]*\$?)\s*\(([^()]*)\)")
 
 REPLACEMENT_NUMBERS = ["0", "-1", "999999999999", "1.5", "&HFF"]
 REPLACEMENT_ARGS = ['"fuzz"', "UndeclaredFuzzName123", "(1+2)"]
 TYPE_NAMES = ["Long", "Boolean", "String * 16", "Float"]
 KEYWORDS = [
-    "If", "Then", "Else", "ElseIf", "EndIf", "For", "To", "Step", "Next", "Dim", "Public",
-    "Const", "Scan", "NextScan", "SlowSequence", "EndSequence", "DataTable", "EndTable", "Sub",
-    "EndSub", "Function", "EndFunction", "Do", "Loop", "While", "Wend", "Select", "Case",
-    "EndSelect", "True", "False", "And", "Or", "Not", "As", "Long", "Boolean", "String", "Units",
-    "Alias", "BeginProg", "EndProg", "DataInterval", "Average", "Sample",
+    "If",
+    "Then",
+    "Else",
+    "ElseIf",
+    "EndIf",
+    "For",
+    "To",
+    "Step",
+    "Next",
+    "Dim",
+    "Public",
+    "Const",
+    "Scan",
+    "NextScan",
+    "SlowSequence",
+    "EndSequence",
+    "DataTable",
+    "EndTable",
+    "Sub",
+    "EndSub",
+    "Function",
+    "EndFunction",
+    "Do",
+    "Loop",
+    "While",
+    "Wend",
+    "Select",
+    "Case",
+    "EndSelect",
+    "True",
+    "False",
+    "And",
+    "Or",
+    "Not",
+    "As",
+    "Long",
+    "Boolean",
+    "String",
+    "Units",
+    "Alias",
+    "BeginProg",
+    "EndProg",
+    "DataInterval",
+    "Average",
+    "Sample",
 ]
 FOREIGN_STATEMENTS = [
     "FuzzVar = FuzzVar + 1",
@@ -234,14 +279,14 @@ def op_delete_line(lines, rng):
     if len(lines) < 2:
         return None
     i = rng.randrange(len(lines))
-    return lines[:i] + lines[i + 1:]
+    return lines[:i] + lines[i + 1 :]
 
 
 def op_duplicate_line(lines, rng):
     if not lines:
         return None
     i = rng.randrange(len(lines))
-    return lines[: i + 1] + [lines[i]] + lines[i + 1:]
+    return lines[: i + 1] + [lines[i]] + lines[i + 1 :]
 
 
 def op_swap_adjacent(lines, rng):
@@ -260,7 +305,7 @@ def op_rename_identifier(lines, rng):
     i, m = rng.choice(cands)
     line = lines[i]
     suffix = rng.choice(["_Fz", "2", "X", "_Mut"])
-    new_line = line[: m.end()] + suffix + line[m.end():]
+    new_line = line[: m.end()] + suffix + line[m.end() :]
     new = list(lines)
     new[i] = new_line
     return new
@@ -273,7 +318,7 @@ def op_replace_numeric_literal(lines, rng):
     i, m = rng.choice(cands)
     line = lines[i]
     repl = rng.choice(REPLACEMENT_NUMBERS)
-    new_line = line[: m.start()] + repl + line[m.end():]
+    new_line = line[: m.start()] + repl + line[m.end() :]
     new = list(lines)
     new[i] = new_line
     return new
@@ -302,7 +347,7 @@ def op_replace_argument(lines, rng):
     j = rng.randrange(len(args))
     args[j] = rng.choice(REPLACEMENT_ARGS)
     line = lines[i]
-    new_line = line[: m.start()] + m.group(1) + "(" + ",".join(args) + ")" + line[m.end():]
+    new_line = line[: m.start()] + m.group(1) + "(" + ",".join(args) + ")" + line[m.end() :]
     new = list(lines)
     new[i] = new_line
     return new
@@ -317,7 +362,7 @@ def op_drop_argument(lines, rng):
     j = rng.randrange(len(args))
     del args[j]
     line = lines[i]
-    new_line = line[: m.start()] + m.group(1) + "(" + ",".join(args) + ")" + line[m.end():]
+    new_line = line[: m.start()] + m.group(1) + "(" + ",".join(args) + ")" + line[m.end() :]
     new = list(lines)
     new[i] = new_line
     return new
@@ -331,7 +376,7 @@ def op_add_argument(lines, rng):
     args = _split_call_args(m.group(2))
     args.append(rng.choice(REPLACEMENT_ARGS))
     line = lines[i]
-    new_line = line[: m.start()] + m.group(1) + "(" + ",".join(args) + ")" + line[m.end():]
+    new_line = line[: m.start()] + m.group(1) + "(" + ",".join(args) + ")" + line[m.end() :]
     new = list(lines)
     new[i] = new_line
     return new
@@ -340,7 +385,7 @@ def op_add_argument(lines, rng):
 def op_change_keyword_case(lines, rng):
     cands = []
     for kw in KEYWORDS:
-        pat = re.compile(r'\b' + re.escape(kw) + r'\b', re.IGNORECASE)
+        pat = re.compile(r"\b" + re.escape(kw) + r"\b", re.IGNORECASE)
         for i, m in _candidate_lines(lines, pat):
             cands.append((i, m))
     if not cands:
@@ -353,7 +398,7 @@ def op_change_keyword_case(lines, rng):
         return None
     repl = rng.choice(variants)
     line = lines[i]
-    new_line = line[: m.start()] + repl + line[m.end():]
+    new_line = line[: m.start()] + repl + line[m.end() :]
     new = list(lines)
     new[i] = new_line
     return new
@@ -392,7 +437,7 @@ def op_insert_continuation(lines, rng):
         return None
     pos = rng.choice(commas) + 1
     new = list(lines)
-    new[i:i + 1] = [line[:pos] + " _", line[pos:]]
+    new[i : i + 1] = [line[:pos] + " _", line[pos:]]
     return new
 
 
@@ -408,10 +453,10 @@ def op_toggle_two_word(lines, rng):
     cands = []
     for i, line in enumerate(lines):
         for word, split_at in TWO_WORD_PAIRS:
-            for m in re.finditer(r'\b' + word + r'\b', line, re.IGNORECASE):
+            for m in re.finditer(r"\b" + word + r"\b", line, re.IGNORECASE):
                 cands.append((i, m, word, split_at, "join_to_split"))
-            two = word[:split_at] + r'\s+' + word[split_at:]
-            for m in re.finditer(r'\b' + two + r'\b', line, re.IGNORECASE):
+            two = word[:split_at] + r"\s+" + word[split_at:]
+            for m in re.finditer(r"\b" + two + r"\b", line, re.IGNORECASE):
                 cands.append((i, m, word, split_at, "split_to_join"))
     if not cands:
         return None
@@ -421,18 +466,18 @@ def op_toggle_two_word(lines, rng):
     if direction == "join_to_split":
         repl = text[:split_at] + " " + text[split_at:]
     else:
-        repl = re.sub(r'\s+', "", text)
-    new_line = line[: m.start()] + repl + line[m.end():]
+        repl = re.sub(r"\s+", "", text)
+    new_line = line[: m.start()] + repl + line[m.end() :]
     new = list(lines)
     new[i] = new_line
     return new
 
 
 def op_change_declared_type(lines, rng):
-    pat = re.compile(r'\bAs\s+(Long|Float|Boolean|String\s*\*\s*\d+|String)\b', re.IGNORECASE)
+    pat = re.compile(r"\bAs\s+(Long|Float|Boolean|String\s*\*\s*\d+|String)\b", re.IGNORECASE)
     cands = []
     for i, line in enumerate(lines):
-        if not re.search(r'\b(Dim|Public)\b', line, re.IGNORECASE):
+        if not re.search(r"\b(Dim|Public)\b", line, re.IGNORECASE):
             continue
         for m in _outside_strings(line, pat):
             cands.append((i, m))
@@ -441,14 +486,14 @@ def op_change_declared_type(lines, rng):
     i, m = rng.choice(cands)
     new_type = rng.choice(TYPE_NAMES)
     line = lines[i]
-    new_line = line[: m.start()] + f"As {new_type}" + line[m.end():]
+    new_line = line[: m.start()] + f"As {new_type}" + line[m.end() :]
     new = list(lines)
     new[i] = new_line
     return new
 
 
 def op_change_interval(lines, rng):
-    interval_kw = re.compile(r'\b(Scan|DataInterval|DataTable)\s*\(', re.IGNORECASE)
+    interval_kw = re.compile(r"\b(Scan|DataInterval|DataTable)\s*\(", re.IGNORECASE)
     cands = []
     for i, line in enumerate(lines):
         km = interval_kw.search(line)
@@ -473,7 +518,7 @@ def op_change_interval(lines, rng):
     i, m = rng.choice(cands)
     repl = rng.choice(REPLACEMENT_NUMBERS)
     line = lines[i]
-    new_line = line[: m.start()] + repl + line[m.end():]
+    new_line = line[: m.start()] + repl + line[m.end() :]
     new = list(lines)
     new[i] = new_line
     return new
@@ -500,12 +545,17 @@ def op_typo_identifier(lines, rng):
     i, m = rng.choice(uses)
     word, k = m.group(0), rng.randrange(1, len(m.group(0)) - 1)
     kind = rng.choice(["drop", "double", "swap"])
-    typo = (word[:k] + word[k + 1:] if kind == "drop" else word[:k] + word[k] + word[k:]
-            if kind == "double" else word[:k - 1] + word[k] + word[k - 1] + word[k + 1:])
+    typo = (
+        word[:k] + word[k + 1 :]
+        if kind == "drop"
+        else word[:k] + word[k] + word[k:]
+        if kind == "double"
+        else word[: k - 1] + word[k] + word[k - 1] + word[k + 1 :]
+    )
     if typo.upper() == word.upper():
         return None
     new = list(lines)
-    new[i] = lines[i][: m.start()] + typo + lines[i][m.end():]
+    new[i] = lines[i][: m.start()] + typo + lines[i][m.end() :]
     return new
 
 
@@ -521,7 +571,7 @@ def op_neighbour_number(lines, rng):
     if repl == m.group(0):
         return None
     new = list(lines)
-    new[i] = lines[i][: m.start()] + repl + lines[i][m.end():]
+    new[i] = lines[i][: m.start()] + repl + lines[i][m.end() :]
     return new
 
 
@@ -537,7 +587,7 @@ def op_swap_arguments(lines, rng):
         return None
     args[a], args[b] = args[b], args[a]
     new = list(lines)
-    new[i] = lines[i][: m.start()] + m.group(1) + "(" + ",".join(args) + ")" + lines[i][m.end():]
+    new[i] = lines[i][: m.start()] + m.group(1) + "(" + ",".join(args) + ")" + lines[i][m.end() :]
     return new
 
 
@@ -583,6 +633,7 @@ def apply_mutation(lines: list[str], rng: random.Random) -> tuple[list[str], lis
 # Running both compilers
 # --------------------------------------------------------------------------------------
 
+
 def normalise(text: str) -> str:
     return "\n".join(line.rstrip() for line in text.strip().splitlines())
 
@@ -593,8 +644,7 @@ def _run_ours_child(path_str: str, logger: str, result_pipe) -> None:
         profile = profiles.get(logger)
         result = compile_file(Path(path_str), profile, provenance=False)
         if result.implementation_exceptions:
-            result_pipe.send((4, "IMPLEMENTATION EXCEPTION: " +
-                              " | ".join(result.implementation_exceptions)))
+            result_pipe.send((4, "IMPLEMENTATION EXCEPTION: " + " | ".join(result.implementation_exceptions)))
             return
         result_pipe.send(((0 if result.ok else 1), oracle.as_read_back("\n".join(result.result_lines()))))
     except Exception as exc:  # a crash is a result, not a harness failure
@@ -674,7 +724,7 @@ def materialise(seed: Seed, lines: list[str], tmp_dir: Path, name: str) -> Path:
 
 
 def run_mutant(seed: Seed, lines: list[str], profile: profiles.Profile, name: str | None = None) -> Quad:
-    name = name or re.sub(r"[^A-Za-z0-9_.-]", "_", seed.path.name)   # GEUS names have blanks
+    name = name or re.sub(r"[^A-Za-z0-9_.-]", "_", seed.path.name)  # GEUS names have blanks
     with tempfile.TemporaryDirectory(prefix="fuzz-") as tmp:
         tmp_dir = Path(tmp)
         path = materialise(seed, lines, tmp_dir, name)
@@ -688,8 +738,10 @@ def run_mutant(seed: Seed, lines: list[str], profile: profiles.Profile, name: st
 # Shrinking (delta debugging over lines)
 # --------------------------------------------------------------------------------------
 
-def shrink(seed: Seed, lines: list[str], profile: profiles.Profile, target_class: str,
-           initial_quad: Quad, budget: int) -> tuple[list[str], int, Quad]:
+
+def shrink(
+    seed: Seed, lines: list[str], profile: profiles.Profile, target_class: str, initial_quad: Quad, budget: int
+) -> tuple[list[str], int, Quad]:
     calls = 0
     best_quad = initial_quad
 
@@ -711,7 +763,7 @@ def shrink(seed: Seed, lines: list[str], profile: profiles.Profile, target_class
         while i < len(lines):
             if calls >= budget:
                 return lines, calls, best_quad
-            candidate = lines[:i] + lines[i + chunk:]
+            candidate = lines[:i] + lines[i + chunk :]
             if test(candidate) == target_class:
                 lines = candidate
                 removed_any = True
@@ -729,6 +781,7 @@ def shrink(seed: Seed, lines: list[str], profile: profiles.Profile, target_class
 # Saving reproducers
 # --------------------------------------------------------------------------------------
 
+
 def _signature(cls: str, our_out: str, their_out: str) -> tuple[str, str]:
     a = normalise(our_out).splitlines()
     b = normalise(their_out).splitlines()
@@ -738,8 +791,8 @@ def _signature(cls: str, our_out: str, their_out: str) -> tuple[str, str]:
         # signature with the seed's filename, collapsing every distinct rejection reason from the
         # same seed into one bucket. Use the rejecting side's own detail lines (after the banner)
         # instead, since that is the text that actually distinguishes root causes.
-        detail = a if cls in ("crash", "hang", "implementation_exception") else (
-            b[1:] if cls == "false_accept" else a[1:]
+        detail = (
+            a if cls in ("crash", "hang", "implementation_exception") else (b[1:] if cls == "false_accept" else a[1:])
         )
         first_diff = " | ".join(detail) if detail else (b[0] if b else a[0] if a else "")
     else:
@@ -760,14 +813,17 @@ def _display_path(path: Path) -> str:
     return str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path)
 
 
-def save_reproducer(out_dir: Path, logger: str, cls: str, seed: Seed, lines: list[str],
-                     ops: list[str], profile: profiles.Profile) -> dict | None:
+def save_reproducer(
+    out_dir: Path, logger: str, cls: str, seed: Seed, lines: list[str], ops: list[str], profile: profiles.Profile
+) -> dict | None:
     text = "\n".join(lines)
     needs_siblings = seed.siblings is not None and re.search(r"(?i)includesection\s*\(", text)
     header = []
     if needs_siblings:
-        header.append(SIBLINGS_MARKER + f" -- from crbasic/{seed.path.name}, needs its sibling "
-                       ".crb library files alongside this file to compile")
+        header.append(
+            SIBLINGS_MARKER + f" -- from crbasic/{seed.path.name}, needs its sibling "
+            ".crb library files alongside this file to compile"
+        )
     header.append(f"' fuzz: seed={seed.group}/{seed.path.name} ops={'+'.join(ops)} class={cls}")
     full_text = "\n".join(header) + "\n" + text + "\n"
 
@@ -809,21 +865,24 @@ def save_reproducer(out_dir: Path, logger: str, cls: str, seed: Seed, lines: lis
 # Main
 # --------------------------------------------------------------------------------------
 
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--logger", default="cr6", help="cr6 | cr1000x | cr300 | cr350 | all")
     ap.add_argument("--count", type=int, default=None, help="mutants to generate (default per logger)")
     ap.add_argument("--seed", type=int, default=1, help="RNG seed base, for reproducibility")
     ap.add_argument("--workers", type=int, default=4)
-    ap.add_argument("--max-per-signature", type=int, default=3,
-                     help="exemplars kept per (class, generic-message) signature")
-    ap.add_argument("--shrink-budget", type=int, default=12,
-                     help="max real compiles spent shrinking one reproducer")
-    ap.add_argument("--shrink-budget-total", type=int, default=400,
-                     help="max real compiles spent shrinking across the whole run")
+    ap.add_argument(
+        "--max-per-signature", type=int, default=3, help="exemplars kept per (class, generic-message) signature"
+    )
+    ap.add_argument("--shrink-budget", type=int, default=12, help="max real compiles spent shrinking one reproducer")
+    ap.add_argument(
+        "--shrink-budget-total", type=int, default=400, help="max real compiles spent shrinking across the whole run"
+    )
     ap.add_argument("--out", type=Path, default=FUZZ_CORPUS)
-    ap.add_argument("--relevant", action="store_true",
-                     help="help-example seeds only where they use just FirnMelt/GEUS instructions")
+    ap.add_argument(
+        "--relevant", action="store_true", help="help-example seeds only where they use just FirnMelt/GEUS instructions"
+    )
     args = ap.parse_args()
 
     loggers = list(DEFAULT_COUNTS) if args.logger == "all" else [args.logger]
@@ -848,16 +907,29 @@ def run_logger(logger: str, args: argparse.Namespace) -> bool:
     if not seeds:
         print(f"{logger}: no accepted seeds found", file=sys.stderr)
         args.out.mkdir(parents=True, exist_ok=True)
-        summary_path.write_text(json.dumps({
-            "logger": logger, "count": 0, "seed": args.seed,
-            "counts": {}, "saved": 0, "oracle_errors": oracle_errors,
-        }, indent=2) + "\n", encoding="utf-8")
+        summary_path.write_text(
+            json.dumps(
+                {
+                    "logger": logger,
+                    "count": 0,
+                    "seed": args.seed,
+                    "counts": {},
+                    "saved": 0,
+                    "oracle_errors": oracle_errors,
+                },
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
         return False
-    print(f"{logger}: {len(seeds)} accepted seeds "
-          f"({sum(1 for s in seeds if s.group == 'repo')} repo, "
-          f"{sum(1 for s in seeds if s.group == 'chm')} chm, "
-          f"{sum(1 for s in seeds if s.group == 'geus')} geus), generating {count} mutants "
-          f"(seed={args.seed})")
+    print(
+        f"{logger}: {len(seeds)} accepted seeds "
+        f"({sum(1 for s in seeds if s.group == 'repo')} repo, "
+        f"{sum(1 for s in seeds if s.group == 'chm')} chm, "
+        f"{sum(1 for s in seeds if s.group == 'geus')} geus), generating {count} mutants "
+        f"(seed={args.seed})"
+    )
 
     mutants = []
     for i in range(count):
@@ -874,8 +946,10 @@ def run_logger(logger: str, args: argparse.Namespace) -> bool:
             return i, classify(*quad), quad, None
         except oracle.OracleError as exc:
             error = {
-                "stage": "mutant", "seed": f"{sd.group}/{sd.path.name}",
-                "source": f"mutant:{i}:ops={'+'.join(ops)}", "message": str(exc),
+                "stage": "mutant",
+                "seed": f"{sd.group}/{sd.path.name}",
+                "source": f"mutant:{i}:ops={'+'.join(ops)}",
+                "message": str(exc),
             }
             return i, "oracle_error", None, error
 
@@ -887,8 +961,10 @@ def run_logger(logger: str, args: argparse.Namespace) -> bool:
                 oracle_errors.append(error)
 
     counts = Counter(cls or "exact" for cls, _, _ in results)
-    print(f"{logger}: classified {count} mutants in {time.time() - t0:.0f}s -> "
-          + ", ".join(f"{k}={counts.get(k, 0)}" for k in ["exact"] + CLASSES))
+    print(
+        f"{logger}: classified {count} mutants in {time.time() - t0:.0f}s -> "
+        + ", ".join(f"{k}={counts.get(k, 0)}" for k in ["exact"] + CLASSES)
+    )
 
     seen: Counter = Counter()
     remaining_shrink_budget = args.shrink_budget_total
@@ -910,10 +986,14 @@ def run_logger(logger: str, args: argparse.Namespace) -> bool:
             try:
                 shrunk_lines, used, quad = shrink(sd, lines, profile, cls, quad, budget)
             except oracle.OracleError as exc:
-                oracle_errors.append({
-                    "stage": "shrink", "seed": f"{sd.group}/{sd.path.name}",
-                    "source": f"mutant:{i}:ops={'+'.join(ops)}", "message": str(exc),
-                })
+                oracle_errors.append(
+                    {
+                        "stage": "shrink",
+                        "seed": f"{sd.group}/{sd.path.name}",
+                        "source": f"mutant:{i}:ops={'+'.join(ops)}",
+                        "message": str(exc),
+                    }
+                )
                 continue
             remaining_shrink_budget -= used
         else:
@@ -922,22 +1002,39 @@ def run_logger(logger: str, args: argparse.Namespace) -> bool:
         try:
             meta = save_reproducer(args.out, logger, cls, sd, shrunk_lines, ops, profile)
         except oracle.OracleError as exc:
-            oracle_errors.append({
-                "stage": "save", "seed": f"{sd.group}/{sd.path.name}",
-                "source": f"mutant:{i}:ops={'+'.join(ops)}", "message": str(exc),
-            })
+            oracle_errors.append(
+                {
+                    "stage": "save",
+                    "seed": f"{sd.group}/{sd.path.name}",
+                    "source": f"mutant:{i}:ops={'+'.join(ops)}",
+                    "message": str(exc),
+                }
+            )
             continue
         if meta is not None:
             saved.append(meta)
 
-    print(f"{logger}: saved {len(saved)} reproducers to {args.out / logger}"
-          f" (shrink budget used: {args.shrink_budget_total - remaining_shrink_budget})")
+    print(
+        f"{logger}: saved {len(saved)} reproducers to {args.out / logger}"
+        f" (shrink budget used: {args.shrink_budget_total - remaining_shrink_budget})"
+    )
 
     args.out.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text(json.dumps({
-        "logger": logger, "count": count, "seed": args.seed,
-        "counts": dict(counts), "saved": len(saved), "oracle_errors": oracle_errors,
-    }, indent=2) + "\n", encoding="utf-8")
+    summary_path.write_text(
+        json.dumps(
+            {
+                "logger": logger,
+                "count": count,
+                "seed": args.seed,
+                "counts": dict(counts),
+                "saved": len(saved),
+                "oracle_errors": oracle_errors,
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     if oracle_errors:
         print(f"{logger}: {len(oracle_errors)} oracle errors; see {summary_path}", file=sys.stderr)
     return not oracle_errors

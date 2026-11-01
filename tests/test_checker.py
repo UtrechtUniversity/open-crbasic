@@ -116,10 +116,7 @@ def test_orphan_endtable_with_no_datatable_at_all():
 
 
 def test_extra_endtable_after_a_properly_closed_table():
-    text = (
-        "DataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nEndTable\n"
-        + wrapped("    CallTable T\n")
-    )
+    text = "DataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nEndTable\n" + wrapped("    CallTable T\n")
     result = compile_text(text)
     assert messages_of(result) == ["EndTable without DataTable."]
 
@@ -130,8 +127,7 @@ def test_explicit_call_to_undefined_sub():
 
 
 def test_implicit_call_to_declared_sub_is_fine():
-    text = ("Public X As Float\nSub MySub(a As Float)\n  X = a\nEndSub\n" +
-            wrapped_bare("    MySub(5)\n"))
+    text = "Public X As Float\nSub MySub(a As Float)\n  X = a\nEndSub\n" + wrapped_bare("    MySub(5)\n")
     result = compile_text(text)
     assert result.diagnostics.errors == []
 
@@ -164,6 +160,7 @@ def test_echo_preserves_leading_indentation_and_is_not_trimmed():
 
 
 # ---- "Need closing )" shapes (docs/checker.md "Need closing ) shapes", oracle-confirmed CR6) --
+
 
 def test_unclosed_paren_in_assignment_rhs():
     result = compile_text(wrapped("  x = Sin(1\n"))
@@ -251,8 +248,7 @@ def test_duplicate_alias_name_two_sources_same_target():
     # source, `Y`) -- oracle-confirmed `Duplicate Alias Name: <name>.` on the *second* statement's
     # own line, all four loggers (`t.cr6` probes, `CR6Comp.exe`/`cr1000xcomp.exe`/`cr300comp.exe`/
     # `cr350comp.exe`).
-    result = compile_text(
-        "Public X As Float\nPublic Y As Float\nAlias X = Foo\nAlias Y = Foo\n" + wrapped_bare(""))
+    result = compile_text("Public X As Float\nPublic Y As Float\nAlias X = Foo\nAlias Y = Foo\n" + wrapped_bare(""))
     assert messages_of(result) == ["Duplicate Alias Name: Foo."]
     assert result.diagnostics.errors[0].line == 4
 
@@ -304,9 +300,7 @@ def test_trailing_text_after_a_complete_as_clause_is_silently_ignored():
     # oracle-confirmed quirk: once a variable's own `As Type` has been fully parsed, anything
     # before the next comma (or end of line) is discarded, not rejected -- `Y` is still declared
     # normally afterwards.
-    result = compile_text(
-        "Public X As Long asX String, Y As Float\n" + wrapped_bare("    Y = 1\n")
-    )
+    result = compile_text("Public X As Long asX String, Y As Float\n" + wrapped_bare("    Y = 1\n"))
     assert result.diagnostics.errors == []
 
 
@@ -320,9 +314,7 @@ def test_trailing_text_after_a_complete_as_clause_is_silently_ignored():
 def test_oversized_array_dimension_is_rejected():
     # tests/corpus/fuzz/cr6/hang/dd9cc650482d.CR6, minimized: >2147483647 (INT32_MAX).
     result = compile_text("Public X(999999999999) As Long\n" + wrapped_bare(""))
-    assert messages_of(result) == [
-        "Illegally dimension: Public X(999999999999) As Long\n"
-    ]
+    assert messages_of(result) == ["Illegally dimension: Public X(999999999999) As Long\n"]
 
 
 def test_zero_array_dimension_is_rejected():
@@ -346,12 +338,8 @@ def test_illegally_dimension_echoes_the_whole_declaration_verbatim():
     # oracle-confirmed: the echoed text is the *whole* declaration statement, not just the
     # offending variable, and even a fully-valid sibling variable on the same line doesn't change
     # that -- `docs/checker.md`.
-    result = compile_text(
-        "Public A As Long, X(0) As Long, B As Float\n" + wrapped_bare("")
-    )
-    assert messages_of(result) == [
-        "Illegally dimension: Public A As Long, X(0) As Long, B As Float\n"
-    ]
+    result = compile_text("Public A As Long, X(0) As Long, B As Float\n" + wrapped_bare(""))
+    assert messages_of(result) == ["Illegally dimension: Public A As Long, X(0) As Long, B As Float\n"]
 
 
 def test_illegally_dimension_fires_once_per_bad_dimension():
@@ -384,9 +372,7 @@ def test_array_dimension_count_checked_before_value():
 
 
 def test_array_dimension_count_reports_once_per_over_dim_variable():
-    result = compile_text(
-        "Public X(1,1,1,1) As Long, Y(2,2,2,2) As Long\n" + wrapped_bare("")
-    )
+    result = compile_text("Public X(1,1,1,1) As Long, Y(2,2,2,2) As Long\n" + wrapped_bare(""))
     assert messages_of(result) == [
         "Variable X(1 dimension exceeds max of 3.",
         "Variable Y(2 dimension exceeds max of 3.",
@@ -435,8 +421,10 @@ def test_missing_parameter_followup_reports_leftover_continuation_line():
     # `average_1.CR6` (`docs/checker.md` "Missing-parameter followup"): `Average` alone on one
     # line (required-parameter shortfall), its own wrapped argument list on the next -- the real
     # compiler reports both, oracle-confirmed.
-    text = ("Public TCTemp As Float\nBeginProg\n  Scan (1,Sec,3,1)\n"
-            "    Average\n(1,TCTemp,FP2,False)\n  NextScan\nEndProg\n")
+    text = (
+        "Public TCTemp As Float\nBeginProg\n  Scan (1,Sec,3,1)\n"
+        "    Average\n(1,TCTemp,FP2,False)\n  NextScan\nEndProg\n"
+    )
     assert printed_messages_of(compile_text(text)) == [
         "Invalid or missing parameter.",
         "Invalid, or out of place expression: (1,TCTemp,FP2,False).",
@@ -448,8 +436,10 @@ def test_missing_parameter_followup_suppressed_when_first_name_undeclared():
     # silent about the leftover line when an unknown name comes before any syntax error. Oracle,
     # 2026-09-27: `(Undeclared,1,FP2,False)` silent, but `(1,Undeclared,FP2,False)` is reported
     # (the comma after `1` is the syntax error; `docs/checker.md` "The scan").
-    text = ("Public TCTemp As Float\nBeginProg\n  Scan (1,Sec,3,1)\n"
-            "    Average\n(Undeclared,1,FP2,False)\n  NextScan\nEndProg\n")
+    text = (
+        "Public TCTemp As Float\nBeginProg\n  Scan (1,Sec,3,1)\n"
+        "    Average\n(Undeclared,1,FP2,False)\n  NextScan\nEndProg\n"
+    )
     assert messages_of(compile_text(text)) == ["Invalid or missing parameter."]
     text = text.replace("(Undeclared,1,", "(1,Undeclared,")
     assert printed_messages_of(compile_text(text)) == [
@@ -461,8 +451,10 @@ def test_missing_parameter_followup_suppressed_when_first_name_undeclared():
 def test_missing_parameter_followup_checks_only_the_first_name():
     # `cdmresistance_1.CR6` (`docs/checker.md`): a *later* undeclared name in the same leftover
     # does not suppress the followup -- only the first one gates it.
-    text = ("Public TCTemp As Float\nBeginProg\n  Scan (1,Sec,3,1)\n"
-            "    Average\n(1,TCTemp,FP2,Undeclared)\n  NextScan\nEndProg\n")
+    text = (
+        "Public TCTemp As Float\nBeginProg\n  Scan (1,Sec,3,1)\n"
+        "    Average\n(1,TCTemp,FP2,Undeclared)\n  NextScan\nEndProg\n"
+    )
     assert printed_messages_of(compile_text(text)) == [
         "Invalid or missing parameter.",
         "Invalid, or out of place expression: (1,TCTemp,FP2,Undeclared).",
@@ -472,10 +464,7 @@ def test_missing_parameter_followup_checks_only_the_first_name():
 def test_channel_check_suppressed_when_file_has_an_earlier_pass1_error():
     # `docs/checker.md` "Two-pass compilation": pass 2 (the channel-range check) never runs once
     # pass 1 recorded any error anywhere in the file.
-    text = wrapped(
-        "    ExciteV (Vx1,2500,0)\n"
-        "    TCDiff (X,1,mv200C,1,TypeT,X,True,0,15000,1.0,0)\n"
-    )
+    text = wrapped("    ExciteV (Vx1,2500,0)\n    TCDiff (X,1,mv200C,1,TypeT,X,True,0,15000,1.0,0)\n")
     msgs = messages_of(compile_text(text))
     assert "Invalid symbol in expression: Vx1." in msgs
     assert "Invalid channel 1, must use U1..U12." not in msgs
@@ -497,9 +486,7 @@ def test_undefined_symbol_in_channel_argument():
 
 def test_datatable_name_position_is_not_checked():
     # code 6 (identifier): the table's own name is captured verbatim, not symbol-resolved.
-    text = "DataTable (SomeTable,True,-1)\n  Sample (1,X,FP2)\nEndTable\n" + wrapped(
-        "    CallTable (SomeTable)\n"
-    )
+    text = "DataTable (SomeTable,True,-1)\n  Sample (1,X,FP2)\nEndTable\n" + wrapped("    CallTable (SomeTable)\n")
     result = compile_text(text)
     assert result.diagnostics.errors == []
 
@@ -648,8 +635,7 @@ def test_sub_not_defined_never_gets_the_file_prefix(tmp_path):
     result = _compile_with_include(
         tmp_path,
         '#If Section = "Body" Then\n  Call NoSuchLibSub\n#EndIf\n',
-        'BeginProg\n  Scan (1,Sec,3,1)\n'
-        '    IncludeSection("Body", "CPU:Lib.crb")\n  NextScan\nEndProg\n',
+        'BeginProg\n  Scan (1,Sec,3,1)\n    IncludeSection("Body", "CPU:Lib.crb")\n  NextScan\nEndProg\n',
     )
     assert messages_of(result) == ["Sub NoSuchLibSub not defined."]
     assert "<Lib.crb>" not in result.result_lines()[2]
@@ -659,8 +645,7 @@ def test_bare_unresolved_statement_never_gets_the_file_prefix(tmp_path):
     result = _compile_with_include(
         tmp_path,
         '#If Section = "Body" Then\nNotBogusButUndefined\n#EndIf\n',
-        'BeginProg\n  Scan (1,Sec,3,1)\n'
-        '    IncludeSection("Body", "CPU:Lib.crb")\n  NextScan\nEndProg\n',
+        'BeginProg\n  Scan (1,Sec,3,1)\n    IncludeSection("Body", "CPU:Lib.crb")\n  NextScan\nEndProg\n',
     )
     assert messages_of(result) == ["Invalid, or out of place expression: NotBogusButUndefined."]
     assert "<Lib.crb>" not in result.result_lines()[2]

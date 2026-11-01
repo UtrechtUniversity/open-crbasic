@@ -39,11 +39,9 @@ from .diagnostics import Diagnostic, Diagnostics
 from .lexer import Token
 from .sources import DiskSource, SourceProvider
 
-_DIRECTIVE_RE = re.compile(
-    r'^\s*#\s*(If_no_remove|If|ElseIf|Else|EndIf|UnDef)\b(.*)$', re.IGNORECASE
-)
-_THEN_SUFFIX_RE = re.compile(r'\bThen\s*$', re.IGNORECASE)
-_LEADING_WORD_RE = re.compile(r'^\s*([A-Za-z_][A-Za-z0-9_]*\$?)')
+_DIRECTIVE_RE = re.compile(r"^\s*#\s*(If_no_remove|If|ElseIf|Else|EndIf|UnDef)\b(.*)$", re.IGNORECASE)
+_THEN_SUFFIX_RE = re.compile(r"\bThen\s*$", re.IGNORECASE)
+_LEADING_WORD_RE = re.compile(r"^\s*([A-Za-z_][A-Za-z0-9_]*\$?)")
 
 _RELOPS = {"=", "<>", "<", ">", "<=", ">="}
 _COMPOUND_OPS = {"+=", "-=", "*=", "/=", "\\=", "^=", "&="}
@@ -101,7 +99,7 @@ class _TokStream:
         return self.peek().kind == "EOF"
 
     def remaining(self) -> list[Token]:
-        return self.toks[self.i:]
+        return self.toks[self.i :]
 
     def is_op(self, text: str, k: int = 0) -> bool:
         t = self.peek(k)
@@ -215,66 +213,86 @@ def _drop_semicolons(tokens: list[Token], profile) -> list[Token]:
     instruction call (`Delay(1,1,Sec) ;`), `Do ;`, `CallTable T ;`, `EndIf ;` and `If c Then ;` keep
     their own messages."""
     real = [t for t in tokens if t.kind != "EOF"]
-    eof = tokens[len(real):]
-    semi = lambda t: t.kind == "OP" and t.text == ";"   # noqa: E731
+    eof = tokens[len(real) :]
+    semi = lambda t: t.kind == "OP" and t.text == ";"  # noqa: E731
     body = [t for t in real if not semi(t)]
     if len(body) == len(real) or not body or body[0].kind != "IDENT":
         return tokens
     head = body[0].upper
-    trailing_only = real[:len(body)] == body   # every `;` follows the last other token
+    trailing_only = real[: len(body)] == body  # every `;` follows the last other token
     first = real[0] is body[0]
 
-    def glued(word: str) -> bool:   # `Then;`, `Next;`: the `;` makes the keyword part of a longer word
-        return any(semi(t) and a.kind == "IDENT" and a.upper == word and t.col == a.col + len(a.text)
-                   for a, t in zip(real, real[1:]))
+    def glued(word: str) -> bool:  # `Then;`, `Next;`: the `;` makes the keyword part of a longer word
+        return any(
+            semi(t) and a.kind == "IDENT" and a.upper == word and t.col == a.col + len(a.text)
+            for a, t in zip(real, real[1:])
+        )
 
     if head == "NEXT":
         ok = first and not glued("NEXT")
     elif head == "ENDSELECT":
         if first and semi(real[1]) and not glued("ENDSELECT"):
-            j = 1   # only the first gap-free group of `;` is skipped (`EndSelect ; ;` is `Too many parameters:  ;.`)
+            j = 1  # only the first gap-free group of `;` is skipped (`EndSelect ; ;` is `Too many parameters:  ;.`)
             while j + 1 < len(real) and semi(real[j + 1]) and real[j + 1].col == real[j].col + 1:
                 j += 1
-            return [real[0], *real[j + 1:], *eof]
+            return [real[0], *real[j + 1 :], *eof]
         ok = False
     elif head == "CASE" and [t.upper for t in body[1:]] == ["ELSE"] and first and real[:2] == body:
-        ok = True    # `Case Else ;` (all four loggers)
-    elif (head == "ELSEIF" and body[-1].upper == "THEN" and real[:len(body)] == body and first
-          and len(body) > 2 and not glued("THEN")):
-        ok = True    # `ElseIf c Then ;` (all four loggers)
+        ok = True  # `Case Else ;` (all four loggers)
+    elif (
+        head == "ELSEIF"
+        and body[-1].upper == "THEN"
+        and real[: len(body)] == body
+        and first
+        and len(body) > 2
+        and not glued("THEN")
+    ):
+        ok = True  # `ElseIf c Then ;` (all four loggers)
     elif head in ("SUB", "FUNCTION"):
-        ok = trailing_only and first and len(body) > 1   # `Sub S ;`, `Function F(a) ;` (all four loggers)
+        ok = trailing_only and first and len(body) > 1  # `Sub S ;`, `Function F(a) ;` (all four loggers)
     elif profile.name not in ("cr6", "cr1000x"):
         ok = False
     elif head in ("IF", "ELSEIF"):
         then = max((i for i, t in enumerate(body) if t.kind == "IDENT" and t.upper == "THEN"), default=-1)
         if then < 0 or not first or glued("THEN") or glued("ELSE"):
-            ok = False   # also `; If c Then`
+            ok = False  # also `; If c Then`
         elif then + 1 < len(body):
-            ok = _is_assignment(body[then + 1:])
+            ok = _is_assignment(body[then + 1 :])
         else:
-            ok = head == "ELSEIF" or not any(semi(t) for t in real[real.index(body[then]) + 1:])
+            ok = head == "ELSEIF" or not any(semi(t) for t in real[real.index(body[then]) + 1 :])
     elif head == "CONST":
         eq = next((i for i, t in enumerate(real) if t.kind == "OP" and t.text == "="), len(real))
-        ok = first and not any(semi(t) for t in real[:eq])   # `Const ; K = 1`, `Const K ; = 1` are rejected
+        ok = first and not any(semi(t) for t in real[:eq])  # `Const ; K = 1`, `Const K ; = 1` are rejected
     elif head in ("FOR", "WHILE", "SELECT"):
         ok = first
     elif head in ("DO", "LOOP", "CASE"):
         # (`Do ; While c` and `Loop ; Until c` are rejected: only the condition skips a `;`)
-        ok = (first and len(body) > 1 and not (head == "CASE" and [t.upper for t in body[1:]] == ["ELSE"])
-              and (head == "CASE" or real[1] is body[1]))
-    elif head in profile.functions and head not in profile.instructions and trailing_only and first \
-            and len(body) > 1 and body[1].text == "(" and body[-1].text == ")":
-        ok = True    # `SerialOpen(ComRS232,9600,0,0,50) ;` (oracle, CR6, 2026-10-12)
+        ok = (
+            first
+            and len(body) > 1
+            and not (head == "CASE" and [t.upper for t in body[1:]] == ["ELSE"])
+            and (head == "CASE" or real[1] is body[1])
+        )
+    elif (
+        head in profile.functions
+        and head not in profile.instructions
+        and trailing_only
+        and first
+        and len(body) > 1
+        and body[1].text == "("
+        and body[-1].text == ")"
+    ):
+        ok = True  # `SerialOpen(ComRS232,9600,0,0,50) ;` (oracle, CR6, 2026-10-12)
     else:
-        member = len(body) > 1 and body[1].kind == "OP" and body[1].text == "."   # `Public.X = 1 ;`
+        member = len(body) > 1 and body[1].kind == "OP" and body[1].text == "."  # `Public.X = 1 ;`
         ok = (head not in profile.instructions or member and head in ("PUBLIC", "DIM")) and _is_assignment(body)
     if ok:
         return body + eof
     if profile.name in ("cr6", "cr1000x") and head not in ("SUB", "FUNCTION"):
         # (the table name slot keeps its `;`: `DataTable (T ;,1,-1)`, see `_parse_segment`)
-        name_slot = 3 if head == "DATATABLE" and len(real) > 3 and real[1].text == "(" \
-            and real[2].kind == "IDENT" else -1
+        name_slot = (
+            3 if head == "DATATABLE" and len(real) > 3 and real[1].text == "(" and real[2].kind == "IDENT" else -1
+        )
         depth, kept = 0, []
         for i, t in enumerate(real):
             if t.kind == "OP" and t.text in "()":
@@ -314,8 +332,9 @@ def _expr_end(toks: list[Token], i: int = 0) -> int | None:
     chains) starting at `toks[i]`, or None when there is none."""
     n = len(toks)
     while True:
-        while i < n and (toks[i].kind == "OP" and toks[i].text in "+-"
-                         or toks[i].kind == "IDENT" and toks[i].upper == "NOT"):
+        while i < n and (
+            toks[i].kind == "OP" and toks[i].text in "+-" or toks[i].kind == "IDENT" and toks[i].upper == "NOT"
+        ):
             i += 1
         if i >= n:
             return None
@@ -372,19 +391,26 @@ def _close_open_flat(tokens: list[Token], profile) -> list[Token]:
         return tokens
     open_at = stack[0]
     prev = real[open_at - 1] if open_at else None
-    if prev is None or prev.kind != "IDENT" or prev.upper not in _SELF_CLOSING_CALLS \
-            or open_at + 1 >= end or (open_at > 1 and real[open_at - 2].text == "."):
+    if (
+        prev is None
+        or prev.kind != "IDENT"
+        or prev.upper not in _SELF_CLOSING_CALLS
+        or open_at + 1 >= end
+        or (open_at > 1 and real[open_at - 2].text == ".")
+    ):
         return tokens
-    if any(t.kind == "OP" and t.text in (",", "{", "}") for t in real[open_at + 1:end]) \
-            or any(t.kind == "IDENT" and t.upper == "THEN" for t in real[open_at + 1:end]):
+    if any(t.kind == "OP" and t.text in (",", "{", "}") for t in real[open_at + 1 : end]) or any(
+        t.kind == "IDENT" and t.upper == "THEN" for t in real[open_at + 1 : end]
+    ):
         return tokens
     close = lexer.Token("OP", ")", ")", real[end - 1].col + len(real[end - 1].text), real[end - 1].line)
-    return real[:end] + [close] + real[end:] + tokens[len(real):]
+    return real[:end] + [close] + real[end:] + tokens[len(real) :]
 
 
 class _Closed(list):
     """Tokens of a statement whose unclosed group was closed; `dropped` holds the second,
     side-by-side expression of `Abs(X Q` that the closing left out (see `cr3xx.check_dropped_tail`)."""
+
     dropped: list = []
 
 
@@ -396,25 +422,33 @@ def _close_open_call(tokens: list[Token], profile) -> list[Token]:
     `LineNum(X)`-in-an-open-group shapes of `_close_open_extra`."""
     real = [t for t in tokens if t.kind != "EOF"]
     original = tokens
-    if real and real[0].kind == "IDENT" and (
-            real[0].upper == "WHILE" or real[0].upper in ("DO", "LOOP") and len(real) > 1
-            and real[1].kind == "IDENT" and real[1].upper in ("WHILE", "UNTIL")):
+    if (
+        real
+        and real[0].kind == "IDENT"
+        and (
+            real[0].upper == "WHILE"
+            or real[0].upper in ("DO", "LOOP")
+            and len(real) > 1
+            and real[1].kind == "IDENT"
+            and real[1].upper in ("WHILE", "UNTIL")
+        )
+    ):
         cut = next((i for i, t in enumerate(real) if t.kind == "IDENT" and t.upper == "THEN"), None)
         if cut is not None:
-            tokens = real[:cut] + tokens[len(real):]
+            tokens = real[:cut] + tokens[len(real) :]
     out = _close_open_extra(tokens, profile)
     if out is tokens:
         out = _close_open_flat(tokens, profile)
     if out is tokens and tokens is not original:
         depth = sum(1 if t.text == "(" else -1 if t.text == ")" else 0 for t in tokens if t.kind == "OP")
-        if depth > 0:   # still unclosed after the cut (`While (C Then`): keep the old rejection
+        if depth > 0:  # still unclosed after the cut (`While (C Then`): keep the old rejection
             return original
     return out
 
 
 def _close_open_extra(tokens: list[Token], profile) -> list[Token]:
     real = [t for t in tokens if t.kind != "EOF"]
-    eof = tokens[len(real):]
+    eof = tokens[len(real) :]
     head = real[0].upper if real and real[0].kind == "IDENT" else ""
     stack: list[int] = []
     end = len(real)
@@ -436,25 +470,25 @@ def _close_open_extra(tokens: list[Token], profile) -> list[Token]:
         return lexer.Token(kind, text, text, last.col + len(last.text), last.line, value)
 
     def call_name(o: int) -> str:
-        return real[o - 1].upper if o and real[o - 1].kind == "IDENT" and not (o > 1 and real[o - 2].text == ".") \
-            else ""
+        return (
+            real[o - 1].upper if o and real[o - 1].kind == "IDENT" and not (o > 1 and real[o - 2].text == ".") else ""
+        )
 
     names = [call_name(o) for o in stack]
     n = len(stack)
     inner = stack[-1]
-    content = real[inner + 1:end]
+    content = real[inner + 1 : end]
     if head in ("IF", "ELSEIF") and any(t.kind == "IDENT" and t.upper == "THEN" for t in real[:end]):
         return tokens
 
     def closed(body: list[Token]) -> list[Token]:
-        return real[:inner + 1] + body + [mk("OP", ")")] * n + real[end:] + eof
+        return real[: inner + 1] + body + [mk("OP", ")")] * n + real[end:] + eof
 
     # ---- calls of the self-closing family, possibly nested in one another ----
     if all(nm in _S1_CALLS for nm in names[:-1]) and names[-1] in _SELF_CLOSING_CALLS:
-        for k in range(1, n):   # what stands between an outer `(` and the next call: nothing or `... op`
-            prefix = real[stack[k - 1] + 1:stack[k] - 1]
-            if any(t.kind == "OP" and t.text == "," for t in prefix) or (
-                    prefix and not _is_binary(prefix[-1])):
+        for k in range(1, n):  # what stands between an outer `(` and the next call: nothing or `... op`
+            prefix = real[stack[k - 1] + 1 : stack[k] - 1]
+            if any(t.kind == "OP" and t.text == "," for t in prefix) or (prefix and not _is_binary(prefix[-1])):
                 return tokens
         if names[-1] in _S1_CALLS and content:
             # `n` open groups take up to `n + 1` side-by-side expressions, or `n` of them before a
@@ -476,12 +510,15 @@ def _close_open_extra(tokens: list[Token], profile) -> list[Token]:
                 return closed(content) if n > 1 else tokens
             dropped = [t for part in exprs[1:] for t in part]
             if any(part[0].kind == "IDENT" and len(part) > 1 and part[1].text == "(" for part in exprs[1:]):
-                return tokens   # `Abs(X Q(1)`: Incomplete expression (oracle, 2026-10-12)
+                return tokens  # `Abs(X Q(1)`: Incomplete expression (oracle, 2026-10-12)
             out = _Closed(closed(exprs[0]))
             out.dropped = dropped
             return out
-        if names[-1] in _S2_CALLS and (not content or n == 1 and [t.text for t in content] == [","]) \
-                and not any(t.kind == "IDENT" and t.upper in _S2_CALLS for t in real[:inner - 1]):
+        if (
+            names[-1] in _S2_CALLS
+            and (not content or n == 1 and [t.text for t in content] == [","])
+            and not any(t.kind == "IDENT" and t.upper in _S2_CALLS for t in real[: inner - 1])
+        ):
             return closed([mk("NUMBER", "0", 0)])
         if names[-1] in _S2_CALLS and n > 1 and content:
             e1 = _expr_end(content, 0)
@@ -490,17 +527,23 @@ def _close_open_extra(tokens: list[Token], profile) -> list[Token]:
         return tokens
     # ---- `Y = A(LineNum(X) + 1`: a closed LineNum/Signature call inside one other open group ----
     simple_assign = len(real) > 2 and real[0].kind == "IDENT" and real[1].kind == "OP" and real[1].text == "="
-    if n == 1 and simple_assign and head not in profile.instructions and end == len(real) \
-            and names[0] not in _SELF_CLOSING_CALLS:
+    if (
+        n == 1
+        and simple_assign
+        and head not in profile.instructions
+        and end == len(real)
+        and names[0] not in _SELF_CLOSING_CALLS
+    ):
         if any(t.text == "," for t in content) or any(
-                t.kind == "IDENT" and t.upper in _S2_CALLS for t in real[:inner - 1]):
+            t.kind == "IDENT" and t.upper in _S2_CALLS for t in real[: inner - 1]
+        ):
             return tokens
         calls = [i for i, t in enumerate(content) if t.kind == "IDENT" and t.upper in _S2_CALLS]
         if len(calls) != 1 or calls[0] + 1 >= len(content) or content[calls[0] + 1].text != "(":
             return tokens
         c = calls[0]
         close = _match_paren(content, c + 1)
-        pre, post = content[:c], content[close + 1:] if close is not None else None
+        pre, post = content[:c], content[close + 1 :] if close is not None else None
         if close is None:
             return tokens
         if pre and not _is_binary(pre[-1]):
@@ -509,13 +552,26 @@ def _close_open_extra(tokens: list[Token], profile) -> list[Token]:
             return tokens
         return real[:end] + [mk("OP", ")")] + real[end:] + eof
     # ---- statement `A(LineNum(X) = 1`: the call closes the index too ----
-    if n == 1 and stack[0] == 1 and len(real) > 5 and real[0].kind == "IDENT" and real[2].kind == "IDENT" \
-            and real[2].upper in _S2_CALLS and real[3].text == "(" and head not in profile.instructions:
+    if (
+        n == 1
+        and stack[0] == 1
+        and len(real) > 5
+        and real[0].kind == "IDENT"
+        and real[2].kind == "IDENT"
+        and real[2].upper in _S2_CALLS
+        and real[3].text == "("
+        and head not in profile.instructions
+    ):
         close = _match_paren(real, 3)
-        if close is not None and close + 1 < len(real) and real[close + 1].kind == "OP" \
-                and real[close + 1].text == "=" and close + 2 < len(real):
+        if (
+            close is not None
+            and close + 1 < len(real)
+            and real[close + 1].kind == "OP"
+            and real[close + 1].text == "="
+            and close + 2 < len(real)
+        ):
             one = lexer.Token("NUMBER", "1", "1", real[2].col, real[2].line, 1)
-            return real[:2] + [one, lexer.Token("OP", ")", ")", real[2].col, real[2].line)] + real[close + 1:] + eof
+            return real[:2] + [one, lexer.Token("OP", ")", ")", real[2].col, real[2].line)] + real[close + 1 :] + eof
     return tokens
 
 
@@ -528,8 +584,13 @@ def _is_block_statement(st: S.Stmt) -> bool:
     if not isinstance(st, S.Instruction):
         return False
     word = st.keyword.upper()
-    return word in _INLINE_BLOCK_WORDS or word == "END" and bool(st.args) and isinstance(st.args[0], S.Name) \
+    return (
+        word in _INLINE_BLOCK_WORDS
+        or word == "END"
+        and bool(st.args)
+        and isinstance(st.args[0], S.Name)
         and st.args[0].name.upper() == "SELECT"
+    )
 
 
 def _hoist_block_statements(stmt: S.If) -> list[S.Stmt]:
@@ -543,7 +604,7 @@ def _hoist_block_statements(stmt: S.If) -> list[S.Stmt]:
         if body:
             for position, st in enumerate(body):
                 if _is_block_statement(st):
-                    st.hoisted_last = position == len(body) - 1   # (the reachability warning)
+                    st.hoisted_last = position == len(body) - 1  # (the reachability warning)
                     hoisted.append(st)
             setattr(stmt, attr, [st for st in body if not _is_block_statement(st)])
     for st in hoisted:
@@ -584,14 +645,14 @@ LOGICAL_ASSIGN = "logical-prefixed assignment"
 
 
 def _has_assign(expr) -> bool:
-    return isinstance(expr, S.Binary) and (expr.op == "ASSIGN" or _has_assign(expr.left)
-                                           or _has_assign(expr.right))
+    return isinstance(expr, S.Binary) and (expr.op == "ASSIGN" or _has_assign(expr.left) or _has_assign(expr.right))
 
 
 _DIGIT_NAME = re.compile(r"[\d.][\w.]*")
 
-_DEFERRED_SOURCE_INSTRUCTIONS = frozenset({
-    "SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM", "TOTALIZE", "MEDIAN", "STDDEV", "MOMENT", "COVARIANCE"})
+_DEFERRED_SOURCE_INSTRUCTIONS = frozenset(
+    {"SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM", "TOTALIZE", "MEDIAN", "STDDEV", "MOMENT", "COVARIANCE"}
+)
 
 
 def _dims_after_type_scan(text: str, open_col: int, close_col: int) -> int | None:
@@ -645,7 +706,7 @@ class _Parser:
         self._done = False  # set once a top-level EndProg is seen; see `run()`
         self._inline_body = False  # parsing the statements of a one-line `If`
         self._in_struct = False  # inside StructureType ... EndStructureType
-        self._in_table = False   # inside DataTable ... EndTable
+        self._in_table = False  # inside DataTable ... EndTable
         self.function_names: set[str] = set()
         self._collect = False
         self._to_ok = False  # `To` as a binary operator: assignment values and `Select Case`
@@ -690,7 +751,8 @@ class _Parser:
             if ll.kind in ("include_warning", "include_error"):
                 if self._active():
                     (self.diags.warning if ll.kind == "include_warning" else self.diags.error)(
-                        ll.line, ll.text, ll.file)
+                        ll.line, ll.text, ll.file
+                    )
                     if ll.kind == "include_error":  # (CR300/CR350 cascade trigger, `cr3xx`)
                         self.program.include_error_at.append(len(self.program.statements))
                     # CR6/CR1000X: after an `IncludeSection` extension error no later include is
@@ -720,12 +782,10 @@ class _Parser:
                 self.function_names.add(m.group(1).upper())
             if ll.bad_init:
                 self.diags.error(ll.line, ll.bad_init[0], ll.file)
-                self.diags.error(ll.line, f"Variable initialization of {ll.bad_init[1]} has bad syntax.",
-                                 ll.file)
+                self.diags.error(ll.line, f"Variable initialization of {ll.bad_init[1]} has bad syntax.", ll.file)
             before = len(self.program.statements)
             self._parse_line(ll)
-            if self.program.hash_cut is None and any(
-                    S.hash_statement(st) for st in self.program.statements[before:]):
+            if self.program.hash_cut is None and any(S.hash_statement(st) for st in self.program.statements[before:]):
                 self.program.hash_cut = len(self.diags.items)
             if self._done:
                 # CR6Comp stops reading the file at the first top-level EndProg -- confirmed with
@@ -733,9 +793,10 @@ class _Parser:
                 # compiles fine, because it is never looked at. See docs/frontend.md.
                 break
         for ll in todo:  # never reached (after EndProg or an overflow line): positions only
-            for l in (ll.unpulled or [ll]):
-                self._note_line(dataclasses.replace(
-                    l, line=l.line + unshift.get(ll.file, 0) + (ll.pulls if ll.unpulled else 0)))
+            for l in ll.unpulled or [ll]:
+                self._note_line(
+                    dataclasses.replace(l, line=l.line + unshift.get(ll.file, 0) + (ll.pulls if ll.unpulled else 0))
+                )
             if ll.unpulled is not None:
                 unshift[ll.file] = unshift.get(ll.file, 0) + ll.pulls
         if self.cond_stack:  # read lines only: nothing after the first `EndProg` is looked at
@@ -803,7 +864,7 @@ class _Parser:
 
     def _eval_directive_cond(self, rest: str, line: int, file: str) -> bool:
         # malformed conditions: oracle, all four loggers, round 39 (docs/checker.md#if-conditions-round-39)
-        echo = rest.strip()   # echoed up to `Then`, its spacing kept (round 41: `Nope < 1 .`)
+        echo = rest.strip()  # echoed up to `Then`, its spacing kept (round 41: `Nope < 1 .`)
         m = re.search(r"(?i)\bThen\b", echo)
         if m and echo[: m.start()].strip():
             echo = echo[: m.start()]
@@ -815,19 +876,22 @@ class _Parser:
             tokens = lexer.tokenize(text, line)
             p = _TokStream(tokens)
             expr = self._parse_expr(p, line, file)
-        except (lexer.LexError, _ParseError):
-            verb = ("No Matching, or out of place ) in expression: " if text.count("(") > text.count(")")
-                    else "Invalid, or out of place expression: ")
+        except lexer.LexError, _ParseError:
+            verb = (
+                "No Matching, or out of place ) in expression: "
+                if text.count("(") > text.count(")")
+                else "Invalid, or out of place expression: "
+            )
             self.diags.error(line, f"{verb}{echo}.", file)
             return False
-        if not (p.at_end() or p.is_op(":") or p.is_ident("THEN")):   # (`#If True Then #Foo : #EndIf`)
+        if not (p.at_end() or p.is_op(":") or p.is_ident("THEN")):  # (`#If True Then #Foo : #EndIf`)
             self.diags.error(line, f"Incomplete expression: {echo}.", file)
             return False
         try:
             value = consteval.value_of(expr, self.env)
             return consteval.truthy(value)
         except consteval.NotConstant:
-            if self.profile.single_pass:   # each undefined name (`#If Nope < 1` -> `Nope is not defined.`)
+            if self.profile.single_pass:  # each undefined name (`#If Nope < 1` -> `Nope is not defined.`)
                 for name in self._undefined_directive_names(expr):
                     self.diags.error(line, self.profile.unresolved_symbol_message.format(name=name), file)
             else:
@@ -867,9 +931,13 @@ class _Parser:
             stmt.at_eol = at_eol and not getattr(stmt, "grouped", False)
             if self.provenance:
                 stmt.origin = (ll, seg_offsets[idx])  # positions only: logical line and segment offset
-            if (isinstance(stmt, S.If) and stmt.inline is None and idx < last_idx
-                    and self.profile.name in ("cr6", "cr1000x")
-                    and re.search(r"\bThen\s*$", seg_text_raw, re.I)):
+            if (
+                isinstance(stmt, S.If)
+                and stmt.inline is None
+                and idx < last_idx
+                and self.profile.name in ("cr6", "cr1000x")
+                and re.search(r"\bThen\s*$", seg_text_raw, re.I)
+            ):
                 stmt.inline = []  # `If X Then : Y = 1` is a one-line If (oracle, 2026-10-10)
                 colon_if = True
             # Segments after a one-line `If` belong to its body: no newline in the echo (oracle,
@@ -900,7 +968,7 @@ class _Parser:
         arg = stmt.args[index]
         try:
             value = consteval.value_of(arg, self.env)
-        except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
+        except consteval.NotConstant, TypeError, ValueError, ZeroDivisionError:
             if isinstance(arg, S.Name) and arg.name.upper() in ("NAN", "INF"):
                 value = "-nan" if arg.name.upper() == "NAN" else "inf"
             else:
@@ -910,22 +978,20 @@ class _Parser:
         if isinstance(value, str):
             spec = value
         elif isinstance(value, (int, float)):
-            if isinstance(arg, S.Number) and arg.text.upper().startswith(("&H", "&B")) \
-                    and 2**31 <= value < 2**32:
+            if isinstance(arg, S.Number) and arg.text.upper().startswith(("&H", "&B")) and 2**31 <= value < 2**32:
                 value -= 2**32
-            if not -2**31 <= value < 2**31 and not consteval.is_float(arg, self.env):
+            if not -(2**31) <= value < 2**31 and not consteval.is_float(arg, self.env):
                 return False  # overflow conversions are not modelled here
             spec = format(value, ".7g")
         else:
             return False
-        bad = source.bad_include_extension(spec, _INCLUDE_OWN_EXT.get(self.profile.name),
-                                          _CR3XX_INCLUDE_EXTS.get(self.profile.name))
+        bad = source.bad_include_extension(
+            spec, _INCLUDE_OWN_EXT.get(self.profile.name), _CR3XX_INCLUDE_EXTS.get(self.profile.name)
+        )
         if bad:
-            self.diags.error(stmt.line, f"Include file {spec} must have valid program file extension.",
-                             stmt.file)
+            self.diags.error(stmt.line, f"Include file {spec} must have valid program file extension.", stmt.file)
             self.program.include_error_at.append(len(self.program.statements))
-        elif self.profile.single_pass and not spec.upper().endswith(
-                (".CRB", *_CR3XX_INCLUDE_EXTS[self.profile.name])):
+        elif self.profile.single_pass and not spec.upper().endswith((".CRB", *_CR3XX_INCLUDE_EXTS[self.profile.name])):
             self.diags.warning(stmt.line, f"Cannot open include file  {spec}.", stmt.file)
         else:
             return False  # loading files named by expressions is outside this bounded rule
@@ -936,8 +1002,9 @@ class _Parser:
         variables or calls are rejected, then the name is NULL. Oracle, all four loggers, 2026-10-27:
         docs/checker.md#include-names-that-are-not-constants-round-53."""
         from .checker import expressions, symbols
+
         declared = {n.upper() for n in symbols.declared_names(self.program)}
-        names: list[tuple[str, bool]] = []   # (name, is a call)
+        names: list[tuple[str, bool]] = []  # (name, is a call)
 
         def walk(e) -> None:
             if isinstance(e, (S.Name, S.Index)):
@@ -946,11 +1013,15 @@ class _Parser:
                 for x in v if isinstance(v, list) else [v]:
                     if isinstance(x, S.Expr):
                         walk(x)
+
         walk(stmt.args[index])
         known = {n.upper() for n in (*self.env.consts, *self.profile.symbols, *self.profile.functions)} | declared
         undeclared = [n for n, call in names if n.upper() not in known]
-        runtime = any(n.upper() in declared or call for n, call in names if n.upper() in known
-                      and n.upper() not in self.env.consts)
+        runtime = any(
+            n.upper() in declared or call
+            for n, call in names
+            if n.upper() in known and n.upper() not in self.env.consts
+        )
         text = expressions._arg_text(stmt, index).strip()
         if not undeclared and not runtime:
             return False
@@ -996,43 +1067,66 @@ class _Parser:
             real = [c for c in rec["params"] if c not in (14, 32, 36, 46)] if rec else []
             slow = bool(real) and m is not None and m.group(1).upper() == "SLOWSEQUENCE"
             # `SlowSequence` takes only the simple `SlowSequence(")` / `SlowSequence(A,")` shapes here.
-            slow_shape = re.fullmatch(r"\s*SlowSequence\s*\(\s*", seg_text_raw[:e.col], re.I) or \
-                re.fullmatch(r"\s*SlowSequence\s*\(\s*[^(),]+,\s*", seg_text_raw[:e.col], re.I)
-            if (e.message == "unterminated string" and real and real[0] >= 100
-                    and (not slow or slow_shape)
-                    and seg_text_raw[e.col:e.col + 1] == '"'):
-                if slow and "," in seg_text_raw[:e.col]:
+            slow_shape = re.fullmatch(r"\s*SlowSequence\s*\(\s*", seg_text_raw[: e.col], re.I) or re.fullmatch(
+                r"\s*SlowSequence\s*\(\s*[^(),]+,\s*", seg_text_raw[: e.col], re.I
+            )
+            if (
+                e.message == "unterminated string"
+                and real
+                and real[0] >= 100
+                and (not slow or slow_shape)
+                and seg_text_raw[e.col : e.col + 1] == '"'
+            ):
+                if slow and "," in seg_text_raw[: e.col]:
                     # `SlowSequence(A,")`: the cut-off string is a second, excess argument. `0` stands
                     # in for it so the argument count is one too many, and the raw text (quote
                     # included) is kept for the echo (oracle, all four loggers, 2026-10-16:
                     # `Too many parameters:  ".`).
-                    stmt = self._parse_text_segment(seg_text_raw[:e.col] + "0)", line, file)
+                    stmt = self._parse_text_segment(seg_text_raw[: e.col] + "0)", line, file)
                     if isinstance(stmt, S.Instruction):
                         stmt.text = seg_text_raw
                     return stmt
                 # An optional first parameter: the cut-off string is dropped and the rest read as
                 # the instruction (oracle, 2026-10-16: `Calibrate(")` compiles, `Calibrate(A,")`
                 # reports `Variable A out of bounds.`; `SlowSequence(")` compiles, the same).
-                return self._parse_text_segment(seg_text_raw[:e.col].rstrip().rstrip(","), line, file)
-            if (m := re.match(r"(\s*Const\s+([A-Za-z_]\w*)\s+As\s+)([^\s,]*\[[^\s,]*)", seg_text_raw, re.I)):
+                return self._parse_text_segment(seg_text_raw[: e.col].rstrip().rstrip(","), line, file)
+            if m := re.match(r"(\s*Const\s+([A-Za-z_]\w*)\s+As\s+)([^\s,]*\[[^\s,]*)", seg_text_raw, re.I):
                 # a `[` in the type word: the word is the type (`Long[5] unknown Const type`); with
                 # no `=` it is the plain no-assignment pair (oracle, 2026-10-18, "Round 20")
                 if "=" not in seg_text_raw:
                     return self._parse_text_segment(f"Const {m[2]}", line, file)
                 self.env.define(m[2], 0, False)
-                return S.ConstDecl(line, file, name=m[2], value=S.Number(line, file, value=0, text="0"),
-                                   type=m[3], value_span=(0, 0), text=seg_text_raw)
+                return S.ConstDecl(
+                    line,
+                    file,
+                    name=m[2],
+                    value=S.Number(line, file, value=0, text="0"),
+                    type=m[3],
+                    value_span=(0, 0),
+                    text=seg_text_raw,
+                )
             if e.message == "unterminated string" and re.match(r"\s*Const\s+\"", seg_text_raw, re.I):
                 # `Const "abc`: the string is read as a name, to the next space (oracle, 2026-10-18)
-                word_match = re.match(r"[^\s,]+", seg_text_raw[e.col:])
+                word_match = re.match(r"[^\s,]+", seg_text_raw[e.col :])
                 assert word_match is not None
                 word = word_match.group()
-                return S.Unparsed(line, file, text="", reason="Const lead: " + (
-                    f"Invalid variable or constant name: {word}." if "=" in seg_text_raw else
-                    f"Const with no assignment.\nToo many parameters:  {word}."))
-            if e.message == "unterminated string" and "=" not in seg_text_raw and re.fullmatch(
-                    r"\s*Const\s+[^\s\",]+\s+", seg_text_raw[:e.col], re.I):
-                return self._parse_text_segment(seg_text_raw[:e.col].rstrip(), line, file)  # `Const 5 "abc`
+                return S.Unparsed(
+                    line,
+                    file,
+                    text="",
+                    reason="Const lead: "
+                    + (
+                        f"Invalid variable or constant name: {word}."
+                        if "=" in seg_text_raw
+                        else f"Const with no assignment.\nToo many parameters:  {word}."
+                    ),
+                )
+            if (
+                e.message == "unterminated string"
+                and "=" not in seg_text_raw
+                and re.fullmatch(r"\s*Const\s+[^\s\",]+\s+", seg_text_raw[: e.col], re.I)
+            ):
+                return self._parse_text_segment(seg_text_raw[: e.col].rstrip(), line, file)  # `Const 5 "abc`
             if e.message == "unterminated string" and re.match(r"\s*Const\s+[A-Za-z_]", seg_text_raw, re.I):
                 if (stmt := self._const_unterminated(seg_text_raw, e.col, line, file)) is not None:
                     return stmt
@@ -1066,17 +1160,20 @@ class _Parser:
         del real_tokens
         return line_text
 
-    def _cr3xx_argument_semicolon(self, seg: list[Token], line: int, file: str,
-                                  seg_text: str) -> list[Token]:
+    def _cr3xx_argument_semicolon(self, seg: list[Token], line: int, file: str, seg_text: str) -> list[Token]:
         """CR300/CR350: a `;` inside an instruction's argument is `Invalid symbol in expression:
         <argument up to the ;>.`; an argument at a parameter that ends the argument list
         (`checker.cr3xx._ABORTING_PARAMS`) adds `Too many parameters:  <next argument>.`. The
         statement is otherwise read without the `;` (oracle, 2026-10-12: `Delay(0,10 ;,mSec)`,
         `PortSet(C1 ;,1)`, `Sample(1,X ;,FP2)`, `Scan (1 ;,Sec,3,0)`)."""
-        if len(seg) < 4 or seg[0].kind != "IDENT" or seg[1].text != "(" or \
-                seg[0].upper not in self.profile.instructions or \
-                self.profile.instructions[seg[0].upper]["params"][:1] == [7]:
-            return seg   # (code 7, `Case (1 ;)`/`If (c ;)`: a parenthesised expression)
+        if (
+            len(seg) < 4
+            or seg[0].kind != "IDENT"
+            or seg[1].text != "("
+            or seg[0].upper not in self.profile.instructions
+            or self.profile.instructions[seg[0].upper]["params"][:1] == [7]
+        ):
+            return seg  # (code 7, `Case (1 ;)`/`If (c ;)`: a parenthesised expression)
         depth, index, start = 1, 0, 2
         for i in range(2, len(seg)):
             t = seg[i]
@@ -1095,13 +1192,14 @@ class _Parser:
         else:
             return seg
         from .checker.cr3xx import _ABORTING_PARAMS
-        table = seg[0].upper == "DATATABLE"   # (its errors start the cascade: oracle, 2026-10-12)
+
+        table = seg[0].upper == "DATATABLE"  # (its errors start the cascade: oracle, 2026-10-12)
         if table and index == 0 and i == 3 and seg[2].kind == "IDENT":
             if t.col == seg[2].col + len(seg[2].text):
-                return seg   # `DataTable (T;,...)` names the table `T;` (`_parse_segment`)
-            index, symbol = 1, ";"   # `DataTable (T ;,1,-1)`: the `;` takes the next slot
+                return seg  # `DataTable (T;,...)` names the table `T;` (`_parse_segment`)
+            index, symbol = 1, ";"  # `DataTable (T ;,1,-1)`: the `;` takes the next slot
         else:
-            symbol = seg_text[seg[start].col:t.col + 1].strip()
+            symbol = seg_text[seg[start].col : t.col + 1].strip()
 
         def error(message: str) -> None:
             self.diags.items.append(Diagnostic("error", line, message, file, trigger=table))
@@ -1115,7 +1213,7 @@ class _Parser:
                 if u.kind == "OP" and u.text in "()":
                     depth += 1 if u.text == "(" else -1
                 if u.kind == "OP" and u.text == "," and depth == 1:
-                    m = re.match(r"\s*([^\s,()]+)", seg_text[u.col + 1:])
+                    m = re.match(r"\s*([^\s,()]+)", seg_text[u.col + 1 :])
                     if m:
                         error(f"Too many parameters:  {m.group(1)}.")
                     break
@@ -1129,40 +1227,47 @@ class _Parser:
                 elif u.kind == "OP" and u.text == "," and depth == 1:
                     commas += 1
                     if commas == len(params):
-                        close = next(k for k in range(len(seg) - 1, j, -1)
-                                     if seg[k].kind == "OP" and seg[k].text == ")")
+                        close = next(
+                            k for k in range(len(seg) - 1, j, -1) if seg[k].kind == "OP" and seg[k].text == ")"
+                        )
                         seg = seg[:j] + seg[close:]
                         break
         return [u for u in seg if u is not t]
 
-    def _grouped_statement(self, seg: list[Token], line: int, file: str, seg_text: str
-                           ) -> S.Stmt | None:
+    def _grouped_statement(self, seg: list[Token], line: int, file: str, seg_text: str) -> S.Stmt | None:
         """`(w = 0)`, `(Delay(0,1,mSec))`: one pair of parentheses around a whole assignment or
         instruction compiles as that statement on all four loggers, alone or as a one-line `If`
         body; `(w)` and `(w + 1)` stay errors (oracle, 2026-10-24, `docs/checker.md` "Parenthesized
         statements")."""
         real = [t for t in seg if t.kind != "EOF"]
-        if not (len(real) > 2 and real[0].kind == "OP" and real[0].text == "("
-                and real[-1].kind == "OP" and real[-1].text == ")"):
+        if not (
+            len(real) > 2
+            and real[0].kind == "OP"
+            and real[0].text == "("
+            and real[-1].kind == "OP"
+            and real[-1].text == ")"
+        ):
             return None
         depth = 0
         for k, t in enumerate(real):
             if t.kind == "OP" and t.text in "()":
                 depth += 1 if t.text == "(" else -1
                 if depth == 0 and k != len(real) - 1:
-                    return None   # `(a)(b)`: the first group closes before the end
+                    return None  # `(a)(b)`: the first group closes before the end
         kept = len(self.diags.items)
-        inner = self._parse_segment(real[1:-1] + [t for t in seg if t.kind == "EOF"], line, file,
-                                    seg_text)
+        inner = self._parse_segment(real[1:-1] + [t for t in seg if t.kind == "EOF"], line, file, seg_text)
         if isinstance(inner, (S.Assignment, S.Instruction)):
             if self.profile.single_pass:
                 # CR300/CR350 echo the inside of the group (`Invalid assignment in expression:
                 # Double = Z.`, `paren_assignment.json`)
-                inner.text = " ".join(t.text for t in real[1:-1]) if not seg_text else \
-                    seg_text[seg_text.index("(") + 1:seg_text.rindex(")")].strip()
-                inner.grouped = True   # ... with no line break before the `.`
+                inner.text = (
+                    " ".join(t.text for t in real[1:-1])
+                    if not seg_text
+                    else seg_text[seg_text.index("(") + 1 : seg_text.rindex(")")].strip()
+                )
+                inner.grouped = True  # ... with no line break before the `.`
             return inner
-        del self.diags.items[kept:]   # the whole group is reparsed as written
+        del self.diags.items[kept:]  # the whole group is reparsed as written
         return None
 
     def _parse_segment(self, seg: list[Token], line: int, file: str, seg_text: str) -> S.Stmt:
@@ -1170,38 +1275,71 @@ class _Parser:
             return grouped
         if self.profile.single_pass:
             seg = self._cr3xx_argument_semicolon(seg, line, file, seg_text)
-        if (len(seg) > 3 and seg[0].upper == "DATATABLE" and seg[1].text == "("
-                and seg[2].kind == "IDENT" and seg[3].kind == "OP" and seg[3].text == ";"):
+        if (
+            len(seg) > 3
+            and seg[0].upper == "DATATABLE"
+            and seg[1].text == "("
+            and seg[2].kind == "IDENT"
+            and seg[3].kind == "OP"
+            and seg[3].text == ";"
+        ):
             # CR6/CR1000X (`_drop_semicolons` keeps only this `;`): a glued `T;` is the table name
             # `T;` (`CallTable T` is then `Could not find DataTable T.`); `T ;` makes the `;` the
             # next parameter (`Invalid, or out of place expression: ;.`, `Too many parameters:
             # -1.`), like a second word below (oracle, 2026-10-12)
             if seg[3].col == seg[2].col + len(seg[2].text):
                 name = seg[2].text + ";"
-                seg = seg[:2] + [lexer.Token("IDENT", name, name.upper(), seg[2].col,
-                                             seg[2].line)] + seg[4:]
+                seg = seg[:2] + [lexer.Token("IDENT", name, name.upper(), seg[2].col, seg[2].line)] + seg[4:]
             else:
                 self.diags.error(line, "Invalid, or out of place expression: ;.", file)
-                seg = seg[:3] + [lexer.Token("OP", ",", ",", seg[3].col, seg[3].line),
-                                 lexer.Token("NUMBER", "0", "0", seg[3].col, seg[3].line, 0)] + seg[4:]
-        if (len(seg) > 3 and seg[0].kind == "IDENT" and seg[0].upper in _RAW_NAME_FIRST
-                and seg[1].kind == "OP" and seg[1].text == "(" and seg[2].kind == "IDENT"
-                and seg[3].kind == "IDENT"):
+                seg = (
+                    seg[:3]
+                    + [
+                        lexer.Token("OP", ",", ",", seg[3].col, seg[3].line),
+                        lexer.Token("NUMBER", "0", "0", seg[3].col, seg[3].line, 0),
+                    ]
+                    + seg[4:]
+                )
+        if (
+            len(seg) > 3
+            and seg[0].kind == "IDENT"
+            and seg[0].upper in _RAW_NAME_FIRST
+            and seg[1].kind == "OP"
+            and seg[1].text == "("
+            and seg[2].kind == "IDENT"
+            and seg[3].kind == "IDENT"
+        ):
             # The table name is read up to whitespace too, so a second word becomes the next
             # parameter: `DataTable (Ten Sec,True,-1)` names `Ten` and reports `Too many
             # parameters:  -1.`; `ConstTable (my Tab,0)` compiles (oracle, 2026-10-01)
             seg = seg[:3] + [lexer.Token("OP", ",", ",", seg[3].col, seg[3].line)] + seg[3:]
-        if len(seg) > 2 and seg[0].kind == "IDENT" and seg[0].upper == "CALLTABLE" and (
-                seg[1].kind == "NUMBER" or seg[1].kind == "OP" and seg[1].text == "("
-                and len(seg) > 3 and seg[2].kind == "NUMBER"):
-            at = 1 if seg[1].kind == "NUMBER" else 2   # `CallTable 15Min` / `CallTable(15Min)`
+        if (
+            len(seg) > 2
+            and seg[0].kind == "IDENT"
+            and seg[0].upper == "CALLTABLE"
+            and (
+                seg[1].kind == "NUMBER"
+                or seg[1].kind == "OP"
+                and seg[1].text == "("
+                and len(seg) > 3
+                and seg[2].kind == "NUMBER"
+            )
+        ):
+            at = 1 if seg[1].kind == "NUMBER" else 2  # `CallTable 15Min` / `CallTable(15Min)`
             m = _DIGIT_NAME.match(seg_text, seg[at].col)
             if m:
-                rest = [t for t in seg[at + 1:] if t.col >= m.end()]
-                seg = seg[:at] + [lexer.Token("IDENT", m.group(0), m.group(0).upper(), seg[at].col,
-                                              seg[at].line)] + rest
-        if (len(seg) > 3 and seg[0].kind == "IDENT" and seg[0].upper == "DATATABLE"
-                and seg[1].kind == "OP" and seg[1].text == "(" and seg[2].kind in ("NUMBER", "STRING")):
+                rest = [t for t in seg[at + 1 :] if t.col >= m.end()]
+                seg = (
+                    seg[:at] + [lexer.Token("IDENT", m.group(0), m.group(0).upper(), seg[at].col, seg[at].line)] + rest
+                )
+        if (
+            len(seg) > 3
+            and seg[0].kind == "IDENT"
+            and seg[0].upper == "DATATABLE"
+            and seg[1].kind == "OP"
+            and seg[1].text == "("
+            and seg[2].kind in ("NUMBER", "STRING")
+        ):
             # a table name starting with a digit (`DataTable(15Min,...)`, `("15Min")`) is one name,
             # reported by the checker (oracle, all four loggers, 2026-10-11); one with a dot
             # (`1.5`, `.5`, `1.5x`, `"1.5"`) is read whole too (`DataTable name 1.5 is illegal.`)
@@ -1217,8 +1355,7 @@ class _Parser:
                 seg = seg[:2] + [lexer.Token("IDENT", name, name.upper(), seg[2].col, seg[2].line)] + rest
         p = _TokStream(seg, seg_text)
         try:
-            if (self._in_struct and seg and seg[0].kind == "IDENT"
-                    and seg[0].upper not in self.profile.instructions):
+            if self._in_struct and seg and seg[0].kind == "IDENT" and seg[0].upper not in self.profile.instructions:
                 # StructureType members: `Name`, `A, B, C`, `Name As Double`,
                 # `Arr(2) As String * 110` -- a declaration list without Public/Dim (the real
                 # compilers accept bare members; structuretype_3.CR6 on CR1000X).
@@ -1240,7 +1377,9 @@ class _Parser:
             if not p.at_end():
                 extra = p.peek()
                 return S.Unparsed(
-                    line, file, text=seg_text,
+                    line,
+                    file,
+                    text=seg_text,
                     reason=f"unexpected trailing input starting at {extra.text or extra.kind!r}",
                 )
             stmt.text = seg_text
@@ -1254,29 +1393,36 @@ class _Parser:
         except Exception as e:  # never raise out of the parser
             return S.Unparsed(line, file, text=seg_text, reason=f"internal error: {e!r}")
 
-    def _table_only_outside_table(self, seg: list[Token], p: _TokStream, line: int, file: str,
-                                  seg_text: str) -> S.Instruction | None:
+    def _table_only_outside_table(
+        self, seg: list[Token], p: _TokStream, line: int, file: str, seg_text: str
+    ) -> S.Instruction | None:
         """`Sample (1,x y,FP2)` outside a table (oracle, all four loggers, 2026-10-13): the source
         argument (the second) of the output-processing instructions is not read before `X must be
         used inside a table declaration.`, so a parse failure inside it, in a balanced argument
         list, still leaves the instruction; the later arguments become placeholders."""
-        if (self._in_table or self._in_struct or len(seg) < 4 or seg[0].kind != "IDENT"
-                or seg[0].upper not in _DEFERRED_SOURCE_INSTRUCTIONS
-                or seg[0].upper not in self.profile.instructions
-                or seg[1].kind != "OP" or seg[1].text != "("):
+        if (
+            self._in_table
+            or self._in_struct
+            or len(seg) < 4
+            or seg[0].kind != "IDENT"
+            or seg[0].upper not in _DEFERRED_SOURCE_INSTRUCTIONS
+            or seg[0].upper not in self.profile.instructions
+            or seg[1].kind != "OP"
+            or seg[1].text != "("
+        ):
             return None
         depth, commas = 0, []
         for i, tok in enumerate(seg[1:], 1):
             if tok.kind != "OP":
                 continue
             depth += (tok.text == "(") - (tok.text == ")")
-            if depth < 0 or (depth == 0 and tok.text == ")" and seg[i + 1:] and seg[i + 1].kind != "EOF"):
+            if depth < 0 or (depth == 0 and tok.text == ")" and seg[i + 1 :] and seg[i + 1].kind != "EOF"):
                 return None
             if tok.text == "," and depth == 1:
                 commas.append(i)
         if depth != 0 or len(commas) < 2 or not commas[0] < p.i <= commas[1]:
             return None
-        sub = _TokStream(seg[2:commas[0]] + [Token("EOF", "", "", seg[commas[0]].col)], seg_text)
+        sub = _TokStream(seg[2 : commas[0]] + [Token("EOF", "", "", seg[commas[0]].col)], seg_text)
         try:
             first = self._parse_expr(sub, line, file)
         except _ParseError:
@@ -1284,8 +1430,7 @@ class _Parser:
         if not sub.at_end():
             return None
         args: list[S.Expr | None] = [first] + [S.Number(line, file, value=0, text="0") for _ in commas]
-        return S.Instruction(line, file, text=seg_text, keyword=seg[0].upper, args=args,
-                             arg_spans=[None] * len(args))
+        return S.Instruction(line, file, text=seg_text, keyword=seg[0].upper, args=args, arg_spans=[None] * len(args))
 
     # ------------------------------------------------------- statements
 
@@ -1306,21 +1451,21 @@ class _Parser:
                     stmt = self._parse_assignment_or_call(p, line, file)
                 except _ParseError:
                     stmt = None
-                if isinstance(stmt, S.Assignment) and isinstance(
-                        stmt.target, (S.Name, S.Index, S.Member)):
+                if isinstance(stmt, S.Assignment) and isinstance(stmt.target, (S.Name, S.Index, S.Member)):
                     return stmt
                 p.i = start
-            if first.kind == "OP" and first.text == "+" and (
-                    result := self._try_plus_assign(p, start, line, file)) is not None:
+            if (
+                first.kind == "OP"
+                and first.text == "+"
+                and (result := self._try_plus_assign(p, start, line, file)) is not None
+            ):
                 return result  # `+ X = 1`
             p.i = start
             if first.kind in ("NUMBER", "STRING") or (first.kind == "OP" and first.text in ("(", "-", "+")):
                 if (result := self._try_logical_assign(p, start, line, file)) is not None:
                     return result  # `1 And Y = 1`, `-X And Y = 1`
                 p.i = start
-            raise _ParseError(
-                f"statement does not start with an identifier (found {first.text or first.kind!r})"
-            )
+            raise _ParseError(f"statement does not start with an identifier (found {first.text or first.kind!r})")
         kw = first.upper
         if kw == "IF":
             return self._parse_if(p, line, file)
@@ -1398,8 +1543,7 @@ class _Parser:
             return S.Instruction(line, file, keyword="ENDTABLE")
         return S.Instruction(line, file, keyword=kw, args=args, arg_spans=spans)
 
-    def _absorb_trailing(self, p: _TokStream, args: list, spans: list, line: int, file: str,
-                         kw: str) -> None:
+    def _absorb_trailing(self, p: _TokStream, args: list, spans: list, line: int, file: str, kw: str) -> None:
         """`Instr(a,b) tail`: the real compiler appends one gap-free tail chunk as one more
         parameter (`PortSet(C1,1) 1` == `PortSet(C1,1,1)`), and ignores stray `)` `,` `=` tokens
         (oracle, all four loggers, 2026-10-04, `docs/checker.md` "Trailing tokens after an
@@ -1415,13 +1559,16 @@ class _Parser:
                 pieces[-1].append(t)
         params = self.profile.instructions[kw]["params"]
         found: list[tuple[S.Expr, tuple[int, int]]] = []
-        if (len(args) >= len(params) and rest[0].kind == "OP" and rest[0].text == ";"
-                and not self._inline_body):
+        if len(args) >= len(params) and rest[0].kind == "OP" and rest[0].text == ";" and not self._inline_body:
             # `Battery(X) ;`: a `;` after the last parameter is one more (gap-free) parameter
             # (`Too many parameters:  ;.`, oracle, all four loggers, 2026-10-12)
             end = 1
-            while end < len(rest) and rest[end].kind == "OP" and rest[end].text == ";" \
-                    and rest[end].col == rest[end - 1].col + 1:
+            while (
+                end < len(rest)
+                and rest[end].kind == "OP"
+                and rest[end].text == ";"
+                and rest[end].col == rest[end - 1].col + 1
+            ):
                 end += 1
             text = ";" * end
             args.append(S.Name(line, file, name=text))
@@ -1515,15 +1662,15 @@ class _Parser:
                 return expr, (cand[0].col, cand[-1].col + len(cand[-1].text))
         return None
 
-    def _tail_chunk(self, piece: list[Token], seg_text: str, line: int, file: str,
-                    const_slot: bool = False):
+    def _tail_chunk(self, piece: list[Token], seg_text: str, line: int, file: str, const_slot: bool = False):
         """One comma-free tail piece -> `(expr, span)`, `True` (only stray `)`/`=`), or `None`."""
         lead = 0
         while lead < len(piece) and piece[lead].kind == "OP" and piece[lead].text == "(":
             lead += 1
-        loose = [t for t in piece[lead:] if not (t.kind == "OP" and t.text in (")", "="))] if lead and const_slot else []
-        for chunk in (piece, [t for t in piece if not (t.kind == "OP" and t.text in (")", "="))],
-                      loose):
+        loose = (
+            [t for t in piece[lead:] if not (t.kind == "OP" and t.text in (")", "="))] if lead and const_slot else []
+        )
+        for chunk in (piece, [t for t in piece if not (t.kind == "OP" and t.text in (")", "="))], loose):
             if not chunk:
                 if chunk is loose:
                     continue
@@ -1558,20 +1705,22 @@ class _Parser:
         if j > p.i and (p.toks[j].kind == "EOF" or (p.toks[j].kind == "OP" and p.toks[j].text == "(")):
             # spaces inside the Sub name are dropped: `Call r un(A,B)` calls `run` (oracle, all
             # four loggers, 2026-10-12; fuzz false reject `cr1000x/false_reject/f4932fe73ffd`)
-            merged = name_tok.text + "".join(t.text for t in p.toks[p.i:j])
+            merged = name_tok.text + "".join(t.text for t in p.toks[p.i : j])
             name_tok = dataclasses.replace(name_tok, text=merged, upper=merged.upper())
             p.i = j
         args: list[S.Expr | None] = []
         if p.is_op("("):
             p.next()
             args, _spans = self._parse_arglist(p, ")", line, file, strict=False)  # see above
-            if len(args) > 1 and args[-1] is None and not (p.toks[p.i - 1].kind == "OP"
-                                                          and p.toks[p.i - 1].text == ")"):
-                args.pop()   # `Call S(a,b,` (never closed): the empty slot after the last comma is
+            if (
+                len(args) > 1
+                and args[-1] is None
+                and not (p.toks[p.i - 1].kind == "OP" and p.toks[p.i - 1].text == ")")
+            ):
+                args.pop()  # `Call S(a,b,` (never closed): the empty slot after the last comma is
                 # not an argument (oracle, all four loggers, 2026-10-12)
             ignored = self._absorb_sub_tail(p, args, line, file)
-            return S.Call(line, file, name=name_tok.text, args=args, explicit=True,
-                          tail_ignored=ignored)
+            return S.Call(line, file, name=name_tok.text, args=args, explicit=True, tail_ignored=ignored)
         elif p.is_op(";") and not self._inline_body:
             # `Call Foo ;` links to the sub named `Foo;` (`structure._call_link_name`)
             args = [S.Name(line, file, name=";")]
@@ -1580,15 +1729,18 @@ class _Parser:
             args, _spans = self._parse_bare_arglist(p, line, file)
         return S.Call(line, file, name=name_tok.text, args=args, explicit=True)
 
-    def _try_logical_assign(self, p: _TokStream, start: int, line: int, file: str
-                            ) -> S.Stmt | None:
+    def _try_logical_assign(self, p: _TokStream, start: int, line: int, file: str) -> S.Stmt | None:
         """The `LOGICAL_ASSIGN` reading of the whole statement from token `start`, or None
         (position restored by the caller)."""
         p.i = start
         saved = p.toks
         n = len(saved) - 1
-        while self.profile.name in ("cr6", "cr1000x") and n > start and saved[n - 1].kind == "OP" \
-                and saved[n - 1].text == ";":
+        while (
+            self.profile.name in ("cr6", "cr1000x")
+            and n > start
+            and saved[n - 1].kind == "OP"
+            and saved[n - 1].text == ";"
+        ):
             n -= 1  # a trailing `;` is skipped like a blank on CR6/CR1000X (`X AND Y = 1 ;`)
         p.toks = saved[:n] + saved[-1:]
         self._logical_assign = True
@@ -1610,8 +1762,7 @@ class _Parser:
         p.i = start
         while p.is_op("+"):
             p.next()
-        if not self._at_assign_target(p) or p.is_op("(") or (
-                self.profile.single_pass and not p.is_op("=", 1)):
+        if not self._at_assign_target(p) or p.is_op("(") or (self.profile.single_pass and not p.is_op("=", 1)):
             return None
         try:
             target = self._parse_atom(p, line, file)
@@ -1623,8 +1774,9 @@ class _Parser:
             return None
         if not p.at_end():
             return None
-        return S.Unparsed(line, file, text="", reason=LOGICAL_ASSIGN,
-                          expr=S.Binary(line, file, "ASSIGN", target, value))
+        return S.Unparsed(
+            line, file, text="", reason=LOGICAL_ASSIGN, expr=S.Binary(line, file, "ASSIGN", target, value)
+        )
 
     def _parse_assignment_or_call(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         # An lvalue only (never a full expression): `=` is also the relational operator, so
@@ -1649,8 +1801,13 @@ class _Parser:
         finally:
             self._to_ok = outer
         t = p.peek()
-        if (t.kind == "OP" and t.text == "=" and isinstance(target, S.Index) and not target.args
-                and p.toks[p.i + 1].kind == "EOF"):
+        if (
+            t.kind == "OP"
+            and t.text == "="
+            and isinstance(target, S.Index)
+            and not target.args
+            and p.toks[p.i + 1].kind == "EOF"
+        ):
             # `S2() =`: a Sub call whose tail is ignored (oracle, 2026-10-04, all four loggers)
             p.i = len(p.toks) - 1
             return S.Call(line, file, name=target.name, args=[], explicit=False, tail_ignored=True)
@@ -1664,18 +1821,17 @@ class _Parser:
             if op_tok.text != "=":
                 base_op = op_tok.text[0]
                 value = S.Binary(op_tok.line, file, base_op, target, value)
-            return S.Assignment(line, file, target=target, value=value,
-                                compound=op_tok.text != "=")
+            return S.Assignment(line, file, target=target, value=value, compound=op_tok.text != "=")
         if (p.peek().kind == "IDENT" and p.peek().upper in _WORD_BINARY_OPS - {"MOD"}) or (
-                p.peek().kind == "OP" and p.peek().text in _LOGICAL_LEAD_OPS):
+            p.peek().kind == "OP" and p.peek().text in _LOGICAL_LEAD_OPS
+        ):
             # `X > 2 And Y = 1`, `X + 1 And Y = 1`, `(X > 2) And Y = 1`: any left operand may
             # lead into the logical-assignment reading (oracle, all four loggers, 2026-10-12)
             end = p.i
             if (result := self._try_logical_assign(p, start, line, file)) is not None:
                 return result
             p.i = end
-        if isinstance(target, S.Name) and p.is_ident("AS") and (
-                self._in_struct or not self.profile.single_pass):
+        if isinstance(target, S.Name) and p.is_ident("AS") and (self._in_struct or not self.profile.single_pass):
             # (CR300/CR350 outside a StructureType read `Flag As Boolean` as an expression: oracle,
             # 2026-10-11, `chm/not_1.CR6`)
             # A StructureType member declaration (`Frequency As Float`, no Public/Dim prefix):
@@ -1697,16 +1853,22 @@ class _Parser:
             return S.Declaration(line, file, kind="STRUCTUREMEMBER", vars=[var])
         if isinstance(target, S.Name):
             return S.Call(line, file, name=target.name, args=[], explicit=False)
-        if isinstance(target, S.Index) and (target.name.upper() in self.function_names or (
-                self.profile.single_pass and target.name.upper() in self.profile.functions
-                and target.name.upper() not in self.profile.instructions)):
+        if isinstance(target, S.Index) and (
+            target.name.upper() in self.function_names
+            or (
+                self.profile.single_pass
+                and target.name.upper() in self.profile.functions
+                and target.name.upper() not in self.profile.instructions
+            )
+        ):
             # a `Function` call statement is one expression (oracle, 2026-10-08: `F0()+Nope`
             # and `Fn(1)+Zork` report the undefined name, `Fn(1)+1` compiles), not a Sub tail
             if p.at_end():
                 return S.Call(line, file, name=target.name, args=list(target.args), explicit=False)
             t = p.peek()
             if (t.kind in ("IDENT", "NUMBER", "STRING") and t.upper not in _WORD_BINARY_OPS) or (
-                    t.kind == "OP" and t.text in ("(", ",")):
+                t.kind == "OP" and t.text in ("(", ",")
+            ):
                 # a juxtaposed tail (`Fn(1) 1`, `Fn(1),Zork`): `Incomplete expression` (oracle,
                 # 2026-10-08, all four loggers); its operands are still name-checked
                 juxt: list = []
@@ -1716,32 +1878,50 @@ class _Parser:
                         p.i += 1
                         continue
                     juxt.append(self._parse_expr(p, line, file))
-                return S.Call(line, file, name=target.name, args=list(target.args),
-                              explicit=False, juxtaposed=juxt, juxt_opaque=comma)
+                return S.Call(
+                    line,
+                    file,
+                    name=target.name,
+                    args=list(target.args),
+                    explicit=False,
+                    juxtaposed=juxt,
+                    juxt_opaque=comma,
+                )
             p.i = start
             expr = self._parse_expr(p, line, file)
             if not p.at_end():
                 t = p.peek()
-                if not (self.profile.single_pass and t.kind in ("IDENT", "NUMBER", "STRING")
-                        and t.upper not in _WORD_BINARY_OPS):
+                if not (
+                    self.profile.single_pass
+                    and t.kind in ("IDENT", "NUMBER", "STRING")
+                    and t.upper not in _WORD_BINARY_OPS
+                ):
                     raise _ParseError("expected an assignment or a call")
                 # a complete expression, then a juxtaposed operand (`StrComp(a,b) > 0 Then`): CR300/
                 # CR350 (oracle, 2026-10-11) name the first operand, then `Incomplete expression`
                 juxt = []
                 while not p.at_end():
                     juxt.append(self._parse_expr(p, line, file))
-                return S.Call(line, file, name=target.name, args=list(target.args), explicit=False,
-                              tail_expr=expr, juxtaposed=juxt)
-            return S.Call(line, file, name=target.name, args=list(target.args), explicit=False,
-                          tail_expr=expr)
+                return S.Call(
+                    line,
+                    file,
+                    name=target.name,
+                    args=list(target.args),
+                    explicit=False,
+                    tail_expr=expr,
+                    juxtaposed=juxt,
+                )
+            return S.Call(line, file, name=target.name, args=list(target.args), explicit=False, tail_expr=expr)
         if isinstance(target, S.Index):
             args = list(target.args)
-            if len(args) > 1 and args[-1] is None and not (p.toks[p.i - 1].kind == "OP"
-                                                          and p.toks[p.i - 1].text == ")"):
-                args.pop()   # never closed: see `_parse_call`
+            if (
+                len(args) > 1
+                and args[-1] is None
+                and not (p.toks[p.i - 1].kind == "OP" and p.toks[p.i - 1].text == ")")
+            ):
+                args.pop()  # never closed: see `_parse_call`
             ignored = self._absorb_sub_tail(p, args, line, file)
-            return S.Call(line, file, name=target.name, args=args, explicit=False,
-                          tail_ignored=ignored)
+            return S.Call(line, file, name=target.name, args=args, explicit=False, tail_ignored=ignored)
         raise _ParseError("expected an assignment or a call")
 
     # ---- If / ElseIf ----------------------------------------------------
@@ -1778,24 +1958,27 @@ class _Parser:
         if else_idx is None:
             then_toks, else_toks = rest, None
         else:
-            then_toks, else_toks = rest[:else_idx], rest[else_idx + 1:]
+            then_toks, else_toks = rest[:else_idx], rest[else_idx + 1 :]
         # The first statement after `Then`/`Else` is echoed from one column past the keyword to
         # one column before `Else` or the segment's end, trailing spaces kept (oracle, 2026-10-01).
         text_end = len(p.seg_text)
         else_tok = rest[else_idx] if else_idx is not None else None
-        then_bounds = (then_tok.col + len(then_tok.text) + 1 if then_tok else None,
-                       else_tok.col - 1 if else_tok else text_end)
+        then_bounds = (
+            then_tok.col + len(then_tok.text) + 1 if then_tok else None,
+            else_tok.col - 1 if else_tok else text_end,
+        )
         then_stmts = self._parse_stmt_list(then_toks, line, file, p.seg_text, then_bounds)
         inline_else = None
         if else_toks is not None:
             assert else_tok is not None
             inline_else = self._parse_stmt_list(
-                else_toks, line, file, p.seg_text,
-                (else_tok.col + len(else_tok.text) + 1, text_end))
+                else_toks, line, file, p.seg_text, (else_tok.col + len(else_tok.text) + 1, text_end)
+            )
         return S.If(line, file, cond=cond, inline=then_stmts, inline_else=inline_else)
 
-    def _parse_stmt_list(self, toks: list[Token], line: int, file: str, outer: str = "",
-                         bounds: tuple[int | None, int] | None = None) -> list[S.Stmt]:
+    def _parse_stmt_list(
+        self, toks: list[Token], line: int, file: str, outer: str = "", bounds: tuple[int | None, int] | None = None
+    ) -> list[S.Stmt]:
         """Statements of a one-line `If`. Each gets its verbatim source slice as `text` (the real
         compiler echoes `X=Q+1`, oracle 2026-09-27) with `arg_spans` re-based onto it, and
         `at_eol` False (no newline in the CR300/CR350 echo)."""
@@ -1822,8 +2005,10 @@ class _Parser:
                 spans = getattr(stmt, "arg_spans", None)
                 if spans:
                     # a span ending at the segment's synthetic EOF (col 0) ends at the segment
-                    stmt.arg_spans = [None if sp is None else (
-                        sp[0] - start, (sp[1] if sp[1] >= sp[0] else end) - start) for sp in spans]
+                    stmt.arg_spans = [
+                        None if sp is None else (sp[0] - start, (sp[1] if sp[1] >= sp[0] else end) - start)
+                        for sp in spans
+                    ]
             stmt.at_eol = False
             out.append(stmt)
         return out
@@ -1837,7 +2022,7 @@ class _Parser:
             self._to_ok = outer
         if p.is_ident("THEN"):
             p.next()
-            p.i = len(p.toks) - 1   # whatever follows `Then` on the line is ignored (oracle, 2026-10-12)
+            p.i = len(p.toks) - 1  # whatever follows `Then` on the line is ignored (oracle, 2026-10-12)
         return S.ElseIf(line, file, cond=cond)
 
     # ---- For --------------------------------------------------------
@@ -1878,11 +2063,10 @@ class _Parser:
             # `Do X`/`Loop "a"`: the word is read as an instruction parameter (oracle, 2026-10-10)
             t = p.peek(1) if p.is_op("(") and p.peek(1).kind == "IDENT" else p.peek()
             if t.kind in ("IDENT", "STRING"):
-                raise _ParseError(f"Do/Loop parameter: Illegal parameter {t.text}, "
-                                  "expecting constant integer.")
+                raise _ParseError(f"Do/Loop parameter: Illegal parameter {t.text}, expecting constant integer.")
             if (t.kind == "NUMBER" and p.peek(1).kind == "EOF") or (
-                    t.kind == "OP" and t.text == "-" and p.peek(1).kind == "NUMBER"
-                    and p.peek(2).kind == "EOF"):
+                t.kind == "OP" and t.text == "-" and p.peek(1).kind == "NUMBER" and p.peek(2).kind == "EOF"
+            ):
                 raise _ParseError("Do/Loop parameter: Invalid or missing expression.")
         return S.DoLoop(line, file, keyword=which, cond_kind=cond_kind, cond=cond)
 
@@ -1927,7 +2111,7 @@ class _Parser:
             p.next()
             if not p.is_op(")") and not p.at_end():
                 while True:
-                    if bad := self._numeric_name(p):   # (oracle, all four loggers, round 74: `Sub S(1p)`)
+                    if bad := self._numeric_name(p):  # (oracle, all four loggers, round 74: `Sub S(1p)`)
                         errors.append(f"Variable name {bad} illegal, starts with a number.")
                     else:
                         params.append(self._parse_param(p, line, file, errors))
@@ -1958,11 +2142,11 @@ class _Parser:
             # docs/checker.md#malformed-routine-headers-round-59)
             params.append(self._parse_param(p, line, file, errors))
             p.i = len(p.toks) - 1
-        return S.SubDef(line, file, keyword=which, name=name_tok.text, params=params,
-                         return_type=return_type, header_errors=errors)
+        return S.SubDef(
+            line, file, keyword=which, name=name_tok.text, params=params, return_type=return_type, header_errors=errors
+        )
 
-    def _parse_param(self, p: _TokStream, line: int, file: str,
-                     errors: list[str] | None = None) -> S.Param:
+    def _parse_param(self, p: _TokStream, line: int, file: str, errors: list[str] | None = None) -> S.Param:
         optional = p.is_ident("OPTIONAL")
         if optional:
             p.next()
@@ -2010,7 +2194,7 @@ class _Parser:
                     # docs/checker.md#round-67-review-fixes). Other junk is unobserved.
                     while not p.at_end() and not p.is_op(",") and not p.is_op(")"):
                         p.next()
-                    echo = p.seg_text[size_col:p.peek().col].rstrip()
+                    echo = p.seg_text[size_col : p.peek().col].rstrip()
                     errors.append(f"Incomplete expression: {echo}.")
         default = None
         if p.is_op("="):
@@ -2024,8 +2208,15 @@ class _Parser:
                 # CR300/CR350 print the name as `p` (oracle, round 59)
                 name = "p" if self.profile.single_pass else name_tok.text
                 errors.append(f"Required parameter {name} cannot be initialized.")
-        return S.Param(name=name_tok.text, by_ref=None, type=vtype, string_size=strsize,
-                        dims=dims, default=default, dim_exprs=dim_exprs)
+        return S.Param(
+            name=name_tok.text,
+            by_ref=None,
+            type=vtype,
+            string_size=strsize,
+            dims=dims,
+            default=default,
+            dim_exprs=dim_exprs,
+        )
 
     # ---- Const ------------------------------------------------------
 
@@ -2047,9 +2238,12 @@ class _Parser:
             elif tok.kind == "OP" and tok.text == ",":
                 p.i = len(p.toks) - 1
                 return S.Unparsed(line, file, text="", reason="Const lead: CONST needs assignment.")
-            elif (tok.kind == "STRING" or (tok.kind == "OP" and tok.text == "*") or (tok.kind == "NUMBER" and not tok.text.isdigit()
-                                           and "E" not in tok.text.upper().lstrip("&"))
-                  or (tok.kind == "OP" and tok.text == "-" and after.kind == "NUMBER")):
+            elif (
+                tok.kind == "STRING"
+                or (tok.kind == "OP" and tok.text == "*")
+                or (tok.kind == "NUMBER" and not tok.text.isdigit() and "E" not in tok.text.upper().lstrip("&"))
+                or (tok.kind == "OP" and tok.text == "-" and after.kind == "NUMBER")
+            ):
                 if tok.kind == "OP" and tok.text == "-":
                     text = tok.text + after.text
                     rest_at = 2
@@ -2087,7 +2281,8 @@ class _Parser:
                         except _ParseError:
                             return self._const_bad_subscript(p, sub_i, line, file)
                         if not (p.at_end() or p.is_op(",") or p.is_op(")")) and any(
-                                t.kind == "OP" and t.text == "=" for t in p.toks[sub_i:]):
+                            t.kind == "OP" and t.text == "=" for t in p.toks[sub_i:]
+                        ):
                             # `Const J(3 4) = 7`: adjacent operands (oracle, 2026-10-18, "Round 20")
                             return self._const_sub_unparsed(p, sub_i, line, file, CONST_INCOMPLETE)
                         arr_span = (dim_start_col, p.peek().col)
@@ -2099,19 +2294,17 @@ class _Parser:
                 p.next()
                 type_tok = p.expect_ident()
                 vtype = type_tok.upper
-                word_match = re.match(r"[^\s,]+", p.seg_text[type_tok.col:])
+                word_match = re.match(r"[^\s,]+", p.seg_text[type_tok.col :])
                 assert word_match is not None
                 word = word_match.group()
-                if word.upper() not in _CONST_TYPE_WORDS and any(
-                        t.kind == "OP" and t.text == "=" for t in p.toks):
+                if word.upper() not in _CONST_TYPE_WORDS and any(t.kind == "OP" and t.text == "=" for t in p.toks):
                     # the type is the whitespace-delimited word (`As Long(5)`, `As Long=7`,
                     # `As Long!`): an unknown one makes `J` 0 and ignores the rest of the line
                     # (oracle, 2026-10-17, docs/checker.md "Round 19")
                     p.i = len(p.toks) - 1
                     zero = S.Number(line, file, value=0, text="0")
                     self.env.define(name_tok.text, 0, False)
-                    return S.ConstDecl(line, file, name=name_tok.text, value=zero, type=word,
-                                       value_span=(0, 0))
+                    return S.ConstDecl(line, file, name=name_tok.text, value=zero, type=word, value_span=(0, 0))
                 if p.is_op("!"):
                     p.next()  # pointer type (see docs/frontend.md)
                     assert vtype is not None
@@ -2129,8 +2322,7 @@ class _Parser:
                             break
                     stop = p.toks[end].col if p.toks[end].kind != "EOF" else len(p.seg_text)
                     p.i = len(p.toks) - 1
-                    return S.Unparsed(line, file, text="",
-                                      reason="Const bad value: " + p.seg_text[star.col:stop])
+                    return S.Unparsed(line, file, text="", reason="Const bad value: " + p.seg_text[star.col : stop])
                 if vtype == "STRING" and p.is_op("*"):
                     p.next()
                     self._parse_expr(p, line, file)
@@ -2142,8 +2334,12 @@ class _Parser:
                 pass  # (`Const = X Y`: `Y` is the value)
             elif p.is_op("(") and any(t.kind == "OP" and t.text == "=" for t in p.remaining()):
                 pass  # `Const J (5) = 7` is `Const J = (5) = 7`: the `=` is implied (oracle, "Round 19")
-            elif not lead and p.peek().kind == "IDENT" and not p.is_ident("AS") and any(
-                    t.kind == "OP" and t.text == "=" for t in p.remaining()):
+            elif (
+                not lead
+                and p.peek().kind == "IDENT"
+                and not p.is_ident("AS")
+                and any(t.kind == "OP" and t.text == "=" for t in p.remaining())
+            ):
                 # `Const Max  Length1 = 22`: everything after the name is the value (oracle, all
                 # four loggers, round 41: `Invalid symbol in expression: Length1 = 22.`)
                 rest_col = p.peek().col
@@ -2177,8 +2373,12 @@ class _Parser:
                 stop = p.toks[eq_at + len(rest)].col if eq_at + len(rest) < len(p.toks) - 1 else len(p.seg_text)
                 text = p.seg_text[value_start_col:stop]
                 p.i = len(p.toks) - 1
-                return S.Unparsed(line, file, text="", reason="Const bad value: " + (
-                    CONST_NOMATCH if depth > 0 else CONST_INCOMPLETE) + text)
+                return S.Unparsed(
+                    line,
+                    file,
+                    text="",
+                    reason="Const bad value: " + (CONST_NOMATCH if depth > 0 else CONST_INCOMPLETE) + text,
+                )
         except _ParseError:
             # `Const` with no complete `Name [As Type] = value` on its own physical line -- a CHM
             # corpus example wrapped the assignment onto the next line with no `_` continuation
@@ -2190,18 +2390,20 @@ class _Parser:
                 # `=` seen, value empty or ending in a binary operator: `Invalid, or out of place
                 # expression: <value>.` (oracle, 2026-10-10, docs/checker.md "Round 7")
                 rest = p.toks[eq_at:]
-                if rest[0].kind == "EOF" or (rest[-2].kind == "OP" and rest[-2].text in "+-*/^="
-                                             and len(rest[-2].text) == 1):
-                    value = p.seg_text[rest[0].col:] if rest[0].kind != "EOF" else ""
+                if rest[0].kind == "EOF" or (
+                    rest[-2].kind == "OP" and rest[-2].text in "+-*/^=" and len(rest[-2].text) == 1
+                ):
+                    value = p.seg_text[rest[0].col :] if rest[0].kind != "EOF" else ""
                     return S.Unparsed(line, file, text="", reason="Const bad value: " + value)
                 depth = sum((t.text == "(") - (t.text == ")") for t in rest if t.kind == "OP")
                 if depth >= 0:
                     # `Const J = (5`, `((5)`, `(5 = 7`: no matching `)`; `(+)`, `* 5`, `5 * * 3`: out of
                     # place (oracle, 2026-10-18, docs/checker.md "Round 20")
-                    value = p.seg_text[rest[0].col:]
+                    value = p.seg_text[rest[0].col :]
                     p.i = len(p.toks) - 1
-                    return S.Unparsed(line, file, text="", reason="Const bad value: " + (
-                        CONST_NOMATCH if depth > 0 else "") + value)
+                    return S.Unparsed(
+                        line, file, text="", reason="Const bad value: " + (CONST_NOMATCH if depth > 0 else "") + value
+                    )
             body = re.sub(r"(?i)^\s*Const\b", "", p.seg_text, count=1)
             bad = re.match(r"\s*(?:=\s*)*(\d\w*)(?![\w.])", body)
             if bad and "=" in body:
@@ -2212,8 +2414,7 @@ class _Parser:
             return S.Unparsed(line, file, text="", reason="Const without '='")
         node = S.ConstDecl(line, file, name=name_tok.text, value=value, type=vtype, value_span=value_span)
         try:
-            self.env.define(name_tok.text, consteval.value_of(value, self.env),
-                            consteval.is_float(value, self.env))
+            self.env.define(name_tok.text, consteval.value_of(value, self.env), consteval.is_float(value, self.env))
         except consteval.NotConstant:
             pass
         return node
@@ -2234,11 +2435,15 @@ class _Parser:
         if m:
             return self._parse_text_segment(f"Const {m[1]}({m[2]}) = 0", line, file)
         if re.match(r"\s*Const\s+[A-Za-z_]\w*\(\s*,*\s*\)\s*=", pre, re.I):
-            return S.Unparsed(line, file, text="", reason="Const lead: String without end quote\n"
-                              "Invalid, or out of place expression: " + seg[q:] + ".")
+            return S.Unparsed(
+                line,
+                file,
+                text="",
+                reason="Const lead: String without end quote\nInvalid, or out of place expression: " + seg[q:] + ".",
+            )
         eq = pre.find("=")
         if eq >= 0 and "(" not in pre and "," in pre[eq:]:
-            return self._parse_text_segment(seg[:eq + pre[eq:].index(",")], line, file)
+            return self._parse_text_segment(seg[: eq + pre[eq:].index(",")], line, file)
         return S.Unparsed(line, file, text="", reason="Const lead: CONST needs assignment.")
 
     def _const_bad_subscript(self, p, start_i, line, file):
@@ -2259,10 +2464,14 @@ class _Parser:
             elif t.kind == "OP" and t.text == ")":
                 depth -= 1
         last = p.toks[end - 1] if end > start_i else None
-        if not need_op or (last is not None and last.kind == "OP" and last.text in ("+", "-", "*", "/", "^")
-                           and any(t.kind == "OP" and t.text == "=" for t in p.toks[end:])):
+        if not need_op or (
+            last is not None
+            and last.kind == "OP"
+            and last.text in ("+", "-", "*", "/", "^")
+            and any(t.kind == "OP" and t.text == "=" for t in p.toks[end:])
+        ):
             stop = p.toks[end].col if p.toks[end].kind != "EOF" else len(p.seg_text)
-            text = p.seg_text[p.toks[start_i].col:stop]
+            text = p.seg_text[p.toks[start_i].col : stop]
             p.i = len(p.toks) - 1
             return S.Unparsed(line, file, text="", reason="Const bad value: " + kind + text)
         raise _ParseError("Const subscript")
@@ -2271,8 +2480,7 @@ class _Parser:
         p.i = len(p.toks) - 1  # (everything after the first subscript is ignored)
         node = S.ConstDecl(line, file, name=name_tok.text, value=dim, type=None, value_span=span)
         try:
-            self.env.define(name_tok.text, consteval.value_of(dim, self.env),
-                            consteval.is_float(dim, self.env))
+            self.env.define(name_tok.text, consteval.value_of(dim, self.env), consteval.is_float(dim, self.env))
         except consteval.NotConstant:
             pass
         return node
@@ -2310,8 +2518,8 @@ class _Parser:
                 # the same way as an unclosed paren (`expect_close`). See docs/frontend.md.
                 break
         if p.is_op(")") or p.is_op("}"):
-            p.i = len(p.toks) - 1   # an unmatched `)`/`}` ends the declaration (oracle, round 14)
-        if not vars_:   # every name started with a digit: those errors are all (round 74)
+            p.i = len(p.toks) - 1  # an unmatched `)`/`}` ends the declaration (oracle, round 14)
+        if not vars_:  # every name started with a digit: those errors are all (round 74)
             return S.Unparsed(line, file, text=p.seg_text or "", reason="empty statement")
         return S.Declaration(line, file, kind=kind, vars=vars_)
 
@@ -2321,7 +2529,7 @@ class _Parser:
         to a comma at depth 0; None (nothing consumed) for any other item."""
         if p.peek().kind != "NUMBER":
             return None
-        m = re.match(r"\d\w*", p.seg_text[p.peek().col:] if p.seg_text else p.peek().text)
+        m = re.match(r"\d\w*", p.seg_text[p.peek().col :] if p.seg_text else p.peek().text)
         depth = 0
         while not p.at_end() and not (depth == 0 and (p.is_op(",") or p.is_op(")"))):
             depth += p.is_op("(") - p.is_op(")")
@@ -2343,7 +2551,7 @@ class _Parser:
         message text.
         """
         if p.at_end():
-            text = p.seg_text[name_tok.col:] if p.seg_text else name_tok.text
+            text = p.seg_text[name_tok.col :] if p.seg_text else name_tok.text
             raise _ParseError(f"{UNCLOSED_DIM_PREFIX}{text}")
         p.expect_close(")")
 
@@ -2368,10 +2576,15 @@ class _Parser:
             # skipped, the parenthesis is the dimension (oracle, 2026-10-10)
             j = 0
             while p.peek(j).kind in ("IDENT", "NUMBER", "STRING") or (
-                    j and p.peek(j).kind == "OP" and p.peek(j).text == "."):
+                j and p.peek(j).kind == "OP" and p.peek(j).text == "."
+            ):
                 j += 1
-            if j and p.peek(j).kind == "OP" and p.peek(j).text == "(" and not any(
-                    p.peek(k).kind == "IDENT" and p.peek(k).upper == "AS" for k in range(j)):
+            if (
+                j
+                and p.peek(j).kind == "OP"
+                and p.peek(j).text == "("
+                and not any(p.peek(k).kind == "IDENT" and p.peek(k).upper == "AS" for k in range(j))
+            ):
                 p.i += j
         if p.is_op("("):
             p.next()
@@ -2383,7 +2596,7 @@ class _Parser:
                 while p.is_op(","):
                     p.next()
                     dims.append(self._parse_dim(p, line, file))
-            paren_dim = any(t.kind == "OP" and t.text == "(" for t in p.toks[first:p.i])
+            paren_dim = any(t.kind == "OP" and t.text == "(" for t in p.toks[first : p.i])
             self._close_dims_or_raise(p, name_tok)
             if paren_dim and len(dims) > 1:
                 keep = _dims_after_type_scan(p.seg_text, p.toks[first - 1].col, p.toks[p.i - 1].col)
@@ -2407,8 +2620,7 @@ class _Parser:
                 star = p.next()
                 if p.at_end() or p.is_op(","):
                     size_missing = star.col + 1  # `String *` with no size (oracle, 2026-10-10)
-                elif not dims and p.peek().kind == "NUMBER" and (
-                        p.peek(1).kind == "OP" and p.peek(1).text == "("):
+                elif not dims and p.peek().kind == "NUMBER" and (p.peek(1).kind == "OP" and p.peek(1).text == "("):
                     # `Public A As String * 16(5) = {...}`: the dimension follows the size
                     # (oracle, all four loggers, round 16; docs/frontend.md)
                     num = p.next()
@@ -2493,10 +2705,17 @@ class _Parser:
         junk_dims: list[S.Expr] = []
         if any(isinstance(d, S.Juxtaposed) for d in dims):
             # the compiler keeps the dimension as size 1 (round 54, alias bounds)
-            junk_dims, dims = dims, [S.Number(d.line, file, 1, "1") if isinstance(d, S.Juxtaposed) else d
-                                     for d in dims]
-        decl = S.VarDecl(name=name_tok.text, dims=dims, type=vtype, string_size=strsize, init=init,
-                         dim0_span=dim0_span, paren_dim=paren_dim, junk_dims=junk_dims)
+            junk_dims, dims = dims, [S.Number(d.line, file, 1, "1") if isinstance(d, S.Juxtaposed) else d for d in dims]
+        decl = S.VarDecl(
+            name=name_tok.text,
+            dims=dims,
+            type=vtype,
+            string_size=strsize,
+            init=init,
+            dim0_span=dim0_span,
+            paren_dim=paren_dim,
+            junk_dims=junk_dims,
+        )
         decl.size_missing = size_missing  # column just after the `*`, or None
         decl.size_junk = size_junk  # (column of the String size, kind of what follows it), or None
         decl.empty_type_init = empty_type_init  # `As Float() = ...`, reported by structure.py
@@ -2577,24 +2796,22 @@ class _Parser:
             # quirk"): `Need '=' in units definition: x\n.`. A fully empty target (`Units` alone)
             # or one that fails to parse gets the plain, un-suffixed reason instead -- no oracle
             # evidence for the latter shape.
-            target_text = seg_text.strip()[len("UNITS"):].strip()
+            target_text = seg_text.strip()[len("UNITS") :].strip()
             if target_text:
                 try:
                     target_tokens = lexer.tokenize(target_text, line)
                     tp = _TokStream(target_tokens)
                     self._parse_atom(tp, line, file)
                     if tp.at_end():
-                        return S.Unparsed(line, file, text=target_text,
-                                           reason="Units target with no '='")
-                except (lexer.LexError, _ParseError):
+                        return S.Unparsed(line, file, text=target_text, reason="Units target with no '='")
+                except lexer.LexError, _ParseError:
                     pass
             return S.Unparsed(line, file, text=seg_text.strip(), reason="Units without '='")
-        lhs_text, label = seg_text[:eq], seg_text[eq + 1:].strip()
+        lhs_text, label = seg_text[:eq], seg_text[eq + 1 :].strip()
         try:
             lhs_tokens = lexer.tokenize(lhs_text, line)
         except lexer.LexError as e:
-            return S.Unparsed(line, file, text=seg_text.strip(),
-                               reason=f"lex error in Units target: {e.message}")
+            return S.Unparsed(line, file, text=seg_text.strip(), reason=f"lex error in Units target: {e.message}")
         p = _TokStream(lhs_tokens)
         try:
             p.expect_ident("UNITS")
@@ -2605,7 +2822,7 @@ class _Parser:
             extra_targets: list[S.Expr] = []
             if not p.at_end() and not isinstance(lhs, (S.Name, S.Index)):
                 raise _ParseError("unexpected trailing input in Units target")
-            while p.is_op(","):   # `Units A, B = ms`: every name is checked
+            while p.is_op(","):  # `Units A, B = ms`: every name is checked
                 p.next()
                 if p.at_end():
                     break
@@ -2829,9 +3046,11 @@ class _Parser:
                 args, _spans = self._parse_arglist(p, ")", line, file, strict=strict)
                 node = S.Index(tok.line, file, tok.text, args)
             while p.is_op("."):
-                if (isinstance(node, S.Name) and (
-                        p.peek(1).kind != "IDENT" or p.peek(1).col > p.peek().col + 1)
-                        and (self.profile.known_first_word_pass1 or p.i > 1)):
+                if (
+                    isinstance(node, S.Name)
+                    and (p.peek(1).kind != "IDENT" or p.peek(1).col > p.peek().col + 1)
+                    and (self.profile.known_first_word_pass1 or p.i > 1)
+                ):
                     # a trailing `.` stays on the name (`junk.`: an unknown name, oracle 2026-10-08;
                     # `T.` compiles for a table, `X.` is `Could not find X.`, all four loggers; a blank
                     # between the dot and a name ends the member: `T. To 3`, `T. Then`, `T. X` adjacent operands)
@@ -2923,14 +3142,17 @@ def partial_expression(text: str, profile: profiles.Profile) -> S.Expr | None:
         parser_._logical_assign = True
         body = toks[start:]
         depth = sum((t.text == "(") - (t.text == ")") for t in body if t.kind == "OP")
-        if body and ((body[-1].kind == "IDENT" and body[-1].upper in _Parser._LOGICAL_OPS)
-                     or (body[-1].kind == "OP" and body[-1].text == "=")):
+        if body and (
+            (body[-1].kind == "IDENT" and body[-1].upper in _Parser._LOGICAL_OPS)
+            or (body[-1].kind == "OP" and body[-1].text == "=")
+        ):
             # a logical word (or `=`) with no right operand still has its left operand's strings
             # counted, as if a number followed (oracle, all four loggers, 2026-10-12)
             body = body + [Token("NUMBER", "0", "0", 0, 0, 0)]
         try:
-            return parser_._parse_expr(_TokStream(
-                body + [Token("OP", ")", ")", 0, 0)] * max(depth, 0) + [_eof_like(0)], text), 0, "")
+            return parser_._parse_expr(
+                _TokStream(body + [Token("OP", ")", ")", 0, 0)] * max(depth, 0) + [_eof_like(0)], text), 0, ""
+            )
         except _ParseError:
             pass
         for cut in range(len(toks), start, -1):  # a dangling tail (`... AND state =`) is dropped
@@ -2946,10 +3168,13 @@ def partial_expression(text: str, profile: profiles.Profile) -> S.Expr | None:
 _source_module = source  # parse_file's `source` parameter shadows the module
 
 
-def parse_file(path: Path | str, profile: profiles.Profile | None = None,
-               pull_limit: tuple[int, ...] | None = None,
-               source: SourceProvider | None = None,
-               provenance: bool = True) -> tuple[S.Program, Diagnostics]:
+def parse_file(
+    path: Path | str,
+    profile: profiles.Profile | None = None,
+    pull_limit: tuple[int, ...] | None = None,
+    source: SourceProvider | None = None,
+    provenance: bool = True,
+) -> tuple[S.Program, Diagnostics]:
     """`provenance=False` skips the pieces/line-map/origin data only the language server reads (the CLI
     path); everything the checker sees is unchanged. `profile` is normally left to the file's own extension (`profiles.for_file`, the historical
     default); the caller passes it explicitly when the logger was chosen another way (`--logger`,
@@ -2958,10 +3183,15 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None,
     `.CR6` file always folded against the CR6 profile regardless of `--logger`, silently baking a
     CR6 symbol value into a non-CR6 profile's `program.consts` -- `docs/loggers.md`."""
     path = Path(path)
-    lines, diags = _source_module.load_program(path, _INCLUDE_OWN_EXT.get((profile or _profile_for(path.name)).name),
-                                       _pulls_init(profile or _profile_for(path.name)), pull_limit,
-                                       _CR3XX_INCLUDE_EXTS.get((profile or _profile_for(path.name)).name),
-                                       source, provenance)
+    lines, diags = _source_module.load_program(
+        path,
+        _INCLUDE_OWN_EXT.get((profile or _profile_for(path.name)).name),
+        _pulls_init(profile or _profile_for(path.name)),
+        pull_limit,
+        _CR3XX_INCLUDE_EXTS.get((profile or _profile_for(path.name)).name),
+        source,
+        provenance,
+    )
     pull_log = diags.pull_log
     parser = _Parser(profile or _profile_for(path.name), diags, provenance)
     program, diags = parser.run(lines, path.name)
@@ -2995,8 +3225,12 @@ def _include_warning_drives(diags: Diagnostics, profile: profiles.Profile) -> No
     NoSuch.crb.` for `"CPU:NoSuch.crb"`); CR300/CR350 keep it (oracle, 2026-09-28)."""
     if profile.include_drive_prefix:
         return
-    diags.items[:] = [dataclasses.replace(d, message=_MISSING_INCLUDE_DRIVE_RE.sub(r"\1", d.message))
-                      if d.severity == "warning" else d for d in diags.items]
+    diags.items[:] = [
+        dataclasses.replace(d, message=_MISSING_INCLUDE_DRIVE_RE.sub(r"\1", d.message))
+        if d.severity == "warning"
+        else d
+        for d in diags.items
+    ]
 
 
 def _set_last_line(program: S.Program, parser: _Parser, main_text: str) -> None:
@@ -3009,13 +3243,18 @@ def _set_last_line(program: S.Program, parser: _Parser, main_text: str) -> None:
         program.last_line = max(1, len(main_text.splitlines()))
 
 
-def parse_text(text: str, name: str = "t.cr6", directory: Path | str | None = None,
-               profile: profiles.Profile | None = None) -> tuple[S.Program, Diagnostics]:
+def parse_text(
+    text: str, name: str = "t.cr6", directory: Path | str | None = None, profile: profiles.Profile | None = None
+) -> tuple[S.Program, Diagnostics]:
     directory = Path(directory) if directory is not None else None
     lines, diags = source.load_text(
-        text, name, directory, _INCLUDE_OWN_EXT.get((profile or _profile_for(name)).name),
+        text,
+        name,
+        directory,
+        _INCLUDE_OWN_EXT.get((profile or _profile_for(name)).name),
         _pulls_init(profile or _profile_for(name)),
-        _CR3XX_INCLUDE_EXTS.get((profile or _profile_for(name)).name))
+        _CR3XX_INCLUDE_EXTS.get((profile or _profile_for(name)).name),
+    )
     parser = _Parser(profile or _profile_for(name), diags)
     program, diags = parser.run(lines, name)
     program.line_map = parser.line_map

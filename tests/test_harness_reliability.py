@@ -1,4 +1,3 @@
-
 import json
 import subprocess
 import sys
@@ -16,9 +15,15 @@ def _row(cls: str | None) -> dict:
 
 def _replay_row(cls: str | None) -> dict:
     return {
-        "file": "case.CR6", "logger": "cr6", "recorded_class": cls,
-        "now_class": cls, "status": "fixed" if cls is None else f"still {cls}",
-        "our_exit": 0, "their_exit": 0, "ours": "same", "theirs": "same",
+        "file": "case.CR6",
+        "logger": "cr6",
+        "recorded_class": cls,
+        "now_class": cls,
+        "status": "fixed" if cls is None else f"still {cls}",
+        "our_exit": 0,
+        "their_exit": 0,
+        "ours": "same",
+        "theirs": "same",
     }
 
 
@@ -78,23 +83,31 @@ def test_difftest_keeps_bad_oracle_row_without_losing_good_row(monkeypatch, tmp_
     ]
 
     assert rows[0] == {
-        "group": "cli", "file": str(bad), "status": "oracle_error", "class": "oracle_error",
-        "ours": "", "theirs": "runner emitted no compiler verdict",
-        "our_exit": None, "their_exit": None, "logger": "", "impact": "operational failure",
+        "group": "cli",
+        "file": str(bad),
+        "status": "oracle_error",
+        "class": "oracle_error",
+        "ours": "",
+        "theirs": "runner emitted no compiler verdict",
+        "our_exit": None,
+        "their_exit": None,
+        "logger": "",
+        "impact": "operational failure",
     }
     assert rows[1]["status"] == "exact"
     assert rows[1]["class"] is None
     assert difftest.summarise(rows)["cli"] == {
-        "exact": 1, "verdict": 0, "mismatch": 0, "oracle_error": 1,
+        "exact": 1,
+        "verdict": 0,
+        "mismatch": 0,
+        "oracle_error": 1,
         "implementation_exception": 0,
     }
     assert difftest.gate_failed(rows, "report")
 
 
 def test_difftest_does_not_hide_arbitrary_oracle_failure(monkeypatch, tmp_path):
-    monkeypatch.setattr(
-        difftest, "theirs", lambda *args: (_ for _ in ()).throw(ValueError("implementation bug"))
-    )
+    monkeypatch.setattr(difftest, "theirs", lambda *args: (_ for _ in ()).throw(ValueError("implementation bug")))
     with pytest.raises(ValueError, match="implementation bug"):
         difftest.compare_one(("cli", tmp_path / "case.CR6", None), object())
 
@@ -115,9 +128,14 @@ def test_replay_oracle_error_becomes_row(monkeypatch, tmp_path):
     path = tmp_path / "false_reject" / "case.CR6"
     path.parent.mkdir()
     path.write_text("BeginProg\nEndProg\n")
-    path.with_suffix(".json").write_text(json.dumps({
-        "logger": "cr6", "class": "false_reject",
-    }))
+    path.with_suffix(".json").write_text(
+        json.dumps(
+            {
+                "logger": "cr6",
+                "class": "false_reject",
+            }
+        )
+    )
 
     def fail(*args, **kwargs):
         raise fuzz_replay.fuzz.oracle.OracleError("runner failed")
@@ -136,8 +154,7 @@ def test_replay_json_summary_includes_oracle_error(tmp_path):
     path = tmp_path / "replay.json"
     fuzz_replay.write_json_report(path, [_replay_row("oracle_error")])
     report = json.loads(path.read_text())
-    assert report["summary"] == {"total": 1, "counts": {"oracle_error": 1},
-                                 "impact": {"operational failure": 1}}
+    assert report["summary"] == {"total": 1, "counts": {"oracle_error": 1}, "impact": {"operational failure": 1}}
 
 
 def test_prune_fixed_keeps_oracle_error(monkeypatch, tmp_path):
@@ -160,7 +177,8 @@ def test_replay_does_not_hide_arbitrary_failure(monkeypatch, tmp_path):
     path.write_text("BeginProg\nEndProg\n")
     path.with_suffix(".json").write_text(json.dumps({"logger": "cr6", "class": "false_accept"}))
     monkeypatch.setattr(
-        fuzz_replay.fuzz, "run_mutant",
+        fuzz_replay.fuzz,
+        "run_mutant",
         lambda *args, **kwargs: (_ for _ in ()).throw(ValueError("implementation bug")),
     )
     with pytest.raises(ValueError, match="implementation bug"):
@@ -172,8 +190,11 @@ def test_replay_json_report_shape(tmp_path):
     rows = [_replay_row(None), _replay_row("false_reject"), _replay_row("false_reject")]
     fuzz_replay.write_json_report(path, rows)
     report = json.loads(path.read_text())
-    assert report["summary"] == {"total": 3, "counts": {"exact": 1, "false_reject": 2},
-                                 "impact": {"exact": 1, "false reject": 2}}
+    assert report["summary"] == {
+        "total": 3,
+        "counts": {"exact": 1, "false_reject": 2},
+        "impact": {"exact": 1, "false reject": 2},
+    }
     assert report["rows"] == rows
 
 

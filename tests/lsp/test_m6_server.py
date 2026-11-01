@@ -51,14 +51,23 @@ def test_findings_carry_channel_code_and_evidence_link(make_client, tmp_path):
     ocb001 = next(d for d in diags if d.get("code") == "OCB001")
     assert ocb001["severity"] == 1 and ocb001["range"]["start"]["line"] == 1
     assert ocb001["codeDescription"]["href"].endswith("checker.md#alias-names-that-are-crbasic-names-round-33")
-    assert not [d for d in diags if d.get("source") == "opencrbasic"]   # the reference accepts it
+    assert not [d for d in diags if d.get("source") == "opencrbasic"]  # the reference accepts it
     included = client.wait_diagnostics(lib, lambda d: "OCB002" in codes(d))["diagnostics"]
     assert [d["range"]["start"]["line"] for d in included if d.get("code") == "OCB002"] == [2]
     assert required(next(d for d in included if d.get("code") == "OCB002"))["severity"] == 2
-    assert codes(diags, COVERAGE) == []          # coverage notices are opt-in in the editor
-    assert client.request("textDocument/codeAction", {   # quick fixes are for compiler diagnostics
-        "textDocument": {"uri": a.as_uri()}, "range": ocb001["range"],
-        "context": {"diagnostics": [ocb001]}}, 60) == []
+    assert codes(diags, COVERAGE) == []  # coverage notices are opt-in in the editor
+    assert (
+        client.request(
+            "textDocument/codeAction",
+            {  # quick fixes are for compiler diagnostics
+                "textDocument": {"uri": a.as_uri()},
+                "range": ocb001["range"],
+                "context": {"diagnostics": [ocb001]},
+            },
+            60,
+        )
+        == []
+    )
     assert client.shutdown() == 0
 
 
@@ -69,7 +78,7 @@ def test_unsaved_include_text_drives_findings(make_client, tmp_path):
     client.open(a)
     client.wait_diagnostics(a, lambda d: "OCB001" in codes(d))
     client.open(lib, CLEAN_LIB, version=1)
-    client.change(lib, LIB, 2)                   # unsaved: the disk still has the clean library
+    client.change(lib, LIB, 2)  # unsaved: the disk still has the clean library
     published = client.wait_diagnostics(lib, lambda d: "OCB002" in codes(d))
     assert published["version"] == 2
     before = len(client.publishes(lib))
@@ -112,9 +121,10 @@ def test_configuration_changes_clear_and_restore_findings(make_client, tmp_path)
     toml.write_text('[checks]\nOCB001 = "nonsense"\n', encoding="utf-8")
     before = len(client.publishes(a))
     client.watched((toml, 2))
-    invalid = client.wait_diagnostics(a, lambda d: any("Check configuration ignored" in x["message"] for x in d),
-                                      after=before)["diagnostics"]
-    assert codes(invalid) == []                  # an invalid configuration runs no checks (as `crbc`)
+    invalid = client.wait_diagnostics(
+        a, lambda d: any("Check configuration ignored" in x["message"] for x in d), after=before
+    )["diagnostics"]
+    assert codes(invalid) == []  # an invalid configuration runs no checks (as `crbc`)
     toml.unlink()
     before = len(client.publishes(a))
     client.watched((toml, 3))
@@ -132,7 +142,7 @@ def test_findings_follow_the_document_version(make_client, tmp_path):
     client.change(a, ENTRY.replace("Alias D(1)=Status", "Alias D(1)=Stat"), 2)
     published = client.wait_diagnostics(a, lambda d: "OCB001" not in codes(d), after=before)
     assert published["version"] == 2
-    assert all(p["version"] == 2 for p in client.publishes(a)[before:])   # never an older result
+    assert all(p["version"] == 2 for p in client.publishes(a)[before:])  # never an older result
     assert client.shutdown() == 0
 
 
@@ -155,9 +165,12 @@ def test_a_check_error_does_not_disable_formatting(make_client, tmp_path):
     a = root / "A.CR6"
     client = started(make_client, root)
     client.open(a)
-    client.wait_diagnostics(a, lambda d: "OCB001" in codes(d))   # an error under `--strict`
-    edits = client.request("textDocument/formatting", {
-        "textDocument": {"uri": a.as_uri()}, "options": {"tabSize": 2, "insertSpaces": True}}, 60)
+    client.wait_diagnostics(a, lambda d: "OCB001" in codes(d))  # an error under `--strict`
+    edits = client.request(
+        "textDocument/formatting",
+        {"textDocument": {"uri": a.as_uri()}, "options": {"tabSize": 2, "insertSpaces": True}},
+        60,
+    )
     assert apply(messy, edits) == ENTRY
     assert client.shutdown() == 0
 
@@ -172,9 +185,11 @@ def test_quick_fixes_match_the_published_data_not_the_text(make_client, tmp_path
     target = next(d for d in diags if "Invalid symbol" in d["message"])
     assert set(target["data"]) == {"entry", "result", "index"}
     renamed = {**target, "message": "a client may rewrite or translate the text"}
-    actions = client.request("textDocument/codeAction", {
-        "textDocument": {"uri": a.as_uri()}, "range": target["range"],
-        "context": {"diagnostics": [renamed]}}, 60)
+    actions = client.request(
+        "textDocument/codeAction",
+        {"textDocument": {"uri": a.as_uri()}, "range": target["range"], "context": {"diagnostics": [renamed]}},
+        60,
+    )
     assert [x["title"] for x in actions][:1] == ["Change to `D`"]
     assert client.shutdown() == 0
 
@@ -199,18 +214,27 @@ def test_a_diagnostic_of_an_older_result_gets_no_quick_fix(make_client, tmp_path
     a = root / "A.CR6"
     client = started(make_client, root)
     client.open(a, first, version=1)
-    old = next(d for d in client.wait_diagnostics(a, lambda d: any("Dx" in x["message"] for x in d))["diagnostics"]
-               if "Dx" in d["message"])
+    old = next(
+        d
+        for d in client.wait_diagnostics(a, lambda d: any("Dx" in x["message"] for x in d))["diagnostics"]
+        if "Dx" in d["message"]
+    )
     client.change(a, second, 2)
-    new = next(d for d in client.wait_diagnostics(a, lambda d: any("Dy" in x["message"] for x in d))["diagnostics"]
-               if "Dy" in d["message"])
+    new = next(
+        d
+        for d in client.wait_diagnostics(a, lambda d: any("Dy" in x["message"] for x in d))["diagnostics"]
+        if "Dy" in d["message"]
+    )
     assert old["data"]["index"] == new["data"]["index"] and old["data"]["result"] != new["data"]["result"]
 
     def actions(diag):
-        return client.request("textDocument/codeAction", {
-            "textDocument": {"uri": a.as_uri()}, "range": diag["range"],
-            "context": {"diagnostics": [diag]}}, 60)
-    assert actions(old) == []                   # it would have fixed `Dy` with `Dx`'s action
+        return client.request(
+            "textDocument/codeAction",
+            {"textDocument": {"uri": a.as_uri()}, "range": diag["range"], "context": {"diagnostics": [diag]}},
+            60,
+        )
+
+    assert actions(old) == []  # it would have fixed `Dy` with `Dx`'s action
     assert [x["title"] for x in actions(new)][:1] == ["Change to `D`"]
     assert client.shutdown() == 0
 
@@ -221,5 +245,5 @@ def test_configuration_above_the_workspace_folder_is_not_used(make_client, tmp_p
     a = root / "A.CR6"
     client = started(make_client, root)
     client.open(a)
-    client.wait_diagnostics(a, lambda d: "OCB001" in codes(d))   # no watcher reaches above the folder
+    client.wait_diagnostics(a, lambda d: "OCB001" in codes(d))  # no watcher reaches above the folder
     assert client.shutdown() == 0

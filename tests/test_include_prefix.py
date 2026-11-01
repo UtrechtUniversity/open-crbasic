@@ -9,11 +9,14 @@ from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
 
-@pytest.mark.parametrize("spec,cr6,cr300", [
-    ("Lib.crb", "<Lib.crb>", "<cpu:Lib.crb>"),
-    ("CPU:Lib.crb", "<Lib.crb>", "<CPU:Lib.crb>"),
-    ("cpu:lib.CRB", "<lib.CRB>", "<cpu:lib.CRB>"),
-])
+@pytest.mark.parametrize(
+    "spec,cr6,cr300",
+    [
+        ("Lib.crb", "<Lib.crb>", "<cpu:Lib.crb>"),
+        ("CPU:Lib.crb", "<Lib.crb>", "<CPU:Lib.crb>"),
+        ("cpu:lib.CRB", "<lib.CRB>", "<cpu:lib.CRB>"),
+    ],
+)
 def test_include_prefix(tmp_path: Path, spec, cr6, cr300):
     (tmp_path / "Lib.crb").write_text("Const Port = U99\n")
     main = tmp_path / "t.cr6"

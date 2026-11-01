@@ -23,18 +23,21 @@ def scan(body: str) -> str:
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x", "cr300", "cr350"])
-@pytest.mark.parametrize("body,expected", [
-    ("    X = 1\n    EndIf\n", [(5, ILLEGAL_IF), (5, NO_IF)]),
-    ("    Next X\n", [(4, "FOR NEXT statement illegally has SCAN without NEXT SCAN."),
-                    (4, "NEXT without FOR.")]),
-    ("    Loop\n", [(4, "LOOP statement illegally has SCAN without NEXT SCAN."),
-                  (4, "LOOP without DO.")]),
-    ("    EndSelect\n", [(4, "EndSelect w/o Select")]),
-    ("    For I = 1 To 2\n      EndIf\n    Next\n",
-     [(5, NO_IF), (6, "FOR NEXT statement illegally has SCAN without NEXT SCAN.")]),
-    ("    If X Then\n      Next\n    EndIf\n", [(5, "NEXT without FOR."), (6, ILLEGAL_IF)]),
-    ("    EndIf\n    EndIf\n", [(4, ILLEGAL_IF), (4, NO_IF), (5, NO_IF)]),
-])
+@pytest.mark.parametrize(
+    "body,expected",
+    [
+        ("    X = 1\n    EndIf\n", [(5, ILLEGAL_IF), (5, NO_IF)]),
+        ("    Next X\n", [(4, "FOR NEXT statement illegally has SCAN without NEXT SCAN."), (4, "NEXT without FOR.")]),
+        ("    Loop\n", [(4, "LOOP statement illegally has SCAN without NEXT SCAN."), (4, "LOOP without DO.")]),
+        ("    EndSelect\n", [(4, "EndSelect w/o Select")]),
+        (
+            "    For I = 1 To 2\n      EndIf\n    Next\n",
+            [(5, NO_IF), (6, "FOR NEXT statement illegally has SCAN without NEXT SCAN.")],
+        ),
+        ("    If X Then\n      Next\n    EndIf\n", [(5, "NEXT without FOR."), (6, ILLEGAL_IF)]),
+        ("    EndIf\n    EndIf\n", [(4, ILLEGAL_IF), (4, NO_IF), (5, NO_IF)]),
+    ],
+)
 def test_unmatched_closers(body, expected, logger):
     assert messages(scan(body), logger) == expected
 
@@ -50,22 +53,26 @@ def test_is_pass2():
 
 
 def test_balanced_blocks_are_silent():
-    body = ("    If X Then\n      For I = 1 To 2\n        Do\n        Loop Until X\n      Next\n"
-            "    EndIf\n    Select Case X\n      Case 1\n    EndSelect\n")
+    body = (
+        "    If X Then\n      For I = 1 To 2\n        Do\n        Loop Until X\n      Next\n"
+        "    EndIf\n    Select Case X\n      Case 1\n    EndSelect\n"
+    )
     assert messages(scan(body)) == []
 
 
-@pytest.mark.parametrize("body", [
-    "  Scan (1,Sec,0,0)\n    If X Then\n  NextScan\n    EndIf\n",
-    "  Scan (1,Sec,0,0)\n    For I = 1 To 2\n  NextScan\n    Next\n",
-    "  Scan (1,Sec,0,0)\n    Do\n  NextScan\n    Loop\n",
-])
+@pytest.mark.parametrize(
+    "body",
+    [
+        "  Scan (1,Sec,0,0)\n    If X Then\n  NextScan\n    EndIf\n",
+        "  Scan (1,Sec,0,0)\n    For I = 1 To 2\n  NextScan\n    Next\n",
+        "  Scan (1,Sec,0,0)\n    Do\n  NextScan\n    Loop\n",
+    ],
+)
 def test_nextscan_leaves_inner_blocks_open(body):
     # Oracle: compiles (with a "never reached" warning); fuzz-found false reject, 2026-09-27.
     assert messages(f"Public X, I\nBeginProg\n{body}EndProg\n") == []
 
 
 def test_scan_opened_inside_if_is_popped_by_endif():
-    text = ("Public X\nBeginProg\n  If X Then\n  Scan (1,Sec,0,0)\n  EndIf\n  NextScan\n"
-            "EndProg\n")
+    text = "Public X\nBeginProg\n  If X Then\n  Scan (1,Sec,0,0)\n  EndIf\n  NextScan\nEndProg\n"
     assert messages(text) == [(5, ILLEGAL_IF)]

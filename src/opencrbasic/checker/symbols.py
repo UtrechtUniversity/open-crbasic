@@ -169,9 +169,16 @@ def out_of_scope_nodes(program: S.Program, resolvable: frozenset | set = frozens
     every = set().union(*locals_.values()) if locals_ else set()
     if not every:
         return frozenset()
-    outer = declared_names(S.Program("", [
-        replace(st, params=[]) if isinstance(st, S.SubDef) else st for st, r in owners
-        if not (r is not None and isinstance(st, S.Declaration) and st.kind == "DIM")]))
+    outer = declared_names(
+        S.Program(
+            "",
+            [
+                replace(st, params=[]) if isinstance(st, S.SubDef) else st
+                for st, r in owners
+                if not (r is not None and isinstance(st, S.Declaration) and st.kind == "DIM")
+            ],
+        )
+    )
     hidden_all = every - outer - set(resolvable)
     if not hidden_all:
         return frozenset()
@@ -205,8 +212,7 @@ def ess_variable_names(program: S.Program) -> set[str]:
     program never uses `ESSVariables` at all (the overwhelmingly common case -- returns empty
     immediately).
     """
-    if not any(isinstance(s, S.Instruction) and s.keyword.upper() == "ESSVARIABLES"
-               for s in program.statements):
+    if not any(isinstance(s, S.Instruction) and s.keyword.upper() == "ESSVARIABLES" for s in program.statements):
         return set()
     names: set[str] = set()
     for stmt in program.statements:
@@ -246,8 +252,7 @@ def const_table_fields(program: S.Program) -> dict[str, set[str]]:
     current: str | None = None
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CONSTTABLE":
-            current = stmt.args[0].name.upper() if stmt.args and isinstance(stmt.args[0], S.Name) \
-                else None
+            current = stmt.args[0].name.upper() if stmt.args and isinstance(stmt.args[0], S.Name) else None
             if current is not None:
                 fields.setdefault(current, set())
         elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ENDCONSTTABLE":
@@ -346,9 +351,9 @@ def declared_dim_counts(program: S.Program, strings: bool = False) -> dict[str, 
                 name = v.name.upper()
                 if (v.type or "").upper() == "STRING":
                     strings_seen.add(name)
-                if ((v.type or "").upper() == "STRING" and not strings) or \
-                        re.search(r"(?i)\b" + re.escape(v.name) + r"\s*\(\s*\)" + (r"\s*As\b" if strings else ""),
-                           stmt.text):
+                if ((v.type or "").upper() == "STRING" and not strings) or re.search(
+                    r"(?i)\b" + re.escape(v.name) + r"\s*\(\s*\)" + (r"\s*As\b" if strings else ""), stmt.text
+                ):
                     # a String takes a character subscript (`Buf(1,1,I)`); `A()` is its own error
                     # on CR6/CR1000X, a scalar to CR300/CR350 (`Public A()`, `X = A(1)` ->
                     # `Dimensions not declared`, oracle 2026-10-10) unless a failed `A() As Long`
@@ -362,6 +367,7 @@ def declared_dim_counts(program: S.Program, strings: bool = False) -> dict[str, 
 
 class DimCounts(dict):
     """`declared_dim_counts`'s result; `.strings` names the String variables it includes."""
+
     strings: frozenset = frozenset()
 
 
@@ -379,10 +385,15 @@ def scoped_view(program: S.Program, stmt: S.Stmt, publics: bool = False) -> S.Pr
         if st is stmt:
             owner = cur
         tagged.append((st, cur))
-    stmts: list[S.Stmt] = [st for st, c in tagged if c is None] + [st for st, c in tagged if c is not None and c is owner]
+    stmts: list[S.Stmt] = [st for st, c in tagged if c is None] + [
+        st for st, c in tagged if c is not None and c is owner
+    ]
     if publics:
-        stmts = [st for st, c in tagged if c is not None and c is not owner and isinstance(st, S.Declaration)
-                 and st.kind == "PUBLIC"] + stmts
+        stmts = [
+            st
+            for st, c in tagged
+            if c is not None and c is not owner and isinstance(st, S.Declaration) and st.kind == "PUBLIC"
+        ] + stmts
     return S.Program("", stmts)
 
 
@@ -390,14 +401,14 @@ class ScopeTables:
     """`dims` (upper-case name -> full dimension tuple, as `declared_all_dims`), `types` (name -> type,
     arrays always, scalars only when `scalars`) and `arrays` (names declared with dimensions), for the
     declarations visible at one statement."""
+
     __slots__ = ("dims", "types", "arrays")
 
     def __init__(self, dims, types, arrays):
         self.dims, self.types, self.arrays = dims, types, arrays
 
 
-def scope_tables(program: S.Program, env: consteval.Env, scalars: bool = False,
-                 parameters: bool = False):
+def scope_tables(program: S.Program, env: consteval.Env, scalars: bool = False, parameters: bool = False):
     """`stmt -> ScopeTables` looking array shapes up by the scope of the use site: a `Sub`/`Function`
     body sees its own local `Dim`s over the globals (a local shadows a global of the same name, oracle
     2026-10-12: `Dim P(5)` in one Sub, `S1(P(15))` against `Public P(20)` in main code compiles, and
@@ -432,13 +443,14 @@ def scope_tables(program: S.Program, env: consteval.Env, scalars: bool = False,
                 dims.pop(n, None)
                 types.pop(n, None)
                 arrays.discard(n)
-                if parameters:   # (`Q()` holds one element too, round 31 review)
+                if parameters:  # (`Q()` holds one element too, round 31 review)
                     try:
                         shape = tuple(consteval.value_of(d, env) for d in prm.dim_exprs) or (1,)
                     except consteval.NotConstant:
                         continue
-                    if all(isinstance(d, (int, float)) and not isinstance(d, bool)
-                           and 1 <= d < float("inf") for d in shape):
+                    if all(
+                        isinstance(d, (int, float)) and not isinstance(d, bool) and 1 <= d < float("inf") for d in shape
+                    ):
                         dims[n], types[n] = tuple(int(d) for d in shape), (prm.type or "FLOAT").upper()
         return ScopeTables(dims, types, arrays)
 
@@ -478,8 +490,12 @@ def declared_all_dims(program: S.Program, env: consteval.Env) -> dict[str, tuple
                     val = consteval.value_of(d, env)
                 except consteval.NotConstant:
                     break
-                if not isinstance(val, (int, float)) or isinstance(val, bool) or val != val \
-                        or val in (float("inf"), float("-inf")):
+                if (
+                    not isinstance(val, (int, float))
+                    or isinstance(val, bool)
+                    or val != val
+                    or val in (float("inf"), float("-inf"))
+                ):
                     break
                 sizes.append(int(val))
             else:
@@ -536,14 +552,14 @@ def _names_through_bad_as_clause(stmt: S.Unparsed) -> set[str]:
     m = re.match(r"(?i)\s*(?:Public|Dim|Static)\s+(.*)$", stmt.text or "", re.S)
     if not m:
         return set()
-    bad = re.escape(stmt.reason[len("Invalid As clause: "):].strip())
+    bad = re.escape(stmt.reason[len("Invalid As clause: ") :].strip())
     out: set[str] = set()
     for item in _split_top_commas(m.group(1)):  # not a comma inside an array's dimensions
         name = re.match(r"\s*([A-Za-z_][A-Za-z0-9_]*)", item)
         if not name:
             break
         out.add(name.group(1).upper())
-        if bad and re.search(rf"\b{bad}\b", item[name.end():]):
+        if bad and re.search(rf"\b{bad}\b", item[name.end() :]):
             break
     return out
 
@@ -557,16 +573,14 @@ def is_reserved_predefined_name(name: str, profile) -> bool:
     return key in profile.symbols and key not in profile.declarable_predefined_names
 
 
-def report_predefined_name_collision(stmt: S.Stmt, name: str, profile,
-                                     diags: Diagnostics) -> bool:
+def report_predefined_name_collision(stmt: S.Stmt, name: str, profile, diags: Diagnostics) -> bool:
     if not is_reserved_predefined_name(name, profile):
         return False
     diags.error(stmt.line, f"{name} is a predefined CONST.", stmt.file)
     return True
 
 
-def report_function_name_collision(stmt: S.Stmt, name: str, profile,
-                                    diags: Diagnostics) -> bool:
+def report_function_name_collision(stmt: S.Stmt, name: str, profile, diags: Diagnostics) -> bool:
     if name.upper() not in profile.functions:
         return False
     diags.error(stmt.line, f"{name} already defined as an internal function.", stmt.file)
@@ -587,8 +601,7 @@ def check_local_name_collision(stmt: S.Stmt, profile, diags: Diagnostics) -> Non
     else:
         return
     for index, name in enumerate(names):
-        collision = (not shadows_functions and
-                     report_function_name_collision(stmt, name, profile, diags))
+        collision = not shadows_functions and report_function_name_collision(stmt, name, profile, diags)
         collision = collision or report_predefined_name_collision(stmt, name, profile, diags)
         if collision and profile.single_pass:
             if index + 2 < len(names):

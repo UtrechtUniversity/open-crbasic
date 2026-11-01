@@ -13,10 +13,7 @@ SMALL = ["cr300", "cr350"]
 
 def lines(body: str, logger: str) -> list[str]:
     body_text = "".join(f"    {b}\n" for b in body.split(" / "))
-    text = (
-        "Public X, A(5), B(2,3), L(4) As Long\nBeginProg\n  Scan (1,Sec,0,0)\n"
-        f"{body_text}  NextScan\nEndProg\n"
-    )
+    text = f"Public X, A(5), B(2,3), L(4) As Long\nBeginProg\n  Scan (1,Sec,0,0)\n{body_text}  NextScan\nEndProg\n"
     profile = profiles.get(logger)
     program, diags = parser.parse_text(text, "t.CR6", profile=profile)
     result = CompileResult("t.CR6", profile, diags)
@@ -29,13 +26,16 @@ B_OOB = ["line 4: Variable B out of bounds."]
 
 
 @pytest.mark.parametrize("logger", LOGGERS)
-@pytest.mark.parametrize("body", [
-    "Battery(A(9))",
-    "Battery(A(0))",
-    "Randomize A(&HFF)",
-    "Move(A(1),2,A(6),1)",
-    "DewPoint(X,A(9),1)",
-])
+@pytest.mark.parametrize(
+    "body",
+    [
+        "Battery(A(9))",
+        "Battery(A(0))",
+        "Randomize A(&HFF)",
+        "Move(A(1),2,A(6),1)",
+        "DewPoint(X,A(9),1)",
+    ],
+)
 def test_a_out_of_bounds(body, logger):
     assert lines(body, logger) == A_OOB
 
@@ -52,15 +52,18 @@ def test_b_out_of_bounds(body, logger):
 
 
 @pytest.mark.parametrize("logger", LOGGERS)
-@pytest.mark.parametrize("body", [
-    "Battery(A(5))",
-    "Battery(A(-1))",
-    "Battery(A(6)+1)",
-    "X = A(6)",
-    "Battery(L(5))",
-    "WriteIO(1,A(9))",
-    "AddPrecise(X,A(9))",
-])
+@pytest.mark.parametrize(
+    "body",
+    [
+        "Battery(A(5))",
+        "Battery(A(-1))",
+        "Battery(A(6)+1)",
+        "X = A(6)",
+        "Battery(L(5))",
+        "WriteIO(1,A(9))",
+        "AddPrecise(X,A(9))",
+    ],
+)
 def test_not_bounds_checked(body, logger):
     # some of these have other (oracle-matching) errors on CR300/CR350; none is out of bounds
     assert not any("out of bounds" in line for line in lines(body, logger))
@@ -89,13 +92,16 @@ def test_pass_placement_small(logger):
 
 
 @pytest.mark.parametrize("logger", FULL)
-@pytest.mark.parametrize("body", [
-    "Battery(A(1,2))",
-    "Battery(X(2))",
-    "Battery(X(0))",
-    "Battery(B(1,1,2))",
-    "Battery(A(1,0))",
-])
+@pytest.mark.parametrize(
+    "body",
+    [
+        "Battery(A(1,2))",
+        "Battery(X(2))",
+        "Battery(X(0))",
+        "Battery(B(1,1,2))",
+        "Battery(A(1,0))",
+    ],
+)
 def test_extra_subscripts_are_size_one_dimensions_full(body, logger):
     # a subscript beyond the declared rank counts as a size-1 dimension; a scalar is shape (1,)
     name = body.split("(")[1]
@@ -108,24 +114,30 @@ def test_scalar_destination_out_of_bounds_full(logger):
 
 
 @pytest.mark.parametrize("logger", FULL)
-@pytest.mark.parametrize("body", [
-    "Battery(A(2,1))",
-    "Battery(A(5,1))",
-    "Battery(X(1))",
-    "Battery(X(1,1))",
-    "Battery(B(1,1,1))",
-    "Battery(A(1,1,1))",
-])
+@pytest.mark.parametrize(
+    "body",
+    [
+        "Battery(A(2,1))",
+        "Battery(A(5,1))",
+        "Battery(X(1))",
+        "Battery(X(1,1))",
+        "Battery(B(1,1,1))",
+        "Battery(A(1,1,1))",
+    ],
+)
 def test_extra_subscripts_in_bounds_full(body, logger):
     assert lines(body, logger) == []
 
 
 @pytest.mark.parametrize("logger", SMALL)
-@pytest.mark.parametrize("body,name", [
-    ("Battery(X(2))", "X(2)"),
-    ("Battery(A(1,2))", "A(1,2)"),
-    ("Battery(L(1,2))", "L(1,2)"),
-])
+@pytest.mark.parametrize(
+    "body,name",
+    [
+        ("Battery(X(2))", "X(2)"),
+        ("Battery(A(1,2))", "A(1,2)"),
+        ("Battery(L(1,2))", "L(1,2)"),
+    ],
+)
 def test_over_indexing_is_dimensions_not_declared_small(body, name, logger):
     # a Long destination must not also report "Illegal destination variable type"
     assert lines(body, logger) == [f"line 4: Dimensions not declared: {name}."]

@@ -8,8 +8,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parents[1] / "tools"))
 import fuzz  # noqa: E402
 
-LINES = ["Public Battery_V, Temp(3)", "BeginProg", "  Scan(5,Sec,0,0)", "    Battery(Battery_V)",
-         "  NextScan", "EndProg"]
+LINES = [
+    "Public Battery_V, Temp(3)",
+    "BeginProg",
+    "  Scan(5,Sec,0,0)",
+    "    Battery(Battery_V)",
+    "  NextScan",
+    "EndProg",
+]
 
 
 def test_realistic_operators():
@@ -23,6 +29,7 @@ def test_realistic_operators():
 
 def test_relevant_names():
     from opencrbasic import profiles
+
     names = fuzz.relevant_names(profiles.get("cr6"))
     if not fuzz.CRBASIC_DIR.is_dir():
         return

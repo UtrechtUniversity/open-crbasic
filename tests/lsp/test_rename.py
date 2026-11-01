@@ -54,7 +54,7 @@ def apply(data: bytes, edits) -> bytes:
     lines = data.split(b"\n")
     for e in sorted(edits, key=lambda e: (e.line, e.start), reverse=True):
         line = lines[e.line]
-        lines[e.line] = line[:e.start] + e.new_text.encode("latin-1") + line[e.end:]
+        lines[e.line] = line[: e.start] + e.new_text.encode("latin-1") + line[e.end :]
     return b"\n".join(lines)
 
 
@@ -85,12 +85,13 @@ def sample(tmp_path):
 
 # ------------------------------------------------------------------ accepted renames
 
+
 def test_global_rename_skips_shadowing_local(sample):
     p, r = sample
     line, _col = pos(p, "a", 0, 7 - 0)[0], 7
     res = R.rename([r], p, 0, 7, "Alpha")
     assert res.ok and res.refusal is None
-    assert spots(res, p) == [(0, 7, 8), (8, 4, 5), (9, 8, 9)]       # not the Dim a / `a = p + K`
+    assert spots(res, p) == [(0, 7, 8), (8, 4, 5), (9, 8, 9)]  # not the Dim a / `a = p + K`
     assert all(e.new_text == "Alpha" for e in res.edits[p])
     assert res.versions == {p: hashlib.sha256(p.read_bytes()).hexdigest()}
     out = apply(p.read_bytes(), res.edits[p]).decode()
@@ -101,17 +102,17 @@ def test_global_rename_skips_shadowing_local(sample):
 
 def test_local_parameter_and_constant(sample):
     p, r = sample
-    res = R.rename([r], p, 2, 8, "q")                  # parameter p
+    res = R.rename([r], p, 2, 8, "q")  # parameter p
     assert spots(res, p) == [(2, 8, 9), (4, 6, 7)] or spots(res, p) == [(2, 8, 9), (4, 6, 7)]
-    res = R.rename([r], p, 1, 6, "Kay")                # Const K
+    res = R.rename([r], p, 1, 6, "Kay")  # Const K
     assert spots(res, p) == [(1, 6, 7), (4, 10, 11), (8, 17, 18)]
-    res = R.rename([r], p, 3, 6, "loc")                # local Dim a: only the Sub's uses
+    res = R.rename([r], p, 3, 6, "loc")  # local Dim a: only the Sub's uses
     assert spots(res, p) == [(3, 6, 7), (4, 2, 3)]
 
 
 def test_reference_position_and_just_after_name(sample):
     p, r = sample
-    res = R.rename([r], p, 8, 5, "Alpha")              # just after the `a` in BeginProg
+    res = R.rename([r], p, 8, 5, "Alpha")  # just after the `a` in BeginProg
     assert spots(res, p) == [(0, 7, 8), (8, 4, 5), (9, 8, 9)]
     pr = R.prepare_rename([r], p, 9, 8)
     assert pr.ok and (pr.path, pr.line, pr.start, pr.end, pr.placeholder) == (p, 9, 8, 9, "a")
@@ -124,7 +125,10 @@ def test_case_only_change_is_allowed(sample):
 
 
 def test_sub_function_and_table_rename(tmp_path):
-    m = write(tmp_path, "m.CR6", """Public x
+    m = write(
+        tmp_path,
+        "m.CR6",
+        """Public x
 Function Twice(v)
   Twice = v * 2
 EndFunction
@@ -138,7 +142,8 @@ BeginProg
     x = Hist.Foo
   NextScan
 EndProg
-""")
+""",
+    )
     r = run(m)
     res = R.rename([r], m, 1, 10, "Dbl")
     assert res.ok and spots(res, m) == [(1, 9, 14), (2, 2, 7), (9, 8, 13)]
@@ -147,7 +152,10 @@ EndProg
 
 
 def test_structure_member_and_type(tmp_path):
-    m = write(tmp_path, "m.CR6", """StructureType Pt
+    m = write(
+        tmp_path,
+        "m.CR6",
+        """StructureType Pt
   Lat As Float
   Lon As Float
 EndStructureType
@@ -158,13 +166,14 @@ BeginProg
     p.Lon = p.Lat + 1
   NextScan
 EndProg
-""")
+""",
+    )
     r = run(m)
     res = R.rename([r], m, 1, 3, "North")
     assert res.ok and spots(res, m) == [(1, 2, 5), (7, 6, 9), (8, 14, 17)]
     res = R.rename([r], m, 0, 16, "Point")
     assert res.ok and spots(res, m) == [(0, 14, 16), (4, 12, 14)]
-    res = R.rename([r], m, 1, 3, "Lon")                # collides with a member of the same type
+    res = R.rename([r], m, 1, 3, "Lon")  # collides with a member of the same type
     assert res is not None
     assert required(res.refusal).code == "collision"
     assert R.rename([r], m, 1, 3, "Lat2").ok
@@ -177,7 +186,7 @@ def test_crlf_and_overlay_versions(tmp_path):
     assert spots(res, m) == [(0, 7, 8), (8, 4, 5), (9, 8, 9)]
     out = apply(m.read_bytes().replace(b"\r\n", b"\n"), res.edits[m]).replace(b"\n", b"\r\n")
     assert b"Public Alpha, Arr(3)\r\n" in out
-    buf = SAMPLE.replace("Public a,", "Public a ,").encode()           # unsaved buffer
+    buf = SAMPLE.replace("Public a,", "Public a ,").encode()  # unsaved buffer
     r2 = run(m, overlays={m: buf})
     res2 = R.rename([r2], m, 0, 7, "Alpha")
     assert res2.ok and res2.versions == {m: hashlib.sha256(buf).hexdigest()}
@@ -193,7 +202,7 @@ def test_stale_file_is_refused(sample):
     assert required(R.prepare_rename([r], p, 0, 7).refusal).code == "stale"
 
 
-def test_unedited_dependency_that_changed_is_stale(tmp_path):      # review R2 finding 1
+def test_unedited_dependency_that_changed_is_stale(tmp_path):  # review R2 finding 1
     lib = write(tmp_path, "Lib.crb", "Public otherName\n")
     m = write(tmp_path, "M.CR6", 'Include "Lib.crb"\nPublic oldName\nBeginProg\noldName=1\nEndProg\n')
     r = run(m)
@@ -204,23 +213,24 @@ def test_unedited_dependency_that_changed_is_stale(tmp_path):      # review R2 f
     assert res is not None
     assert code(res) == "stale" and "Lib.crb" in required(res.refusal).message
     assert code(R.prepare_rename([r], m, 1, 8)) == "stale"
-    lib.write_bytes(b"Public otherName\n")                 # restored: current again
+    lib.write_bytes(b"Public otherName\n")  # restored: current again
     assert R.rename([r], m, 1, 8, "newName").ok
-    lib.unlink()                                             # a vanished dependency is stale too
+    lib.unlink()  # a vanished dependency is stale too
     assert code(R.rename([r], m, 1, 8, "newName")) == "stale"
 
 
 def test_unedited_dependency_read_through_given_source(tmp_path):
     from opencrbasic.sources import DiskSource, OverlaySource
+
     lib = write(tmp_path, "Lib.crb", "Public otherName\n")
     m = write(tmp_path, "M.CR6", 'Include "Lib.crb"\nPublic oldName\nBeginProg\noldName=1\nEndProg\n')
     r = run(m)
-    buf = OverlaySource(DiskSource(), {lib: b"Public newName\n"})      # unsaved buffer differs
+    buf = OverlaySource(DiskSource(), {lib: b"Public newName\n"})  # unsaved buffer differs
     assert code(R.rename([r], m, 1, 8, "newName", source=buf)) == "stale"
     assert R.rename([r], m, 1, 8, "newName", source=OverlaySource(DiskSource())).ok
 
 
-def test_edited_file_changed_after_prepare_is_stale(tmp_path):     # review R2 finding 2
+def test_edited_file_changed_after_prepare_is_stale(tmp_path):  # review R2 finding 2
     text = "Public oldName\nBeginProg\noldName=1\nEndProg\n"
     p = write(tmp_path, "M.CR6", text)
     r = run(p)
@@ -230,7 +240,7 @@ def test_edited_file_changed_after_prepare_is_stale(tmp_path):     # review R2 f
     assert code(R.prepare_rename([r], p, 0, 8)) == "stale"
 
 
-def test_public_member_use_of_new_name_is_a_capture(tmp_path):     # review R2 finding 4
+def test_public_member_use_of_new_name_is_a_capture(tmp_path):  # review R2 finding 4
     p = write(tmp_path, "M.CR6", "Public oldName,out\nBeginProg\nout=Public.newName\nEndProg\n")
     r = run(p)
     res = R.rename([r], p, 0, 8, "newName")
@@ -250,13 +260,13 @@ def test_public_member_use_of_the_target_is_renamed_and_other_members_are_captur
 
 
 def test_member_use_of_other_container_is_not_a_collision(tmp_path):
-    p = write(tmp_path, "M.CR6", "Public oldName,out\nPublic Other As Long\nBeginProg\n"
-              "out=Status.newName\nEndProg\n")
+    p = write(tmp_path, "M.CR6", "Public oldName,out\nPublic Other As Long\nBeginProg\nout=Status.newName\nEndProg\n")
     r = run(p)
     assert R.rename([r], p, 0, 8, "newName").ok
 
 
 # ------------------------------------------------------------------ refusals: the position
+
 
 def code(res) -> str:
     assert not res.ok and res.refusal is not None
@@ -265,7 +275,10 @@ def code(res) -> str:
 
 
 def test_position_refusals(tmp_path):
-    m = write(tmp_path, "m.CR6", """Public a, st$ As String * 4  ' a comment a
+    m = write(
+        tmp_path,
+        "m.CR6",
+        """Public a, st$ As String * 4  ' a comment a
 Const K = 5
 
 BeginProg
@@ -275,19 +288,23 @@ BeginProg
     a = Len("a")
   NextScan
 EndProg
-""")
+""",
+    )
     r = run(m)
-    assert code(R.rename([r], m, 0, 40, "X")) == "not_a_name"          # in the comment
-    assert code(R.rename([r], m, 7, 14, "X")) == "not_a_name"          # in the string
-    assert code(R.rename([r], m, 5, 13, "X")) == "external"             # Status
-    assert code(R.rename([r], m, 6, 5, "X")) == "external"             # instruction PanelTemp
-    assert code(R.rename([r], m, 7, 9, "X")) == "external"            # function Len
+    assert code(R.rename([r], m, 0, 40, "X")) == "not_a_name"  # in the comment
+    assert code(R.rename([r], m, 7, 14, "X")) == "not_a_name"  # in the string
+    assert code(R.rename([r], m, 5, 13, "X")) == "external"  # Status
+    assert code(R.rename([r], m, 6, 5, "X")) == "external"  # instruction PanelTemp
+    assert code(R.rename([r], m, 7, 9, "X")) == "external"  # function Len
     assert not R.prepare_rename([r], m, 99, 0).ok
     assert code(R.rename([], m, 0, 7, "X")) == "no_results"
 
 
 def test_unresolved_and_unmodelled_and_quoted(tmp_path):
-    m = write(tmp_path, "m.CR6", """Public a
+    m = write(
+        tmp_path,
+        "m.CR6",
+        """Public a
 DataTable("Quoted",True,-1)
   Sample(1,a,FP2)
 EndTable
@@ -297,7 +314,8 @@ BeginProg
     a = Quoted.a
   NextScan
 EndProg
-""")
+""",
+    )
     r = run(m)
     assert code(R.rename([r], m, 6, 9, "X")) == "unresolved"
     assert code(R.rename([r], m, 1, 12, "X")) == "quoted"
@@ -308,21 +326,28 @@ EndProg
 
 
 def test_ambiguous_duplicate_declarations(tmp_path):
-    m = write(tmp_path, "m.CR6", """Public a
+    m = write(
+        tmp_path,
+        "m.CR6",
+        """Public a
 Public a
 BeginProg
   Scan(1,Sec,0,0)
     a = 1
   NextScan
 EndProg
-""")
+""",
+    )
     r = run(m)
     assert code(R.rename([r], m, 4, 4, "X")) == "ambiguous"
-    assert code(R.rename([r], m, 0, 7, "X")) == "ambiguous"            # its reference is ambiguous
+    assert code(R.rename([r], m, 0, 7, "X")) == "ambiguous"  # its reference is ambiguous
 
 
 def test_unindexed_code_is_refused(tmp_path):
-    m = write(tmp_path, "m.CR6", """Const Mode = 1
+    m = write(
+        tmp_path,
+        "m.CR6",
+        """Const Mode = 1
 Public a
 #If Mode = 1
 Public b
@@ -332,10 +357,14 @@ BeginProg
     a = Mode
   NextScan
 EndProg
-""")
+""",
+    )
     r = run(m)
-    assert code(R.rename([r], m, 0, 6, "Choice")) == "unindexed_code"     # #If Mode
-    m2 = write(tmp_path, "n.CR6", """Public a
+    assert code(R.rename([r], m, 0, 6, "Choice")) == "unindexed_code"  # #If Mode
+    m2 = write(
+        tmp_path,
+        "n.CR6",
+        """Public a
 Public b
 #If 1 = 0
 b = a
@@ -345,16 +374,20 @@ BeginProg
     a = 1
   NextScan
 EndProg
-""")
+""",
+    )
     r2 = run(m2)
-    assert code(R.rename([r2], m2, 0, 7, "X")) == "unindexed_code"        # inactive branch uses a
-    assert required(R.rename([r2], m2, 1, 7, "X").refusal).code == "unindexed_code"   # b too
+    assert code(R.rename([r2], m2, 0, 7, "X")) == "unindexed_code"  # inactive branch uses a
+    assert required(R.rename([r2], m2, 1, 7, "X").refusal).code == "unindexed_code"  # b too
     m3 = write(tmp_path, "o.CR6", "Public a\nBeginProg\n  a = 1\nEndProg\na = 2\n")
-    assert code(R.rename([run(m3)], m3, 0, 7, "X")) == "unindexed_code"     # after EndProg
+    assert code(R.rename([run(m3)], m3, 0, 7, "X")) == "unindexed_code"  # after EndProg
 
 
 def test_name_inside_a_string_is_refused(tmp_path):
-    m = write(tmp_path, "m.CR6", """ConstTable(Cfg)
+    m = write(
+        tmp_path,
+        "m.CR6",
+        """ConstTable(Cfg)
   Const Secs = 60
 EndConstTable
 Public a
@@ -363,10 +396,11 @@ BeginProg
     a = Secs + Len("Cfg.Secs")
   NextScan
 EndProg
-""")
+""",
+    )
     r = run(m)
-    assert code(R.rename([r], m, 1, 8, "Ticks")) == "string_mention"        # Secs
-    assert code(R.rename([r], m, 0, 12, "Config")) == "string_mention"      # Cfg
+    assert code(R.rename([r], m, 1, 8, "Ticks")) == "string_mention"  # Secs
+    assert code(R.rename([r], m, 0, 12, "Config")) == "string_mention"  # Cfg
     assert R.rename([r], m, 3, 7, "b").ok
     assert code(R.rename([r], m, 3, 7, "Secs")) == "collision"
     m2 = write(tmp_path, "n.CR6", 'Public a\nBeginProg\n  a = Len("fresh")\nEndProg\n')
@@ -375,31 +409,49 @@ EndProg
 
 # ------------------------------------------------------------------ refusals: the new name
 
+
 def test_new_name_refusals(sample):
     p, r = sample
     for bad in ("", "1x", "a b", "x$", "x-y", "x.y", "é"):
         assert code(R.rename([r], p, 1, 6, bad)) == "invalid_name", bad
-    for word in ("Public", "If", "Scan", "PanelTemp", "Len", "Status", "Settings", "NAN", "inf",
-                 "Long", "Sec", "As", "then"):
+    for word in (
+        "Public",
+        "If",
+        "Scan",
+        "PanelTemp",
+        "Len",
+        "Status",
+        "Settings",
+        "NAN",
+        "inf",
+        "Long",
+        "Sec",
+        "As",
+        "then",
+    ):
         assert code(R.rename([r], p, 1, 6, word)) == "reserved_name", word
     assert code(R.rename([r], p, 1, 6, "K")) == "unchanged"
-    assert code(R.rename([r], p, 1, 6, "arr")) == "collision"          # global Arr, other case
-    assert code(R.rename([r], p, 1, 6, "Foo")) == "collision"          # a Sub
-    assert code(R.rename([r], p, 0, 7, "p")) == "collision"            # a parameter somewhere
-    assert code(R.rename([r], p, 2, 8, "K")) == "collision"            # local param vs global Const
-    assert code(R.rename([r], p, 3, 6, "Arr")) == "collision"          # local Dim vs global
-    assert code(R.rename([r], p, 2, 8, "a")) == "collision"            # param vs the Sub's own Dim a
+    assert code(R.rename([r], p, 1, 6, "arr")) == "collision"  # global Arr, other case
+    assert code(R.rename([r], p, 1, 6, "Foo")) == "collision"  # a Sub
+    assert code(R.rename([r], p, 0, 7, "p")) == "collision"  # a parameter somewhere
+    assert code(R.rename([r], p, 2, 8, "K")) == "collision"  # local param vs global Const
+    assert code(R.rename([r], p, 3, 6, "Arr")) == "collision"  # local Dim vs global
+    assert code(R.rename([r], p, 2, 8, "a")) == "collision"  # param vs the Sub's own Dim a
     assert R.rename([r], p, 2, 8, "fresh").ok
 
 
 def test_new_name_used_by_other_reference(tmp_path):
-    m = write(tmp_path, "m.CR6", """Public a
+    m = write(
+        tmp_path,
+        "m.CR6",
+        """Public a
 BeginProg
   Scan(1,Sec,0,0)
     a = undeclared + 1
   NextScan
 EndProg
-""")
+""",
+    )
     r = run(m)
     assert code(R.rename([r], m, 0, 7, "undeclared")) == "collision"
 
@@ -414,13 +466,17 @@ EndSub
 
 
 def entry(tmp_path, name, extra=""):
-    return write(tmp_path, name, f'''Include "lib.crb"
+    return write(
+        tmp_path,
+        name,
+        f"""Include "lib.crb"
 {extra}BeginProg
   Scan(1,Sec,0,0)
     Bump()
   NextScan
 EndProg
-''')
+""",
+    )
 
 
 def test_two_entries_deduplicate(tmp_path):
@@ -448,7 +504,7 @@ def test_reference_in_entry_file_and_unrelated_entry_ignored(tmp_path):
     a = entry(tmp_path, "a.CR6", "Public aa\n")
     other = write(tmp_path, "c.CR6", "Public shared\nBeginProg\n  shared = 1\nEndProg\n")
     ra, rc = run(a), run(other)
-    res = R.rename([ra, rc], lib, 0, 8, "total")            # c does not depend on lib.crb
+    res = R.rename([ra, rc], lib, 0, 8, "total")  # c does not depend on lib.crb
     assert res.ok and list(res.edits) == [lib]
     res = R.rename([ra, rc], other, 0, 8, "total")
     assert res.ok and list(res.edits) == [other]
@@ -460,7 +516,7 @@ def test_entries_disagree_on_declaration_set(tmp_path):
     rb = run(entry(tmp_path, "b.CR6", "Public pad\nPublic v\n"))
     ra2 = run(tmp_path / "a.CR6")
     assert code(R.rename([ra, rb], lib, 1, 2, "w")) == "entries_disagree"
-    a = tmp_path / "a.CR6"                     # one entry: its own declaration decides
+    a = tmp_path / "a.CR6"  # one entry: its own declaration decides
     res = R.rename([ra2], lib, 1, 2, "w")
     assert res.ok and set(res.edits) == {a, lib}
 
@@ -510,7 +566,7 @@ def test_collision_only_in_the_other_entry_is_refused(tmp_path):
     results = [run(a), run(b)]
     for path, line, col in ((a, 2, 3), (b, 3, 3), (lib, 0, 9)):
         assert code(R.rename(results, path, line, col, "renamedValue")) == "collision"
-    assert R.rename(results[:1], a, 2, 3, "renamedValue").ok       # A alone has no collision
+    assert R.rename(results[:1], a, 2, 3, "renamedValue").ok  # A alone has no collision
 
 
 def test_entry_using_an_edited_line_without_the_declaration_is_refused(tmp_path):
@@ -539,8 +595,13 @@ def _facts(path: Path) -> dict:
     for t in res.tables:
         tables.append(repr(dataclasses.replace(t, fields=[])))
         tables.extend(repr(f) for f in t.fields)
-    return {"ok": res.ok, "mode": res.mode, "lines": list(res.result_lines()), "tables": tables,
-            "list": (res.table_list or "").split("\n")}
+    return {
+        "ok": res.ok,
+        "mode": res.mode,
+        "lines": list(res.result_lines()),
+        "tables": tables,
+        "list": (res.table_list or "").split("\n"),
+    }
 
 
 def _same_facts(base: dict, new: dict, old_name: str, new_name: str) -> list[str]:
@@ -596,7 +657,9 @@ def sweep(stride: int = 1, offset: int = 0, verbose: bool = False, workdir: Path
         if not res.ok:
             refused[required(res.refusal).code] += 1
             if verbose:
-                print("refused", path.name, line + 1, old_name, required(res.refusal).code, required(res.refusal).message)
+                print(
+                    "refused", path.name, line + 1, old_name, required(res.refusal).code, required(res.refusal).message
+                )
             continue
         accepted += 1
         try:
@@ -617,8 +680,10 @@ def sweep(stride: int = 1, offset: int = 0, verbose: bool = False, workdir: Path
 def test_sweep_semantic_preservation(tmp_path):
     full = os.environ.get("RENAME_SWEEP") == "full"
     accepted, refused, problems = sweep(1 if full else 23, 0, verbose=full, workdir=tmp_path / "w")
-    print(f"\nRENAME SWEEP accepted={accepted} refused={sum(refused.values())} "
-          f"by_reason={dict(refused)} problems={len(problems)}")
+    print(
+        f"\nRENAME SWEEP accepted={accepted} refused={sum(refused.values())} "
+        f"by_reason={dict(refused)} problems={len(problems)}"
+    )
     for p in problems[:20]:
         print("PROBLEM", p)
     assert accepted > 0
@@ -667,11 +732,14 @@ def test_r3b_f1_const_used_as_a_parameter_dimension_is_renamed(tmp_path):
 
 
 def test_r3b_f2_alias_junk_token_does_not_shift_ordinals(tmp_path):
-    p = write(tmp_path, "M.CR6", "Public arr(2)\nAlias arr(1) = a1 a2, a2\nBeginProg\n"
-              "  Scan(1,Sec,0,0)\n    a2 = 1\n  NextScan\nEndProg\n")
+    p = write(
+        tmp_path,
+        "M.CR6",
+        "Public arr(2)\nAlias arr(1) = a1 a2, a2\nBeginProg\n  Scan(1,Sec,0,0)\n    a2 = 1\n  NextScan\nEndProg\n",
+    )
     r = run(p)
     assert r.ok
-    res = R.rename([r], p, *pos(p, "a2 = 1"), "b2")     # the declaration, not the ignored `a2`
+    res = R.rename([r], p, *pos(p, "a2 = 1"), "b2")  # the declaration, not the ignored `a2`
     assert res.ok and spots(res, p) == [(1, 22, 24), (4, 4, 6)]
     p.write_bytes(apply(p.read_bytes(), res.edits[p]))
     assert run(p).ok
@@ -705,23 +773,22 @@ def test_r3b_f3_structure_member_named_by_a_table_field_is_refused(tmp_path):
     assert res is not None
     assert not res.ok and required(res.refusal).code == "table_field"
     res = R.rename([r], p, *pos(p, "Lon As Float"), "Lat2")
-    assert res.ok, res.refusal                       # no `T.Lon` use
+    assert res.ok, res.refusal  # no `T.Lon` use
     p2 = write(tmp_path, "N.CR6", STRUCT_TEXT.replace("out = T.Lat", "out = T.Q_Avg"))
     r2 = run(p2)
-    res = R.rename([r2], p2, *pos(p2, "Lon As Float"), "Q")     # new name derives T.Q_Avg
+    res = R.rename([r2], p2, *pos(p2, "Lon As Float"), "Q")  # new name derives T.Q_Avg
     assert res is not None
     assert not res.ok and required(res.refusal).code == "table_field"
 
 
 def test_r3b_f14a_case_only_rename_from_a_differently_spelled_reference(tmp_path):
-    p = write(tmp_path, "M.CR6", "Public total\nBeginProg\n  Scan(1,Sec,0,0)\n    TOTAL = 1\n"
-              "  NextScan\nEndProg\n")
+    p = write(tmp_path, "M.CR6", "Public total\nBeginProg\n  Scan(1,Sec,0,0)\n    TOTAL = 1\n  NextScan\nEndProg\n")
     r = run(p)
     res = R.rename([r], p, *pos(p, "TOTAL"), "total")
     assert res.ok, res.refusal
     assert [e.new_text for e in res.edits[p]] == ["total", "total"]
     res = R.rename([r], p, *pos(p, "TOTAL"), "TOTAL")
-    assert res.ok                                    # the declaration is spelled `total`
+    assert res.ok  # the declaration is spelled `total`
     p.write_bytes(p.read_bytes().replace(b"TOTAL", b"total"))
     r = run(p)
     res = R.rename([r], p, *pos(p, "total", nth=1), "total")
@@ -730,8 +797,12 @@ def test_r3b_f14a_case_only_rename_from_a_differently_spelled_reference(tmp_path
 
 
 def test_r3b_f14b_case_only_rename_is_not_a_collision_with_a_local(tmp_path):
-    p = write(tmp_path, "M.CR6", "Public a\nSub S\n  Dim a\n  a = 2\nEndSub\nBeginProg\n"
-              "  Scan(1,Sec,0,0)\n    a = 1\n    S\n  NextScan\nEndProg\n")
+    p = write(
+        tmp_path,
+        "M.CR6",
+        "Public a\nSub S\n  Dim a\n  a = 2\nEndSub\nBeginProg\n"
+        "  Scan(1,Sec,0,0)\n    a = 1\n    S\n  NextScan\nEndProg\n",
+    )
     r = run(p)
     res = R.rename([r], p, *pos(p, "Public a", offset=7), "A")
     assert res.ok, res.refusal
@@ -742,8 +813,7 @@ def test_r3b_f14b_case_only_rename_is_not_a_collision_with_a_local(tmp_path):
 
 
 def test_r3b_f16_new_name_in_an_unparsed_statement_is_refused(tmp_path):
-    p = write(tmp_path, "M.CR6", "Public x\nStatic y\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n"
-              "  NextScan\nEndProg\n")
+    p = write(tmp_path, "M.CR6", "Public x\nStatic y\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n  NextScan\nEndProg\n")
     r = run(p)
     res = R.rename([r], p, *pos(p, "Public x", offset=7), "y")
     assert res is not None
@@ -754,7 +824,10 @@ def test_r3b_f16_new_name_in_an_unparsed_statement_is_refused(tmp_path):
 
 def test_click_in_a_comment_line_or_inactive_branch_is_not_a_name(tmp_path):
     """LSP-R4a (host H-10): the file is read, the line is not code any entry parses."""
-    m = write(tmp_path, "m.CR6", """' sharedValue in a comment
+    m = write(
+        tmp_path,
+        "m.CR6",
+        """' sharedValue in a comment
 Public a
 #If 1 = 0
 Public z
@@ -762,7 +835,8 @@ Public z
 BeginProg
   a = 1
 EndProg
-""")
+""",
+    )
     r = run(m)
     for line, col in ((0, 4), (3, 8)):
         res = R.prepare_rename([r], m, line, col)
@@ -770,6 +844,6 @@ EndProg
         assert code(res) == "not_a_name"
         assert "not in code any entry parses" in required(res.refusal).message
     other = write(tmp_path, "o.CR6", "Public q\nBeginProg\nEndProg\n")
-    res = R.prepare_rename([run(other)], m, 0, 4)                   # an entry not reading m
+    res = R.prepare_rename([run(other)], m, 0, 4)  # an entry not reading m
     assert res is not None
     assert code(res) == "no_results" and "depends on the file" in required(res.refusal).message

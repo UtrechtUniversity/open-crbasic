@@ -105,8 +105,7 @@ CR300_ONLY = [
 ]
 
 
-@pytest.mark.parametrize("text,expected", [r[1:] for r in CR300_ONLY],
-                         ids=[r[0] for r in CR300_ONLY])
+@pytest.mark.parametrize("text,expected", [r[1:] for r in CR300_ONLY], ids=[r[0] for r in CR300_ONLY])
 def test_cr300_only(text, expected):
     for logger in CR300_LOGGERS:
         assert lines(text, logger) == expected, logger
@@ -115,7 +114,9 @@ def test_cr300_only(text, expected):
 # Member arity.
 ARITY_PROGRAM = (
     "Public X, T As Long, V(3)\nDataTable (Tb,1,-1)\n  Sample (1,X,FP2)\nEndTable\n"
-    + B + "    CallTable Tb\n    {stmt}\n" + E
+    + B
+    + "    CallTable Tb\n    {stmt}\n"
+    + E
 )
 
 ARITY_BAD = [
@@ -157,8 +158,14 @@ def test_member_arity_ok(stmt):
 def event_program(data_event: str, body: str) -> str:
     de = f"{data_event}\n" if data_event else ""
     return (
-        "Public X\nDataTable (Tb,1,-1)\n" + de + "  Sample (1,X,FP2)\nEndTable\n"
-        + B + "    CallTable Tb\n" + body + "\n" + E
+        "Public X\nDataTable (Tb,1,-1)\n"
+        + de
+        + "  Sample (1,X,FP2)\nEndTable\n"
+        + B
+        + "    CallTable Tb\n"
+        + body
+        + "\n"
+        + E
     )
 
 
@@ -190,15 +197,19 @@ def test_eventcount_with_dataevent():
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x", "cr300", "cr350"])
 def test_constant_table_name_with_a_space_compiles(logger):
     # fuzz seed 50 false reject (oracle, 2026-10-01): the name is read up to the whitespace
-    text = ("ConstTable (my Tab,0)\n  Const A = 1\nEndConstTable\nPublic X\nBeginProg\n"
-            "  Scan (1,Sec,0,0)\n    X = A\n  NextScan\nEndProg\n")
+    text = (
+        "ConstTable (my Tab,0)\n  Const A = 1\nEndConstTable\nPublic X\nBeginProg\n"
+        "  Scan (1,Sec,0,0)\n    X = A\n  NextScan\nEndProg\n"
+    )
     assert lines(text, logger) == []
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr300"])
 def test_data_table_name_with_a_space_shifts_the_parameters(logger):
-    text = ("Public X\nDataTable (Ten Sec,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n"
-            "  Scan (1,Sec,0,0)\n    CallTable Ten\n  NextScan\nEndProg\n")
+    text = (
+        "Public X\nDataTable (Ten Sec,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n"
+        "  Scan (1,Sec,0,0)\n    CallTable Ten\n  NextScan\nEndProg\n"
+    )
     assert lines(text, logger)[0] == "line 2: Too many parameters:  -1."
 
 
@@ -206,44 +217,66 @@ def test_data_table_name_with_a_space_shifts_the_parameters(logger):
 @pytest.mark.parametrize("body", ["  Return F(a)", "  X = F(a) + 1", "  If F(a) > 1 Then X = 1"])
 def test_recursive_function_call(body, logger):
     # oracle, 2026-10-01 (pass 1)
-    text = (f"Public X\nFunction F(a) As Float\n{body}\nEndFunction\nBeginProg\n"
-            "  Scan (1,Sec,0,0)\n    X = F(1)\n  NextScan\nEndProg\n")
+    text = (
+        f"Public X\nFunction F(a) As Float\n{body}\nEndFunction\nBeginProg\n"
+        "  Scan (1,Sec,0,0)\n    X = F(1)\n  NextScan\nEndProg\n"
+    )
     assert lines(text, logger)[0] == "line 3: Cannot recursively call functions."
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr300"])
-@pytest.mark.parametrize("text", [
-    "Public X\nSub S\n  Call S\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
-    "Public X\nFunction F(a) As Float\n  F = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n"
-    "    X = F(1)\n  NextScan\nEndProg\n",
-])
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Public X\nSub S\n  Call S\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+        "Public X\nFunction F(a) As Float\n  F = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n"
+        "    X = F(1)\n  NextScan\nEndProg\n",
+    ],
+)
 def test_not_recursive(text, logger):
     assert lines(text, logger) == []
 
 
-@pytest.mark.parametrize("baud,cr6_ok,cr300_ok", [
-    (9600, True, True), (0, True, True), (115200, True, True), (460800, True, True),
-    (600, True, False), (-9600, True, False), (300, False, False), (14400, False, False),
-    (921600, False, False), (-1, False, False),
-])
+@pytest.mark.parametrize(
+    "baud,cr6_ok,cr300_ok",
+    [
+        (9600, True, True),
+        (0, True, True),
+        (115200, True, True),
+        (460800, True, True),
+        (600, True, False),
+        (-9600, True, False),
+        (300, False, False),
+        (14400, False, False),
+        (921600, False, False),
+        (-1, False, False),
+    ],
+)
 def test_serialopen_baud_rate_on_comrs232(baud, cr6_ok, cr300_ok):
     # oracle, 2026-10-01 (pass 1; CR6 rule from the decompiled FUN_004735b0)
-    text = (f"Public X\nBeginProg\n  SerialOpen (ComRS232,{baud},3,0,10000)\n  Scan (1,Sec,0,0)\n"
-            "  NextScan\nEndProg\n")
+    text = f"Public X\nBeginProg\n  SerialOpen (ComRS232,{baud},3,0,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n"
     bad = f"line 3: {baud} is illegal baud rate."
     assert (bad not in lines(text, "cr6")) == cr6_ok
     assert (bad not in lines(text, "cr300")) == cr300_ok
 
 
-@pytest.mark.parametrize("stmt,cr300_extra", [
-    ("Erase(5)", []), ("Read(5)", []), ("Move(5,1,X,1)", ["line 8: Too many parameters:  1."]),
-    ("MoveBytes(5,0,X,0,4)", ["line 8: Too many parameters:  0."]),
-    ("GetRecord(5,Tb,1)", ["line 8: Too many parameters:  Tb."]),
-])
+@pytest.mark.parametrize(
+    "stmt,cr300_extra",
+    [
+        ("Erase(5)", []),
+        ("Read(5)", []),
+        ("Move(5,1,X,1)", ["line 8: Too many parameters:  1."]),
+        ("MoveBytes(5,0,X,0,4)", ["line 8: Too many parameters:  0."]),
+        ("GetRecord(5,Tb,1)", ["line 8: Too many parameters:  Tb."]),
+    ],
+)
 def test_code27_literal_destination(stmt, cr300_extra):
     # oracle, 2026-10-01: a literal where a variable or array is required (code 27)
-    text = ("Public X, R(4)\nDataTable (Tb,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n"
-            f"  Scan (1,Sec,0,0)\n    CallTable Tb\n    {stmt}\n    X = Nope\n  NextScan\nEndProg\n")
+    text = (
+        "Public X, R(4)\nDataTable (Tb,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n"
+        f"  Scan (1,Sec,0,0)\n    CallTable Tb\n    {stmt}\n    X = Nope\n  NextScan\nEndProg\n"
+    )
     assert lines(text, "cr6") == ["line 8: Invalid Variable or Array: 5."]
-    assert lines(text, "cr300") == (["line 8: Invalid Variable or Array: 5."] + cr300_extra
-                                    + ["line 9: Nope is not defined."])
+    assert lines(text, "cr300") == (
+        ["line 8: Invalid Variable or Array: 5."] + cr300_extra + ["line 9: Nope is not defined."]
+    )

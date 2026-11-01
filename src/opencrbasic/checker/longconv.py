@@ -17,7 +17,7 @@ import struct
 from .. import consteval
 from .. import syntax as S
 
-INT_MIN = -2**31
+INT_MIN = -(2**31)
 _OPS = ("+", "-", "*", "/", "^", "\\", "MOD")
 
 
@@ -32,8 +32,7 @@ def float_names(statements) -> frozenset[str]:
 
 def literal_names(statements) -> frozenset[str]:
     """`Const` names declared as one digits-only literal (`_integer_literal`)."""
-    return frozenset(st.name.upper() for st in statements
-                     if isinstance(st, S.ConstDecl) and _integer_literal(st.value))
+    return frozenset(st.name.upper() for st in statements if isinstance(st, S.ConstDecl) and _integer_literal(st.value))
 
 
 def _float_typed(expr: S.Expr | None, names) -> bool:
@@ -47,8 +46,7 @@ def _float_typed(expr: S.Expr | None, names) -> bool:
     if isinstance(expr, S.Unary):
         return _float_typed(expr.operand, names)
     if isinstance(expr, S.Binary):
-        return expr.op in ("/", "^") or _float_typed(expr.left, names) or \
-            _float_typed(expr.right, names)
+        return expr.op in ("/", "^") or _float_typed(expr.left, names) or _float_typed(expr.right, names)
     return False
 
 
@@ -62,16 +60,14 @@ def _plain(expr: S.Expr | None) -> bool:
     return False
 
 
-def long_value(arg: S.Expr | None, env: consteval.Env, profile, names=frozenset(),
-               literals=frozenset()) -> int | None:
+def long_value(arg: S.Expr | None, env: consteval.Env, profile, names=frozenset(), literals=frozenset()) -> int | None:
     """The 32-bit `long` the compiler makes of constant `arg`, or None when `arg` is missing, not
     constant, or in a form this model does not cover (hex beyond 8 digits, function calls)."""
     if arg is None:
         return None
     if isinstance(arg, S.String):
         return INT_MIN
-    if isinstance(arg, S.Name) and arg.name.upper() in ("NAN", "INF") and \
-            arg.name.upper() not in env.consts:
+    if isinstance(arg, S.Name) and arg.name.upper() in ("NAN", "INF") and arg.name.upper() not in env.consts:
         return INT_MIN
     if not _plain(arg):
         return None
@@ -95,8 +91,9 @@ def long_value(arg: S.Expr | None, env: consteval.Env, profile, names=frozenset(
         return _wrap(int(value))
     if INT_MIN < value < 2**31:
         return int(value)
-    if profile.name in ("cr300", "cr350") and (_integer_literal(arg) or (
-            isinstance(arg, S.Name) and arg.name.upper() in literals)):
+    if profile.name in ("cr300", "cr350") and (
+        _integer_literal(arg) or (isinstance(arg, S.Name) and arg.name.upper() in literals)
+    ):
         return _float32_long(value)
     return INT_MIN
 
@@ -126,8 +123,11 @@ def _wrap(value: int) -> int:
 
 
 def _float32_long(value: float) -> int:
-    f = struct.unpack("<f", struct.pack("<f", float(value)))[0] if abs(value) < 3.4e38 \
+    f = (
+        struct.unpack("<f", struct.pack("<f", float(value)))[0]
+        if abs(value) < 3.4e38
         else math.copysign(math.inf, value)
-    if not -2**31 <= f <= 2**31:
+    )
+    if not -(2**31) <= f <= 2**31:
         return INT_MIN
-    return max(-2**31 + 1, min(2**31 - 1, int(f)))
+    return max(-(2**31) + 1, min(2**31 - 1, int(f)))

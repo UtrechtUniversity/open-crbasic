@@ -100,13 +100,16 @@ _LEADING_IDENT_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)")
 _TOO_FEW_PARAMS_KINDS = frozenset({"identifier", "deferred_text"})
 
 
-_DECLARATION_WORDS = frozenset({"PUBLIC", "DIM", "STATIC", "CONST", "ALIAS", "UNITS", "READONLY",
-                                "SUB", "FUNCTION"})
+_DECLARATION_WORDS = frozenset({"PUBLIC", "DIM", "STATIC", "CONST", "ALIAS", "UNITS", "READONLY", "SUB", "FUNCTION"})
 
 
-def unterminated_string_shape(stmt: S.Stmt, profile, subs: set[str],
-                              operands: set[str] | None = None,
-                              functions: frozenset[str] | set[str] = frozenset()) -> str | None:
+def unterminated_string_shape(
+    stmt: S.Stmt,
+    profile,
+    subs: set[str],
+    operands: set[str] | None = None,
+    functions: frozenset[str] | set[str] = frozenset(),
+) -> str | None:
     """How a line cut short by an unterminated string is reported (oracle, all four loggers,
     2026-09-28, `docs/checker.md` "Unterminated strings"): `"if"` (a one-line `If`), `"call"` (a
     `Sub` call), `"instruction"`, `"assignment"`, or `None` (left to the generic fallback)."""
@@ -116,8 +119,7 @@ def unterminated_string_shape(stmt: S.Stmt, profile, subs: set[str],
     word = m.group(1).upper() if m else ""
     if word == "IF":
         return "if" if re.search(r"(?i)\bThen\b\s*\S", stmt.text) else None
-    if word != "CALL" and not profile.single_pass and (
-            shape := _function_call_string(stmt.text, functions)):
+    if word != "CALL" and not profile.single_pass and (shape := _function_call_string(stmt.text, functions)):
         return shape
     if word == "CALL" or word in subs:
         return "call"
@@ -136,6 +138,7 @@ def unterminated_string_shape(stmt: S.Stmt, profile, subs: set[str],
         return "assignment"
     if operands is not None:
         from . import structure
+
         reached = structure.string_reached(stmt.text, operands, profile)
         if reached:
             return "assignment" if reached == "reached" else "many"
@@ -168,10 +171,10 @@ def _function_call_string(text: str, functions: frozenset[str] | set[str]) -> st
         if depth == 0:
             # the unterminated quote follows the call: `F("abc")"` reads it as an adjacent operand
             # (`Incomplete expression`), `F("abc") + "x` as the fallback (oracle, round 67)
-            rest = text[i + 1:]
+            rest = text[i + 1 :]
             if rest.count('"') != 1:
                 return None
-            return "function" if rest[:rest.index('"')].strip() else "function_tail"
+            return "function" if rest[: rest.index('"')].strip() else "function_tail"
         comma |= c == "," and depth == 1
         i += 1
     return None
@@ -179,8 +182,9 @@ def _function_call_string(text: str, functions: frozenset[str] | set[str]) -> st
 
 def user_functions(program: S.Program) -> set[str]:
     """The upper-cased names of the program's `Function` routines."""
-    return {st.name.upper() for st in program.statements
-            if isinstance(st, S.SubDef) and st.keyword.upper() == "FUNCTION"}
+    return {
+        st.name.upper() for st in program.statements if isinstance(st, S.SubDef) and st.keyword.upper() == "FUNCTION"
+    }
 
 
 def _past_last_param(text: str, count: int) -> str | None:
@@ -198,7 +202,7 @@ def _past_last_param(text: str, count: int) -> str | None:
             commas.append(i)
     if len(commas) < count:
         return None
-    return _next_simple_token(text[commas[count - 1] + 1:]) or None
+    return _next_simple_token(text[commas[count - 1] + 1 :]) or None
 
 
 def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnostics) -> None:
@@ -207,6 +211,7 @@ def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnos
     quote` then the fallback echoing the raw line; `If X Then S = "abc` -> `String without end
     quote` then the fallback for `S = "abc:endif` (the compiler's block-form rewrite)."""
     from . import structure, symbols
+
     subs = symbols.declared_subs(program)
     operands = structure.pass1_operands(program, profile)
     functions = user_functions(program)
@@ -215,28 +220,31 @@ def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnos
         if shape == "instruction":
             diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
         elif shape and shape.startswith("too_many:"):
-            diags.error(stmt.line, f"Too many parameters:  {shape[len('too_many:'):]}.", stmt.file)
+            diags.error(stmt.line, f"Too many parameters:  {shape[len('too_many:') :]}.", stmt.file)
         elif shape == "call":
             diags.error(stmt.line, "Invalid or malformed function argument.", stmt.file)
         elif shape in ("function", "function_arg", "function_tail"):
             diags.error(stmt.line, "String without end quote", stmt.file)
             if shape == "function_arg":
                 diags.error(stmt.line, "Call argument required.", stmt.file)
-            diags.error(stmt.line, f"Incomplete expression: {stmt.text}." if shape == "function_tail"
-                        else structure._out_of_place(profile, stmt.text, stmt.at_eol), stmt.file)
+            diags.error(
+                stmt.line,
+                f"Incomplete expression: {stmt.text}."
+                if shape == "function_tail"
+                else structure._out_of_place(profile, stmt.text, stmt.at_eol),
+                stmt.file,
+            )
         elif shape == "many":
             diags.error(stmt.line, structure._no_matching(profile, stmt.text, stmt.at_eol), stmt.file)
         elif shape == "assignment":
             diags.error(stmt.line, "String without end quote", stmt.file)
-            diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol),
-                        stmt.file)
+            diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol), stmt.file)
         elif shape == "if":
             then = re.search(r"(?i)\bThen\b\s*(.*)$", stmt.text)
             assert then is not None  # (`unterminated_string_shape` found it)
             rest = then.group(1)
             diags.error(stmt.line, "String without end quote", stmt.file)
-            diags.error(stmt.line, f"Invalid, or out of place expression: {rest}:endif.",
-                        stmt.file)
+            diags.error(stmt.line, f"Invalid, or out of place expression: {rest}:endif.", stmt.file)
 
 
 def _real_params(params: list[int]) -> list[int]:
@@ -280,8 +288,12 @@ def misplaced_returns(program: S.Program) -> dict[int, bool]:
             routine = stmt.keyword.upper()
         elif isinstance(stmt, S.Instruction):
             kw = stmt.keyword.upper()
-            if kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and stmt.args and isinstance(
-                    stmt.args[0], S.Name) and stmt.args[0].name.upper() in ("SUB", "FUNCTION")):
+            if kw in ("ENDSUB", "ENDFUNCTION") or (
+                kw == "END"
+                and stmt.args
+                and isinstance(stmt.args[0], S.Name)
+                and stmt.args[0].name.upper() in ("SUB", "FUNCTION")
+            ):
                 routine = None
             elif kw == "RETURN" and routine != "FUNCTION":
                 found[id(stmt)] = routine == "SUB"
@@ -306,7 +318,7 @@ def check_return_placement(program: S.Program, profile, diags: Diagnostics) -> N
         diags.error(stmt.line, "Return outside of Function.", stmt.file)
         spans = getattr(stmt, "arg_spans", None)
         if stmt.args and spans and spans[0] is not None:
-            token = _next_simple_token(stmt.text[spans[0][0]:])
+            token = _next_simple_token(stmt.text[spans[0][0] :])
             if token:
                 diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
 
@@ -363,15 +375,20 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
             # an unresolved name in an argument other than a destination (8/27/29) or a code 28
             # is reported as `Invalid symbol`, and the shortfall is not (oracle, 2026-10-10)
             kinds = _type_code_kinds()
-            if any(a is not None and params[i] % 100 not in (8, 27, 28, 29)
-                   and kinds.get(params[i] % 100) in _TOO_MANY_SAFE_KINDS
-                   and _undefined_names(a, known) for i, a in enumerate(stmt.args[:len(params)])):
+            if any(
+                a is not None
+                and params[i] % 100 not in (8, 27, 28, 29)
+                and kinds.get(params[i] % 100) in _TOO_MANY_SAFE_KINDS
+                and _undefined_names(a, known)
+                for i, a in enumerate(stmt.args[: len(params)])
+            ):
                 continue
             _report_constant_destinations(stmt, record, params, program, profile, diags)
         # CR6/CR1000X: an earlier parameter-kind error on the statement hides the shortfall, as it
         # hides `Too many parameters` below (`Average Strain`, `Sample (Strain)`, `PortSet (X,1)`)
         if profile.name in ("cr6", "cr1000x") and _earlier_error_in_stmt(
-                program, stmt, diags, ("Illegal parameter ", "Variable illegal in Parameter")):
+            program, stmt, diags, ("Illegal parameter ", "Variable illegal in Parameter")
+        ):
             continue
         kind = _type_code_kinds().get(missing_code - 100 if missing_code >= 100 else missing_code)
         if kind in _TOO_FEW_PARAMS_KINDS:
@@ -406,12 +423,12 @@ def shortfall_message(record: dict, given: int) -> str | None:
     if given >= _required_count(params) or params[given] in _TOLERANT_CODES:
         return None
     kind = _type_code_kinds().get(params[given] - 100 if params[given] >= 100 else params[given])
-    return "Too few parameters in instruction." if kind in _TOO_FEW_PARAMS_KINDS \
-        else "Invalid or missing parameter."
+    return "Too few parameters in instruction." if kind in _TOO_FEW_PARAMS_KINDS else "Invalid or missing parameter."
 
 
-def _report_constant_destinations(stmt: S.Instruction, record: dict, params: list, program,
-                                  profile, diags: Diagnostics) -> None:
+def _report_constant_destinations(
+    stmt: S.Instruction, record: dict, params: list, program, profile, diags: Diagnostics
+) -> None:
     """CR6/CR1000X, a statement short of required parameters: the arguments given are still
     examined first, so a constant `PrecisionVariable` gives `Invalid Variable or Array: <arg>.`
     ahead of `Invalid or missing parameter.` (oracle, 2026-10-03,
@@ -420,8 +437,11 @@ def _report_constant_destinations(stmt: S.Instruction, record: dict, params: lis
     if stmt.keyword.upper() in _PRECISION_VARIABLE_POSITIONS:
         known = _known_names(program, profile)
         variables = symbols.declared_variable_names(program)
-        if stmt.args and stmt.args[0] is not None and not (
-                _undefined_names(stmt.args[0], known) or _variable_refs(stmt.args[0], variables)):
+        if (
+            stmt.args
+            and stmt.args[0] is not None
+            and not (_undefined_names(stmt.args[0], known) or _variable_refs(stmt.args[0], variables))
+        ):
             diags.error(stmt.line, f"Invalid Variable or Array: {_arg_text(stmt, 0)}.", stmt.file)
 
 
@@ -452,24 +472,73 @@ def _report_constant_destinations(stmt: S.Instruction, record: dict, params: lis
 # four loggers (2026-09-27/28): `DataTable (T,1,-1,"fuzz")`, `CallTable(T,X,Y)`, and table output
 # with its `deferred_text` source, `Minimum (1,X,FP2,False,False,"fuzz")` -> `Too many parameters:
 # "fuzz".`, `SendTableDef(ComRS232,0,4094,T,(1+2))` -> `... 1+2.`.
-_TOO_MANY_EXTRA = frozenset({"DATATABLE", "CALLTABLE", "SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM",
-                             "TOTALIZE", "STDDEV", "MEDIAN", "SENDTABLEDEF", "ESSINITIALIZE",
-                             "WINDVECTOR"})
+_TOO_MANY_EXTRA = frozenset(
+    {
+        "DATATABLE",
+        "CALLTABLE",
+        "SAMPLE",
+        "AVERAGE",
+        "MAXIMUM",
+        "MINIMUM",
+        "TOTALIZE",
+        "STDDEV",
+        "MEDIAN",
+        "SENDTABLEDEF",
+        "ESSINITIALIZE",
+        "WINDVECTOR",
+    }
+)
 
 # Parameterless instructions (`params == []`): any argument is `Too many parameters:  <first token>.`
 # (oracle, CR6/CR1000X, 2026-10-10, each probed as `Name junk` and `Name(1)`). Not `EndIf`/
 # `EndSelect` (block-closer messages come with it), nor the custom-parsed `Const`/`Data`/`Alias`/...
-ZERO_PARAM_INSTRUCTIONS = frozenset({
-    "BEGINPROG", "ENDPROG", "NEXTSCAN", "NEXTSUBSCAN", "EXITSCAN", "CONTINUESCAN", "EXITDO",
-    "EXITFOR", "EXITSUB", "ABORTSCAN", "PRESERVEVARIABLES", "PROCHIPRI", "ENDPROCHIPRI", "LEDOFF",
-    "CARDFLUSH", "OPENINTERVAL", "TABLEHIDE", "RESTORE", "PIPELINEMODE", "ANGLEDEGREES", "WEND",
-    "RESTART", "DEBUGBREAK", "ALLOWSPECIALCOMMS", "PULSECOUNTRESET"})
+ZERO_PARAM_INSTRUCTIONS = frozenset(
+    {
+        "BEGINPROG",
+        "ENDPROG",
+        "NEXTSCAN",
+        "NEXTSUBSCAN",
+        "EXITSCAN",
+        "CONTINUESCAN",
+        "EXITDO",
+        "EXITFOR",
+        "EXITSUB",
+        "ABORTSCAN",
+        "PRESERVEVARIABLES",
+        "PROCHIPRI",
+        "ENDPROCHIPRI",
+        "LEDOFF",
+        "CARDFLUSH",
+        "OPENINTERVAL",
+        "TABLEHIDE",
+        "RESTORE",
+        "PIPELINEMODE",
+        "ANGLEDEGREES",
+        "WEND",
+        "RESTART",
+        "DEBUGBREAK",
+        "ALLOWSPECIALCOMMS",
+        "PULSECOUNTRESET",
+    }
+)
 
-_TOO_MANY_SAFE_KINDS = frozenset({
-    "const_expr", "expr", "const_expr_only", "bool_expr", "variable_or_array", "expr_or_name",
-    "expr_typed", "expr_special", "expr_pair", "datatype_kw", "const_int_kw", "next_kw",
-    "end_exit_kw",
-})
+_TOO_MANY_SAFE_KINDS = frozenset(
+    {
+        "const_expr",
+        "expr",
+        "const_expr_only",
+        "bool_expr",
+        "variable_or_array",
+        "expr_or_name",
+        "expr_typed",
+        "expr_special",
+        "expr_pair",
+        "datatype_kw",
+        "const_int_kw",
+        "next_kw",
+        "end_exit_kw",
+    }
+)
 # `deferred_text` (the source of `SampleMaxMin`, `Moment`, `Histogram`, `FFT`, `Covariance`,
 # `RainFlow`, `LevelCrossing`, `ETsz`, `SendData`, ...) ends at the next top-level comma like the
 # kinds above, so an excess argument is left over and reported (oracle, all four loggers,
@@ -520,8 +589,18 @@ def _too_many_eligible(params: list[int]) -> bool:
     return True
 
 
-_RAW_TEXT_KINDS = frozenset({"identifier", "deferred_text", "raw_line_text", "expr_marker", "type_name",
-                             "sub_params", "for_header", "expr_list"})
+_RAW_TEXT_KINDS = frozenset(
+    {
+        "identifier",
+        "deferred_text",
+        "raw_line_text",
+        "expr_marker",
+        "type_name",
+        "sub_params",
+        "for_header",
+        "expr_list",
+    }
+)
 
 
 def plain_expression_params(params: list[int]) -> bool:
@@ -554,11 +633,12 @@ def check_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
         # `DataTable (T,1,-1,"fuzz")` -> `Too many parameters:  "fuzz".`, pass 1, all four
         # loggers (oracle, 2026-09-27), although its name parameter is not an eligible kind; so is
         # `CallTable` (`CallTable(T,X,Y)` -> `Too many parameters:  Y.`, 2026-09-28).
-        if not record or not (_too_many_eligible(record["params"])
-                              or stmt.keyword.upper() in _TOO_MANY_EXTRA
-                              or stmt.keyword.upper() in ("GOESDATA", "ARGOSDATA")
-                              or (profile.name in ("cr6", "cr1000x")
-                                  and stmt.keyword.upper() in ZERO_PARAM_INSTRUCTIONS)):
+        if not record or not (
+            _too_many_eligible(record["params"])
+            or stmt.keyword.upper() in _TOO_MANY_EXTRA
+            or stmt.keyword.upper() in ("GOESDATA", "ARGOSDATA")
+            or (profile.name in ("cr6", "cr1000x") and stmt.keyword.upper() in ZERO_PARAM_INSTRUCTIONS)
+        ):
             # (`GOESData(X,T,0,0,1,7)` all four loggers, `ArgosData(R,1,T,2,"FP2",7)` CR6/CR1000X:
             # oracle, 2026-10-12)
             continue
@@ -575,7 +655,8 @@ def check_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
         # CR6/CR1000X: an earlier parameter-kind error on the statement hides it (oracle,
         # 2026-10-04: `PortSet(C1,1,x,y)`, `PortSet(x,1,y,z)`, `Delay(1,x,y,z)`)
         if not profile.single_pass and _earlier_error_in_stmt(
-                program, stmt, diags, ("Illegal parameter ", "Variable illegal in Parameter")):
+            program, stmt, diags, ("Illegal parameter ", "Variable illegal in Parameter")
+        ):
             continue
         diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
 
@@ -585,8 +666,7 @@ def _earlier_error_in_stmt(program: S.Program, stmt, diags: Diagnostics, prefixe
     (oracle, 2026-10-08, CR6/CR1000X: `PortSet(C1,1,x):PortSet(C1,1,1,2)` still reports `Too many
     parameters:  2.`) a diagnostic belongs to the statement whose text contains its echoed
     argument; a single-statement line keeps the plain line match."""
-    here = [d for d in diags.items if d.line == stmt.line and d.file == stmt.file
-            and d.message.startswith(prefixes)]
+    here = [d for d in diags.items if d.line == stmt.line and d.file == stmt.file and d.message.startswith(prefixes)]
     if not here:
         return False
     if sum(1 for o in program.statements if (o.file, o.line) == (stmt.file, stmt.line)) < 2:
@@ -596,8 +676,7 @@ def _earlier_error_in_stmt(program: S.Program, stmt, diags: Diagnostics, prefixe
             if d.stmt == id(stmt):
                 return True
             continue
-        echo = re.sub(r"^(?:Illegal parameter |[^:]*: )|(?:, expecting constant integer)?\.$", "",
-                      d.message).strip()
+        echo = re.sub(r"^(?:Illegal parameter |[^:]*: )|(?:, expecting constant integer)?\.$", "", d.message).strip()
         if echo in stmt.text:
             return True
     return False
@@ -630,7 +709,7 @@ def check_essinitialize_too_many(program: S.Program, profile, diags: Diagnostics
                     break
         if split is None:
             continue
-        token = _next_simple_token(body[split + 1:])
+        token = _next_simple_token(body[split + 1 :])
         if token:
             diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
 
@@ -645,7 +724,7 @@ _SNMP_TYPES = frozenset({"INTEGER", "COUNTER", "STRING", "TIMETICKS", "OPAQUE", 
 
 
 _SNMP_OID_LITERAL = re.compile(r"^\s*SNMPVARIABLE\s*\(\s*[^,]+,\s*([\d.]+)\s*[,)]", re.I)
-_SNMP_FLOOR = (1, 3, 6, 1, 2, 1, 1, 7)       # the highest OID the system group already owns
+_SNMP_FLOOR = (1, 3, 6, 1, 2, 1, 1, 7)  # the highest OID the system group already owns
 
 
 def _snmp_components(text: str) -> tuple | None:
@@ -675,8 +754,7 @@ def check_snmp_oid(program: S.Program, profile, diags: Diagnostics, env=None) ->
             if comps is None or len(comps) < 3:
                 continue
             key = comps
-        elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SNMPVARIABLE" \
-                and len(stmt.args) >= 2:
+        elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SNMPVARIABLE" and len(stmt.args) >= 2:
             arg = stmt.args[1]
             if isinstance(arg, S.Number):
                 if arg.text.isdigit() and arg.value in (0, 1):
@@ -685,16 +763,24 @@ def check_snmp_oid(program: S.Program, profile, diags: Diagnostics, env=None) ->
                     key = _snmp_components(arg.text)
                 else:
                     continue
-            elif isinstance(arg, S.Unary) and arg.op == "-" and isinstance(arg.operand, S.Number) \
-                    and arg.operand.text == "1":
+            elif (
+                isinstance(arg, S.Unary)
+                and arg.op == "-"
+                and isinstance(arg.operand, S.Number)
+                and arg.operand.text == "1"
+            ):
                 both = True
             elif isinstance(arg, S.String):
                 if re.fullmatch(r"\d+(?:\.\d+)+", arg.value):
                     greater = True
                 elif not re.fullmatch(r"[\d.]*\d[\d.]*", arg.value):
                     both = True
-            elif isinstance(arg, S.Name) and env is not None and arg.name.upper() not in env.consts \
-                    and arg.name.upper() not in ("TRUE", "FALSE", "NAN"):
+            elif (
+                isinstance(arg, S.Name)
+                and env is not None
+                and arg.name.upper() not in env.consts
+                and arg.name.upper() not in ("TRUE", "FALSE", "NAN")
+            ):
                 both = True
             else:
                 continue
@@ -703,23 +789,23 @@ def check_snmp_oid(program: S.Program, profile, diags: Diagnostics, env=None) ->
         low = [0 if c == "" else c for c in key] if key else None
         if both:
             diags.error(stmt.line, "Illegal object id.", stmt.file)
-        if both or greater or (low is not None and (tuple(low) < _SNMP_FLOOR
-                                                    or (cr3xx and tuple(low) == _SNMP_FLOOR))):
-            diags.error(stmt.line, f"SNMP OID must be greater than {'.'.join(map(str, _SNMP_FLOOR))}",
-                        stmt.file)
+        if both or greater or (low is not None and (tuple(low) < _SNMP_FLOOR or (cr3xx and tuple(low) == _SNMP_FLOOR))):
+            diags.error(stmt.line, f"SNMP OID must be greater than {'.'.join(map(str, _SNMP_FLOOR))}", stmt.file)
         if key is not None:
             declared = sum(1 for earlier in seen if earlier == key)
             if cr3xx:
                 declared += key in ((*_SNMP_FLOOR, 0), (*_SNMP_FLOOR, ""))
             else:
-                declared += len(key) == 8 and tuple(key[:7]) == _SNMP_FLOOR[:7] and \
-                    isinstance(key[7], int) and 1 <= key[7] <= 7
+                declared += (
+                    len(key) == 8 and tuple(key[:7]) == _SNMP_FLOOR[:7] and isinstance(key[7], int) and 1 <= key[7] <= 7
+                )
             for _ in range(int(declared)):
                 diags.error(stmt.line, "Illegal OID since already declared.", stmt.file)
             seen.append(key)
         # (the type check is a later pass that these errors would hide; the real compiler prints it)
         if len(diags.items) > before and isinstance(stmt, S.Unparsed):
             from . import var_types
+
             typer = typer or var_types._Typer(program)
             m = var_types._SNMP_RE.match(stmt.text)
             clash = bool(m) and var_types._snmp_mismatch(typer, S.Name(stmt.line, name=m.group(1)), m.group(2))
@@ -733,8 +819,12 @@ def check_modemcallback_baud(program: S.Program, profile, diags: Diagnostics) ->
     2026-10-10: 599, 300, 460801 and 2^31-1 fail; 1234, 100000 and 0.5 pass; 2^31 and wider
     give -2147483648). Only the COMSDC7 port was probed (`ComC1,300` passes)."""
     for stmt in program.statements:
-        if not (isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "MODEMCALLBACK"
-                and "MODEMCALLBACK" in profile.instructions and len(stmt.args) == 9):  # (a wrong count reports only the count, oracle 2026-10-10)
+        if not (
+            isinstance(stmt, S.Instruction)
+            and stmt.keyword.upper() == "MODEMCALLBACK"
+            and "MODEMCALLBACK" in profile.instructions
+            and len(stmt.args) == 9
+        ):  # (a wrong count reports only the count, oracle 2026-10-10)
             continue
         port, arg = stmt.args[1], stmt.args[2]
         if not (isinstance(port, S.Name) and port.name.upper() == "COMSDC7"):
@@ -747,17 +837,17 @@ def check_modemcallback_baud(program: S.Program, profile, diags: Diagnostics) ->
             # -> 5, `True` -> -1 are illegal, `uSec` -> 0 passes; a string becomes -2147483648)
             try:
                 value = consteval.value_of(stmt.args[2], consteval.Env(profile, dict(program.consts)))
-            except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
+            except consteval.NotConstant, TypeError, ValueError, ZeroDivisionError:
                 continue
             if isinstance(arg, S.Number):
                 continue
             if isinstance(value, str):
-                diags.error(stmt.line, f"{-2**31} is illegal baud rate.", stmt.file)
+                diags.error(stmt.line, f"{-(2**31)} is illegal baud rate.", stmt.file)
                 continue
             arg, sign = S.Number(stmt.line, stmt.file, abs(int(value)), str(abs(int(value)))), (-1 if value < 0 else 1)
         baud = int(sign * arg.value)
-        if not -2**31 <= baud < 2**31:
-            baud = -2**31
+        if not -(2**31) <= baud < 2**31:
+            baud = -(2**31)
         if baud != 0 and not 600 <= baud <= 460800:
             diags.error(stmt.line, f"{baud} is illegal baud rate.", stmt.file)
 
@@ -769,7 +859,9 @@ def check_snmpvariable_too_many(program: S.Program, profile, diags: Diagnostics)
     whitespace-split recovery shape, which emits the ordinary excess-parameter message.
     """
     for stmt in program.statements:
-        if not isinstance(stmt, S.Unparsed) or not (stmt.reason == "dotted SNMP OID literal" or stmt.reason.startswith("expected ')', found")):
+        if not isinstance(stmt, S.Unparsed) or not (
+            stmt.reason == "dotted SNMP OID literal" or stmt.reason.startswith("expected ')', found")
+        ):
             continue
         match = _SNMP_SPACED_OID.match(stmt.text)
         if match:
@@ -800,7 +892,7 @@ def check_snmpvariable_too_many(program: S.Program, profile, diags: Diagnostics)
                 allowed = 3  # RWRITE takes the Valid argument
                 if len(words) > 2 and re.match(r"(?:RANGES|VALUES)\s", words[2]):
                     allowed = len(words)  # `RANGES 0,65535` / `VALUES 1,2,3`: commas belong to it
-            if len(starts) > allowed and (token := _next_simple_token(stmt.text[starts[allowed]:])):
+            if len(starts) > allowed and (token := _next_simple_token(stmt.text[starts[allowed] :])):
                 diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
                 continue
         match = _SNMP_OID_DEST.match(stmt.text)
@@ -889,7 +981,12 @@ def check_scan_params(program: S.Program, profile, diags: Diagnostics, env: cons
                 diags.error(stmt.line, f"Scan {label} parameter must be a non-negative integer", stmt.file)
             if idx == 0:
                 split = _scan_min_interval(stmt, diags, env)
-                if split and split[0] > 86400 and not (split[0] == 0 and split[1] < 1000) and _crem(split[1], 1000) == 0:
+                if (
+                    split
+                    and split[0] > 86400
+                    and not (split[0] == 0 and split[1] < 1000)
+                    and _crem(split[1], 1000) == 0
+                ):
                     diags.error(stmt.line, "Maximum Scan interval is 1 Day.", stmt.file)
         if slow and split is not None:
             raw_us = split[0] * 1_000_000 + split[1]
@@ -968,17 +1065,26 @@ def scan_split(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | Non
     `Scan(2147483648,Sec)` is `Maximum Scan interval is 1 Day.` there). No validity check: a negative, string or wrapped interval is used as it is
     (oracle, 2026-10-10; `docs/instructions.md` "Scan interval arithmetic")."""
     args = stmt.args
-    if len(args) < 2 or args[0] is None or args[1] is None or \
-            not (consteval.is_constant(args[0], env) and consteval.is_constant(args[1], env)):
+    if (
+        len(args) < 2
+        or args[0] is None
+        or args[1] is None
+        or not (consteval.is_constant(args[0], env) and consteval.is_constant(args[1], env))
+    ):
         return None
     try:
         value, unit = consteval.value_of(args[0], env), consteval.value_of(args[1], env)
     except consteval.NotConstant:
         return None
     n = consteval.to_long(-1 if value is True else 0 if value is False else value)
-    if n == -2147483648 and env.profile.name in ("cr300", "cr350") and isinstance(value, (int, float)) \
-            and not isinstance(value, bool) and _f32_is_2_31(value):
-        n = 2147483647      # CR300/CR350 saturate a float32 of exactly +2^31 (CR6/CR1000X: -2^31)
+    if (
+        n == -2147483648
+        and env.profile.name in ("cr300", "cr350")
+        and isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and _f32_is_2_31(value)
+    ):
+        n = 2147483647  # CR300/CR350 saturate a float32 of exactly +2^31 (CR6/CR1000X: -2^31)
     unit = unit if isinstance(unit, (int, float)) and not isinstance(unit, bool) else None
     if not consteval.is_finite_number(unit) or int(unit) not in _US_PER_UNIT:
         return 0, 0
@@ -997,9 +1103,10 @@ def scan_split(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | Non
 
 def _f32_is_2_31(value) -> bool:
     import struct
+
     try:
         return struct.unpack("f", struct.pack("f", float(value)))[0] == 2147483648.0
-    except (OverflowError, ValueError):
+    except OverflowError, ValueError:
         return False
 
 
@@ -1034,16 +1141,24 @@ def check_scan_max_interval(program: S.Program, profile, diags: Diagnostics, env
 def _scan_raw(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | None:
     """`(int(interval), units)` of a constant `Scan` interval that fits `INT32_MAX`, else `None`."""
     args = stmt.args
-    if len(args) < 2 or args[0] is None or args[1] is None or \
-            not (consteval.is_constant(args[0], env) and consteval.is_constant(args[1], env)):
+    if (
+        len(args) < 2
+        or args[0] is None
+        or args[1] is None
+        or not (consteval.is_constant(args[0], env) and consteval.is_constant(args[1], env))
+    ):
         return None
     try:
         value = consteval.value_of(args[0], env)
         unit = consteval.value_of(args[1], env)
     except consteval.NotConstant:
         return None
-    if isinstance(value, bool) or not consteval.is_finite_number(value) or unit not in _US_PER_UNIT \
-            or not 0 <= int(value) <= 2147483647:
+    if (
+        isinstance(value, bool)
+        or not consteval.is_finite_number(value)
+        or unit not in _US_PER_UNIT
+        or not 0 <= int(value) <= 2147483647
+    ):
         return None
     return int(value), cast(int, unit)
 
@@ -1056,8 +1171,9 @@ def _units_key(units_arg: S.Expr, env: consteval.Env, truncate: bool):
     return consteval.value_of(units_arg, env)
 
 
-def _interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None, env: consteval.Env,
-                 truncate_units: bool = False) -> float | None:
+def _interval_us(
+    interval_arg: S.Expr | None, units_arg: S.Expr | None, env: consteval.Env, truncate_units: bool = False
+) -> float | None:
     if interval_arg is None or units_arg is None:
         return None
     if not (consteval.is_constant(interval_arg, env) and consteval.is_constant(units_arg, env)):
@@ -1073,8 +1189,9 @@ def _interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None, env: con
     return value * us_per_unit
 
 
-def _divisible_interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None,
-                            env: consteval.Env, truncate_units: bool = False) -> float | None:
+def _divisible_interval_us(
+    interval_arg: S.Expr | None, units_arg: S.Expr | None, env: consteval.Env, truncate_units: bool = False
+) -> float | None:
     """`_interval_us` with the interval's value truncated toward zero to a whole number of its own
     units first. Oracle-confirmed (`docs/checker.md` "Interval truncation", all four loggers
     identical): `DataInterval(0,1.5,Sec,10)` against `Scan(1,Min,0,0)` reports `interval 1000000
@@ -1166,11 +1283,13 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
         kw = stmt.keyword.upper()
         if kw == "SCAN":
             args = stmt.args
-            scan_interval_us = _divisible_interval_us(
-                args[0] if args else None, args[1] if len(args) > 1 else None, env
-            ) if _scan_raw(stmt, env) else None
+            scan_interval_us = (
+                _divisible_interval_us(args[0] if args else None, args[1] if len(args) > 1 else None, env)
+                if _scan_raw(stmt, env)
+                else None
+            )
             if scan_split(stmt, env) == (0, 0):
-                scan_interval_us = None   # wraps to a zero interval: no divisibility check (r15)
+                scan_interval_us = None  # wraps to a zero interval: no divisibility check (r15)
             continue
         if kw == "NEXTSCAN":
             scan_interval_us = None
@@ -1201,15 +1320,17 @@ def _divisibility_message(dt_us: int, scan_us: int) -> str | None:
     if dt_sec < 3601:
         dt_units = dt_sec * 10000 + dt_sub // 100
         if dt_units > 0 and dt_units % scan_units:
-            return (f"DataTable interval {dt_units}00 uSec not integrally divisible by "
-                    f"scan interval {scan_units}00 uSec.")
+            return (
+                f"DataTable interval {dt_units}00 uSec not integrally divisible by scan interval {scan_units}00 uSec."
+            )
     elif scan_sub == 0:
         if dt_sec % scan_sec:
-            return (f"DataTable interval {dt_sec} Sec not integrally divisible by "
-                    f"scan interval {scan_sec} Sec.")
+            return f"DataTable interval {dt_sec} Sec not integrally divisible by scan interval {scan_sec} Sec."
     elif scan_sec or 10000 % scan_units:
-        return ("DataTable with interval > 1 hour cannot be called by scan whose interval is not "
-                "an integral second is not divisible into a second.")
+        return (
+            "DataTable with interval > 1 hour cannot be called by scan whose interval is not "
+            "an integral second is not divisible into a second."
+        )
     return None
 
 
@@ -1316,15 +1437,16 @@ def _string_typed(expr: S.Expr | None, typer, str_consts: set[str], profile) -> 
             return arms.pop() if len(arms) == 1 else None
         if record is not None and isinstance(expr, S.Index):
             return record.get("kind") == 312
-        return False if isinstance(expr, S.Name) and (name in ("TRUE", "FALSE") or
-                                                      name in profile.symbols) else None
+        return False if isinstance(expr, S.Name) and (name in ("TRUE", "FALSE") or name in profile.symbols) else None
     if isinstance(expr, S.Unary):
         return False
     if isinstance(expr, S.Binary):
         if expr.op not in ("+", "&"):
             return False
-        sides = {_string_typed(expr.left, typer, str_consts, profile),
-                 _string_typed(expr.right, typer, str_consts, profile)}
+        sides = {
+            _string_typed(expr.left, typer, str_consts, profile),
+            _string_typed(expr.right, typer, str_consts, profile),
+        }
         return True if True in sides else None if None in sides else False
     return None
 
@@ -1336,6 +1458,7 @@ def check_iif_types(program: S.Program, profile, diags: Diagnostics) -> None:
     One report per line, only on a line with no earlier error."""
     from .expressions import _index_nodes, _stmt_exprs
     from .var_types import _Typer
+
     if "IIF" not in profile.functions:
         return
     typer = _Typer(program)
@@ -1364,6 +1487,7 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
     CR300/CR350, which do not have either instruction at all.
     """
     from . import instr_data  # (a one-line If's statement too, round 52)
+
     known: set[str] | None = None
     variable_names: set[str] | None = None
     str_consts: set[str] | None = None
@@ -1378,8 +1502,10 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
             known = _known_names(program, profile)
             variable_names = symbols.declared_variable_names(program)
         record = profile.instructions[kw]
-        if given_count(stmt, profile) < _required_count(_real_params(record["params"])) and \
-                profile.name in ("cr6", "cr1000x"):
+        if given_count(stmt, profile) < _required_count(_real_params(record["params"])) and profile.name in (
+            "cr6",
+            "cr1000x",
+        ):
             continue  # reported with the missing-parameter line, `_report_constant_destinations`
         for i in sorted(positions):
             if i >= len(stmt.args) or stmt.args[i] is None:
@@ -1390,7 +1516,7 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
             if str_consts is None:
                 str_consts = _string_consts(program)
             if _has_call(arg, variable_names) or _stringish(arg, str_consts):
-                continue   # (`AddPrecise(Sqr(4),.1)`, `("fuzz")`, `KS+1` compile: R15, fuzz false reject)
+                continue  # (`AddPrecise(Sqr(4),.1)`, `("fuzz")`, `KS+1` compile: R15, fuzz false reject)
             diags.error(stmt.line, f"Invalid Variable or Array: {_arg_text(stmt, i)}.", stmt.file)
 
 
@@ -1401,9 +1527,15 @@ def check_vibrating_wire_diagnostics(program: S.Program, profile, diags: Diagnos
     if profile.name != "cr6":
         return
     from . import instr_data
-    strings = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration)
-               for v in st.vars if v.type == "STRING"}
-    variables = symbols.declared_variable_names(program)   # (an undefined name: pass 2 reports it)
+
+    strings = {
+        v.name.upper()
+        for st in program.statements
+        if isinstance(st, S.Declaration)
+        for v in st.vars
+        if v.type == "STRING"
+    }
+    variables = symbols.declared_variable_names(program)  # (an undefined name: pass 2 reports it)
     for st in instr_data._with_inline(program.statements):
         if isinstance(st, S.Instruction) and st.keyword.upper() == "VIBRATINGWIRE" and len(st.args) > 7:
             arg = st.args[7]
@@ -1416,9 +1548,23 @@ def check_vibrating_wire_diagnostics(program: S.Program, profile, diags: Diagnos
 # SDM address argument position, measured by setting each numeric argument of a chm example to 99
 # (oracle, CR6, 2026-09-28; `docs/instructions.md` "SDM addresses").
 _SDM_ADDRESS_ARG = {
-    "CS7500": 2, "CSAT3": 2, "CSAT3B": 2, "CSAT3BMONITOR": 2, "EC100": 1, "EC100CONFIGURE": 1,
-    "LI7200": 2, "LI7700": 2, "SDMCD16AC": 2, "SDMCD16MASK": 2, "SDMGENERIC": 1, "SDMIO16": 2,
-    "SDMSIO4": 2, "SDMSW8A": 2, "SDMX50": 0, "TDR100": 1, "TDR200": 1,
+    "CS7500": 2,
+    "CSAT3": 2,
+    "CSAT3B": 2,
+    "CSAT3BMONITOR": 2,
+    "EC100": 1,
+    "EC100CONFIGURE": 1,
+    "LI7200": 2,
+    "LI7700": 2,
+    "SDMCD16AC": 2,
+    "SDMCD16MASK": 2,
+    "SDMGENERIC": 1,
+    "SDMIO16": 2,
+    "SDMSIO4": 2,
+    "SDMSW8A": 2,
+    "SDMX50": 0,
+    "TDR100": 1,
+    "TDR200": 1,
 }
 
 
@@ -1450,14 +1596,14 @@ def check_sdm_address(program: S.Program, profile, diags: Diagnostics, env: cons
         is_float = consteval.is_float(arg, env)
         if is_float is None:
             is_float = value != int(value) if abs(value) < 2**63 else True
-        if is_float or not -2**31 <= value < 2**31:
+        if is_float or not -(2**31) <= value < 2**31:
             try:
                 rounded = struct.unpack("f", struct.pack("f", value))[0]
-            except OverflowError:   # some CPython builds raise on float32 overflow, others return +-inf
+            except OverflowError:  # some CPython builds raise on float32 overflow, others return +-inf
                 rounded = math.copysign(math.inf, value)
             # float32 +inf saturates to Long max (255); -inf is 0
             value = (2**31 - 1 if rounded > 0 else 0) if math.isinf(rounded) else rounded
-            if not -2**31 <= value < 2**31:
+            if not -(2**31) <= value < 2**31:
                 continue
         address = int(value) & 0xFF
         if address >= 15:
@@ -1482,8 +1628,7 @@ def _operator_tree(expr: S.Expr | None) -> bool:
     return isinstance(expr, (S.Number, S.String, S.Name))
 
 
-def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
-                         env: consteval.Env) -> None:
+def check_avgrun_options(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     """`AvgRun`'s optional arguments after `ResetVar` (decompiled AvgRun compile function; oracle,
     2026-10-01): a Float or String variable as `Count` -> `Optional Count parameter must be type
     long.` (all four loggers; a Long/Boolean variable, a literal or an expression compile). On
@@ -1500,7 +1645,7 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
     toward zero, a string or anything outside Long range gives `-2147483648`."""
     if not _RUNNING_AVG & profile.instructions.keys():
         return
-    scopes = symbols.statement_scopes(program, profile)   # its own routine's parameters, also named like a later `Const`
+    scopes = symbols.statement_scopes(program, profile)  # its own routine's parameters, also named like a later `Const`
     from .expressions import _alias_names, _has_dotted_field
 
     def variable_type(arg: S.Expr | None, view: S.Program) -> str | None:
@@ -1509,6 +1654,7 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
         return symbols.declared_variable_types(view).get(arg.name.upper())
 
     from . import longconv
+
     names = longconv.float_names(program.statements)
     literals = longconv.literal_names(program.statements)
 
@@ -1529,16 +1675,23 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
             continue
         kw = stmt.keyword.upper()
         args = list(stmt.args) + [None] * (8 - len(stmt.args))
-        view = symbols.scoped_view(program, stmt, publics=True)   # the storage visible here (round 71)
-        if kw in ("TOTALRUN", "STDDEVRUN") and args[4] is not None \
-                and variable_type(args[5], view) in _AVGRUN_TYPE_ERROR:
+        view = symbols.scoped_view(program, stmt, publics=True)  # the storage visible here (round 71)
+        if (
+            kw in ("TOTALRUN", "STDDEVRUN")
+            and args[4] is not None
+            and variable_type(args[5], view) in _AVGRUN_TYPE_ERROR
+        ):
             # same Count message as `AvgRun` (oracle, CR6 and CR300, 2026-10-08)
             diags.error(stmt.line, "Optional Count parameter must be type long.", stmt.file)
         if kw == "AVGRUN" and args[4] is not None and variable_type(args[5], view) in _AVGRUN_TYPE_ERROR:
             diags.error(stmt.line, "Optional Count parameter must be type long.", stmt.file)
         at = _INSTANCES_AT.get(kw)
-        if at is not None and args[4] is not None and args[at] is not None \
-                and len(profile.instructions[kw]["params"]) > at + 1:
+        if (
+            at is not None
+            and args[4] is not None
+            and args[at] is not None
+            and len(profile.instructions[kw]["params"]) > at + 1
+        ):
             # a variable, alias or field anywhere in it: its own routine's parameters (also named
             # like a later `Const`) and locals, but no other routine's (`N+0`, round 71)
             visible = symbols.declared_variable_names(view) | _alias_names(view) | scopes[id(stmt)][0]
@@ -1555,22 +1708,21 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
                 diags.error(stmt.line, "Out of memory.", stmt.file)  # (ends the compile, not modelled)
                 continue
             if not constant or variable_type(args[at], view) is not None or instances == 0:
-                diags.error(stmt.line, "Optional number of distinct instances must be a "
-                            "constant of type long.", stmt.file)
+                diags.error(
+                    stmt.line, "Optional number of distinct instances must be a constant of type long.", stmt.file
+                )
             if args[at + 1] is None:
                 diags.error(stmt.line, "Missing instance number", stmt.file)
         reps, count = number(args[1]), number(args[3])
         if reps is not None and count is not None and (reps < 1 or count < 1):
-            diags.error(stmt.line, f"number of averages {count} and reps {reps} in RunningAvg "
-                        "must be > 0.", stmt.file)
+            diags.error(stmt.line, f"number of averages {count} and reps {reps} in RunningAvg must be > 0.", stmt.file)
 
 
 # CDM measurements' `SettlingTime` argument (0-based position; oracle, CR6/CR1000X, 2026-10-12).
 _CDM_SETTLING_ARG = {"CDM_TCSE": 9, "CDM_VOLTSE": 7}
 
 
-def check_option_values(program: S.Program, profile, diags: Diagnostics,
-                        env: consteval.Env) -> None:
+def check_option_values(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     """Constant option arguments (oracle, 2026-10-02, `docs/checker.md` "Option arguments"),
     converted to a 32-bit `long` as in `checker/longconv.py`. Reported with pass 2 without hiding
     the tier-C checks on CR6/CR1000X, only in an otherwise clean file on CR300/CR350 (like
@@ -1591,6 +1743,7 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
       `Settling time: %d, out of range (100 - 100000, or 0 for default).` (oracle, 2026-10-12).
     """
     from . import longconv
+
     names = longconv.float_names(program.statements)
     literals = longconv.literal_names(program.statements)
     cr3 = profile.name in ("cr300", "cr350")
@@ -1599,8 +1752,10 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
         if not isinstance(stmt, (S.Instruction, S.Call)):
             continue
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else stmt.name.upper()
-        if kw not in ("SPLITSTR", "IPROUTE", "MATRIX", "CDM_DELAY", "MOVEBYTES") + \
-                tuple(_CDM_SETTLING_ARG) or kw not in profile.instructions:
+        if (
+            kw not in ("SPLITSTR", "IPROUTE", "MATRIX", "CDM_DELAY", "MOVEBYTES") + tuple(_CDM_SETTLING_ARG)
+            or kw not in profile.instructions
+        ):
             continue
         args = list(stmt.args)
 
@@ -1614,14 +1769,13 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
         elif kw == "MOVEBYTES":
             v = value(5)
             if len(args) > 5 and isinstance(args[5], S.Name) and args[5].name.upper() == "INF":
-                v = 2147483647   # (INF saturates here; NAN and strings give INT_MIN, see below)
-            if v is not None and v & 0x7FFF > 4:   # (only the low 15 bits are tested)
+                v = 2147483647  # (INF saturates here; NAN and strings give INT_MIN, see below)
+            if v is not None and v & 0x7FFF > 4:  # (only the low 15 bits are tested)
                 diags.error(stmt.line, f"Invalid transfer option {v}, must be 0..4.", stmt.file)
         elif kw in _CDM_SETTLING_ARG:
             v = value(_CDM_SETTLING_ARG[kw])
             if v is not None and v != 0 and not 100 <= v <= 100000:
-                diags.error(stmt.line, f"Settling time: {v}, out of range (100 - 100000, or 0 for "
-                            "default).", stmt.file)
+                diags.error(stmt.line, f"Settling time: {v}, out of range (100 - 100000, or 0 for default).", stmt.file)
         elif kw == "CDM_DELAY":
             v = value(2)
             if v is not None and v % 256 not in (0, 1):
@@ -1660,6 +1814,7 @@ def _cdm_delay_overlong(args: list, env: consteval.Env, profile, names, literals
     small negative interval print twice, -1 Hr, 1 Day and 86400000 mSec once, 60 Min none. Only an
     integral constant is modelled (a fraction goes through float arithmetic, not reproduced)."""
     from . import longconv
+
     if len(args) < 5 or args[3] is None or args[4] is None:
         return 0
     try:
@@ -1667,8 +1822,14 @@ def _cdm_delay_overlong(args: list, env: consteval.Env, profile, names, literals
         unit = consteval.value_of(args[4], env)
     except consteval.NotConstant:
         return 0
-    if isinstance(raw, bool) or not isinstance(raw, (int, float)) or raw != int(raw) \
-            or not -2**31 <= raw < 2**31 or isinstance(unit, bool) or unit not in _US_PER_UNIT:
+    if (
+        isinstance(raw, bool)
+        or not isinstance(raw, (int, float))
+        or raw != int(raw)
+        or not -(2**31) <= raw < 2**31
+        or isinstance(unit, bool)
+        or unit not in _US_PER_UNIT
+    ):
         return 0
     n = longconv.long_value(args[3], env, profile, names, literals)
     if n is None:
@@ -1701,8 +1862,11 @@ def _matrix_shapes(program: S.Program, env: consteval.Env) -> dict[str, tuple[in
         if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
             for v in st.vars:
                 (repeated if v.name.upper() in seen else seen).add(v.name.upper())
-    return {n: _ILLEGAL_MATRIX if len(d) > 2 else (d[0], d[1] if len(d) == 2 else 1)
-            for n, d in dims.items() if len(d) <= 3 and types.get(n) == "FLOAT" and n not in repeated}
+    return {
+        n: _ILLEGAL_MATRIX if len(d) > 2 else (d[0], d[1] if len(d) == 2 else 1)
+        for n, d in dims.items()
+        if len(d) <= 3 and types.get(n) == "FLOAT" and n not in repeated
+    }
 
 
 # Shape given to an operand the compiler calls `Illegal Matrix` (a String literal, an array of
@@ -1722,6 +1886,7 @@ def matrix_undefined_operands(stmt, program: S.Program, env, known, profile) -> 
     shape (an option that is not a constant 1-5, an operand that is neither a bare name nor of a
     known shape, a name inside an indexed operand)."""
     from . import longconv
+
     args = list(stmt.args)
     if len(args) != 4 or any(a is None for a in args):
         return None
@@ -1768,8 +1933,7 @@ def _matrix_dimension_errors(option: int, args, shapes) -> list[str]:
     ops = [args[1], args[2], args[3]] if option <= 3 else [args[1], args[3]]
     shape = []
     for i, a in enumerate(ops):
-        if (isinstance(a, S.String) and i < len(ops) - 1) or \
-                (isinstance(a, S.Number) and option <= 3 and i == 1):
+        if (isinstance(a, S.String) and i < len(ops) - 1) or (isinstance(a, S.Number) and option <= 3 and i == 1):
             # (a String destination has its own message; a number is only probed as `B`)
             shape.append(_ILLEGAL_MATRIX)
         elif isinstance(a, S.Name) and a.name.upper() in shapes:
@@ -1804,25 +1968,25 @@ def check_const_int_args(program: S.Program, profile, diags: Diagnostics, env: c
         if not record or kw in ("DO", "LOOP", "ELSE"):
             continue
         if not profile.single_pass and _earlier_error_in_stmt(
-                program, stmt, diags, ("Invalid symbol in expression", "Variable illegal in Parameter")):
+            program, stmt, diags, ("Invalid symbol in expression", "Variable illegal in Parameter")
+        ):
             continue  # CR6/CR1000X: an earlier const-family error on the line ends the statement
-        for i, code in enumerate(record["params"][:len(stmt.args)]):
+        for i, code in enumerate(record["params"][: len(stmt.args)]):
             arg = stmt.args[i]
             if code not in (4, 104) or arg is None:
                 continue
             from . import expressions
+
             text = _strip_parens(expressions._arg_text(stmt, i).strip())
             if not text or _is_integer_token(text, arg, env):
                 continue
             echo = "-" if re.match(r"-\s", text) else text
-            diags.error(stmt.line, f"Illegal parameter {echo}, expecting constant integer.",
-                        stmt.file, stmt=stmt)
+            diags.error(stmt.line, f"Illegal parameter {echo}, expecting constant integer.", stmt.file, stmt=stmt)
 
 
 def _strip_parens(text: str) -> str:
     """`text` without enclosing parentheses (`(1+2)` is echoed as `1+2`, oracle 2026-09-28)."""
-    while text.startswith("(") and text.endswith(")") and \
-            _paren_depth_ok(text[1:-1]):
+    while text.startswith("(") and text.endswith(")") and _paren_depth_ok(text[1:-1]):
         text = text[1:-1].strip()
     return text
 
@@ -1853,30 +2017,34 @@ def _is_integer_token(text: str, arg: S.Expr, env: consteval.Env) -> bool:
 
 # `SerialIn` constant ComPort codes, compared by absolute value (oracle, 2026-10-25,
 # docs/checker.md#serialin-comport-codes-round-36); CR300/CR350 not probed
-_SERIALIN_PORTS = {"cr6": frozenset(range(1, 19)) | frozenset(range(32, 48)),
-                   "cr1000x": frozenset(range(1, 15)) | frozenset(range(32, 48))}
+_SERIALIN_PORTS = {
+    "cr6": frozenset(range(1, 19)) | frozenset(range(32, 48)),
+    "cr1000x": frozenset(range(1, 15)) | frozenset(range(32, 48)),
+}
 
 
-def check_serialbrk_comport(program: S.Program, profile, diags: Diagnostics,
-                            env: consteval.Env) -> None:
+def check_serialbrk_comport(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     """Numeric constant ports of the statement builder, not expression calls.
 
     CR6 FUN_004731f0 and four-profile observations: docs/checker.md#serialbrk-ports-round-42.
     Strings and runtime variables bypass this builder's constant numeric check.
     """
-    bounds = {"cr6": (16, "COMC1, COMC3, or COMU1..COMU7"),
-              "cr1000x": (12, "COMC1, COMC3..COMC7")}.get(profile.name)
+    bounds = {"cr6": (16, "COMC1, COMC3, or COMU1..COMU7"), "cr1000x": (12, "COMC1, COMC3..COMC7")}.get(profile.name)
     if bounds is None:
         return
     names = longconv.float_names(program.statements)
     literals = longconv.literal_names(program.statements)
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SERIALBRK" \
-                or len(stmt.args) != 2 or any(a is None for a in stmt.args):
+        if (
+            not isinstance(stmt, S.Instruction)
+            or stmt.keyword.upper() != "SERIALBRK"
+            or len(stmt.args) != 2
+            or any(a is None for a in stmt.args)
+        ):
             continue
         try:
             value = consteval.value_of(stmt.args[0], env)
-        except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
+        except consteval.NotConstant, TypeError, ValueError, ZeroDivisionError:
             value = None
         if isinstance(value, str):
             continue
@@ -1889,6 +2057,7 @@ def check_serialin_comport(program: S.Program, profile, diags: Diagnostics, env:
     """`ComPort N illegal.` for a constant `SerialIn` ComPort whose 32-bit value, sign dropped, is
     not a port code of the logger (`N` is that absolute value)."""
     from . import longconv
+
     ports = _SERIALIN_PORTS.get(profile.name)
     if ports is None:
         return
@@ -1896,11 +2065,15 @@ def check_serialin_comport(program: S.Program, profile, diags: Diagnostics, env:
     literals = longconv.literal_names(program.statements)
     for stmt in program.statements:
         # a short statement stops at its missing parameter first (oracle, CR6/CR1000X, round 59)
-        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SERIALIN" and len(stmt.args) > 1 \
-                and shortfall_message(profile.instructions["SERIALIN"], given_count(stmt, profile)) is None:
+        if (
+            isinstance(stmt, S.Instruction)
+            and stmt.keyword.upper() == "SERIALIN"
+            and len(stmt.args) > 1
+            and shortfall_message(profile.instructions["SERIALIN"], given_count(stmt, profile)) is None
+        ):
             v = longconv.long_value(stmt.args[1], env, profile, names, literals)
-            if v is not None and (abs(v) if v != -2**31 else v) not in ports:
-                diags.error(stmt.line, f"ComPort {abs(v) if v != -2**31 else v} illegal.", stmt.file)
+            if v is not None and (abs(v) if v != -(2**31) else v) not in ports:
+                diags.error(stmt.line, f"ComPort {abs(v) if v != -(2**31) else v} illegal.", stmt.file)
 
 
 _SERIALIN_DEST_MESSAGE = "A string variable destination is required"
@@ -1911,8 +2084,12 @@ def _serialin_types(program: S.Program, profile) -> dict[str, str]:
     for stmt in program.statements:
         if isinstance(stmt, S.ConstDecl):
             types[stmt.name.upper()] = "CONST"
-        elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS" \
-                and stmt.args and isinstance(stmt.args[0], (S.Name, S.Index)):
+        elif (
+            isinstance(stmt, S.Instruction)
+            and stmt.keyword.upper() == "ALIAS"
+            and stmt.args
+            and isinstance(stmt.args[0], (S.Name, S.Index))
+        ):
             kind = types.get(stmt.args[0].name.upper())
             if kind is not None:
                 for alias in stmt.args[1:]:
@@ -1920,7 +2097,7 @@ def _serialin_types(program: S.Program, profile) -> dict[str, str]:
                         types[alias.name.upper()] = kind
     for name in profile.functions:
         types.setdefault(name, "FUNCTION")
-    for name in profile.symbols:   # `SerialIn(ComRS232,...)` (oracle, CR6/CR1000X, round 59)
+    for name in profile.symbols:  # `SerialIn(ComRS232,...)` (oracle, CR6/CR1000X, round 59)
         types.setdefault(name, "CONST")
     return types
 
@@ -1944,14 +2121,18 @@ def check_serialin_destination(program: S.Program, profile, diags: Diagnostics) 
     """
     types = _serialin_types(program, profile)
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SERIALIN" \
-                or "SERIALIN" not in profile.instructions or not stmt.args or stmt.args[0] is None:
+        if (
+            not isinstance(stmt, S.Instruction)
+            or stmt.keyword.upper() != "SERIALIN"
+            or "SERIALIN" not in profile.instructions
+            or not stmt.args
+            or stmt.args[0] is None
+        ):
             continue
         if not _serialin_bad_destination(stmt.args[0], types):
             continue
         key = (stmt.line, stmt.file)
-        at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key),
-                  len(diags.items))
+        at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key), len(diags.items))
         new = [Diagnostic("error", stmt.line, _SERIALIN_DEST_MESSAGE, stmt.file)]
         if profile.single_pass:
             # A failed destination ends this argument list before count checks.
@@ -1959,8 +2140,7 @@ def check_serialin_destination(program: S.Program, profile, diags: Diagnostics) 
             at = min(at, len(diags.items))
             if len(stmt.args) > 1 and stmt.args[1] is not None:
                 text = _next_simple_token(_arg_text(stmt, 1)) or _arg_text(stmt, 1)
-                new.append(Diagnostic("error", stmt.line, f"Too many parameters:  {text}.",
-                                      stmt.file))
+                new.append(Diagnostic("error", stmt.line, f"Too many parameters:  {text}.", stmt.file))
         diags.items[at:at] = new
 
 
@@ -1981,15 +2161,16 @@ def check_serialinrecord(program: S.Program, profile, diags: Diagnostics, env: c
     def value(arg):
         try:
             v = consteval.value_of(arg, env) if arg is not None else None
-        except (consteval.NotConstant, consteval.DivideByZero):
+        except consteval.NotConstant, consteval.DivideByZero:
             return None
         return int(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else None
 
     buffers: dict[int, int | None] = {}
     unknown_port = False
     for st in program.statements:
-        name = st.keyword if isinstance(st, S.Instruction) else getattr(st, "name", "") \
-            if isinstance(st, S.Call) else ""
+        name = (
+            st.keyword if isinstance(st, S.Instruction) else getattr(st, "name", "") if isinstance(st, S.Call) else ""
+        )
         if not isinstance(st, (S.Call, S.Instruction)) or name.upper() != "SERIALOPEN" or not st.args:
             continue
         port = value(st.args[0])
@@ -2000,25 +2181,27 @@ def check_serialinrecord(program: S.Program, profile, diags: Diagnostics, env: c
         old = buffers.get(port, 0)
         buffers[port] = None if size is None or old is None else max(old, 256, size)
     for st in program.statements:
-        if not isinstance(st, S.Instruction) or st.keyword.upper() != "SERIALINRECORD" \
-                or len(st.args) < 5:
+        if not isinstance(st, S.Instruction) or st.keyword.upper() != "SERIALINRECORD" or len(st.args) < 5:
             continue
         port, start, count, end = (value(st.args[i]) for i in (0, 2, 3, 4))
-        word = (lambda v: (v + 2**15) % 2**16 - 2**15)   # StartWord/EndWord are 16-bit (65535 is -1)
-        if (start is not None and count is not None and end is not None) and start and count and end and \
-                min(word(start), count, word(end)) < 0:
+        word = lambda v: (v + 2**15) % 2**16 - 2**15  # StartWord/EndWord are 16-bit (65535 is -1)
+        if (
+            (start is not None and count is not None and end is not None)
+            and start
+            and count
+            and end
+            and min(word(start), count, word(end)) < 0
+        ):
             diags.error(st.line, "StartWord, NumberBytes and EndWord cannot all be not used", st.file)
         if port is None or count is None or unknown_port:
             continue
         size = buffers.get(port, 0)
         if size is not None and count % 2**32 >= size:
-            diags.error(st.line, f"Number of bytes {count} must be less than input buffer {size}",
-                        st.file)
+            diags.error(st.line, f"Number of bytes {count} must be less than input buffer {size}", st.file)
 
 
-_DEBUG_HISTORY_LIMIT = 26843544   # bytes: HistorySize*4 above this gives `Out of memory.`
-_DEBUG_ARG_TYPES = {2: frozenset({"LONG", "BOOLEAN"}), 3: frozenset({"LONG", "BOOLEAN"}),
-                    4: frozenset({"STRING"})}
+_DEBUG_HISTORY_LIMIT = 26843544  # bytes: HistorySize*4 above this gives `Out of memory.`
+_DEBUG_ARG_TYPES = {2: frozenset({"LONG", "BOOLEAN"}), 3: frozenset({"LONG", "BOOLEAN"}), 4: frozenset({"STRING"})}
 
 
 def debug_history_oom(stmt: S.Instruction, env, profile, program: S.Program) -> bool:
@@ -2033,20 +2216,20 @@ def debug_history_oom(stmt: S.Instruction, env, profile, program: S.Program) -> 
     if len(stmt.args) != 5 or stmt.args[1] is None:
         return False
     arg = stmt.args[1]
-    v = longconv.long_value(arg, env, profile, longconv.float_names(program.statements),
-                            longconv.literal_names(program.statements))
+    v = longconv.long_value(
+        arg, env, profile, longconv.float_names(program.statements), longconv.literal_names(program.statements)
+    )
     if v is None:
         return False
     if isinstance(arg, S.Name) and arg.name.upper() == "INF" and "INF" not in env.consts:
-        v = 2**31 - 1     # (saturates, unlike NAN and -INF)
-    elif isinstance(arg, S.Number) and not arg.text.startswith("&") and (
-            "." in arg.text or "E" in arg.text.upper()):
+        v = 2**31 - 1  # (saturates, unlike NAN and -INF)
+    elif isinstance(arg, S.Number) and not arg.text.startswith("&") and ("." in arg.text or "E" in arg.text.upper()):
         try:
-            f = struct.unpack("<f", struct.pack("<f", arg.value))[0]   # (a decimal literal is a float32)
-        except OverflowError:   # beyond float32 range: +-inf, as in check_stage2a above
+            f = struct.unpack("<f", struct.pack("<f", arg.value))[0]  # (a decimal literal is a float32)
+        except OverflowError:  # beyond float32 range: +-inf, as in check_stage2a above
             f = math.copysign(math.inf, arg.value)
         # +inf saturates to Long max (Debug 1e39 and 3.5e38: Out of memory); -inf and other out-of-range values to Long min
-        v = int(f) if -2**31 <= f < 2**31 else (2**31 - 1 if math.isinf(f) and f > 0 else -2**31)
+        v = int(f) if -(2**31) <= f < 2**31 else (2**31 - 1 if math.isinf(f) and f > 0 else -(2**31))
     return (v * 4) & 0xFFFFFFFF > _DEBUG_HISTORY_LIMIT
 
 
@@ -2062,8 +2245,12 @@ def check_debug_args(program: S.Program, profile, diags: Diagnostics, env: const
         return
     types = _serialin_types(program, profile)
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "DEBUG" \
-                or len(stmt.args) != 5 or any(a is None for a in stmt.args):
+        if (
+            not isinstance(stmt, S.Instruction)
+            or stmt.keyword.upper() != "DEBUG"
+            or len(stmt.args) != 5
+            or any(a is None for a in stmt.args)
+        ):
             continue
         key = (stmt.line, stmt.file)
         same = [d for d in diags.items if (d.line, d.file) == key]
@@ -2074,9 +2261,10 @@ def check_debug_args(program: S.Program, profile, diags: Diagnostics, env: const
                 kind = types.get(arg.name.upper())
                 if kind is None:
                     text = _arg_text(stmt, i).strip()
-                    bad |= any(d.message == f"Invalid symbol in expression: {text}." for d in same) \
-                        or (isinstance(arg, S.Name) and (arg.name.upper() in ("NAN", "INF")
-                                                           or consteval.is_constant(arg, env)))
+                    bad |= any(d.message == f"Invalid symbol in expression: {text}." for d in same) or (
+                        isinstance(arg, S.Name)
+                        and (arg.name.upper() in ("NAN", "INF") or consteval.is_constant(arg, env))
+                    )
                 else:
                     bad |= kind not in allowed
             elif isinstance(arg, S.Member):
@@ -2084,8 +2272,9 @@ def check_debug_args(program: S.Program, profile, diags: Diagnostics, env: const
             else:
                 bad |= isinstance(arg, (S.Number, S.String, S.Binary, S.Unary))
         if bad:
-            at = max((i for i, d in enumerate(diags.items) if (d.line, d.file) == key),
-                     default=len(diags.items) - 1) + 1
+            at = (
+                max((i for i, d in enumerate(diags.items) if (d.line, d.file) == key), default=len(diags.items) - 1) + 1
+            )
             diags.items.insert(at, Diagnostic("error", stmt.line, "Illegal parameter(s)", stmt.file))
 
 
@@ -2101,13 +2290,16 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
         return
     types = _serialin_types(program, profile)
     from .expressions import _index_nodes, _known_names, _undefined_names
+
     known = _known_names(program, profile)
 
     def bad(a):
         # CR300/CR350 name the undefined variable first and still report the destination
         # (oracle, 2026-10-08)
         return _serialin_bad_destination(a, types) or (
-            profile.single_pass and isinstance(a, (S.Name, S.Index)) and a.name.upper() not in known)
+            profile.single_pass and isinstance(a, (S.Name, S.Index)) and a.name.upper() not in known
+        )
+
     for stmt in program.statements:
         if isinstance(stmt, S.Assignment) and _undefined_names(stmt.target, known):
             continue  # an unresolved target is the generic `Invalid, or out of place expression`
@@ -2115,12 +2307,12 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
         fname = getattr(call, "name", "").upper()
         if isinstance(call, (S.Index, S.Call)) and call.name.upper() in _EMAIL_FUNCTIONS:
             args = call.args
-        elif isinstance(call, S.Name) and call.name.upper() in _EMAIL_FUNCTIONS \
-                and isinstance(stmt, S.Assignment):
+        elif isinstance(call, S.Name) and call.name.upper() in _EMAIL_FUNCTIONS and isinstance(stmt, S.Assignment):
             args = []  # `X = EmailSend` with its arguments wrapped onto the next line
         elif isinstance(stmt, S.Assignment):
-            nested = [n for n in _index_nodes(stmt.value) if n.name.upper() in _EMAIL_FUNCTIONS
-                      and len(n.args) >= 9]  # inside a larger expression (oracle: `...+1`)
+            nested = [
+                n for n in _index_nodes(stmt.value) if n.name.upper() in _EMAIL_FUNCTIONS and len(n.args) >= 9
+            ]  # inside a larger expression (oracle: `...+1`)
             if not nested:
                 continue
             args = nested[0].args
@@ -2130,14 +2322,16 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
         # destinations: `EmailRecv` arguments 9-12, `EmailSend` argument 9 only; the rest are
         # numbers (host sweep, oracle 2026-10-11, `tests/fixtures/r13_function_arity.json`)
         tail = args[8:12] if fname == "EMAILRECV" else args[8:9]
-        if None in tail or (tail and not any(
-                not isinstance(a, (S.Binary, S.Unary)) and bad(a) for a in tail)):
+        if None in tail or (tail and not any(not isinstance(a, (S.Binary, S.Unary)) and bad(a) for a in tail)):
             continue
         key = (stmt.line, stmt.file)
-        at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key),
-                  len(diags.items))
-        while profile.single_pass and at < len(diags.items) and (diags.items[at].line, diags.items[at].file) == key \
-                and diags.items[at].message.endswith(" is not defined."):
+        at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key), len(diags.items))
+        while (
+            profile.single_pass
+            and at < len(diags.items)
+            and (diags.items[at].line, diags.items[at].file) == key
+            and diags.items[at].message.endswith(" is not defined.")
+        ):
             at += 1
         new = [Diagnostic("error", stmt.line, _SERIALIN_DEST_MESSAGE, stmt.file)]
         diags.items[at:at] = new
@@ -2152,13 +2346,13 @@ def check_tcpopen_handle_type(program: S.Program, profile, diags: Diagnostics) -
     if profile.name not in ("cr6", "cr1000x"):
         return
     from .expressions import _index_nodes, _stmt_exprs
+
     types = symbols.declared_variable_types(program)
     for stmt in program.statements:
         if isinstance(stmt, S.Call) and stmt.name.upper() == "TCPOPEN":
             calls = [stmt.args]
         else:
-            calls = [ix.args for e in _stmt_exprs(stmt) for ix in _index_nodes(e)
-                     if ix.name.upper() == "TCPOPEN"]
+            calls = [ix.args for e in _stmt_exprs(stmt) for ix in _index_nodes(e) if ix.name.upper() == "TCPOPEN"]
         for args in calls[:1]:
             if len(args) < 5 or args[4] is None:
                 continue
@@ -2169,10 +2363,13 @@ def check_tcpopen_handle_type(program: S.Program, profile, diags: Diagnostics) -
             else:
                 bad = isinstance(arg, (S.Number, S.String, S.Binary, S.Unary))
             if bad:
-                at = next((i for i, d in enumerate(diags.items)
-                           if (d.line, d.file) == (stmt.line, stmt.file)), len(diags.items))
-                diags.items.insert(at, Diagnostic("error", stmt.line,
-                                                  "Parameter must be a variable of type long", stmt.file))
+                at = next(
+                    (i for i, d in enumerate(diags.items) if (d.line, d.file) == (stmt.line, stmt.file)),
+                    len(diags.items),
+                )
+                diags.items.insert(
+                    at, Diagnostic("error", stmt.line, "Parameter must be a variable of type long", stmt.file)
+                )
 
 
 def check_tcpopen_connections(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -2185,6 +2382,7 @@ def check_tcpopen_connections(program: S.Program, profile, diags: Diagnostics, e
     whatever its value, then `Parameter must be a constant integer: <statement>.`; CR300/CR350 print
     only the second line (oracle, all four loggers, 2026-10-12; review R13C-6)."""
     from .expressions import _index_nodes, _stmt_exprs
+
     types = symbols.declared_variable_types(program)
     dims = symbols.declared_all_dims(program, env)
     declared: dict[str, int] = {}
@@ -2193,14 +2391,16 @@ def check_tcpopen_connections(program: S.Program, profile, diags: Diagnostics, e
             for v in st.vars:
                 declared[v.name.upper()] = declared.get(v.name.upper(), 0) + 1
     busy = {(d.line, d.file) for d in diags.items}
-    stmts = [st for top in program.statements for st in (top, *(getattr(top, "inline", None) or []),
-                                                       *(getattr(top, "inline_else", None) or []))]
+    stmts = [
+        st
+        for top in program.statements
+        for st in (top, *(getattr(top, "inline", None) or []), *(getattr(top, "inline_else", None) or []))
+    ]
     for stmt in stmts:
         if isinstance(stmt, S.Call) and stmt.name.upper() == "TCPOPEN":
             calls = [stmt.args]
         else:
-            calls = [ix.args for e in _stmt_exprs(stmt) for ix in _index_nodes(e)
-                     if ix.name.upper() == "TCPOPEN"]
+            calls = [ix.args for e in _stmt_exprs(stmt) for ix in _index_nodes(e) if ix.name.upper() == "TCPOPEN"]
         for args in calls[:1]:
             if len(args) not in (5, 6, 7) or args[4] is None or (len(args) > 5 and args[5] is None):
                 continue
@@ -2212,28 +2412,38 @@ def check_tcpopen_connections(program: S.Program, profile, diags: Diagnostics, e
                 count = consteval.value_of(args[5], env) if len(args) > 5 else 0
             except consteval.NotConstant:
                 continue
-            lit = args[5].operand if len(args) > 5 and isinstance(args[5], S.Unary) \
-                and args[5].op in ("-", "+") else (args[5] if len(args) > 5 else None)
+            lit = (
+                args[5].operand
+                if len(args) > 5 and isinstance(args[5], S.Unary) and args[5].op in ("-", "+")
+                else (args[5] if len(args) > 5 else None)
+            )
             size = 1
             for d in dims[name]:
                 size *= d
-            if isinstance(lit, S.Number) and not re.fullmatch(r"\d+|&[Hh][0-9A-Fa-f]+", lit.text) \
-                    and lit is args[5] and (stmt.line, stmt.file) not in busy:
+            if (
+                isinstance(lit, S.Number)
+                and not re.fullmatch(r"\d+|&[Hh][0-9A-Fa-f]+", lit.text)
+                and lit is args[5]
+                and (stmt.line, stmt.file) not in busy
+            ):
                 if not profile.single_pass:
-                    diags.error(stmt.line, f"Max number of concurrent connections must be 1..{size}",
-                                stmt.file, stmt=stmt)
+                    diags.error(
+                        stmt.line, f"Max number of concurrent connections must be 1..{size}", stmt.file, stmt=stmt
+                    )
                 sep = "\n" if profile.fallback_echo_newline and stmt.at_eol else ""
-                diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.",
-                            stmt.file, stmt=stmt)
+                diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.", stmt.file, stmt=stmt)
                 continue
-            if profile.single_pass or isinstance(count, bool) or not isinstance(count, (int, float)) \
-                    or count != int(count):
+            if (
+                profile.single_pass
+                or isinstance(count, bool)
+                or not isinstance(count, (int, float))
+                or count != int(count)
+            ):
                 continue
             count = int(count)
             if 1 <= count <= size or (stmt.line, stmt.file) in busy:
                 continue
-            diags.error(stmt.line, f"Max number of concurrent connections must be 1..{size}", stmt.file,
-                        stmt=stmt)
+            diags.error(stmt.line, f"Max number of concurrent connections must be 1..{size}", stmt.file, stmt=stmt)
 
 
 _PULSE_CHANNELS = {"cr6": re.compile(r"C[1-4]|U(?:[1-9]|1[0-2])"), "cr1000x": re.compile(r"C[1-8]|P[12]")}
@@ -2256,13 +2466,17 @@ def check_pulsecount_channels(program: S.Program, profile, diags: Diagnostics) -
             used = set()
         elif kw == "NEXTSCAN" or (kw == "NEXT" and re.match(r"(?i)\s*Next\s+Scan\b", stmt.text or "")):
             used = None
-        elif kw == "PULSECOUNT" and used is not None and len(stmt.args) > 2 \
-                and isinstance(stmt.args[2], S.Name) and channel.fullmatch(stmt.args[2].name.upper()):
+        elif (
+            kw == "PULSECOUNT"
+            and used is not None
+            and len(stmt.args) > 2
+            and isinstance(stmt.args[2], S.Name)
+            and channel.fullmatch(stmt.args[2].name.upper())
+        ):
             name = stmt.args[2].name.upper()
             if name in used:
-                if profile.name == "cr1000x" and name[0] == "C":   # (not `P1`/`P2`, 2026-10-24)
-                    diags.error(stmt.line, f"Pulsecount: channel {name} already in use or unavailable.",
-                                stmt.file)
+                if profile.name == "cr1000x" and name[0] == "C":  # (not `P1`/`P2`, 2026-10-24)
+                    diags.error(stmt.line, f"Pulsecount: channel {name} already in use or unavailable.", stmt.file)
                 diags.error(stmt.line, f"{name} already used as PulseCount in this scan.", stmt.file)
             used.add(name)
 
@@ -2277,11 +2491,16 @@ def check_sdi12_nan_fill(program: S.Program, profile, diags: Diagnostics, env) -
     if profile.name not in ("cr6", "cr1000x"):
         return
     from .instr_measure import _flat_offset, _index_value, _measurement_aliases
+
     tables = symbols.scope_tables(program, env, scalars=True)
     aliases = _measurement_aliases(program, tables, env)
     for st in program.statements:
-        if not (isinstance(st, S.Instruction) and st.keyword.upper() == "SDI12RECORDER" and len(st.args) > 6
-                and isinstance(st.args[0], (S.Name, S.Index))):
+        if not (
+            isinstance(st, S.Instruction)
+            and st.keyword.upper() == "SDI12RECORDER"
+            and len(st.args) > 6
+            and isinstance(st.args[0], (S.Name, S.Index))
+        ):
             continue
         dest, scope = st.args[0], tables(st)
         kind = scope.types.get(dest.name.upper())
@@ -2305,22 +2524,33 @@ def check_sdi12_nan_fill(program: S.Program, profile, diags: Diagnostics, env) -
             fill = consteval.value_of(st.args[6], env)
         except consteval.NotConstant:
             continue
-        if offset is None or offset >= total or isinstance(fill, (bool, str)) or fill != int(fill) \
-                or not -2**31 <= fill < 2**31:
+        if (
+            offset is None
+            or offset >= total
+            or isinstance(fill, (bool, str))
+            or fill != int(fill)
+            or not -(2**31) <= fill < 2**31
+        ):
             continue
         room = total - offset
         if not (-1 <= fill <= room):
-            diags.error(st.line, f"Illegal NAN fill locations, legal is -1 or 1..{room}(room in the "
-                        "destination array)", st.file)
+            diags.error(
+                st.line, f"Illegal NAN fill locations, legal is -1 or 1..{room}(room in the destination array)", st.file
+            )
 
 
-_SERIAL_TERMINALS = {"cr6": {9: 101, 10: 103, 11: 201, 12: 203, 13: 205, 14: 207, 15: 209, 16: 211},
-                     "cr1000x": {9: 101, 10: 103, 11: 105, 12: 107}}
+_SERIAL_TERMINALS = {
+    "cr6": {9: 101, 10: 103, 11: 201, 12: 203, 13: 205, 14: 207, 15: 209, 16: 211},
+    "cr1000x": {9: 101, 10: 103, 11: 105, 12: 107},
+}
 _IO_TERMINALS = {"cr6": {*range(101, 105), *range(201, 213)}, "cr1000x": set(range(101, 109))}
 _SDI12_TERMINALS = {"cr6": {101, 103, 201, 203, 205, 207, 209, 211}, "cr1000x": {101, 103, 105, 107}}
-_TERMINAL_ROLES = {"SDI12RECORDER": (1, "sdi12", "SDI12Recorder"),       # (position, role, message label)
-                   "SDI12SENSORSETUP": (1, "sdi12", "SDI12SensorSetup"),
-                   "PORTSET": (0, "output", "PortSet"), "PULSECOUNT": (2, "pulse", "Pulsecount")}
+_TERMINAL_ROLES = {
+    "SDI12RECORDER": (1, "sdi12", "SDI12Recorder"),  # (position, role, message label)
+    "SDI12SENSORSETUP": (1, "sdi12", "SDI12SensorSetup"),
+    "PORTSET": (0, "output", "PortSet"),
+    "PULSECOUNT": (2, "pulse", "Pulsecount"),
+}
 
 
 def check_terminal_conflicts(program: S.Program, profile, diags: Diagnostics, env) -> None:
@@ -2348,9 +2578,15 @@ def check_terminal_conflicts(program: S.Program, profile, diags: Diagnostics, en
 
     owner: dict[int, str] = {}
     sdi_kind: dict[int, str] = {}
-    for st in program.statements:    # (a `SerialOpen` statement parses as a `Call`)
-        if isinstance(st, S.Call) and st.name.upper() == "SERIALOPEN" and not st.explicit and st.args \
-                and (port := value(st.args[0])) is not None and (t := serial.get(port)):
+    for st in program.statements:  # (a `SerialOpen` statement parses as a `Call`)
+        if (
+            isinstance(st, S.Call)
+            and st.name.upper() == "SERIALOPEN"
+            and not st.explicit
+            and st.args
+            and (port := value(st.args[0])) is not None
+            and (t := serial.get(port))
+        ):
             owner[t] = owner[t + 1] = "serial"
     for st in program.statements:
         if not isinstance(st, S.Instruction):
@@ -2424,13 +2660,20 @@ _DNP_ANALOG = frozenset({"LONG", "FLOAT"})
 # 2026-10-08 / 2026-10-12 (docs/instructions.md "DNPVariable groups"); any other group is
 # `Illegal DNP3 group N.`
 _DNP_GROUPS = {
-    1: (None, False, _DNP_BOOL, "Boolean", 2), 2: (1, True, _DNP_BOOL, "Boolean", 3),
-    10: (None, False, _DNP_BOOL, "Boolean", 2), 12: (10, False, _DNP_BOOL, "Boolean", 1),
-    20: (None, False, _DNP_LONG, "Long", 8), 21: (20, False, _DNP_LONG, "Long", 12),
-    22: (20, True, _DNP_LONG, "Long", 8), 23: (21, True, _DNP_LONG, "Long", 8),
-    30: (None, False, _DNP_ANALOG, "Long", 5), 31: (30, False, _DNP_ANALOG, "Long", 7),
-    32: (30, True, _DNP_ANALOG, "Long", 7), 33: (31, True, _DNP_ANALOG, "Long", 7),
-    40: (None, False, _DNP_ANALOG, "Long", 3), 41: (40, False, _DNP_ANALOG, "Long", 3),
+    1: (None, False, _DNP_BOOL, "Boolean", 2),
+    2: (1, True, _DNP_BOOL, "Boolean", 3),
+    10: (None, False, _DNP_BOOL, "Boolean", 2),
+    12: (10, False, _DNP_BOOL, "Boolean", 1),
+    20: (None, False, _DNP_LONG, "Long", 8),
+    21: (20, False, _DNP_LONG, "Long", 12),
+    22: (20, True, _DNP_LONG, "Long", 8),
+    23: (21, True, _DNP_LONG, "Long", 8),
+    30: (None, False, _DNP_ANALOG, "Long", 5),
+    31: (30, False, _DNP_ANALOG, "Long", 7),
+    32: (30, True, _DNP_ANALOG, "Long", 7),
+    33: (31, True, _DNP_ANALOG, "Long", 7),
+    40: (None, False, _DNP_ANALOG, "Long", 3),
+    41: (40, False, _DNP_ANALOG, "Long", 3),
     110: (None, False, frozenset({"STRING"}), "String", None),
 }
 _DNP_KNOWN_TYPES = frozenset({"BOOLEAN", "LONG", "FLOAT", "STRING"})
@@ -2482,11 +2725,10 @@ def _dnp_source(stmt: S.Instruction, conv, dims: dict) -> tuple[list[str], int |
     values: list[int] = []
     for a in src.args:
         number = a.operand if isinstance(a, S.Unary) and a.op in ("-", "+") else a
-        simple = isinstance(number, S.Number) or (
-            isinstance(number, S.Name) and number.name.upper() in conv[0].consts)
+        simple = isinstance(number, S.Number) or (isinstance(number, S.Name) and number.name.upper() in conv[0].consts)
         value = None
         if isinstance(number, S.Name) and number.name.upper() in ("TRUE", "FALSE"):
-            return [], None     # (`B(TRUE)` is out of bounds plus the variable-reference line; not modelled)
+            return [], None  # (`B(TRUE)` is out of bounds plus the variable-reference line; not modelled)
         if simple:
             try:
                 value = consteval.value_of(a, conv[0])
@@ -2568,12 +2810,11 @@ def check_dnp_update(program: S.Program, profile, diags: Diagnostics, env=None) 
     (bad swath, variation 0, illegal group, class on a static group) or uses group 110, which do
     not count. Also the `DNPVariable` argument rules (docs/instructions.md "DNPVariable groups")."""
     defined = False
-    failed_bases: list[int] = []     # static groups an event group was used before
+    failed_bases: list[int] = []  # static groups an event group was used before
     assigned: set[int] = set()
     types = symbols.declared_variable_types(program)
     tables = symbols.scope_tables(program, env) if env is not None else None
-    conv = (env, profile, longconv.float_names(program.statements),
-            longconv.literal_names(program.statements))
+    conv = (env, profile, longconv.float_names(program.statements), longconv.literal_names(program.statements))
     info: dict[int, tuple] = {}
     for st in program.statements:
         if isinstance(st, S.Instruction) and st.keyword.upper() == "DNPVARIABLE":
@@ -2596,8 +2837,7 @@ def check_dnp_update(program: S.Program, profile, diags: Diagnostics, env=None) 
                     continue
                 base = _DNP_GROUPS[group][0]
                 if base is not None and base not in assigned:
-                    diags.error(stmt.line, f"Must assign group {base} before using group {group}.",
-                                stmt.file)
+                    diags.error(stmt.line, f"Must assign group {base} before using group {group}.", stmt.file)
                     failed_bases.append(base)
                     defined = True
                     continue
@@ -2608,8 +2848,7 @@ def check_dnp_update(program: S.Program, profile, diags: Diagnostics, env=None) 
                 assigned.add(group)
                 if group != 110:
                     defined = True
-            elif kw == "DNPUPDATE" and (not defined or any(b not in every_group
-                                                              for b in failed_bases)):
+            elif kw == "DNPUPDATE" and (not defined or any(b not in every_group for b in failed_bases)):
                 diags.error(stmt.line, "DNP3Statics and/or DNP3Events are not defined", stmt.file)
 
 
@@ -2621,8 +2860,7 @@ def check_portbridge_array(program: S.Program, profile, diags: Diagnostics, env)
     types = symbols.declared_variable_types(program)
     tables = symbols.scope_tables(program, env)
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "PORTBRIDGE" \
-                or len(stmt.args) != 2:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "PORTBRIDGE" or len(stmt.args) != 2:
             continue
         dims = tables(stmt).dims
         arg = stmt.args[1]
@@ -2639,36 +2877,84 @@ def check_portbridge_array(program: S.Program, profile, diags: Diagnostics, env)
 
 # CDM instructions whose first two arguments are `CDMType, CPIAddress` and that were each observed to
 # register their address (oracle, CR6; docs/instructions.md "CDM address and module type").
-_CDM_ADDRESS_INSTRUCTIONS = frozenset({
-    "CDM_BATTERY", "CDM_VOLTSE", "CDM_VOLTDIFF", "CDM_TCDIFF", "CDM_TCSE", "CDM_PANELTEMP",
-    "CDM_BRHALF", "CDM_EXCITEV", "CDM_EXCITEI", "CDM_SW12", "CDM_SW5", "CDM_SWPOWER",
-    "CDM_DELAY", "CDM_PULSEPORT", "CDM_MUXSELECT", "CDM_THERM107", "CDM_RESISTANCE",
-    "CDM_ACPOWER", "CDM_CURRENTDIFF", "CDM_BRFULL6W", "CDM_BRHALF3W", "CDM_TCCOMP",
-    "CDM_PERIODAVG",
-})
+_CDM_ADDRESS_INSTRUCTIONS = frozenset(
+    {
+        "CDM_BATTERY",
+        "CDM_VOLTSE",
+        "CDM_VOLTDIFF",
+        "CDM_TCDIFF",
+        "CDM_TCSE",
+        "CDM_PANELTEMP",
+        "CDM_BRHALF",
+        "CDM_EXCITEV",
+        "CDM_EXCITEI",
+        "CDM_SW12",
+        "CDM_SW5",
+        "CDM_SWPOWER",
+        "CDM_DELAY",
+        "CDM_PULSEPORT",
+        "CDM_MUXSELECT",
+        "CDM_THERM107",
+        "CDM_RESISTANCE",
+        "CDM_ACPOWER",
+        "CDM_CURRENTDIFF",
+        "CDM_BRFULL6W",
+        "CDM_BRHALF3W",
+        "CDM_TCCOMP",
+        "CDM_PERIODAVG",
+    }
+)
 # `CDMType` values that name a module (the other values 0..65536 are the unnamed `NULL` module;
 # oracle sweep 0..299 on CR6 and CR1000X, spot values above).
 _CDM_NAMED_TYPES = frozenset(range(100, 106)) | {200, 201, 202} | frozenset(range(220, 232)) | {260, 261}
 _CDM_ANALOG = "Analog measurement"
 # Text before ` instruction not supported by module NULL.` for a NULL-module type (one or two lines).
 _CDM_NULL_MODULE = {
-    "CDM_VOLTSE": [_CDM_ANALOG], "CDM_VOLTDIFF": [_CDM_ANALOG], "CDM_TCSE": [_CDM_ANALOG],
-    "CDM_PANELTEMP": [_CDM_ANALOG], "CDM_BRFULL6W": [_CDM_ANALOG], "CDM_BRHALF3W": [_CDM_ANALOG],
-    "CDM_THERM107": [_CDM_ANALOG], "CDM_RESISTANCE": [_CDM_ANALOG],
-    "CDM_BATTERY": ["CDM_Battery"], "CDM_DELAY": ["CDM_Delay"], "CDM_PULSEPORT": ["CDM_PulsePort"],
-    "CDM_TCCOMP": ["CDM_TCComp"], "CDM_ACPOWER": ["CDM_ACPower"], "CDM_PERIODAVG": ["CDM_PeriodAvg"],
-    "CDM_EXCITEV": ["CDM_Excite"], "CDM_EXCITEI": ["CDM_Excite"], "CDM_MUXSELECT": ["CDM_MuxSel"],
-    "CDM_SW12": ["SW"], "CDM_SW5": ["SW"],
-    "CDM_SWPOWER": ["CDM_SWPower", "SW"], "CDM_CURRENTDIFF": ["CDM_CurrentDiff", _CDM_ANALOG],
+    "CDM_VOLTSE": [_CDM_ANALOG],
+    "CDM_VOLTDIFF": [_CDM_ANALOG],
+    "CDM_TCSE": [_CDM_ANALOG],
+    "CDM_PANELTEMP": [_CDM_ANALOG],
+    "CDM_BRFULL6W": [_CDM_ANALOG],
+    "CDM_BRHALF3W": [_CDM_ANALOG],
+    "CDM_THERM107": [_CDM_ANALOG],
+    "CDM_RESISTANCE": [_CDM_ANALOG],
+    "CDM_BATTERY": ["CDM_Battery"],
+    "CDM_DELAY": ["CDM_Delay"],
+    "CDM_PULSEPORT": ["CDM_PulsePort"],
+    "CDM_TCCOMP": ["CDM_TCComp"],
+    "CDM_ACPOWER": ["CDM_ACPower"],
+    "CDM_PERIODAVG": ["CDM_PeriodAvg"],
+    "CDM_EXCITEV": ["CDM_Excite"],
+    "CDM_EXCITEI": ["CDM_Excite"],
+    "CDM_MUXSELECT": ["CDM_MuxSel"],
+    "CDM_SW12": ["SW"],
+    "CDM_SW5": ["SW"],
+    "CDM_SWPOWER": ["CDM_SWPower", "SW"],
+    "CDM_CURRENTDIFF": ["CDM_CurrentDiff", _CDM_ANALOG],
 }
 
 
 # Names the compiler prints for the named `CDMType` values (oracle, CR6, 2026-10-12, `CDM_SW12(<id>,...)`).
 _CDM_MODULE_NAMES = {
-    100: "EC100", 101: "CSAT3B", 102: "TGA300", 103: "IRGASON2", 104: "EC155UNH", 105: "IRGASONHP",
-    200: "CDM-VW300", 201: "CDM-VW305", 202: "VWIRE305", 224: "TEMP120", 225: "VOLT408V1",
-    226: "VOLT408V10", 227: "VOLT408V60", 228: "TEMP408J", 229: "TEMP408K", 230: "TEMP408T",
-    231: "CURRENT408", 260: "SPECTRUM103", 261: "SPECTRUM109",
+    100: "EC100",
+    101: "CSAT3B",
+    102: "TGA300",
+    103: "IRGASON2",
+    104: "EC155UNH",
+    105: "IRGASONHP",
+    200: "CDM-VW300",
+    201: "CDM-VW305",
+    202: "VWIRE305",
+    224: "TEMP120",
+    225: "VOLT408V1",
+    226: "VOLT408V10",
+    227: "VOLT408V60",
+    228: "TEMP408J",
+    229: "TEMP408K",
+    230: "TEMP408T",
+    231: "CURRENT408",
+    260: "SPECTRUM103",
+    261: "SPECTRUM109",
 }
 # Instructions only the CDM-A108/A116/VOLT108/VOLT116 (220..223) carry; any other named module gives
 # `<SW|CDM_PulsePort> instruction not supported by module <name>.` and nothing else on the line.
@@ -2716,8 +3002,7 @@ def check_fieldcal_variable_args(program: S.Program, profile, diags: Diagnostics
     dims = symbols.declared_all_dims(program, env) if env is not None else None
     conv = None
     if env is not None:
-        conv = (env, profile, longconv.float_names(program.statements),
-                longconv.literal_names(program.statements))
+        conv = (env, profile, longconv.float_names(program.statements), longconv.literal_names(program.statements))
 
     def number(arg):
         return _dnp_long(arg, conv) if conv is not None else None
@@ -2736,51 +3021,82 @@ def check_fieldcal_variable_args(program: S.Program, profile, diags: Diagnostics
         if not 0 <= option <= 4:
             diags.error(stmt.line, "Invalid function option.", stmt.file)
             continue
-        earlier = False   # a MeasVar or Reps error (CR300/CR350 then print no Mult/Offset line)
+        earlier = False  # a MeasVar or Reps error (CR300/CR350 then print no Mult/Offset line)
         meas = len(args) > 1 and _fieldcal_string_subscript(args[1])
         if meas:
             earlier = True
-            diags.error(stmt.line, "FieldCal MeasVar must be a declared public variable that can be "
-                                   "resolved during compilation.", stmt.file)
+            diags.error(
+                stmt.line,
+                "FieldCal MeasVar must be a declared public variable that can be resolved during compilation.",
+                stmt.file,
+            )
         reps = number(args[2]) if len(args) > 2 else None
         if reps is not None and reps not in (1, 2) and not meas:
             earlier = True
             diags.error(stmt.line, "Illegal Reps: must be 1 or 2.", stmt.file)
         for index, label, options in ((3, "Mult", (2, 3)), (4, "Offset", (0, 1, 2, 4))):
             # which `Option` values check which argument (oracle, all four loggers, 2026-10-11)
-            if option in options and index < len(args) and _fieldcal_bad_variable(args[index]) \
-                    and not (earlier and profile.single_pass):
-                diags.error(stmt.line, f"FieldCal {label} must be a declared variable that can be "
-                                       "resolved during compilation.", stmt.file)
+            if (
+                option in options
+                and index < len(args)
+                and _fieldcal_bad_variable(args[index])
+                and not (earlier and profile.single_pass)
+            ):
+                diags.error(
+                    stmt.line,
+                    f"FieldCal {label} must be a declared variable that can be resolved during compilation.",
+                    stmt.file,
+                )
                 earlier = True
         if len(args) > 5 and _fieldcal_string_subscript(args[5]):
-            diags.error(stmt.line, "FieldCal Mode must be a declared public variable that can be "
-                                   "resolved during compilation.", stmt.file)
+            diags.error(
+                stmt.line,
+                "FieldCal Mode must be a declared public variable that can be resolved during compilation.",
+                stmt.file,
+            )
         if option in (1, 2, 3) and len(args) > 6:
             known = args[6]
             shape = dims.get(known.name.upper()) if dims is not None and isinstance(known, S.Index) else None
-            outside = bool(shape) and isinstance(known, S.Index) and len(shape) == 1 and len(known.args) == 1 and \
-                isinstance(known.args[0], S.Number) and isinstance(known.args[0].value, int) and \
-                not 1 <= known.args[0].value <= shape[0]     # (printed after `Variable K out of bounds.`)
-            bad = outside or _fieldcal_bad_variable(known) or isinstance(known, S.Unary) or (
-                isinstance(known, (S.Name, S.Index))
-                and types.get(known.name.upper()) == "STRING")
+            outside = (
+                bool(shape)
+                and isinstance(known, S.Index)
+                and len(shape) == 1
+                and len(known.args) == 1
+                and isinstance(known.args[0], S.Number)
+                and isinstance(known.args[0].value, int)
+                and not 1 <= known.args[0].value <= shape[0]
+            )  # (printed after `Variable K out of bounds.`)
+            bad = (
+                outside
+                or _fieldcal_bad_variable(known)
+                or isinstance(known, S.Unary)
+                or (isinstance(known, (S.Name, S.Index)) and types.get(known.name.upper()) == "STRING")
+            )
             if bad:
-                diags.error(stmt.line, "FieldCal KnownVar must be a declared public variable that can "
-                                       "be resolved during compilation.", stmt.file)
+                diags.error(
+                    stmt.line,
+                    "FieldCal KnownVar must be a declared public variable that can be resolved during compilation.",
+                    stmt.file,
+                )
         if option in (1, 2, 3) and len(args) > 6 and dims is not None and len(diags.items) == before:
             known, measure = args[6], args[1]
             sizes = []
             for var in (known, measure):
                 shape = dims.get(var.name.upper()) if isinstance(var, (S.Name, S.Index)) else None
-                sizes.append(None if shape is None or len(shape) > 1 or not isinstance(var, (S.Name, S.Index))
-                             or types.get(var.name.upper()) == "STRING" else shape[0])
+                sizes.append(
+                    None
+                    if shape is None
+                    or len(shape) > 1
+                    or not isinstance(var, (S.Name, S.Index))
+                    or types.get(var.name.upper()) == "STRING"
+                    else shape[0]
+                )
             if None in sizes or sizes[0] == sizes[1]:
                 continue
             assert isinstance(known, (S.Name, S.Index)) and isinstance(measure, (S.Name, S.Index))
             text = f"{known.name} and {measure.name} must be declared the same size."
             if text not in size_reported:
-                size_reported.add(text)     # (printed once per program, oracle 2026-10-12)
+                size_reported.add(text)  # (printed once per program, oracle 2026-10-12)
                 diags.error(stmt.line, text, stmt.file)
 
 
@@ -2802,7 +3118,8 @@ def check_matrix_destination(program: S.Program, profile, diags: Diagnostics) ->
             continue
         dest = stmt.args[3]
         constant = isinstance(dest, (S.Number, S.String, S.Binary)) or (
-            isinstance(dest, S.Unary) and isinstance(dest.operand, S.Number))
+            isinstance(dest, S.Unary) and isinstance(dest.operand, S.Number)
+        )
         if constant:
             diags.error(stmt.line, "Illegal destination variable type, expecting Float.", stmt.file)
 
@@ -2835,7 +3152,7 @@ def _cdm_type_value(kind) -> int | None:
         return None
     if isinstance(kind, str):
         return 0
-    return int(kind) if isinstance(kind, (int, float)) and kind == kind and abs(kind) < 2 ** 31 else None
+    return int(kind) if isinstance(kind, (int, float)) and kind == kind and abs(kind) < 2**31 else None
 
 
 def cdm_null_module(stmt: S.Instruction, env) -> bool:
@@ -2849,8 +3166,12 @@ def cdm_null_module(stmt: S.Instruction, env) -> bool:
         kind = _cdm_type_value(consteval.value_of(stmt.args[0], env))
     except consteval.NotConstant:
         return False
-    return kind is not None and 0 <= kind <= 65536 and kind not in _CDM_NAMED_TYPES \
+    return (
+        kind is not None
+        and 0 <= kind <= 65536
+        and kind not in _CDM_NAMED_TYPES
         and (kw != "CDM_DELAY" or _delay_option(stmt, env) == 0)
+    )
 
 
 def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env) -> None:
@@ -2894,8 +3215,7 @@ def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env
                     diags.error(stmt.line, f"{name} instruction not supported by module NULL.", stmt.file)
             continue
         if first.setdefault(address, kind) != kind:
-            diags.error(stmt.line, f"Address {address} already used with a different type CDM.",
-                        stmt.file)
+            diags.error(stmt.line, f"Address {address} already used with a different type CDM.", stmt.file)
         elif cdm_null_module(stmt, env):
             for name in _CDM_NULL_MODULE.get(kw, ()):
                 diags.error(stmt.line, f"{name} instruction not supported by module NULL.", stmt.file)
@@ -2913,14 +3233,22 @@ def check_epi_scan_buffers(program: S.Program, profile, diags: Diagnostics, env)
     Sec.` past 1 Sec; docs/instructions.md. Not modelled inside `SubScan` (only the buffer message
     is), nor below 1 mSec."""
     from .. import mode
+
     if profile.name not in ("cr6", "cr1000x"):
         return
     stmts = [st for st in program.statements if isinstance(st, S.Instruction)]
     if not any(st.keyword.upper() in _EPI_FILTERS for st in stmts):
         return
     try:
-        if mode.decide(program.statements, profile, lambda e: consteval.is_constant(e, env),
-                       lambda e: consteval.value_of(e, env)) != "Pipeline":
+        if (
+            mode.decide(
+                program.statements,
+                profile,
+                lambda e: consteval.is_constant(e, env),
+                lambda e: consteval.value_of(e, env),
+            )
+            != "Pipeline"
+        ):
             return
     except Exception:
         return
@@ -2979,21 +3307,23 @@ def check_avw200_scan_time(program: S.Program, profile, diags: Diagnostics, env)
     docs/instructions.md. Only whole-second intervals, constant `Reps` 1..16 and channels 1..32, and no `SubScan` or
     conditional block in the scan."""
     from .. import mode
+
     if profile.name not in ("cr6", "cr1000x") or "AVW200" not in profile.instructions:
         return
     stmts = [st for st in program.statements if isinstance(st, (S.Instruction, S.If, S.For, S.DoLoop, S.Case))]
     if not any(isinstance(st, S.Instruction) and st.keyword.upper() == "AVW200" for st in stmts):
         return
     try:
-        decided = mode.decide(program.statements, profile, lambda e: consteval.is_constant(e, env),
-                              lambda e: consteval.value_of(e, env))
+        decided = mode.decide(
+            program.statements, profile, lambda e: consteval.is_constant(e, env), lambda e: consteval.value_of(e, env)
+        )
     except Exception:
         return
     if decided != "Pipeline":
         return
-    scan = None            # the open main-sequence Scan statement
+    scan = None  # the open main-sequence Scan statement
     slow = False
-    sums: list[tuple[S.Instruction, int | None, list]] = []   # (scan, interval seconds, [(stmt, reps)])
+    sums: list[tuple[S.Instruction, int | None, list]] = []  # (scan, interval seconds, [(stmt, reps)])
     for st in stmts:
         if not isinstance(st, S.Instruction):
             if scan is not None:
@@ -3018,11 +3348,13 @@ def check_avw200_scan_time(program: S.Program, profile, diags: Diagnostics, env)
             sums[-1][2].append(st)
     holders = [entry for entry in sums if entry[2]]
     if len(holders) != 1 or sum(len(e[2]) for e in sums) != sum(
-            1 for st in stmts if isinstance(st, S.Instruction) and st.keyword.upper() == "AVW200"):
+        1 for st in stmts if isinstance(st, S.Instruction) and st.keyword.upper() == "AVW200"
+    ):
         return
     scan_stmt, _, calls = holders[0]
-    interval_us = _interval_us(scan_stmt.args[0] if scan_stmt.args else None,
-                               scan_stmt.args[1] if len(scan_stmt.args) > 1 else None, env)
+    interval_us = _interval_us(
+        scan_stmt.args[0] if scan_stmt.args else None, scan_stmt.args[1] if len(scan_stmt.args) > 1 else None, env
+    )
     if interval_us is None or interval_us % 1_000_000 or interval_us <= 0:
         return
     interval = int(interval_us // 1_000_000)
@@ -3032,20 +3364,23 @@ def check_avw200_scan_time(program: S.Program, profile, diags: Diagnostics, env)
             reps = consteval.value_of(st.args[7], env) if len(st.args) > 7 else None
         except consteval.NotConstant:
             return
-        if isinstance(reps, bool) or not isinstance(reps, (int, float)) or reps != int(reps) \
-                or not 1 <= reps <= 16:
+        if isinstance(reps, bool) or not isinstance(reps, (int, float)) or reps != int(reps) or not 1 <= reps <= 16:
             return
-        for position in (5, 6):   # AVWChan / MuxChannel: outside 1..32 the compiler adds `Bad parameter(s)`
+        for position in (5, 6):  # AVWChan / MuxChannel: outside 1..32 the compiler adds `Bad parameter(s)`
             try:
                 channel = consteval.value_of(st.args[position], env)
-            except (consteval.NotConstant, IndexError):
+            except consteval.NotConstant, IndexError:
                 return
             if isinstance(channel, bool) or not isinstance(channel, (int, float)) or not 1 <= channel <= 32:
                 return
         total += int(reps)
         if 2 * total > interval:
-            diags.error(st.line, f"Scan interval {interval} secs is too small; AVW200 measurement "
-                        f"time is {2 * total} secs (2 secs per sensor).", st.file)
+            diags.error(
+                st.line,
+                f"Scan interval {interval} secs is too small; AVW200 measurement "
+                f"time is {2 * total} secs (2 secs per sensor).",
+                st.file,
+            )
 
 
 def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) -> None:
@@ -3058,7 +3393,8 @@ def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) 
         return
     types = _serialin_types(program, profile)
     string_consts = {
-        stmt.name.upper() for stmt in program.statements
+        stmt.name.upper()
+        for stmt in program.statements
         if isinstance(stmt, S.ConstDecl) and isinstance(stmt.value, S.String)
     }
     for stmt in program.statements:
@@ -3071,8 +3407,8 @@ def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) 
         if isinstance(payload, S.String):
             continue
         if isinstance(payload, S.Name) and (
-                payload.name.upper() in string_consts or
-                types.get(payload.name.upper()) == "STRING"):
+            payload.name.upper() in string_consts or types.get(payload.name.upper()) == "STRING"
+        ):
             continue
         if isinstance(payload, (S.Number, S.Name)) or _numeric_expression(payload, types):
             diags.error(stmt.line, "A string or string variable is required", stmt.file)
@@ -3090,8 +3426,11 @@ def _numeric_expression(expr: S.Expr | None, types: dict) -> bool:
     if isinstance(expr, S.Unary):
         return expr.op == "-" and _numeric_expression(expr.operand, types)
     if isinstance(expr, S.Binary):
-        return expr.op in ("+", "-", "*", "/", "^") and _numeric_expression(expr.left, types) \
+        return (
+            expr.op in ("+", "-", "*", "/", "^")
+            and _numeric_expression(expr.left, types)
             and _numeric_expression(expr.right, types)
+        )
     return False
 
 
@@ -3116,8 +3455,9 @@ def _constant_name_text(arg: S.Expr | None, env: consteval.Env, depth: int = 0) 
     return None
 
 
-def _check_port_index(stmt: S.Instruction, key: str, index: str | None, cfg: dict | None,
-                      env: consteval.Env, profile, found: Diagnostics) -> None:
+def _check_port_index(
+    stmt: S.Instruction, key: str, index: str | None, cfg: dict | None, env: consteval.Env, profile, found: Diagnostics
+) -> None:
     """`Illegal dimension N` for `Baudrate(index)`/`Security(index)`; docs/instructions.md#field-index-dimension."""
     if not cfg or index is None or key not in cfg or not index.endswith(")"):
         return
@@ -3135,8 +3475,9 @@ def _check_port_index(stmt: S.Instruction, key: str, index: str | None, cfg: dic
         found.error(stmt.line, f"Illegal dimension {value}", stmt.file)
 
 
-def check_settings_fields(program: S.Program, profile, diags: Diagnostics, found: Diagnostics,
-                          env: consteval.Env) -> None:
+def check_settings_fields(
+    program: S.Program, profile, diags: Diagnostics, found: Diagnostics, env: consteval.Env
+) -> None:
     """`%s is not a Settings Field Name.` / `%s is not a Status or Settings Field Name.` /
     `Cannot find %s` for a constant first argument of `SetSetting`/`SetStatus`;
     docs/instructions.md#setsetting-and-setstatus-field-names. Findings go to `found` (the
@@ -3147,8 +3488,12 @@ def check_settings_fields(program: S.Program, profile, diags: Diagnostics, found
     both = settings | {n.upper() for n in fields["status"]}
     stop: tuple[str, int] | None = None
     for d in diags.items:
-        if d.severity == "error" and d.message.startswith("Could not find DataTable ") and d.line \
-                and (stop is None or d.line < stop[1]):
+        if (
+            d.severity == "error"
+            and d.message.startswith("Could not find DataTable ")
+            and d.line
+            and (stop is None or d.line < stop[1])
+        ):
             stop = (d.file, d.line)
     const_tables = symbols.const_table_fields(program)
     for stmt in program.statements:
@@ -3175,8 +3520,8 @@ def check_settings_fields(program: S.Program, profile, diags: Diagnostics, found
             if fields_for_table is None:
                 found.error(stmt.line, f"Cannot find {table}", stmt.file)
             elif field.split("(", 1)[0].strip().upper() not in fields_for_table and not (
-                    field.split("(", 1)[0].strip().upper() == "APPLYANDRESTART" and
-                    fields_for_table):
+                field.split("(", 1)[0].strip().upper() == "APPLYANDRESTART" and fields_for_table
+            ):
                 found.error(stmt.line, f"Cannot find {field.split('(', 1)[0].strip()}", stmt.file)
             continue
         if "(" in name:

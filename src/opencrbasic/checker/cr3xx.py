@@ -37,8 +37,10 @@ from . import expressions, instr_rules, structure, symbols
 # constant at all" trigger (an undefined name or a live variable, never a resolvable value) is
 # implemented, which never risks flagging a value the real compiler would accept.
 _SERIALOPEN = "SERIALOPEN"
-_SERIALOPEN_PORTS = {"cr6": frozenset(range(1, 19)) | frozenset(range(31, 100)),
-                     "cr1000x": frozenset(range(1, 15)) | frozenset(range(31, 100))}
+_SERIALOPEN_PORTS = {
+    "cr6": frozenset(range(1, 19)) | frozenset(range(31, 100)),
+    "cr1000x": frozenset(range(1, 15)) | frozenset(range(31, 100)),
+}
 _COMPORT_ARG_POSITION = 0
 # Every `Serial*` function whose first argument is a `ComPort` (`data/<logger>/functions.json`:
 # same `argtypes[0]` shape as `SerialOpen`'s own position 0) -- oracle-confirmed for `SerialOpen`/
@@ -48,28 +50,40 @@ _COMPORT_ARG_POSITION = 0
 # oracle-probed -- safe either way, since an inclusion here only ever *adds* an already-correct-
 # for-`SerialOpen`-style undefined-name diagnostic (never the `SerialOpen`-only ComPort/constant
 # pair, gated separately below), so a wrong inclusion costs nothing worse than under-reporting.
-_SERIAL_FUNCTIONS_WITH_COMPORT_ARG = frozenset({
-    "SERIALOPEN", "SERIALCLOSE", "SERIALFLUSH", "SERIALOUT", "SERIALIN", "SERIALINBLOCK",
-    "SERIALINCHK", "SERIALBRK",
-})
+_SERIAL_FUNCTIONS_WITH_COMPORT_ARG = frozenset(
+    {
+        "SERIALOPEN",
+        "SERIALCLOSE",
+        "SERIALFLUSH",
+        "SERIALOUT",
+        "SERIALIN",
+        "SERIALINBLOCK",
+        "SERIALINCHK",
+        "SERIALBRK",
+    }
+)
 
 
 # Baud rates `SerialOpen` accepts on `ComRS232` (oracle, 2026-10-01; CR6 from the decompiled
 # `FUN_004735b0`, which compares the absolute value: 300 only on ports above ComRS232, 230400 and
 # 460800 only on it). CR300/CR350 also reject 300, 600 and any negative rate.
-_BAUDS = frozenset({0, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 76800, 115200, 230400,
-                    460800})
+_BAUDS = frozenset({0, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 76800, 115200, 230400, 460800})
 
 
 # CR6/CR1000X `SerialOpen` CommsMode values per control port (oracle, 2026-10-24, round 34, 0..20
 # and -1 swept): ComC1/ComC5 take 0..7, ComC3/ComC7 0..4 and 6, else an error; the RS232, ME, U
 # and SDC ports warn for anything but 1 and 2. The port is the predefined constant's value.
-_COMMS_MODES = {"COMC1": frozenset(range(8)), "COMC5": frozenset(range(8)),
-                "COMC3": frozenset({0, 1, 2, 3, 4, 6}), "COMC7": frozenset({0, 1, 2, 3, 4, 6})}
+_COMMS_MODES = {
+    "COMC1": frozenset(range(8)),
+    "COMC5": frozenset(range(8)),
+    "COMC3": frozenset({0, 1, 2, 3, 4, 6}),
+    "COMC7": frozenset({0, 1, 2, 3, 4, 6}),
+}
 
 
-def _commsmode_problem(stmt: S.Call, profile, consts: dict | None, index: int = 5,
-                       mode: object = None) -> tuple[bool, str] | None:
+def _commsmode_problem(
+    stmt: S.Call, profile, consts: dict | None, index: int = 5, mode: object = None
+) -> tuple[bool, str] | None:
     """`index` is the CommsMode argument, `mode` a value to use instead of it."""
     if len(stmt.args) <= index or stmt.args[index] is None:
         return None
@@ -78,20 +92,22 @@ def _commsmode_problem(stmt: S.Call, profile, consts: dict | None, index: int = 
         port = consteval.value_of(stmt.args[0], env)
         if mode is None:
             mode = consteval.value_of(stmt.args[index], env)
-    except (consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError):
+    except consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError:
         return None
     if isinstance(mode, bool) or not isinstance(mode, (int, float)) or mode != int(mode):
         return None
     for key, modes in _COMMS_MODES.items():
         record = profile.symbols.get(key)
         if record and record["value"] == port:
-            return (True, f"CommsMode Option {int(mode)} not supported on {record['name']}.") \
-                if int(mode) not in modes else None
+            return (
+                (True, f"CommsMode Option {int(mode)} not supported on {record['name']}.")
+                if int(mode) not in modes
+                else None
+            )
     if int(mode) in (1, 2):
         return None
     for key, record in profile.symbols.items():
-        if record["value"] == port and (key == "COMRS232" or key == "COMME" or
-                                         re.fullmatch(r"COM(U|SDC)\d+", key)):
+        if record["value"] == port and (key == "COMRS232" or key == "COMME" or re.fullmatch(r"COM(U|SDC)\d+", key)):
             # a warning only (`COM232`, `COMME` as printed)
             shown = {"COMRS232": "COM232", "COMME": "COMME"}.get(key, record["name"])
             return False, f"CommsMode Option {int(mode)} not supported on {shown}."
@@ -100,8 +116,7 @@ def _commsmode_problem(stmt: S.Call, profile, consts: dict | None, index: int = 
 
 def bare_unknown_delay(stmt: S.Call, known: set[str]) -> bool:
     """CR6/CR1000X `SerialOpen` whose 4th argument is a bare undeclared name and that has a 5th."""
-    return len(stmt.args) >= 5 and isinstance(stmt.args[3], S.Name) and \
-        stmt.args[3].name.upper() not in known
+    return len(stmt.args) >= 5 and isinstance(stmt.args[3], S.Name) and stmt.args[3].name.upper() not in known
 
 
 def _format_needs_com1_4(stmt: S.Call, profile, consts: dict | None) -> bool:
@@ -110,7 +125,7 @@ def _format_needs_com1_4(stmt: S.Call, profile, consts: dict | None) -> bool:
     env = consteval.Env(profile, dict(consts or {}))
     try:
         port, fmt = consteval.value_of(stmt.args[0], env), consteval.value_of(stmt.args[2], env)
-    except (consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError):
+    except consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError:
         return False
     if not isinstance(port, int) or not isinstance(fmt, int) or isinstance(port, bool) or isinstance(fmt, bool):
         return False
@@ -122,7 +137,7 @@ def _non_numeric(expr, profile, consts: dict | None, variable_names) -> bool:
         return True
     try:
         value = consteval.value_of(expr, consteval.Env(profile, dict(consts or {})))
-    except (consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError):
+    except consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError:
         return False
     # no constant integer: a string, a float literal, or beyond 32 bits (round 58)
     return isinstance(value, str) or expressions._not_constant_integer(expr)
@@ -134,8 +149,9 @@ def _check_baud(stmt: S.Call, profile, diags: Diagnostics, consts: dict | None =
     # CR6/CR1000X check every valid port (oracle, 2026-10-25, round 35: ComUSB, ComC1, ComSDC7,
     # ComME, 32); an unknown port name is `ComPort 0 illegal.` only
     known_port = isinstance(port, S.Number) or (
-        isinstance(port, S.Name) and (port.name.upper() in profile.symbols
-                                      or port.name.upper() in {str(c).upper() for c in consts or {}}))
+        isinstance(port, S.Name)
+        and (port.name.upper() in profile.symbols or port.name.upper() in {str(c).upper() for c in consts or {}})
+    )
     if len(stmt.args) < 2 or not (rs232 or (not profile.single_pass and known_port)):
         return
     arg = stmt.args[1]
@@ -147,14 +163,13 @@ def _check_baud(stmt: S.Call, profile, diags: Diagnostics, consts: dict | None =
         # illegal baud rate.`, `Hr+1` -> 5, `True` -> -1, `uSec` -> 0 is fine; a string is accepted)
         try:
             value = consteval.value_of(stmt.args[1], consteval.Env(profile, dict(consts or {})))
-        except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
+        except consteval.NotConstant, TypeError, ValueError, ZeroDivisionError:
             return
         if isinstance(arg, S.Number) or isinstance(value, str) or value != int(value):
             return
-        arg, sign = S.Number(stmt.line, stmt.file, abs(int(value)), str(abs(int(value)))), (
-            -1 if value < 0 else 1)
+        arg, sign = S.Number(stmt.line, stmt.file, abs(int(value)), str(abs(int(value)))), (-1 if value < 0 else 1)
     baud = sign * arg.value
-    if not -2**31 <= baud < 2**31:
+    if not -(2**31) <= baud < 2**31:
         return  # `Parameter must be integral.` instead (`checker/intervals.py`)
     if profile.name in ("cr300", "cr350"):
         ok = baud in _BAUDS - {600}
@@ -203,14 +218,15 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         if name not in _SERIAL_FUNCTIONS_WITH_COMPORT_ARG:
             continue
         if name == _SERIALOPEN and not stmt.explicit and not stmt.args:
-            diags.error(stmt.line, "ComPort 0 illegal.", stmt.file)  # bare `SerialOpen[()]`, all four loggers (oracle, 2026-10-08)
+            diags.error(
+                stmt.line, "ComPort 0 illegal.", stmt.file
+            )  # bare `SerialOpen[()]`, all four loggers (oracle, 2026-10-08)
         if _COMPORT_ARG_POSITION >= len(stmt.args) or stmt.args[_COMPORT_ARG_POSITION] is None:
             continue
         arg = stmt.args[_COMPORT_ARG_POSITION]
         names = expressions._undefined_names(arg, known)
         for undefined_name in names if cr3 else []:
-            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=undefined_name),
-                        stmt.file)
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=undefined_name), stmt.file)
         if name != _SERIALOPEN:
             continue
         is_variable = bool(expressions._variable_refs(arg, variable_names))
@@ -220,57 +236,86 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
             # docs/checker.md#serialopen-comport-codes-round-37)
             try:
                 port = consteval.value_of(arg, consteval.Env(profile, dict(program.consts or {})))
-            except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
+            except consteval.NotConstant, TypeError, ValueError, ZeroDivisionError:
                 port = None
             if consteval.is_finite_number(port) and not isinstance(port, bool):
-                if port != int(port) or not -2**31 <= port < 2**31:
+                if port != int(port) or not -(2**31) <= port < 2**31:
                     diags.error(stmt.line, "ComPort 0 illegal.", stmt.file)
                     diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}.", stmt.file)
                     continue
                 if int(port) not in ports:
                     diags.error(stmt.line, f"ComPort {int(port)} illegal.", stmt.file)
-                    diags.error(stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}.",
-                                stmt.file)
+                    diags.error(stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}.", stmt.file)
                     continue
         _check_baud(stmt, profile, diags, program.consts)
         constant_port = not (names or is_variable or isinstance(arg, S.String))
         # CR6/CR1000X: a String or variable `SerialOpenFormat` makes the 5th argument the CommsMode, with
         # no TXDelay range and at most 5 arguments (oracle, 2026-10-28, round 57,
         # docs/checker.md#serialopen-format-and-commsmode-round-57)
-        shifted = not cr3 and constant_port and len(stmt.args) > 2 and stmt.args[2] is not None \
+        shifted = (
+            not cr3
+            and constant_port
+            and len(stmt.args) > 2
+            and stmt.args[2] is not None
             and _non_numeric(stmt.args[2], profile, program.consts, variable_names)
+        )
         # a bare undeclared TXDelay is lost in the same comma recovery (decompiled `FUN_00494aa0`,
         # oracle round 58, docs/checker.md#serialopen-recovery-round-58)
         shifted = shifted or (not cr3 and constant_port and bare_unknown_delay(stmt, known))
-        if not cr3 and constant_port and not shifted and stmt.args[2:3] and stmt.args[2] is not None \
-                and _format_needs_com1_4(stmt, profile, program.consts):
+        if (
+            not cr3
+            and constant_port
+            and not shifted
+            and stmt.args[2:3]
+            and stmt.args[2] is not None
+            and _format_needs_com1_4(stmt, profile, program.consts)
+        ):
             diags.error(stmt.line, "Format option only available on COM1..COM4", stmt.file)
-        if constant_port and not shifted and len(stmt.args) > 3 \
-                and stmt.args[3] is not None:
+        if constant_port and not shifted and len(stmt.args) > 3 and stmt.args[3] is not None:
             # `TXDelay` (oracle, all four loggers, 2026-10-12): a constant outside 0..14000000 is
             # `%d usec delay before transmit is illegal, must be 0..14000000`; a variable is
             # `Parameter must be a constant integer: <statement>.`
             delay = stmt.args[3]
             if expressions._variable_refs(delay, variable_names):
                 sep = "\n" if cr3 and stmt.at_eol else ""
-                diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.",
-                            stmt.file)
+                diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.", stmt.file)
                 continue
             try:
                 value = consteval.value_of(delay, consteval.Env(profile, dict(program.consts or {})))
-            except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
+            except consteval.NotConstant, TypeError, ValueError, ZeroDivisionError:
                 value = None
-            if consteval.is_finite_number(value) and not isinstance(value, bool) and value == int(value) \
-                    and -2**31 <= value < 2**31 and not 0 <= value <= 14000000:
+            if (
+                consteval.is_finite_number(value)
+                and not isinstance(value, bool)
+                and value == int(value)
+                and -(2**31) <= value < 2**31
+                and not 0 <= value <= 14000000
+            ):
                 # (beyond 32 bits: `Parameter must be a constant integer` only, `intervals.py`)
-                diags.error(stmt.line, f"{int(value)} usec delay before transmit is illegal, must be "
-                            "0..14000000", stmt.file)
+                diags.error(
+                    stmt.line, f"{int(value)} usec delay before transmit is illegal, must be 0..14000000", stmt.file
+                )
         # a 6th argument that is no constant integer counts as mode 0, then is rejected (same probes)
-        bad_mode = not cr3 and constant_port and not shifted and len(stmt.args) > 5 \
-            and stmt.args[5] is not None and (expressions._not_constant_integer(stmt.args[5])
-                                              or bool(expressions._variable_refs(stmt.args[5], variable_names)))
-        if not cr3 and constant_port and (problem := _commsmode_problem(
-                stmt, profile, program.consts, 4 if shifted else 5, mode=0 if bad_mode else None)):
+        bad_mode = (
+            not cr3
+            and constant_port
+            and not shifted
+            and len(stmt.args) > 5
+            and stmt.args[5] is not None
+            and (
+                expressions._not_constant_integer(stmt.args[5])
+                or bool(expressions._variable_refs(stmt.args[5], variable_names))
+            )
+        )
+        if (
+            not cr3
+            and constant_port
+            and (
+                problem := _commsmode_problem(
+                    stmt, profile, program.consts, 4 if shifted else 5, mode=0 if bad_mode else None
+                )
+            )
+        ):
             if problem[0]:
                 diags.error(stmt.line, problem[1], stmt.file)
             else:
@@ -281,8 +326,11 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         if shifted and len(stmt.args) > 5:
             diags.error(stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}.", stmt.file)
             continue
-        if not (cr3 or names or is_variable or isinstance(arg, S.String)) and len(stmt.args) > 4 \
-                and expressions._variable_refs(stmt.args[4], variable_names):
+        if (
+            not (cr3 or names or is_variable or isinstance(arg, S.String))
+            and len(stmt.args) > 4
+            and expressions._variable_refs(stmt.args[4], variable_names)
+        ):
             # a variable `BufferSize` (oracle, CR6/CR1000X, 2026-10-24, round 34)
             diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}.", stmt.file)
             continue
@@ -293,8 +341,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
             if not cr3 and names and not is_variable:
                 continue  # CR6/CR1000X: an undefined name gives only this line (docs/checker.md)
             sep = "\n" if cr3 and stmt.at_eol else ""
-            diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.",
-                        stmt.file)
+            diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.", stmt.file)
 
 
 # `check_too_many_cascade` (Round 7b, broadened this round -- see `docs/loggers.md` "Too many
@@ -357,72 +404,115 @@ _TOO_MANY_PREFIX = "Too many parameters:"
 
 # Declaration errors taint the same way (oracle, CR300 and CR350, 2026-09-27: each of these
 # followed by a clean `Scan (1,Sec,0,0)` gives `Too many parameters:  Sec.` on it).
-_DECLARATION_TRIGGERS = ("instruction must be in a ConstTable", "already declared as a variable.", "is already declared as a CONST.",
-                         "illegal, starts with a number.", "not yet declared.", "so cannot be aliased.",
-                         "not supported", "Variable not named.", " is illegal baud rate.",
-                         "already defined as an internal function.", "is a predefined CONST.",
-                         "Only one ConstTable allowed.", "EndConstTable with no ConstTable.",
-                         "Missing variable name.", "; cannot be numeric.",
-                         "Too few parameters in instruction.", "Const with no assignment.", "CONST needs assignment.",
-                         " unknown Const type", "Cannot Alias an Alias.")  # (round 31)
-_DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Duplicate Alias", "Need closing )", "Illegal END or EXIT ", "Illegally dimensioned aliased name", "Alias is illegally dimensioned.", "Invalid Variable declaration",
-                                 "EndSelect w/o Select", "EndStructure without Structure", "String without end quote",
-                                 "Call argument required", "No Matching, or out of place )",
-                                 "Expression expects ", "Incomplete expression:", "ESS variable ",
-                                 "Invalid or missing parameter.",
-                                 "Parameter must be a constant integer:",
-                                 "Invalid, or out of place expression:", "Invalid assignment in expression:",
-                                 "Illegal destination variable type", "Invalid Variable or Array:",
-                                 "Cannot recursively call functions.", "Parameter must be integral.",
-                                 "Interval (", "Illegally dimension: ", "Scan interval must be integrally divisible",
-                                 "Dimensions not declared:")
+_DECLARATION_TRIGGERS = (
+    "instruction must be in a ConstTable",
+    "already declared as a variable.",
+    "is already declared as a CONST.",
+    "illegal, starts with a number.",
+    "not yet declared.",
+    "so cannot be aliased.",
+    "not supported",
+    "Variable not named.",
+    " is illegal baud rate.",
+    "already defined as an internal function.",
+    "is a predefined CONST.",
+    "Only one ConstTable allowed.",
+    "EndConstTable with no ConstTable.",
+    "Missing variable name.",
+    "; cannot be numeric.",
+    "Too few parameters in instruction.",
+    "Const with no assignment.",
+    "CONST needs assignment.",
+    " unknown Const type",
+    "Cannot Alias an Alias.",
+)  # (round 31)
+_DECLARATION_TRIGGER_PREFIXES = (
+    "Too many Slow Sequences",
+    "Duplicate Alias",
+    "Need closing )",
+    "Illegal END or EXIT ",
+    "Illegally dimensioned aliased name",
+    "Alias is illegally dimensioned.",
+    "Invalid Variable declaration",
+    "EndSelect w/o Select",
+    "EndStructure without Structure",
+    "String without end quote",
+    "Call argument required",
+    "No Matching, or out of place )",
+    "Expression expects ",
+    "Incomplete expression:",
+    "ESS variable ",
+    "Invalid or missing parameter.",
+    "Parameter must be a constant integer:",
+    "Invalid, or out of place expression:",
+    "Invalid assignment in expression:",
+    "Illegal destination variable type",
+    "Invalid Variable or Array:",
+    "Cannot recursively call functions.",
+    "Parameter must be integral.",
+    "Interval (",
+    "Illegally dimension: ",
+    "Scan interval must be integrally divisible",
+    "Dimensions not declared:",
+)
 
 
 def _is_short_instruction(stmt, profile) -> bool:
     """An instruction call written with fewer arguments than it requires."""
     record = profile.instructions.get(stmt.keyword.upper()) if isinstance(stmt, S.Instruction) else None
     return record is not None and instr_rules.given_count(stmt, profile) < instr_rules._required_count(
-        instr_rules._real_params(record["params"]))
-
-
-def _is_cascade_trigger(diag) -> bool:
-    return diag.severity == "error" and diag.cascade and (
-        diag.trigger or diag.message.endswith(_UNRESOLVED_SUFFIX) or diag.message == _TCPOPEN_HANDLE or diag.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
-        or diag.message.startswith(_TOO_MANY_PREFIX)
-        or diag.message in ("Miss match of types", "Illegal object id.", "Illegal OID since already declared.")
-        or diag.message.startswith("SNMP OID must be greater than")  # SNMPVariable (oracle, CR300/CR350)
-        or diag.message.endswith(_DECLARATION_TRIGGERS)
-        or diag.message.startswith(_DECLARATION_TRIGGER_PREFIXES)
+        instr_rules._real_params(record["params"])
     )
 
 
-def _reword_prose(program: S.Program, profile, diags: Diagnostics, stmt: S.Unparsed,
-                  gone: set[str]) -> None:
+def _is_cascade_trigger(diag) -> bool:
+    return (
+        diag.severity == "error"
+        and diag.cascade
+        and (
+            diag.trigger
+            or diag.message.endswith(_UNRESOLVED_SUFFIX)
+            or diag.message == _TCPOPEN_HANDLE
+            or diag.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
+            or diag.message.startswith(_TOO_MANY_PREFIX)
+            or diag.message in ("Miss match of types", "Illegal object id.", "Illegal OID since already declared.")
+            or diag.message.startswith("SNMP OID must be greater than")  # SNMPVariable (oracle, CR300/CR350)
+            or diag.message.endswith(_DECLARATION_TRIGGERS)
+            or diag.message.startswith(_DECLARATION_TRIGGER_PREFIXES)
+        )
+    )
+
+
+def _reword_prose(program: S.Program, profile, diags: Diagnostics, stmt: S.Unparsed, gone: set[str]) -> None:
     """A prose line after the cascade has started: a name whose declaration the cascade dropped is
     undefined there too (oracle, CR300, 2026-10-08: `Current` declared after the first error, then
     prose mentioning `current`). Re-derives the leading-word lines of the generic fallback."""
     key = (stmt.line, stmt.file)
     own = [i for i, d in enumerate(diags.items) if (d.line, d.file) == key]
     echoes = {_echo_key(stmt.text), _echo_key(structure.condition_part(stmt.text) or stmt.text)}
-    fb = next((i for i in own if diags.items[i].message.startswith(_GENERIC_FALLBACK_PREFIX)
-               and _echo_key(diags.items[i].message[len(_GENERIC_FALLBACK_PREFIX):-1])
-               in echoes), None)
-    if fb is None or not all(diags.items[i].message.endswith(_UNRESOLVED_SUFFIX)
-                             for i in own if i < fb):
+    fb = next(
+        (
+            i
+            for i in own
+            if diags.items[i].message.startswith(_GENERIC_FALLBACK_PREFIX)
+            and _echo_key(diags.items[i].message[len(_GENERIC_FALLBACK_PREFIX) : -1]) in echoes
+        ),
+        None,
+    )
+    if fb is None or not all(diags.items[i].message.endswith(_UNRESOLVED_SUFFIX) for i in own if i < fb):
         return
-    text = diags.items[fb].message[len(_GENERIC_FALLBACK_PREFIX):-1]
+    text = diags.items[fb].message[len(_GENERIC_FALLBACK_PREFIX) : -1]
     lead = _INSTRUCTION_PROSE_RE.match(text)
     info = profile.instructions.get(lead.group(1).upper()) if lead else None
     if _TABLE_LINE_RE.match(text) or (info and info["params"]):
         return
-    known = prose_known(program, profile) - declared_later(first_declarations(program), stmt.line,
-                                                           stmt.file) - gone
+    known = prose_known(program, profile) - declared_later(first_declarations(program), stmt.line, stmt.file) - gone
     words = _leading_unknown_words(text, known)
     old = [diags.items[i].message for i in own if i < fb]
     new = [profile.unresolved_symbol_message.format(name=w) for w in words]
     if old != new:
         fresh = [Diagnostic("error", stmt.line, m, stmt.file, True) for m in new]
-        diags.items[own[0] if own else fb:fb] = fresh
+        diags.items[own[0] if own else fb : fb] = fresh
 
 
 def _tainted_prose_instruction(stmt: S.Unparsed, profile) -> str | None:
@@ -437,7 +527,7 @@ def _tainted_prose_instruction(stmt: S.Unparsed, profile) -> str | None:
         return ""
     if codes[0] % 100 == 6 and len(codes) > 1:
         name_tok = instr_rules._next_simple_token(rest)
-        return instr_rules._next_simple_token(rest[rest.index(name_tok) + len(name_tok):]) or None
+        return instr_rules._next_simple_token(rest[rest.index(name_tok) + len(name_tok) :]) or None
     return None
 
 
@@ -483,10 +573,11 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
     # its identical-shaped successor is swallowed).
     tainted = False
     taint_at = 0
-    stash: dict[tuple, list] = {}   # inline-`If` condition diagnostics set aside while the body is rewritten
-    inline_bodies = {id(b) for st in program.statements if isinstance(st, S.If)
-                     for b in (st.inline or []) + (st.inline_else or [])}
-    dropped: set[int] = set()      # tainted declarations: their names are never registered
+    stash: dict[tuple, list] = {}  # inline-`If` condition diagnostics set aside while the body is rewritten
+    inline_bodies = {
+        id(b) for st in program.statements if isinstance(st, S.If) for b in (st.inline or []) + (st.inline_else or [])
+    }
+    dropped: set[int] = set()  # tainted declarations: their names are never registered
     tainted_subs: set[int] = set()  # tainted `Sub`/`Function` headers: parameters dropped
     rewritten: set[int] = set()
     dropped_names: set[str] = set()
@@ -500,7 +591,7 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
         if not tainted and isinstance(stmt, S.Declaration):
             registered_names.update(v.name.upper() for v in stmt.vars)
         existing = [d for d in diags.items if (d.line, d.file) == key]
-        if isinstance(stmt, S.If) and stmt.inline is not None:   # (a body hoisted out of it too)
+        if isinstance(stmt, S.If) and stmt.inline is not None:  # (a body hoisted out of it too)
             # only the condition's own lines belong to the `If`; the body's are its statements'
             existing = [d for d in existing if _names_in(stmt.cond, profile, d.message)]
         elif (owner0 := _inline_owner(program.statements, index)) is not None and not tainted:
@@ -514,36 +605,57 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 if held:
                     stash.setdefault(key, []).extend(held)
                     diags.items[:] = [d for d in diags.items if not any(d is h for h in held)]
-            if (isinstance(stmt, S.Call) and stmt.name.upper() == "SERIALOPEN" and len(stmt.args) > 1
-                    and isinstance(stmt.args[1], (S.Unary, S.Binary))):
+            if (
+                isinstance(stmt, S.Call)
+                and stmt.name.upper() == "SERIALOPEN"
+                and len(stmt.args) > 1
+                and isinstance(stmt.args[1], (S.Unary, S.Binary))
+            ):
                 # a negative or computed baud is swallowed once the cascade has started, a plain
                 # illegal one still prints (oracle, CR300/CR350, 2026-10-10)
-                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key
-                                  or not d.message.endswith(" is illegal baud rate.")]
+                diags.items[:] = [
+                    d
+                    for d in diags.items
+                    if (d.line, d.file) != key or not d.message.endswith(" is illegal baud rate.")
+                ]
             lead = _LEFTOVER_LEAD_RE.match(stmt.text) if isinstance(stmt, S.Unparsed) else None
             lead_name = (lead.group(1) or lead.group(2)) if lead else None
             if lead_name and lead_name.upper() in dropped_names - registered_names:
                 # a missing-parameter leftover `(Name,1,...)` whose first name is a cascade-dropped
                 # declaration reports it first (oracle, CR300/CR350, 2026-10-08)
-                at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key
-                           and d.message.startswith(_GENERIC_FALLBACK_PREFIX)), None)
+                at = next(
+                    (
+                        i
+                        for i, d in enumerate(diags.items)
+                        if (d.line, d.file) == key and d.message.startswith(_GENERIC_FALLBACK_PREFIX)
+                    ),
+                    None,
+                )
                 if at is not None:
-                    diags.items.insert(at, Diagnostic("error", stmt.line, profile.unresolved_symbol_message
-                                                      .format(name=lead_name), stmt.file))
+                    diags.items.insert(
+                        at,
+                        Diagnostic(
+                            "error", stmt.line, profile.unresolved_symbol_message.format(name=lead_name), stmt.file
+                        ),
+                    )
                 continue
             if isinstance(stmt, S.Unparsed) and dropped_names - registered_names:
                 _reword_prose(program, profile, diags, stmt, dropped_names - registered_names)
-            if isinstance(stmt, S.Unparsed) and (_TABLE_LINE_RE.match(stmt.text)
-                                                 or _SIGNED_TABLE_RE.match(stmt.text)):
-                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key or not (
-                    d.message.startswith("Could not find DataTable ")
-                    or d.message == "Expr illegally occurs before BeginProg." or (
-                        d.message.startswith(_GENERIC_FALLBACK_PREFIX)
-                        and stmt.text.strip() in d.message))]
+            if isinstance(stmt, S.Unparsed) and (_TABLE_LINE_RE.match(stmt.text) or _SIGNED_TABLE_RE.match(stmt.text)):
+                diags.items[:] = [
+                    d
+                    for d in diags.items
+                    if (d.line, d.file) != key
+                    or not (
+                        d.message.startswith("Could not find DataTable ")
+                        or d.message == "Expr illegally occurs before BeginProg."
+                        or (d.message.startswith(_GENERIC_FALLBACK_PREFIX) and stmt.text.strip() in d.message)
+                    )
+                ]
                 continue
             if isinstance(stmt, S.Declaration) or (
-                    isinstance(stmt, S.Unparsed)
-                    and stmt.text.lstrip().upper().startswith(("PUBLIC ", "DIM "))):
+                isinstance(stmt, S.Unparsed) and stmt.text.lstrip().upper().startswith(("PUBLIC ", "DIM "))
+            ):
                 # A tainted declaration's own error is dropped (oracle: `Public A As StringX * 50`
                 # then `Dim Z banana` prints no `Invalid Variable declaration banana.`); one with
                 # two or more variables reads like an instruction (`Dim A(), B` -> `Too many
@@ -558,8 +670,12 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                     dropped_names.update(v.name.upper() for v in stmt.vars)
                 continue
             alias_src = None
-            if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS" and stmt.args \
-                    and isinstance(stmt.args[0], (S.Index, S.Name)):
+            if (
+                isinstance(stmt, S.Instruction)
+                and stmt.keyword.upper() == "ALIAS"
+                and stmt.args
+                and isinstance(stmt.args[0], (S.Index, S.Name))
+            ):
                 alias_src = stmt.args[0].name
             elif isinstance(stmt, S.Unparsed):  # `Alias A(1) =` with the name on the next line
                 m_alias = re.match(r"(?i)\s*Alias\s+([A-Za-z_]\w*)\s*(?:\([^()]*\))?\s*=\s*$", stmt.text)
@@ -568,11 +684,13 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 # a cascade-dropped declaration is never registered, so its aliases name an
                 # undeclared source (oracle, CR300/CR350, 2026-10-04)
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
-                at = next((i for i, d in enumerate(diags.items)
-                           if d.file == stmt.file and d.line > stmt.line), len(diags.items))
-                diags.items.insert(at, Diagnostic("error", stmt.line,
-                                                  f"{alias_src} not yet declared so cannot be aliased.",
-                                                  stmt.file))
+                at = next(
+                    (i for i, d in enumerate(diags.items) if d.file == stmt.file and d.line > stmt.line),
+                    len(diags.items),
+                )
+                diags.items.insert(
+                    at, Diagnostic("error", stmt.line, f"{alias_src} not yet declared so cannot be aliased.", stmt.file)
+                )
                 # the alias name is not registered either (prose that mentions it: `current`)
                 if isinstance(stmt, S.Instruction):
                     dropped_names.update(a.name.upper() for a in stmt.args[1:] if isinstance(a, S.Name))
@@ -584,8 +702,7 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 m = re.search(r"\((.*)$", stmt.text or "")  # `(x) As Long` -> x, As
                 # a parameter's own dimensions are no token (oracle, 2026-10-22: a tainted
                 # `Sub T(Q(-1))` or `Sub T(Q(K))` prints nothing, round 29)
-                tokens = [t for t in re.split(r"[\s,()=]+", re.sub(r"\([^()]*\)", "", m.group(1)))
-                          if t] if m else []
+                tokens = [t for t in re.split(r"[\s,()=]+", re.sub(r"\([^()]*\)", "", m.group(1))) if t] if m else []
                 if m:
                     # with two or more parameters the second parameter's name is echoed (oracle,
                     # CR300, 2026-10-10: `(a As Long!, rst As Long)` -> `rst`, not `As`)
@@ -616,67 +733,96 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 # instruction is used to ...`)
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
                 if taken:
-                    at = next((i for i, d in enumerate(diags.items)
-                               if d.file == stmt.file and d.line > stmt.line), len(diags.items))
-                    diags.items.insert(at, Diagnostic("error", stmt.line,
-                                                      f"Too many parameters:  {taken}.", stmt.file))
+                    at = next(
+                        (i for i, d in enumerate(diags.items) if d.file == stmt.file and d.line > stmt.line),
+                        len(diags.items),
+                    )
+                    diags.items.insert(at, Diagnostic("error", stmt.line, f"Too many parameters:  {taken}.", stmt.file))
                 continue
-            if isinstance(stmt, S.Unparsed) and re.fullmatch(r"(?i)\s*(?:do|loop)\s+(?:while|until)\s*", stmt.text or ""):
+            if isinstance(stmt, S.Unparsed) and re.fullmatch(
+                r"(?i)\s*(?:do|loop)\s+(?:while|until)\s*", stmt.text or ""
+            ):
                 # (`Do While` with nothing after it: the incomplete-expression line is gone)
-                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key
-                                  or not d.message.startswith("Incomplete expression:")]
+                diags.items[:] = [
+                    d
+                    for d in diags.items
+                    if (d.line, d.file) != key or not d.message.startswith("Incomplete expression:")
+                ]
                 continue
-            m = (re.search(r"(?i)\b(?:While|Until)\b\s*(.*)$", stmt.text or "")
-                 if isinstance(stmt, S.DoLoop) and stmt.cond is not None else
-                 re.match(r"(?i)\s*(?:do|loop)\s+(?:while|until)\b\s*(.*\S.*)$", stmt.text or "")
-                 if isinstance(stmt, S.Unparsed) else None)  # (`Do Until X >`: unparsable too)
+            m = (
+                re.search(r"(?i)\b(?:While|Until)\b\s*(.*)$", stmt.text or "")
+                if isinstance(stmt, S.DoLoop) and stmt.cond is not None
+                else re.match(r"(?i)\s*(?:do|loop)\s+(?:while|until)\b\s*(.*\S.*)$", stmt.text or "")
+                if isinstance(stmt, S.Unparsed)
+                else None
+            )  # (`Do Until X >`: unparsable too)
             if m:
                 # a `Do`/`Loop` condition is rewritten like a second argument (oracle, CR300,
                 # 2026-10-04: `Loop Until X=-1` -> `Too many parameters:  X.`)
                 text = instr_rules._next_simple_token(m.group(1)) or m.group(1)
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
-                at = next((i for i, d in enumerate(diags.items)
-                           if d.file == stmt.file and d.line > stmt.line), len(diags.items))
-                diags.items.insert(at, Diagnostic("error", stmt.line,
-                                                  f"Too many parameters:  {text}.", stmt.file))
+                at = next(
+                    (i for i, d in enumerate(diags.items) if d.file == stmt.file and d.line > stmt.line),
+                    len(diags.items),
+                )
+                diags.items.insert(at, Diagnostic("error", stmt.line, f"Too many parameters:  {text}.", stmt.file))
                 rewritten.add(id(stmt))
                 continue
-            trigger_short = (taint_at < index and (program.statements[taint_at].line,
-                                                   program.statements[taint_at].file) == key
-                             and _is_short_instruction(program.statements[taint_at], profile))
-            kept_shortfall = [d for d in diags.items if (d.line, d.file) == key
-                              and d.message in _SHORTFALL_MESSAGES][:1] if trigger_short else []
-            if (isinstance(stmt, S.Instruction) and instr_rules.given_count(stmt, profile) == 1
-                    and _is_short_instruction(stmt, profile)):
+            trigger_short = (
+                taint_at < index
+                and (program.statements[taint_at].line, program.statements[taint_at].file) == key
+                and _is_short_instruction(program.statements[taint_at], profile)
+            )
+            kept_shortfall = (
+                [d for d in diags.items if (d.line, d.file) == key and d.message in _SHORTFALL_MESSAGES][:1]
+                if trigger_short
+                else []
+            )
+            if (
+                isinstance(stmt, S.Instruction)
+                and instr_rules.given_count(stmt, profile) == 1
+                and _is_short_instruction(stmt, profile)
+            ):
                 if id(stmt) in inline_bodies:
                     continue  # (a one-line `If` body keeps its shortfall, oracle 2026-10-12: `I = Nope` then `If X Then Delay`)
                 # a short instruction after the cascade started has no second argument to echo and
                 # its own shortfall disappears (oracle, CR300, 2026-10-10: `Delay(1)` then
                 # `PanelTemp(X)` prints one line; on a shared line the trigger's own line stays)
-                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key
-                                  or d.message not in _SHORTFALL_MESSAGES or any(d is k for k in kept_shortfall)]
+                diags.items[:] = [
+                    d
+                    for d in diags.items
+                    if (d.line, d.file) != key
+                    or d.message not in _SHORTFALL_MESSAGES
+                    or any(d is k for k in kept_shortfall)
+                ]
                 continue
-            if (isinstance(stmt, S.Instruction) and len(stmt.args) >= 2
-                    and stmt.args[1] is not None
-                    and stmt.keyword.upper() not in ("UNITS", "READONLY", "ALIAS", "CONSTTABLE", "SNMPVARIABLE")):
+            if (
+                isinstance(stmt, S.Instruction)
+                and len(stmt.args) >= 2
+                and stmt.args[1] is not None
+                and stmt.keyword.upper() not in ("UNITS", "READONLY", "ALIAS", "CONSTTABLE", "SNMPVARIABLE")
+            ):
                 # (`Units X = m` is never rewritten: repository libraries, oracle; nor is an
                 # `Alias` or a `ConstTable (T,0)`, oracle 2026-10-03.)
                 # the next simple token, like a genuine overflow (oracle: `MainScanSecs * 4` ->
                 # `MainScanSecs`, `SearchString()` -> `SearchString`)
-                text = instr_rules._next_simple_token(expressions._arg_text(stmt, 1)) or \
-                    expressions._arg_text(stmt, 1)
+                text = instr_rules._next_simple_token(expressions._arg_text(stmt, 1)) or expressions._arg_text(stmt, 1)
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
-                at = next((i for i, d in enumerate(diags.items)
-                           if d.file == stmt.file and d.line > stmt.line), len(diags.items))
+                at = next(
+                    (i for i, d in enumerate(diags.items) if d.file == stmt.file and d.line > stmt.line),
+                    len(diags.items),
+                )
                 diags.items[at:at] = kept_shortfall
-                diags.items.insert(at + len(kept_shortfall), Diagnostic(
-                    "error", stmt.line, f"Too many parameters:  {text}.", stmt.file))
+                diags.items.insert(
+                    at + len(kept_shortfall),
+                    Diagnostic("error", stmt.line, f"Too many parameters:  {text}.", stmt.file),
+                )
                 rewritten.add(id(stmt))
             continue
         if any(_is_cascade_trigger(d) for d in existing):
             tainted = True
             taint_at = index
-    for (line, file), held in stash.items():   # condition diagnostics go back before the body's
+    for (line, file), held in stash.items():  # condition diagnostics go back before the body's
         at = next((i for i, d in enumerate(diags.items) if d.file == file and d.line >= line), len(diags.items))
         diags.items[at:at] = held
     diags.cascade_gone = dropped_names - registered_names  # (names the cascade left unregistered)
@@ -700,8 +846,7 @@ def _destination_types(program: S.Program) -> tuple[dict[str, str], dict[int, di
     routine's only: the second result maps `id(statement)` to its routine's alias types (oracle,
     CR300/CR350, 2026-10-24, `tests/fixtures/r31_review_fixes.json` f1)."""
     types = _variable_types(program)
-    declared = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration)
-                for v in st.vars}
+    declared = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration) for v in st.vars}
     scoped: dict[int, dict[str, str]] = {}
     local: dict[str, str] | None = None
     for st in program.statements:
@@ -711,12 +856,16 @@ def _destination_types(program: S.Program) -> tuple[dict[str, str], dict[int, di
             local = None
         if local is not None:
             scoped[id(st)] = local
-        if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS" and len(st.args) > 1 \
-                and isinstance(st.args[0], (S.Name, S.Index)) and st.args[0].name.upper() in types:
+        if (
+            isinstance(st, S.Instruction)
+            and st.keyword.upper() == "ALIAS"
+            and len(st.args) > 1
+            and isinstance(st.args[0], (S.Name, S.Index))
+            and st.args[0].name.upper() in types
+        ):
             for alias in st.args[1:]:
                 if isinstance(alias, (S.Name, S.Index)) and alias.name.upper() not in declared:
-                    (types if local is None else local).setdefault(
-                        alias.name.upper(), types[st.args[0].name.upper()])
+                    (types if local is None else local).setdefault(alias.name.upper(), types[st.args[0].name.upper()])
     return types, scoped
 
 
@@ -747,35 +896,56 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             params = {p.name.upper(): (p.type or "FLOAT").upper() for p in stmt.params}
         elif S.ends_routine(stmt):
             params = {}
-        if not isinstance(stmt, S.Instruction) or not stmt.args or stmt.args[0] is None \
-                or per_line[(stmt.line, stmt.file)] > 1:
+        if (
+            not isinstance(stmt, S.Instruction)
+            or not stmt.args
+            or stmt.args[0] is None
+            or per_line[(stmt.line, stmt.file)] > 1
+        ):
             continue
         info = profile.instructions.get(stmt.keyword.upper())
-        literal = next((i for i, (code, a) in enumerate(zip(info["params"], stmt.args))
-                        if code in (27, 29) and a is not None and not isinstance(a, S.String)
-                        and not _expr_names(a)), None) if info and info["params"] else None
-        if literal is not None and per_line[(stmt.line, stmt.file)] == 1 and not any(
-                (d.line, d.file) == (stmt.line, stmt.file) for d in diags.errors):
+        literal = (
+            next(
+                (
+                    i
+                    for i, (code, a) in enumerate(zip(info["params"], stmt.args))
+                    if code in (27, 29) and a is not None and not isinstance(a, S.String) and not _expr_names(a)
+                ),
+                None,
+            )
+            if info and info["params"]
+            else None
+        )
+        if (
+            literal is not None
+            and per_line[(stmt.line, stmt.file)] == 1
+            and not any((d.line, d.file) == (stmt.line, stmt.file) for d in diags.errors)
+        ):
             # `RealTime(5)`, `Erase(5)`, `Matrix(5,(1+2),0,R)` -> `Invalid Variable or Array:
             # 5.`, then the argument list ends (oracle, CR300, 2026-10-01: `Move(5,1,X,1)` ->
             # `Too many parameters:  1.`)
-            at = next((i for i, d in enumerate(diags.items) if d.file == stmt.file
-                       and d.line > stmt.line), len(diags.items))
-            new = [Diagnostic("error", stmt.line, "Invalid Variable or Array: "
-                              f"{expressions._arg_text(stmt, literal).strip()}.", stmt.file)]
+            at = next(
+                (i for i, d in enumerate(diags.items) if d.file == stmt.file and d.line > stmt.line), len(diags.items)
+            )
+            new = [
+                Diagnostic(
+                    "error",
+                    stmt.line,
+                    f"Invalid Variable or Array: {expressions._arg_text(stmt, literal).strip()}.",
+                    stmt.file,
+                )
+            ]
             if len(stmt.args) > literal + 1 and stmt.args[literal + 1] is not None:
                 text = instr_rules._next_simple_token(
-                    expressions._arg_text(stmt, literal + 1)) or \
                     expressions._arg_text(stmt, literal + 1)
-                new.append(Diagnostic("error", stmt.line, f"Too many parameters:  {text}.",
-                                      stmt.file))
+                ) or expressions._arg_text(stmt, literal + 1)
+                new.append(Diagnostic("error", stmt.line, f"Too many parameters:  {text}.", stmt.file))
             diags.items[at:at] = new
             continue
         if not info or not info["params"] or info["params"][0] != _FLOAT_DEST:
             continue
         if types is None:
-            (types, scoped), known = _destination_types(program), \
-                expressions._known_names(program, profile)
+            (types, scoped), known = _destination_types(program), expressions._known_names(program, profile)
             ds = expressions.program_dims(program, profile, known)
         assert known is not None and ds is not None
         arg = stmt.args[0]
@@ -801,25 +971,36 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
         own = [d for d in diags.items if (d.line, d.file) == key and d.severity == "error"]
         if not keep and any(d.message.startswith("Dimensions not declared") for d in own):
             continue  # (`Battery(L(2))` for a Long scalar: over-indexing is reported first)
-        if keep and [d.message for d in own[:len(keep)]] != keep:
+        if keep and [d.message for d in own[: len(keep)]] != keep:
             continue
-        at = diags.items.index(own[0]) if own else next(
-            (i for i, d in enumerate(diags.items) if d.file == stmt.file and d.line > stmt.line),
-            len(diags.items))
-        new = list(own[:len(keep)]) or [Diagnostic("error", stmt.line, _DEST_MESSAGE, stmt.file)]
+        at = (
+            diags.items.index(own[0])
+            if own
+            else next(
+                (i for i, d in enumerate(diags.items) if d.file == stmt.file and d.line > stmt.line), len(diags.items)
+            )
+        )
+        new = list(own[: len(keep)]) or [Diagnostic("error", stmt.line, _DEST_MESSAGE, stmt.file)]
         if keep and (dims if expression else expressions._has_undefined_index(arg, known, ds, stmt)):
             # (oracle, CR300, 2026-10-03: `Battery(Nope(1))`, `PanelTemp(Nope(1),15000)`)
-            new.append(Diagnostic("error", stmt.line, expressions.dimensions_message(
-                expressions._arg_text(stmt, 0).strip(), profile, False), stmt.file))
+            new.append(
+                Diagnostic(
+                    "error",
+                    stmt.line,
+                    expressions.dimensions_message(expressions._arg_text(stmt, 0).strip(), profile, False),
+                    stmt.file,
+                )
+            )
         elif keep and expression:
             new.append(Diagnostic("error", stmt.line, _DEST_MESSAGE, stmt.file))
         if len(stmt.args) >= 2 and stmt.args[1] is not None:
-            text = instr_rules._next_simple_token(expressions._arg_text(stmt, 1)) or \
-                expressions._arg_text(stmt, 1)
+            text = instr_rules._next_simple_token(expressions._arg_text(stmt, 1)) or expressions._arg_text(stmt, 1)
             new.append(Diagnostic("error", stmt.line, f"Too many parameters:  {text}.", stmt.file))
-        diags.items[:] = [d for d in diags.items[:at] if (d.line, d.file) != key or
-                          d.severity != "error"] + new + [
-            d for d in diags.items[at:] if (d.line, d.file) != key or d.severity != "error"]
+        diags.items[:] = (
+            [d for d in diags.items[:at] if (d.line, d.file) != key or d.severity != "error"]
+            + new
+            + [d for d in diags.items[at:] if (d.line, d.file) != key or d.severity != "error"]
+        )
 
 
 # Parameter codes resolved as a runtime expression or variable: an undefined name there ends the
@@ -834,24 +1015,30 @@ def drop_too_many_after_variable_illegal(program: S.Program, profile, diags: Dia
         return
     per_line = collections.Counter((st.line, st.file) for st in program.statements)
     # (a routine header too: `Sub S(P(K),Q,R)` -> `... R.`, oracle, 2026-10-22, round 29)
-    declarations = {(st.line, st.file) for st in program.statements
-                    if isinstance(st, (S.Declaration, S.SubDef))}
-    bad = {(d.line, d.file) for d in diags.errors
-           if d.message.startswith(_VARIABLE_ILLEGAL_PREFIX) and per_line[(d.line, d.file)] == 1
-           and (d.line, d.file) not in declarations}  # (a declaration names the variable two on)
+    declarations = {(st.line, st.file) for st in program.statements if isinstance(st, (S.Declaration, S.SubDef))}
+    bad = {
+        (d.line, d.file)
+        for d in diags.errors
+        if d.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
+        and per_line[(d.line, d.file)] == 1
+        and (d.line, d.file) not in declarations
+    }  # (a declaration names the variable two on)
     if bad:
-        diags.items[:] = [d for d in diags.items if not (
-            (d.line, d.file) in bad and d.message.startswith(_TOO_MANY_PREFIX))]
+        diags.items[:] = [
+            d for d in diags.items if not ((d.line, d.file) in bad and d.message.startswith(_TOO_MANY_PREFIX))
+        ]
     # The excess argument is reached after the earlier ones' names: `Battery(foo, bar)` ->
     # `foo is not defined.`, then `Too many parameters:  bar.` (oracle, CR300, 2026-10-01).
     items = diags.items
     for i in range(len(items) - 1, -1, -1):
         d = items[i]
-        if d.severity != "error" or not d.message.startswith(_TOO_MANY_PREFIX) or \
-                per_line[(d.line, d.file)] != 1:
+        if d.severity != "error" or not d.message.startswith(_TOO_MANY_PREFIX) or per_line[(d.line, d.file)] != 1:
             continue
-        later = [j for j in range(i + 1, len(items)) if (items[j].line, items[j].file) ==
-                 (d.line, d.file) and items[j].message.endswith(_UNRESOLVED_SUFFIX)]
+        later = [
+            j
+            for j in range(i + 1, len(items))
+            if (items[j].line, items[j].file) == (d.line, d.file) and items[j].message.endswith(_UNRESOLVED_SUFFIX)
+        ]
         if later:
             items.insert(later[-1], items.pop(i))  # (`later` indices shift by one after the pop)
 
@@ -878,8 +1065,12 @@ def check_undefined_arg_aborts(program: S.Program, profile, diags: Diagnostics) 
             if not names:
                 continue
             code = info["params"][index] if index < len(info["params"]) else None
-            if code not in _ABORTING_PARAMS or (index == 0 and code == _FLOAT_DEST) or \
-                    index + 1 >= len(stmt.args) or stmt.args[index + 1] is None:
+            if (
+                code not in _ABORTING_PARAMS
+                or (index == 0 and code == _FLOAT_DEST)
+                or index + 1 >= len(stmt.args)
+                or stmt.args[index + 1] is None
+            ):
                 break
             key = (stmt.line, stmt.file)
             wanted = {profile.unresolved_symbol_message.format(name=n) for n in names}
@@ -893,22 +1084,18 @@ def check_undefined_arg_aborts(program: S.Program, profile, diags: Diagnostics) 
                 rest = [d for d in diags.items if d not in keep]
                 at = rest.index(too_many[0])
                 followup = []
-                if stmt.keyword.upper() == "SERIALIN" and index == 0 \
-                        and isinstance(stmt.args[0], S.Name):
-                    followup.append(Diagnostic("error", stmt.line,
-                                               instr_rules._SERIALIN_DEST_MESSAGE, stmt.file))
+                if stmt.keyword.upper() == "SERIALIN" and index == 0 and isinstance(stmt.args[0], S.Name):
+                    followup.append(Diagnostic("error", stmt.line, instr_rules._SERIALIN_DEST_MESSAGE, stmt.file))
                 diags.items[:] = rest[:at] + keep + followup + rest[at:]
                 break
-            text = instr_rules._next_simple_token(expressions._arg_text(stmt, index + 1)) or \
-                expressions._arg_text(stmt, index + 1)
+            text = instr_rules._next_simple_token(expressions._arg_text(stmt, index + 1)) or expressions._arg_text(
+                stmt, index + 1
+            )
             at = diags.items.index(keep[-1]) + 1
-            if stmt.keyword.upper() == "SERIALIN" and index == 0 \
-                    and isinstance(stmt.args[0], S.Name):
-                diags.items.insert(at, Diagnostic("error", stmt.line,
-                                                  instr_rules._SERIALIN_DEST_MESSAGE, stmt.file))
+            if stmt.keyword.upper() == "SERIALIN" and index == 0 and isinstance(stmt.args[0], S.Name):
+                diags.items.insert(at, Diagnostic("error", stmt.line, instr_rules._SERIALIN_DEST_MESSAGE, stmt.file))
                 at += 1
-            diags.items.insert(at, Diagnostic("error", stmt.line, f"Too many parameters:  {text}.",
-                                              stmt.file))
+            diags.items.insert(at, Diagnostic("error", stmt.line, f"Too many parameters:  {text}.", stmt.file))
             drop = {id(d) for d in own if d not in keep}
             diags.items[:] = [d for d in diags.items if id(d) not in drop]
             break
@@ -932,15 +1119,18 @@ _RESOLVED_FIRST_PARAM = frozenset({1, 2, 5, 7, 8, 24, 25, 27, 28, 29, 33, 38, 39
 _CONST_FIRST_PARAM = frozenset({1, 5, 38, 39})  # constant-only (`docs/type-codes.md`)
 
 
-def _report_rewritten_first_arg(program: S.Program, profile, diags: Diagnostics,
-                                dropped: set[int], rewritten: set[int]) -> None:
+def _report_rewritten_first_arg(
+    program: S.Program, profile, diags: Diagnostics, dropped: set[int], rewritten: set[int]
+) -> None:
     """A rewritten instruction's first argument is still checked before its `Too many
     parameters` line: each undefined name (unregistered ones included), then `Dimensions not
     declared: A(I).` for an undefined indexed name (oracle, CR300, 2026-10-01: `PanelTemp(PTemp,
     15000)` after `Dim Z banana` then `Public PTemp`)."""
     import dataclasses
-    known = expressions._known_names(dataclasses.replace(
-        program, statements=[st for st in program.statements if id(st) not in dropped]), profile)
+
+    known = expressions._known_names(
+        dataclasses.replace(program, statements=[st for st in program.statements if id(st) not in dropped]), profile
+    )
     tables = getattr(known, "tables", ())
     types, scoped = _destination_types(program)
 
@@ -979,32 +1169,47 @@ def _report_rewritten_first_arg(program: S.Program, profile, diags: Diagnostics,
             # `Variable illegal in Parameter: C4.`, no `Too many` (oracle, CR300, 2026-10-01)
             messages = [m for m in messages if m.endswith(" is not defined.")]
             messages.append(f"Variable illegal in Parameter: {expressions._arg_text(stmt, 0).strip()}.")
-            diags.items[:] = [d for d in diags.items if not (
-                (d.line, d.file) == (stmt.line, stmt.file) and d.message.startswith(_TOO_MANY_PREFIX))]
-            at = next((i for i, d in enumerate(diags.items) if d.file == stmt.file
-                       and d.line > stmt.line), len(diags.items))
-            diags.items[at:at] = [Diagnostic("error", stmt.line, m, stmt.file, cascade=False)
-                                  for m in messages]
+            diags.items[:] = [
+                d
+                for d in diags.items
+                if not ((d.line, d.file) == (stmt.line, stmt.file) and d.message.startswith(_TOO_MANY_PREFIX))
+            ]
+            at = next(
+                (i for i, d in enumerate(diags.items) if d.file == stmt.file and d.line > stmt.line), len(diags.items)
+            )
+            diags.items[at:at] = [Diagnostic("error", stmt.line, m, stmt.file, cascade=False) for m in messages]
             continue
         if info["params"][0] == _FLOAT_DEST:
             arg = stmt.args[0]
             names_ok = not messages
             if not isinstance(arg, (S.Name, S.Index)) or (
-                    names_ok and _is_bad_destination(arg, {**types, **scoped.get(id(stmt), {})})):
+                names_ok and _is_bad_destination(arg, {**types, **scoped.get(id(stmt), {})})
+            ):
                 messages.append(_DEST_MESSAGE)
-        if stmt.keyword.upper() == "SERIALIN" and (instr_rules._serialin_bad_destination(
-                stmt.args[0], instr_rules._serialin_types(program, profile)) or
-                (messages and isinstance(stmt.args[0], S.Name))):
+        if stmt.keyword.upper() == "SERIALIN" and (
+            instr_rules._serialin_bad_destination(stmt.args[0], instr_rules._serialin_types(program, profile))
+            or (messages and isinstance(stmt.args[0], S.Name))
+        ):
             messages.append(instr_rules._SERIALIN_DEST_MESSAGE)
         if not messages:
             continue
-        at = next(i for i, d in enumerate(diags.items) if (d.line, d.file) == (stmt.line, stmt.file)
-                  and d.message.startswith(_TOO_MANY_PREFIX))
+        at = next(
+            i
+            for i, d in enumerate(diags.items)
+            if (d.line, d.file) == (stmt.line, stmt.file) and d.message.startswith(_TOO_MANY_PREFIX)
+        )
         diags.items[at:at] = [Diagnostic("error", stmt.line, m, stmt.file, cascade=False) for m in messages]
 
 
-def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_at: int,
-                         dropped: set[int], tainted_subs: set[int], rewritten: set[int]) -> None:
+def _report_unregistered(
+    program: S.Program,
+    profile,
+    diags: Diagnostics,
+    taint_at: int,
+    dropped: set[int],
+    tainted_subs: set[int],
+    rewritten: set[int],
+) -> None:
     """Names a tainted declaration would have registered are undefined afterwards: `Public A`
     after `Dim Z banana` makes a later `X = A` print `A is not defined.`, and a tainted `Function
     F (x)` loses its parameters (`F(1)` -> `No Matching, or out of place ) ...`; `X = a` in a
@@ -1016,18 +1221,23 @@ def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_
 
     from .. import consteval
     from . import structure, unused
+
     statements = []
     for st in program.statements:
         if id(st) in dropped:
             continue
-        statements.append(dataclasses.replace(st, params=[]) if isinstance(st, S.SubDef) and id(st) in tainted_subs else st)
+        statements.append(
+            dataclasses.replace(st, params=[]) if isinstance(st, S.SubDef) and id(st) in tainted_subs else st
+        )
     modified = dataclasses.replace(program, statements=statements)
-    unregistered = expressions._known_names(program, profile) - \
-        expressions._known_names(modified, profile)
-    functions = {st.name.upper() for st in program.statements
-                 if isinstance(st, S.SubDef) and id(st) in tainted_subs and st.keyword == "FUNCTION"}
+    unregistered = expressions._known_names(program, profile) - expressions._known_names(modified, profile)
+    functions = {
+        st.name.upper()
+        for st in program.statements
+        if isinstance(st, S.SubDef) and id(st) in tainted_subs and st.keyword == "FUNCTION"
+    }
     affected: set[tuple[int, str]] = set()
-    for st in program.statements[taint_at + 1:]:
+    for st in program.statements[taint_at + 1 :]:
         if id(st) in dropped or id(st) in rewritten or isinstance(st, S.SubDef):
             continue
         names: set[str] = set()
@@ -1046,12 +1256,15 @@ def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_
         fresh = [d for d in scratch.items if (d.line, d.file) == key and d.severity == "error"]
         at = [i for i, d in enumerate(diags.items) if (d.line, d.file) == key]
         old = collections.Counter(diags.items[i].message for i in at)
-        if (at and at == list(range(at[0], at[-1] + 1))
-                and all(diags.items[i].severity == "error" for i in at)
-                and not old - collections.Counter(d.message for d in fresh)):
+        if (
+            at
+            and at == list(range(at[0], at[-1] + 1))
+            and all(diags.items[i].severity == "error" for i in at)
+            and not old - collections.Counter(d.message for d in fresh)
+        ):
             # the names are reported in text order: a newly undefined name (`For i = 1 To nv`
             # with `i` dropped) goes before an already reported one (oracle, CR300, 2026-10-04)
-            diags.items[at[0]:at[-1] + 1] = fresh
+            diags.items[at[0] : at[-1] + 1] = fresh
             for d in fresh:
                 existing[(d.line, d.file, d.message)] -= 1
             continue
@@ -1063,22 +1276,23 @@ def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_
     _respliced_call_args(modified, profile, diags, scratch, affected)
 
 
-def _respliced_call_args(modified: S.Program, profile, diags: Diagnostics, scratch: Diagnostics,
-                         affected: set[tuple[int, str]]) -> None:
+def _respliced_call_args(
+    modified: S.Program, profile, diags: Diagnostics, scratch: Diagnostics, affected: set[tuple[int, str]]
+) -> None:
     """An unresolved call's argument names, rechecked without the unregistered declarations
     (`CDM_Battery(CDM_A108,1,Batt_Volt)` after the taint also reports `Batt_Volt`)."""
     check_undefined_call_args(modified, profile, scratch)
-    calls = {(st.line, st.file) for st in modified.statements
-             if isinstance(st, S.Call) and not st.explicit}
+    calls = {(st.line, st.file) for st in modified.statements if isinstance(st, S.Call) and not st.explicit}
     for key in affected & calls:
         fresh = [d for d in scratch.items if (d.line, d.file) == key and d.severity == "error"]
         at = [i for i, d in enumerate(diags.items) if (d.line, d.file) == key]
         if not at or at != list(range(at[0], at[0] + len(at))) or len(fresh) <= len(at):
             continue
-        if [d.message for d in diags.items[at[0]:at[-1] + 1]] != \
-                [d.message for d in fresh if d.message in {e.message for e in diags.items[at[0]:at[-1] + 1]}]:
+        if [d.message for d in diags.items[at[0] : at[-1] + 1]] != [
+            d.message for d in fresh if d.message in {e.message for e in diags.items[at[0] : at[-1] + 1]}
+        ]:
             continue
-        diags.items[at[0]:at[-1] + 1] = fresh
+        diags.items[at[0] : at[-1] + 1] = fresh
 
 
 # `check_unknown_line_words` (this round): a line that parses as nothing recognisable at all --
@@ -1129,12 +1343,16 @@ _LINE_WORD_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 # Instructions without parameters: text after the name is a surplus parameter (oracle, CR300 and
 # CR350, 2026-10-11, one probe each; `EndProg` ignores its tail and `Alias`, `Const`, `Data`, ... read
 # it themselves, so they are not listed).
-_TAIL_REJECTING = frozenset(n.upper() for n in (
-    "BeginProg PipeLineMode SequentialMode EndIf WEND OpenInterval NEXTSCAN NEXTSUBSCAN ENDTABLE "
-    "FillStop ExitScan ContinueScan ExitSub ExitDo ExitFor Restore AngleDegrees ShutdownBegin "
-    "ShutdownEnd EndSequence ExitFunction AbortScan SampleFieldCal WaitTriggerSequence "
-    "PulseCountReset WebPageEnd TableHide DHCPRenew Restart PreserveVariables "
-    "ApplyAndRestartSequence EndApplyAndRestartSequence").split())
+_TAIL_REJECTING = frozenset(
+    n.upper()
+    for n in (
+        "BeginProg PipeLineMode SequentialMode EndIf WEND OpenInterval NEXTSCAN NEXTSUBSCAN ENDTABLE "
+        "FillStop ExitScan ContinueScan ExitSub ExitDo ExitFor Restore AngleDegrees ShutdownBegin "
+        "ShutdownEnd EndSequence ExitFunction AbortScan SampleFieldCal WaitTriggerSequence "
+        "PulseCountReset WebPageEnd TableHide DHCPRenew Restart PreserveVariables "
+        "ApplyAndRestartSequence EndApplyAndRestartSequence"
+    ).split()
+)
 _ZERO_TAIL_RE = re.compile(r"\s*([A-Za-z_]\w*)(?=[\s,(])(.*)$", re.S)
 # A parameter text that starts with a binary operator word: `Invalid, or out of place expression`
 # after the next operand is named (`is`/`mod` stop at once), not `Incomplete expression`.
@@ -1271,7 +1489,7 @@ def _paren_items_words(inner: str, known: set[str]) -> list[str]:
             if not hexed:
                 words.append(amp.group(0))
                 continue
-            item = "0" + item[hexed.end():]
+            item = "0" + item[hexed.end() :]
         walked: dict = {}
         found = _leading_unknown_words(item, known, state=walked)
         words += found[:1] if idx == 3 else found
@@ -1280,8 +1498,9 @@ def _paren_items_words(inner: str, known: set[str]) -> list[str]:
     return words
 
 
-def _leading_unknown_words(text: str, known: set[str], callables: frozenset = frozenset(),
-                           state: dict | None = None) -> list[str]:
+def _leading_unknown_words(
+    text: str, known: set[str], callables: frozenset = frozenset(), state: dict | None = None
+) -> list[str]:
     """The ordered list of `text`'s own leading bare words this project believes CR300/CR350
     would report as `%s is not defined.` ahead of the generic fallback for it -- see this
     module's `check_unknown_line_words` comment above for the oracle evidence and the exact walk
@@ -1297,13 +1516,13 @@ def _leading_unknown_words(text: str, known: set[str], callables: frozenset = fr
         return [word.group(0)] if word.group(0).upper() not in known else []
     # The chain starts at the first word or number (a leading `2 when the` reports `when`).
     pos = len(text) - len(text.lstrip(" \t"))
-    if re.match(r"-\d", text[pos:pos + 2]):
+    if re.match(r"-\d", text[pos : pos + 2]):
         pos += 1  # a signed number starts the chain like a number (oracle, CR300, 2026-10-10: `-1 Then`)
-    elif text[pos:pos + 1] == '"' and text.find('"', pos + 1) > 0:
-        text = text[:pos] + "0" + text[text.find('"', pos + 1) + 1:]  # a string literal likewise
+    elif text[pos : pos + 1] == '"' and text.find('"', pos + 1) > 0:
+        text = text[:pos] + "0" + text[text.find('"', pos + 1) + 1 :]  # a string literal likewise
     if not _LINE_OPERAND_RE.match(text, pos):
         return []
-    if text[pos:pos + 3].upper() == "IS " or text[pos:].upper() == "IS":
+    if text[pos : pos + 3].upper() == "IS " or text[pos:].upper() == "IS":
         return []  # a leading `Is` ends the walk before any word (oracle, CR300, 2026-10-08)
     words: list[str] = []
     extending = True  # False once we're consuming the single trailing "peek" word.
@@ -1320,13 +1539,14 @@ def _leading_unknown_words(text: str, known: set[str], callables: frozenset = fr
             words.append(operand.group(0))
         if not extending:
             break
-        paren = None if operand.group(0)[0].isdigit() or operand.group(0)[0] == '"' \
-            else _LINE_PAREN_RE.match(text, pos)
+        paren = None if operand.group(0)[0].isdigit() or operand.group(0)[0] == '"' else _LINE_PAREN_RE.match(text, pos)
         if paren and len(words) == 1 and (words[0].upper() not in known or words[0].upper() in callables):
             # `device (8 channels)`: the first word's parenthesis opens a second walk of the same
             # shape, which ends at the first `)`, and nothing after it is examined
             # (oracle, CR300, 2026-10-08).
-            words += _paren_items_words(text[paren.end():], known)  # (a declared variable or function keeps the walk too, oracle 2026-10-10: `X (foo bar)`)
+            words += _paren_items_words(
+                text[paren.end() :], known
+            )  # (a declared variable or function keeps the walk too, oracle 2026-10-10: `X (foo bar)`)
             break
         op_match = _LINE_OP_RUN_RE.match(text, pos) or _LINE_OP_WORD_RE.match(text, pos)
         if op_match:
@@ -1350,8 +1570,25 @@ def _leading_unknown_words(text: str, known: set[str], callables: frozenset = fr
 # `Variable illegal in Parameter: <arg>.` when one of those two operands is a variable or an
 # undefined name; any other parameter is followed by `Too many parameters:  <first token of the
 # next argument>.` when an argument follows. The arguments after it are never read.
-_CALL_ADJACENT_EXCLUDED = frozenset({"DATA", "DATALONG", "ALIAS", "UNITS", "SUB", "FUNCTION", "IF", "ELSEIF",
-                                     "WHILE", "UNTIL", "SELECT", "CASE", "FOR", "DO", "LOOP"})
+_CALL_ADJACENT_EXCLUDED = frozenset(
+    {
+        "DATA",
+        "DATALONG",
+        "ALIAS",
+        "UNITS",
+        "SUB",
+        "FUNCTION",
+        "IF",
+        "ELSEIF",
+        "WHILE",
+        "UNTIL",
+        "SELECT",
+        "CASE",
+        "FOR",
+        "DO",
+        "LOOP",
+    }
+)
 _ADJACENT_CONST_CODES = frozenset({1, 5, 20, 38, 39})
 _ADJACENT_EXPR_CODES = frozenset({2, 8, 24, 25, 26, 27, 28, 29, 33, 40, 41, 47, 48})
 _ADJACENT_RE = re.compile(r"[\w\")]\s+[\w\"]")
@@ -1392,8 +1629,9 @@ def _adjacent_operands(arg: str) -> bool:
 _ADJACENT_TABLE_SOURCES = frozenset({"SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM", "TOTALIZE", "STDDEV"})
 
 
-def _call_adjacent_arg_messages(inner: str, record: dict, here: set[str], variables: AbstractSet[str],
-                                profile, in_table: bool) -> list[str] | None:
+def _call_adjacent_arg_messages(
+    inner: str, record: dict, here: set[str], variables: AbstractSet[str], profile, in_table: bool
+) -> list[str] | None:
     params = record["params"]
     args = _split_args_quoted(inner)
     if args is None:
@@ -1405,9 +1643,9 @@ def _call_adjacent_arg_messages(inner: str, record: dict, here: set[str], variab
         if _adjacent_operands(arg):
             break
         if k < len(params) and params[k] % 100 in (6, 11):
-            continue    # a name or deferred text: not looked at while the statement is read
+            continue  # a name or deferred text: not looked at while the statement is read
         if not arg.strip() or arg.count("(") != arg.count(")") or _leading_unknown_words(arg, here):
-            return None     # an earlier argument with problems of its own: not this shape
+            return None  # an earlier argument with problems of its own: not this shape
     else:
         return None
     if k >= len(params):
@@ -1423,7 +1661,8 @@ def _call_adjacent_arg_messages(inner: str, record: dict, here: set[str], variab
         if short:
             return [short]
         return [profile.unresolved_symbol_message.format(name=w) for w in _leading_unknown_words(carg, here)] + [
-            f"Incomplete expression: {carg}."]
+            f"Incomplete expression: {carg}."
+        ]
     if code not in _ADJACENT_CONST_CODES and code not in _ADJACENT_EXPR_CODES:
         return None
     carg = arg.strip() if last else arg.lstrip()
@@ -1431,15 +1670,13 @@ def _call_adjacent_arg_messages(inner: str, record: dict, here: set[str], variab
     out.append(f"Incomplete expression: {carg}.")
     if code in _ADJACENT_CONST_CODES:
         chain = _leading_unknown_words(carg, set(), frozenset(profile.functions))
-        if any(w.upper() in variables or w.upper() not in here for w in chain
-               if w.upper() not in profile.functions):
+        if any(w.upper() in variables or w.upper() not in here for w in chain if w.upper() not in profile.functions):
             out.append(f"Variable illegal in Parameter: {carg}.")
     elif not last:
-        token = instr_rules._next_simple_token(",".join(args[k + 1:]))
+        token = instr_rules._next_simple_token(",".join(args[k + 1 :]))
         if token:
             out.append(f"Too many parameters:  {token}.")
     return out
-
 
 
 # `check_undefined_call_args` (this round): a `Name(args)`/`Name args` call whose own name never
@@ -1473,8 +1710,9 @@ def _call_adjacent_arg_messages(inner: str, record: dict, here: set[str], variab
 MEMBER_STOP = "\0member"  # (oracle, CR300, 2026-10-01: `Foo(Bad,Tb.X)` -> Foo, Bad, nothing else)
 
 
-def _call_arg_undefined_names(args: list[S.Expr | None], known: set[str],
-                              routines: frozenset[str] = frozenset()) -> list[str]:
+def _call_arg_undefined_names(
+    args: list[S.Expr | None], known: set[str], routines: frozenset[str] = frozenset()
+) -> list[str]:
     """The undefined names among an unresolved call's arguments, in source order -- see
     `check_undefined_call_args`'s module comment above for the oracle evidence and the rule."""
     names: list[str] = []
@@ -1508,7 +1746,9 @@ def _call_arg_undefined_names(args: list[S.Expr | None], known: set[str],
         if not walk(arg):
             return names
     if len(args) > 3 and isinstance(args[3], S.Number) and args[3].text[:2].lower() == "&h":
-        if undefined(args[3].text[1:]) or args[3].text[1:].upper() in routines:  # (a declared variable `h0F` is not named, a Sub's name is: oracle, CR300/CR350, 2026-10-12)
+        if (
+            undefined(args[3].text[1:]) or args[3].text[1:].upper() in routines
+        ):  # (a declared variable `h0F` is not named, a Sub's name is: oracle, CR300/CR350, 2026-10-12)
             names.append(args[3].text[1:])  # (oracle, CR300, 2026-10-11: a fourth `&h0000` names `h0000`)
     elif len(args) > 3:
         first = args[3]
@@ -1562,15 +1802,20 @@ def check_undefined_call_args(program: S.Program, profile, diags: Diagnostics) -
         d = items[i]
         stmt = calls_by_key.get((d.line, d.file))
         nxt = items[i + 1] if i + 1 < n else None
-        if (stmt is not None and d.severity == "error"
-                and d.message == profile.unresolved_symbol_message.format(name=stmt.name)
-                and nxt is not None and nxt.severity == "error"
-                and (nxt.line, nxt.file) == (d.line, d.file)
-                and nxt.message.startswith(_GENERIC_FALLBACK_PREFIX)):
+        if (
+            stmt is not None
+            and d.severity == "error"
+            and d.message == profile.unresolved_symbol_message.format(name=stmt.name)
+            and nxt is not None
+            and nxt.severity == "error"
+            and (nxt.line, nxt.file) == (d.line, d.file)
+            and nxt.message.startswith(_GENERIC_FALLBACK_PREFIX)
+        ):
             if known is None:
                 known = expressions._known_names(program, profile)
-            routines = frozenset(st.name.upper() for st in program.statements if isinstance(st, S.SubDef)) \
-                - symbols.declared_variable_names(program)
+            routines = frozenset(
+                st.name.upper() for st in program.statements if isinstance(st, S.SubDef)
+            ) - symbols.declared_variable_names(program)
             names = _call_arg_undefined_names(stmt.args, known, routines)
             new_items.append(d)
             for undefined_name in names:
@@ -1578,9 +1823,11 @@ def check_undefined_call_args(program: S.Program, profile, diags: Diagnostics) -
                     i += 1  # a table member ends the call: no fallback line
                     changed = True
                     break
-                new_items.append(Diagnostic(
-                    "error", d.line, profile.unresolved_symbol_message.format(name=undefined_name),
-                    d.file, True))
+                new_items.append(
+                    Diagnostic(
+                        "error", d.line, profile.unresolved_symbol_message.format(name=undefined_name), d.file, True
+                    )
+                )
                 changed = True
             i += 1
             continue
@@ -1601,11 +1848,14 @@ def order_email_destination(program: S.Program, profile, diags: Diagnostics) -> 
         if d.message != instr_rules._SERIALIN_DEST_MESSAGE:
             continue
         j = i + 1
-        while j < len(items) and (items[j].line, items[j].file) == (d.line, d.file) \
-                and items[j].message.endswith(_UNRESOLVED_SUFFIX):
+        while (
+            j < len(items)
+            and (items[j].line, items[j].file) == (d.line, d.file)
+            and items[j].message.endswith(_UNRESOLVED_SUFFIX)
+        ):
             j += 1
         if j > i + 1:
-            items[i:j] = items[i + 1:j] + [d]
+            items[i:j] = items[i + 1 : j] + [d]
 
 
 _SHORTFALL_MESSAGES = ("Invalid or missing parameter.", "Too few parameters in instruction.")
@@ -1619,12 +1869,14 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
     `X=Nope` then `PanelTemp(X)` on the next line hide it)."""
     if profile.name not in ("cr300", "cr350"):
         return
-    named = {(d.line, d.file) for d in diags.items
-             if d.severity == "error" and d.message.endswith(_UNRESOLVED_SUFFIX)}
+    named = {(d.line, d.file) for d in diags.items if d.severity == "error" and d.message.endswith(_UNRESOLVED_SUFFIX)}
     # `Variable illegal in Parameter` ends the statement like an undefined name does, and hides the
     # shortfalls of the statement and of the later ones (oracle, CR300, 2026-10-12: `Delay(y)`)
-    illegal = {(d.line, d.file) for d in diags.items
-               if d.severity == "error" and d.message.startswith(_VARIABLE_ILLEGAL_PREFIX)}
+    illegal = {
+        (d.line, d.file)
+        for d in diags.items
+        if d.severity == "error" and d.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
+    }
     named |= illegal
     if not named:
         return
@@ -1632,8 +1884,13 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
     known = expressions._known_names(program, profile)
 
     def has_names(stmt) -> bool:
-        exprs = (stmt.args if isinstance(stmt, S.Instruction)
-                 else [stmt.target, stmt.value] if isinstance(stmt, S.Assignment) else [])
+        exprs = (
+            stmt.args
+            if isinstance(stmt, S.Instruction)
+            else [stmt.target, stmt.value]
+            if isinstance(stmt, S.Assignment)
+            else []
+        )
         if isinstance(stmt, S.Instruction) and (stmt.line, stmt.file) in illegal:
             return True
         return any(expressions._undefined_names(e, known) for e in exprs)
@@ -1641,10 +1898,10 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
     def is_short(stmt) -> bool:
         record = profile.instructions.get(stmt.keyword.upper()) if isinstance(stmt, S.Instruction) else None
         return record is not None and instr_rules.given_count(stmt, profile) < instr_rules._required_count(
-            instr_rules._real_params(record["params"]))
+            instr_rules._real_params(record["params"])
+        )
 
-    first = next((i for i, st in enumerate(stmts) if (st.line, st.file) in named and has_names(st)),
-                 None)
+    first = next((i for i, st in enumerate(stmts) if (st.line, st.file) in named and has_names(st)), None)
     # A line whose name errors come from no instruction/assignment (prose, `S.Unparsed`) keeps the
     # per-line rule: it hides only its own line's shortfall.
     with_names = {(st.line, st.file) for st in stmts if has_names(st)}
@@ -1658,8 +1915,7 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
             return False
         key = (d.line, d.file)
         idxs = [i for i, st in enumerate(stmts) if (st.line, st.file) == key]
-        if any(isinstance(st := stmts[i], S.Unparsed) and st.reason == structure._FOR_MISSING
-               for i in idxs):
+        if any(isinstance(st := stmts[i], S.Unparsed) and st.reason == structure._FOR_MISSING for i in idxs):
             return False  # a `For` without `=` is never hidden by names (oracle, CR300, 2026-10-10)
         short = [i for i in idxs if is_short(stmts[i])]
         nth = seen[key]
@@ -1676,16 +1932,19 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
     # a `For` without `=` or a short instruction that ends a line whose earlier segment named
     # undefined words prints after them (oracle, CR300/CR350, 2026-10-10: `X=Nope : PanelTemp`)
     for i, st in enumerate(stmts):
-        if not ((isinstance(st, S.Unparsed) and st.reason == structure._FOR_MISSING)
-                or is_short(st)):
+        if not ((isinstance(st, S.Unparsed) and st.reason == structure._FOR_MISSING) or is_short(st)):
             continue
         key = (st.line, st.file)
         if i + 1 < len(stmts) and (stmts[i + 1].line, stmts[i + 1].file) == key:
             continue
         if not any((o.line, o.file) == key and has_names(o) for o in stmts[:i]):
             continue
-        if any((o.line, o.file) == key and o is not st and (is_short(o) or (
-                isinstance(o, S.Unparsed) and o.reason == structure._FOR_MISSING)) for o in stmts):
+        if any(
+            (o.line, o.file) == key
+            and o is not st
+            and (is_short(o) or (isinstance(o, S.Unparsed) and o.reason == structure._FOR_MISSING))
+            for o in stmts
+        ):
             continue  # (only a line's single shortfall moves)
         moved = [d for d in diags.items if (d.line, d.file) == key and d.message in _SHORTFALL_MESSAGES]
         if moved:
@@ -1719,9 +1978,13 @@ def check_for_header(program: S.Program, profile, diags: Diagnostics) -> None:
         echo, is_init = found
         key = (stmt.line, stmt.file)
         own = [d for d in diags.items if (d.line, d.file) == key]
-        if not all(d.message.endswith(_UNRESOLVED_SUFFIX) or d.message.startswith(
-                (_GENERIC_FALLBACK_PREFIX, "Incomplete expression:",
-                 "No Matching, or out of place )")) for d in own):
+        if not all(
+            d.message.endswith(_UNRESOLVED_SUFFIX)
+            or d.message.startswith(
+                (_GENERIC_FALLBACK_PREFIX, "Incomplete expression:", "No Matching, or out of place )")
+            )
+            for d in own
+        ):
             continue
         if known is None:
             known = prose_known(program, profile)
@@ -1730,13 +1993,15 @@ def check_for_header(program: S.Program, profile, diags: Diagnostics) -> None:
         assert header is not None  # (`_for_header_incomplete` matched it)
         start = header.start(1)
         eq = re.search(r"=(.*?)\sTo\s", text[:start], re.I | re.S)
-        words = ([] if is_init or not eq else _leading_unknown_words(eq.group(1), here)) + \
-            _leading_unknown_words(echo, here)
+        words = ([] if is_init or not eq else _leading_unknown_words(eq.group(1), here)) + _leading_unknown_words(
+            echo, here
+        )
         at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key), len(diags.items))
         diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
-        diags.items[at:at] = [Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=w),
-                                         stmt.file, True) for w in words] + [
-            Diagnostic("error", stmt.line, structure._for_header_message(kind, echo), stmt.file)]
+        diags.items[at:at] = [
+            Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=w), stmt.file, True)
+            for w in words
+        ] + [Diagnostic("error", stmt.line, structure._for_header_message(kind, echo), stmt.file)]
 
 
 def _echo_key(text: str) -> str:
@@ -1771,8 +2036,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
         return
     unparsed_lines = {(s.line, s.file) for s in program.statements if isinstance(s, S.Unparsed)}
     # (a line with several `:`-separated statements echoes each one; only the Unparsed one counts)
-    unparsed_text = {(s.line, s.file, _echo_key(s.text)): s for s in program.statements
-                     if isinstance(s, S.Unparsed)}
+    unparsed_text = {(s.line, s.file, _echo_key(s.text)): s for s in program.statements if isinstance(s, S.Unparsed)}
     if not unparsed_lines:
         return
     known: set[str] | None = None
@@ -1780,60 +2044,81 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
     new_items: list[Diagnostic] = []
     changed = False
     for d in diags.items:
-        if (d.severity == "error" and d.message.endswith(".")
-                and d.message.startswith(_GENERIC_FALLBACK_PREFIX)
-                and (d.line, d.file) in unparsed_lines
-                and (d.line, d.file, _echo_key(d.message[len(_GENERIC_FALLBACK_PREFIX):-1]))
-                in unparsed_text):
+        if (
+            d.severity == "error"
+            and d.message.endswith(".")
+            and d.message.startswith(_GENERIC_FALLBACK_PREFIX)
+            and (d.line, d.file) in unparsed_lines
+            and (d.line, d.file, _echo_key(d.message[len(_GENERIC_FALLBACK_PREFIX) : -1])) in unparsed_text
+        ):
             if known is None:
                 known = prose_known(program, profile)
             if first is None:
                 first = first_declarations(program)
             here = known - declared_later(first, d.line, d.file)
-            text = d.message[len(_GENERIC_FALLBACK_PREFIX):-1]
+            text = d.message[len(_GENERIC_FALLBACK_PREFIX) : -1]
             if re.match(r"(?i)\s*Alias\b", text) and any(
-                    (e.line, e.file) == (d.line, d.file) and e.message.startswith("Need '=' in alias definition")
-                    for e in diags.items):
+                (e.line, e.file) == (d.line, d.file) and e.message.startswith("Need '=' in alias definition")
+                for e in diags.items
+            ):
                 # an `Alias` line without its `=` has been answered by the alias message alone
                 # (oracle, CR300/CR350, 2026-10-11: `Alias rTime(1)` / `= Year` on the next line)
                 changed = True
                 continue
             table = _TABLE_LINE_RE.match(text)
             signed = None if table else _SIGNED_TABLE_RE.match(text)
-            if signed and (signed.group(1).upper() in symbols._ALWAYS_KNOWN_SYSTEM_TABLES
-                           or signed.group(1).upper() in prose_known_tables(program, profile)):
+            if signed and (
+                signed.group(1).upper() in symbols._ALWAYS_KNOWN_SYSTEM_TABLES
+                or signed.group(1).upper() in prose_known_tables(program, profile)
+            ):
                 signed = None
             table = table or signed
             if table:
-                new_items.append(Diagnostic("error", d.line, f"Could not find DataTable "
-                                            f"{table.group(1)}.", d.file, cascade=False))
+                new_items.append(
+                    Diagnostic("error", d.line, f"Could not find DataTable {table.group(1)}.", d.file, cascade=False)
+                )
                 d = dataclasses.replace(d, cascade=False)  # (no cascade: oracle, `r1` probe)
                 changed = True
                 if _loose_before_beginprog(program, d.line, d.file):
                     # (oracle, CR300, 2026-10-11: `foo.` before `BeginProg` also gets the placement line)
                     new_items.append(d)
-                    new_items.append(Diagnostic("error", d.line, "Expr illegally occurs before BeginProg.",
-                                                d.file, cascade=False))
+                    new_items.append(
+                        Diagnostic("error", d.line, "Expr illegally occurs before BeginProg.", d.file, cascade=False)
+                    )
                     continue
             bare = text.rstrip("\n")
             cp = structure.condition_part(bare)
-            if cp is not None and not cp.strip() and not (
-                    re.match(r"(?i)\s*(?:DO|LOOP)\b", bare) and any(
-                        e.severity == "error" and e.line and e.line < d.line for e in diags.items)
-                    ) and (empty := structure._pass1_scan(
-                    bare, structure._Everything(), profile)) is not None and empty in (("pass1", "missing_expr"),
-                                                                 ("pass1", "fallback")):
+            if (
+                cp is not None
+                and not cp.strip()
+                and not (
+                    re.match(r"(?i)\s*(?:DO|LOOP)\b", bare)
+                    and any(e.severity == "error" and e.line and e.line < d.line for e in diags.items)
+                )
+                and (empty := structure._pass1_scan(bare, structure._Everything(), profile)) is not None
+                and empty in (("pass1", "missing_expr"), ("pass1", "fallback"))
+            ):
                 # a block keyword with no condition at all: the same pass-1 verdicts as CR6/CR1000X
                 # (oracle, CR300/CR350, 2026-10-11: bare `If`/`ElseIf`/`Case`/`Loop While` are
                 # `Invalid or missing expression.`, `If ` and `Select Case` an empty echo)
-                new_items.append(dataclasses.replace(d, message=(
-                    "Invalid or missing expression." if empty[1] == "missing_expr"
-                    else f"{_GENERIC_FALLBACK_PREFIX}.")))
+                new_items.append(
+                    dataclasses.replace(
+                        d,
+                        message=(
+                            "Invalid or missing expression."
+                            if empty[1] == "missing_expr"
+                            else f"{_GENERIC_FALLBACK_PREFIX}."
+                        ),
+                    )
+                )
                 changed = True
                 continue
             zero = _ZERO_TAIL_RE.match(bare)
-            if zero and zero.group(1).upper() in _TAIL_REJECTING and (
-                    tok := instr_rules._next_simple_token(zero.group(2))):
+            if (
+                zero
+                and zero.group(1).upper() in _TAIL_REJECTING
+                and (tok := instr_rules._next_simple_token(zero.group(2)))
+            ):
                 # an instruction with no parameters followed by text: the first token is the
                 # surplus (oracle, CR300/CR350, 2026-10-11: `BeginProg, EndProg (Begin Program,
                 # End Program)` -> `Too many parameters:  EndProg.`)
@@ -1842,20 +2127,54 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 continue
             call = re.match(r"\s*([A-Za-z_]\w*)\s*\((.*)$", bare, re.S)
             cinfo = profile.instructions.get(call.group(1).upper()) if call else None
-            if call and cinfo and cinfo["params"] and call.group(1).upper() not in _CALL_ADJACENT_EXCLUDED and (
-                    found := _call_adjacent_arg_messages(call.group(2), cinfo, here,
-                                                         symbols.declared_variable_names(program),
-                                                         profile, _inside_table(program, d.line, d.file))) is not None:
+            if (
+                call
+                and cinfo
+                and cinfo["params"]
+                and call.group(1).upper() not in _CALL_ADJACENT_EXCLUDED
+                and (
+                    found := _call_adjacent_arg_messages(
+                        call.group(2),
+                        cinfo,
+                        here,
+                        symbols.declared_variable_names(program),
+                        profile,
+                        _inside_table(program, d.line, d.file),
+                    )
+                )
+                is not None
+            ):
                 for message in found:
                     new_items.append(Diagnostic("error", d.line, message, d.file))
                 changed = True
                 continue
-            if call and cinfo and cinfo["params"] and cinfo["params"][0] % 100 not in (6, 11) and call.group(
-                    1).upper() not in ("DATA", "DATALONG", "ALIAS", "UNITS", "SUB", "FUNCTION", "IF", "ELSEIF",
-                                      "WHILE", "UNTIL", "SELECT", "CASE", "FOR", "DO", "LOOP") and \
-                    (carg := _split_top_commas(call.group(2))[0].rstrip()) and re.search(
-                        r"[\w\"]\s+[\w\"]", re.sub(r'"[^"]*"', '"', carg)) and not re.search(
-                            r"(?i)\b(?:and|or|xor|eqv|imp|mod|is|to|not)\b", carg):
+            if (
+                call
+                and cinfo
+                and cinfo["params"]
+                and cinfo["params"][0] % 100 not in (6, 11)
+                and call.group(1).upper()
+                not in (
+                    "DATA",
+                    "DATALONG",
+                    "ALIAS",
+                    "UNITS",
+                    "SUB",
+                    "FUNCTION",
+                    "IF",
+                    "ELSEIF",
+                    "WHILE",
+                    "UNTIL",
+                    "SELECT",
+                    "CASE",
+                    "FOR",
+                    "DO",
+                    "LOOP",
+                )
+                and (carg := _split_top_commas(call.group(2))[0].rstrip())
+                and re.search(r"[\w\"]\s+[\w\"]", re.sub(r'"[^"]*"', '"', carg))
+                and not re.search(r"(?i)\b(?:and|or|xor|eqv|imp|mod|is|to|not)\b", carg)
+            ):
                 # `Instruction(a b, ...)`: the first argument is read as an expression with
                 # adjacent operands (oracle, CR300/CR350, 2026-10-11: `MQTTPublishTable(MQTT QoS,
                 # ...)` -> both words, `Incomplete expression: MQTT QoS.`, and for a constant-only
@@ -1863,8 +2182,9 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 if carg.endswith(")") and carg.count("(") < carg.count(")"):
                     carg = carg[:-1].rstrip()  # (the call's own closing parenthesis)
                 for word in _leading_unknown_words(carg, here):
-                    new_items.append(Diagnostic("error", d.line,
-                                                profile.unresolved_symbol_message.format(name=word), d.file))
+                    new_items.append(
+                        Diagnostic("error", d.line, profile.unresolved_symbol_message.format(name=word), d.file)
+                    )
                 new_items.append(Diagnostic("error", d.line, f"Incomplete expression: {carg}.", d.file))
                 if cinfo["params"][0] in _CONST_FIRST_PARAM:
                     new_items.append(Diagnostic("error", d.line, f"Variable illegal in Parameter: {carg}.", d.file))
@@ -1872,9 +2192,14 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 continue
             lead = _INSTRUCTION_PROSE_RE.match(text)
             info = profile.instructions.get(lead.group(1).upper()) if lead else None
-            if lead and info and lead.group(1).upper() not in ("DATA", "DATALONG") and info["params"] \
-                    and not (structure.condition_part(text) or "").strip() \
-                    and not structure.inline_if_condition(text):
+            if (
+                lead
+                and info
+                and lead.group(1).upper() not in ("DATA", "DATALONG")
+                and info["params"]
+                and not (structure.condition_part(text) or "").strip()
+                and not structure.inline_if_condition(text)
+            ):
                 # `Battery sensor using the`: the instruction reads the prose as its argument
                 # (oracle, CR300, 2026-10-01): its words, `Incomplete expression: <prose>.`, and
                 # for a constant-only first parameter `Variable illegal in Parameter: <prose>.`
@@ -1891,12 +2216,11 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     # a name token (`CallTable`, `DataTable`, `FileMark`): the first word is taken
                     # unchecked, the rest is the next parameter, or the surplus when there is none
                     name_tok = instr_rules._next_simple_token(rest)
-                    rest = rest[rest.index(name_tok) + len(name_tok):] if name_tok else rest
+                    rest = rest[rest.index(name_tok) + len(name_tok) :] if name_tok else rest
                     codes = codes[1:]
                     if not codes:
-                        if (tok := instr_rules._next_simple_token(rest)):
-                            new_items.append(Diagnostic("error", d.line,
-                                                        f"Too many parameters:  {tok}.", d.file))
+                        if tok := instr_rules._next_simple_token(rest):
+                            new_items.append(Diagnostic("error", d.line, f"Too many parameters:  {tok}.", d.file))
                             changed = True
                             continue
                     rest = rest.lstrip(" \t")
@@ -1907,28 +2231,33 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     if op and op.group(1).upper() not in _LEAD_OP_NO_OPERAND:
                         # a leading binary operator word: the next operand is read, then the
                         # expression is out of place (oracle, CR300/CR350, 2026-10-11)
-                        after = _LEAD_OP_SKIP_RE.sub("", rest[op.end():], count=1)
+                        after = _LEAD_OP_SKIP_RE.sub("", rest[op.end() :], count=1)
                         words = _leading_unknown_words(after, here)[:1] if _LINE_WORD_RE.match(after) else []
                     for word in words:
-                        new_items.append(Diagnostic("error", d.line,
-                                                    profile.unresolved_symbol_message.format(name=word),
-                                                    d.file))
-                    new_items.append(Diagnostic("error", d.line, (
-                        f"{_GENERIC_FALLBACK_PREFIX}{rest}." if op else f"Incomplete expression: {rest}."),
-                        d.file))
-                    if codes[0] in _CONST_FIRST_PARAM and not (
-                            op and not _LINE_WORD_RE.match(after)):
-                        new_items.append(Diagnostic("error", d.line,
-                                                    f"Variable illegal in Parameter: {rest}.", d.file))
+                        new_items.append(
+                            Diagnostic("error", d.line, profile.unresolved_symbol_message.format(name=word), d.file)
+                        )
+                    new_items.append(
+                        Diagnostic(
+                            "error",
+                            d.line,
+                            (f"{_GENERIC_FALLBACK_PREFIX}{rest}." if op else f"Incomplete expression: {rest}."),
+                            d.file,
+                        )
+                    )
+                    if codes[0] in _CONST_FIRST_PARAM and not (op and not _LINE_WORD_RE.match(after)):
+                        new_items.append(Diagnostic("error", d.line, f"Variable illegal in Parameter: {rest}.", d.file))
                     changed = True
                     continue
             callables = frozenset(symbols.declared_variable_names(program) | set(profile.functions))
             fw = _LINE_WORD_RE.match(text, len(text) - len(text.lstrip(" \t")))
             needs_paren = bool(
-                fw and fw.group(0).upper() not in profile.instructions
-                and not text[fw.end():].lstrip(" \t").startswith(("(", "."))
+                fw
+                and fw.group(0).upper() not in profile.instructions
+                and not text[fw.end() :].lstrip(" \t").startswith(("(", "."))
                 and fw.group(0).upper() not in symbols.declared_variable_names(program)
-                and structure._bare_function_needs_paren(fw.group(0).upper(), profile.functions))
+                and structure._bare_function_needs_paren(fw.group(0).upper(), profile.functions)
+            )
             cond_text = structure.condition_part(text)
             cond_text = cond_text if cond_text and cond_text.strip() else None
             if cond_text is None and re.match(r"(?i)\s*if\b", text):
@@ -1937,29 +2266,33 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
             if needs_paren and fw:
                 # the operands after a parenthesis-less function are named (oracle, CR300,
                 # 2026-10-10: `Timer is bar baz` -> `bar`, `baz`)
-                rest = text[fw.end():]  # (a leading `is` counts as an operand, never named)
+                rest = text[fw.end() :]  # (a leading `is` counts as an operand, never named)
                 if re.fullmatch(r"[\w\s]*", rest):
                     # as many operands as the function has parameters are read (oracle, CR300,
                     # 2026-10-10: `Timer foo bar baz` names three, `COS foo bar` one)
                     count = profile.functions[fw.group(0).upper()].get("nargs") or 1
-                    words = [w for w in re.findall(r"[A-Za-z_]\w*|\d+", rest)[:count]
-                             if not w[0].isdigit() and w.upper() not in here and w.upper() != "IS"]
+                    words = [
+                        w
+                        for w in re.findall(r"[A-Za-z_]\w*|\d+", rest)[:count]
+                        if not w[0].isdigit() and w.upper() not in here and w.upper() != "IS"
+                    ]
                 else:
                     words = _leading_unknown_words(rest, here)
             elif re.match(r"(?i)\s*NOT\s", text):
                 words = _leading_unknown_words(re.sub(r"(?i)^\s*NOT\b", "", text), here)
             for word in words:
-                new_items.append(Diagnostic(
-                    "error", d.line, profile.unresolved_symbol_message.format(name=word), d.file,
-                    True))
+                new_items.append(
+                    Diagnostic("error", d.line, profile.unresolved_symbol_message.format(name=word), d.file, True)
+                )
                 changed = True
             if needs_paren:
                 # a built-in function used as the first word without its parenthesis (oracle,
                 # CR300/CR350, 2026-10-08: `Sin foo`, `Timer 1`, `COS of angle`)
                 d = dataclasses.replace(d, message=f"Expression expects ( : {text}.")
                 changed = True
-            if d.message.startswith(_GENERIC_FALLBACK_PREFIX) and (stmt := unparsed_text.get(
-                    (d.line, d.file, _echo_key(text)))):
+            if d.message.startswith(_GENERIC_FALLBACK_PREFIX) and (
+                stmt := unparsed_text.get((d.line, d.file, _echo_key(text)))
+            ):
                 # an assignment's pass-1 syntax verdicts are the same words on CR300/CR350
                 # (oracle, 2026-10-10: `X = 1 2` -> `Incomplete expression`, `X = (1 2)` -> `No Matching,
                 # or out of place )`), whatever names precede them
@@ -1968,82 +2301,121 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 scan_text = stmt.text
                 inline = structure.inline_if_condition(stmt.text) if cond is None else None
                 if inline and ";" in inline:
-                    cond, inline = inline, None   # `If X ; = 1 Then Y = 2`: the condition alone
+                    cond, inline = inline, None  # `If X ; = 1 Then Y = 2`: the condition alone
                 if inline:
                     # `If X Y Then Y = 1`: an unreadable condition is reported alone, as for a block
                     # `If` (oracle, CR300/CR350 and CR6, 2026-10-10)
                     scan_text = "If " + inline + "Then"
                     inline_scan = structure._pass1_scan(scan_text, structure._Everything(), profile)
-                    if inline_scan and inline_scan[0] == "pass1" and inline_scan[1] in ("incomplete", "no_matching", "fallback"):
+                    if (
+                        inline_scan
+                        and inline_scan[0] == "pass1"
+                        and inline_scan[1] in ("incomplete", "no_matching", "fallback")
+                    ):
                         cond = inline
-                verdict = (structure._pass1_scan(scan_text, structure._Everything(), profile)
-                           if cond is not None
-                           or re.match(r"\s*(?:[A-Za-z_]\w*\s*=|NOT\b)", stmt.text, re.I)
-                           or re.match(r"\s*(?:\d[\w.]*|-\s*\d[\w.]*|\"[^\"]*\")\s*=", stmt.text)
-                           or re.match(r"\s*[A-Za-z_]\w*\s+(?:AND|OR|XOR|IMP|EQV)\b[^=]*[\w)]\s*=", stmt.text, re.I)
-                           or re.search(r"\b(?:AND|OR|XOR|IMP|EQV)\b[^=]*=", stmt.text, re.I)
-                           else None)  # (prose stays generic)
-                head = {"invalid_assignment": "Invalid assignment in expression: ",
+                verdict = (
+                    structure._pass1_scan(scan_text, structure._Everything(), profile)
+                    if cond is not None
+                    or re.match(r"\s*(?:[A-Za-z_]\w*\s*=|NOT\b)", stmt.text, re.I)
+                    or re.match(r"\s*(?:\d[\w.]*|-\s*\d[\w.]*|\"[^\"]*\")\s*=", stmt.text)
+                    or re.match(r"\s*[A-Za-z_]\w*\s+(?:AND|OR|XOR|IMP|EQV)\b[^=]*[\w)]\s*=", stmt.text, re.I)
+                    or re.search(r"\b(?:AND|OR|XOR|IMP|EQV)\b[^=]*=", stmt.text, re.I)
+                    else None
+                )  # (prose stays generic)
+                head = (
+                    {
+                        "invalid_assignment": "Invalid assignment in expression: ",
                         "incomplete": "Incomplete expression: ",
                         "no_matching": "No Matching, or out of place ) in expression: ",
-                        "expects_comma": "Expression expects , : "}.get(verdict[1]) \
-                    if verdict and verdict[0] == "pass1" else None
+                        "expects_comma": "Expression expects , : ",
+                    }.get(verdict[1])
+                    if verdict and verdict[0] == "pass1"
+                    else None
+                )
                 call = re.match(r"\s*([A-Za-z_]\w*)\s*\(([^()]*)", stmt.text)
-                juxt = call and stmt.reason != "lex error: unterminated string" and re.search(
-                    r"[\w\"]\s+(?!(?:AND|OR|XOR|MOD|IMP|EQV)\b)[A-Za-z_\d\"]", call.group(2), re.I)
-                if (head is None and call and call.group(1).upper() in profile.functions
-                        and call.group(1).upper() not in symbols.declared_variable_names(program)
-                        and juxt):
+                juxt = (
+                    call
+                    and stmt.reason != "lex error: unterminated string"
+                    and re.search(r"[\w\"]\s+(?!(?:AND|OR|XOR|MOD|IMP|EQV)\b)[A-Za-z_\d\"]", call.group(2), re.I)
+                )
+                if (
+                    head is None
+                    and call
+                    and call.group(1).upper() in profile.functions
+                    and call.group(1).upper() not in symbols.declared_variable_names(program)
+                    and juxt
+                ):
                     # a built-in call whose argument list holds juxtaposed operands (oracle, CR300,
                     # 2026-10-10: `Sin (foo bar)`, `ArrayIndex (Array Index)`): `Expression expects ,`
                     # when the argument is not the function's last, else `No Matching` (oracle,
                     # CR300, 2026-10-11: `Round (A B, 1)`, `UDPDataGram("a",UDP Port, ...) - tail`
                     # expect a comma, `Sin (A B)`, `Round (A, 1 B)` do not); text after the `)` is not read
-                    k = call.group(2)[:juxt.start() + 1].count(",") + 1
+                    k = call.group(2)[: juxt.start() + 1].count(",") + 1
                     nargs = profile.functions[call.group(1).upper()].get("nargs") or 0
-                    head = ("Expression expects , : " if k < nargs
-                            else "No Matching, or out of place ) in expression: ")
+                    head = "Expression expects , : " if k < nargs else "No Matching, or out of place ) in expression: "
                     if call.group(1).upper() in structure._SELF_CLOSING_FUNCTIONS:
-                        head = "Incomplete expression: "   # (`Abs(x y)`, oracle, CR300, 2026-10-12)
+                        head = "Incomplete expression: "  # (`Abs(x y)`, oracle, CR300, 2026-10-12)
                 rhs_call = re.match(r"\s*[A-Za-z_]\w*\s*=\s*([A-Za-z_]\w*)\s*\((.*)$", stmt.text, re.S)
-                if (verdict and verdict[0] == "pass1" and rhs_call
-                        and rhs_call.group(1).upper() in profile.functions and not words
-                        and (verdict[1] in ("no_matching", "expects_comma") or (
+                if (
+                    verdict
+                    and verdict[0] == "pass1"
+                    and rhs_call
+                    and rhs_call.group(1).upper() in profile.functions
+                    and not words
+                    and (
+                        verdict[1] in ("no_matching", "expects_comma")
+                        or (
                             verdict[1] == "incomplete"
-                            and rhs_call.group(1).upper() in structure._SELF_CLOSING_FUNCTIONS))):
+                            and rhs_call.group(1).upper() in structure._SELF_CLOSING_FUNCTIONS
+                        )
+                    )
+                ):
                     # the bad argument's own undefined words come first (oracle, CR300, 2026-10-12:
                     # `x = Sin(Zork Y)` -> `Zork is not defined.` then the message)
                     parts = _split_args_quoted(rhs_call.group(2)) or []
                     bad = next((a for a in parts if _adjacent_operands(a)), None)
-                    for word in (_leading_unknown_words(bad.strip(), here) if bad else []):
-                        new_items.append(Diagnostic("error", d.line,
-                                                    profile.unresolved_symbol_message.format(name=word),
-                                                    d.file, True))
-                if head == "No Matching, or out of place ) in expression: " and cond is None \
-                        and stmt.reason != "lex error: unterminated string" and (
+                    for word in _leading_unknown_words(bad.strip(), here) if bad else []:
+                        new_items.append(
+                            Diagnostic(
+                                "error", d.line, profile.unresolved_symbol_message.format(name=word), d.file, True
+                            )
+                        )
+                if (
+                    head == "No Matching, or out of place ) in expression: "
+                    and cond is None
+                    and stmt.reason != "lex error: unterminated string"
+                    and (
                         refined := structure._unclosed_call_message(
-                            profile, stmt.text, stmt.at_eol, symbols.declared_variable_names(program))):
+                            profile, stmt.text, stmt.at_eol, symbols.declared_variable_names(program)
+                        )
+                    )
+                ):
                     # a call left open at the end of the line: its argument count decides the message
                     # as on CR6/CR1000X (oracle, CR300/CR350, 2026-10-11: `x = Round(x` -> `Expression
                     # expects ,`, `x = FileOpen (s, "r",` -> the generic fallback)
                     d = dataclasses.replace(d, message=refined)
                     changed = True
                 elif cond is not None:
-                    if head == "No Matching, or out of place ) in expression: " and (
+                    if (
+                        head == "No Matching, or out of place ) in expression: "
+                        and (
                             refined := structure._unclosed_call_message(
-                                profile, cond, False, symbols.declared_variable_names(program))
-                            ) and refined.startswith("Expression expects ,"):
+                                profile, cond, False, symbols.declared_variable_names(program)
+                            )
+                        )
+                        and refined.startswith("Expression expects ,")
+                    ):
                         # `If Round(X Then`: a call left open in a condition, same count rule as a
                         # statement (oracle, CR300/CR350, 2026-10-12)
                         head = "Expression expects , : "
                     # a `While`/`Do While|Until`/`Loop While|Until` condition echoes alone, no
                     # line-end newline (oracle, CR300/CR350, 2026-10-10)
-                    if head is None and ";" in cond:   # (oracle, 2026-10-12: `Do While X ;`, `Case 1 ;`)
+                    if head is None and ";" in cond:  # (oracle, 2026-10-12: `Do While X ;`, `Case 1 ;`)
                         head = "Invalid symbol in expression: "
                     d = dataclasses.replace(d, message=(head or _GENERIC_FALLBACK_PREFIX) + cond + ".")
                     changed = True
                 elif head:
-                    d = dataclasses.replace(d, message=head + d.message[len(_GENERIC_FALLBACK_PREFIX):])
+                    d = dataclasses.replace(d, message=head + d.message[len(_GENERIC_FALLBACK_PREFIX) :])
                     changed = True
         new_items.append(d)
     if changed:
@@ -2051,9 +2423,11 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
         return
 
 
-_ARITY_PREFIXES = {"many": "No Matching, or out of place ) in expression: ",
-                   "few": "Expression expects , : ",
-                   "empty": "Invalid, or out of place expression: "}
+_ARITY_PREFIXES = {
+    "many": "No Matching, or out of place ) in expression: ",
+    "few": "Expression expects , : ",
+    "empty": "Invalid, or out of place expression: ",
+}
 
 
 class _ArityState(TypedDict, total=False):
@@ -2079,8 +2453,11 @@ def _arity_walk(expr: S.Expr | None, known: set[str], profile, state: _ArityStat
         problem = expressions._call_arity_problem(expr.name, expr.args, profile)
         args, stop = expr.args, False
         if problem == "many":
-            at = next(k for k in range(len(args))
-                      if expressions._call_arity_problem(expr.name, args[:k + 1], profile) == "many")
+            at = next(
+                k
+                for k in range(len(args))
+                if expressions._call_arity_problem(expr.name, args[: k + 1], profile) == "many"
+            )
             args, stop = args[:at], True
             state.setdefault("kind", "many")
         elif problem in ("few", "empty"):
@@ -2126,8 +2503,7 @@ def order_names_around_arity(program: S.Program, profile, diags: Diagnostics) ->
         key = (stmt.line, stmt.file)
         if per_line[key] != 1:
             continue
-        own = [(i, d) for i, d in enumerate(diags.items) if (d.line, d.file) == key
-               and d.severity == "error"]
+        own = [(i, d) for i, d in enumerate(diags.items) if (d.line, d.file) == key and d.severity == "error"]
         if known is None:
             known = expressions._known_names(program, profile)
         state: _ArityState = {"names": []}
@@ -2137,17 +2513,28 @@ def order_names_around_arity(program: S.Program, profile, diags: Diagnostics) ->
         if state.get("bad") or kind is None:
             continue
         arity = [(i, d) for i, d in own if d.message.startswith(_ARITY_PREFIXES[kind])]
-        if not arity and isinstance(stmt, S.Assignment) and own and expressions._undefined_names(
-                stmt.target, known):
+        if not arity and isinstance(stmt, S.Assignment) and own and expressions._undefined_names(stmt.target, known):
             # an unresolved target hides the pass-1 arity check, but the parse still reaches it
-            arity = [(own[0][0], Diagnostic("error", stmt.line, expressions._arity_message(
-                kind, stmt.text, profile, stmt.at_eol, True), stmt.file, show_file=False))]
+            arity = [
+                (
+                    own[0][0],
+                    Diagnostic(
+                        "error",
+                        stmt.line,
+                        expressions._arity_message(kind, stmt.text, profile, stmt.at_eol, True),
+                        stmt.file,
+                        show_file=False,
+                    ),
+                )
+            ]
         if len(arity) != 1 or any(
-                d.message != arity[0][1].message and not d.message.endswith(_UNRESOLVED_SUFFIX)
-                for _, d in own):
+            d.message != arity[0][1].message and not d.message.endswith(_UNRESOLVED_SUFFIX) for _, d in own
+        ):
             continue
-        new = [Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=n),
-                          stmt.file) for n in state["names"]] + [arity[0][1]]
+        new = [
+            Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=n), stmt.file)
+            for n in state["names"]
+        ] + [arity[0][1]]
         first = own[0][0]
         drop = {id(d) for _, d in own}
         items = [d for d in diags.items if id(d) not in drop]
@@ -2163,8 +2550,7 @@ def order_names_before_call_arity(program: S.Program, profile, diags: Diagnostic
     `Y is not defined.`, then `Call argument required.` / the `No Matching` or fallback line)."""
     if profile.name not in ("cr300", "cr350"):
         return
-    functions = {st.name.upper() for st in program.statements
-                 if isinstance(st, S.SubDef) and st.keyword == "FUNCTION"}
+    functions = {st.name.upper() for st in program.statements if isinstance(st, S.SubDef) and st.keyword == "FUNCTION"}
     if not functions:
         return
     per_line = collections.Counter((st.line, st.file) for st in program.statements)
@@ -2180,19 +2566,31 @@ def order_names_before_call_arity(program: S.Program, profile, diags: Diagnostic
         own = [diags.items[i] for i in at]
         names = [d for d in own if re.fullmatch(r"\w+ is not defined\.", d.message)]
         rest = [d for d in own if d not in names]
-        if not names or not rest or not all(
-                d.message == "Call argument required." or d.message.startswith((
-                    "No Matching, or out of place ) in expression: ",
-                    "Invalid, or out of place expression: ")) for d in rest):
+        if (
+            not names
+            or not rest
+            or not all(
+                d.message == "Call argument required."
+                or d.message.startswith(
+                    ("No Matching, or out of place ) in expression: ", "Invalid, or out of place expression: ")
+                )
+                for d in rest
+            )
+        ):
             continue
-        diags.items[at[0]:at[-1] + 1] = names + rest
+        diags.items[at[0] : at[-1] + 1] = names + rest
 
 
-_CLOSER_ERRORS = frozenset({
-    "END IF without IF or END SELECT without SELECT.", "NEXT without FOR.", "LOOP without DO.",
-    "IF or SELECT statement illegally has SCAN without NEXT SCAN.",
-    "FOR NEXT statement illegally has SCAN without NEXT SCAN.",
-    "LOOP statement illegally has SCAN without NEXT SCAN."})
+_CLOSER_ERRORS = frozenset(
+    {
+        "END IF without IF or END SELECT without SELECT.",
+        "NEXT without FOR.",
+        "LOOP without DO.",
+        "IF or SELECT statement illegally has SCAN without NEXT SCAN.",
+        "FOR NEXT statement illegally has SCAN without NEXT SCAN.",
+        "LOOP statement illegally has SCAN without NEXT SCAN.",
+    }
+)
 
 
 # Errors that do not hide the closer / `CallTable` errors below (oracle, CR300, 2026-10-04, the
@@ -2200,7 +2598,7 @@ _CLOSER_ERRORS = frozenset({
 # (`EndSub without Sub or nested subs.`) and a built-in call's arity error.
 def _hides_nothing(d) -> bool:
     if d.message.endswith(" must be used inside a table declaration."):
-        return True   # (oracle, 2026-10-13: `Sample` outside a table beside an unknown `CallTable`)
+        return True  # (oracle, 2026-10-13: `Sample` outside a table beside an unknown `CallTable`)
     if d.message.endswith("without Sub or nested subs."):
         return True
     if d.message == "If without EndIf inside of Sub.":  # oracle, CR300/CR350, 2026-10-11 (`t5` probe)
@@ -2228,11 +2626,15 @@ def drop_block_closer_errors_after_errors(program: S.Program, profile, diags: Di
     if not closers:
         return
     lines = {(d.line, d.file) for d in closers}
-    placement = [d for d in diags.items if d.severity == "error" and (d.line, d.file) in lines
-                 and d.message.endswith(" illegally occurs before BeginProg.")]
+    placement = [
+        d
+        for d in diags.items
+        if d.severity == "error"
+        and (d.line, d.file) in lines
+        and d.message.endswith(" illegally occurs before BeginProg.")
+    ]
     ours = {id(d) for d in closers + placement}
-    if not any(d.severity == "error" and id(d) not in ours and not _hides_nothing(d)
-               for d in diags.items):
+    if not any(d.severity == "error" and id(d) not in ours and not _hides_nothing(d) for d in diags.items):
         return
     diags.items[:] = [d for d in diags.items if id(d) not in ours]
 
@@ -2248,13 +2650,21 @@ def drop_calltable_error_with_other_errors(program: S.Program, profile, diags: D
     # (a table field in an expression is hidden the same way: oracle, CR300/CR350, 2026-10-11,
     # `x = Nope.Field(1,1)` with `Zork = 1` before or after it, `chm/tablenameeventend_1.CR6`)
     sites = {(st.line, st.file) for st in program.statements if not isinstance(st, S.Unparsed)}
-    mine = [d for d in diags.items if d.severity == "error" and (d.line, d.file) in sites
-            and d.message.startswith(("Could not find DataTable ", "Could not find FileMark table ",
-                                      "Cannot find DataTable "))]
+    mine = [
+        d
+        for d in diags.items
+        if d.severity == "error"
+        and (d.line, d.file) in sites
+        and d.message.startswith(
+            ("Could not find DataTable ", "Could not find FileMark table ", "Cannot find DataTable ")
+        )
+    ]
     lines = {(d.line, d.file) for d in mine}  # (an error on the same line does not hide it: oracle,
     # CR300/CR350, 2026-10-11, `X = Tmp.dat + Zed` prints both)
-    if mine and any(d.severity == "error" and d not in mine and not _hides_nothing(d)
-                    and (d.line, d.file) not in lines for d in diags.items):
+    if mine and any(
+        d.severity == "error" and d not in mine and not _hides_nothing(d) and (d.line, d.file) not in lines
+        for d in diags.items
+    ):
         diags.items[:] = [d for d in diags.items if d not in mine]
 
 
@@ -2264,12 +2674,12 @@ def drop_compound_target_repeat(program: S.Program, profile, diags: Diagnostics)
     if profile.name not in ("cr300", "cr350"):
         return
     for stmt in program.statements:
-        if not (isinstance(stmt, S.Assignment) and stmt.compound
-                and isinstance(stmt.target, (S.Name, S.Index))):
+        if not (isinstance(stmt, S.Assignment) and stmt.compound and isinstance(stmt.target, (S.Name, S.Index))):
             continue
         message = profile.unresolved_symbol_message.format(name=stmt.target.name)
-        same = [i for i, d in enumerate(diags.items)
-                if (d.line, d.file) == (stmt.line, stmt.file) and d.message == message]
+        same = [
+            i for i, d in enumerate(diags.items) if (d.line, d.file) == (stmt.line, stmt.file) and d.message == message
+        ]
         if len(same) >= 2:
             del diags.items[same[1]]
 
@@ -2293,21 +2703,21 @@ def order_block_keyword_calls(program: S.Program, profile, diags: Diagnostics) -
         # string literals are not code: `LEN("Scan(")` is no call, `LEN("Nope")` names nothing
         code = re.sub(r'"[^"]*"', lambda q: " " * len(q.group()), stmt.text or "")
         m = _CALL_KEYWORD_RE.search(code)
-        marks = [d for d in diags.items if (d.line, d.file) == key
-                 and d.message.startswith("Incomplete expression:")]
+        marks = [d for d in diags.items if (d.line, d.file) == key and d.message.startswith("Incomplete expression:")]
         if not (m and marks):
             continue
-        if any((d.line, d.file) == key and d.message.startswith("Invalid, or out of place expression:")
-               for d in diags.items):  # `Q(1) = Scan(1)`, an undeclared or scalar indexed target
+        if any(
+            (d.line, d.file) == key and d.message.startswith("Invalid, or out of place expression:")
+            for d in diags.items
+        ):  # `Q(1) = Scan(1)`, an undeclared or scalar indexed target
             diags.items[:] = [d for d in diags.items if d not in marks]
             continue
-        before = {w.upper() for w in re.findall(r"[A-Za-z_]\w*", code[:m.start()])}
+        before = {w.upper() for w in re.findall(r"[A-Za-z_]\w*", code[: m.start()])}
         keep = []
         for d in diags.items:
             if (d.line, d.file) == key:
                 name = re.fullmatch(r"(\w+) is not defined\.", d.message)
-                if d.message.startswith("Dimensions not declared") or (
-                        name and name.group(1).upper() not in before):
+                if d.message.startswith("Dimensions not declared") or (name and name.group(1).upper() not in before):
                     continue
             keep.append(d)
         group = [d for d in keep if (d.line, d.file) == key]
@@ -2331,8 +2741,11 @@ def fix_then_operand(program: S.Program, profile, diags: Diagnostics) -> None:
         if not (verdict and verdict[0] == "pass1"):
             continue
         key = (stmt.line, stmt.file)
-        hits = [i for i, d in enumerate(diags.items)
-                if (d.line, d.file) == key and d.message == profile.unresolved_symbol_message.format(name="Then")]
+        hits = [
+            i
+            for i, d in enumerate(diags.items)
+            if (d.line, d.file) == key and d.message == profile.unresolved_symbol_message.format(name="Then")
+        ]
         if not hits:
             continue
         message = structure._pass1_message(profile, dataclasses.replace(stmt, at_eol=False), verdict[1])
@@ -2372,9 +2785,9 @@ def _string_reached(text: str) -> bool:
         lexer.tokenize(text, 0)
         return False
     except lexer.LexError as e:
-        if e.message != "unterminated string" or text[e.col:e.col + 1] != '"':
+        if e.message != "unterminated string" or text[e.col : e.col + 1] != '"':
             return False
-        head = text[:e.col]
+        head = text[: e.col]
     toks = [t for t in lexer.tokenize(head, 0) if t.kind != "EOF"]
     expect, depth = True, 0
     for t in toks:
@@ -2419,10 +2832,19 @@ def order_unterminated_string(program: S.Program, profile, diags: Diagnostics) -
             continue
         key = (stmt.line, stmt.file)
         own = [d for d in diags.items if (d.line, d.file) == key]
-        final = next((d for d in own if d.message.startswith((_GENERIC_FALLBACK_PREFIX, "Incomplete expression:",
-                                                              "No Matching, or out of place )"))), None)
-        if final is None or not all(d.message.endswith(_UNRESOLVED_SUFFIX) or d.message == _STRING_END_QUOTE
-                                    or d is final for d in own):
+        final = next(
+            (
+                d
+                for d in own
+                if d.message.startswith(
+                    (_GENERIC_FALLBACK_PREFIX, "Incomplete expression:", "No Matching, or out of place )")
+                )
+            ),
+            None,
+        )
+        if final is None or not all(
+            d.message.endswith(_UNRESOLVED_SUFFIX) or d.message == _STRING_END_QUOTE or d is final for d in own
+        ):
             continue
         sub = re.match(r"\s*([A-Za-z_]\w*)\s*\([^()\"]*\)\s+\"", stmt.text)
         if (sub and sub.group(1).upper() in declared) or re.match(r"(?i)\s*(?:Public|Dim)\b", stmt.text):
@@ -2433,16 +2855,22 @@ def order_unterminated_string(program: S.Program, profile, diags: Diagnostics) -
         if not names and (m := _IF_STRING_RE.match(stmt.text)):
             if known is None:
                 known = prose_known(program, profile)
-            here = known - declared_later(first_declarations(program), stmt.line, stmt.file) \
-                - diags.cascade_gone
-            words = _leading_unknown_words(m.group(1), here) + (
-                [m.group(2)] if m.group(2).upper() not in here else [])
-            names = [Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=w),
-                                stmt.file, True) for w in words]
-        if final.message.startswith("No Matching") and re.match(
-                r"\s*([A-Za-z_]\w*)\s*\(", stmt.text) and stmt.text.lstrip().split("(")[0].strip().upper() in profile.functions:
-            final = dataclasses.replace(final, message=f"{_GENERIC_FALLBACK_PREFIX}{stmt.text}"
-                                        f"{chr(10) if final.message.endswith(chr(10) + '.') else ''}.")
+            here = known - declared_later(first_declarations(program), stmt.line, stmt.file) - diags.cascade_gone
+            words = _leading_unknown_words(m.group(1), here) + ([m.group(2)] if m.group(2).upper() not in here else [])
+            names = [
+                Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=w), stmt.file, True)
+                for w in words
+            ]
+        if (
+            final.message.startswith("No Matching")
+            and re.match(r"\s*([A-Za-z_]\w*)\s*\(", stmt.text)
+            and stmt.text.lstrip().split("(")[0].strip().upper() in profile.functions
+        ):
+            final = dataclasses.replace(
+                final,
+                message=f"{_GENERIC_FALLBACK_PREFIX}{stmt.text}"
+                f"{chr(10) if final.message.endswith(chr(10) + '.') else ''}.",
+            )
         at = diags.items.index(own[0])
         diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
         diags.items[at:at] = [*names, Diagnostic("error", stmt.line, _STRING_END_QUOTE, stmt.file, True), final]
@@ -2473,14 +2901,14 @@ def semicolon_headers(program: S.Program, profile, diags: Diagnostics) -> None:
             eq = next((t for t in toks if t.kind == "OP" and t.text == "="), None)
             if eq is None:
                 continue
-            echo = stmt.text[(toks[semi].col if toks[semi].col < eq.col else eq.col + 1):].lstrip()
+            echo = stmt.text[(toks[semi].col if toks[semi].col < eq.col else eq.col + 1) :].lstrip()
         else:
             start = None
             for t in toks[:semi]:
                 if t.kind == "OP" and t.text == "=":
                     start = t.col + 1
                 elif t.kind == "IDENT" and t.upper in ("TO", "STEP"):
-                    rest = stmt.text[t.col + len(t.text):]
+                    rest = stmt.text[t.col + len(t.text) :]
                     start = t.col + len(t.text) + len(rest) - len(rest.lstrip())
             if start is None:
                 continue
@@ -2492,7 +2920,9 @@ def semicolon_headers(program: S.Program, profile, diags: Diagnostics) -> None:
         if at is None:
             continue
         diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
-        diags.items.insert(at, Diagnostic("error", stmt.line, f"Invalid symbol in expression: {echo}.", stmt.file, True))
+        diags.items.insert(
+            at, Diagnostic("error", stmt.line, f"Invalid symbol in expression: {echo}.", stmt.file, True)
+        )
 
 
 def add_string_illegal(program: S.Program, profile, diags: Diagnostics) -> None:
@@ -2509,7 +2939,8 @@ def add_string_illegal(program: S.Program, profile, diags: Diagnostics) -> None:
         key = (stmt.line, stmt.file)
         own = [d for d in diags.items if (d.line, d.file) == key]
         prefixes = (_GENERIC_FALLBACK_PREFIX, "Incomplete expression:") + (
-            ("Invalid symbol in expression:",) if ";" in stmt.text else ())   # `X = "a" and "b" ;`
+            ("Invalid symbol in expression:",) if ";" in stmt.text else ()
+        )  # `X = "a" and "b" ;`
         final = next((d for d in own if d.message.startswith(prefixes)), None)
         if final is None or any(d.message == "String is illegal here" for d in own):
             continue
@@ -2573,9 +3004,16 @@ def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics, early:
     params: dict[str, str | None] = {}  # the enclosing Sub/Function's plain parameters: name -> type
     for stmt in program.statements:
         if isinstance(stmt, S.SubDef):
-            params = {p.name.upper(): ((p.type or "FLOAT").upper() if p.by_ref is None and not p.dims
-                                       and (p.type or "FLOAT").upper() in ("LONG", "BOOLEAN", "FLOAT", "STRING")
-                                       else None) for p in stmt.params}
+            params = {
+                p.name.upper(): (
+                    (p.type or "FLOAT").upper()
+                    if p.by_ref is None
+                    and not p.dims
+                    and (p.type or "FLOAT").upper() in ("LONG", "BOOLEAN", "FLOAT", "STRING")
+                    else None
+                )
+                for p in stmt.params
+            }
             continue
         if bindings.closes_routine(stmt):
             params = {}
@@ -2583,14 +3021,20 @@ def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics, early:
         if isinstance(stmt, S.Call) and stmt.name.upper() == "TCPOPEN":
             calls = [stmt.args]
         else:
-            calls = [ix.args for e in expressions._stmt_exprs(stmt) for ix in expressions._index_nodes(e)
-                     if ix.name.upper() == "TCPOPEN"]
+            calls = [
+                ix.args
+                for e in expressions._stmt_exprs(stmt)
+                for ix in expressions._index_nodes(e)
+                if ix.name.upper() == "TCPOPEN"
+            ]
         for args in calls:
             if len(args) < 5 or args[4] is None:
                 continue
             arg = args[4]
-            own_dims = any((d.line, d.file) == (stmt.line, stmt.file)
-                           and d.message.startswith("Dimensions not declared") for d in diags.items)
+            own_dims = any(
+                (d.line, d.file) == (stmt.line, stmt.file) and d.message.startswith("Dimensions not declared")
+                for d in diags.items
+            )
             if own_dims and not (isinstance(args[4], S.Index) and args[4].name.upper() not in known):
                 continue  # (an earlier argument's dimension error ends the walk before the fifth)
             if isinstance(args[3], (S.Name, S.Index)) and args[3].name.upper() not in known:
@@ -2647,14 +3091,28 @@ def drop_after_alias_collision(program: S.Program, profile, diags: Diagnostics) 
     not do this). "Later" is in expanded source order, across `Include` files (round 31 review)."""
     if not profile.single_pass:
         return
-    aliases = {(st.line, st.file) for st in program.statements
-               if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"}
-    hit = next((d for d in diags.items if d.severity == "error" and (d.line, d.file) in aliases
-                and d.message.endswith(" already declared as a variable.")), None)
+    aliases = {
+        (st.line, st.file)
+        for st in program.statements
+        if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
+    }
+    hit = next(
+        (
+            d
+            for d in diags.items
+            if d.severity == "error"
+            and (d.line, d.file) in aliases
+            and d.message.endswith(" already declared as a variable.")
+        ),
+        None,
+    )
     if hit is not None:
         order: dict[tuple, int] = {}
         for i, st in enumerate(program.statements):
             order.setdefault((st.line, st.file), i)
         at = order[(hit.line, hit.file)]
-        diags.items[:] = [d for d in diags.items if not (
-            order.get((d.line, d.file), -1) > at or (d.file == hit.file and d.line > hit.line))]
+        diags.items[:] = [
+            d
+            for d in diags.items
+            if not (order.get((d.line, d.file), -1) > at or (d.file == hit.file and d.line > hit.line))
+        ]

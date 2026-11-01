@@ -51,7 +51,7 @@ class Image:
         if rel >= s.SizeOfRawData:
             return ""
         off = s.PointerToRawData + rel
-        raw = self.d[off:self.d.find(b"\0", off)]
+        raw = self.d[off : self.d.find(b"\0", off)]
         if len(raw) < 200 and all(32 <= c < 127 for c in raw):
             return raw.decode()
         return None
@@ -92,13 +92,15 @@ def instruction_table(img: Image) -> list[dict]:
     rows = []
     for index, off in enumerate(range(start, end + 16, 16)):
         codes = img.cstr(img.u32(off + 4)) or ""
-        rows.append({
-            "index": index,
-            "name": img.cstr(img.u32(off)),
-            "params": [int(c) for c in codes.split(",") if c],
-            "compile_fn": hex(img.u32(off + 8)),
-            "runtime_fn": hex(img.u32(off + 12)) if img.u32(off + 12) else None,
-        })
+        rows.append(
+            {
+                "index": index,
+                "name": img.cstr(img.u32(off)),
+                "params": [int(c) for c in codes.split(",") if c],
+                "compile_fn": hex(img.u32(off + 8)),
+                "runtime_fn": hex(img.u32(off + 12)) if img.u32(off + 12) else None,
+            }
+        )
     return rows
 
 
@@ -108,7 +110,7 @@ def function_table(img: Image) -> list[dict]:
     anchor = find_string(img, "CSGN")
 
     def name(off: int) -> str | None:
-        raw = img.d[off:off + 96].split(b"\0")[0]
+        raw = img.d[off : off + 96].split(b"\0")[0]
         return raw.decode() if raw and all(32 < c < 127 for c in raw) else None
 
     start = end = anchor
@@ -138,9 +140,9 @@ def symbol_table(img: Image) -> list[dict]:
     stride = anchor - img.d.rfind(b"\0SCAN\0", 0, anchor) - 1
 
     def name(off: int) -> str | None:
-        raw = img.d[off:off + 36]
+        raw = img.d[off : off + 36]
         text = raw.split(b"\0")[0]
-        return text.decode() if IDENT.match(text) and not any(raw[len(text):]) else None
+        return text.decode() if IDENT.match(text) and not any(raw[len(text) :]) else None
 
     start = end = anchor
     while name(start - stride):

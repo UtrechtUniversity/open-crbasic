@@ -18,8 +18,10 @@ def test_extract_empty_header_runs_into_result_line():
 
 
 def test_extract_blank_separator_dropped_and_missing_header():
-    assert tt.extract_times("[Times]\nline 1: Scan: 0\n\nline 9: Scan: 1 (Subroutine)\np.CR6 -- Compiled", "p.CR6") \
+    assert (
+        tt.extract_times("[Times]\nline 1: Scan: 0\n\nline 9: Scan: 1 (Subroutine)\np.CR6 -- Compiled", "p.CR6")
         == "line 1: Scan: 0\nline 9: Scan: 1 (Subroutine)"
+    )
     assert tt.extract_times("p.CR6 -- Compiled", "p.CR6") is None
 
 

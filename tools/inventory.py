@@ -29,7 +29,7 @@ from extract_tables import Image  # noqa: E402
 
 HEAD = re.compile(r"^// ==== (\S+) @ ([0-9a-f]{8})\n", re.M)
 CALL = re.compile(r"\b((?:thunk_)?FUN_[0-9a-f]{8})\(")
-CORE = "FUN_0050aef0"   # the message formatter every reporter wraps (`docs/binary.md`)
+CORE = "FUN_0050aef0"  # the message formatter every reporter wraps (`docs/binary.md`)
 WRAPPER = re.compile(r"(?:thunk_|\b)FUN_0050aef0\(([01]),param_1,")
 # a string symbol is read whole, commas and all (`s_When_channel_<_0,_measurements_p_0065c788`)
 SYMBOL = re.compile(r"\s*(?:s_\S*?_([0-9a-f]{8})|&DAT_([0-9a-f]{8}))\s*(?:,|$)")
@@ -38,8 +38,8 @@ SPEC = re.compile(r"%[-+ #0]*\d*(?:\.\d+)?(?:l|h)?[dsfgxXuc]")
 # A helper reached from the builders of this many instructions or more is shared infrastructure
 # (expression parsing, destination resolution); it is listed by name instead of expanded.
 SHARED = 15
-MIN_LITERAL = 10   # a Python template needs this many literal characters to identify a message
-LINKS = 20         # evidence links kept per field (the count is always complete)
+MIN_LITERAL = 10  # a Python template needs this many literal characters to identify a message
+LINKS = 20  # evidence links kept per field (the count is always complete)
 
 
 def sha256(path: Path) -> str:
@@ -64,8 +64,10 @@ def templates() -> list[tuple[re.Pattern, str]]:
         rel = path.relative_to(ROOT / "src").as_posix()
         for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
             if isinstance(node, ast.JoinedStr):
-                add("".join(str(v.value) if isinstance(v, ast.Constant) else "\x00" for v in node.values),
-                    f"{rel}:{node.lineno}")
+                add(
+                    "".join(str(v.value) if isinstance(v, ast.Constant) else "\x00" for v in node.values),
+                    f"{rel}:{node.lineno}",
+                )
             elif isinstance(node, ast.Constant) and isinstance(node.value, str):
                 add(node.value, f"{rel}:{node.lineno}")
 
@@ -98,9 +100,14 @@ def observations() -> list[dict]:
                 if outputs:
                     case = node.get("id", where)
                     found[(fixture, case)] = {
-                        "ref": f"tests/fixtures/{fixture}#{case}", "source": node["source"], "path": None,
+                        "ref": f"tests/fixtures/{fixture}#{case}",
+                        "source": node["source"],
+                        "path": None,
                         "siblings": {k: v for k, v in files.items() if isinstance(v, str)}
-                        if isinstance(files, dict) else None, "outputs": outputs}
+                        if isinstance(files, dict)
+                        else None,
+                        "outputs": outputs,
+                    }
                 return
             for key, value in node.items():
                 walk(value, fixture, f"{where}.{key}" if where else key)
@@ -115,8 +122,13 @@ def observations() -> list[dict]:
         program = path.with_suffix(".CR6")
         if record.get("theirs") and program.exists():
             rel = program.relative_to(ROOT).as_posix()
-            found[(rel, "")] = {"ref": rel, "source": program.read_text(encoding="latin-1"),
-                                "siblings": {}, "path": program, "outputs": [record["theirs"]]}
+            found[(rel, "")] = {
+                "ref": rel,
+                "source": program.read_text(encoding="latin-1"),
+                "siblings": {},
+                "path": program,
+                "outputs": [record["theirs"]],
+            }
     return list(found.values())
 
 
@@ -156,11 +168,11 @@ def main() -> None:
         return bisect.bisect_right(newlines, offset - 1) + 1
 
     heads = list(HEAD.finditer(src))
-    bodies: dict[str, tuple[int, str]] = {}   # name -> (offset of the body, body)
+    bodies: dict[str, tuple[int, str]] = {}  # name -> (offset of the body, body)
     by_addr: dict[int, str] = {}
     for i, m in enumerate(heads):
         end = heads[i + 1].start() if i + 1 < len(heads) else len(src)
-        bodies[m.group(1)] = (m.end(), src[m.end():end])
+        bodies[m.group(1)] = (m.end(), src[m.end() : end])
         by_addr.setdefault(int(m.group(2), 16), m.group(1))
 
     # reporters: every function that hands its first parameter to the formatter, and their thunks
@@ -169,8 +181,9 @@ def main() -> None:
         if name.removeprefix("thunk_") != CORE and (w := WRAPPER.search(body)):
             kind = "error" if w.group(1) == "1" else "warning"
             reporters[name.removeprefix("thunk_")] = reporters["thunk_" + name.removeprefix("thunk_")] = kind
-    report_call = re.compile(r"\b(" + "|".join(map(re.escape, sorted(reporters, key=len, reverse=True)))
-                             + r")\(([^;]*?)\);")
+    report_call = re.compile(
+        r"\b(" + "|".join(map(re.escape, sorted(reporters, key=len, reverse=True))) + r")\(([^;]*?)\);"
+    )
 
     def messages(name: str) -> list[dict]:
         at, body = bodies.get(name, (0, ""))
@@ -192,8 +205,13 @@ def main() -> None:
         out, seen = [], set()
         for m in CALL.finditer(body):
             c = m.group(1)
-            if c in bodies and c not in own and c not in reporters and c.removeprefix("thunk_") != CORE \
-                    and c not in seen:
+            if (
+                c in bodies
+                and c not in own
+                and c not in reporters
+                and c.removeprefix("thunk_") != CORE
+                and c not in seen
+            ):
                 seen.add(c)
                 out.append((c, line_of(at + m.start())))
         return out
@@ -217,7 +235,7 @@ def main() -> None:
                     todo.append(c)
         return sites, hit
 
-    users: dict[str, int] = defaultdict(int)   # helper -> instructions whose builder reaches it
+    users: dict[str, int] = defaultdict(int)  # helper -> instructions whose builder reaches it
     for b in builder_of.values():
         if b:
             for f in {c.removeprefix("thunk_") for c in reach(b, set())[0]}:
@@ -225,11 +243,18 @@ def main() -> None:
     shared = {f for f, k in users.items() if k >= SHARED}
 
     tmpl = templates()
-    source_text = "\n".join([*(p.read_text(encoding="utf-8") for p in (ROOT / "src" / "opencrbasic").rglob("*.py")),
-                             *(p.read_text(encoding="utf-8") for p in (ROOT / "src" / "opencrbasic" / "data").rglob("*.json")
-                               if not p.name.startswith("notices_"))])
+    source_text = "\n".join(
+        [
+            *(p.read_text(encoding="utf-8") for p in (ROOT / "src" / "opencrbasic").rglob("*.py")),
+            *(
+                p.read_text(encoding="utf-8")
+                for p in (ROOT / "src" / "opencrbasic" / "data").rglob("*.json")
+                if not p.name.startswith("notices_")
+            ),
+        ]
+    )
     observed = observations()
-    lines: dict[str, set[int]] = defaultdict(set)   # observed message text -> observation ids
+    lines: dict[str, set[int]] = defaultdict(set)  # observed message text -> observation ids
     for i, obs in enumerate(observed):
         for text in obs["outputs"]:
             for line in text.splitlines():
@@ -246,6 +271,7 @@ def main() -> None:
 
     from opencrbasic import profiles
     from opencrbasic.compiler import compile_file
+
     cr6 = profiles.get("cr6")
     emitted: dict[str, str | None] = {}
 
@@ -258,7 +284,7 @@ def main() -> None:
         where = next((w for rx, w in tmpl if rx.fullmatch(sample)), None)
         pieces = [q.strip() for q in SPEC.split(fmt) if len(q.strip()) >= MIN_LITERAL]
         if where is None and pieces and all(q in source_text for q in pieces):
-            where = "fragments in the sources"   # a message assembled from pieces
+            where = "fragments in the sources"  # a message assembled from pieces
         if where is None:
             rx = pattern(fmt)
             # a case whose sibling files are not a plain map cannot be replayed faithfully
@@ -286,8 +312,10 @@ def main() -> None:
         state = "tested" if where and seen else "partially tested" if where or seen else "unknown"
         return {**msg, "state": state, "implemented": where, "observed": [observed[i]["ref"] for i in seen[:3]]}
 
-    python = {p.relative_to(ROOT / "src").as_posix(): p.read_text(encoding="utf-8").splitlines()
-              for p in sorted((ROOT / "src" / "opencrbasic").rglob("*.py"))}
+    python = {
+        p.relative_to(ROOT / "src").as_posix(): p.read_text(encoding="utf-8").splitlines()
+        for p in sorted((ROOT / "src" / "opencrbasic").rglob("*.py"))
+    }
 
     def indirect_sites(fn: str) -> list[dict]:
         at, body = bodies[fn]
@@ -301,28 +329,44 @@ def main() -> None:
         uses = {i for i, text in enumerate(code) if word.search(text)}
         literal = re.compile(rf"[\"'`]{re.escape(name)}[\"'`(]", re.I)
         links = [f"{p}:{n}" for p, text in python.items() for n, line in enumerate(text, 1) if literal.search(line)]
-        entry: dict = {"name": name, "compile_fn": r["compile_fn"], "builder": builder,
-                       "messages": [], "helpers": [], "shared_helpers": [], "unresolved_calls": []}
+        entry: dict = {
+            "name": name,
+            "compile_fn": r["compile_fn"],
+            "builder": builder,
+            "messages": [],
+            "helpers": [],
+            "shared_helpers": [],
+            "unresolved_calls": [],
+        }
         if builder is not None:
             sites, hit = reach(builder, shared)
             for fn in [builder] + sorted(sites):
-                entry["messages"] += [evidence({**m, "via": None if fn == builder else fn}, uses)
-                                      for m in messages(fn)]
+                entry["messages"] += [evidence({**m, "via": None if fn == builder else fn}, uses) for m in messages(fn)]
                 entry["unresolved_calls"] += indirect_sites(fn)
-            entry["helpers"] = [{"name": c, "called_from": caller, "line": line}
-                                for c, (caller, line) in sorted(sites.items())]
+            entry["helpers"] = [
+                {"name": c, "called_from": caller, "line": line} for c, (caller, line) in sorted(sites.items())
+            ]
             entry["shared_helpers"] = sorted(hit)
         msgs = entry["messages"]
-        entry["state"] = ("unknown" if builder is None or not uses else
-                          "tested" if msgs and all(m["state"] == "tested" for m in msgs) else "partially tested")
+        entry["state"] = (
+            "unknown"
+            if builder is None or not uses
+            else "tested"
+            if msgs and all(m["state"] == "tested" for m in msgs)
+            else "partially tested"
+        )
         entry["python"] = {"count": len(links), "sites": links[:LINKS]}
         entry["observations"] = {"count": len(uses), "refs": [observed[i]["ref"] for i in sorted(uses)[:LINKS]]}
         out.append(entry)
 
     everywhere = set(range(len(observed)))
-    infrastructure = {fn: {"instructions": users[fn],
-                           "messages": [evidence(m, everywhere) for m in messages(fn if fn in bodies else "thunk_" + fn)]}
-                      for fn in sorted(shared)}
+    infrastructure = {
+        fn: {
+            "instructions": users[fn],
+            "messages": [evidence(m, everywhere) for m in messages(fn if fn in bodies else "thunk_" + fn)],
+        }
+        for fn in sorted(shared)
+    }
 
     pins = {
         "generator": "tools/inventory.py",
@@ -330,16 +374,29 @@ def main() -> None:
         "decompile": {"file": "scratch/re/CR6Comp.decomp.c", "sha256": sha256(args.decomp)},
         "instructions_json_sha256": sha256(ROOT / "src" / "opencrbasic" / "data" / "instructions.json"),
     }
-    args.out.write_text(json.dumps({**pins, "shared_helper_threshold": SHARED,
-                                    "reporters": dict(sorted(reporters.items())),
-                                    "instructions": out, "shared_helpers": infrastructure},
-                                   indent=1) + "\n", encoding="utf-8")
+    args.out.write_text(
+        json.dumps(
+            {
+                **pins,
+                "shared_helper_threshold": SHARED,
+                "reporters": dict(sorted(reporters.items())),
+                "instructions": out,
+                "shared_helpers": infrastructure,
+            },
+            indent=1,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     # a notice names each resolved message of the instruction's builder or own helpers that
     # opencrbasic neither emits from a template nor reproduces (`docs/inventory.md`)
-    missing = {e["name"].upper(): sorted({m["text"] for m in e["messages"] if m["text"] and not m["implemented"]})
-               for e in out}
-    args.notices.write_text(json.dumps({**pins, "missing": {k: v for k, v in missing.items() if v}},
-                                       indent=1, sort_keys=True) + "\n", encoding="utf-8")
+    missing = {
+        e["name"].upper(): sorted({m["text"] for m in e["messages"] if m["text"] and not m["implemented"]}) for e in out
+    }
+    args.notices.write_text(
+        json.dumps({**pins, "missing": {k: v for k, v in missing.items() if v}}, indent=1, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
 
 if __name__ == "__main__":

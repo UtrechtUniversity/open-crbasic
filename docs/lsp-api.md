@@ -161,11 +161,11 @@ function_arg_count_classes(profile, provider, names=None) -> tuple[ArgCountRow(n
 `opencrbasic.catalog` lists every name a program can use for one logger profile.
 
 ```python
-cat = InstructionCatalog.for_profile("cr6")     # cached; ValueError for an unknown profile
-cat.get("voltse")            # CatalogEntry(name="VoltSe", kind="instruction", ...) or None
-cat.get("if", "symbol")      # one kind only
-cat.entries("if")            # every entry of the name, in kind priority order
-cat.names("keyword")         # profile spellings of one kind, sorted case-insensitively
+cat = InstructionCatalog.for_profile("cr6")  # cached; ValueError for an unknown profile
+cat.get("voltse")  # CatalogEntry(name="VoltSe", kind="instruction", ...) or None
+cat.get("if", "symbol")  # one kind only
+cat.entries("if")  # every entry of the name, in kind priority order
+cat.names("keyword")  # profile spellings of one kind, sorted case-insensitively
 iter(cat), len(cat), "voltse" in cat
 ```
 
@@ -738,15 +738,15 @@ so compiler acceptance is unchanged (`tools/selfdiff.py`: 0 differ). Handoff wit
 corpus counts: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-05a-handoff.md`.
 
 ```python
-ix = bindings.build(result.program, "cr6")      # AnalysisResult.program, or parser.parse_file()[0]
-ix.declarations, ix.references                  # tuples, in source (emission) order
-ix.failures                                     # IndexFailure(index, file, line, message)
-ix.unparsed                                     # Unparsed statements the parser could not take apart
+ix = bindings.build(result.program, "cr6")  # AnalysisResult.program, or parser.parse_file()[0]
+ix.declarations, ix.references  # tuples, in source (emission) order
+ix.failures  # IndexFailure(index, file, line, message)
+ix.unparsed  # Unparsed statements the parser could not take apart
 ix.declarations_named("x"), ix.references_to(decl), ix.records_in(stmt), ix.counts()
-ix.lookup("x", routine=None, role="read")       # Resolution(candidates, ambiguity)
-ix.token_of(record)                             # lexer Token (col into record.unit.text) or None
-bindings.name_tokens(stmt, "x", member=False, string=False)   # token-based, strings skipped
-bindings.segment_starts(logical_text)           # [(offset, segment text)] as the parser splits on ':'
+ix.lookup("x", routine=None, role="read")  # Resolution(candidates, ambiguity)
+ix.token_of(record)  # lexer Token (col into record.unit.text) or None
+bindings.name_tokens(stmt, "x", member=False, string=False)  # token-based, strings skipped
+bindings.segment_starts(logical_text)  # [(offset, segment text)] as the parser splits on ':'
 ```
 
 `build` never raises for a program (a bad profile name is still `ValueError`). Each statement is

@@ -1,4 +1,3 @@
-
 import contextlib
 import io
 import shutil
@@ -105,7 +104,7 @@ def test_max_file_bytes_refuses_the_entry_and_its_includes(tmp_path):
     assert over.text == "" and not over.ok and over.oversized == {lib: lib.stat().st_size}
     tiny = compiler_output(entry, "cr6", max_file_bytes=10)
     assert tiny.text == "" and tiny.oversized == {entry: entry.stat().st_size}
-    small = {lib: b"Public lib_v\n"}                   # an overlay under the limit replaces it
+    small = {lib: b"Public lib_v\n"}  # an overlay under the limit replaces it
     assert compiler_output(entry, "cr6", small, 100) == compiler_output(entry, "cr6", small)
 
 
@@ -138,10 +137,12 @@ def test_table_fields_match_tdf_derivation(program):
 
 
 def test_table_fields_of_a_small_program_and_markdown():
-    src = (b"Public Temp, Batt\nUnits Temp = degC\n\nDataTable (Hourly, True, -1)\n"
-           b"  DataInterval (0, 5, Min, 10)\n  Average (1, Temp, FP2, False)\n"
-           b"  Minimum (1, Batt, FP2, False, False)\nEndTable\n\n"
-           b"BeginProg\n  Scan (1, Sec, 0, 0)\n    Temp = 1\n    CallTable Hourly\n  NextScan\nEndProg\n")
+    src = (
+        b"Public Temp, Batt\nUnits Temp = degC\n\nDataTable (Hourly, True, -1)\n"
+        b"  DataInterval (0, 5, Min, 10)\n  Average (1, Temp, FP2, False)\n"
+        b"  Minimum (1, Batt, FP2, False, False)\nEndTable\n\n"
+        b"BeginProg\n  Scan (1, Sec, 0, 0)\n    Temp = 1\n    CallTable Hourly\n  NextScan\nEndProg\n"
+    )
     entry = Path("/nonexistent-dir/Small.CR6")
     res = analyze(AnalysisRequest(entry, "cr6", {entry: src}))
     assert res.ok
@@ -149,7 +150,9 @@ def test_table_fields_of_a_small_program_and_markdown():
     hourly = tables["Hourly"]
     assert hourly.interval == "5 MIN"
     assert [(f.name, f.units, f.process) for f in hourly.fields] == [
-        ("Temp_Avg", "degC", "Avg"), ("Batt_Min", None, "Min")]
+        ("Temp_Avg", "degC", "Avg"),
+        ("Batt_Min", None, "Min"),
+    ]
     assert "Public" in tables and "Status" in tables
     md = render_table_fields(list(tables.values()))
     assert "## Hourly (interval 5 MIN)" in md

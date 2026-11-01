@@ -39,16 +39,17 @@ import time
 import zipfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]          # opencrbasic/
-CRBASIC = ROOT / "tests" / "corpus" / "firnmelt"                   # the checkout's CRBasic sources
+ROOT = Path(__file__).resolve().parents[1]  # opencrbasic/
+CRBASIC = ROOT / "tests" / "corpus" / "firnmelt"  # the checkout's CRBasic sources
 SRC = ROOT / "src"
 DATA = SRC / "opencrbasic" / "data"
 DROP_ENV = ("PYTHONPATH", "PYTHONHOME", "VIRTUAL_ENV", "UV_PROJECT_ENVIRONMENT")
-BANNER = re.compile(r"opencrbasic-lsp: opencrbasic=(?P<path>.+) api_version=(?P<api>\d+) "
-                    r"git=(?P<git>\S+)")
+BANNER = re.compile(
+    r"opencrbasic-lsp: opencrbasic=(?P<path>.+) api_version=(?P<api>\d+) "
+    r"git=(?P<git>\S+)"
+)
 COMPILE_RUNS = (
-    ("compile", ["-s", "-t", "-z", "out.tdf", "-l", "out.lst", "-p", "out.pre",
-                 "Main.CR6", "msg1.txt"]),
+    ("compile", ["-s", "-t", "-z", "out.tdf", "-l", "out.lst", "-p", "out.pre", "Main.CR6", "msg1.txt"]),
     ("reload", ["-u", "-i", "out.pre", "Main.CR6", "msg2.txt"]),
 )
 CONSOLE_SCRIPTS = ("crbc = opencrbasic.cli:main", "crbc-lsp = opencrbasic.lsp.server:main")
@@ -84,8 +85,7 @@ def clean_env(**extra: str) -> dict[str, str]:
 
 
 def sh(argv: list, *, cwd: Path, env: dict[str, str], timeout: float = 900):
-    return subprocess.run([str(a) for a in argv], cwd=cwd, env=env, capture_output=True,
-                          timeout=timeout)
+    return subprocess.run([str(a) for a in argv], cwd=cwd, env=env, capture_output=True, timeout=timeout)
 
 
 def text(data: bytes) -> str:
@@ -97,21 +97,21 @@ def tail(data: bytes, lines: int = 25) -> str:
 
 
 def snapshot(root: Path) -> dict[str, str]:
-    return {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
-            for p in sorted(root.rglob("*")) if p.is_file()}
+    return {
+        p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+        for p in sorted(root.rglob("*"))
+        if p.is_file()
+    }
 
 
 def profile_files() -> list[Path]:
-    return sorted(p for p in DATA.rglob("*")
-                  if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc")
+    return sorted(p for p in DATA.rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc")
 
 
 def describe_environment(uv: str) -> list[str]:
     clean = clean_env()
-    rev = text(sh(["git", "-C", ROOT, "rev-parse", "--short", "HEAD"], cwd=ROOT,
-                  env=clean).stdout).strip()
-    dirty = text(sh(["git", "-C", ROOT, "status", "--porcelain", "--", "src"], cwd=ROOT,
-                    env=clean).stdout).strip()
+    rev = text(sh(["git", "-C", ROOT, "rev-parse", "--short", "HEAD"], cwd=ROOT, env=clean).stdout).strip()
+    dirty = text(sh(["git", "-C", ROOT, "status", "--porcelain", "--", "src"], cwd=ROOT, env=clean).stdout).strip()
     uv_version = text(sh([uv, "--version"], cwd=ROOT, env=clean).stdout).strip()
     return [
         f"host: {platform.node()} {platform.platform()}",
@@ -124,17 +124,22 @@ def describe_environment(uv: str) -> list[str]:
 
 def build(uv: str, tmp: Path, report: Report) -> tuple[Path, Path] | None:
     dist = tmp / "dist"
-    proc = sh([uv, "build", "--sdist", "--wheel", "--out-dir", dist, ROOT], cwd=tmp,
-              env=clean_env(UV_PROJECT_ENVIRONMENT=str(tmp / "project-env")))
+    proc = sh(
+        [uv, "build", "--sdist", "--wheel", "--out-dir", dist, ROOT],
+        cwd=tmp,
+        env=clean_env(UV_PROJECT_ENVIRONMENT=str(tmp / "project-env")),
+    )
     wheels = sorted(dist.glob("*.whl"))
     sdists = sorted(dist.glob("*.tar.gz"))
     if proc.returncode != 0 or len(wheels) != 1 or len(sdists) != 1:
-        report.record("uv build produces one sdist and one wheel", False,
-                      f"exit {proc.returncode}\n{tail(proc.stdout)}\n{tail(proc.stderr)}")
+        report.record(
+            "uv build produces one sdist and one wheel",
+            False,
+            f"exit {proc.returncode}\n{tail(proc.stdout)}\n{tail(proc.stderr)}",
+        )
         return None
     detail = "\n".join(line for line in text(proc.stderr).splitlines() if "Successfully" in line)
-    report.record("uv build produces one sdist and one wheel", True,
-                  f"{wheels[0].name}, {sdists[0].name}\n{detail}")
+    report.record("uv build produces one sdist and one wheel", True, f"{wheels[0].name}, {sdists[0].name}\n{detail}")
     return wheels[0], sdists[0]
 
 
@@ -149,54 +154,66 @@ def check_wheel(report: Report, wheel: Path) -> None:
     present = set(files)
     expected = [p.relative_to(SRC).as_posix() for p in profile_files()]
     missing = [n for n in expected if n not in present]
-    report.record("wheel contains every profile data file",
-                  bool(expected) and not missing,
-                  f"{len(expected)} profile files in src/opencrbasic/data; missing: {missing}")
+    report.record(
+        "wheel contains every profile data file",
+        bool(expected) and not missing,
+        f"{len(expected)} profile files in src/opencrbasic/data; missing: {missing}",
+    )
     missing_scripts = [s for s in CONSOLE_SCRIPTS if s not in entry_text]
-    report.record("wheel declares crbc and crbc-lsp entry points", not missing_scripts,
-                  f"missing: {missing_scripts}" if missing_scripts else "\n".join(CONSOLE_SCRIPTS))
-    lsp_requires = [line for line in meta_text.splitlines()
-                    if line.startswith("Requires-Dist") and "pygls" in line
-                    and LSP_EXTRA.search(line)]
-    report.record("wheel declares pygls under the lsp extra", bool(lsp_requires),
-                  "\n".join(lsp_requires) or "no such Requires-Dist line")
-    stray = [n for n in files if any(part in ("tests", "scratch", "__pycache__", ".venv")
-                                     for part in n.split("/"))]
-    report.record("wheel holds no tests, scratch, cache or venv entries", not stray,
-                  f"stray: {stray[:20]}")
+    report.record(
+        "wheel declares crbc and crbc-lsp entry points",
+        not missing_scripts,
+        f"missing: {missing_scripts}" if missing_scripts else "\n".join(CONSOLE_SCRIPTS),
+    )
+    lsp_requires = [
+        line
+        for line in meta_text.splitlines()
+        if line.startswith("Requires-Dist") and "pygls" in line and LSP_EXTRA.search(line)
+    ]
+    report.record(
+        "wheel declares pygls under the lsp extra",
+        bool(lsp_requires),
+        "\n".join(lsp_requires) or "no such Requires-Dist line",
+    )
+    stray = [n for n in files if any(part in ("tests", "scratch", "__pycache__", ".venv") for part in n.split("/"))]
+    report.record("wheel holds no tests, scratch, cache or venv entries", not stray, f"stray: {stray[:20]}")
     size = wheel.stat().st_size
-    report.record("wheel size and file count", True,
-                  f"{wheel.name}: {size} bytes ({size / 1024:.1f} KiB), {len(files)} files")
+    report.record(
+        "wheel size and file count", True, f"{wheel.name}: {size} bytes ({size / 1024:.1f} KiB), {len(files)} files"
+    )
 
 
 def check_sdist(report: Report, sdist: Path) -> None:
     with tarfile.open(sdist) as t:
-        members = {m.name.split("/", 1)[1] for m in t.getmembers()
-                   if m.isfile() and "/" in m.name}
+        members = {m.name.split("/", 1)[1] for m in t.getmembers() if m.isfile() and "/" in m.name}
     expected = [p.relative_to(ROOT).as_posix() for p in profile_files()]
     missing = [n for n in expected if n not in members]
-    report.record("sdist contains every profile data file", bool(expected) and not missing,
-                  f"{sdist.name}: {len(members)} files; missing: {missing}")
+    report.record(
+        "sdist contains every profile data file",
+        bool(expected) and not missing,
+        f"{sdist.name}: {len(members)} files; missing: {missing}",
+    )
 
 
-def make_venv(uv: str, tmp: Path, name: str, requirement: str, report: Report,
-              label: str) -> Path | None:
+def make_venv(uv: str, tmp: Path, name: str, requirement: str, report: Report, label: str) -> Path | None:
     venv = tmp / name
     env = clean_env(UV_PROJECT_ENVIRONMENT=str(tmp / "project-env"))
     created = sh([uv, "venv", venv], cwd=tmp, env=env)
     python = venv_executable(venv, "python")
     installed = sh([uv, "pip", "install", "--python", python, requirement], cwd=tmp, env=env)
     if created.returncode != 0 or installed.returncode != 0:
-        report.record(f"fresh venv: {label}", False,
-                      f"venv exit {created.returncode}, install exit {installed.returncode}\n"
-                      f"{tail(created.stderr)}\n{tail(installed.stderr)}")
+        report.record(
+            f"fresh venv: {label}",
+            False,
+            f"venv exit {created.returncode}, install exit {installed.returncode}\n"
+            f"{tail(created.stderr)}\n{tail(installed.stderr)}",
+        )
         return None
-    version = text(sh([python, "-c", "import sys; print(sys.version.split()[0])"], cwd=tmp,
-                      env=clean_env()).stdout).strip()
-    packages = [line.strip()[2:] for line in text(installed.stderr).splitlines()
-                if line.strip().startswith("+ ")]
-    report.record(f"fresh venv: {label}", True,
-                  f"python {version}; installed: {', '.join(packages)}")
+    version = text(
+        sh([python, "-c", "import sys; print(sys.version.split()[0])"], cwd=tmp, env=clean_env()).stdout
+    ).strip()
+    packages = [line.strip()[2:] for line in text(installed.stderr).splitlines() if line.strip().startswith("+ ")]
+    report.record(f"fresh venv: {label}", True, f"python {version}; installed: {', '.join(packages)}")
     return venv
 
 
@@ -210,8 +227,7 @@ def compile_under(argv_prefix: list, base: Path, env: dict[str, str]) -> dict:
     runs = []
     for label, args in COMPILE_RUNS:
         proc = sh([*argv_prefix, *args], cwd=work, env=env)
-        runs.append({"run": label, "rc": proc.returncode,
-                     "stdout": text(proc.stdout), "stderr": text(proc.stderr)})
+        runs.append({"run": label, "rc": proc.returncode, "stdout": text(proc.stdout), "stderr": text(proc.stderr)})
     after = snapshot(work)
     written = {k: v for k, v in after.items() if before.get(k) != v}
     return {"runs": runs, "written": written}
@@ -224,11 +240,17 @@ def compare_compiles(a: dict, b: dict) -> list[str]:
             if ra[key] != rb[key]:
                 detail = ""
                 if key != "rc":
-                    detail = "\n".join(list(difflib.unified_diff(
-                        ra[key].splitlines(), rb[key].splitlines(), "installed", "checkout",
-                        lineterm=""))[:20])
-                diffs.append(f"{ra['run']} {key} differs: {ra[key] if key == 'rc' else ''}"
-                             f" vs {rb[key] if key == 'rc' else ''}\n{detail}")
+                    detail = "\n".join(
+                        list(
+                            difflib.unified_diff(
+                                ra[key].splitlines(), rb[key].splitlines(), "installed", "checkout", lineterm=""
+                            )
+                        )[:20]
+                    )
+                diffs.append(
+                    f"{ra['run']} {key} differs: {ra[key] if key == 'rc' else ''}"
+                    f" vs {rb[key] if key == 'rc' else ''}\n{detail}"
+                )
     if a["written"] != b["written"]:
         keys = set(a["written"]) ^ set(b["written"])
         keys |= {k for k in a["written"] if k in b["written"] and a["written"][k] != b["written"][k]}
@@ -240,32 +262,40 @@ def check_compile(report: Report, venv: Path, tmp: Path) -> None:
     help_env = clean_env()
     crbc = venv_executable(venv, "crbc")
     installed_help = sh([crbc, "--help"], cwd=tmp, env=help_env)
-    checkout_help = sh([sys.executable, "-m", "opencrbasic", "--help"], cwd=tmp,
-                       env=clean_env(PYTHONPATH=str(SRC)))
-    same_help = (installed_help.returncode == checkout_help.returncode == 0
-                 and installed_help.stdout == checkout_help.stdout
-                 and installed_help.stderr == checkout_help.stderr)
-    report.record("crbc --help exits 0 and matches the checkout's", same_help,
-                  f"exit {installed_help.returncode} (installed), "
-                  f"{checkout_help.returncode} (checkout)\n{tail(installed_help.stdout, 5)}")
+    checkout_help = sh([sys.executable, "-m", "opencrbasic", "--help"], cwd=tmp, env=clean_env(PYTHONPATH=str(SRC)))
+    same_help = (
+        installed_help.returncode == checkout_help.returncode == 0
+        and installed_help.stdout == checkout_help.stdout
+        and installed_help.stderr == checkout_help.stderr
+    )
+    report.record(
+        "crbc --help exits 0 and matches the checkout's",
+        same_help,
+        f"exit {installed_help.returncode} (installed), "
+        f"{checkout_help.returncode} (checkout)\n{tail(installed_help.stdout, 5)}",
+    )
 
     installed = compile_under([crbc], tmp / "compile", clean_env())
     rcs = [r["rc"] for r in installed["runs"]]
-    report.record("installed crbc compiles a copy of ../crbasic (Main.CR6)",
-                  all(rc == 0 for rc in rcs),
-                  f"exit statuses {rcs}; {len(installed['written'])} files written\n"
-                  + "\n".join(f"{k}  {v[:12]}" for k, v in sorted(installed["written"].items())))
-    checkout_import = sh([sys.executable, "-c",
-                          "import opencrbasic, pathlib; "
-                          "print(pathlib.Path(opencrbasic.__file__).resolve())"],
-                         cwd=tmp, env=clean_env(PYTHONPATH=str(SRC)))
+    report.record(
+        "installed crbc compiles a copy of ../crbasic (Main.CR6)",
+        all(rc == 0 for rc in rcs),
+        f"exit statuses {rcs}; {len(installed['written'])} files written\n"
+        + "\n".join(f"{k}  {v[:12]}" for k, v in sorted(installed["written"].items())),
+    )
+    checkout_import = sh(
+        [sys.executable, "-c", "import opencrbasic, pathlib; print(pathlib.Path(opencrbasic.__file__).resolve())"],
+        cwd=tmp,
+        env=clean_env(PYTHONPATH=str(SRC)),
+    )
     checkout_path = text(checkout_import.stdout).strip()
-    checkout = compile_under([sys.executable, "-m", "opencrbasic"], tmp / "compile",
-                             clean_env(PYTHONPATH=str(SRC)))
+    checkout = compile_under([sys.executable, "-m", "opencrbasic"], tmp / "compile", clean_env(PYTHONPATH=str(SRC)))
     diffs = compare_compiles(installed, checkout)
-    report.record("installed crbc output equals the checkout's (stdout, stderr, files)",
-                  not diffs and checkout_path.startswith(str(SRC.resolve())),
-                  f"checkout package: {checkout_path}\n" + "\n".join(diffs))
+    report.record(
+        "installed crbc output equals the checkout's (stdout, stderr, files)",
+        not diffs and checkout_path.startswith(str(SRC.resolve())),
+        f"checkout package: {checkout_path}\n" + "\n".join(diffs),
+    )
 
 
 def read_frames(stream, sink: queue.Queue) -> None:
@@ -296,8 +326,9 @@ def read_frames(stream, sink: queue.Queue) -> None:
 
 
 def lsp_session(exe: Path, cwd: Path, env: dict[str, str], timeout: float = 60) -> dict:
-    proc = subprocess.Popen([str(exe)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE, cwd=cwd, env=env)
+    proc = subprocess.Popen(
+        [str(exe)], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd, env=env
+    )
     frames: queue.Queue = queue.Queue()
     stderr_lines: list[str] = []
     notes: list[dict] = []
@@ -331,7 +362,7 @@ def lsp_session(exe: Path, cwd: Path, env: dict[str, str], timeout: float = 60) 
                 raise TimeoutError(f"no response to request id {rid}") from None
             if kind != "msg":
                 raise RuntimeError(f"stdout {kind}: {payload or ''}")
-            if "method" in payload and "id" in payload:     # server request: answer null
+            if "method" in payload and "id" in payload:  # server request: answer null
                 send({"jsonrpc": "2.0", "id": payload["id"], "result": None})
             elif "method" in payload:
                 notes.append(payload)
@@ -341,9 +372,14 @@ def lsp_session(exe: Path, cwd: Path, env: dict[str, str], timeout: float = 60) 
                 faults.append(f"unexpected message: {payload}")
 
     try:
-        send({"jsonrpc": "2.0", "id": 1, "method": "initialize",
-              "params": {"processId": None, "rootUri": None, "capabilities": {},
-                         "workspaceFolders": None}})
+        send(
+            {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "initialize",
+                "params": {"processId": None, "rootUri": None, "capabilities": {}, "workspaceFolders": None},
+            }
+        )
         result["init"] = await_response(1)
         send({"jsonrpc": "2.0", "method": "initialized", "params": {}})
         send({"jsonrpc": "2.0", "id": 2, "method": "shutdown"})
@@ -357,7 +393,7 @@ def lsp_session(exe: Path, cwd: Path, env: dict[str, str], timeout: float = 60) 
             proc.kill()
             proc.wait()
         err_thread.join(timeout=5)
-    while True:                                  # notifications that arrived last
+    while True:  # notifications that arrived last
         try:
             kind, payload = frames.get_nowait()
         except queue.Empty:
@@ -398,30 +434,40 @@ def check_lsp(report: Report, venv: Path, tmp: Path) -> None:
     shut = res.get("shutdown") or {}
     if "error" in shut or "result" not in shut:
         problems.append(f"shutdown response: {shut}")
-    logs = [n.get("params", {}).get("message", "") for n in res["notes"]
-            if n.get("method") == "window/logMessage"]
+    logs = [n.get("params", {}).get("message", "") for n in res["notes"] if n.get("method") == "window/logMessage"]
     if not (banner_path and any("opencrbasic=" + banner_path in m for m in logs)):
         problems.append(f"no window/logMessage carries the banner; logMessages: {logs}")
-    detail = [first, f"initialize capabilities: {sorted(caps) if isinstance(caps, dict) else caps}",
-              f"logMessages after initialized: {logs}", f"stderr lines: {len(stderr)}"]
+    detail = [
+        first,
+        f"initialize capabilities: {sorted(caps) if isinstance(caps, dict) else caps}",
+        f"logMessages after initialized: {logs}",
+        f"stderr lines: {len(stderr)}",
+    ]
     detail += [f"problem: {p}" for p in problems]
-    report.record("crbc-lsp answers initialize/shutdown/exit with the installed banner",
-                  not problems, "\n".join(detail))
+    report.record(
+        "crbc-lsp answers initialize/shutdown/exit with the installed banner", not problems, "\n".join(detail)
+    )
 
 
 def check_core(report: Report, venv: Path, tmp: Path) -> None:
     python = venv_executable(venv, "python")
-    imported = sh([python, "-c", "import opencrbasic.cli as c, pathlib; "
-                   "print(pathlib.Path(c.__file__).resolve())"], cwd=tmp, env=clean_env())
+    imported = sh(
+        [python, "-c", "import opencrbasic.cli as c, pathlib; print(pathlib.Path(c.__file__).resolve())"],
+        cwd=tmp,
+        env=clean_env(),
+    )
     path = text(imported.stdout).strip()
     inside = bool(path) and Path(path).is_relative_to(venv.resolve())
-    report.record("import opencrbasic.cli without the lsp extra",
-                  imported.returncode == 0 and inside,
-                  f"exit {imported.returncode}; {path}\n{tail(imported.stderr, 10)}")
+    report.record(
+        "import opencrbasic.cli without the lsp extra",
+        imported.returncode == 0 and inside,
+        f"exit {imported.returncode}; {path}\n{tail(imported.stderr, 10)}",
+    )
     probe = sh([python, "-c", "import pygls"], cwd=tmp, env=clean_env())
     absent = probe.returncode != 0 and b"ModuleNotFoundError" in probe.stderr
-    report.record("pygls is absent from the core environment", absent,
-                  f"exit {probe.returncode}; {tail(probe.stderr, 2)}")
+    report.record(
+        "pygls is absent from the core environment", absent, f"exit {probe.returncode}; {tail(probe.stderr, 2)}"
+    )
 
 
 def run_checks(uv: str, tmp: Path, report: Report) -> None:
@@ -434,21 +480,22 @@ def run_checks(uv: str, tmp: Path, report: Report) -> None:
     wheel, sdist = built
     check_wheel(report, wheel)
     check_sdist(report, sdist)
-    lsp_venv = make_venv(uv, tmp, "venv-lsp", f"opencrbasic[lsp] @ {wheel.as_uri()}", report,
-                         "wheel with the lsp extra")
+    lsp_venv = make_venv(
+        uv, tmp, "venv-lsp", f"opencrbasic[lsp] @ {wheel.as_uri()}", report, "wheel with the lsp extra"
+    )
     if lsp_venv is not None:
         check_compile(report, lsp_venv, tmp)
         check_lsp(report, lsp_venv, tmp)
-    core_venv = make_venv(uv, tmp, "venv-core", f"opencrbasic @ {wheel.as_uri()}", report,
-                          "wheel without the extra")
+    core_venv = make_venv(uv, tmp, "venv-core", f"opencrbasic @ {wheel.as_uri()}", report, "wheel without the extra")
     if core_venv is not None:
         check_core(report, core_venv, tmp)
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n", 1)[0])
-    parser.add_argument("--keep", action="store_true",
-                        help="keep the temporary directory (builds, environments, copies)")
+    parser.add_argument(
+        "--keep", action="store_true", help="keep the temporary directory (builds, environments, copies)"
+    )
     args = parser.parse_args(argv)
     uv = shutil.which("uv")
     if uv is None:

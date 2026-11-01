@@ -24,9 +24,18 @@ from .helpdocs import HelpLookup, InstructionHelp, _md, pair_signature
 from .source import _is_continuation, _strip_comment
 
 __all__ = [
-    "CallContext", "call_context", "call_stack", "ParameterInfo", "SignatureInfo", "signature_help",
-    "Declaration", "declarations", "Hover", "hover",
+    "CallContext",
+    "call_context",
+    "call_stack",
+    "ParameterInfo",
+    "SignatureInfo",
+    "signature_help",
+    "Declaration",
+    "declarations",
+    "Hover",
+    "hover",
 ]
+
 
 def _esc(text: str) -> str:
     """Markdown-escaped text on one line (help descriptions keep their source line breaks)."""
@@ -37,10 +46,29 @@ _TYPE_CODES_PATH = Path(__file__).resolve().parent / "data" / "type_codes.json"
 
 # Words that may be followed by `(` without being a call: operators, the words the parser
 # dispatches on (`If (a) Then`, `While (a)`, ...). Grammar words, not a catalog subset.
-_NOT_CALLS = frozenset({
-    "AND", "OR", "NOT", "XOR", "MOD", "EQV", "IMP", "TO", "IS", "THEN", "STEP", "AS",
-    "IF", "ELSEIF", "WHILE", "UNTIL", "SELECT", "CASE", "RETURN",
-})
+_NOT_CALLS = frozenset(
+    {
+        "AND",
+        "OR",
+        "NOT",
+        "XOR",
+        "MOD",
+        "EQV",
+        "IMP",
+        "TO",
+        "IS",
+        "THEN",
+        "STEP",
+        "AS",
+        "IF",
+        "ELSEIF",
+        "WHILE",
+        "UNTIL",
+        "SELECT",
+        "CASE",
+        "RETURN",
+    }
+)
 
 _CALL_NAME_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\$?(?:\.[A-Za-z0-9_]+\$?)*\s*$")
 _WORD_RE = re.compile(r"(?<![A-Za-z0-9_$.])[A-Za-z_][A-Za-z0-9_]*\$?")
@@ -58,7 +86,7 @@ class _Frame:
     __slots__ = ("name", "line", "col", "commas")
 
     def __init__(self, name: str | None, line: int, col: int):
-        self.name = name        # None: grouping parenthesis or `{`
+        self.name = name  # None: grouping parenthesis or `{`
         self.line = line
         self.col = col
         self.commas = 0
@@ -70,7 +98,7 @@ class _Scan:
 
     def __init__(self) -> None:
         self.stack: list[_Frame] = []
-        self.state = "code"     # state at the end of the last fed text: code | string | comment
+        self.state = "code"  # state at the end of the last fed text: code | string | comment
 
     def feed(self, lineno: int, text: str, end: int) -> None:
         """Scan `text[:end]`; a string still open at the end of the previous fed line stays open
@@ -82,7 +110,7 @@ class _Scan:
             ch = text[i]
             if self.state == "string":
                 if ch == '"':
-                    if text[i + 1:i + 2] == '"':
+                    if text[i + 1 : i + 2] == '"':
                         i += 2
                         continue
                     self.state = "code"
@@ -111,9 +139,9 @@ class _Scan:
 
 @dataclass(frozen=True)
 class CallContext:
-    name: str           # as written; may be dotted (`Table.Field`)
-    active: int         # 0-based argument index
-    line: int           # physical line / column where the name starts
+    name: str  # as written; may be dotted (`Table.Field`)
+    active: int  # 0-based argument index
+    line: int  # physical line / column where the name starts
     column: int
 
 
@@ -200,26 +228,26 @@ def _kind_of(code: int) -> tuple[str | None, bool]:
 
 @dataclass(frozen=True)
 class ParameterInfo:
-    label: str                      # help name when paired, else `argN`
-    label_span: tuple[int, int]     # offsets of the parameter in `SignatureInfo.label`
-    documentation: str              # Markdown; "" when none
-    type_code: int | None           # catalog code (instructions); None for functions
-    kind: str | None                # `type_codes.json` kind of the code; None for functions
-    optional: bool                  # catalog code >= 100, or the help syntax says optional
+    label: str  # help name when paired, else `argN`
+    label_span: tuple[int, int]  # offsets of the parameter in `SignatureInfo.label`
+    documentation: str  # Markdown; "" when none
+    type_code: int | None  # catalog code (instructions); None for functions
+    kind: str | None  # `type_codes.json` kind of the code; None for functions
+    optional: bool  # catalog code >= 100, or the help syntax says optional
 
 
 @dataclass(frozen=True)
 class SignatureInfo:
-    name: str                       # the profile's spelling
-    kind: str                       # "instruction" | "function"
-    label: str                      # `Name(p1, p2)`
-    documentation: str              # Markdown: summary, help syntax, mismatch note, provenance
+    name: str  # the profile's spelling
+    kind: str  # "instruction" | "function"
+    label: str  # `Name(p1, p2)`
+    documentation: str  # Markdown: summary, help syntax, mismatch note, provenance
     parameters: tuple[ParameterInfo, ...]
-    active_parameter: int | None    # clamped; None when there are no parameters
-    paired: bool                    # parameter names come from help
+    active_parameter: int | None  # clamped; None when there are no parameters
+    paired: bool  # parameter names come from help
     catalog_count: int | None
-    help_count: int | None          # None: no help
-    note: str                       # why names are not paired ("" when paired)
+    help_count: int | None  # None: no help
+    note: str  # why names are not paired ("" when paired)
     help_source: Path | None
 
 
@@ -266,12 +294,15 @@ def _no_help_line(help_configured: bool) -> str:
 
 
 def _accepted_note(accepted: tuple[int, ...]) -> str:
-    return (f"Accepted argument counts (checker): {_count_text(accepted)}. "
-            f"Parameters after the first {accepted[0]} are optional.")
+    return (
+        f"Accepted argument counts (checker): {_count_text(accepted)}. "
+        f"Parameters after the first {accepted[0]} are optional."
+    )
 
 
-def _build_signature(entry: CatalogEntry, help: InstructionHelp | None, active: int,
-                     help_configured: bool = True) -> SignatureInfo | None:
+def _build_signature(
+    entry: CatalogEntry, help: InstructionHelp | None, active: int, help_configured: bool = True
+) -> SignatureInfo | None:
     accepted: tuple[int, ...] | None = None
     if entry.kind == "instruction":
         codes = tuple(entry.params)
@@ -295,9 +326,13 @@ def _build_signature(entry: CatalogEntry, help: InstructionHelp | None, active: 
         kinds = [(None, False)] * count
         paired = pair_signature(entry.name, (0,) * count, help)
         if accepted:
-            paired = dataclasses.replace(paired, params=tuple(
-                dataclasses.replace(p, optional=True) if i >= accepted[0] else p
-                for i, p in enumerate(paired.params)))
+            paired = dataclasses.replace(
+                paired,
+                params=tuple(
+                    dataclasses.replace(p, optional=True) if i >= accepted[0] else p
+                    for i, p in enumerate(paired.params)
+                ),
+            )
         type_codes = [None] * count
     labels, spans, pos = [], [], len(entry.name) + 1
     params = []
@@ -308,8 +343,16 @@ def _build_signature(entry: CatalogEntry, help: InstructionHelp | None, active: 
         spans.append((pos, pos + len(piece)))
         pos += len(piece) + 2
         labels.append(piece)
-        params.append(ParameterInfo(p.label, spans[-1], _esc(p.description) if p.from_help else "",
-                                    type_code, kind, p.optional or cat_optional))
+        params.append(
+            ParameterInfo(
+                p.label,
+                spans[-1],
+                _esc(p.description) if p.from_help else "",
+                type_code,
+                kind,
+                p.optional or cat_optional,
+            )
+        )
     label = f"{entry.name}({', '.join(labels)})"
     doc: list[str] = []
     if help is not None:
@@ -325,9 +368,19 @@ def _build_signature(entry: CatalogEntry, help: InstructionHelp | None, active: 
     elif entry.kind == "function" and entry.nargs is not None:
         doc.append("Argument count from the function table; a trailing argument may be optional.")
     clamped = None if count == 0 else max(0, min(active, count - 1))
-    return SignatureInfo(entry.name, entry.kind, label, "\n\n".join(doc), tuple(params), clamped,
-                         paired.matched, count, paired.help_count, paired.note,
-                         help.source_path if help else None)
+    return SignatureInfo(
+        entry.name,
+        entry.kind,
+        label,
+        "\n\n".join(doc),
+        tuple(params),
+        clamped,
+        paired.matched,
+        count,
+        paired.help_count,
+        paired.note,
+        help.source_path if help else None,
+    )
 
 
 def _mismatch(help: InstructionHelp, note: str) -> str:
@@ -335,8 +388,7 @@ def _mismatch(help: InstructionHelp, note: str) -> str:
     return f"{syntax}{note[:1].upper()}{note[1:]}; help parameter names are not applied to the catalog positions."
 
 
-def signature_help(name: str, active: int, profile, help_provider: HelpLookup | None = None
-                   ) -> SignatureInfo | None:
+def signature_help(name: str, active: int, profile, help_provider: HelpLookup | None = None) -> SignatureInfo | None:
     """Signature of an instruction or builtin function for the profile (name or `Profile`), with
     parameter names and text from help when its parameter count equals the catalog's, otherwise
     `argN` labels from the catalog count. None for a name that is neither (including dotted
@@ -354,17 +406,17 @@ def signature_help(name: str, active: int, profile, help_provider: HelpLookup | 
 @dataclass(frozen=True)
 class Declaration:
     name: str
-    kind: str                       # Public | Dim | Static | Const | Sub | Function | DataTable |
-                                    # ConstTable | Alias
-    type: str | None = None         # as written (upper case); None: no `As` written
+    kind: str  # Public | Dim | Static | Const | Sub | Function | DataTable |
+    # ConstTable | Alias
+    type: str | None = None  # as written (upper case); None: no `As` written
     dims: tuple[str, ...] = ()
     string_size: str | None = None
     units: str | None = None
-    value: str | None = None        # Const: resolved value when known, else the written expression
-    detail: str = ""                # Sub/Function: parameter list; Alias: the aliased name
-    scope: str | None = None        # enclosing Sub/Function name, None: top level
-    file: str = ""                  # compiler display name
-    line: int = 0                   # reported line
+    value: str | None = None  # Const: resolved value when known, else the written expression
+    detail: str = ""  # Sub/Function: parameter list; Alias: the aliased name
+    scope: str | None = None  # enclosing Sub/Function name, None: top level
+    file: str = ""  # compiler display name
+    line: int = 0  # reported line
     physical_line: int | None = None  # first physical line of the statement, when known
 
 
@@ -386,7 +438,11 @@ def _expr_text(e, depth: int = 0) -> str:
         args = "" if e.args is None else f"({', '.join(_expr_text(a, depth + 1) for a in e.args)})"
         return f"{base}.{e.member}{args}"
     if isinstance(e, S.Unary):
-        return f"{e.op} {_expr_text(e.operand, depth + 1)}" if e.op.isalpha() else f"{e.op}{_expr_text(e.operand, depth + 1)}"
+        return (
+            f"{e.op} {_expr_text(e.operand, depth + 1)}"
+            if e.op.isalpha()
+            else f"{e.op}{_expr_text(e.operand, depth + 1)}"
+        )
     if isinstance(e, S.Binary):
         return f"{_expr_text(e.left, depth + 1)} {e.op} {_expr_text(e.right, depth + 1)}"
     if isinstance(e, S.ArrayLiteral):
@@ -424,32 +480,39 @@ def declarations(program) -> dict[str, list[Declaration]]:
     def add(name: str, st, kind: str, **kw) -> None:
         file, line, phys = where(st)
         out.setdefault(name.upper(), []).append(
-            Declaration(name, kind, scope=kw.pop("scope", scope), file=file, line=line,
-                        physical_line=phys, **kw))
+            Declaration(name, kind, scope=kw.pop("scope", scope), file=file, line=line, physical_line=phys, **kw)
+        )
 
     for st in statements:
         if isinstance(st, S.Declaration):
             for v in st.vars:
-                add(v.name, st, st.kind.capitalize(), type=v.type,
+                add(
+                    v.name,
+                    st,
+                    st.kind.capitalize(),
+                    type=v.type,
                     dims=tuple(_expr_text(d) for d in v.dims),
                     string_size=_expr_text(v.string_size) if v.string_size is not None else None,
-                    units=v.units)
+                    units=v.units,
+                )
         elif isinstance(st, S.ConstDecl):
             known = consts.get(st.name.upper())
-            add(st.name, st, "Const", type=st.type,
-                value=str(known) if known is not None else _expr_text(st.value))
+            add(st.name, st, "Const", type=st.type, value=str(known) if known is not None else _expr_text(st.value))
         elif isinstance(st, S.SubDef):
             detail = ", ".join(
-                ("Optional " if p.default is not None else "") + p.name
-                + ("()" if p.dims else "") + (f" As {p.type}" if p.type else "") for p in st.params)
+                ("Optional " if p.default is not None else "")
+                + p.name
+                + ("()" if p.dims else "")
+                + (f" As {p.type}" if p.type else "")
+                for p in st.params
+            )
             add(st.name, st, st.keyword.capitalize(), type=st.return_type, detail=detail, scope=None)
             scope = st.name
         elif isinstance(st, S.Instruction):
             kw = st.keyword
             if closes_routine(st):
                 scope = None
-            elif kw in ("DATATABLE", "CONSTTABLE") and st.args and (
-                    table := _declared_name_arg(st.args[0], kw)):
+            elif kw in ("DATATABLE", "CONSTTABLE") and st.args and (table := _declared_name_arg(st.args[0], kw)):
                 add(table, st, "DataTable" if kw == "DATATABLE" else "ConstTable")
             elif kw == "UNITS" and len(st.args) == 2 and isinstance(st.args[1], S.String):
                 target = _target_name(st.args[0])
@@ -512,13 +575,14 @@ def _declaration_markdown(decls: list[Declaration]) -> str:
 @dataclass(frozen=True)
 class Hover:
     markdown: str
-    line: int           # physical line and decoded columns of the word
+    line: int  # physical line and decoded columns of the word
     start_column: int
     end_column: int
 
 
-def _callable_markdown(entry: CatalogEntry, help: InstructionHelp | None, help_configured: bool,
-                       others: tuple[CatalogEntry, ...]) -> str:
+def _callable_markdown(
+    entry: CatalogEntry, help: InstructionHelp | None, help_configured: bool, others: tuple[CatalogEntry, ...]
+) -> str:
     sig = _build_signature(entry, help, 0, help_configured)
     label = entry.kind
     if any(e.kind == "keyword" for e in others):
@@ -526,8 +590,11 @@ def _callable_markdown(entry: CatalogEntry, help: InstructionHelp | None, help_c
     head = f"**{_esc(help.title)}**" if help is not None else f"**{_esc(entry.name)}** ({label})"
     out = [head]
     if sig is None:
-        out += ["", f"Function table row: code {entry.code}, kind {entry.func_kind}, argspec {entry.argspec}; "
-                    "no argument count in the table."]
+        out += [
+            "",
+            f"Function table row: code {entry.code}, kind {entry.func_kind}, argspec {entry.argspec}; "
+            "no argument count in the table.",
+        ]
     else:
         out += ["", "```crbasic", sig.label, "```"]
         if help is not None and help.summary:
@@ -541,8 +608,9 @@ def _callable_markdown(entry: CatalogEntry, help: InstructionHelp | None, help_c
             rows.append(text + (f": {p.documentation}" if p.documentation else ""))
         if rows:
             out += [""] + rows
-        accepted = (_accepted_counts(entry.name, entry.nargs)
-                    if entry.kind == "function" and entry.nargs is not None else None)
+        accepted = (
+            _accepted_counts(entry.name, entry.nargs) if entry.kind == "function" and entry.nargs is not None else None
+        )
         if accepted and sig.paired:
             out += ["", _accepted_note(accepted)]
         elif entry.kind == "function" and entry.nargs is not None:
@@ -560,9 +628,15 @@ def _simple_markdown(entry: CatalogEntry) -> str:
     return f"**{_esc(entry.name)}** (CRBasic keyword)"
 
 
-def hover(result, text: str, line: int, column: int, profile,
-          help_provider: HelpLookup | None = None,
-          declared: Mapping[str, list[Declaration]] | None = None) -> Hover | None:
+def hover(
+    result,
+    text: str,
+    line: int,
+    column: int,
+    profile,
+    help_provider: HelpLookup | None = None,
+    declared: Mapping[str, list[Declaration]] | None = None,
+) -> Hover | None:
     """Markdown for the word at the position, or None.
 
     `result` is an `AnalysisResult` (or None): its AST gives declared names unless `declared`
@@ -584,8 +658,7 @@ def hover(result, text: str, line: int, column: int, profile,
     callable_entry = _callable_entry(cat, name)
     if callable_entry is not None:
         help = help_provider.lookup(callable_entry.name) if help_provider is not None else None
-        md = _callable_markdown(callable_entry, help, help_provider is not None,
-                                cat.entries(name))
+        md = _callable_markdown(callable_entry, help, help_provider is not None, cat.entries(name))
         sym = cat.get(name, "symbol")
         if sym is not None:
             md += f"\n\nAlso a predefined constant: {sym.name} = {sym.value}."

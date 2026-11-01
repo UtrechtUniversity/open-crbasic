@@ -22,9 +22,9 @@ __all__ = ["InlayHint", "parameter_hints"]
 
 @dataclass(frozen=True)
 class InlayHint:
-    line: int               # 0-based physical line
-    column: int             # decoded-character column of the argument's first character
-    label: str              # `Name:`
+    line: int  # 0-based physical line
+    column: int  # decoded-character column of the argument's first character
+    label: str  # `Name:`
     kind: str = "parameter"
     padding_right: bool = True
 
@@ -33,9 +33,9 @@ class _Frame:
     __slots__ = ("sig", "index", "first", "last")
 
     def __init__(self, sig):
-        self.sig = sig          # SignatureInfo of a call frame; None for grouping `(` and `{`
+        self.sig = sig  # SignatureInfo of a call frame; None for grouping `(` and `{`
         self.index = 0
-        self.first = None       # first and last token of the current argument
+        self.first = None  # first and last token of the current argument
         self.last = None
 
 
@@ -55,8 +55,7 @@ def _shift(unit, ll, seg: int) -> int | None:
     return None
 
 
-def parameter_hints(result, path, start_line: int, end_line: int, profile,
-                    help_provider=None) -> list[InlayHint]:
+def parameter_hints(result, path, start_line: int, end_line: int, profile, help_provider=None) -> list[InlayHint]:
     """Hints for the calls of `path` (a file of the analysis) on physical lines
     `start_line..end_line`, both 0-based and inclusive, sorted by position.
 
@@ -108,7 +107,7 @@ def _hints(result, path, start_line, end_line, profile, help_provider) -> list[I
             if first is None or frame.index >= len(frame.sig.parameters):
                 return
             label = frame.sig.parameters[frame.index].label
-            written = text[first.col:last.col + len(last.text)]
+            written = text[first.col : last.col + len(last.text)]
             if written.strip().lower() == label.lower():
                 return
             start = seg + shift + first.col
@@ -118,8 +117,7 @@ def _hints(result, path, start_line, end_line, profile, help_provider) -> list[I
             p = paths.get(r.occurrence)
             if p is None or not (path_keys(p) & keys):
                 return
-            found.setdefault((r.line - 1, r.start_col),
-                             InlayHint(r.line - 1, r.start_col, label + ":"))
+            found.setdefault((r.line - 1, r.start_col), InlayHint(r.line - 1, r.start_col, label + ":"))
 
         stack: list[_Frame] = []
         for i, t in enumerate(toks):
@@ -149,14 +147,17 @@ def _hints(result, path, start_line, end_line, profile, help_provider) -> list[I
                 continue
             if t.kind == "OP" and t.text in ("(", "{"):
                 sig = None
-                if t.text == "(" and i and toks[i - 1].kind == "IDENT" and not (
-                        i > 1 and toks[i - 2].kind == "OP" and toks[i - 2].text == "."):
+                if (
+                    t.text == "("
+                    and i
+                    and toks[i - 1].kind == "IDENT"
+                    and not (i > 1 and toks[i - 2].kind == "OP" and toks[i - 2].text == ".")
+                ):
                     name = toks[i - 1]
-                    first_in_stmt = i == 1 and isinstance(stmt, S.Instruction) \
-                        and stmt.keyword == name.upper
+                    first_in_stmt = i == 1 and isinstance(stmt, S.Instruction) and stmt.keyword == name.upper
                     sig = signature(name.text, first_in_stmt)
                 stack.append(_Frame(sig))
-        for frame in stack:                         # an unclosed call ends at the end of the line
+        for frame in stack:  # an unclosed call ends at the end of the line
             if frame.sig is not None:
                 emit(frame.first, frame.last, frame)
     return sorted(found.values(), key=lambda h: (h.line, h.column))

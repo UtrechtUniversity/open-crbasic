@@ -78,7 +78,7 @@ def test_dim_public_is_public():
 
 
 def test_const_typed_and_array():
-    c = one('Const A As Long = 9999\n', S.ConstDecl)
+    c = one("Const A As Long = 9999\n", S.ConstDecl)
     assert isinstance(c, S.ConstDecl) and c.type == "LONG"
     prog, _ = parse("Const A = {1,2,3}\n")
     c2 = prog.statements[0]
@@ -92,7 +92,10 @@ def test_alias_multi_target():
     assert isinstance(i, S.Instruction) and i.keyword == "ALIAS"
     assert isinstance(i.args[0], S.Name) and i.args[0].name == "Array"
     assert [a.name if isinstance(a, S.Name) else as_named(a).name for a in i.args[1:]] == [
-        "FrontRoom", "BedRoom", "GreatRoom", "Laundry",
+        "FrontRoom",
+        "BedRoom",
+        "GreatRoom",
+        "Laundry",
     ]
 
 
@@ -235,14 +238,7 @@ def test_end_if_two_word_form():
 
 
 def test_select_case():
-    ss = stmts(
-        "Select Case X\n"
-        "Case 1, 2 To 5, Is >= 7\n"
-        "  Y = 1\n"
-        "Case Else\n"
-        "  Y = 2\n"
-        "EndSelect\n"
-    )
+    ss = stmts("Select Case X\nCase 1, 2 To 5, Is >= 7\n  Y = 1\nCase Else\n  Y = 2\nEndSelect\n")
     sel = ss[0]
     assert isinstance(sel, S.Instruction) and sel.keyword == "SELECT"
     assert isinstance(sel.args[0], S.Name) and sel.args[0].name == "X"
@@ -355,7 +351,7 @@ def test_call_explicit_no_parens():
 
 
 def test_call_bare_with_parens():
-    c = one("LogDebug(\"\")\n", S.Call)
+    c = one('LogDebug("")\n', S.Call)
     assert isinstance(c, S.Call) and not c.explicit and c.name == "LogDebug"
 
 
@@ -445,12 +441,7 @@ def test_alias_target_present_but_no_eq_is_a_distinct_reason():
 
 def test_conditional_compilation_skipped_branch_defines_nothing():
     prog, diags = parse(
-        "Const Flag = False\n"
-        "#If Flag Then\n"
-        "Const OnlyIfFlag = 1\n"
-        "#Else\n"
-        "Const OnlyIfNotFlag = 2\n"
-        "#EndIf\n"
+        "Const Flag = False\n#If Flag Then\nConst OnlyIfFlag = 1\n#Else\nConst OnlyIfNotFlag = 2\n#EndIf\n"
     )
     assert prog.consts.get("ONLYIFNOTFLAG") == 2
     assert "ONLYIFFLAG" not in prog.consts
@@ -460,14 +451,7 @@ def test_static_assert_pattern_never_parsed_when_skipped():
     # `ERROR__STATIC_ASSERT__...` alone is not valid CRBasic syntax (confirmed with the oracle:
     # `Invalid, or out of place expression`), but a skipped #If branch is never even tokenised,
     # so it never reaches the parser. See docs/frontend.md.
-    prog, diags = parse(
-        "Const Ok = True\n"
-        "#If Ok Then\n"
-        "#Else\n"
-        "ERROR__STATIC_ASSERT__unreachable\n"
-        "#EndIf\n"
-        "Public X\n"
-    )
+    prog, diags = parse("Const Ok = True\n#If Ok Then\n#Else\nERROR__STATIC_ASSERT__unreachable\n#EndIf\nPublic X\n")
     assert not diags.errors
     assert [type(s).__name__ for s in prog.statements] == ["ConstDecl", "Declaration"]
 
@@ -504,10 +488,7 @@ def test_includesection_section_binding(tmp_path):
         '#If Section = "ConstTable" Then\nConst FromCT = 1\n#EndIf\n'
         '#If Section = "Definitions" Then\nConst FromDefs = 2\n#EndIf\n'
     )
-    text = (
-        'IncludeSection("ConstTable", "CPU:Lib.crb")\n'
-        'IncludeSection("Definitions", "CPU:Lib.crb")\n'
-    )
+    text = 'IncludeSection("ConstTable", "CPU:Lib.crb")\nIncludeSection("Definitions", "CPU:Lib.crb")\n'
     prog, diags = parser.parse_text(text, "t.cr6", directory=tmp_path)
     assert prog.consts.get("FROMCT") == 1
     assert prog.consts.get("FROMDEFS") == 2
@@ -521,9 +502,7 @@ def test_includesection_tolerates_a_trailing_argument(tmp_path):
     # the call to end right after the two strings it uses, so a trailing argument (however
     # harmless) silently fell through to being parsed as an ordinary, meaningless statement
     # instead of expanding the include at all.
-    (tmp_path / "Lib.crb").write_text(
-        '#If Section = "Rail" Then\nConst FromRail = 1\n#EndIf\n'
-    )
+    (tmp_path / "Lib.crb").write_text('#If Section = "Rail" Then\nConst FromRail = 1\n#EndIf\n')
     text = 'IncludeSection("Rail", "CPU:Lib.crb",(1+2))\n'
     prog, diags = parser.parse_text(text, "t.cr6", directory=tmp_path)
     assert prog.consts.get("FROMRAIL") == 1
@@ -554,10 +533,16 @@ def test_lex_error_never_raises():
 def test_structuretype_bare_members_and_statements():
     from opencrbasic import parser
     from opencrbasic import syntax as S
+
     prog, _ = parser.parse_text(
         "StructureType gps_t\n  Lat\n  Lon As Double\n  A, B, C\n  S(2) As String * 110\n"
-        "  Units Lat = deg\n  ReadOnly Lat, Lon\nEndStructureType\n")
-    members = [v.name for st in prog.statements if isinstance(st, S.Declaration)
-               and st.kind == "STRUCTUREMEMBER" for v in st.vars]
+        "  Units Lat = deg\n  ReadOnly Lat, Lon\nEndStructureType\n"
+    )
+    members = [
+        v.name
+        for st in prog.statements
+        if isinstance(st, S.Declaration) and st.kind == "STRUCTUREMEMBER"
+        for v in st.vars
+    ]
     assert members == ["Lat", "Lon", "A", "B", "C", "S"]
     assert not any(isinstance(st, S.Unparsed) for st in prog.statements)

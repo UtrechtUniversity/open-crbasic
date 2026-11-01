@@ -6,8 +6,10 @@ import pytest
 from opencrbasic import checker, parser, profiles
 from opencrbasic.compiler import CompileResult
 
-TEXT = ("Public X\nBeginProg\n  SNMPVariable(MyTemp,1.3.6.1.4.1.43592.55.1.4,Float,RONLY)\n"
-        "  Scan (1,Sec,0,0)\n    MyTemp = X + 1\n  NextScan\nEndProg\n")
+TEXT = (
+    "Public X\nBeginProg\n  SNMPVariable(MyTemp,1.3.6.1.4.1.43592.55.1.4,Float,RONLY)\n"
+    "  Scan (1,Sec,0,0)\n    MyTemp = X + 1\n  NextScan\nEndProg\n"
+)
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x", "cr300", "cr350"])

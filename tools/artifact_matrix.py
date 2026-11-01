@@ -53,12 +53,15 @@ OPTIONS = {
 # programs the reference rejects, for the outputs of a failed compile
 FAILING = {
     "fail_decl.CR6": "Public 1bad\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
-    "fail_table.CR6": ("Public X\nDataTable(T,True,-1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n"
-                       "  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"),
+    "fail_table.CR6": (
+        "Public X\nDataTable(T,True,-1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n"
+        "  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+    ),
     "fail_include.CR6": 'Include "CPU:missing.crb"\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n',
     "fail_scan.CR6": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \nEndProg\n",
-    "fail_section.CR6": ('Public X\nIncludeSection("Defs","CPU:missing.crb")\nBeginProg\n  Scan(1,Sec,0,0)\n'
-                         "  NextScan\nEndProg\n"),
+    "fail_section.CR6": (
+        'Public X\nIncludeSection("Defs","CPU:missing.crb")\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n'
+    ),
 }
 
 
@@ -67,8 +70,11 @@ SIBLING_SUFFIXES = (".cr6", ".crb", ".cr1x", ".cr300", ".cr350", ".csv")
 
 def corpus(stride: int) -> list[tuple[str, dict[str, bytes]]]:
     """(program name, every file staged next to it) per program."""
-    siblings = {f.name: f.read_bytes() for f in sorted(CRBASIC.iterdir())
-                if f.is_file() and f.suffix.lower() in SIBLING_SUFFIXES}
+    siblings = {
+        f.name: f.read_bytes()
+        for f in sorted(CRBASIC.iterdir())
+        if f.is_file() and f.suffix.lower() in SIBLING_SUFFIXES
+    }
     out = [(p.name, siblings) for p in sorted(CRBASIC.glob("*.CR6"))]
     out += [(p.name, {p.name: p.read_bytes()}) for p in sorted(CHM.glob("*.CR6"))[::stride]]
     out += [(name, {name: text.replace("\n", "\r\n").encode()}) for name, text in FAILING.items()]
@@ -86,11 +92,18 @@ def run(argv: list[str], name: str, files: dict[str, bytes], env=None) -> dict:
         tmp = Path(d)
         for f, data in files.items():
             (tmp / f).write_bytes(data)
-        proc = subprocess.run([name if a == "P" else a for a in argv], cwd=tmp, capture_output=True,
-                              timeout=120, env=env)
-        return {"exit": proc.returncode, "stdout": base64.b64encode(lines(proc.stdout)).decode(),
-                "files": {f.name: base64.b64encode(f.read_bytes()).decode() for f in sorted(tmp.iterdir())
-                          if f.is_file() and f.name not in files}}
+        proc = subprocess.run(
+            [name if a == "P" else a for a in argv], cwd=tmp, capture_output=True, timeout=120, env=env
+        )
+        return {
+            "exit": proc.returncode,
+            "stdout": base64.b64encode(lines(proc.stdout)).decode(),
+            "files": {
+                f.name: base64.b64encode(f.read_bytes()).decode()
+                for f in sorted(tmp.iterdir())
+                if f.is_file() and f.name not in files
+            },
+        }
 
 
 def stdout_text(result: dict) -> str:
@@ -108,10 +121,10 @@ def reference(exe: Path, option: str, name: str, files: dict[str, bytes]) -> dic
     prefix, env = oracle._runner_command(exe)
     try:
         result = run(prefix + OPTIONS[option], name, files, env)
-    except (OSError, subprocess.TimeoutExpired):
+    except OSError, subprocess.TimeoutExpired:
         return None
     if result["exit"] not in (0, 1) or f"{name} -- " not in stdout_text(result):
-        return None                       # a runner failure, not a compiler verdict
+        return None  # a runner failure, not a compiler verdict
     CACHE.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(result))
     return result
@@ -132,6 +145,7 @@ def classify(theirs: dict | None, mine: dict) -> dict[str, str]:
 
     def sha(b64: str) -> str:
         return hashlib.sha256(base64.b64decode(b64)).hexdigest()[:16]
+
     out: dict[str, str] = {}
     if theirs["exit"] != mine["exit"]:
         out["exit"] = str(mine["exit"])
@@ -172,16 +186,18 @@ def main() -> int:
     print(f"{args.logger}: {len({n for _, n, _ in results})} programs x {len(OPTIONS)} option sets")
     by_option: dict[str, Counter] = {o: Counter() for o in OPTIONS}
     for option, _, classes in results:
-        by_option[option]["exact" if "exact" in classes else
-                          "reference failure" if "reference failure" in classes else "differs"] += 1
+        by_option[option][
+            "exact" if "exact" in classes else "reference failure" if "reference failure" in classes else "differs"
+        ] += 1
     for option, c in by_option.items():
-        print(f"  {option:13} exact {c['exact']:4}  differs {c['differs']:4}  reference failure {c['reference failure']:3}")
-    outputs = Counter(k for _, _, classes in results for k in classes
-                      if k not in ("exact", "reference failure"))
+        print(
+            f"  {option:13} exact {c['exact']:4}  differs {c['differs']:4}  reference failure {c['reference failure']:3}"
+        )
+    outputs = Counter(k for _, _, classes in results for k in classes if k not in ("exact", "reference failure"))
     if outputs:
         print("  differences by output: " + ", ".join(f"{k} {v}" for k, v in sorted(outputs.items())))
     shown = [(o, n, c) for o, n, c in results if "exact" not in c and "reference failure" not in c]
-    for option, name, classes in shown[:args.show]:
+    for option, name, classes in shown[: args.show]:
         print(f"  --- {option} {name}: {', '.join(classes)}")
 
     if args.write_baseline:
@@ -198,8 +214,11 @@ def main() -> int:
         base = everything[args.logger]
         # a regression: a cell not in the baseline, or a difference (with its output fingerprint)
         # or a reference failure the baseline does not have; losing a difference is an improvement
-        regressions = [k for k, classes in table.items()
-                       if k not in base or ("exact" not in classes and not classes.items() <= base[k].items())]
+        regressions = [
+            k
+            for k, classes in table.items()
+            if k not in base or ("exact" not in classes and not classes.items() <= base[k].items())
+        ]
         missing = sorted(set(base) - set(table))
         improved = [k for k, classes in table.items() if k in base and k not in regressions and classes != base[k]]
         for k in regressions:
