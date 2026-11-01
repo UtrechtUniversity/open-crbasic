@@ -62,8 +62,8 @@ reference crashes are never counted as verdicts.
 
 - The package version (`pyproject.toml`) and `opencrbasic.__version__` are one number
   (`tests/test_versions.py`). Major: a change to the drop-in contract or a gated verdict policy;
-  minor: new checks, notices or features; patch: fixes. The VS Code extension has its own version
-  and checks `analysis.API_VERSION` at startup.
+  minor: new checks, notices or features; patch: fixes. The VS Code extension, in its own repository, has its
+  own version.
 - `analysis.API_VERSION` (now 2) versions the editor facade; the language server refuses to start
   with another (`docs/lsp-api.md`). `checks.SCHEMA_VERSION` (now 2) versions the `--report` JSON.
   Each is bumped only on an incompatible change.
