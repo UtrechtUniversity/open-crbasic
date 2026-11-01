@@ -1,0 +1,210 @@
+#If Section = "ConstTable" Then
+    Const GPSComPort = ComU1
+    Const GPSPortPair = U1
+
+    Const GPSFixTimeoutSecs = 600
+
+    Const GPSAverageFixes = 60
+#EndIf
+
+#If Section = "Definitions" Then
+    Const GPSBaud = 9600
+    Const GPSLevel3V3 = 2
+    Const GPSFormat = 19
+    Const GPSParkFormat = 0 ' see architecture.md#gps
+    Const GPSParkBufferBytes = 16
+    Const GPSBufferBytes = 1000
+    Const GPSBootSecs = 2
+    Const GPSNoClockChange = -1
+    Const GPSClockToleranceSecs = 0.5 ' see architecture.md#gps
+    Const GPSClockAgreeSecs = 0.1
+    Const GPSRMCLatencySecs = 0.22 ' see architecture.md#gps
+    Const GPSWindowMaxSecs = GPSFixTimeoutSecs + 2 * GPSAverageFixes
+    Const GPSUbxLength = 52
+
+    #If GPSAverageFixes > 254 Then
+        ERROR__STATIC_ASSERT__GPSAverageFixes_exceeds_payload_field
+    #EndIf
+
+    Dim GPSUbxBytes(GPSUbxLength) As Long = {&HB5,&H62,&H06,&H8A,&H2C,&H00,&H00,&H03,&H00,&H00,&HAC,&H00,&H91,&H20,&H01,&HBB,&H00,&H91,&H20,&H01,&HCA,&H00,&H91,&H20,&H00,&HC0,&H00,&H91,&H20,&H00,&HC5,&H00,&H91,&H20,&H00,&HB1,&H00,&H91,&H20,&H00,&H07,&H00,&H92,&H20,&H00,&H31,&H00,&H93,&H20,&H01,&HEC,&H70} ' see architecture.md#gps
+    Dim GPSUbxBuffer As String * GPSUbxLength + 1
+
+    Public GPS_Lat As Double
+    Public GPS_Lon As Double
+    Public GPS_Fixes As Long
+    Public GPS_Satellites As Long
+    Public GPS_FixSecs
+    Public GPS_ClockErrorSecs As Double
+    Public GPS_ClockSet As Boolean
+    Public GPS_Raw(15) As Double
+    Public GPS_NMEA(2) As String * 100
+
+    Units GPS_Lat=deg
+    Units GPS_Lon=deg
+    Units GPS_FixSecs=s
+    Units GPS_ClockErrorSecs=s
+
+    Dim GPSRMC As String * 100
+    Dim GPSRt(9) As Long
+    Dim GPSSetRt(7) As Long
+    Dim GPSRMCSecs As Long
+    Dim GPSSetTime As String * 24
+    Dim GPSLatSum As Double
+    Dim GPSLonSum As Double
+    Dim GPSPrevErrorSecs As Double
+    Dim GPSHavePrevError As Boolean
+    Dim GPSClockChecked As Boolean
+
+    DataTable(GPS_Data,True,-1)
+        Sample(1,GPS_Lat,IEEE8)
+        Sample(1,GPS_Lon,IEEE8)
+        Sample(1,GPS_Fixes,Long)
+        Sample(1,GPS_Satellites,Long)
+        Sample(1,GPS_FixSecs,IEEE4)
+        Sample(1,GPS_ClockErrorSecs,IEEE4)
+        Sample(1,GPS_ClockSet,Boolean)
+    EndTable
+#EndIf
+
+#If Section = "Functions" Then
+
+    Sub InitGPSPort
+        Dim I As Long
+        For I = 1 To GPSUbxLength
+            MoveBytes(GPSUbxBuffer, I - 1, GPSUbxBytes(I), 3, 1)
+        Next I
+        PortPairConfig(GPSPortPair, GPSLevel3V3)
+        SerialOpen(GPSComPort, GPSBaud, GPSParkFormat, 0, GPSParkBufferBytes)
+    EndSub
+
+    Sub StartGPS
+        GPS_Lat = NAN
+        GPS_Lon = NAN
+        GPS_Fixes = 0
+        GPS_Satellites = 0
+        GPS_FixSecs = NAN
+        GPS_ClockErrorSecs = NAN
+        GPS_ClockSet = False
+        GPSLatSum = 0
+        GPSLonSum = 0
+        GPSHavePrevError = False
+        GPSClockChecked = False
+        SerialClose(GPSComPort)
+        SerialOpen(GPSComPort, GPSBaud, GPSFormat, 0, GPSBufferBytes)
+    EndSub
+
+    Sub StopGPS
+        SerialClose(GPSComPort)
+        SerialOpen(GPSComPort, GPSBaud, GPSParkFormat, 0, GPSParkBufferBytes)
+        If GPS_Fixes > 0 Then
+            GPS_Lat = GPSLatSum / GPS_Fixes
+            GPS_Lon = GPSLonSum / GPS_Fixes
+        EndIf
+    EndSub
+
+    Function GPSRMCField(Index As Long) As String * 16
+        Dim I As Long
+        Dim First As Long
+        Dim Last As Long
+        First = 0
+        For I = 1 To Index
+            First = InStr(First + 1, GPSRMC, ",", 2)
+            If First = 0 Then Return ""
+        Next I
+        Last = InStr(First + 1, GPSRMC, ",", 2)
+        If Last = 0 Then Last = Len(GPSRMC) + 1
+        Return Mid(GPSRMC, First + 1, Last - First - 1)
+    EndFunction
+
+    Function GPSDegrees(Text As String * 16, Hemisphere As String * 2, DegDigits As Long) As Double
+        Dim Dot As Long
+        Dim Deg As Long
+        Dim MinWhole As Long
+        Dim Frac As Long
+        Dim FracText As String * 10
+        Dot = InStr(1, Text, ".", 2)
+        If Dot <> DegDigits + 3 Then Return NAN
+        Deg = Mid(Text, 1, DegDigits)
+        MinWhole = Mid(Text, DegDigits + 1, 2)
+        FracText = Mid(Text, Dot + 1, 9)
+        Frac = FracText
+        GPSDegrees = Deg + (MinWhole + Frac / 10 ^ Len(FracText)) / 60
+        If (Hemisphere = "S") OR (Hemisphere = "W") Then GPSDegrees = -GPSDegrees
+    EndFunction
+
+    Function GPSClockError(RMCDate As String * 16, RMCTime As String * 16) As Double
+        Dim GPSTime As String * 20
+        Dim LoggerTime As String * 20
+        Dim LoggerSecs As Long
+        GPSTime = "20" + Mid(RMCDate, 5, 2) + "-" + Mid(RMCDate, 3, 2) + "-" + Mid(RMCDate, 1, 2) _
+            + " " + Mid(RMCTime, 1, 2) + ":" + Mid(RMCTime, 3, 2) + ":" + Mid(RMCTime, 5, 2)
+        LoggerTime = FormatLong(GPSRt(1), "%04d") + "-" + FormatLong(GPSRt(2), "%02d") + "-" _
+            + FormatLong(GPSRt(3), "%02d") + " " + FormatLong(GPSRt(4), "%02d") + ":" _
+            + FormatLong(GPSRt(5), "%02d") + ":" + FormatLong(GPSRt(6), "%02d")
+        GPSRMCSecs = SecsSince1990(GPSTime, 4)
+        LoggerSecs = SecsSince1990(LoggerTime, 4)
+        GPSClockError = LoggerSecs - GPSRMCSecs + GPSRt(7) / 1000000 - GPS_Raw(12) - GPSRMCLatencySecs
+    EndFunction
+
+    Sub SetClockFromRMC
+        Dim SinceSecs
+        Dim WholeSecs As Long
+        SinceSecs = GPS_Raw(12) + GPSRMCLatencySecs
+        WholeSecs = Int(SinceSecs)
+        GPSRMCSecs = GPSRMCSecs + WholeSecs
+        GPSSetTime = SecsSince1990(GPSRMCSecs, 4)
+        GPSSetRt(1) = Mid(GPSSetTime, 1, 4)
+        GPSSetRt(2) = Mid(GPSSetTime, 6, 2)
+        GPSSetRt(3) = Mid(GPSSetTime, 9, 2)
+        GPSSetRt(4) = Mid(GPSSetTime, 12, 2)
+        GPSSetRt(5) = Mid(GPSSetTime, 15, 2)
+        GPSSetRt(6) = Mid(GPSSetTime, 18, 2)
+        GPSSetRt(7) = (SinceSecs - WholeSecs) * 1000000
+        ClockSet(GPSSetRt())
+    EndSub
+
+    Function PollGPS(ElapsedSecs As Long) As Boolean
+        Dim RMCDate As String * 16
+        Dim RMCTime As String * 16
+        Dim Lat As Double
+        Dim Lon As Double
+        Dim ErrorSecs As Double
+
+        If ElapsedSecs = GPSBootSecs Then SerialOutBlock(GPSComPort, GPSUbxBuffer, GPSUbxLength)
+
+        GPS(GPS_Raw(), -GPSComPort, 0, GPSNoClockChange, GPS_NMEA())
+        RealTime(GPSRt())
+        GPSRMC = GPS_NMEA(1)
+        RMCTime = GPSRMCField(1)
+        RMCDate = GPSRMCField(9)
+        If (GPSRMCField(2) = "A") AND (GPS_Raw(12) < 1) AND (Len(RMCTime) >= 6) AND (Len(RMCDate) = 6) Then
+            Lat = GPSDegrees(GPSRMCField(3), GPSRMCField(4), 2)
+            Lon = GPSDegrees(GPSRMCField(5), GPSRMCField(6), 3)
+            If (Lat <> NAN) AND (Lon <> NAN) Then
+                If GPS_Fixes = 0 Then GPS_FixSecs = ElapsedSecs
+                GPS_Fixes = GPS_Fixes + 1
+                GPSLatSum = GPSLatSum + Lat
+                GPSLonSum = GPSLonSum + Lon
+                GPS_Satellites = GPS_Raw(9)
+            EndIf
+
+            If NOT GPSClockChecked Then
+                ErrorSecs = GPSClockError(RMCDate, RMCTime)
+                If GPSHavePrevError AND (ABS(ErrorSecs - GPSPrevErrorSecs) < GPSClockAgreeSecs) Then
+                    GPS_ClockErrorSecs = ErrorSecs
+                    GPSClockChecked = True
+                    If ABS(ErrorSecs) > GPSClockToleranceSecs Then
+                        Call SetClockFromRMC
+                        GPS_ClockSet = True
+                    EndIf
+                EndIf
+                GPSPrevErrorSecs = ErrorSecs
+                GPSHavePrevError = True
+            EndIf
+        EndIf
+
+        If (GPS_Fixes >= GPSAverageFixes) AND GPSClockChecked Then Return True
+        If (GPS_Fixes = 0) AND (ElapsedSecs >= GPSFixTimeoutSecs) Then Return True
+        Return (ElapsedSecs >= GPSWindowMaxSecs)
+    EndFunction
+#EndIf

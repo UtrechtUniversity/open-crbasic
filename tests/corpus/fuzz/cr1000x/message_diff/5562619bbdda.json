@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/message_diff/5562619bbdda.CR6",
+  "logger": "cr1000x",
+  "class": "message_diff",
+  "seed": "repo/SerialProbe.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "insert_whitespace"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "5562619bbdda.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: \tSerialOut(ComUSB, DebugMsg + ProbeC  RLF, \"\", 0, 0).\nline 2: Expr illegally occurs before BeginProg.",
+  "theirs": "5562619bbdda.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: \tSerialOut(ComUSB, DebugMsg + ProbeC  RLF, \"\", 0, 0).\nline 2: Expr illegally occurs before BeginProg."
+}

@@ -9,7 +9,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 FIXTURES = Path(__file__).parent / "fixtures"
 CASES = [case for name in ("r64_leading_op", "r64_windvector_reps", "r64_function_args",
                            "r64_function_string", "r64_sdm_delay")

@@ -1,0 +1,15 @@
+{
+  "file": "/tmp/claude-0/-home-user-firnmelt-datalogger-mirror/acee0996-63f0-56bd-a337-b59f9f1988e5/scratchpad/fuzz50/cr6/message_diff/72f032da5778.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/ScanSyncTest.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "toggle_two_word",
+    "rename_identifier"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "72f032da5778.CR6 -- Compile Failed!\n\nline 17: No BeginProg in Program.",
+  "theirs": "72f032da5778.CR6 -- Compile Failed!\n\nline 17: No BeginProg in Program.\nline 17: Sub ... EndSub not matched."
+}

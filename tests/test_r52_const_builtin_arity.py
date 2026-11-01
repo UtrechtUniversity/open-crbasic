@@ -8,7 +8,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "r52_const_builtin_arity.json").read_text())
 
 

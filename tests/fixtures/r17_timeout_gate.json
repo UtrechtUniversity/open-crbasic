@@ -1,0 +1,947 @@
+{
+ "observation_date": "2026-10-16",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r17_timeout_gate-0",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-1",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-2",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-3",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-4",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-5",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-6",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-7",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-8",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-9",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-10",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1E3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-11",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1E3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-16",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-17",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-20",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Warning: Parameter will truncate to the nearest integer.\nline 9: No Matching, or out of place ) in expression:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-21",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Warning: Parameter will truncate to the nearest integer.\nline 9: No Matching, or out of place ) in expression:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-22",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5,2)."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-23",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5,2)."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-24",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN,2)."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-25",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN,2)."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-26",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-27",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"fuzz\")."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-28",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-29",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5)."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-30",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN)."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-31",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN)."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-34",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-35",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-38",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    If IfTime(0,1,Min) Then Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-39",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min) + Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-40",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = TimeIntoInterval(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-41",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = Sqr(4)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")."
+  },
+  {
+   "id": "cr6-r17_timeout_gate-42",
+   "logger": "cr6",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Const K=1.5\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-0",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-1",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-2",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-3",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-4",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-5",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-6",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-7",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-8",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-9",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-10",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1E3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-11",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1E3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-16",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-17",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-20",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Warning: Parameter will truncate to the nearest integer.\nline 9: No Matching, or out of place ) in expression:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-21",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Warning: Parameter will truncate to the nearest integer.\nline 9: No Matching, or out of place ) in expression:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-22",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5,2)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-23",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5,2)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-24",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN,2)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-25",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN,2)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-26",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-27",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"fuzz\")."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-28",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-29",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-30",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-31",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-34",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-35",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-38",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    If IfTime(0,1,Min) Then Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-39",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min) + Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-40",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = TimeIntoInterval(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-41",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = Sqr(4)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")."
+  },
+  {
+   "id": "cr1000x-r17_timeout_gate-42",
+   "logger": "cr1000x",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Const K=1.5\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-0",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-1",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-2",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-3",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-4",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-5",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-6",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-7",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-8",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-9",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-10",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1E3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-11",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1E3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-16",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-17",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-20",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Warning: Parameter will truncate to the nearest integer.\nline 9: No Matching, or out of place ) in expression:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-21",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Warning: Parameter will truncate to the nearest integer.\nline 9: No Matching, or out of place ) in expression:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-22",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5,2)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-23",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5,2)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-24",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN,2)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-25",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN,2)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-26",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-27",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"fuzz\")\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-28",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-29",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-30",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-31",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-34",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-35",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-38",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    If IfTime(0,1,Min) Then Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-39",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min) + Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-40",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = TimeIntoInterval(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-41",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = Sqr(4)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n."
+  },
+  {
+   "id": "cr300-r17_timeout_gate-42",
+   "logger": "cr300",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Const K=1.5\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-0",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-1",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-2",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-3",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-4",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-5",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-6",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-7",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-8",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-9",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-10",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1E3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-11",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1E3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-16",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-17",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-20",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Warning: Parameter will truncate to the nearest integer.\nline 9: No Matching, or out of place ) in expression:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-21",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Warning: Parameter will truncate to the nearest integer.\nline 9: No Matching, or out of place ) in expression:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-22",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5,2)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-23",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5,2)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-24",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN,2)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-25",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral.\nline 9: No Matching, or out of place ) in expression:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN,2)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-26",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-27",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"fuzz\")\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-28",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-29",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,1.5)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-30",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,NAN)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-31",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,NAN)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-34",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\",2)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-35",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,\"x\",2)\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-38",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    If IfTime(0,1,Min) Then Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-39",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min) + Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"x\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: Parameter will truncate to the nearest integer."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-40",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = TimeIntoInterval(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-41",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = Sqr(4)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,\"fuzz\")\n."
+  },
+  {
+   "id": "cr350-r17_timeout_gate-42",
+   "logger": "cr350",
+   "source": "Public PTemp\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Const K=1.5\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Parameter must be integral."
+  }
+ ]
+}

@@ -1,0 +1,448 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/Main.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/Main.CR6 ops=swap_adjacent class=mode_diff
+Public PTemp, Batt_volt
+
+Public wdog_timer As Long
+Public BenchWatchdogOff As Boolean = False
+
+Dim ComUSBOpen As Boolean = False
+
+ConstTable(GlobalConfigTable)
+
+	IncludeSection("ConstTable", "CPU:StationConfig.crb")
+
+	Const LowPowerRailMask = &B10
+
+	Const CommsRailPort = SW12_2
+
+	Const LowPowerSettleSecs = 10
+
+	Const FinAppReadUnits = 60
+
+	Const DebugTrace = False
+
+	Const DebugHeartbeatScans = 20
+
+	Const WatchdogSecs = 120
+
+	Const SeqStallScans = 60 ' see architecture.md#fault-tolerance
+
+	Const Seq1WaitSecs = 120
+
+	Const FinAppDropSettleSecs = 5
+
+	IncludeSection("ConstTable", "CPU:PowerProfileLib.crb")
+	IncludeSection("ConstTable", "CPU:AcclimaTDRLib.crb")
+	IncludeSection("ConstTable", "CPU:GeoPrecisionTStringLib.crb")
+	IncludeSection("ConstTable", "CPU:SnowVue10Lib.crb")
+	IncludeSection("ConstTable", "CPU:PT1000Lib.crb")
+	IncludeSection("ConstTable", "CPU:FinAppLib.crb")
+	IncludeSection("ConstTable", "CPU:SBDIridiumLib.crb")
+	IncludeSection("ConstTable", "CPU:GPSLib.crb")
+	IncludeSection("ConstTable", "CPU:SbdPayloadLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:StationConfig.crb")
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,MainScanSecs * 4,Sec,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+IncludeSection("Definitions", "CPU:PowerProfileLib.crb")
+IncludeSection("Definitions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Definitions", "CPU:GeoPrecisionTStringLib.crb")
+IncludeSection("Definitions", "CPU:SnowVue10Lib.crb")
+IncludeSection("Definitions", "CPU:PT1000Lib.crb")
+IncludeSection("Definitions", "CPU:FinAppLib.crb")
+IncludeSection("Definitions", "CPU:SBDIridiumLib.crb")
+IncludeSection("Definitions", "CPU:GPSLib.crb")
+
+Public SbdLastOk As Boolean
+Public TDROk As Boolean
+Public TStringOk As Boolean
+Public SnowVueOk As Boolean
+Public PT1000Ok As Boolean
+
+IncludeSection("Definitions", "CPU:SbdPayloadLib.crb")
+
+Public DebugMsg As String * 500
+
+Function LogDebug(Message As String * 500)
+	If NOT DebugTrace Then ExitFunction
+	If NOT ComUSBOpen Then
+		SerialOpen(ComUSB, 115200, 0, 0, 1000)
+		ComUSBOpen = True
+	EndIf
+	DebugMsg = Message
+	SerialOut(ComUSB, DebugMsg + CRLF, "", 0, 0)
+EndFunction
+
+IncludeSection("Functions", "CPU:PowerProfileLib.crb")
+IncludeSection("Functions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Functions", "CPU:GeoPrecisionTStringLib.crb")
+IncludeSection("Functions", "CPU:SnowVue10Lib.crb")
+IncludeSection("Functions", "CPU:PT1000Lib.crb")
+IncludeSection("Functions", "CPU:FinAppLib.crb")
+IncludeSection("Functions", "CPU:SBDIridiumLib.crb")
+IncludeSection("Functions", "CPU:GPSLib.crb")
+IncludeSection("Functions", "CPU:SbdPayloadLib.crb")
+
+Const ProfileSem = 1
+
+Dim MeasDue As Boolean
+Dim SbdDue As Boolean
+Dim SbdRetryPending As Boolean
+Dim FinAppWanted As Boolean
+Dim SeqResult As Boolean
+Dim BoxTempC
+Dim SwitchLoadedV
+Dim SwitchUnloadedV
+
+Public MainScanCount As Long
+Dim SeqAliveScan(3) As Long
+Dim SeqStalled As Boolean
+Dim SeqI As Long
+Dim WaitI As Long
+
+Const TmrSeq1 = 1
+Const TmrStep = 2
+Const TmrSeq2 = 3
+Const TmrSeq3 = 6
+
+Public Seq1Step As Long
+
+Public DebugScanCount As Long
+Public DebugSeq1Ms As Long
+Public DebugSeq2Ms As Long
+Public DebugSeq3Ms As Long
+Dim DebugStepMs As Long
+Dim DebugLastProfile As Long = -1
+Dim DebugLastDay As Long = -1
+Dim DebugLastFinAppWanted As Boolean
+
+Dim DebugLine As String * 400
+
+Function DebugTDRAnswering() As Long
+	Dim I As Long
+	DebugTDRAnswering = 0
+	For I = 1 To TDRCount
+		If Acclima_VWC(I) <> NAN Then DebugTDRAnswering = DebugTDRAnswering + 1
+	Next I
+EndFunction
+
+Function DebugTStringAnswering() As Long
+	Dim I As Long
+	DebugTStringAnswering = 0
+	For I = 1 To TStringCount
+		If TString_Temp_C(I) <> NAN Then DebugTStringAnswering = DebugTStringAnswering + 1
+	Next I
+EndFunction
+
+BeginProg
+	Call InitPowerProfile
+	SW12(CommsRailPort, 0)
+	Call ParkIridiumPort
+	Call InitGPSPort
+	LogDebug("")
+	LogDebug("FirnMelt station " + FormatLong(StationId,"%d") + " starting")
+
+	Scan (MainScanSecs,Sec,0,0)
+		MainScanCount = MainScanCount + 1
+		SeqStalled = False
+		For SeqI = 1 To 3
+			If MainScanCount - SeqAliveScan(SeqI) > SeqStallScans Then SeqStalled = True
+		Next SeqI
+		If BenchWatchdogOff Then
+			wdog_timer = WatchdogTimer(0,Sec)
+		ElseIf NOT SeqStalled Then
+			wdog_timer = WatchdogTimer(WatchdogSecs,Sec)
+		EndIf
+
+		PanelTemp (PTemp,15000)
+		Battery (Batt_volt)
+
+#If BatteryTempSensor > 0 Then
+		BoxTempC = TString_Temp_C(BatteryTempSensor)
+#Else
+		BoxTempC = NAN
+#EndIf
+
+		Call UpdatePowerClock
+		Call UpdatePowerInputs(Batt_volt, PTemp, BoxTempC)
+
+		FinAppLoadOn = FinApp_Powered
+		SemaphoreGet(ProfileSem)
+		Call UpdatePowerProfile
+		SemaphoreRelease(ProfileSem)
+
+		If DebugTrace Then
+			DebugScanCount = DebugScanCount + 1
+
+			If PowerProfile <> DebugLastProfile Then
+				DebugLine = "PROFILE " + FormatLong(DebugLastProfile,"%d") + " -> " + FormatLong(PowerProfile,"%d") _
+					+ "  prevDayV25=" + FormatFloat(PrevDayV25,"%.3f") _
+					+ " T=" + FormatFloat(PrevDayDecisionTempC,"%.1f") _
+					+ " prevDayV=" + FormatFloat(PrevDayDecisionV,"%.3f") _
+					+ " min=" + FormatFloat(PrevDayBattMin,"%.3f") _
+					+ " quietMin=" + FormatFloat(PrevDayBattMinQuiet,"%.3f")
+				DebugLine = DebugLine + " quietN=" + FormatFloat(PrevDayQuietSamples,"%.0f") _
+					+ "  measUnits=" + FormatLong(MeasIntervalUnits(),"%d") _
+					+ " sbdDays=" + FormatLong(SbdPeriodDays(),"%d") _
+					+ " finappDays=" + FormatLong(FinAppPeriodDays(),"%d")
+				LogDebug(DebugLine)
+				DebugLastProfile = PowerProfile
+			EndIf
+
+			If DayIndex <> DebugLastDay Then
+				LogDebug("DAY " + FormatLong(DebugLastDay,"%d") + " -> " + FormatLong(DayIndex,"%d") _
+					+ "  " + PowerTimeStr _
+					+ "  finAppDayActive=" + IIF(FinAppDayActive,"T","F") _
+					+ " amb=" + FormatFloat(AmbientForDecision,"%.2f"))
+				DebugLastDay = DayIndex
+			EndIf
+
+			If DebugScanCount MOD DebugHeartbeatScans = 0 Then
+				DebugLine = "HB " + PowerTimeStr _
+					+ " prof=" + FormatLong(PowerProfile,"%d") _
+					+ " unit=" + FormatLong(UnitOfDay,"%d") _
+					+ " day=" + FormatLong(DayIndex,"%d") _
+					+ " batt=" + FormatFloat(Batt_volt,"%.3f")
+				DebugLine = DebugLine _
+					+ " panel=" + FormatFloat(PTemp,"%.2f") _
+					+ " amb=" + FormatFloat(AmbientForDecision,"%.2f") _
+					+ " pt1000=" + FormatFloat(PT1000_Temp_C,"%.3f") _
+					+ " finPwr=" + IIF(FinApp_Powered,"T","F") _
+					+ " hiPwr=" + IIF(HighPowerActive,"T","F")
+				DebugLine = DebugLine _
+					+ " skip=" + FormatLong(Status.SkippedScan,"%d") _
+					+ " wdog=" + FormatLong(Status.WatchdogErrors,"%d") _
+					+ " varOOB=" + FormatLong(Status.VarOutOfBound,"%d") _
+					+ " scans=" + FormatLong(DebugScanCount,"%d")
+				LogDebug(DebugLine)
+			EndIf
+		EndIf
+
+		CallTable StationStatus
+	NextScan
+
+SlowSequence
+	Scan (SeqTickSecs,Sec,0,0)
+		SeqAliveScan(1) = MainScanCount
+		SemaphoreGet(ProfileSem)
+		MeasDue = DueNow(SeqLowPower, MeasIntervalUnits(), 0)
+		SemaphoreRelease(ProfileSem)
+
+		If MeasDue Then
+			Timer(TmrSeq1,mSec,TimerResetAndStart)
+			If DebugTrace Then LogDebug("SEQ1 start  unit=" + FormatLong(UnitOfDay,"%d") _
+				+ " prof=" + FormatLong(PowerProfile,"%d") _
+				+ " everyUnits=" + FormatLong(MeasIntervalUnits(),"%d"))
+
+			Seq1Step = 1
+			WriteIO(LowPowerRailMask, LowPowerRailMask)
+			Delay(1,LowPowerSettleSecs,Sec)
+			If DebugTrace Then LogDebug("SEQ1 rail on, settled " + FormatLong(LowPowerSettleSecs,"%d") _
+				+ " s at " + FormatLong(Timer(TmrSeq1,mSec,TimerReadOnly),"%d") + " ms")
+
+			Seq1Step = 2
+			Timer(TmrStep,mSec,TimerResetAndStart)
+			PT1000Ok = SamplePT1000()
+			AmbientTempC = PT1000_Temp_C
+			DebugStepMs = Timer(TmrStep,mSec,TimerReadOnly)
+			CallTable PT1000_Data
+			If DebugTrace Then LogDebug("SEQ1 pt1000 ok=" + IIF(PT1000Ok,"T","F") _
+				+ " ohms=" + FormatFloat(PT1000_Ohms,"%.3f") _
+				+ " degC=" + FormatFloat(PT1000_Temp_C,"%.4f") _
+				+ " ms=" + FormatLong(DebugStepMs,"%d"))
+
+			Seq1Step = 3
+			Timer(TmrStep,mSec,TimerResetAndStart)
+			TDROk = SampleTDRs()
+			DebugStepMs = Timer(TmrStep,mSec,TimerReadOnly)
+			CallTable Acclima_Data
+			If DebugTrace Then LogDebug("SEQ1 tdr    answering=" + FormatLong(DebugTDRAnswering(),"%d") _
+				+ "/" + FormatLong(TDRCount,"%d") _
+				+ " vwc1=" + FormatFloat(Acclima_VWC(1),"%.3f") _
+				+ " temp1=" + FormatFloat(Acclima_SoilTemp(1),"%.3f") _
+				+ " ms=" + FormatLong(DebugStepMs,"%d"))
+
+			Seq1Step = 4
+			Timer(TmrStep,mSec,TimerResetAndStart)
+			TStringOk = SampleTString()
+			SeqResult = SampleTStringSupply()
+			DebugStepMs = Timer(TmrStep,mSec,TimerReadOnly)
+			CallTable TString_Data
+			If DebugTrace Then
+				DebugLine = "SEQ1 tstring ok=" + IIF(TStringOk,"T","F") _
+					+ " answering=" + FormatLong(DebugTStringAnswering(),"%d") _
+					+ "/" + FormatLong(TStringCount,"%d") _
+					+ " errs=" + FormatLong(TString_ErrorCount,"%d")
+				DebugLine = DebugLine _
+					+ " supply=" + FormatFloat(TString_Supply_V,"%.3f") _
+					+ " t1=" + FormatFloat(TString_Temp_C(1),"%.3f") _
+					+ " tN=" + FormatFloat(TString_Temp_C(TStringCount),"%.3f") _
+					+ " ms=" + FormatLong(DebugStepMs,"%d")
+				LogDebug(DebugLine)
+			EndIf
+
+			Seq1Step = 5
+			Timer(TmrStep,mSec,TimerResetAndStart)
+			SnowVueOk = SampleSnowVue(PT1000_Temp_C)
+			DebugStepMs = Timer(TmrStep,mSec,TimerReadOnly)
+			CallTable SnowVue_Data
+			CallTable SnowVue_Diagnostics
+			If DebugTrace Then LogDebug("SEQ1 snowvue ok=" + IIF(SnowVueOk,"T","F") _
+				+ " dist=" + FormatFloat(SnowVue_TCDistance_m,"%.3f") _
+				+ " ms=" + FormatLong(DebugStepMs,"%d"))
+
+			WriteIO(LowPowerRailMask, 0)
+			Seq1Step = 0
+			DebugSeq1Ms = Timer(TmrSeq1,mSec,TimerReadOnly)
+			If DebugTrace Then LogDebug("SEQ1 done   rail off, total=" + FormatLong(DebugSeq1Ms,"%d") _
+				+ " ms  skip=" + FormatLong(Status.SkippedScan,"%d"))
+		EndIf
+
+		Call AccumulateIntraday(MeasDue)
+	NextScan
+
+SlowSequence
+	Scan (SeqTickSecs,Sec,0,0)
+		SeqAliveScan(2) = MainScanCount
+		SemaphoreGet(ProfileSem)
+		FinAppWanted = FinAppDayActive
+		SemaphoreRelease(ProfileSem)
+
+		If DebugTrace AND (FinAppWanted <> DebugLastFinAppWanted) Then
+			LogDebug("SEQ2 wanted " + IIF(DebugLastFinAppWanted,"T","F") + " -> " + IIF(FinAppWanted,"T","F") _
+				+ "  day=" + FormatLong(DayIndex,"%d") _
+				+ " prof=" + FormatLong(PowerProfile,"%d") _
+				+ " periodDays=" + FormatLong(FinAppPeriodDays(),"%d") _
+				+ " amb=" + FormatFloat(AmbientForDecision,"%.2f"))
+			DebugLastFinAppWanted = FinAppWanted
+		EndIf
+
+		If FinApp_Powered <> FinAppWanted Then
+			Timer(TmrSeq2,mSec,TimerResetAndStart)
+			If FinAppWanted Then
+				Battery(SwitchUnloadedV)
+				SeqResult = StartFinApp()
+				Battery(SwitchLoadedV)
+			Else
+				Battery(SwitchLoadedV)
+				SeqResult = StopFinApp()
+				Delay(1,FinAppDropSettleSecs,Sec)
+				Battery(SwitchUnloadedV)
+			EndIf
+			Call RecordFinAppDrop(SwitchLoadedV, SwitchUnloadedV)
+			DebugSeq2Ms = Timer(TmrSeq2,mSec,TimerReadOnly)
+			If DebugTrace Then LogDebug("SEQ2 rail " + IIF(FinAppWanted,"on","off") _
+				+ "  ok=" + IIF(SeqResult,"T","F") _
+				+ " powered=" + IIF(FinApp_Powered,"T","F") _
+				+ " responding=" + IIF(FinApp_Responding,"T","F") _
+				+ " unsafeStops=" + FormatLong(FinApp_UnsafeStops,"%d") _
+				+ " stopPolls=" + FormatLong(FinApp_StopPollsUsed,"%d") _
+				+ " ms=" + FormatLong(DebugSeq2Ms,"%d"))
+		EndIf
+
+		If FinApp_Powered AND DueNow(SeqFinApp, FinAppReadUnits, 0) Then
+			Timer(TmrSeq2,mSec,TimerResetAndStart)
+			SeqResult = SampleFinApp()
+			DebugSeq2Ms = Timer(TmrSeq2,mSec,TimerReadOnly)
+			CallTable FinApp_Data
+			If DebugTrace Then
+				DebugLine = "SEQ2 read   ok=" + IIF(SeqResult,"T","F") _
+					+ " newData=" + IIF(FinApp_NewData,"T","F") _
+					+ " master=" + IIF(FinApp_MasterOk,"T","F") _
+					+ " det=" + IIF(FinApp_DetectorsOk,"T","F") _
+					+ " water=" + IIF(FinApp_WaterOk,"T","F")
+				DebugLine = DebugLine _
+					+ " cnt=" + FormatFloat(FinApp_MasterCounter,"%.0f") _
+					+ " batt=" + FormatFloat(FinApp_Batt_V,"%.2f") _
+					+ " boardT=" + FormatFloat(FinApp_BoardTemp_C,"%.2f") _
+					+ " sweAreal=" + FormatFloat(FinApp_SWE_Areal_mm,"%.3f") _
+					+ " ms=" + FormatLong(DebugSeq2Ms,"%d")
+				LogDebug(DebugLine)
+			EndIf
+		EndIf
+
+	NextScan
+		Call AccumulateFinAppDaily
+
+SlowSequence
+	Scan (SeqTickSecs,Sec,0,0)
+		SeqAliveScan(3) = MainScanCount
+		SemaphoreGet(ProfileSem)
+		SbdDue = DueNow(SeqComms, UnitsPerDay, SbdSendUnitOfDay)
+		SbdDue = SbdDue AND (((DayIndex MOD SbdPeriodDays()) = 0) OR SbdRetryPending)
+		SemaphoreRelease(ProfileSem)
+
+		If SbdDue AND IridiumEnabled Then
+			Timer(TmrSeq3,mSec,TimerResetAndStart)
+			Delay(1,SeqTickSecs,Sec)
+			For WaitI = 1 To Seq1WaitSecs
+				If Seq1Step = 0 Then ExitFor
+				Delay(1,1,Sec)
+			Next WaitI
+			HighPowerActive = True
+			If DebugTrace Then LogDebug("SEQ3 start  unit=" + FormatLong(UnitOfDay,"%d") _
+				+ " day=" + FormatLong(DayIndex,"%d") _
+				+ " prof=" + FormatLong(PowerProfile,"%d") _
+				+ " everyDays=" + FormatLong(SbdPeriodDays(),"%d"))
+
+			SW12(CommsRailPort, 1)
+			Call StartGPS
+			For WaitI = 1 To GPSWindowMaxSecs
+				SeqAliveScan(3) = MainScanCount
+				If PollGPS(WaitI) Then ExitFor
+				Delay(1,1,Sec)
+			Next WaitI
+			Call StopGPS
+			CallTable GPS_Data
+			SeqAliveScan(3) = MainScanCount
+			If DebugTrace Then LogDebug("SEQ3 gps    fixes=" + FormatLong(GPS_Fixes,"%d") _
+				+ " sats=" + FormatLong(GPS_Satellites,"%d") _
+				+ " fixSecs=" + FormatFloat(GPS_FixSecs,"%.0f") _
+				+ " clockErr=" + FormatFloat(GPS_ClockErrorSecs,"%.3f") _
+				+ " set=" + IIF(GPS_ClockSet,"T","F") _
+				+ " at " + FormatLong(Timer(TmrSeq3,mSec,TimerReadOnly),"%d") + " ms")
+
+			If StartIridiumModem() Then
+				IridiumIMEIOk = GetIridiumIMEI()
+				If IridiumIMEIOk Then IridiumIMEIOk = (IridiumIMEI = ExpectedIridiumIMEI)
+				Call BuildSbdPayload
+				LogDebug("SBD payload v" + FormatLong(SbdPayloadVersion,"%d") + ", bytes=" + FormatLong(SbdPayloadLen,"%d"))
+				SbdLastOk = False
+				If DebugTrace Then LogDebug("SEQ3 modem up  imei=" + IridiumIMEI _
+					+ " at " + FormatLong(Timer(TmrSeq3,mSec,TimerReadOnly),"%d") + " ms")
+				SbdLastOk = SendIridiumMessage(SbdPayloadLen)
+			Else
+				IridiumIMEIOk = False
+				SbdLastOk = False
+				If DebugTrace Then LogDebug("SEQ3 modem DID NOT START at " _
+					+ FormatLong(Timer(TmrSeq3,mSec,TimerReadOnly),"%d") + " ms")
+			EndIf
+			If DebugTrace Then
+				DebugLine = "SEQ3 send   ok=" + IIF(SbdLastOk,"T","F") _
+					+ " rssi=" + FormatLong(IridiumRSSI,"%d") _
+					+ " netAvail=" + IIF(IridiumNetworkAvailable,"T","F")
+				DebugLine = DebugLine _
+					+ " writeRes=" + FormatLong(IridiumWriteResult,"%d") _
+					+ " moStatus=" + FormatLong(IridiumMOStatus,"%d") _
+					+ " moMSN=" + FormatLong(IridiumMOMSN,"%d") _
+					+ " elapsed=" + FormatFloat(IridiumSendElapsedSecs,"%.1f") + " s" _
+					+ " at " + FormatLong(Timer(TmrSeq3,mSec,TimerReadOnly),"%d") + " ms"
+				LogDebug(DebugLine)
+			EndIf
+
+			SeqResult = StopIridiumModem()
+			SW12(CommsRailPort, 0)
+			HighPowerActive = False
+			SbdRetryPending = (NOT SbdLastOk) AND (NOT SbdRetryPending)
+			DebugSeq3Ms = Timer(TmrSeq3,mSec,TimerReadOnly)
+			If DebugTrace Then LogDebug("SEQ3 done   stopOk=" + IIF(SeqResult,"T","F") _
+				+ " total=" + FormatLong(DebugSeq3Ms,"%d") _
+				+ " ms  skip=" + FormatLong(Status.SkippedScan,"%d"))
+		EndIf
+	NextScan

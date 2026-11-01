@@ -1,0 +1,34 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/ScanSyncTest.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/ScanSyncTest.CR6 ops=duplicate_line class=message_diff
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+Const CRLF = CHR(13) + CHR(10)
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+Const SeqCount = 4
+Public SeqFires(SeqCount) As Long
+Public SeqAlignedFires(SeqCount) As Long
+Public SeqLastDelta(SeqCount) As Long
+Dim SeqLastSec(SeqCount) As Long
+Dim rt1(9) As Long
+Dim rt2(9) As Long
+Dim rt3(9) As Long
+Dim rt4(9) As Long
+
+Const ClockSem = 1
+
+Function ClockString(Yr As Long, Mo As Long, Dy As Long, Hh As Long, Mn As Long, Sc As Long) As String * 30
+    ClockString = FormatLong(Yr,"%04u") + "-" + FormatLong(Mo,"%02u") + "-" + FormatLong(Dy,"%02u") _
+                  + " " + FormatLong(Hh,"%02u") + ":" + FormatLong(Mn,"%02u") + ":" + FormatLong(Sc,"%02u")
+EndFunction
+
+Sub ReportFire(SeqIndex As Long, SeqLabel As String * 12, PeriodSecs As Long, _
+               Yr As Long, Mo As Long, Dy As Long, Hh As Long, Mn As Long, Sc As Long)
+    Dim NowOfDay As Long
+    Dim Aligned As Boolean

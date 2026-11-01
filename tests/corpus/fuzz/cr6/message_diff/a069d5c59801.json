@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r36/fuzz-426/cr6/message_diff/a069d5c59801.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/PT1000_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument",
+    "insert_foreign_statement"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "a069d5c59801.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: \t\tIf() OR (PT1000_Temp_C < Lo) Then Lo = PT1000_Temp_C.",
+  "theirs": "a069d5c59801.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: () OR (PT1000_Temp_C < Lo) ."
+}

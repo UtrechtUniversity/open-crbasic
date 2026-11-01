@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/0c8dc6ced559.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/PT1000_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "rename_identifier"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "0c8dc6ced559.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: \t\t\t+ FormatFloat(PT1000_Ohms, \"%11.3f\") + FormatFloat(PT1000_Temp_C, \"%11.4f\") + FormatFloat(PTemp, \"%11.4f\") + FormatFloat(PT1000_Temp_CX - PTemp, \"%11.4f\")).\nline 5: Expr illegally occurs before BeginProg.",
+  "theirs": "0c8dc6ced559.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: \t\t\t+ FormatFloat(PT1000_Ohms, \"%11.3f\") \t\t\t+ FormatFloat(PT1000_Temp_C, \"%11.4f\") \t\t\t+ FormatFloat(PTemp, \"%11.4f\") \t\t\t+ FormatFloat(PT1000_Temp_CX - PTemp, \"%11.4f\")).\nline 5: Expr illegally occurs before BeginProg."
+}

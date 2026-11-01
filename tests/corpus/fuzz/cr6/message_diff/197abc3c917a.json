@@ -1,0 +1,14 @@
+{
+  "file": "scratch/r36/fuzz-425/cr6/message_diff/197abc3c917a.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/PowerProfile_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "insert_foreign_statement"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "197abc3c917a.CR6 -- Compile Failed!\n\nline 6: EndSelect w/o Select",
+  "theirs": "197abc3c917a.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:             LogDebug(\">>> library reinitialised\").\nline 2: Expr illegally occurs before BeginProg."
+}

@@ -7,15 +7,13 @@ evidence: `docs/loggers.md`.
 
 import collections
 import dataclasses
+import re
 from collections.abc import Set as AbstractSet
 from typing import TypedDict
 
-import re
-
-from .. import consteval, lexer
+from .. import bindings, consteval, lexer
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
-from .. import bindings
 from . import expressions, instr_rules, structure, symbols
 
 # `SerialOpen`'s own `ComPort` argument (position 0, the only position checked here) is the one
@@ -1015,6 +1013,7 @@ def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_
     a copy of the program without those declarations, keeping only their findings on statements
     after the taint that use an unregistered name or a tainted `Function`."""
     import dataclasses
+
     from .. import consteval
     from . import structure, unused
     statements = []

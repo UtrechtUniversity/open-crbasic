@@ -12,9 +12,9 @@ find a record's column (string tokens are never name tokens).
 
 import re
 from collections import defaultdict
+from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import NamedTuple
-from collections.abc import Iterable
 
 from . import consteval, lexer, profiles, tables
 from . import syntax as S
@@ -813,7 +813,7 @@ def _field_groups(dt, env, var_info, by_display, by_base, anon=None):
     groups: list = []
     pending: list = []
     pending_src = None
-    instr = fn = None
+    instr = None
 
     def flush(fnames):
         nonlocal pending, pending_src, instr

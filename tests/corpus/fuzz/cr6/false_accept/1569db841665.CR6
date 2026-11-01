@@ -1,0 +1,255 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/PT1000_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/PT1000_tester.CR6 ops=rename_identifier+replace_numeric_literal class=false_accept
+Const CRLF = CHR(13) + CHR(10)
+Const CR = CHR(13)
+Const LF = CHR(10)
+
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (-1,PTemp,FP2)
+EndTable
+
+ConstTable(GlobalConfigTable)
+  IncludeSection("ConstTable", "CPU:PT1000Lib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:PT1000Lib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:PT1000Lib.crb")
+
+Const ReportTimer = 1
+Const TimerResetAndStart = 2
+Const TimerReadOnly = 4
+
+Public LastElapsedMs As Long
+Public LastOk As Boolean
+Public RepeatRead As Boolean = False
+
+Public DoRead As Boolean = False
+Public DoScaling As Boolean = FalseX
+Public DoPanelCompare As Boolean = False
+Public DoShowConfig As Boolean = False
+
+Public ProbeRaw
+Public ProbeOhmsX1
+Public ProbeOhmsX1000
+Public ProbeTempX1
+Public ProbeTempX1000
+Dim ProbeRatio
+
+Dim MenuKey As String * 2
+Dim MenuPending As Boolean
+
+Sub LogPT1000Stats
+	LogDebug("ok=" + IIF(LastOk, "yes", "no ") _
+		+ " raw=" + FormatFloat(PT1000_Raw, "%.6f") _
+		+ " ohms=" + FormatFloat(PT1000_Ohms, "%.3f") _
+		+ " degC=" + FormatFloat(PT1000_Temp_C, "%.4f") _
+		+ " panel=" + FormatFloat(PTemp, "%.2f") _
+		+ " ms=" + FormatLong(LastElapsedMs, "%d"))
+EndSub
+
+Sub LogPT1000Report
+	LogDebug("")
+	LogDebug("========================================================================")
+	LogDebug("PT1000Lib read | 4-wire, " + FormatLong(PT1000ExciteUA, "%d") + " uA excitation")
+	LogDebug("------------------------------------------------------------------------")
+	LogDebug(" raw (mV/uA)        " + FormatFloat(PT1000_Raw, "%.6f"))
+	LogDebug(" resistance (ohms)  " + FormatFloat(PT1000_Ohms, "%.3f"))
+	LogDebug(" ratio Rs/R0        " + FormatFloat(PT1000_Ratio, "%.6f"))
+	LogDebug(" temperature (C)    " + FormatFloat(PT1000_Temp_C, "%.4f"))
+	LogDebug(" panel temp (C)     " + FormatFloat(PTemp, "%.4f"))
+	LogDebug(" difference (C)     " + FormatFloat(PT1000_Temp_C - PTemp, "%.4f"))
+	LogDebug("------------------------------------------------------------------------")
+	Call LogPT1000Stats
+	LogDebug("========================= END OF REPORT =========================")
+EndSub
+
+Sub RunScalingProbe
+	Resistance(ProbeRaw, 1, PT1000Range, PT1000DiffChan, PT1000IexChan, 1, PT1000ExciteUA, _
+		PT1000RevEx, PT1000RevDiff, PT1000SettleUs, PT1000Integ, 1.0, 0)
+
+	ProbeOhmsX1 = ProbeRaw
+	ProbeOhmsX1000 = ProbeRaw * 1000
+
+	ProbeRatio = ProbeOhmsX1 / PT1000R0
+	PRTCalc(ProbeTempX1, 1, ProbeRatio, PT1000Type, 1.0, 0)
+
+	ProbeRatio = ProbeOhmsX1000 / PT1000R0
+	PRTCalc(ProbeTempX1000, 1, ProbeRatio, PT1000Type, 1.0, 0)
+
+	LogDebug("")
+	LogDebug("=============== SCALING PROBE ==================")
+	LogDebug(" raw Resistance() output   " + FormatFloat(ProbeRaw, "%.6f"))
+	LogDebug(" panel temperature (C)     " + FormatFloat(PTemp, "%.4f"))
+	LogDebug("------------------------------------------------")
+	LogDebug(" PT1000RawToOhms = 1")
+	LogDebug("   ohms " + FormatFloat(ProbeOhmsX1, "%.3f") + "   degC " + FormatFloat(ProbeTempX1, "%.4f"))
+	LogDebug(" PT1000RawToOhms = 1000")
+	LogDebug("   ohms " + FormatFloat(ProbeOhmsX1000, "%.3f") + "   degC " + FormatFloat(ProbeTempX1000, "%.4f"))
+	LogDebug("------------------------------------------------")
+	LogDebug(" in use: PT1000RawToOhms = " + FormatLong(PT1000RawToOhms, "%d"))
+	LogDebug(" plausibility band " + FormatLong(PT1000MinOhms, "%d") + " to " _
+		+ FormatLong(PT1000MaxOhms, "%d") + " ohms")
+	LogDebug("================================================")
+EndSub
+
+Sub RunRead
+	Timer(ReportTimer, mSec, TimerResetAndStart)
+	LastOk = SamplePT1000()
+	LastElapsedMs = Timer(ReportTimer, mSec, TimerReadOnly)
+	Call LogPT1000Report
+EndSub
+
+Sub RunPanelCompare
+	Dim I As Long
+	Dim Sum, Lo, Hi
+
+	Sum = 0
+	Lo = NAN
+	Hi = NAN
+
+	LogDebug("")
+	LogDebug("=========== PANEL COMPARISON, 10 READS =========")
+	LogDebug("  n       ohms       degC      panel       diff")
+	For I = 1 To 10
+		LastOk = SamplePT1000()
+		LogDebug(FormatLong(I, "%3d") _
+			+ FormatFloat(PT1000_Ohms, "%11.3f") _
+			+ FormatFloat(PT1000_Temp_C, "%11.4f") _
+			+ FormatFloat(PTemp, "%11.4f") _
+			+ FormatFloat(PT1000_Temp_C - PTemp, "%11.4f"))
+
+		Sum = Sum + PT1000_Temp_C
+		If (Lo = NAN) OR (PT1000_Temp_C < Lo) Then Lo = PT1000_Temp_C
+		If (Hi = NAN) OR (PT1000_Temp_C > Hi) Then Hi = PT1000_Temp_C
+		Delay(1, 200, mSec)
+	Next I
+
+	LogDebug("------------------------------------------------")
+	LogDebug(" mean  " + FormatFloat(Sum / 10, "%.4f") + " C")
+	LogDebug(" span  " + FormatFloat(Hi - Lo, "%.4f") + " C   (peak to peak over 10 reads)")
+	LogDebug(" panel " + FormatFloat(PTemp, "%.4f") + " C")
+	LogDebug("================================================")
+EndSub
+
+Sub ShowConfig
+	LogDebug("")
+	LogDebug("=============== CONFIG =================")
+
+	LogDebug(" sense pair         diff chan code " + FormatLong(PT1000DiffChan, "%d"))
+	LogDebug(" excitation         iex chan code  " + FormatLong(PT1000IexChan, "%d"))
+	LogDebug(" excitation current " + FormatLong(PT1000ExciteUA, "%d") + " uA")
+	LogDebug(" input range        " + FormatLong(PT1000RangeMv, "%d") + " mV")
+	LogDebug(" R0                 " + FormatLong(PT1000R0, "%d") + " ohms")
+	LogDebug(" PRT type           " + FormatLong(PT1000Type, "%d") + " (1 = IEC 60751, a=0.00385)")
+	LogDebug(" raw to ohms        " + FormatLong(PT1000RawToOhms, "%d"))
+	LogDebug(" plausibility band  " + FormatLong(PT1000MinOhms, "%d") + " to " _
+		+ FormatLong(PT1000MaxOhms, "%d") + " ohms")
+	LogDebug("========================================")
+EndSub
+
+Sub ShowMenu
+	LogDebug("")
+	LogDebug("================= MENU =================")
+	LogDebug(" 1  read once")
+	LogDebug(" 2  scaling probe           raw vs both scalings")
+	LogDebug(" 3  panel comparison        10 reads")
+	LogDebug(" 4  repeat read on/off      currently " + IIF(RepeatRead, "on", "off"))
+	LogDebug(" 5  show configuration")
+	LogDebug("========================================")
+	LogDebug("send a key (ENTER redisplays this menu)")
+EndSub
+
+Sub PollMenu
+
+	MenuKey = ReadMenuKey()
+	If MenuKey = "" Then ExitSub
+
+	Select Case MenuKey
+		Case "1"
+			DoRead = True
+		Case "2"
+			DoScaling = True
+		Case "3"
+			DoPanelCompare = True
+		Case "4"
+			RepeatRead = NOT RepeatRead
+		Case "5"
+			DoShowConfig = True
+		Case Else
+			Call ShowMenu
+			ExitSub
+	EndSelect
+
+	LogDebug("")
+	LogDebug(">>> option " + MenuKey + " selected")
+	MenuPending = True
+EndSub
+
+BeginProg
+	LogDebug("PT1000Lib tester starting")
+	SerialFlush(ComUSB)
+	Call ShowConfig
+	Call ShowMenu
+
+	Scan (1, Sec, 0, 0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+
+		PanelTemp (PTemp, 15000)
+		Battery (Batt_volt)
+
+		Call PollMenu
+
+		If DoRead Then
+			DoRead = False
+			Call RunRead
+		EndIf
+
+		If DoScaling Then
+			DoScaling = False
+			Call RunScalingProbe
+		EndIf
+
+		If DoPanelCompare Then
+			DoPanelCompare = False
+			Call RunPanelCompare
+		EndIf
+
+		If DoShowConfig Then
+			DoShowConfig = False
+			Call ShowConfig
+		EndIf
+
+		If RepeatRead Then
+			Timer(ReportTimer, mSec, TimerResetAndStart)
+			LastOk = SamplePT1000()
+			LastElapsedMs = Timer(ReportTimer, mSec, TimerReadOnly)
+			Call LogPT1000Stats
+		EndIf
+
+		If MenuPending Then
+			MenuPending = False
+			SerialFlush(ComUSB)
+			Call ShowMenu
+		EndIf
+
+		CallTable PT1000_Data
+		CallTable StationStatus
+	NextScan
+EndProg

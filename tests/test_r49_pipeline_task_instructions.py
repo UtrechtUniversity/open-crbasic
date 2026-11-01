@@ -8,7 +8,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "r49_pipeline_task_instructions.json").read_text())
 
 

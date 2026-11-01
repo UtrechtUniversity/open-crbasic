@@ -9,7 +9,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 FIXTURES = ("r57_task_memory_delays", "r57_serialopen_format_commsmode", "r57_alias_bounds")
 CASES = [case for name in FIXTURES
          for case in json.loads((Path(__file__).parent / "fixtures" / f"{name}.json").read_text())["cases"]]

@@ -1,0 +1,2 @@
+' fuzz: seed=repo/Preflight_tester.CR6 ops=replace_argument+replace_numeric_literal class=message_diff
+		CallTable StationStatus

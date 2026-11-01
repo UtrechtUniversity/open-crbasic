@@ -1,0 +1,2 @@
+' fuzz: seed=repo/ScanSyncTest.CR6 ops=delete_line+rename_identifier class=message_diff
+Sub ReportFire(SeqIndex As2 Long, SeqLabel As String * 12, PeriodSecs As Long, _

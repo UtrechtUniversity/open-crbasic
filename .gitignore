@@ -1,6 +1,15 @@
-.oracle-cache/
 __pycache__/
 .venv/
-difftest-*.json
+dist/
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+.oracle-cache/
 scratch/
+difftest-*.json
 timingtest-*.json
+# Campbell and third-party material, kept local (docs/legal.md)
+compiler/
+extracted_chm/
+examples/
+tests/corpus/chm/

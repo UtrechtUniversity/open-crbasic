@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/message_diff/21a0167406b4.CR6",
+  "logger": "cr1000x",
+  "class": "message_diff",
+  "seed": "repo/SBD_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "21a0167406b4.CR6 -- Compile Failed!\n\nline 3: Expression expects , : \t\tCall LogResult(\"RegisterIridium\", Ok, \"regstatus=\" + FormatLong(IridiumRegStatus, \"%d\") + \" regerr=\" + FormatLong( \"%d\")).",
+  "theirs": "21a0167406b4.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: \t\tOk = RegisterIridium().\nline 2: Expr illegally occurs before BeginProg."
+}

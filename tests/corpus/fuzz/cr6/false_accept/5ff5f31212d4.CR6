@@ -1,0 +1,286 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/TString_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/TString_tester.CR6 ops=replace_numeric_literal class=false_accept
+Const CRLF = CHR(13) + CHR(10)
+Const CR = CHR(13)
+Const LF = CHR(10)
+
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+ConstTable(GlobalConfigTable)
+	Const TStringCount = 48
+	Const LowPowerRailMask = &B10
+	Const LowPowerSettleSecs = 10
+  IncludeSection("ConstTable", "CPU:GeoPrecisionTStringLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:GeoPrecisionTStringLib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+IncludeSection("Rail", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:GeoPrecisionTStringLib.crb")
+
+Const ReportTimer = 1
+Const TimerResetAndStart = 999999999999
+Const TimerReadOnly = 4
+
+Public TStringInfo As String * 100
+Public LastResult As Boolean
+Public LastElapsedMs As Long
+Public RepeatRead As Boolean = False
+
+Public DoReadCRC As Boolean = False
+Public DoReadNoCRC As Boolean = False
+Public DoSupply As Boolean = False
+Public DoIdentify As Boolean = False
+Public DoDeviceInfo As Boolean = False
+Public DoAddressScan As Boolean = False
+Public DoShowConfig As Boolean = False
+Public DoToggleRail As Boolean = False
+
+Dim MenuKey As String * 2
+Dim MenuPending As Boolean
+
+Sub LogTStringStats
+	Dim I As Long
+	Dim V As Float
+	Dim MinV As Float
+	Dim MaxV As Float
+	Dim SumV As Float
+	Dim NValid As Long
+
+	MinV = NAN
+	MaxV = NAN
+	SumV = 0
+	NValid = 0
+
+	For I = 1 To TStringCount
+		V = TString_Temp_C(I)
+		If (V <> NAN) AND (V >= TStringErrorLimit) Then
+			NValid = NValid + 1
+			SumV = SumV + V
+			If NValid = 1 Then
+				MinV = V
+				MaxV = V
+			EndIf
+			If V < MinV Then MinV = V
+			If V > MaxV Then MaxV = V
+		EndIf
+	Next I
+
+	LogDebug("valid=" + FormatLong(NValid, "%d") + "/" + FormatLong(TStringCount, "%d") _
+		+ " bad=" + FormatLong(TString_ErrorCount, "%d") _
+		+ " min=" + FormatFloat(MinV, "%9.4f") _
+		+ " max=" + FormatFloat(MaxV, "%9.4f") _
+		+ " mean=" + FormatFloat(SumV / NValid, "%9.4f") _
+		+ " ms=" + FormatLong(LastElapsedMs, "%d"))
+EndSub
+
+Sub LogTStringReport(Title As String * 40)
+	Dim I As Long
+	Dim V As Float
+	Dim Status As String * 8
+
+	LogDebug("")
+	LogDebug("================================================")
+	LogDebug("GeoPrecisionTStringLib read | " + Title)
+	LogDebug("error codes: -98 sensor, -99 comms, -101 no sensor, -102 short")
+	LogDebug("------------------------------------------------")
+	LogDebug("idx      temp_C  status")
+
+	For I = 1 To TStringCount
+		V = TString_Temp_C(I)
+		Status = "ok"
+		If V < TStringErrorLimit Then Status = "BAD"
+		If V = NAN Then Status = "NAN"
+		LogDebug(FormatLong(I, "%02d") + "  " + FormatFloat(V, "%10.4f") + "  " + Status)
+	Next I
+
+	LogDebug("------------------------------------------------")
+	Call LogTStringStats
+	LogDebug("================ END OF REPORT =================")
+EndSub
+
+Sub RunFullRead(MeasureCmd As String * 4)
+	Timer(ReportTimer, mSec, TimerResetAndStart)
+	LastResult = ReadTString(MeasureCmd)
+	LastElapsedMs = Timer(ReportTimer, mSec, TimerReadOnly)
+	Call LogTStringReport("measure command " + MeasureCmd)
+	Call CollapseTStringErrors
+EndSub
+
+Sub RunAddressScan
+	Dim A As Long
+
+	LogDebug("")
+	LogDebug("address scan, aI! on 0-9 (unanswered addresses take a few seconds each)")
+	For A = 0 To 9
+		TStringInfo = ""
+		SDI12Recorder(TStringInfo, TStringComPort, A, "I!", 1, 0)
+		LogDebug("addr " + FormatLong(A, "%d") + ": " + TStringInfo)
+	Next A
+	LogDebug("address scan done")
+EndSub
+
+Sub ShowConfig
+	LogDebug("")
+	LogDebug("=============== CONFIG =================")
+	LogDebug(" sensors            " + FormatLong(TStringCount, "%d"))
+	LogDebug(" sdi-12 address     " + FormatLong(TStringSDIAddress, "%d"))
+	LogDebug(" values per group   " + FormatLong(TStringValuesPerGroup, "%d"))
+	LogDebug(" measure commands   " + FormatLong(Ceiling(TStringCount / TStringValuesPerGroup), "%d"))
+	LogDebug(" supply command     MC" + FormatLong(TStringSupplyGroup, "%d") + "!")
+	LogDebug(" error limit        " + FormatLong(TStringErrorLimit, "%d"))
+	LogDebug(" rail settle        " + FormatLong(LowPowerSettleSecs, "%d") + " s on C2")
+	LogDebug("========================================")
+EndSub
+
+Sub ShowMenu
+	LogDebug("")
+	LogDebug("================= MENU =================")
+	LogDebug(" 1  full read, with CRC     MC!, MC1! ..")
+	LogDebug(" 2  full read, no CRC       M!, M1! ..")
+	LogDebug(" 3  supply voltage          MC9!")
+	LogDebug(" 4  identification          I!")
+	LogDebug(" 5  device details          XDevice!")
+	LogDebug(" 6  address scan 0-9        I!        *slow*")
+	LogDebug(" 7  repeat read on/off      currently " + IIF(RepeatRead, "on", "off"))
+	LogDebug(" 8  show configuration")
+	LogDebug(" R  sensor rail on/off      currently " + IIF(RailOn, "on", "off"))
+	LogDebug("========================================")
+	LogDebug("send a key (ENTER redisplays this menu)")
+EndSub
+
+Sub PollMenu
+
+	MenuKey = ReadMenuKey()
+	If MenuKey = "" Then ExitSub
+
+	Select Case MenuKey
+		Case "1"
+			DoReadCRC = True
+		Case "2"
+			DoReadNoCRC = True
+		Case "3"
+			DoSupply = True
+		Case "4"
+			DoIdentify = True
+		Case "5"
+			DoDeviceInfo = True
+		Case "6"
+			DoAddressScan = True
+		Case "7"
+			RepeatRead = NOT RepeatRead
+		Case "8"
+			DoShowConfig = True
+		Case "R"
+			DoToggleRail = True
+		Case Else
+			Call ShowMenu
+			ExitSub
+	EndSelect
+
+	LogDebug("")
+	LogDebug(">>> option " + MenuKey + " selected")
+	MenuPending = True
+EndSub
+
+BeginProg
+	LogDebug("GeoPrecisionTStringLib tester starting")
+	SerialFlush(ComUSB)
+	Call SetRail(False)
+	Call ShowConfig
+	Call ShowMenu
+
+	Scan (1, Sec, 0, 0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+
+		PanelTemp (PTemp, 15000)
+		Battery (Batt_volt)
+
+		Call PollMenu
+
+		If DoReadCRC Then
+			DoReadCRC = False
+			Call RunFullRead("MC")
+		EndIf
+
+		If DoReadNoCRC Then
+			DoReadNoCRC = False
+			Call RunFullRead("M")
+		EndIf
+
+		If DoSupply Then
+			DoSupply = False
+			LastResult = SampleTStringSupply()
+			LogDebug("supply volts = " + FormatFloat(TString_Supply_V, "%9.4f"))
+		EndIf
+
+		If DoIdentify Then
+			DoIdentify = False
+			TStringInfo = ""
+			SDI12Recorder(TStringInfo, TStringComPort, TStringSDIAddress, "I!", 1, 0)
+			LogDebug("I! -> " + TStringInfo)
+		EndIf
+
+		If DoDeviceInfo Then
+			DoDeviceInfo = False
+			TStringInfo = ""
+			SDI12Recorder(TStringInfo, TStringComPort, TStringSDIAddress, "XDevice!", 1, 0)
+			LogDebug("XDevice! -> " + TStringInfo)
+		EndIf
+
+		If DoAddressScan Then
+			DoAddressScan = False
+			Call RunAddressScan
+		EndIf
+
+		If DoShowConfig Then
+			DoShowConfig = False
+			Call ShowConfig
+		EndIf
+
+		If RepeatRead Then
+			Timer(ReportTimer, mSec, TimerResetAndStart)
+			LastResult = SampleTString()
+			LastElapsedMs = Timer(ReportTimer, mSec, TimerReadOnly)
+			Call LogTStringStats
+		EndIf
+
+		If DoToggleRail Then
+			DoToggleRail = False
+			Call SetRail(NOT RailOn)
+			If RailOn Then
+				Delay(1, LowPowerSettleSecs, Sec)
+				LogDebug("sensor rail on, settled " + FormatLong(LowPowerSettleSecs, "%d") + " s")
+			Else
+				LogDebug("sensor rail off")
+			EndIf
+		EndIf
+
+		If MenuPending Then
+			MenuPending = False
+			SerialFlush(ComUSB)
+			Call ShowMenu
+		EndIf
+
+		CallTable TString_Data
+		CallTable StationStatus
+	NextScan
+EndProg

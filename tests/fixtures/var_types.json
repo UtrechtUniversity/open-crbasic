@@ -1,0 +1,3194 @@
+{
+  "observation_date": "2026-10-02",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "cr6-routers-long-array",
+      "logger": "cr6",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(L())\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-routers-long-array",
+      "logger": "cr1000x",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(L())\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-routers-long-array",
+      "logger": "cr300",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(L())\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-routers-long-array",
+      "logger": "cr350",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(L())\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-routers-float-array",
+      "logger": "cr6",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(F())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr1000x-routers-float-array",
+      "logger": "cr1000x",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(F())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr300-routers-float-array",
+      "logger": "cr300",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(F())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr350-routers-float-array",
+      "logger": "cr350",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(F())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr6-routers-string-array",
+      "logger": "cr6",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(S())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr1000x-routers-string-array",
+      "logger": "cr1000x",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(S())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr300-routers-string-array",
+      "logger": "cr300",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(S())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr350-routers-string-array",
+      "logger": "cr350",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(S())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr6-routers-boolean-array",
+      "logger": "cr6",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(B())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr1000x-routers-boolean-array",
+      "logger": "cr1000x",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(B())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr300-routers-boolean-array",
+      "logger": "cr300",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(B())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr350-routers-boolean-array",
+      "logger": "cr350",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(B())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr6-routers-double-array",
+      "logger": "cr6",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(D())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr1000x-routers-double-array",
+      "logger": "cr1000x",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(D())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr300-routers-double-array",
+      "logger": "cr300",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(D())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr350-routers-double-array",
+      "logger": "cr350",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(D())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr6-routers-float-element",
+      "logger": "cr6",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(F(1,1))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr1000x-routers-float-element",
+      "logger": "cr1000x",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(F(1,1))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr300-routers-float-element",
+      "logger": "cr300",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(F(1,1))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr350-routers-float-element",
+      "logger": "cr350",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(F(1,1))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr6-routers-long-element",
+      "logger": "cr6",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(L(1,1))\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-routers-long-element",
+      "logger": "cr1000x",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(L(1,1))\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-routers-long-element",
+      "logger": "cr300",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(L(1,1))\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-routers-long-element",
+      "logger": "cr350",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(L(1,1))\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-routers-string-literal",
+      "logger": "cr6",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(\"x\")\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr1000x-routers-string-literal",
+      "logger": "cr1000x",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(\"x\")\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr300-routers-string-literal",
+      "logger": "cr300",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(\"x\")\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr350-routers-string-literal",
+      "logger": "cr350",
+      "source": "Public F(5,5), L(5,5) As Long, S(5,5) As String * 16, B(5,5) As Boolean, D(5,5) As Double\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(\"x\")\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr6-routers-paren-dim",
+      "logger": "cr6",
+      "source": "Public A((1+2),5) As Long\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(A())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr300-routers-paren-dim",
+      "logger": "cr300",
+      "source": "Public A((1+2),5) As Long\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(A())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr6-routers-paren-call-dim",
+      "logger": "cr6",
+      "source": "Public A(Abs(3)) As Long\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(A())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr300-routers-paren-call-dim",
+      "logger": "cr300",
+      "source": "Public A(Abs(3)) As Long\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(A())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr6-routers-paren-second-dim",
+      "logger": "cr6",
+      "source": "Public A(3,2*(1+1)) As Long\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(A())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr300-routers-paren-second-dim",
+      "logger": "cr300",
+      "source": "Public A(3,2*(1+1)) As Long\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(A())\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr6-routers-plain-dim",
+      "logger": "cr6",
+      "source": "Const K=3\nPublic A(K+1,5) As Long\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(A())\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-routers-plain-dim",
+      "logger": "cr300",
+      "source": "Const K=3\nPublic A(K+1,5) As Long\nBeginProg\nScan(1,Sec,0,0)\nRoutersNeighbors(A())\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sortspaindexed-float-float",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,F)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-float-float",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,F)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sortspaindexed-long-float",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,F)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-long-float",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,F)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr6-sortspaindexed-float-long",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,L)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-float-long",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,L)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr6-sortspaindexed-long-long",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,L)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-long-long",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,L)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sortspaindexed-string-long",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OS,6,L)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-string-long",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OS,6,L)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr6-sortspaindexed-string-float",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OS,6,F)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-string-float",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OS,6,F)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sortspaindexed-float-int-literal",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,3)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-float-int-literal",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,3)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr6-sortspaindexed-float-int-expr",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,(1+2))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-float-int-expr",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,(1+2))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr6-sortspaindexed-float-float-literal",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,3.5)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-float-float-literal",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,3.5)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sortspaindexed-long-float-literal",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,3.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-long-float-literal",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,3.5)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr6-sortspaindexed-long-division",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,3/2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-long-division",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,3/2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr6-sortspaindexed-long-sum",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,L(1)+1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-long-sum",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,L(1)+1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sortspaindexed-float-string-literal",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,\"x\")\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-float-string-literal",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,\"x\")\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr6-sortspaindexed-float-const",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-float-const",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr6-sortspaindexed-long-const",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,K)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-long-const",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,K)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sortspaindexed-float-const-float",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,KF)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-float-const-float",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,KF)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sortspaindexed-float-alias-long",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,AL)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-float-alias-long",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,AL)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr6-sortspaindexed-long-true",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,TRUE)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-long-true",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,TRUE)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sortspaindexed-float-nan-long",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,NaN)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-float-nan-long",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OL,6,NaN)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Source and Dest types must be the same."
+    },
+    {
+      "id": "cr6-sortspaindexed-float-element-sum",
+      "logger": "cr6",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,F(1)+L(1))\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sortspaindexed-float-element-sum",
+      "logger": "cr1000x",
+      "source": "Const K=3\nConst KF=3.5\nPublic F(6), L(6) As Long, S(6) As String * 16, Ls As Long\nPublic OF(6,2), OL(6,2) As Long, OS(6,2) As String * 16\nAlias L(1)=AL\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(OF,6,F(1)+L(1))\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sample-nsec-string",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,S,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr1000x-sample-nsec-string",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,S,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr300-sample-nsec-string",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,S,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr6-sample-nsec-boolean",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,B,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr1000x-sample-nsec-boolean",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,B,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr300-sample-nsec-boolean",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,B,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr6-sample-nsec-double",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,D,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr1000x-sample-nsec-double",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,D,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr300-sample-nsec-double",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,D,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr6-sample-nsec-double-array",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,DA(2),Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr1000x-sample-nsec-double-array",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,DA(2),Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr300-sample-nsec-double-array",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,DA(2),Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr6-sample-nsec-string-array",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(2,SA,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr1000x-sample-nsec-string-array",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(2,SA,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr300-sample-nsec-string-array",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(2,SA,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr6-sample-nsec-string-expr",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,S+\"x\",Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr1000x-sample-nsec-string-expr",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,S+\"x\",Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr300-sample-nsec-string-expr",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,S+\"x\",Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr6-sample-nsec-string-literal",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,\"x\",Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr1000x-sample-nsec-string-literal",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,\"x\",Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr300-sample-nsec-string-literal",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,\"x\",Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+    },
+    {
+      "id": "cr6-sample-nsec-long",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,L,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sample-nsec-long",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,L,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sample-nsec-long",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,L,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sample-nsec-long-array",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(2,LA,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sample-nsec-long-array",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(2,LA,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sample-nsec-long-array",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(2,LA,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sample-nsec-int-literal",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,3,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sample-nsec-int-literal",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,3,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sample-nsec-int-literal",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,3,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sample-nsec-long-expr",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,L+1,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sample-nsec-long-expr",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,L+1,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sample-nsec-long-expr",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,L+1,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sample-nsec-float-scalar",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,F,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr1000x-sample-nsec-float-scalar",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,F,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr300-sample-nsec-float-scalar",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,F,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr6-sample-nsec-float-small-array",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,FA,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr1000x-sample-nsec-float-small-array",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,FA,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr300-sample-nsec-float-small-array",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,FA,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr6-sample-nsec-float-array-7",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,FB,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sample-nsec-float-array-7",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,FB,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sample-nsec-float-array-7",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,FB,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sample-nsec-float-element-of-7",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,FB(2),Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sample-nsec-float-element-of-7",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,FB(2),Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sample-nsec-float-element-of-7",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,FB(2),Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sample-nsec-float-reps-7",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(7,FB,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr1000x-sample-nsec-float-reps-7",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(7,FB,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr300-sample-nsec-float-reps-7",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(7,FB,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr6-sample-nsec-float-reps-2-of-14",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(2,FG,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sample-nsec-float-reps-2-of-14",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(2,FG,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sample-nsec-float-reps-2-of-14",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(2,FG,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sample-nsec-float-reps-2-of-13",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(2,FH,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr1000x-sample-nsec-float-reps-2-of-13",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(2,FH,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr300-sample-nsec-float-reps-2-of-13",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(2,FH,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr6-sample-nsec-float-literal",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,3.5,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr1000x-sample-nsec-float-literal",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,3.5,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr300-sample-nsec-float-literal",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,3.5,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr6-sample-nsec-float-expr",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,F+1,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr1000x-sample-nsec-float-expr",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,F+1,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr300-sample-nsec-float-expr",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,F+1,Nsec)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+    },
+    {
+      "id": "cr6-sample-nsec-string-fp2",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,S,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sample-nsec-string-fp2",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,S,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sample-nsec-string-fp2",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,S,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sample-nsec-string-long",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,S,Long)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sample-nsec-string-long",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,S,Long)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sample-nsec-string-long",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nSample(1,S,Long)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sample-nsec-maximum-string-nsec",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nMaximum(1,S,Nsec,False,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sample-nsec-maximum-string-nsec",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nMaximum(1,S,Nsec,False,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sample-nsec-maximum-string-nsec",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double\nPublic FA(3), FB(7), FG(14), FH(13)\nPublic LA(3) As Long, SA(3) As String * 16, DA(7) As Double\nDataTable(T,1,-1)\nMaximum(1,S,Nsec,False,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sdmcd16-long-long",
+      "logger": "cr6",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(L2,L,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sdmcd16-long-long",
+      "logger": "cr1000x",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(L2,L,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sdmcd16-long-boolean-mask",
+      "logger": "cr6",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(L2,B,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source and Mask type must be LONG."
+    },
+    {
+      "id": "cr1000x-sdmcd16-long-boolean-mask",
+      "logger": "cr1000x",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(L2,B,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source and Mask type must be LONG."
+    },
+    {
+      "id": "cr6-sdmcd16-float-boolean-mask",
+      "logger": "cr6",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(F2,B,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source and Mask type must be LONG."
+    },
+    {
+      "id": "cr1000x-sdmcd16-float-boolean-mask",
+      "logger": "cr1000x",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(F2,B,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source and Mask type must be LONG."
+    },
+    {
+      "id": "cr6-sdmcd16-float-mask",
+      "logger": "cr6",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(L2,F,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sdmcd16-float-mask",
+      "logger": "cr1000x",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(L2,F,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sdmcd16-string-mask",
+      "logger": "cr6",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(L2,S,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sdmcd16-string-mask",
+      "logger": "cr1000x",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(L2,S,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sdmcd16-literal-mask",
+      "logger": "cr6",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(L2,5,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sdmcd16-literal-mask",
+      "logger": "cr1000x",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(L2,5,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sdmcd16-expr-source",
+      "logger": "cr6",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(L+1,L,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sdmcd16-expr-source",
+      "logger": "cr1000x",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(L+1,L,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sdmcd16-literal-source",
+      "logger": "cr6",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(5,L,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Source."
+    },
+    {
+      "id": "cr1000x-sdmcd16-literal-source",
+      "logger": "cr1000x",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(5,L,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Source."
+    },
+    {
+      "id": "cr6-sdmcd16-const-source",
+      "logger": "cr6",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(K,L,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Source."
+    },
+    {
+      "id": "cr1000x-sdmcd16-const-source",
+      "logger": "cr1000x",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(K,L,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Source."
+    },
+    {
+      "id": "cr6-sdmcd16-literal-source-boolean-mask",
+      "logger": "cr6",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(5,B,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source and Mask type must be LONG.\nline 5: Invalid Source."
+    },
+    {
+      "id": "cr1000x-sdmcd16-literal-source-boolean-mask",
+      "logger": "cr1000x",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16Mask(5,B,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source and Mask type must be LONG.\nline 5: Invalid Source."
+    },
+    {
+      "id": "cr6-sdmcd16-ac-long-array",
+      "logger": "cr6",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16AC(L2,2,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-sdmcd16-ac-long-array",
+      "logger": "cr1000x",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16AC(L2,2,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-sdmcd16-ac-literal",
+      "logger": "cr6",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16AC(5,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Source."
+    },
+    {
+      "id": "cr1000x-sdmcd16-ac-literal",
+      "logger": "cr1000x",
+      "source": "Public F, F2(4), L As Long, L2(4) As Long, B As Boolean, BA(4) As Boolean, S As String * 16\nConst K = 5\nBeginProg\nScan(1,Sec,0,0)\nSDMCD16AC(5,1,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Source."
+    },
+    {
+      "id": "cr6-snmpvariable-f-integer",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(F,1.3.6.1.4.1.43592.55.1.6,Integer,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-f-counter",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(F,1.3.6.1.4.1.43592.55.1.6,Counter,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-f-string",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(F,1.3.6.1.4.1.43592.55.1.6,String,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-f-timeticks",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(F,1.3.6.1.4.1.43592.55.1.6,TimeTicks,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-f-opaque",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(F,1.3.6.1.4.1.43592.55.1.6,Opaque,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-f-gauge",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(F,1.3.6.1.4.1.43592.55.1.6,Gauge,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-f-float",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(F,1.3.6.1.4.1.43592.55.1.6,Float,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-l-integer",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(L,1.3.6.1.4.1.43592.55.1.6,Integer,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-l-counter",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(L,1.3.6.1.4.1.43592.55.1.6,Counter,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-l-string",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(L,1.3.6.1.4.1.43592.55.1.6,String,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-l-timeticks",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(L,1.3.6.1.4.1.43592.55.1.6,TimeTicks,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-l-opaque",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(L,1.3.6.1.4.1.43592.55.1.6,Opaque,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-l-gauge",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(L,1.3.6.1.4.1.43592.55.1.6,Gauge,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-l-float",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(L,1.3.6.1.4.1.43592.55.1.6,Float,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-s-integer",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(S,1.3.6.1.4.1.43592.55.1.6,Integer,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-s-counter",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(S,1.3.6.1.4.1.43592.55.1.6,Counter,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-s-string",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(S,1.3.6.1.4.1.43592.55.1.6,String,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-s-timeticks",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(S,1.3.6.1.4.1.43592.55.1.6,TimeTicks,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-s-opaque",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(S,1.3.6.1.4.1.43592.55.1.6,Opaque,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-s-gauge",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(S,1.3.6.1.4.1.43592.55.1.6,Gauge,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-s-float",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(S,1.3.6.1.4.1.43592.55.1.6,Float,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-b-integer",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(B,1.3.6.1.4.1.43592.55.1.6,Integer,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-b-counter",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(B,1.3.6.1.4.1.43592.55.1.6,Counter,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-b-string",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(B,1.3.6.1.4.1.43592.55.1.6,String,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-b-timeticks",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(B,1.3.6.1.4.1.43592.55.1.6,TimeTicks,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-b-opaque",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(B,1.3.6.1.4.1.43592.55.1.6,Opaque,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-b-gauge",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(B,1.3.6.1.4.1.43592.55.1.6,Gauge,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-b-float",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(B,1.3.6.1.4.1.43592.55.1.6,Float,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-d-integer",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(D,1.3.6.1.4.1.43592.55.1.6,Integer,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-d-counter",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(D,1.3.6.1.4.1.43592.55.1.6,Counter,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-d-string",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(D,1.3.6.1.4.1.43592.55.1.6,String,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-d-timeticks",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(D,1.3.6.1.4.1.43592.55.1.6,TimeTicks,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-d-opaque",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(D,1.3.6.1.4.1.43592.55.1.6,Opaque,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-d-gauge",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(D,1.3.6.1.4.1.43592.55.1.6,Gauge,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-d-float",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(D,1.3.6.1.4.1.43592.55.1.6,Float,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-fa-integer",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(FA,1.3.6.1.4.1.43592.55.1.6,Integer,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-fa-counter",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(FA,1.3.6.1.4.1.43592.55.1.6,Counter,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-fa-string",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(FA,1.3.6.1.4.1.43592.55.1.6,String,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-fa-timeticks",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(FA,1.3.6.1.4.1.43592.55.1.6,TimeTicks,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-fa-opaque",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(FA,1.3.6.1.4.1.43592.55.1.6,Opaque,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-fa-gauge",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(FA,1.3.6.1.4.1.43592.55.1.6,Gauge,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-fa-float",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(FA,1.3.6.1.4.1.43592.55.1.6,Float,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-la-integer",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(LA,1.3.6.1.4.1.43592.55.1.6,Integer,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-la-counter",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(LA,1.3.6.1.4.1.43592.55.1.6,Counter,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-la-string",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(LA,1.3.6.1.4.1.43592.55.1.6,String,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr6-snmpvariable-la-timeticks",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(LA,1.3.6.1.4.1.43592.55.1.6,TimeTicks,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-la-opaque",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(LA,1.3.6.1.4.1.43592.55.1.6,Opaque,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-la-gauge",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(LA,1.3.6.1.4.1.43592.55.1.6,Gauge,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-la-float",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(LA,1.3.6.1.4.1.43592.55.1.6,Float,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-snmpvariable-omitted-type",
+      "logger": "cr6",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(F,1.3.6.1.4.1.43592.55.1.6)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-snmpvariable-float-integer",
+      "logger": "cr1000x",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(F,1.3.6.1.4.1.43592.55.1.6,Integer,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types"
+    },
+    {
+      "id": "cr300-snmpvariable-float-integer",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, B As Boolean, D As Double, FA(3), LA(3) As Long\nBeginProg\nESSInitialize(\"private,public\")\nSNMPVariable(F,1.3.6.1.4.1.43592.55.1.6,Integer,RWRITE)\nScan(1,Sec,0,0)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Miss match of types\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-snmpvariable-cascade",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, FA(3)\nBeginProg\nESSInitialize(\"private,public\")\nScan(1,Sec,3,0)\nSNMPVariable(F,1.3.6.1.4.1.43592.55.1.6,Integer,RWRITE)\nPanelTemp(F,60)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Miss match of types\nline 6: Too many parameters:  60."
+    },
+    {
+      "id": "cr350-snmpvariable-cascade",
+      "logger": "cr350",
+      "source": "Public F, L As Long, S As String * 16, FA(3)\nBeginProg\nESSInitialize(\"private,public\")\nScan(1,Sec,3,0)\nSNMPVariable(F,1.3.6.1.4.1.43592.55.1.6,Integer,RWRITE)\nPanelTemp(F,60)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Miss match of types\nline 6: Too many parameters:  60."
+    },
+    {
+      "id": "cr300-routers-no-cascade",
+      "logger": "cr300",
+      "source": "Public F, L As Long, S As String * 16, FA(3)\nBeginProg\nESSInitialize(\"private,public\")\nScan(1,Sec,3,0)\nRoutersNeighbors(FA())\nPanelTemp(F,60)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr350-routers-no-cascade",
+      "logger": "cr350",
+      "source": "Public F, L As Long, S As String * 16, FA(3)\nBeginProg\nESSInitialize(\"private,public\")\nScan(1,Sec,3,0)\nRoutersNeighbors(FA())\nPanelTemp(F,60)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Destination variable must be type LONG"
+    },
+    {
+      "id": "cr6-string-operand-and-str-float",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-and-str-float",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-and-str-float",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-and-str-float",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-and-float-str",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F AND S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-and-float-str",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F AND S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-and-float-str",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F AND S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-and-float-str",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F AND S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-and-str-str",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-and-str-str",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-and-str-str",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-and-str-str",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-or-bool-str",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = B OR S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-or-bool-str",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = B OR S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-or-bool-str",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = B OR S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-or-bool-str",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = B OR S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-xor-str-long",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S XOR L\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-xor-str-long",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S XOR L\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-xor-str-long",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S XOR L\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-xor-str-long",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S XOR L\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-imp",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S IMP F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-imp",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S IMP F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-imp",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S IMP F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-imp",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S IMP F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-eqv",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F EQV S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-eqv",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F EQV S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-eqv",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F EQV S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-eqv",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F EQV S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-shift-left",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S << F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-shift-left",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S << F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-shift-left",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S << F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-shift-left",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S << F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-shift-right",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F >> S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-shift-right",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F >> S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-shift-right",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F >> S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-shift-right",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F >> S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-and-literal",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-and-literal",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-and-literal",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-and-literal",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-or-element",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = 1 OR SA(2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-or-element",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = 1 OR SA(2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-or-element",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = 1 OR SA(2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-or-element",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = 1 OR SA(2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-if-and",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nIf S AND F Then R = 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-if-and",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nIf S AND F Then R = 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-if-and",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nIf S AND F Then R = 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-if-and",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nIf S AND F Then R = 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-if-or-compare",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nIf F>1 OR S Then R = 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-if-or-compare",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nIf F>1 OR S Then R = 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-if-or-compare",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nIf F>1 OR S Then R = 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-if-or-compare",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nIf F>1 OR S Then R = 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-if-plain-string",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nIf S Then R = 1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-string-operand-if-plain-string",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nIf S Then R = 1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-string-operand-if-plain-string",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nIf S Then R = 1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-string-operand-if-plain-string",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nIf S Then R = 1\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-string-operand-mul-left",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S * F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr1000x-string-operand-mul-left",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S * F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr300-string-operand-mul-left",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S * F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr350-string-operand-mul-left",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S * F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr6-string-operand-mul-right",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F * S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr1000x-string-operand-mul-right",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F * S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr300-string-operand-mul-right",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F * S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr350-string-operand-mul-right",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F * S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr6-string-operand-mul-both",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S * S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr1000x-string-operand-mul-both",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S * S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr300-string-operand-mul-both",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S * S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr350-string-operand-mul-both",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S * S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr6-string-operand-div-left",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S / L\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr1000x-string-operand-div-left",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S / L\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr300-string-operand-div-left",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S / L\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr350-string-operand-div-left",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S / L\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr6-string-operand-mod-left",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S MOD F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr1000x-string-operand-mod-left",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S MOD F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr300-string-operand-mod-left",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S MOD F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr350-string-operand-mod-left",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S MOD F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr6-string-operand-mod-right",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F MOD S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr1000x-string-operand-mod-right",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F MOD S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr300-string-operand-mod-right",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F MOD S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr350-string-operand-mod-right",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F MOD S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr6-string-operand-add",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S + F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-string-operand-add",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S + F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-string-operand-add",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S + F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-string-operand-add",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S + F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-string-operand-minus",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S - F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-string-operand-minus",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S - F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-string-operand-minus",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S - F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-string-operand-minus",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S - F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-string-operand-concat",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S & F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-string-operand-concat",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S & F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-string-operand-concat",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S & F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-string-operand-concat",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S & F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-string-operand-power",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S ^ F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-string-operand-power",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S ^ F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-string-operand-power",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S ^ F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-string-operand-power",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S ^ F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-string-operand-equal",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S = F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-string-operand-equal",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S = F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-string-operand-equal",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S = F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-string-operand-equal",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S = F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-string-operand-less",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S < F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-string-operand-less",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S < F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-string-operand-less",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S < F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-string-operand-less",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S < F\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-string-operand-not",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = NOT S\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-string-operand-not",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = NOT S\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-string-operand-not",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = NOT S\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-string-operand-not",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = NOT S\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-string-operand-negate",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = -S\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-string-operand-negate",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = -S\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-string-operand-negate",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = -S\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-string-operand-negate",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = -S\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-string-operand-long-and",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F AND L\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-string-operand-long-and",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F AND L\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-string-operand-long-and",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F AND L\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-string-operand-long-and",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F AND L\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-string-operand-bool-and",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F AND B\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-string-operand-bool-and",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F AND B\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-string-operand-bool-and",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F AND B\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-string-operand-bool-and",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F AND B\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-string-operand-instruction-arg",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nTotalRun(R,1,F,100,S OR R>=200)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr1000x-string-operand-instruction-arg",
+      "logger": "cr1000x",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nTotalRun(R,1,F,100,S OR R>=200)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-instruction-arg",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nTotalRun(R,1,F,100,S OR R>=200)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr350-string-operand-instruction-arg",
+      "logger": "cr350",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nTotalRun(R,1,F,100,S OR R>=200)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-parenthesised-offender",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = (S AND F) OR F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-parenthesised-offender",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = (S AND F) OR F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-arithmetic-in-logic",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = (S * F) AND F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr300-string-operand-arithmetic-in-logic",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = (S * F) AND F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal String operand"
+    },
+    {
+      "id": "cr6-string-operand-triple",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND F AND F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-triple",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = S AND F AND F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-negated",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = NOT (S AND F)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-negated",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = NOT (S AND F)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-compare-of-offender",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = (S AND F) > F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr300-string-operand-compare-of-offender",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = (S AND F) > F\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+    },
+    {
+      "id": "cr6-string-operand-mul-chain",
+      "logger": "cr6",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F * F * S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr300-string-operand-mul-chain",
+      "logger": "cr300",
+      "source": "Public R, F, L As Long, S As String * 16, B As Boolean, D As Double, SA(3) As String * 8\nBeginProg\nScan(1,Sec,3,0)\nR = F * F * S\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal operand of type STRING"
+    },
+    {
+      "id": "cr6-ctype-boolean",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Boolean)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr1000x-ctype-boolean",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Boolean)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr300-ctype-boolean",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Boolean)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr350-ctype-boolean",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Boolean)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr6-ctype-uint2",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,UINT2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr1000x-ctype-uint2",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,UINT2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr300-ctype-uint2",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,UINT2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr350-ctype-uint2",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,UINT2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr6-ctype-const",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr1000x-ctype-const",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr300-ctype-const",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr350-ctype-const",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,K)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr6-ctype-expr",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,(1+2))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr1000x-ctype-expr",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,(1+2))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr300-ctype-expr",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,(1+2))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr350-ctype-expr",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,(1+2))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr6-ctype-two-bad",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Boolean) + CType(1.0,UINT2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Illegal type"
+    },
+    {
+      "id": "cr1000x-ctype-two-bad",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Boolean) + CType(1.0,UINT2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Illegal type"
+    },
+    {
+      "id": "cr300-ctype-two-bad",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Boolean) + CType(1.0,UINT2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Illegal type"
+    },
+    {
+      "id": "cr350-ctype-two-bad",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Boolean) + CType(1.0,UINT2)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Illegal type"
+    },
+    {
+      "id": "cr6-ctype-one-bad-one-good",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Boolean) + CType(1.0,Long)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr1000x-ctype-one-bad-one-good",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Boolean) + CType(1.0,Long)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr300-ctype-one-bad-one-good",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Boolean) + CType(1.0,Long)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr350-ctype-one-bad-one-good",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Boolean) + CType(1.0,Long)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr6-ctype-no-type-double",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(Double)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(Double)."
+    },
+    {
+      "id": "cr1000x-ctype-no-type-double",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(Double)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(Double)."
+    },
+    {
+      "id": "cr300-ctype-no-type-double",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(Double)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(Double)\n."
+    },
+    {
+      "id": "cr350-ctype-no-type-double",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(Double)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(Double)\n."
+    },
+    {
+      "id": "cr6-ctype-no-type-string",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nTy(1) = CType(String)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : Ty(1) = CType(String)."
+    },
+    {
+      "id": "cr1000x-ctype-no-type-string",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nTy(1) = CType(String)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : Ty(1) = CType(String)."
+    },
+    {
+      "id": "cr300-ctype-no-type-string",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nTy(1) = CType(String)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : Ty(1) = CType(String)\n."
+    },
+    {
+      "id": "cr350-ctype-no-type-string",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nTy(1) = CType(String)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : Ty(1) = CType(String)\n."
+    },
+    {
+      "id": "cr6-ctype-no-type-value",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0)+1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(1.0)+1."
+    },
+    {
+      "id": "cr1000x-ctype-no-type-value",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0)+1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(1.0)+1."
+    },
+    {
+      "id": "cr300-ctype-no-type-value",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0)+1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(1.0)+1\n."
+    },
+    {
+      "id": "cr350-ctype-no-type-value",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0)+1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(1.0)+1\n."
+    },
+    {
+      "id": "cr6-ctype-no-type-sum",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Long) + CType(Double)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(1.0,Long) + CType(Double)."
+    },
+    {
+      "id": "cr1000x-ctype-no-type-sum",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Long) + CType(Double)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(1.0,Long) + CType(Double)."
+    },
+    {
+      "id": "cr300-ctype-no-type-sum",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Long) + CType(Double)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(1.0,Long) + CType(Double)\n."
+    },
+    {
+      "id": "cr350-ctype-no-type-sum",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Long) + CType(Double)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(1.0,Long) + CType(Double)\n."
+    },
+    {
+      "id": "cr6-ctype-no-type-comment",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0) 'c\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(1.0) ."
+    },
+    {
+      "id": "cr1000x-ctype-no-type-comment",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0) 'c\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(1.0) ."
+    },
+    {
+      "id": "cr300-ctype-no-type-comment",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0) 'c\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(1.0) ."
+    },
+    {
+      "id": "cr350-ctype-no-type-comment",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0) 'c\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : X = CType(1.0) ."
+    },
+    {
+      "id": "cr6-ctype-no-type-if",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nIf CType(1.0) Then X = 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : CType(1.0) ."
+    },
+    {
+      "id": "cr1000x-ctype-no-type-if",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nIf CType(1.0) Then X = 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : CType(1.0) ."
+    },
+    {
+      "id": "cr300-ctype-no-type-if",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nIf CType(1.0) Then X = 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : CType(1.0) ."
+    },
+    {
+      "id": "cr350-ctype-no-type-if",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nIf CType(1.0) Then X = 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : CType(1.0) ."
+    },
+    {
+      "id": "cr6-ctype-no-type-arg",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nRandomize(CType(1.0))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : CType(1.0)."
+    },
+    {
+      "id": "cr1000x-ctype-no-type-arg",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nRandomize(CType(1.0))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : CType(1.0)."
+    },
+    {
+      "id": "cr300-ctype-no-type-arg",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nRandomize(CType(1.0))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : CType(1.0)."
+    },
+    {
+      "id": "cr350-ctype-no-type-arg",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nRandomize(CType(1.0))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type\nline 5: Expression expects , : CType(1.0)."
+    },
+    {
+      "id": "cr6-ctype-bad-type-arg",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nRandomize(CType(1.0,Boolean))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr1000x-ctype-bad-type-arg",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nRandomize(CType(1.0,Boolean))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr300-ctype-bad-type-arg",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nRandomize(CType(1.0,Boolean))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr350-ctype-bad-type-arg",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nRandomize(CType(1.0,Boolean))\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal type"
+    },
+    {
+      "id": "cr6-ctype-three-args",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Long,3)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = CType(1.0,Long,3)."
+    },
+    {
+      "id": "cr1000x-ctype-three-args",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Long,3)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = CType(1.0,Long,3)."
+    },
+    {
+      "id": "cr300-ctype-three-args",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Long,3)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = CType(1.0,Long,3)\n."
+    },
+    {
+      "id": "cr350-ctype-three-args",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Long,3)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = CType(1.0,Long,3)\n."
+    },
+    {
+      "id": "cr6-ctype-long",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-ctype-long",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-ctype-long",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-ctype-long",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-ctype-double",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Double)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-ctype-double",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Double)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-ctype-double",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Double)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-ctype-double",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Double)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-ctype-float",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Float)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-ctype-float",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Float)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-ctype-float",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Float)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-ctype-float",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,Float)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-ctype-string",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,String)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-ctype-string",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,String)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-ctype-string",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,String)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-ctype-string",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,String)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-ctype-lowercase",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-ctype-lowercase",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-ctype-lowercase",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-ctype-lowercase",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(1.0,long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-ctype-string-value",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(\"3\",Long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-ctype-string-value",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(\"3\",Long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-ctype-string-value",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(\"3\",Long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-ctype-string-value",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(\"3\",Long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-ctype-variable-value",
+      "logger": "cr6",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(L,Long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-ctype-variable-value",
+      "logger": "cr1000x",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(L,Long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-ctype-variable-value",
+      "logger": "cr300",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(L,Long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-ctype-variable-value",
+      "logger": "cr350",
+      "source": "Public X, L As Long, Ty(6) As String\nConst K=3\nBeginProg\nScan(1,Sec,0,0)\nX = CType(L,Long)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    }
+  ]
+}

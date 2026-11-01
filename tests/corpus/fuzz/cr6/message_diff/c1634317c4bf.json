@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r36/fuzz-425/cr6/message_diff/c1634317c4bf.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SbdPayload_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "typo_identifier"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "c1634317c4bf.CR6 -- Compile Failed!\n\n<GPSLib.crb> line 22: Invalid symbol in expression: GPSFixTimeoutSecs + 2 * GPSAverageFixes.\n<GPSLib.crb> line 25: Invalid symbol in expression: GPSAverageFixes > 254.\n<SbdPayloadLib.crb> line 8: Invalid symbol in expression: ProfileHistoryDays.\n<SbdPayloadLib.crb> line 9: Invalid symbol in expression: DaySecs / MainScanSecs.\n<SbdPayloadLib.crb> line 16: Invalid symbol in expression: DaySecs / 24.\n<SbdPayloadLib.crb> line 20: Invalid symbol in expression: 215 + TStringCount + 3 * TDRCount + 9 * FinAppDetectorCount.\n<SbdPayloadLib.crb> line 22: Invalid symbol in expression: SbdPayloadBytes > IridiumMaxMOMessageLength.\n<SbdPayloadLib.crb> line 38: Invalid symbol in expression: ProfileHistoryDays.\n<SbdPayloadLib.crb> line 39: Invalid symbol in expression: DaySecs.\n<SbdPayloadLib.crb> line 48: Invalid symbol in expression: FinAppDetectorCount.\n<SbdPayloadLib.crb> line 50: Invalid symbol in expression: FinAppDetectorCount.\n<SbdPayloadLib.crb> line 55: Invalid symbol in expression: SbdHourSecs.",
+  "theirs": "c1634317c4bf.CR6 -- Compile Failed!\n\n<GPSLib.crb> line 22: Invalid symbol in expression: GPSFixTimeoutSecs + 2 * GPSAverageFixes.\n<GPSLib.crb> line 25: Invalid symbol in expression: GPSAverageFixes > 254 .",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

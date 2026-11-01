@@ -1,0 +1,11 @@
+' fuzz: seed=repo/PowerBudget_tester.CR6 ops=replace_argument class=message_diff
+			PBClear = True
+		Case "M"
+			PBDoMark = True
+		Case "S"
+			PBDoConfig = True
+		Case Else
+			MenuPending = True
+	EndSelect
+EndSub
+

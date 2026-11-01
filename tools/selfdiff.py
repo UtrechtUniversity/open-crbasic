@@ -27,11 +27,11 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-REPO = ROOT.parent
+REPO = ROOT
 sys.path.insert(0, str(ROOT / "src"))
 
 LOGGERS = ("cr6", "cr1000x", "cr300", "cr350")
-CRBASIC_DIR = REPO / "crbasic"
+CRBASIC_DIR = REPO / "tests" / "corpus" / "firnmelt"
 CHM_DIR = ROOT / "tests" / "corpus" / "chm"
 FUZZ_DIR = ROOT / "tests" / "corpus" / "fuzz"
 SIBLINGS_MARKER = "' fuzz-needs-siblings: crbasic"

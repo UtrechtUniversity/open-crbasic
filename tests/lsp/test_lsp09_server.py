@@ -20,7 +20,7 @@ from .test_features_server import locate, make_client, units  # noqa: F401
 pytestmark = pytest.mark.server
 
 ROOT = Path(__file__).resolve().parents[2]
-CHM = ROOT.parent / "extracted_chm"
+CHM = ROOT / "extracted_chm"
 FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000}
 HELP = {**FAST, "helpDirectory": str(CHM)}
 need_help = pytest.mark.skipif(not CHM.is_dir(), reason="extracted_chm not present")

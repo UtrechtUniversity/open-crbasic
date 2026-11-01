@@ -1,7 +1,6 @@
 """LSP-05a: the read-only binding index (`opencrbasic.bindings`). Scope policies and their evidence:
 docs/lsp-api.md "Binding index (LSP-05a)"."""
 
-from .assertions import required
 from collections import Counter
 from pathlib import Path
 from typing import cast
@@ -12,8 +11,10 @@ from opencrbasic import bindings, parser, profiles
 from opencrbasic import syntax as S
 from opencrbasic.analysis import AnalysisRequest, analyze
 
+from .assertions import required
+
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
 CHM = sorted((ROOT / "tests" / "corpus" / "chm").glob("*.CR6"))
 
 
@@ -244,7 +245,7 @@ def test_table_field_sites_fieldnames_string_token_is_quoted_and_instruction_has
 
 
 def test_table_field_names_come_from_the_tdf_derivation_on_crbasic_and_chm():
-    from opencrbasic import consteval, tables
+    from opencrbasic import tables
     checked = 0
     for path in sorted(CRBASIC.glob("*.CR6")) + CHM[::5]:
         prog, _ = parser.parse_file(path, profiles.get("cr6"))
@@ -548,6 +549,7 @@ def test_build_never_raises_on_crbasic_directory_and_reports_unresolved():
     assert total["resolved"] > 0
 
 
+@pytest.mark.skipif(not CHM, reason="CRBasic help examples not extracted; see tests/corpus/README.md")
 def test_build_never_raises_on_chm_corpus_and_reports_unresolved():
     assert CHM
     total, failures = _corpus_counts(CHM)
@@ -557,6 +559,7 @@ def test_build_never_raises_on_chm_corpus_and_reports_unresolved():
 
 
 @pytest.mark.parametrize("logger", ["cr1000x", "cr300", "cr350"])
+@pytest.mark.skipif(not CHM, reason="CRBasic help examples not extracted; see tests/corpus/README.md")
 def test_build_never_raises_on_chm_sample_other_loggers(logger):
     total, failures = _corpus_counts(CHM[::7], logger)
     assert failures == [] and total["files"] > 0

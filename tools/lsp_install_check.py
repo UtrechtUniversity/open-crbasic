@@ -40,7 +40,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]          # opencrbasic/
-CRBASIC = ROOT.parent / "crbasic"                   # the checkout's CRBasic sources
+CRBASIC = ROOT / "tests" / "corpus" / "firnmelt"                   # the checkout's CRBasic sources
 SRC = ROOT / "src"
 DATA = SRC / "opencrbasic" / "data"
 DROP_ENV = ("PYTHONPATH", "PYTHONHOME", "VIRTUAL_ENV", "UV_PROJECT_ENVIRONMENT")

@@ -1,0 +1,2 @@
+' fuzz: seed=repo/SerialProbe.CR6 ops=insert_whitespace class=message_diff
+	SerialOut(ComUSB, DebugMsg + ProbeC  RLF, "", 0, 0)

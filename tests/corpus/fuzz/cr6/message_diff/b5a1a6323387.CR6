@@ -1,0 +1,16 @@
+' fuzz: seed=repo/PT1000_tester.CR6 ops=rename_identifier+swap_adjacent class=message_diff
+			+ FormatFloat(PT1000_Ohms, "%11.3f") _
+			+ FormatFloat(PT1000_Temp_C, "%11.4f") _
+			+ FormatFloat(PTemp, "%11.4f") _
+			+ FormatFloat(PT1000_Temp_C - PTemp, "%11.4f"))
+
+		Sum = Sum + PT1000_Temp_C
+		If (Lo = NAN) OR (PT1000_Temp_C < Lo) Then Lo = PT1000_Temp_C
+		If (Hi = NAN) OR (PT1000_Temp_C > Hi) Then Hi = PT1000_Temp_C
+		Delay(1, 200, mSec)
+	Next I
+
+	LogDebug("------------------------------------------------")
+	LogDebug(" mean  " + FormatFloat(Sum / 10, "%.4f") + " C")
+	LogDebug(" span  " + FormatFloat(Hi - Lo, "%.4f") + " C   (peak to peak over 10 reads)")
+	LogDebug(" panel " + FormatFloat(PTemp, "%.4f") + " C")

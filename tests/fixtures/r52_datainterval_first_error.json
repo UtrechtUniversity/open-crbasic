@@ -1,0 +1,401 @@
+{
+ "observation_date": "2026-10-27",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-di-then-minimum-huge-reps",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Minimum (999999999999,Batt_volt,FP2,False,False)\n  Sample (1,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps -2147483648"
+  },
+  {
+   "id": "cr1000x-di-then-minimum-huge-reps",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Minimum (999999999999,Batt_volt,FP2,False,False)\n  Sample (1,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps -2147483648"
+  },
+  {
+   "id": "cr300-di-then-minimum-huge-reps",
+   "logger": "cr300",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Minimum (999999999999,Batt_volt,FP2,False,False)\n  Sample (1,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -2147483648"
+  },
+  {
+   "id": "cr350-di-then-minimum-huge-reps",
+   "logger": "cr350",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Minimum (999999999999,Batt_volt,FP2,False,False)\n  Sample (1,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps -2147483648"
+  },
+  {
+   "id": "cr6-di-then-reps-0",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-di-then-reps-0",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr300-di-then-reps-0",
+   "logger": "cr300",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr350-di-then-reps-0",
+   "logger": "cr350",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-di-then-reps-neg",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (-5,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps -5"
+  },
+  {
+   "id": "cr1000x-di-then-reps-neg",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (-5,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps -5"
+  },
+  {
+   "id": "cr6-di-interval-neg-then-reps-0",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (0,-15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-di-interval-neg-then-reps-0",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (0,-15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-di-both-neg-then-reps-0",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,-15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-di-both-neg-then-reps-0",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,-15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-di-huge-tinto-then-reps-0",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (2147483648,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-di-huge-tinto-then-reps-0",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (2147483648,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-di-then-average-reps-0",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Average (0,Ptemp,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-di-then-average-reps-0",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Average (0,Ptemp,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-di-then-bounds",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (3,Arr(4),FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Variable Arr out of bounds.\nline 4: Variable Arr, index 4, reps 3, out of bounds."
+  },
+  {
+   "id": "cr1000x-di-then-bounds",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (3,Arr(4),FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Variable Arr out of bounds.\nline 4: Variable Arr, index 4, reps 3, out of bounds."
+  },
+  {
+   "id": "cr6-di-then-windvector-oom",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  WindVector (-5,Ptemp,Batt_volt,FP2,False,0,0,0)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Out of memory."
+  },
+  {
+   "id": "cr1000x-di-then-windvector-oom",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  WindVector (-5,Ptemp,Batt_volt,FP2,False,0,0,0)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Out of memory."
+  },
+  {
+   "id": "cr6-reps-0-then-di-same-table",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  Sample (0,Ptemp,FP2)\n  DataInterval (-1,15,Sec,10)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-reps-0-then-di-same-table",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  Sample (0,Ptemp,FP2)\n  DataInterval (-1,15,Sec,10)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-ok-reps-di-reps-0",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  Sample (1,Ptemp,FP2)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Batt_volt,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataInterval TintoInt and Interval parameters must be non-negative\nline 5: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-ok-reps-di-reps-0",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  Sample (1,Ptemp,FP2)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Batt_volt,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataInterval TintoInt and Interval parameters must be non-negative\nline 5: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-two-tables-di-then-reps-0",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (T1,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (1,Ptemp,FP2)\nEndTable\nDataTable (T2,1,-1)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 7: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-two-tables-di-then-reps-0",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (T1,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (1,Ptemp,FP2)\nEndTable\nDataTable (T2,1,-1)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 7: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-two-tables-reps-0-then-di",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (T1,1,-1)\n  Sample (0,Ptemp,FP2)\nEndTable\nDataTable (T2,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (1,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-two-tables-reps-0-then-di",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (T1,1,-1)\n  Sample (0,Ptemp,FP2)\nEndTable\nDataTable (T2,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (1,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-two-tables-di-di-reps-0",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (T1,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (1,Ptemp,FP2)\nEndTable\nDataTable (T2,1,-1)\n  DataInterval (0,-15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 7: DataInterval TintoInt and Interval parameters must be non-negative\nline 8: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-two-tables-di-di-reps-0",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (T1,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (1,Ptemp,FP2)\nEndTable\nDataTable (T2,1,-1)\n  DataInterval (0,-15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 7: DataInterval TintoInt and Interval parameters must be non-negative\nline 8: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-scan-neg-di-reps-0",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (-1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-scan-neg-di-reps-0",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (-1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-di-reps-0-const-destination-in-scan",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp(1,15000)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-di-reps-0-const-destination-in-scan",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp(1,15000)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr300-di-reps-0-const-destination-in-scan",
+   "logger": "cr300",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp(1,15000)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal destination variable type, expecting Float.\nline 8: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-di-reps-0-const-destination-in-scan",
+   "logger": "cr350",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp(1,15000)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal destination variable type, expecting Float.\nline 8: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-di-reps-0-const-destination-two",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp(1,15000)\n    Battery(2)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: 1.\nline 9: Invalid Variable or Array: 2."
+  },
+  {
+   "id": "cr1000x-di-reps-0-const-destination-two",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp(1,15000)\n    Battery(2)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: 1.\nline 9: Invalid Variable or Array: 2."
+  },
+  {
+   "id": "cr6-di-reps-0-undefined-in-scan",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp(Nope,15000)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-di-reps-0-undefined-in-scan",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp(Nope,15000)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-di-reps-0-unresolved-assignment",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Nope = 1\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr1000x-di-reps-0-unresolved-assignment",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Nope = 1\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Illegal Reps 0"
+  },
+  {
+   "id": "cr6-bounds-const-destination-in-scan",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  Sample (3,Arr(4),FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp(1,15000)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-bounds-const-destination-in-scan",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  Sample (3,Arr(4),FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp(1,15000)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-const-destination-sub-before-table-reps-0",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nSub Foo\n  PanelTemp(1,15000)\nEndSub\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-const-destination-sub-before-table-reps-0",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nSub Foo\n  PanelTemp(1,15000)\nEndSub\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr300-const-destination-sub-before-table-reps-0",
+   "logger": "cr300",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nSub Foo\n  PanelTemp(1,15000)\nEndSub\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal destination variable type, expecting Float.\nline 3: Too many parameters:  15000.\nline 5: Too many parameters:  1.\nline 6: Too many parameters:  15.\nline 7: Too many parameters:  Ptemp.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-const-destination-sub-before-table-reps-0",
+   "logger": "cr350",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nSub Foo\n  PanelTemp(1,15000)\nEndSub\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (0,Ptemp,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal destination variable type, expecting Float.\nline 3: Too many parameters:  15000.\nline 5: Too many parameters:  1.\nline 6: Too many parameters:  15.\nline 7: Too many parameters:  Ptemp.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-di-bogus-fieldtype-hides-di",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (1,Ptemp,Bogus)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Bogus."
+  },
+  {
+   "id": "cr1000x-di-bogus-fieldtype-hides-di",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (1,Ptemp,Bogus)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Bogus."
+  },
+  {
+   "id": "cr6-di-undefined-source",
+   "logger": "cr6",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (1,Nope,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-di-undefined-source",
+   "logger": "cr1000x",
+   "source": "Public Ptemp, Batt_volt, Arr(5)\nDataTable (Test,1,-1)\n  DataInterval (-1,15,Sec,10)\n  Sample (1,Nope,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative\nline 4: Invalid symbol in expression: Nope."
+  }
+ ]
+}

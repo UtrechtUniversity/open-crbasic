@@ -6,7 +6,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "r13_logical_assign_targets.json").read_text(encoding="utf-8"))
 
 

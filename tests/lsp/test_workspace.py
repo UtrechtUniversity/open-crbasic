@@ -18,8 +18,7 @@ from opencrbasic.lsp.session import Session
 from .lspclient import LspClient
 
 pytestmark = pytest.mark.server
-from .test_server import (BAD_LIB, FAST, LIB, SMALL, bad, make_client, project,  # noqa: F401
-                          small_project, started, summary)
+from .test_server import BAD_LIB, FAST, LIB, SMALL, bad, make_client, project, small_project, started, summary  # noqa: F401
 
 CREATED, CHANGED, DELETED = 1, 2, 3
 MISSING = "Cannot open include file"

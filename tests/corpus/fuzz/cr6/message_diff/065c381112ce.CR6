@@ -1,0 +1,13 @@
+' fuzz: seed=repo/SnowVue_tester.CR6 ops=insert_whitespace+insert_continuation class=message_diff
+		If DoReadRefTemp Then
+			DoReadRefTemp = False
+			Call RunSDICommand("XRT!")
+		EndIf
+
+		If DoAddressScan Th  en
+			DoAddressScan = False
+			Call RunAddressScan
+		EndIf
+
+		If DoShowConfig Then
+			DoShowConfig = False

@@ -28,6 +28,10 @@ target at all), which gets the same message with a plain empty echo and no embed
 `docs/checker.md` for the corpus evidence, e.g. `am25t_1.CR6`, `ProgramStructure_1.CR6`).
 """
 
+from pathlib import Path
+
+import pytest
+
 from opencrbasic import checker, parser, profiles
 from opencrbasic import syntax as S
 from opencrbasic.compiler import CompileResult
@@ -100,6 +104,7 @@ def test_alias_target_indexed_array_element():
 
 # ------------------------------------------------------------------ corpus regression
 
+@pytest.mark.skipif(not (Path(__file__).parent / "corpus" / "chm" / "realtime_1.CR6").is_file(), reason="CRBasic help examples not extracted; see tests/corpus/README.md")
 def test_realtime_1_first_message_matches_oracle():
     # `tests/corpus/chm/realtime_1.CR6` line 4 is `Alias rTime(1)` with `= Year` on line 5 --
     # this was the corpus case that first surfaced the quirk (`docs/checker.md`).

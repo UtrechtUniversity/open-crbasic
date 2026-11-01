@@ -13,8 +13,8 @@ from opencrbasic.analysis import AnalysisRequest, analyze
 from opencrbasic.helpdocs import HelpProvider, InstructionHelp, ParamHelp
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
-CHM = ROOT.parent / "extracted_chm"
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
+CHM = ROOT / "extracted_chm"
 
 
 class FakeHelp:

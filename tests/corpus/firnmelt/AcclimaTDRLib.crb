@@ -1,0 +1,70 @@
+#If Section = "ConstTable" Then
+    Const TDRComPort = U5
+#EndIf
+
+#If Section = "Definitions" Then
+    Const MaxTDRCount = 8
+    Const TDRMetricsPerProbe = 5
+
+    #If TDRCount < 1 Then
+        ERROR__STATIC_ASSERT__TDRCount_must_be_at_least_1
+    #EndIf
+
+    #If TDRCount > MaxTDRCount Then
+        ERROR__STATIC_ASSERT__TDRCount_exceeds_MaxTDRCount
+    #EndIf
+
+    #If TDRStartAddress < 0 Then
+        ERROR__STATIC_ASSERT__TDRStartAddress_must_be_at_least_0
+    #EndIf
+
+    #If (TDRStartAddress + TDRCount - 1) > 9 Then
+        ERROR__STATIC_ASSERT__TDR_address_range_exceeds_9
+    #EndIf
+
+    Public Acclima_VWC(TDRCount)
+    Public Acclima_SoilTemp(TDRCount)
+    Public Acclima_SoilPerm(TDRCount)
+    Public Acclima_BulkEC(TDRCount)
+    Public Acclima_PoreEC(TDRCount)
+
+    Units Acclima_VWC()=%
+    Units Acclima_SoilTemp()=C
+    Units Acclima_SoilPerm()=er_w
+    Units Acclima_BulkEC()=uS/cm
+    Units Acclima_PoreEC()=uS/cm
+
+    Dim TDRProbe(TDRMetricsPerProbe)
+
+    DataTable(Acclima_Data,True,-1)
+        Sample(1,Batt_volt,FP2)
+        Sample(1,PTemp,FP2)
+        Sample(TDRCount,Acclima_VWC(),FP2)
+        Sample(TDRCount,Acclima_SoilTemp(),FP2)
+        Sample(TDRCount,Acclima_SoilPerm(),FP2)
+        Sample(TDRCount,Acclima_BulkEC(),FP2)
+        Sample(TDRCount,Acclima_PoreEC(),FP2)
+    EndTable
+#EndIf
+
+#If Section = "Functions" Then
+    Function SampleTDRs() As Boolean
+        Dim I As Long
+        Dim SDIAddr As String * 2
+
+        SampleTDRs = True
+        For I = 1 To TDRCount
+            SDIAddr = TDRStartAddress + I - 1
+            SDI12Recorder(TDRProbe(),TDRComPort,SDIAddr,"MC!",1,0,-1)
+
+            Acclima_VWC(I) = TDRProbe(1)
+            Acclima_SoilTemp(I) = TDRProbe(2)
+            Acclima_SoilPerm(I) = TDRProbe(3)
+            Acclima_BulkEC(I) = TDRProbe(4)
+            Acclima_PoreEC(I) = TDRProbe(5)
+            If Acclima_VWC(I) = NAN Then SampleTDRs = False
+
+            Delay(1,100,mSec)
+        Next I
+    EndFunction
+#EndIf

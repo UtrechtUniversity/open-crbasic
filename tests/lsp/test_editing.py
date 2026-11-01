@@ -1,21 +1,27 @@
 """Editing-feature logic (LSP-03b-core): outline, folding, include links, completion."""
 
-from .assertions import required
 from pathlib import Path
 
 import pytest
 
-from opencrbasic import editing, parser, profiles
+from opencrbasic import editing, parser
 from opencrbasic import syntax as S
 from opencrbasic.analysis import AnalysisRequest, analyze
 from opencrbasic.catalog import InstructionCatalog
 from opencrbasic.editing import (
-    FoldRange, Span, completion_candidates, declared_names, document_symbols, folding_ranges,
+    FoldRange,
+    Span,
+    completion_candidates,
+    declared_names,
+    document_symbols,
+    folding_ranges,
     include_links,
 )
 
+from .assertions import required
+
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
 CHM = sorted((ROOT / "tests" / "corpus" / "chm").glob("*.CR6"))
 MAIN = CRBASIC / "Main.CR6"
 
@@ -295,7 +301,7 @@ def test_fold_main_cr6_matches_outline():
     # every fold is a pair of opener .. line before closer
     pairs = editing.block_pairs("cr6")
     openers = set(pairs) | {"#IF", "#IF_NO_REMOVE"}
-    for start, end in folds:
+    for start, _end in folds:
         first = lines[start].split("(")[0].split()[0].upper() if lines[start].split() else ""
         assert first in openers or first.startswith("#"), lines[start]
 
@@ -788,6 +794,7 @@ def _sweep_text_light(text: str) -> None:
     completion_candidates(None, text, len(lines) - 1, len(lines[-1]))
 
 
+@pytest.mark.skipif(not CHM, reason="CRBasic help examples not extracted; see tests/corpus/README.md")
 def test_never_raises_on_chm_corpus():
     assert CHM
     for path in CHM:
@@ -813,6 +820,7 @@ def test_chm_corpus_outline_and_links_sample(memo_analyze):
         completion_candidates(result, path.read_bytes().decode("latin-1"), 2, 2)
 
 
+@pytest.mark.skipif(not CHM, reason="CRBasic help examples not extracted; see tests/corpus/README.md")
 def test_chm_folds_equal_outline_blocks_where_the_program_compiles(memo_analyze):
     checked = 0
     for path in CHM[:: max(1, len(CHM) // 80)]:

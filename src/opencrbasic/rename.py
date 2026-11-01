@@ -14,10 +14,10 @@ branches, directives, text after `EndProg`) only to refuse; they never produce a
 import hashlib
 import re
 from collections import OrderedDict
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import NamedTuple
-from collections.abc import Sequence
 
 from . import bindings, lexer, navigation
 from .catalog import InstructionCatalog

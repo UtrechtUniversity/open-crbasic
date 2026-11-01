@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/mode_diff/d4f2edeb2800.CR6",
+  "logger": "cr1000x",
+  "class": "mode_diff",
+  "seed": "repo/SerialProbe.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "add_argument"
+  ],
+  "our_exit": 0,
+  "their_exit": 0,
+  "ours": "d4f2edeb2800.CR6 -- Compiled in PipelineMode.",
+  "theirs": "d4f2edeb2800.CR6 -- Compiled in PipelineMode.\nline 12: Warning: CommsMode Option 3 not supported on ComUSB."
+}

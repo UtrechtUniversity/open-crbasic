@@ -1,0 +1,16 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_accept/06c542af3521.CR6",
+  "logger": "cr6",
+  "class": "false_accept",
+  "seed": "repo/Main.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "add_argument",
+    "duplicate_line"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "06c542af3521.CR6 -- Compiled in SequentialMode.\nWarning: Table Shunt_Data, is declared but never called.",
+  "theirs": "06c542af3521.CR6 -- Compile Failed!\n\nline 403: No Matching, or out of place ) in expression: \t\t\t\tLogDebug(\"SBD payload v\" + FormatLong(SbdPayloadVersion,\"%d\") + \", bytes=\" + FormatLong(SbdPayloadLen,\"%d\",(1+2))).",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

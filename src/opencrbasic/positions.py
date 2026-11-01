@@ -15,10 +15,10 @@ Three levels:
 """
 
 import codecs
-from typing import NamedTuple
 from collections.abc import Mapping, Sequence
+from typing import NamedTuple
 
-from .source import LineSpan, LogicalLine, Occurrence, Piece, _split_physical_lines
+from .source import LineSpan, LogicalLine, Occurrence, Piece
 
 __all__ = ["LineSpan", "Occurrence", "Piece", "PhysicalRange", "reported_spans", "line_span",
            "logical_ranges", "exact_range", "physical_lines", "lsp_position", "lsp_range",

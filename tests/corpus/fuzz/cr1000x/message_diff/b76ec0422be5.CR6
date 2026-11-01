@@ -1,0 +1,2 @@
+' fuzz: seed=repo/SbdPayload_tester.CR6 ops=drop_argument+add_argument class=message_diff
+	         + " WatchdogErrors=" + FormatFloat(Status.WatchdogErrors, "%g") _

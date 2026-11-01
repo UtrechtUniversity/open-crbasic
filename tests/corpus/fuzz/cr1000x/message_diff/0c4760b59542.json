@@ -1,0 +1,16 @@
+{
+  "file": "scratch/r36/fuzz-428/cr1000x/message_diff/0c4760b59542.CR6",
+  "logger": "cr1000x",
+  "class": "message_diff",
+  "seed": "repo/FinApp_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "change_declared_type",
+    "rename_identifier"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "0c4760b59542.CR6 -- Compile Failed!\n\n<FinAppLib.crb> line 18: Invalid symbol in expression: FinAppDetectorCount < 1.\n<FinAppLib.crb> line 22: Invalid symbol in expression: FinAppDetectorCount > MaxFinAppDetectorCount.\n<FinAppLib.crb> line 26: Invalid symbol in expression: FinAppDetectorFirstId < 1.\n<FinAppLib.crb> line 30: Invalid symbol in expression: (FinAppDetectorFirstId + FinAppDetectorCount - 1) > 9.\n<FinAppLib.crb> line 49: Invalid symbol in expression: FinAppDetectorCount.\n<FinAppLib.crb> line 50: Invalid symbol in expression: FinAppDetectorCount.\n<FinAppLib.crb> line 51: Invalid symbol in expression: FinAppDetectorCount.\n<FinAppLib.crb> line 52: Invalid symbol in expression: FinAppDetectorCount.\n<FinAppLib.crb> line 53: Invalid symbol in expression: FinAppDetectorCount.\n<FinAppLib.crb> line 84: Invalid symbol in expression: FinAppDetectorCount.\n<FinAppLib.crb> line 85: Invalid symbol in expression: FinAppDetectorCount.\n<FinAppLib.crb> line 86: Invalid symbol in expression: FinAppDetectorCount.\n<FinAppLib.crb> line 87: Invalid symbol in expression: FinAppDetectorCount.\n<FinAppLib.crb> line 98: Invalid symbol in expression: FinAppComPort.\n<FinAppLib.crb> line 103: Invalid symbol in expression: FinAppPowerPort.\n<FinAppLib.crb> line 121: Invalid symbol in expression: FinAppPowerPort.\n<FinAppLib.crb> line 128: Invalid symbol in expression: FinAppComPort.\n<FinAppLib.crb> line 144: Invalid symbol in expression: FinAppComPort.\n<FinAppLib.crb> line 162: Invalid symbol in expression: FinAppComPort.",
+  "theirs": "0c4760b59542.CR6 -- Compile Failed!\n\n<FinAppLib.crb> line 18: Invalid symbol in expression: FinAppDetectorCount < 1 .",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

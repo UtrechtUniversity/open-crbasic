@@ -34,7 +34,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]          # opencrbasic/
-VSCODE = ROOT / "vscode"
+VSCODE = ROOT.parent / "open-crbasic-vsix"
 VSCE = VSCODE / "node_modules" / ".bin" / "vsce"
 DROP_ENV = ("PYTHONPATH", "PYTHONHOME", "VIRTUAL_ENV", "UV_PROJECT_ENVIRONMENT")
 TOP_LEVEL_ALLOWED = {"package.json", "readme.md", "language-configuration.json", "out",

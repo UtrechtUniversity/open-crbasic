@@ -37,7 +37,7 @@ import threading
 from pathlib import Path
 
 OPENCRBASIC_ROOT = Path(__file__).resolve().parent.parent
-REPO_ROOT = OPENCRBASIC_ROOT.parent
+REPO_ROOT = OPENCRBASIC_ROOT
 DEFAULT_COMPILER = REPO_ROOT / "compiler" / "CR6Comp.exe"
 CACHE_DIR = OPENCRBASIC_ROOT / ".oracle-cache"
 

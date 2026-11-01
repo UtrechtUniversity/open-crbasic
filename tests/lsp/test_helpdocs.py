@@ -1,16 +1,22 @@
 """Help provider tests: synthetic fixtures only; the optional corpus test asserts no help text."""
 
-from .assertions import required
 from pathlib import Path
 
 import pytest
 
-from opencrbasic import helpdocs, profiles
-from opencrbasic import hover
-from opencrbasic.helpdocs import HelpProvider, coverage_report, function_arg_count_classes, function_coverage_report, pair_signature
+from opencrbasic import helpdocs, hover, profiles
+from opencrbasic.helpdocs import (
+    HelpProvider,
+    coverage_report,
+    function_arg_count_classes,
+    function_coverage_report,
+    pair_signature,
+)
+
+from .assertions import required
 
 FIX = Path(__file__).parent / "fixtures" / "help"
-CORPUS = Path(__file__).resolve().parents[3] / "extracted_chm"
+CORPUS = Path(__file__).resolve().parents[2] / "extracted_chm"
 
 
 @pytest.fixture(scope="module")

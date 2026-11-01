@@ -1,0 +1,14 @@
+{
+  "file": "/tmp/claude-0/-home-user-firnmelt-datalogger-mirror/acee0996-63f0-56bd-a337-b59f9f1988e5/scratchpad/fuzz49/cr1000x/message_diff/243f12295355.CR6",
+  "logger": "cr1000x",
+  "class": "message_diff",
+  "seed": "repo/PortSleep_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "243f12295355.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg.",
+  "theirs": "243f12295355.CR6 -- Compile Failed!\n\nline 2: ComPort 0 illegal."
+}

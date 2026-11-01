@@ -9,9 +9,9 @@ the loader's historical behaviour. See `docs/lsp-api.md`.
 
 import hashlib
 import stat
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Protocol
-from collections.abc import Mapping
 
 
 class SourceProvider(Protocol):

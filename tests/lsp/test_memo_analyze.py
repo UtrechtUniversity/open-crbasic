@@ -1,6 +1,5 @@
 """The memoised analysis fixture (tests/lsp/conftest.py): keys, invalidation and refusals."""
 
-from pathlib import Path
 
 import pytest
 
@@ -8,7 +7,7 @@ from opencrbasic.analysis import AnalysisRequest, analyze
 
 from .conftest import ROOT, MemoAnalyze
 
-MAIN = (ROOT.parent / "crbasic" / "Main.CR6")
+MAIN = (ROOT / "tests" / "corpus" / "firnmelt" / "Main.CR6")
 
 
 def _key(result):

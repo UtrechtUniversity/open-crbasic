@@ -2,9 +2,9 @@
 import argparse
 import json
 
+import fuzz
 import pytest
 
-import fuzz
 from opencrbasic import profiles
 
 

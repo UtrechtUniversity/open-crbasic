@@ -1,0 +1,4 @@
+' fuzz: seed=repo/Main.CR6 ops=toggle_two_word class=message_diff
+	NextScan
+
+#If ShuntSequenceEnabled Then

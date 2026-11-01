@@ -1,0 +1,33 @@
+' fuzz: seed=repo/Preflight_tester.CR6 ops=drop_argument+drop_argument class=message_diff
+	Dim SDIAddr As String * 2
+	Dim Ok As Boolean
+
+	LogDebug("--- SnowVue10 on U7 ---")
+	SDIAddr = SnowVueSDIAddress
+	PreIdent = ""
+	SDI12Recorder(PreIdent, SnowVueComPort, SnowVueSDIAddress, "I!", 1, 0)
+	Ok = SDI12AtAddress(PreIdent, SDIAddr)
+	Call LogCheck("snowvue identification at " + SDIAddr, Ok, PreIdent)
+
+	Timer(PreStepTimer, mSec, TimerResetAndStart)
+	Ok = SampleSnowVue(PT1000_Temp_C)
+	PreStepMs = Timer(PreStepTimer, mSec, TimerReadOnly)
+
+	Call LogCheck("snowvue M1! and M9! sample", Ok, "valid=" _
+		+ FormatLong(SnowVue_ValidReadings,"%d") + "/" + FormatLong(SnowVueBurstCount,"%d") _
+		+ " dist=" + FormatFloat(SnowVue_Distance_m,"%.3f") _
+		+ " tcdist=" + FormatFloat("%.3f") _
+		+ " qual=" + FormatFloat(SnowVue_Quality,"%.0f") _
+		+ " supply=" + FormatFloat(SnowVue_Supply_V,"%.2f") _
+		+ " ms=" + FormatLong(PreStepMs,"%d"))
+EndSub
+
+Sub CheckFinApp
+	Dim N As Long
+	Dim Ok As Boolean
+	Dim Detail As String * 200
+
+	LogDebug("--- FinAPP on C1, SW12-1, " + FormatLong(FinAppPowerSettleSecs,"%d") + " s power-up ---")
+	Ok = StartFinApp()
+	Call LogCheck("finapp power-up and I!", Ok, "address=" + FinAppSDIAddress + " ident=" + FinApp_Ident)
+

@@ -37,7 +37,7 @@ from pathlib import Path
 
 TOOLS_DIR = Path(__file__).resolve().parent
 OPENCRBASIC_ROOT = TOOLS_DIR.parent
-REPO_ROOT = OPENCRBASIC_ROOT.parent
+REPO_ROOT = OPENCRBASIC_ROOT
 DEFAULT_COMPILER = REPO_ROOT / "compiler" / "CR6Comp.exe"
 SRC_DIR = OPENCRBASIC_ROOT / "src"
 sys.path.insert(0, str(SRC_DIR))

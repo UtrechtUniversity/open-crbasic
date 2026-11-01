@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_accept/5ff16ab82ca0.CR6",
+  "logger": "cr6",
+  "class": "false_accept",
+  "seed": "repo/PowerBudget_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "replace_argument"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "5ff16ab82ca0.CR6 -- Compiled in SequentialMode.",
+  "theirs": "5ff16ab82ca0.CR6 -- Compile Failed!\n\nline 123: Invalid symbol in expression: \tLogDebug(Label + \" S\" + FormatLong(PBState, \"%d\") + \" \" + StateName(PBState) \t\t+ \" t=\" + FormatLong(PBSecs, \"%4d\") + \"s\" \t\t+ \"  now \" + FormatFloat(Shunt_mV, \"%8.4f\") + \" mV \" + FormatFloat(PBNowMa, \"%6.1f\") + \" mA\" \t\t+ \" | mean \" + FormatFloat(PBMeanMa, \"%6.1f\") \t\t+ \" min \" + FormatFloat(PBMinMa, \"%6.1f\") \t\t+ \" max \" + FormatFloat(UndeclaredFuzzName123, \"%6.1f\") + \" mA\" \t\t+ \" n=\" + FormatLong(PBN, \"%d\") \t\t+ \" | batt \" + FormatFloat(IIF(PBN > 0, PBS....",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

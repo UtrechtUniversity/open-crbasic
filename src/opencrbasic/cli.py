@@ -71,7 +71,7 @@ def _parse(argv: list[str]) -> tuple[_Options, list[str]]:
                 if arg == "--check":
                     opts["check"].append(value)
                 else:
-                    opts[cast(Literal["logger", "report", "config"], arg[2:])] = value
+                    opts[cast(Literal["logger", "report", "config"], arg[2:])] = value  # noqa: F821 -- ruff reads the Literal strings as names
                 continue
             if arg == "--no-message-file":
                 opts["message_file"] = False
@@ -102,7 +102,7 @@ def _parse(argv: list[str]) -> tuple[_Options, list[str]]:
                         opts["i"] = True
                     break
                 if ch in "svd":
-                    opts[cast(Literal["s", "v", "d"], ch)] = True
+                    opts[cast(Literal["s", "v", "d"], ch)] = True  # noqa: F821
                 elif ch == "t":
                     opts["t"] = True
                 elif ch == "u":
@@ -150,7 +150,6 @@ def _hides_times(program_ast, diags, main) -> bool:
     keep: set[tuple[str, int]] = set()  # lines whose symbol error does not hide
     in_sub = False
     for st in stmts:
-        kw = getattr(st, "keyword", "").upper()
         if isinstance(st, S.SubDef):
             in_sub = True
         if in_sub or isinstance(st, S.Assignment):

@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/f34a68f3fed4.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/Shunt_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "f34a68f3fed4.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: \t\t+ \"  current=\" + FormatFloat(Shunt_Current_A, \"%.4f\") + \" A\" .\nline 3: Expr illegally occurs before BeginProg.",
+  "theirs": "f34a68f3fed4.CR6 -- Compile Failed!\n\nline 2: No BeginProg in Program."
+}

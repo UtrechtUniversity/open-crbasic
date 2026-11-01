@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/7c365bbd0f5e.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/Main.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "toggle_two_word"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "7c365bbd0f5e.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: ShuntSequenceEnabled.",
+  "theirs": "7c365bbd0f5e.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: ShuntSequenceEnabled ."
+}

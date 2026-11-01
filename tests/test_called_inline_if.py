@@ -6,7 +6,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 CASES = json.loads((Path(__file__).parent / "fixtures" / "called_inline_if.json").read_text(encoding="utf-8"))["cases"]
 
 

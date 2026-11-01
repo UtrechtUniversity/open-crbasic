@@ -8,13 +8,14 @@ through its bytes), and nothing else. There are no CRBasic rules here.
 """
 
 import contextlib
+from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any
-from collections.abc import Callable, Mapping
 
 from lsprotocol import types
 
-from .. import editing, formatting, hover as hovering, inlay, navigation, positions, quickfix, rename
+from .. import editing, formatting, inlay, navigation, positions, quickfix, rename
+from .. import hover as hovering
 
 LEGEND = types.SemanticTokensLegend(token_types=list(navigation.TOKEN_TYPES),
                                     token_modifiers=list(navigation.TOKEN_MODIFIERS))

@@ -1,7 +1,9 @@
-"""Generate vscode/syntaxes/crbasic.tmLanguage.json from the CR6 instruction catalog.
+"""Generate the VS Code grammar (open-crbasic-vsix: syntaxes/crbasic.tmLanguage.json) from the CR6 catalog.
 
     python tools/gen_grammar.py            write the grammar
     python tools/gen_grammar.py --check    exit 1 if the committed file differs from a fresh one
+
+The grammar lives in the open-crbasic-vsix repository, expected as a sibling checkout of this one.
 
 Names come from `opencrbasic.catalog` (the CR6 profile's tables), operators from the lexer's
 operator list. Every regex is case-insensitive (`(?i)` first) and sticks to syntax common to
@@ -20,7 +22,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from opencrbasic import lexer  # noqa: E402
 from opencrbasic.catalog import InstructionCatalog  # noqa: E402
 
-OUTPUT = ROOT / "vscode" / "syntaxes" / "crbasic.tmLanguage.json"
+OUTPUT = ROOT.parent / "open-crbasic-vsix" / "syntaxes" / "crbasic.tmLanguage.json"
 PROFILE = "cr6"
 
 # Word operators: rows of the function table that the parser treats as operators
@@ -143,14 +145,14 @@ def main(argv: list[str] | None = None) -> int:
     if args.check:
         current = OUTPUT.read_text(encoding="utf-8") if OUTPUT.is_file() else None
         if current != text:
-            print(f"{OUTPUT.relative_to(ROOT)} is stale; run: python tools/gen_grammar.py",
+            print(f"{OUTPUT} is stale; run: python tools/gen_grammar.py",
                   file=sys.stderr)
             return 1
-        print(f"{OUTPUT.relative_to(ROOT)} is up to date")
+        print(f"{OUTPUT} is up to date")
         return 0
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(text, encoding="utf-8")
-    print(f"wrote {OUTPUT.relative_to(ROOT)}")
+    print(f"wrote {OUTPUT}")
     return 0
 
 

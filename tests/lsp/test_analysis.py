@@ -10,7 +10,7 @@ from opencrbasic.analysis import API_VERSION, AnalysisRequest, analyze
 from opencrbasic.compiler import compile_file
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
 CHM = sorted((ROOT / "tests" / "corpus" / "chm").glob("*.CR6"))
 
 LIB = b"Public LibVar\n"
@@ -49,6 +49,7 @@ def test_crbasic_overlay_equals_disk(entry, memo_analyze):
 
 
 @pytest.mark.slow
+@pytest.mark.skipif(not CHM, reason="CRBasic help examples not extracted; see tests/corpus/README.md")
 def test_chm_corpus_overlay_equals_disk_cr6(memo_analyze):
     assert CHM
     for entry in CHM:

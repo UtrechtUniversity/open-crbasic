@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/952d761d7905.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SBD_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "delete_line"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "952d761d7905.CR6 -- Compile Failed!\n\nline 235: Invalid symbol in expression: MenuKey.",
+  "theirs": "952d761d7905.CR6 -- Compile Failed!\n\nline 232: Invalid, or out of place expression: \tMenuKey = ReadMenuKey().\nline 233: Invalid symbol in expression: MenuKey = \"\" .\nline 235: Invalid symbol in expression:  MenuKey.\nline 274: Invalid symbol in expression: \tLogDebug(\">>> option \" + MenuKey + \" selected\").",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

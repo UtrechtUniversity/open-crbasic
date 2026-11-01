@@ -1,0 +1,2 @@
+' fuzz: seed=repo/SerialProbe.CR6 ops=drop_argument class=message_diff
+		Call ProbeLog("bytes=" + FormatLong(ProbeBytes) + " resp=[" + ProbeResp + "]")

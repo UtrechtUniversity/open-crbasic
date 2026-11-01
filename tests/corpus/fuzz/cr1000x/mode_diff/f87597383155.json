@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r38/fuzz-431/cr1000x/mode_diff/f87597383155.CR6",
+  "logger": "cr1000x",
+  "class": "mode_diff",
+  "seed": "repo/PowerProfile_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "swap_adjacent"
+  ],
+  "our_exit": 0,
+  "their_exit": 0,
+  "ours": "f87597383155.CR6 -- Compiled in PipelineMode.",
+  "theirs": "f87597383155.CR6 -- Compiled in PipelineMode.\nline 242: Warning: EndIf never reached at run time.",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

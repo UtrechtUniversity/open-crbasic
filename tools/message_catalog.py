@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from extract_tables import Image, DEFAULT_EXE  # noqa: E402
+from extract_tables import DEFAULT_EXE, Image  # noqa: E402
 
 CALL = re.compile(r"(?:thunk_)?FUN_(005089c0|00508a00)\((s_\w+_([0-9a-f]{8})|PTR_\w+|&DAT_([0-9a-f]{8}))")
 FUNC = re.compile(r"^// ==== (\S+) @ ([0-9a-f]+)")

@@ -1,0 +1,43 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/SbdPayload_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/SbdPayload_tester.CR6 ops=rename_identifier+add_argument class=message_diff
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:PowerProfileLib.crb")
+IncludeSection("Functions", "CPU:SbdPayloadLib.crb")
+
+Public RunTests As Boolean = False
+
+Public FeedIntraday As Boolean = True
+
+Public TestIndex As Long
+Public TestsPassed As Long
+Public TestsFailed As Long
+
+Public ByteFidelityFirstBad As Long
+Public FirstNullAt As Long
+Dim ScanIdx As Long
+Public ParamCopyOurSum As Long
+Public ParamCopyTheirSum As Long
+
+Const MenuBufferLength = 16
+Dim MenuRaw As String * MenuBufferLength
+Dim MenuKey As String * 2
+Dim MenuBytes As Long
+
+Sub LogResult(TestName As String * 60, Ok As Boolean, Detail As String * 100)
+	TestIndex = TestIndex + 1
+	TestsPassed = TestsPassed + IIF(Ok, 1, 0)
+	TestsFailed = TestsFailed + IIF(Ok, 0, 1)
+	LogDebug("[" + FormatLong(TestIndex, "%02d") + "] " + TestName + " | " + IIF(Ok, "PASS", "FAIL") + " | " + Detail)
+EndSub
+
+Function ParamCopySum(Message As String * IridiumMaxMOMessageLength, MessageLength As Long) As Long
+	Dim I As Long
+	ParamCopySum = 0
+	For I = 1 To MessageLength
+		ParamCopySum = ParamCopySum + ASCII(Message(1,1,I))
+	Next I
+EndFunction
+
+Function BufferSum(Length As Long) As Long

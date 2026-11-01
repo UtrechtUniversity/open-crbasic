@@ -1,0 +1,20 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/Shunt_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/Shunt_tester.CR6 ops=insert_foreign_statement+change_declared_type class=message_diff
+
+ConstTable(GlobalConfigTable)
+	IncludeSection("ConstTable", "CPU:ShuntLib.crb")
+
+	Const ShuntTesterRailMask = &B10
+EndConstTable
+
+IncludeSection("Definitions", "CPU:ShuntLib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:ShuntLib.crb")
+
+		+ "  shunt=" + FormatFloat(Shunt_mV, "%.4f") + " mV" _
+		+ "  current=" + FormatFloat(Shunt_Current_A, "%.4f") + " A" _
+Sub RunCommonMode

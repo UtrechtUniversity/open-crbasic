@@ -8,7 +8,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "r46_timer_integral.json").read_text())
 
 

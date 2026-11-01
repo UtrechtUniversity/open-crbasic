@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r38/fuzz-430/cr6/message_diff/114315fdb7cf.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/PowerBudget_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "typo_identifier",
+    "insert_continuation"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "114315fdb7cf.CR6 -- Compile Failed!\n\nline 4: EndSelect w/o Select",
+  "theirs": "114315fdb7cf.CR6 -- Compile Failed!\n\nline 2: Else with no If."
+}

@@ -1,0 +1,16 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_accept/1a1e2e95552f.CR6",
+  "logger": "cr6",
+  "class": "false_accept",
+  "seed": "repo/SnowVue_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "insert_foreign_statement",
+    "duplicate_line"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "1a1e2e95552f.CR6 -- Compiled in SequentialMode.",
+  "theirs": "1a1e2e95552f.CR6 -- Compile Failed!\n\nline 195: END IF without IF or END SELECT without SELECT.",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

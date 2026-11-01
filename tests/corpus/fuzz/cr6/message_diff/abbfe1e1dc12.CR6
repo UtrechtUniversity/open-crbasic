@@ -1,0 +1,23 @@
+' fuzz: seed=repo/SBD_tester.CR6 ops=insert_whitespace+insert_foreign_statement class=message_diff
+		Case "C"
+			DoWrite = True
+		Case "D"
+			FuzzVar = FuzzVar + 1
+			DoSession = True
+		Case "E"
+			DoRegister = True
+		Case "F"
+			DoSend = True
+		Case Else
+			Call ShowMenu
+			ExitSub
+	EndSelect
+
+	LogDebug("")
+	LogDebug(">>> option " + MenuKey + " selected")
+	MenuPending = True
+EndSub
+
+BeginProg
+	LogDebug("SBDIridiumLib tester starting")
+	SerialFlush(ComUSB)

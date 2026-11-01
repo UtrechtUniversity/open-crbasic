@@ -1,0 +1,2 @@
+' fuzz: seed=repo/Main.CR6 ops=insert_continuation+insert_whitespace class=message_diff
+#EndIf

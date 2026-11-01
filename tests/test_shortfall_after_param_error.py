@@ -6,7 +6,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 CASES = json.loads((Path(__file__).parent / "fixtures" / "shortfall_after_param_error.json").read_text(encoding="utf-8"))["cases"]
 
 

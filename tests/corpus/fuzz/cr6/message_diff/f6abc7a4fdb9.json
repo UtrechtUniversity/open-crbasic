@@ -1,0 +1,16 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/f6abc7a4fdb9.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/FinApp_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "rename_identifier",
+    "add_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "f6abc7a4fdb9.CR6 -- Compile Failed!\n\nline 231: Invalid, or out of place expression: \tMenuPending_Mut = True.",
+  "theirs": "f6abc7a4fdb9.CR6 -- Compile Failed!\n\nline 87: No Matching, or out of place ) in expression: \tLogDebug(\"ident=[\" + FinApp_Ident + \"]\",(1+2)).",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

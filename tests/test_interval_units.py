@@ -5,8 +5,7 @@ import pytest
 
 from opencrbasic import parser, profiles
 from opencrbasic.compiler import compile_file
-from opencrbasic.tables import build_tables, render_table_list
-
+from opencrbasic.tables import build_tables
 
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "r20_interval_units.json").read_text(encoding="utf-8"))
 CASES = FIXTURE["cases"]

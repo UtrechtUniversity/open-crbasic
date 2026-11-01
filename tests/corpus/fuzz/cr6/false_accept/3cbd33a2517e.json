@@ -1,0 +1,16 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_accept/3cbd33a2517e.CR6",
+  "logger": "cr6",
+  "class": "false_accept",
+  "seed": "repo/FinApp_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "change_keyword_case",
+    "add_argument"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "3cbd33a2517e.CR6 -- Compiled in SequentialMode.",
+  "theirs": "3cbd33a2517e.CR6 -- Compile Failed!\n\nline 87: No Matching, or out of place ) in expression: \tLogDebug(\"ident=[\" + FinApp_Ident + \"]\",\"fuzz\").",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

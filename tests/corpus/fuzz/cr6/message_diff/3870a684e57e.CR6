@@ -1,0 +1,7 @@
+' fuzz: seed=repo/FinApp_tester.CR6 ops=toggle_two_word+insert_whitespace class=message_diff
+		Case "C"
+			DoLinkMonitor = True
+		Case Else
+			Call ShowMenu
+			ExitSub
+	EndSelect

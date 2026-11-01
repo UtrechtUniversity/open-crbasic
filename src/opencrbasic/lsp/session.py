@@ -16,11 +16,11 @@ import re
 import sys
 import threading
 import traceback
+from collections.abc import Callable
 from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures.process import BrokenProcessPool
 from dataclasses import dataclass, field, replace
 from pathlib import Path
-from collections.abc import Callable
 from urllib.parse import quote
 
 from .. import checkconfig, positions

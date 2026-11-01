@@ -1,0 +1,16 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/81617488a50a.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/PowerBudget_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "rename_identifier",
+    "replace_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "81617488a50a.CR6 -- Compile Failed!\n\nline 108: Invalid, or out of place expression: \tPBN_Mut = 0.",
+  "theirs": "81617488a50a.CR6 -- Compile Failed!\n\nline 108: Invalid, or out of place expression: \tPBN_Mut = 0.\nline 142: Invalid symbol in expression: \tLogDebug(UndeclaredFuzzName123).",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

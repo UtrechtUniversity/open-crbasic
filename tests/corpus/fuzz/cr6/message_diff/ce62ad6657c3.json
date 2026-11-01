@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/ce62ad6657c3.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/Preflight_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "insert_whitespace",
+    "delete_line"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "ce62ad6657c3.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: \tPreTimeStr = FormatLong(PreRTime(1),\"%04u\") + \"-\" + FormatLong(PreRTime(2),\"%02u\") + \"-\" + FormatLong(PreRTime(3),\"%02u\") + \" \" + FormatLong(PreRTime(4),\"%02u\") + \":\" + FormatLong(PreRTime(5),\"%02u\") + \":\" + FormatLong(PreRTime(6),\"%02u\").\nline 4: Expr illegally occurs before BeginProg.",
+  "theirs": "ce62ad6657c3.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: \tPreTimeStr = FormatLong(PreRTime(1),\"%04u\") + \"-\" + FormatLong(PreRTime(2),\"%02u\") \t\t+ \"-\" + FormatLong(PreRTime(3),\"%02u\") + \" \" + FormatLong(PreRTime(4),\"%02u\") \t\t+ \":\" + FormatLong(PreRTime(5),\"%02u\") + \":\" + FormatLong(PreRTime(6),\"%02u\").\nline 4: Expr illegally occurs before BeginProg."
+}

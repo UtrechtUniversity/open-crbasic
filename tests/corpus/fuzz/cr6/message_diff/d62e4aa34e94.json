@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/d62e4aa34e94.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/PowerBudget_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "insert_whitespace",
+    "change_declared_type"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "d62e4aa34e94.CR6 -- Compile Failed!\n\nline 4: No BeginProg in Program.",
+  "theirs": "d62e4aa34e94.CR6 -- Compile Failed!\n\nline 2: Case outside Select.\nline 2: Case outside Select."
+}

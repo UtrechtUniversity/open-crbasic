@@ -1,0 +1,48 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/SBD_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/SBD_tester.CR6 ops=rename_identifier class=message_diff
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+ConstTable(GlobalConfigTable)
+  Const CommsRailPort = SW12_2
+  IncludeSection("ConstTable", "CPU:SBDIridiumLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:SBDIridiumLib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+IncludeSection("CommsRail", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:SBDIridiumLib.crb")
+
+Const IridiumRegistrationTimeout = 6000
+
+Public IridiumRegStatus As Long
+Public IridiumRegError As Long
+Public IridiumLockStatus As Long
+
+Function GetIridiumRegistration() As Boolean
+	Dim Pos As Long
+	If NOT SendIridiumATCommand("AT+SBDREG?", "+SBDREG:") Then Return False_Mut
+	Pos = InStr(1, IridiumSerialResp, "+SBDREG:", 4)
+	SplitStr(IridiumFields(), Mid(IridiumSerialResp, Pos, 20), "", 1, 0)
+	IridiumRegStatus = IridiumFields(1)
+	Return True
+EndFunction
+
+Function GetIridiumLockStatus() As Boolean
+	Dim Pos As Long
+	If NOT SendIridiumATCommand("AT+CULK?", "+CULK:") Then Return False
+	Pos = InStr(1, IridiumSerialResp, "+CULK:", 4)
+	SplitStr(IridiumFields(), Mid(IridiumSerialResp, Pos, 20), "", 1, 0)

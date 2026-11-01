@@ -1,8 +1,7 @@
 """tools/lsp_gate.py: classification of changed files into gates, the pyrefly include reader."""
 
-import pytest
-
 import lsp_gate as G
+import pytest
 
 PYPROJECT = '''\
 [project]
@@ -53,8 +52,7 @@ def test_compiler_and_unclassified_changes_run_the_full_suite(path):
 
 @pytest.mark.parametrize("path", [
     "opencrbasic/src/opencrbasic/analysis.py", "opencrbasic/src/opencrbasic/rename.py",
-    "opencrbasic/src/opencrbasic/lsp/session.py", "opencrbasic/tests/lsp/test_server.py",
-    "crbasic/Main.CR6"])
+    "opencrbasic/src/opencrbasic/lsp/session.py", "opencrbasic/tests/lsp/test_server.py"])
 def test_lsp_only_changes_run_selfdiff_and_the_lsp_tiers(path):
     got = commands([path])
     assert got[0].startswith("python tools/selfdiff.py")
@@ -68,11 +66,6 @@ def test_a_compiler_file_beside_lsp_files_still_means_the_full_suite():
     assert not any("tests/lsp" in c for c in got)
 
 
-def test_vscode_only_runs_npm():
-    assert [c for _l, c in G.classify(["opencrbasic/vscode/src/extension.ts"])] == [
-            "npm --prefix vscode test"]
-
-
 def test_docs_only_runs_the_link_check():
     gates = G.classify(["opencrbasic/docs/lsp-api.md", "opencrbasic/README.md"])
     assert [c for _l, c in gates] == [
@@ -82,10 +75,6 @@ def test_docs_only_runs_the_link_check():
 def test_docs_beside_code_add_no_link_gate():
     gates = G.classify(["opencrbasic/docs/lsp-api.md", "opencrbasic/src/opencrbasic/hover.py"])
     assert not any("--check-links" in c for _l, c in gates)
-
-
-def test_unrelated_files_outside_the_package_select_nothing():
-    assert G.classify(["scripts/collect_data.py", "STATUS.md"]) == []
 
 
 @pytest.mark.parametrize("path", [

@@ -1,0 +1,9 @@
+' fuzz: seed=repo/PowerProfile_tester.CR6 ops=insert_foreign_statement class=message_diff
+            LogDebug(">>> library reinitialised")
+        Case Else
+            Call ShowMenu
+            ExitSub
+    EndSelect
+
+    MenuPending = True
+EndSub

@@ -1,0 +1,16 @@
+{
+  "file": "/tmp/claude-0/-home-user-firnmelt-datalogger-mirror/acee0996-63f0-56bd-a337-b59f9f1988e5/scratchpad/fuzz49/cr1000x/false_accept/b5d676973a06.CR6",
+  "logger": "cr1000x",
+  "class": "false_accept",
+  "seed": "repo/ScanSyncTest.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "insert_comment",
+    "replace_argument"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "b5d676973a06.CR6 -- Compiled in PipelineMode.",
+  "theirs": "b5d676973a06.CR6 -- Compile Failed!\n\nline 112: Invalid Variable or Array: (1+2).",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

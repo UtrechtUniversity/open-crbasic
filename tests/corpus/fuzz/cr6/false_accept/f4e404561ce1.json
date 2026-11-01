@@ -1,0 +1,16 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_accept/f4e404561ce1.CR6",
+  "logger": "cr6",
+  "class": "false_accept",
+  "seed": "repo/Main.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "swap_adjacent",
+    "change_interval"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "f4e404561ce1.CR6 -- Compiled in SequentialMode.\nWarning: Table StationStatus, is declared but never called.\nWarning: Table Shunt_Data, is declared but never called.\nWarning: Table Acclima_Data, is declared but never called.\nWarning: Table TString_Data, is declared but never called.\nWarning: Table SnowVue_Data, is declared but never called.\nWarning: Table SnowVue_Diagnostics, is declared but never called.\nWarning: Table PT1000_Data, is declared but never called.",
+  "theirs": "f4e404561ce1.CR6 -- Compile Failed!\n\n#If with no #Endif",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

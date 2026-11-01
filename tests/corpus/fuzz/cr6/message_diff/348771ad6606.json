@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/348771ad6606.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/Preflight_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument",
+    "drop_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "348771ad6606.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: SnowVueComPort.\nline 22: Expression expects , : \tCall LogCheck(\"snowvue M1! and M9! sample\", Ok, \"valid=\" \t\t+ FormatLong(SnowVue_ValidReadings,\"%d\") + \"/\" + FormatLong(SnowVueBurstCount,\"%d\") \t\t+ \" dist=\" + FormatFloat(SnowVue_Distance_m,\"%.3f\") \t\t+ \" tcdist=\" + FormatFloat(\"%.3f\") \t\t+ \" qual=\" + FormatFloat(SnowVue_Quality,\"%.0f\") \t\t+ \" supply=\" + FormatFloat(SnowVue_Supply_V,\"%.2f\") \t\t+ \" ms=\" + FormatLong(PreStepMs,\"%d\")).",
+  "theirs": "348771ad6606.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: SnowVueComPort."
+}

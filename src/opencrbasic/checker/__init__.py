@@ -100,10 +100,20 @@ from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
 from . import (
-    cr3xx, ess, expressions, instr_data, instr_measure, instr_rules, instructions, intervals,
-    storage, structs, structure, var_types, warnings,
+    cr3xx,
+    ess,
+    expressions,
+    instr_data,
+    instr_measure,
+    instr_rules,
+    instructions,
+    intervals,
+    storage,
+    structs,
+    structure,
+    var_types,
+    warnings,
 )
-
 
 _current_result: ContextVar = ContextVar("opencrbasic_checker_result", default=None)
 

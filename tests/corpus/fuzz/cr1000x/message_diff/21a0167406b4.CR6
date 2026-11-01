@@ -1,0 +1,7 @@
+' fuzz: seed=repo/SBD_tester.CR6 ops=drop_argument class=message_diff
+		Ok = RegisterIridium()
+		Call LogResult("RegisterIridium", Ok, "regstatus=" + FormatLong(IridiumRegStatus, "%d") + " regerr=" + FormatLong( "%d"))
+
+		Ok = RunIridiumSession()
+		Call LogResult("RunIridiumSession", Ok, "mo=" + FormatLong(IridiumMOStatus, "%d") + " momsn=" + FormatLong(IridiumMOMSN, "%d"))
+

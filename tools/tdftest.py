@@ -38,19 +38,20 @@ from typing import TypedDict
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-REPO = ROOT.parent
+REPO = ROOT
 sys.path.insert(0, str(ROOT / "src"))
+
+import oracle  # noqa: E402
 
 from opencrbasic import parser, profiles, tdf  # noqa: E402
 from opencrbasic.tables import build_tables  # noqa: E402
-import oracle  # noqa: E402
 
 DEFAULT_COMPILER = REPO / "compiler" / "CR6Comp.exe"
 TDF_CACHE_DIR = ROOT / ".oracle-cache" / "tdf"
 FIXTURES_DIR = ROOT / "tests" / "fixtures" / "tdf"
 
 GROUPS = {
-    "repo": (REPO / "crbasic", "*.CR6", REPO / "crbasic"),
+    "repo": (REPO / "tests" / "corpus" / "firnmelt", "*.CR6", REPO / "tests" / "corpus" / "firnmelt"),
     "chm": (ROOT / "tests" / "corpus" / "chm", "*.CR6", ROOT / "tests" / "corpus" / "chm"),
 }
 

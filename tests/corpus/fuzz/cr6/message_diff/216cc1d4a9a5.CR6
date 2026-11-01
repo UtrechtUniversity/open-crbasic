@@ -1,0 +1,25 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/SBD_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/SBD_tester.CR6 ops=insert_whitespace class=message_diff
+
+IncludeSection("Functions", "CPU:SBDIridiumLib.crb")
+
+Const IridiumRegistrationTimeout = 6000
+
+Public IridiumRegStatus As Long
+Public IridiumRegError As Long
+Public IridiumLockStatus As Long
+
+Function Ge  tIridiumRegistration() As Boolean
+	Dim Pos As Long
+	If NOT SendIridiumATCommand("AT+SBDREG?", "+SBDREG:") Then Return False
+	Pos = InStr(1, IridiumSerialResp, "+SBDREG:", 4)
+	SplitStr(IridiumFields(), Mid(IridiumSerialResp, Pos, 20), "", 1, 0)
+	IridiumRegStatus = IridiumFields(1)
+	Return True
+EndFunction
+
+Function GetIridiumLockStatus() As Boolean
+	Dim Pos As Long
+	If NOT SendIridiumATCommand("AT+CULK?", "+CULK:") Then Return False
+	Pos = InStr(1, IridiumSerialResp, "+CULK:", 4)
+	SplitStr(IridiumFields(), Mid(IridiumSerialResp, Pos, 20), "", 1, 0)

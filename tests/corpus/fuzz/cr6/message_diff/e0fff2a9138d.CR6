@@ -1,0 +1,28 @@
+' fuzz: seed=repo/Main.CR6 ops=replace_argument class=message_diff
+		BoxTempC = NAN
+#EndIf
+
+		Call UpdatePowerClock
+		Call UpdatePowerInputs(Batt_volt, PTemp, BoxTempC)
+
+		FinAppLoadOn = FinApp_Powered
+		SemaphoreGet(ProfileSem)
+		Call UpdatePowerProfile
+		SemaphoreRelease(ProfileSem)
+
+		If DebugTrace Then
+			DebugScanCount = DebugScanCount + 1
+
+			If PowerProfile <> DebugLastProfile Then
+				DebugLine = "PROFILE " + FormatLong(DebugLastProfile,"%d") + " -> " + FormatLong(PowerProfile,"%d") _
+					+ "  prevDayV25=" + FormatFloat(PrevDayV25,"%.3f") _
+					+ " T=" + FormatFloat(PrevDayDecisionTempC,"%.1f") _
+					+ " prevDayV=" + FormatFloat(PrevDayDecisionV,"%.3f") _
+					+ " min=" + FormatFloat(PrevDayBattMin,"%.3f") _
+					+ " quietMin=" + FormatFloat(PrevDayBattMinQuiet,"%.3f")
+				DebugLine = DebugLine + " quietN=" + FormatFloat(PrevDayQuietSamples,"%.0f") _
+					+ "  measUnits=" + FormatLong(MeasIntervalUnits(),"%d") _
+					+ " sbdDays=" + FormatLong(SbdPeriodDays(),"%d") _
+					+ " finappDays=" + FormatLong(FinAppPeriodDays(),"%d")
+				LogDebug(DebugLine)
+				DebugLastProfile = PowerProfile

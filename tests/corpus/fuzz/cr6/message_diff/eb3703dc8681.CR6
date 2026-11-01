@@ -1,0 +1,2 @@
+' fuzz: seed=repo/Main.CR6 ops=swap_adjacent+drop_argument class=message_diff
+#EndIf

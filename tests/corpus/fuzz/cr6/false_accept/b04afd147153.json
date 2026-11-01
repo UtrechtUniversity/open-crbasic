@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_accept/b04afd147153.CR6",
+  "logger": "cr6",
+  "class": "false_accept",
+  "seed": "repo/PortSleep_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "insert_comment",
+    "swap_adjacent"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "b04afd147153.CR6 -- Compiled in SequentialMode.\nline 70: Warning: CallTable never reached at run time.",
+  "theirs": "b04afd147153.CR6 -- Compile Failed!\n\nline 70: Cannot autoallocate memory for DataTable PortSleep_Scans called outside of Scan, e.g., called by Sub.\nline 70: Warning: CallTable never reached at run time."
+}

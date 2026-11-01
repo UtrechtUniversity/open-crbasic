@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/message_diff/1b8bd296f91d.CR6",
+  "logger": "cr1000x",
+  "class": "message_diff",
+  "seed": "repo/InStrHeaderFilterTest.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "replace_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "1b8bd296f91d.CR6 -- Compile Failed!\n\nline 11: Scan 0uSec invalid must be at least 1mSec.\nline 12: Invalid symbol in expression: BenchWatchdogOff .\nline 13: Invalid, or out of place expression:       wdog_timer = WatchdogTimer(0,Sec).\nline 15: Invalid, or out of place expression:       wdog_timer = WatchdogTimer(10,Min).\nline 18: Invalid symbol in expression: Batt_volt.\nline 20: Invalid, or out of place expression:     Test1_Mode2_Pos = InStr(1, Test1_Str, \"+SBDI:\", 2).\nline 21: Invalid, or out of place expression:     Test1_Mode4_Pos = InStr(1, Test1_Str, \"+SBDI:\", 4).\nline 22: Invalid symbol in expression: Test1_Mode2_Pos > 0 .\nline 23: Invalid, or out of place expression:       Test1_Mode2_Context = Mid(Test1_Str, Test1_Mode2_Pos, 16).",
+  "theirs": "1b8bd296f91d.CR6 -- Compile Failed!\n\nline 11: Scan 0uSec invalid must be at least 1mSec.\nline 12: Invalid symbol in expression: BenchWatchdogOff .\nline 13: Invalid, or out of place expression:       wdog_timer = WatchdogTimer(0,Sec).\nline 15: Invalid, or out of place expression:       wdog_timer = WatchdogTimer(10,Min).\nline 18: Invalid symbol in expression: Batt_volt.\nline 20: Invalid, or out of place expression:     Test1_Mode2_Pos = InStr(1, Test1_Str, \"+SBDI:\", 2).\nline 21: Invalid, or out of place expression:     Test1_Mode4_Pos = InStr(1, Test1_Str, \"+SBDI:\", 4).\nline 22: Invalid symbol in expression: Test1_Mode2_Pos > 0 .\nline 23: Invalid, or out of place expression:       Test1_Mode2_Context = Mid(Test1_Str, Test1_Mode2_Pos, 16).\nline 25: Scan interval too short for measurement by 0 uSec.",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

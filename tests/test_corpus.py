@@ -22,8 +22,8 @@ from opencrbasic import parser
 from opencrbasic import syntax as S
 
 OPENCRBASIC_ROOT = Path(__file__).resolve().parent.parent
-REPO_ROOT = OPENCRBASIC_ROOT.parent
-CRBASIC_DIR = REPO_ROOT / "crbasic"
+REPO_ROOT = OPENCRBASIC_ROOT
+CRBASIC_DIR = REPO_ROOT / "tests" / "corpus" / "firnmelt"
 CHM_DIR = OPENCRBASIC_ROOT / "tests" / "corpus" / "chm"
 
 # Entry programs (compiled directly, not pulled in via Include/IncludeSection) in `crbasic/`.

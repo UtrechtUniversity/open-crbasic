@@ -1,0 +1,80 @@
+{
+ "observation_date": "2026-10-03",
+ "note": "open* cases: verdicts observed 2026-10-03; later reruns of the same sources page-fault (docs/instructions.md \"Unclosed StructureType\").",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-open",
+   "logger": "cr300",
+   "source": "StructureType (Values)\r\n  val_Float As Float\r\nPublic Sensor1 As Values\r\nPublic Measurements As String * 50\r\nPublic X\r\nBeginProg\r\n  Scan (1,Sec,0,0)\r\n    SplitStr (Sensor1,Measurements,\",\",3,5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sensor1 is not defined.\nline 8: Too many parameters:  Measurements."
+  },
+  {
+   "id": "cr300-open-plain",
+   "logger": "cr300",
+   "source": "StructureType Values\r\n  val_Float As Float\r\nPublic Sensor1 As Values\r\nPublic Measurements As String * 50\r\nPublic X\r\nBeginProg\r\n  Scan (1,Sec,0,0)\r\n    SplitStr (Sensor1,Measurements,\",\",3,5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sensor1 is not defined.\nline 8: Too many parameters:  Measurements."
+  },
+  {
+   "id": "cr300-open-literal",
+   "logger": "cr300",
+   "source": "StructureType Values\r\n  val_Float As Float\r\nPublic Sensor1 As Values\r\nPublic Measurements As String * 50\r\nPublic X\r\nBeginProg\r\n  Scan (1,Sec,0,0)\r\n    SplitStr (Sensor1,\"a,b\",\",\",3,5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sensor1 is not defined.\nline 8: Too many parameters:  \"a."
+  },
+  {
+   "id": "cr300-open-panel",
+   "logger": "cr300",
+   "source": "StructureType Values\r\n  val_Float As Float\r\nPublic Sensor1 As Values\r\nPublic Measurements As String * 50\r\nPublic X\r\nBeginProg\r\n  Scan (1,Sec,0,0)\r\n    PanelTemp(Sensor1,15000)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sensor1 is not defined.\nline 8: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-open",
+   "logger": "cr350",
+   "source": "StructureType (Values)\r\n  val_Float As Float\r\nPublic Sensor1 As Values\r\nPublic Measurements As String * 50\r\nPublic X\r\nBeginProg\r\n  Scan (1,Sec,0,0)\r\n    SplitStr (Sensor1,Measurements,\",\",3,5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sensor1 is not defined.\nline 8: Too many parameters:  Measurements."
+  },
+  {
+   "id": "cr350-open-plain",
+   "logger": "cr350",
+   "source": "StructureType Values\r\n  val_Float As Float\r\nPublic Sensor1 As Values\r\nPublic Measurements As String * 50\r\nPublic X\r\nBeginProg\r\n  Scan (1,Sec,0,0)\r\n    SplitStr (Sensor1,Measurements,\",\",3,5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sensor1 is not defined.\nline 8: Too many parameters:  Measurements."
+  },
+  {
+   "id": "cr350-open-literal",
+   "logger": "cr350",
+   "source": "StructureType Values\r\n  val_Float As Float\r\nPublic Sensor1 As Values\r\nPublic Measurements As String * 50\r\nPublic X\r\nBeginProg\r\n  Scan (1,Sec,0,0)\r\n    SplitStr (Sensor1,\"a,b\",\",\",3,5)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sensor1 is not defined.\nline 8: Too many parameters:  \"a."
+  },
+  {
+   "id": "cr350-open-panel",
+   "logger": "cr350",
+   "source": "StructureType Values\r\n  val_Float As Float\r\nPublic Sensor1 As Values\r\nPublic Measurements As String * 50\r\nPublic X\r\nBeginProg\r\n  Scan (1,Sec,0,0)\r\n    PanelTemp(Sensor1,15000)\r\n  NextScan\r\nEndProg\r\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sensor1 is not defined.\nline 8: Too many parameters:  15000."
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/message_diff/c9277bd25f7f.CR6",
+  "logger": "cr1000x",
+  "class": "message_diff",
+  "seed": "repo/SbdPayload_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "insert_whitespace",
+    "rename_identifier"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "c9277bd25f7f.CR6 -- Compile Failed!\n\nline 93: Cannot recursively call functions.\nline 94: Cannot recursively call functions.\nline 128: Invalid symbol in expression: MainScanSecs.",
+  "theirs": "c9277bd25f7f.CR6 -- Compile Failed!\n\nline 35: Invalid symbol in expression: IridiumMaxMOMessageLength.\nline 93: Cannot recursively call functions.\nline 94: Cannot recursively call functions.\nline 128: Invalid symbol in expression: MainScanSecs.",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

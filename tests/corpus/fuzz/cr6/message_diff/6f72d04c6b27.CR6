@@ -1,0 +1,2 @@
+' fuzz: seed=repo/SnowVue_tester.CR6 ops=delete_line+insert_whitespace class=message_diff
+	SnowVueBurstDist(4) = 8

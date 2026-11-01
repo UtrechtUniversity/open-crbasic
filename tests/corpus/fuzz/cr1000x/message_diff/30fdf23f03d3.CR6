@@ -1,0 +1,3 @@
+' fuzz: seed=repo/ScanSyncTest.CR6 ops=delete_line+change_interval class=message_diff
+    ClockString = FormatLong(Yr,"%04u") + "-" + FormatLong(Mo,"%02u") + "-" + FormatLong(Dy,"%02u") _
+                  + " " + FormatLong(Hh,"%02u") + ":" + FormatLong(Mn,"%02u") + ":" + FormatLong(Sc,"%02u")

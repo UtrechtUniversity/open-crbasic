@@ -1,0 +1,128 @@
+{
+  "observation_date": "2026-10-03",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "cr6-cdm-brhalf3w-channel-255",
+      "logger": "cr6",
+      "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    CDM_BrHalf3W(CDM_A108,1,X(),1,mV200,&HFF,X1,1,2500,True,0,60,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Input channel: 255, out of range (1 - 16).\nline 4: Reps cycle input beyond last channel!"
+    },
+    {
+      "id": "cr1000x-cdm-brhalf3w-channel-one",
+      "logger": "cr1000x",
+      "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    CDM_BrHalf3W(CDM_A108,1,X(),1,mV200,1,X1,1,2500,True,0,60,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-cdm-tccomp-channel-21",
+      "logger": "cr6",
+      "source": "Public X(24)\nBeginProg\n  Scan(1,Sec,0,0)\n    CDM_TCComp(TEMP120,1,X(),1,21,TypeT,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Input channel: 21, out of range (1 - 20)."
+    },
+    {
+      "id": "cr1000x-cdm-paneltemp-channel-zero",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    CDM_PanelTemp(CDM_A108,1,X,1,0,60)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: PanelTemp channel out of range!"
+    },
+    {
+      "id": "cr6-sdmsw8a-start-zero",
+      "logger": "cr6",
+      "source": "Public X(8)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSw8a(X(),8,0,2,0,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Start Channel: 0, must be 1-8."
+    },
+    {
+      "id": "cr1000x-sdmsw8a-start-eight",
+      "logger": "cr1000x",
+      "source": "Public X(8)\nBeginProg\n  Scan(1,Sec,0,0)\n    SDMSw8a(X(),8,0,2,8,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-tdr200-points-negative",
+      "logger": "cr6",
+      "source": "Public X\nBeginProg\n  Scan(5,Sec,0,0)\n    TDR200(X,0,0,1,4,1,-1,5.75,5,.3,.085,.1138,-.1758,0,0,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Points -1 is illegal: range is 100..10112."
+    },
+    {
+      "id": "cr1000x-tdr200-points-100",
+      "logger": "cr1000x",
+      "source": "Public X\nBeginProg\n  Scan(5,Sec,0,0)\n    TDR200(X,0,0,1,4,1,100,5.75,5,.3,.085,.1138,-.1758,0,0,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr6-filemanage-drive",
+      "logger": "cr6",
+      "source": "BeginProg\n  Scan(1,Sec,0,0)\n    FileManage(\"fuzz\",4)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: FileManage invalid drive: fuzz."
+    },
+    {
+      "id": "cr1000x-filemanage-drive",
+      "logger": "cr1000x",
+      "source": "BeginProg\n  Scan(1,Sec,0,0)\n    FileManage(\"fuzz\",4)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: FileManage invalid drive: fuzz."
+    },
+    {
+      "id": "cr6-dnp-string-port",
+      "logger": "cr6",
+      "source": "BeginProg\n  DNP(\"fuzz\",115200,1000)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ComPort -2147483648 illegal."
+    },
+    {
+      "id": "cr1000x-dnp-string-port",
+      "logger": "cr1000x",
+      "source": "BeginProg\n  DNP(\"fuzz\",115200,1000)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ComPort -2147483648 illegal."
+    },
+    {
+      "id": "cr300-dnp-string-port",
+      "logger": "cr300",
+      "source": "BeginProg\n  DNP(\"fuzz\",115200,1000)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ComPort -2147483648 illegal."
+    },
+    {
+      "id": "cr350-dnp-string-port",
+      "logger": "cr350",
+      "source": "BeginProg\n  DNP(\"fuzz\",115200,1000)\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ComPort -2147483648 illegal."
+    },
+    {
+      "id": "cr300-dnp-numeric-port",
+      "logger": "cr300",
+      "source": "BeginProg\n  DNP(20000,115200,1000)\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    }
+  ]
+}

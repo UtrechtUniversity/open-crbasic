@@ -1,13 +1,13 @@
 """Portable regressions for the Windows host findings; Win32 calls are simulated explicitly."""
 
 from pathlib import Path, PureWindowsPath
-from typing import cast
 from types import SimpleNamespace
+from typing import cast
 from unittest.mock import Mock
 
+import lsp_install_check
 import pytest
 
-import lsp_install_check
 from opencrbasic.lsp import server
 from opencrbasic.lsp.session import Diag, Session
 

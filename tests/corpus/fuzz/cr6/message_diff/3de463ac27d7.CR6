@@ -1,0 +1,12 @@
+' fuzz: seed=repo/SerialProbe.CR6 ops=insert_whitespace+rename_identifier class=message_diff
+  	Scan(2, Sec, 0, 0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+		ProbeBytes = Len(ProbeResp)
+
+		Call ProbeLog("bytes=" + FormatLong(ProbeBytes, "%d") + " resp=[" + ProbeResp + "]")
+	NextScan
+EndProg2

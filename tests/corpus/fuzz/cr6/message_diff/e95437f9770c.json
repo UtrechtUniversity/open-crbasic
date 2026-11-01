@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/e95437f9770c.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/PowerBudget_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "rename_identifier",
+    "insert_comment"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "e95437f9770c.CR6 -- Compile Failed!\n\nline 3: EndSelect w/o Select",
+  "theirs": "e95437f9770c.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: \t\t\tMenuPending = True.\nline 2: Expr illegally occurs before BeginProg."
+}

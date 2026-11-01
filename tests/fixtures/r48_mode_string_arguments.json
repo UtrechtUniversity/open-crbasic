@@ -1,0 +1,1987 @@
+{
+  "observation_date": "2026-10-27",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "cr6-portset-0",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-portset-0",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-portset-0",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-0",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-1",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"fuzz\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-portset-1",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"fuzz\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-portset-1",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"fuzz\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-1",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"fuzz\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-2",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"1\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-portset-2",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"1\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-portset-2",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"1\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-2",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"1\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-3",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-portset-3",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-portset-3",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-3",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-4",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,S)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-portset-4",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,S)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-portset-4",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,S)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-4",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,S)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-5",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,K)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-portset-5",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,K)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-portset-5",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,K)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-5",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,K)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-6",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"a\" & \"b\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-portset-6",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"a\" & \"b\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-portset-6",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"a\" & \"b\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-6",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"a\" & \"b\")\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-7",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-portset-7",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-portset-7",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-7",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-8",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,1.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-portset-8",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,1.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-portset-8",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,1.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-8",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,1.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-9",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,True)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-portset-9",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,True)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-portset-9",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,True)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-9",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,True)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-10",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,1+1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-portset-10",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,1+1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-portset-10",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,1+1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-10",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,1+1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-11",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"1\"+0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-portset-11",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"1\"+0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-portset-11",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"1\"+0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-11",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,\"1\"+0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-12",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,LEN(\"ab\"))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-portset-12",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,LEN(\"ab\"))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-portset-12",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,LEN(\"ab\"))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-12",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,LEN(\"ab\"))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-13",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,ABS(1))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-portset-13",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,ABS(1))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-portset-13",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,ABS(1))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-13",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,ABS(1))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-14",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,INT(1.5))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-portset-14",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,INT(1.5))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-portset-14",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,INT(1.5))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-14",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,INT(1.5))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-15",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,CHR(65))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-portset-15",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,CHR(65))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-portset-15",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,CHR(65))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-15",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,CHR(65))\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-16",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,LEN(\"ab\")-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-portset-16",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,LEN(\"ab\")-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-portset-16",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,LEN(\"ab\")-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-16",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,LEN(\"ab\")-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-17",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,L)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-portset-17",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,L)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-portset-17",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,L)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-17",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,L)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-portset-18",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,N)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-portset-18",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,N)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-portset-18",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,N)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-portset-18",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    PortSet(C1,N)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-excitev-string",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    ExciteV(Vx1,\"2500\",0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression: Vx1."
+    },
+    {
+      "id": "cr1000x-excitev-string",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    ExciteV(Vx1,\"2500\",0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-excitev-string",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    ExciteV(Vx1,\"2500\",0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-excitev-string",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    ExciteV(Vx1,\"2500\",0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-muxselect-string",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    MuxSelect(C1,C2,10,\"x\",1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-muxselect-string",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    MuxSelect(C1,C2,10,\"x\",1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-muxselect-string",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    MuxSelect(C1,C2,10,\"x\",1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-muxselect-string",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    MuxSelect(C1,C2,10,\"x\",1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-muxselect-string-const",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    MuxSelect(C1,C2,10,S,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-muxselect-string-const",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    MuxSelect(C1,C2,10,S,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-muxselect-string-const",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    MuxSelect(C1,C2,10,S,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-muxselect-string-const",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    MuxSelect(C1,C2,10,S,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-auto-0",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-auto-0",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-auto-0",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-auto-0",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-auto-1",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"1\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-auto-1",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"1\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-auto-1",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"1\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-auto-1",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"1\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-auto-2",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"x\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-auto-2",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"x\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-auto-2",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"x\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-auto-2",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"x\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-auto-3",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(D,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-auto-3",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(D,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-auto-3",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(D,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-auto-3",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(D,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-auto-4",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-delay-auto-4",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-delay-auto-4",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-auto-4",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-auto-5",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-delay-auto-5",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-delay-auto-5",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-auto-5",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-auto-6",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-delay-auto-6",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-delay-auto-6",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-auto-6",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-auto-7",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\"+0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-auto-7",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\"+0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-auto-7",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\"+0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-auto-7",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\"+0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-auto-8",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(LEN(\"a\")-1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-delay-auto-8",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(LEN(\"a\")-1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-delay-auto-8",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(LEN(\"a\")-1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-auto-8",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(LEN(\"a\")-1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-auto-9",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(ABS(0),20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-delay-auto-9",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(ABS(0),20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-delay-auto-9",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(ABS(0),20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-auto-9",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(ABS(0),20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-auto-10",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(L-2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-delay-auto-10",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(L-2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-delay-auto-10",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(L-2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-auto-10",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(L-2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sw12-auto-0",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-sw12-auto-0",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-sw12-auto-0",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SW12_1 is not defined.\nline 10: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-auto-0",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Too many parameters:  0."
+    },
+    {
+      "id": "cr6-sw12-auto-scan-0",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sw12-auto-scan-0",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sw12-auto-scan-0",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: SW12_1 is not defined.\nline 9: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-auto-scan-0",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Too many parameters:  0."
+    },
+    {
+      "id": "cr6-sw12-auto-1",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-sw12-auto-1",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-sw12-auto-1",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SW12_1 is not defined.\nline 10: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-auto-1",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-sw12-auto-scan-1",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sw12-auto-scan-1",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sw12-auto-scan-1",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: SW12_1 is not defined.\nline 9: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-auto-scan-1",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-sw12-auto-2",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-sw12-auto-2",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-sw12-auto-2",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SW12_1 is not defined.\nline 10: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-auto-2",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sw12-auto-scan-2",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-sw12-auto-scan-2",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-sw12-auto-scan-2",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: SW12_1 is not defined.\nline 9: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-auto-scan-2",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sw12-auto-3",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,2)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-sw12-auto-3",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,2)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-sw12-auto-3",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,2)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SW12_1 is not defined.\nline 10: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-auto-3",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,2)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Too many parameters:  2."
+    },
+    {
+      "id": "cr6-sw12-auto-scan-3",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sw12-auto-scan-3",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sw12-auto-scan-3",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: SW12_1 is not defined.\nline 9: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-auto-scan-3",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Too many parameters:  2."
+    },
+    {
+      "id": "cr6-sw12-auto-inline",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-sw12-auto-inline",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-sw12-auto-inline",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: SW12_1 is not defined.\nline 9: Too many parameters:  1.",
+      "not_modelled": "CR300 prints the unknown SW12_1 name before Too many parameters on a one-line If; opencrbasic reverses them."
+    },
+    {
+      "id": "cr350-sw12-auto-inline",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Too many parameters:  0."
+    },
+    {
+      "id": "cr6-sw12-auto-before",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSW12(SW12_1,1,0)\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Sw12 illegally occurs before BeginProg."
+    },
+    {
+      "id": "cr1000x-sw12-auto-before",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSW12(SW12_1,1,0)\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Sw12 not allowed outside of Scan..NextScan in PipeLine Mode.",
+      "not_modelled": "CR1000X omits the later illegally-occurs-before-BeginProg line after the SW12 PipeLine Mode error (as for PortSet)."
+    },
+    {
+      "id": "cr300-sw12-auto-before",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSW12(SW12_1,1,0)\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: SW12_1 is not defined.\nline 7: Too many parameters:  1.\nline 9: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-sw12-auto-before",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSW12(SW12_1,1,0)\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  0.\nline 9: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr6-sw12-auto-sub",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSub P\n  SW12(SW12_1,1,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sw12-auto-sub",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSub P\n  SW12(SW12_1,1,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sw12 not allowed outside of Scan..NextScan in PipeLine Mode."
+    },
+    {
+      "id": "cr300-sw12-auto-sub",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSub P\n  SW12(SW12_1,1,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: SW12_1 is not defined.\nline 8: Too many parameters:  1.\nline 11: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-sw12-auto-sub",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSub P\n  SW12(SW12_1,1,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  0.\nline 11: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr6-voltse-auto",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      VoltSE(Volt1,1,mV5000,1,0,0,15000,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid channel 1, must use U1..U12."
+    },
+    {
+      "id": "cr1000x-voltse-auto",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      VoltSE(Volt1,1,mV5000,1,0,0,15000,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-voltse-auto",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      VoltSE(Volt1,1,mV5000,1,0,0,15000,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: mV5000 is not defined.\nline 10: Variable illegal in Parameter: mV5000."
+    },
+    {
+      "id": "cr350-voltse-auto",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      VoltSE(Volt1,1,mV5000,1,0,0,15000,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: mV5000 is not defined.\nline 10: Variable illegal in Parameter: mV5000."
+    },
+    {
+      "id": "cr6-delay-explicit-0",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-explicit-0",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-explicit-0",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-explicit-0",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-explicit-1",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"1\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-explicit-1",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"1\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-explicit-1",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"1\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-explicit-1",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"1\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-explicit-2",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"x\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-explicit-2",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"x\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-explicit-2",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"x\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-explicit-2",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"x\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-explicit-3",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(D,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-explicit-3",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(D,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-explicit-3",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(D,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-explicit-3",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(D,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-explicit-4",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-explicit-4",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-explicit-4",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-explicit-4",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-explicit-5",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-delay-explicit-5",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-delay-explicit-5",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-explicit-5",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-explicit-6",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-delay-explicit-6",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-delay-explicit-6",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-explicit-6",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-explicit-7",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\"+0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-explicit-7",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\"+0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-explicit-7",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\"+0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-explicit-7",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\"+0,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-explicit-8",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(LEN(\"a\")-1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-explicit-8",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(LEN(\"a\")-1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-explicit-8",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(LEN(\"a\")-1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-explicit-8",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(LEN(\"a\")-1,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-explicit-9",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(ABS(0),20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-explicit-9",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(ABS(0),20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-explicit-9",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(ABS(0),20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-explicit-9",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(ABS(0),20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-delay-explicit-10",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(L-2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-delay-explicit-10",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(L-2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Delay not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-delay-explicit-10",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(L-2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-delay-explicit-10",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(L-2,20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sw12-explicit-0",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-sw12-explicit-0",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-sw12-explicit-0",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: SW12_1 is not defined.\nline 11: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-explicit-0",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Too many parameters:  0."
+    },
+    {
+      "id": "cr6-sw12-explicit-scan-0",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sw12-explicit-scan-0",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sw12-explicit-scan-0",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SW12_1 is not defined.\nline 10: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-explicit-scan-0",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Too many parameters:  0."
+    },
+    {
+      "id": "cr6-sw12-explicit-1",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sw12-explicit-1",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sw12-explicit-1",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: SW12_1 is not defined.\nline 11: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-explicit-1",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-sw12-explicit-scan-1",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sw12-explicit-scan-1",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sw12-explicit-scan-1",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SW12_1 is not defined.\nline 10: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-explicit-scan-1",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Too many parameters:  1."
+    },
+    {
+      "id": "cr6-sw12-explicit-2",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-sw12-explicit-2",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-sw12-explicit-2",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: SW12_1 is not defined.\nline 11: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-explicit-2",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sw12-explicit-scan-2",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sw12-explicit-scan-2",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sw12-explicit-scan-2",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SW12_1 is not defined.\nline 10: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-explicit-scan-2",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sw12-explicit-3",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,2)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-sw12-explicit-3",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,2)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-sw12-explicit-3",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,2)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: SW12_1 is not defined.\nline 11: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-explicit-3",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,2)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Too many parameters:  2."
+    },
+    {
+      "id": "cr6-sw12-explicit-scan-3",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sw12-explicit-scan-3",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-sw12-explicit-scan-3",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SW12_1 is not defined.\nline 10: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sw12-explicit-scan-3",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    SW12(SW12_1,1,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Too many parameters:  2."
+    },
+    {
+      "id": "cr6-sw12-explicit-inline",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr1000x-sw12-explicit-inline",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sw12 not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-sw12-explicit-inline",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SW12_1 is not defined.\nline 10: Too many parameters:  1.",
+      "not_modelled": "CR300 prints the unknown SW12_1 name before Too many parameters on a one-line If; opencrbasic reverses them."
+    },
+    {
+      "id": "cr350-sw12-explicit-inline",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then SW12(SW12_1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Too many parameters:  0."
+    },
+    {
+      "id": "cr6-sw12-explicit-before",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nSW12(SW12_1,1,0)\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sw12 illegally occurs before BeginProg."
+    },
+    {
+      "id": "cr1000x-sw12-explicit-before",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nSW12(SW12_1,1,0)\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sw12 not allowed outside of Scan..NextScan in PipeLine Mode.",
+      "not_modelled": "CR1000X omits the later illegally-occurs-before-BeginProg line after the SW12 PipeLine Mode error (as for PortSet)."
+    },
+    {
+      "id": "cr300-sw12-explicit-before",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nSW12(SW12_1,1,0)\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: SW12_1 is not defined.\nline 8: Too many parameters:  1.\nline 10: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-sw12-explicit-before",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nSW12(SW12_1,1,0)\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  0.\nline 10: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr6-sw12-explicit-sub",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nSub P\n  SW12(SW12_1,1,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-sw12-explicit-sub",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nSub P\n  SW12(SW12_1,1,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sw12 not allowed outside of Scan..NextScan in PipeLine Mode."
+    },
+    {
+      "id": "cr300-sw12-explicit-sub",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nSub P\n  SW12(SW12_1,1,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: SW12_1 is not defined.\nline 9: Too many parameters:  1.\nline 12: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-sw12-explicit-sub",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nSub P\n  SW12(SW12_1,1,0)\nEndSub\nBeginProg\n  Scan(3,Sec,1,0)\n    P\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Too many parameters:  0.\nline 12: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr6-voltse-explicit",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      VoltSE(Volt1,1,mV5000,1,0,0,15000,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: VoltSe not allowed inside of a conditional statement in PipeLine Mode.\nline 11: Invalid channel 1, must use U1..U12."
+    },
+    {
+      "id": "cr1000x-voltse-explicit",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      VoltSE(Volt1,1,mV5000,1,0,0,15000,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: VoltSe not allowed inside of a conditional statement in PipeLine Mode."
+    },
+    {
+      "id": "cr300-voltse-explicit",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      VoltSE(Volt1,1,mV5000,1,0,0,15000,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: mV5000 is not defined.\nline 11: Variable illegal in Parameter: mV5000."
+    },
+    {
+      "id": "cr350-voltse-explicit",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nPipeLineMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      VoltSE(Volt1,1,mV5000,1,0,0,15000,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: mV5000 is not defined.\nline 11: Variable illegal in Parameter: mV5000."
+    },
+    {
+      "id": "cr6-sequential-delay-string",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-sequential-delay-string",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-sequential-delay-string",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-sequential-delay-string",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      Delay(\"0\",20,mSec)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-sequential-sw12",
+      "logger": "cr6",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr1000x-sequential-sw12",
+      "logger": "cr1000x",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+    },
+    {
+      "id": "cr300-sequential-sw12",
+      "logger": "cr300",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: SW12_1 is not defined.\nline 11: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-sequential-sw12",
+      "logger": "cr350",
+      "source": "Public Volt1, x\nConst K = 1\nConst S = \"a\"\nConst D = \"0\"\nConst L = LEN(\"ab\")\nConst N = ABS(-1)\nSequentialMode\nBeginProg\n  Scan(3,Sec,1,0)\n    If x Then\n      SW12(SW12_1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Too many parameters:  0."
+    }
+  ]
+}

@@ -12,13 +12,13 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-REPO = ROOT.parent
+REPO = ROOT
 sys.path.insert(0, str(ROOT / "src"))
 import opencrbasic  # noqa: E402
 from opencrbasic import analysis, checks, profiles  # noqa: E402
 
 CORPORA = {
-    "crbasic (repository programs)": (REPO / "crbasic", ("*.CR6", "*.crb", "*.csv")),
+    "crbasic (repository programs)": (REPO / "tests" / "corpus" / "firnmelt", ("*.CR6", "*.crb", "*.csv")),
     "CRBasic help examples": (ROOT / "tests" / "corpus" / "chm", ("*.CR6",)),
     "GEUS programs": (REPO / "examples" / "Logger Programs", ("**/*",)),
     "fuzz replay reproducers": (ROOT / "tests" / "corpus" / "fuzz", ("**/*",)),

@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/e6922df229b3.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/Preflight_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "e6922df229b3.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: \t\t+ \" limits=\" + FormatLong(PT1000MinOhms,\"%d\") + \"-\" + FormatLong(PT1000MaxOhms,\"%d\") .\nline 3: Expr illegally occurs before BeginProg.",
+  "theirs": "e6922df229b3.CR6 -- Compile Failed!\n\nline 2: No BeginProg in Program."
+}

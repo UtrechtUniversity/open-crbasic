@@ -8,7 +8,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 CASES = json.loads((Path(__file__).parent / "fixtures" / "r66_include_stop.json").read_text())["cases"]
 
 

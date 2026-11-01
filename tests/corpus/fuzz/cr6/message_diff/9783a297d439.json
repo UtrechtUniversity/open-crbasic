@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/9783a297d439.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/PT1000_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument",
+    "swap_adjacent"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "9783a297d439.CR6 -- Compile Failed!\n\nline 3: No BeginProg in Program.",
+  "theirs": "9783a297d439.CR6 -- Compile Failed!\n\nline 2: No BeginProg in Program."
+}

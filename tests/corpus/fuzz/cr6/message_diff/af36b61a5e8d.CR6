@@ -1,0 +1,136 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/Preflight_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/Preflight_tester.CR6 ops=insert_foreign_statement+insert_whitespace class=message_diff
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+ConstTable(GlobalConfigTable)
+	IncludeSection("ConstTable", "CPU:StationConfig.crb")
+
+	Const LowPowerRailMask = &B10
+
+	Const LowPowerSettleSecs = 10
+
+	IncludeSection("ConstTable", "CPU:PowerProfileLib.crb")
+	IncludeSection("ConstTable", "CPU:AcclimaTDRLib.crb")
+	IncludeSection("ConstTable", "CPU:GeoPrecisionTStringLib.crb")
+	IncludeSection("ConstTable", "CPU:SnowVue10Lib.crb")
+	IncludeSection("ConstTable", "CPU:PT1000Lib.crb")
+	IncludeSection("ConstTable", "CPU:FinAppLib.crb")
+	IncludeSection("ConstTable", "CPU:SBDIridiumLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:StationConfig.crb")
+IncludeSection("Definitions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Definitions", "CPU:GeoPrecisionTStringLib.crb")
+IncludeSection("Definitions", "CPU:SnowVue10Lib.crb")
+IncludeSection("Definitions", "CPU:PT1000Lib.crb")
+IncludeSection("Definitions", "CPU:FinAppLib.crb")
+IncludeSection("Definitions", "CPU:SBDIridiumLib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+IncludeSection("Rail", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Functions", "CPU:GeoPrecisionTStringLib.crb")
+IncludeSection("Functions", "CPU:SnowVue10Lib.crb")
+IncludeSection("Functions", "CPU:PT1000Lib.crb")
+IncludeSection("Functions", "CPU:FinAppLib.crb")
+IncludeSection("Functions", "CPU:SBDIridiumLib.crb")
+
+Const PreTimer = 1
+Const PreStepTimer = 2
+
+Public PreIdent As String * 100
+Public PreTimeStr As String * 30
+Public PreRTime(9) As Long
+
+Public PreIndex As Long
+Public PrePassed As Long
+Public PreFailed As Long
+Public PreSkipped As Long
+Public PreReady As Boolean
+Public PreElapsedMs As Long
+Public PreStepMs As Long
+
+Public PreTDRFound As Long
+Public PreTStringFound As Long
+
+Public DoFull As Boolean = False
+	Dim SDIAddr As String * 2
+	Dim Ok As Boolean
+
+	LogDebug("--- SnowVue10 on U7 ---")
+	SDIAddr = SnowVueSDIAddress
+	PreIdent = ""
+	SDI12Recorder(PreIdent, SnowVueComPort, SnowVueSDIAddress, "I!", 1, 0)
+	Ok = SDI12AtAddress(PreIdent, SDIAddr)
+	Call LogCheck("snowvue identification at " + SDIAddr, Ok, PreIdent)
+
+	Timer(PreStepTimer, mSec, TimerResetAndStart)
+	Ok = SampleSnowVue(PT1000_Temp_C)
+	PreStepMs = Timer(PreStepTimer, mSec, TimerReadOnly)
+
+	Call LogCheck("snowvue M1! and M9! sample", Ok, "valid=" _
+		+ FormatLong(SnowVue_ValidReadings,"%d") + "/" + FormatLong(SnowVueBurstCount,"%d") _
+		+ " dist=" + FormatFloat(SnowVue_Distance_m,"%.3f") _
+		+ " tcdist=" + FormatFloat(SnowVue_TCDistance_m,"%.3f") _
+		+ " qual=" + FormatFloat(SnowVue_Quality,"%.0f") _
+		+ " supply=" + FormatFloat(SnowVue_Supply_V,"%.2f") _
+		+ " ms=" + FormatLong(PreStepMs,"%d"))
+EndSub
+
+Sub CheckFinApp
+	Dim N As Long
+	Dim Ok As Boolean
+	Dim Detail As String * 200
+
+	LogDebug("--- FinAPP on C1, SW12-1, " + FormatLong(FinAppPowerSettleSecs,"%d") + " s power-up ---")
+	Ok = StartFinApp()
+	Call LogCheck("finapp power-up and I!", Ok, "address=" + FinAppSDIAddress + " ident=" + FinApp_Ident)
+
+	If Ok Then
+		Ok = SampleFinApp()
+
+		Call LogCheck("finapp master M!", FinApp_MasterOk, "counter=" _
+			+ FormatFloat(FinApp_MasterCounter,"%.0f") _
+			+ " batt=" + FormatFloat(FinApp_Batt_V,"%.2f") + " V" _
+			Delay(0,1,Sec)
+			+ " board=" + FormatFloat(FinApp_BoardTemp_C,"%.2f") + " C" _
+			+ " pressure=" + FormatFloat(FinApp_Pressure_Pa,"%.0f") + " Pa")
+
+		Detail = "detectors from id " + FormatLong(FinAppDetectorFirstId,"%d") + ":"
+		For N = 1 To FinAppDetectorCount
+			Detail = Detail + "  counter=" + FormatFloat(FinApp_DetCounter(N),"%.0f") _
+				+ " hv=" + FormatFloat(FinApp_HV_V(N),"%.1f") _
+				+ " n=" + FormatFloat(FinApp_Neutrons(N),"%.0f")
+		Next N
+		Call LogCheck("finapp detectors", FinApp_DetectorsOk, Detail)
+
+		Call LogCheck("finapp water M5!", FinApp_WaterOk, "counter=" _
+			+ FormatFloat(FinApp_WaterCounter,"%.0f") _
+			+ " swe_areal=" + FormatFloat(FinApp_SWE_Areal_mm,"%.3f") + " mm" _
+			+ " newdata=" + IIF(FinApp_NewData,"1","0"))
+
+		StoreFinAppRecord = True
+	Else
+		Call LogSkip("finapp master, detectors, water", "probe did not answer after power-up")
+	EndIf
+
+	Ok = StopFinApp()
+	Call LogCheck("finapp guarded power-off", Ok, "polls=" + FormatLong(FinApp_StopPollsUsed,"%d") _
+		+ " unsafestops=" + FormatLong(FinApp_UnsafeStops,"%d"))
+EndSub
+
+Sub CheckModem
+	Dim Ok As Boolean

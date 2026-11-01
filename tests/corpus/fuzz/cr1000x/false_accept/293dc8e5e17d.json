@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/false_accept/293dc8e5e17d.CR6",
+  "logger": "cr1000x",
+  "class": "false_accept",
+  "seed": "repo/PortSleep_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "replace_argument"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "293dc8e5e17d.CR6 -- Compiled in PipelineMode.\nWarning: Table PortSleep_Scans, is declared but never called.",
+  "theirs": "293dc8e5e17d.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: PortOpenFlag."
+}

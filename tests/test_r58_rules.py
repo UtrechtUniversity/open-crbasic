@@ -9,7 +9,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 FIXTURES = ("r58_table_walk", "r58_windvector_options", "r58_declaration_dims", "r58_serialopen_and_names",
             "r58_inline_tier_c")
 CASES = [case for name in FIXTURES

@@ -1,0 +1,15 @@
+{
+  "file": "/tmp/claude-0/-home-user-firnmelt-datalogger-mirror/acee0996-63f0-56bd-a337-b59f9f1988e5/scratchpad/fuzz49/cr6/message_diff/af4ff603cff7.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SBD_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "change_declared_type",
+    "add_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "af4ff603cff7.CR6 -- Compile Failed!\n\nline 2: If illegally occurs before BeginProg.\nline 2: Invalid symbol in expression: DoRegister .",
+  "theirs": "af4ff603cff7.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: DoRegister .\nline 2: If illegally occurs before BeginProg."
+}

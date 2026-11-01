@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/message_diff/08828720d9a0.CR6",
+  "logger": "cr1000x",
+  "class": "message_diff",
+  "seed": "repo/SbdPayload_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument",
+    "insert_comment"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "08828720d9a0.CR6 -- Compile Failed!\n\nline 3: Expression expects , : \tCall LogResult(\"payload fits one SBD message\", Ok, \"len=\" + FormatLong(SbdPayloadLen, \"%d\") + \" max=\" + FormatLong( \"%d\")).",
+  "theirs": "08828720d9a0.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: \tOk = (SbdPayloadLen <= IridiumMaxMOMessageLength).\nline 2: Expr illegally occurs before BeginProg."
+}

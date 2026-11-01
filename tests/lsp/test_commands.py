@@ -9,12 +9,11 @@ import pytest
 from opencrbasic import cli, profiles
 from opencrbasic import syntax as S
 from opencrbasic.analysis import AnalysisRequest, analyze
-from opencrbasic.commands import (CompilerOutput, compiler_output, render_table_fields,
-                                  table_fields)
+from opencrbasic.commands import CompilerOutput, compiler_output, render_table_fields, table_fields
 from opencrbasic.tables import build_tables
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
 CHM = sorted((ROOT / "tests" / "corpus" / "chm").glob("*.CR6"))
 CRBASIC_PROGRAMS = sorted(CRBASIC.glob("*.CR6"))
 
@@ -110,6 +109,7 @@ def test_max_file_bytes_refuses_the_entry_and_its_includes(tmp_path):
     assert compiler_output(entry, "cr6", small, 100) == compiler_output(entry, "cr6", small)
 
 
+@pytest.mark.skipif(not CHM, reason="CRBasic help examples not extracted; see tests/corpus/README.md")
 def test_other_logger_matches_cli(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     sample = CHM[0]

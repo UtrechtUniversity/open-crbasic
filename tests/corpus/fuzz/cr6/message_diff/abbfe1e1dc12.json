@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/abbfe1e1dc12.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SBD_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "insert_whitespace",
+    "insert_foreign_statement"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "abbfe1e1dc12.CR6 -- Compile Failed!\n\nline 2: Case outside Select.\nline 4: Case outside Select.\nline 7: Case outside Select.\nline 9: Case outside Select.\nline 14: EndSelect w/o Select",
+  "theirs": "abbfe1e1dc12.CR6 -- Compile Failed!\n\nline 2: Case outside Select.\nline 4: Case outside Select.\nline 7: Case outside Select.\nline 9: Case outside Select."
+}

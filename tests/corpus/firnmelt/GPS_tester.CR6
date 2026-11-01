@@ -1,0 +1,53 @@
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+ConstTable(GlobalConfigTable)
+	Const CommsRailPort = SW12_2
+	IncludeSection("ConstTable", "CPU:GPSLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:GPSLib.crb")
+IncludeSection("Functions", "CPU:GPSLib.crb")
+IncludeSection("CommsRail", "CPU:BenchLib.crb")
+
+Public DoWindow As Boolean = False
+Public WindowRunning As Boolean = False
+Public WindowSecs As Long
+Public WindowsRun As Long
+
+BeginProg
+	Call SetCommsRail(False)
+	Call InitGPSPort
+
+	Scan (1, Sec, 0, 0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+
+		PanelTemp (PTemp, 15000)
+		Battery (Batt_volt)
+
+		If DoWindow AND NOT WindowRunning Then
+			DoWindow = False
+			Call SetCommsRail(True)
+			Call StartGPS
+			WindowSecs = 0
+			WindowRunning = True
+		EndIf
+
+		If WindowRunning Then
+			WindowSecs = WindowSecs + 1
+			If PollGPS(WindowSecs) Then
+				Call StopGPS
+				Call SetCommsRail(False)
+				CallTable GPS_Data
+				WindowRunning = False
+				WindowsRun = WindowsRun + 1
+			EndIf
+		EndIf
+	NextScan
+EndProg

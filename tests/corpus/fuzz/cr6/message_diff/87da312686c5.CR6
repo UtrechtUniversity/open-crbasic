@@ -1,0 +1,95 @@
+' fuzz: seed=repo/SBD_tester.CR6 ops=drop_argument class=message_diff
+Dim MenuKey As String * 2
+Dim MenuPending As Boolean
+
+Sub LogResult(TestName As String * 60, Ok As Boolean, Detail As String * 100)
+	TestIndex = TestIndex + 1
+	TestsPassed = TestsPassed + IIF(Ok, 1, 0)
+	TestsFailed = TestsFailed + IIF(Ok, 0, 1)
+	LogDebug("[" + FormatLong(TestIndex, "%02d") + "] " + TestName + " | " + IIF(Ok, "PASS", "FAIL") + " | " + Detail)
+EndSub
+
+Sub SkipResult(TestName As String * 60, Reason As String * 100)
+	TestIndex = TestIndex + 1
+	TestsSkipped = TestsSkipped + 1
+	LogDebug("[" + FormatLong(TestIndex, "%02d") + "] " + TestName + " | SKIP | " + Reason)
+EndSub
+
+Sub LogSummary
+	LogDebug("------------------------------------------------")
+	LogDebug("RESULT passed=" + FormatLong(TestsPassed, "%d") + " failed=" + FormatLong(TestsFailed, "%d") + " skipped=" + FormatLong(TestsSkipped, "%d"))
+	LogDebug("================ END OF REPORT =================")
+EndSub
+
+Sub RunAllTests
+	Dim Ok As Boolean
+
+	TestIndex = 0
+	TestsPassed = 0
+	TestsFailed = 0
+	TestsSkipped = 0
+	TestPayloadLength = Len(TestPayload)
+
+	LogDebug("================================================")
+	LogDebug("SBDIridiumLib automated test report")
+	LogDebug("payload bytes=" + FormatLong(TestPayloadLength, "%d") + " txtests=" + IIF(RunTxTests, "on", "off"))
+	LogDebug("================================================")
+
+	LogDebug("--- phase 1: bring-up and free queries ---")
+
+	Call SetCommsRail(True)
+	Ok = StartIridiumModem()
+	Call LogResult("StartIridiumModem", Ok, "")
+	If NOT Ok Then
+		Call SetCommsRail(False)
+		LogDebug( remaining tests are meaningless")
+		Call LogSummary
+		ExitSub
+	EndIf
+
+	Ok = GetIridiumIMEI()
+	Call LogResult("GetIridiumIMEI", Ok, "imei=" + IridiumIMEI)
+
+	Ok = GetIridiumSignal()
+	Call LogResult("GetIridiumSignal", Ok, "rssi=" + FormatLong(IridiumRSSI, "%d"))
+
+	Ok = GetIridiumSystemTime()
+	Call LogResult("GetIridiumSystemTime", Ok, "acquired=" + IIF(IridiumNetworkAcquired, "1", "0"))
+
+	Ok = GetIridiumRegistration()
+	Call LogResult("GetIridiumRegistration", Ok, "regstatus=" + FormatLong(IridiumRegStatus, "%d"))
+
+	Ok = GetIridiumLockStatus()
+	Call LogResult("GetIridiumLockStatus", Ok, "lock=" + FormatLong(IridiumLockStatus, "%d"))
+
+	Ok = GetIridiumBufferStatus()
+	Call LogResult("GetIridiumBufferStatus", Ok, "moflag=" + FormatLong(IridiumMOBufferFlag, "%d"))
+
+	LogDebug("--- phase 2: payload write and checksum (no airtime) ---")
+
+	IridiumMOBuffer = ChecksumTestA
+	Ok = WriteIridiumMessage(Len(ChecksumTestA))
+	Call LogResult("WriteIridiumMessage/chksum-hi-null", Ok, "len=" + FormatLong(Len(ChecksumTestA), "%d") + " wb=" + FormatLong(IridiumWriteResult, "%d"))
+
+	IridiumMOBuffer = ChecksumTestB
+	Ok = WriteIridiumMessage(Len(ChecksumTestB))
+	Call LogResult("WriteIridiumMessage/chksum-lo-null", Ok, "len=" + FormatLong(Len(ChecksumTestB), "%d") + " wb=" + FormatLong(IridiumWriteResult, "%d"))
+
+	IridiumMOBuffer = TestPayload
+	Ok = WriteIridiumMessage(TestPayloadLength)
+	Call LogResult("WriteIridiumMessage/payload", Ok, "len=" + FormatLong(TestPayloadLength, "%d") + " wb=" + FormatLong(IridiumWriteResult, "%d"))
+
+	Ok = GetIridiumBufferStatus()
+	Call LogResult("GetIridiumBufferStatus/after-write", (Ok AND (IridiumMOBufferFlag = 1)), "moflag=" + FormatLong(IridiumMOBufferFlag, "%d"))
+
+	LogDebug("--- phase 3: signal and transmit ---")
+
+	If RunTxTests Then
+		Ok = AcquireIridiumSignal()
+		Call LogResult("AcquireIridiumSignal", Ok, "rssi=" + FormatLong(IridiumRSSI, "%d") + " avail=" + IIF(IridiumNetworkAvailable, "1", "0"))
+
+		Ok = RegisterIridium()
+		Call LogResult("RegisterIridium", Ok, "regstatus=" + FormatLong(IridiumRegStatus, "%d") + " regerr=" + FormatLong(IridiumRegError, "%d"))
+
+		Ok = RunIridiumSession()
+		Call LogResult("RunIridiumSession", Ok, "mo=" + FormatLong(IridiumMOStatus, "%d") + " momsn=" + FormatLong(IridiumMOMSN, "%d"))

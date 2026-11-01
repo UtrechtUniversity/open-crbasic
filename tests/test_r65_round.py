@@ -9,7 +9,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 FIXTURES = Path(__file__).parent / "fixtures"
 CASES = [case for name in ("r65_string_operands", "r65_ftpclient_option", "r65_getrecord_size")
          for case in json.loads((FIXTURES / f"{name}.json").read_text())["cases"]]

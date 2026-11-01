@@ -1,0 +1,3 @@
+' fuzz: seed=repo/Freezer_tester.CR6 ops=rename_identifier+toggle_two_word class=message_diff
+		ElseIf TimeIntoInterval(0,FinAppReadSecs,Sec) Then
+			FinAppSampleOk = SampleFinApp()

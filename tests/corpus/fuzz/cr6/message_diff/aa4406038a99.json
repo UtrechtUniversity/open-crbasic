@@ -1,0 +1,16 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/aa4406038a99.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/InStrHeaderFilterTest.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "insert_whitespace",
+    "change_declared_type"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "aa4406038a99.CR6 -- Compile Failed!\n\nline 12: Invalid symbol in expression: BenchWatchdogOff .\nline 13: Invalid, or out of place expression:       wdog_timer = WatchdogTimer(0,Sec).\nline 15: Invalid symbol in expression:     LogDebug(\"Test1 [\" + Test1_Str + \"]\").\nline 16: Invalid symbol in expression:     LogDebug(\"  mode2 Pos=\" + FormatLong(Test1_Mode2_Pos,\"%u\") + \" ctx=[\" + Test1_Mode2_Context + \"]\").\nline 17: Invalid symbol in expression:     LogDebug(\"  mode4 Pos=\" + FormatLong(Test1_Mode4_Pos,\"%u\") + \" ctx=[\" + Test1_Mode4_Context + \"]\").\nline 18: Invalid symbol in expression:     LogDebug(\"Test2 [\" + Test2_Str + \"]\").\nline 19: Invalid, or out of place expression:     LogDebug(\"  mode2 Pos=\" + FormatLong(Test2_Mod  e2_Pos,\"%u\") + \" ctx=[\" + Test2_Mode2_Context + \"]\").\nline 20: Invalid symbol in expression:     LogDebug(\"  mode4 Pos=\" + FormatLong(Test2_Mode4_Pos,\"%u\") + \" ctx=[\" + Test2_Mode4_Context + \"]\").\nline 21: Invalid symbol in expression:     LogDebug(\"Test3 [\" + Test3_Str + \"]\").\nline 22: Invalid symbol in expression:     LogDebug(\"  mode2 Pos=\" + FormatLong(Test3_Mode2_Pos,\"%u\") + \" ctx=[\" + Test3_Mode2_Context + \"]\").\nline 23: Invalid symbol in expression:     LogDebug(\"  mode4 Pos=\" + FormatLong(Test3_Mode4_Pos,\"%u\") + \" ctx=[\" + Test3_Mode4_Context + \"]\").",
+  "theirs": "aa4406038a99.CR6 -- Compile Failed!\n\nline 12: Invalid symbol in expression: BenchWatchdogOff .\nline 13: Invalid, or out of place expression:       wdog_timer = WatchdogTimer(0,Sec).\nline 15: Invalid symbol in expression:     LogDebug(\"Test1 [\" + Test1_Str + \"]\").\nline 16: Invalid symbol in expression:     LogDebug(\"  mode2 Pos=\" + FormatLong(Test1_Mode2_Pos,\"%u\") + \" ctx=[\" + Test1_Mode2_Context + \"]\").\nline 17: Invalid symbol in expression:     LogDebug(\"  mode4 Pos=\" + FormatLong(Test1_Mode4_Pos,\"%u\") + \" ctx=[\" + Test1_Mode4_Context + \"]\").\nline 18: Invalid symbol in expression:     LogDebug(\"Test2 [\" + Test2_Str + \"]\").\nline 19: Invalid symbol in expression:     LogDebug(\"  mode2 Pos=\" + FormatLong(Test2_Mod  e2_Pos,\"%u\") + \" ctx=[\" + Test2_Mode2_Context + \"]\").\nline 20: Invalid symbol in expression:     LogDebug(\"  mode4 Pos=\" + FormatLong(Test2_Mode4_Pos,\"%u\") + \" ctx=[\" + Test2_Mode4_Context + \"]\").\nline 21: Invalid symbol in expression:     LogDebug(\"Test3 [\" + Test3_Str + \"]\").\nline 22: Invalid symbol in expression:     LogDebug(\"  mode2 Pos=\" + FormatLong(Test3_Mode2_Pos,\"%u\") + \" ctx=[\" + Test3_Mode2_Context + \"]\").\nline 23: Invalid symbol in expression:     LogDebug(\"  mode4 Pos=\" + FormatLong(Test3_Mode4_Pos,\"%u\") + \" ctx=[\" + Test3_Mode4_Context + \"]\").",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_accept/aea62115f538.CR6",
+  "logger": "cr6",
+  "class": "false_accept",
+  "seed": "repo/PortSleep_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "delete_line"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "aea62115f538.CR6 -- Compiled in SequentialMode.",
+  "theirs": "aea62115f538.CR6 -- Compile Failed!\n\nline 49: ComPort 0 illegal."
+}

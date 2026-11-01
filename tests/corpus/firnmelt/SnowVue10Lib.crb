@@ -1,0 +1,141 @@
+#If Section = "ConstTable" Then
+    Const SnowVueComPort = U7
+    Const SnowVueBurstCount = 5
+#EndIf
+
+#If Section = "Definitions" Then
+    Const MaxSnowVueBurstCount = 15
+    Const SnowVueMeasureValues = 2
+    Const SnowVueMetaValues = 8
+    Const SnowVueNoEcho = 0
+    Const SnowVueInvalidTempLimit = -998
+    Const SnowVueUnread = 1E9
+
+    #If SnowVueBurstCount < 1 Then
+        ERROR__STATIC_ASSERT__SnowVueBurstCount_must_be_at_least_1
+    #EndIf
+
+    #If SnowVueBurstCount > MaxSnowVueBurstCount Then
+        ERROR__STATIC_ASSERT__SnowVueBurstCount_exceeds_MaxSnowVueBurstCount
+    #EndIf
+
+    Public SnowVue_Distance_m
+    Public SnowVue_TCDistance_m
+    Public SnowVue_Quality
+    Public SnowVue_Pitch_deg
+    Public SnowVue_Roll_deg
+    Public SnowVue_ValidReadings As Long
+
+    Public SnowVue_RefTemp_C
+    Public SnowVue_IntTemp_C
+    Public SnowVue_IntRH
+    Public SnowVue_Supply_V
+    Public SnowVue_ResFreq_kHz
+    Public SnowVue_Alert
+
+    Units SnowVue_Distance_m=m
+    Units SnowVue_TCDistance_m=m
+    Units SnowVue_Quality=unitless
+    Units SnowVue_Pitch_deg=degrees
+    Units SnowVue_Roll_deg=degrees
+    Units SnowVue_RefTemp_C=C
+    Units SnowVue_IntTemp_C=C
+    Units SnowVue_IntRH=%
+    Units SnowVue_Supply_V=Volts
+    Units SnowVue_ResFreq_kHz=kHz
+    Units SnowVue_Alert=unitless
+
+    Dim SnowVueMeasure(SnowVueMeasureValues)
+    Dim SnowVueMeta(SnowVueMetaValues)
+    Dim SnowVueBurstDist(SnowVueBurstCount)
+    Dim SnowVueBurstQual(SnowVueBurstCount)
+    Dim SnowVueSorted(SnowVueBurstCount,2)
+
+    DataTable(SnowVue_Data,True,-1)
+        Sample(1,SnowVue_Distance_m,IEEE4)
+        Sample(1,SnowVue_TCDistance_m,IEEE4)
+        Sample(1,SnowVue_Quality,FP2)
+        Sample(1,SnowVue_Pitch_deg,FP2)
+        Sample(1,SnowVue_Roll_deg,FP2)
+        Sample(1,SnowVue_ValidReadings,UINT2)
+    EndTable
+
+    DataTable(SnowVue_Diagnostics,True,-1)
+        Sample(1,SnowVue_IntTemp_C,FP2)
+        Sample(1,SnowVue_IntRH,FP2)
+        Sample(1,SnowVue_Supply_V,FP2)
+        Sample(1,SnowVue_ResFreq_kHz,FP2)
+        Sample(1,SnowVue_Alert,FP2)
+        Sample(1,SnowVue_RefTemp_C,FP2)
+    EndTable
+#EndIf
+
+#If Section = "Functions" Then
+    Function ReadSnowVueDistance() As Boolean
+        SDI12Recorder(SnowVueMeasure(), SnowVueComPort, SnowVueSDIAddress, "M1!", 1, 0, -1)
+
+        SnowVue_Distance_m = SnowVueMeasure(1)
+        SnowVue_Quality = SnowVueMeasure(2)
+
+        Return ((SnowVue_Distance_m <> NAN) AND (SnowVue_Distance_m <> SnowVueNoEcho))
+    EndFunction
+
+    Function ReadSnowVueMeta() As Boolean
+        SDI12Recorder(SnowVueMeta(), SnowVueComPort, SnowVueSDIAddress, "M9!", 1, 0, -1)
+
+        SnowVue_RefTemp_C = SnowVueMeta(1)
+        SnowVue_IntTemp_C = SnowVueMeta(2)
+        SnowVue_IntRH = SnowVueMeta(3)
+        SnowVue_Pitch_deg = SnowVueMeta(4)
+        SnowVue_Roll_deg = SnowVueMeta(5)
+        SnowVue_Supply_V = SnowVueMeta(6)
+        SnowVue_ResFreq_kHz = SnowVueMeta(7)
+        SnowVue_Alert = SnowVueMeta(8)
+
+        Return (SnowVueMeta(1) <> NAN)
+    EndFunction
+
+    Sub SelectSnowVueMedian
+        Dim L As Long
+        Dim U As Long
+
+        SortSpaIndexed(SnowVueSorted(), SnowVueBurstCount, SnowVueBurstDist())
+        SnowVue_Distance_m = NAN
+        SnowVue_Quality = NAN
+        If SnowVue_ValidReadings <= 0 Then ExitSub
+
+        L = SnowVueSorted((SnowVue_ValidReadings + 1) INTDV 2, 2)
+        U = SnowVueSorted(SnowVue_ValidReadings INTDV 2 + 1, 2)
+        SnowVue_Distance_m = (SnowVueBurstDist(L) + SnowVueBurstDist(U)) / 2
+        SnowVue_Quality = IIF(SnowVueBurstQual(L) > SnowVueBurstQual(U), SnowVueBurstQual(L), SnowVueBurstQual(U))
+    EndSub
+
+    Sub ReadSnowVueBurst
+        Dim I As Long
+
+        SnowVue_ValidReadings = 0
+        For I = 1 To SnowVueBurstCount
+            SnowVueBurstDist(I) = SnowVueUnread
+            If ReadSnowVueDistance() Then
+                SnowVueBurstDist(I) = SnowVue_Distance_m
+                SnowVueBurstQual(I) = SnowVue_Quality
+                SnowVue_ValidReadings = SnowVue_ValidReadings + 1
+            EndIf
+        Next I
+
+        Call SelectSnowVueMedian
+    EndSub
+
+    Function SampleSnowVue(AirTemp_C As Float) As Boolean
+        Dim MetaOk As Boolean
+
+        Call ReadSnowVueBurst
+        MetaOk = ReadSnowVueMeta()
+        If SnowVue_RefTemp_C < SnowVueInvalidTempLimit Then SnowVue_RefTemp_C = NAN
+        If SnowVue_IntTemp_C < SnowVueInvalidTempLimit Then SnowVue_IntTemp_C = NAN
+
+        SnowVue_TCDistance_m = SnowVue_Distance_m * SQR((AirTemp_C + 273.15) / 273.15)
+
+        Return ((SnowVue_TCDistance_m <> NAN) AND MetaOk)
+    EndFunction
+#EndIf

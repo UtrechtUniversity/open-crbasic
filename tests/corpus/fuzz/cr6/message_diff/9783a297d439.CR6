@@ -1,0 +1,2 @@
+' fuzz: seed=repo/PT1000_tester.CR6 ops=drop_argument+swap_adjacent class=message_diff
+		LogDebug(FormatLong(I, "%3d") _

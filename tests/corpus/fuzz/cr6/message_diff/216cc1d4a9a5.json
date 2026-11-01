@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r38/fuzz-430/cr6/message_diff/216cc1d4a9a5.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SBD_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "insert_whitespace"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "216cc1d4a9a5.CR6 -- Compile Failed!\n\n<SBDIridiumLib.crb> line 63: Invalid symbol in expression: IridiumATTimeout.\n<SBDIridiumLib.crb> line 75: ComPort 0 illegal.\n<SBDIridiumLib.crb> line 98: ComPort 0 illegal.\n<SBDIridiumLib.crb> line 203: Invalid symbol in expression: IridiumPollTimeout.\n<SBDIridiumLib.crb> line 226: Invalid symbol in expression: IridiumWriteTimeout.\n<SBDIridiumLib.crb> line 247: Invalid symbol in expression: IridiumPollTimeout.\nline 12: Invalid, or out of place expression: Function Ge  tIridiumRegistration() As Boolean.\nline 14: Return outside of Function.\nline 14: Too many parameters:  False.\nline 18: Return outside of Function.\nline 18: Too many parameters:  True.",
+  "theirs": "216cc1d4a9a5.CR6 -- Compile Failed!\n\n<SBDIridiumLib.crb> line 63: Invalid symbol in expression: IridiumATTimeout.\n<SBDIridiumLib.crb> line 75: ComPort 0 illegal.\n<SBDIridiumLib.crb> line 98: ComPort 0 illegal.\n<SBDIridiumLib.crb> line 203: Invalid symbol in expression: IridiumPollTimeout.\n<SBDIridiumLib.crb> line 226: Invalid symbol in expression: IridiumWriteTimeout.\n<SBDIridiumLib.crb> line 247: Invalid symbol in expression: IridiumPollTimeout.\nline 12: Invalid symbol in expression:  As.",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

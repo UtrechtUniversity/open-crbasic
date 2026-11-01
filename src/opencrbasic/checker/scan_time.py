@@ -12,8 +12,8 @@ total of a scan holding one is a lower bound (`partial`).
 import math
 import re
 import struct
-from typing import cast
 from dataclasses import dataclass, field
+from typing import cast
 
 from .. import consteval
 from .. import syntax as S

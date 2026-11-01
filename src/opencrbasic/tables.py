@@ -13,9 +13,8 @@ import json
 import math
 import struct
 from dataclasses import dataclass, field
-from typing import TypedDict
-from fractions import Fraction
 from pathlib import Path
+from typing import TypedDict
 
 from . import consteval
 from . import syntax as S
@@ -1574,7 +1573,7 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
     duration = _f32(_f32(_FREE_MEMORY - reserved) / rate) if rate else float("inf")
     if rate:
         # tables whose interval is not shorter than the duration get 2 records and leave the pool
-        for t, m in autos:
+        for _t, m in autos:
             if duration > 0 and duration <= m["_w"]:
                 m["_forced"] = True
                 rate = _f32(rate - m["_rate"])
@@ -1810,7 +1809,7 @@ def _explode_indices(subdims: list[int], drop_last: bool, begin: int = 1, dim: i
     for lin in range(start, start + count):
         coord = []
         rem = lin
-        for d, stride in zip(dims, strides):
+        for _d, stride in zip(dims, strides):
             coord.append(rem // stride + 1)
             rem %= stride
         yield tuple(coord)

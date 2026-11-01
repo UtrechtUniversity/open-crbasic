@@ -1,0 +1,2 @@
+' fuzz: seed=repo/ScanSyncTest.CR6 ops=drop_argument+replace_argument class=message_diff
+             + " delta=" + FormatLong(Delta,"%d") _

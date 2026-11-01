@@ -1,0 +1,40 @@
+SequentialMode
+Public HarnessVersion As Long = 1
+Public SensorAddress As Long = 0
+Public TargetAddress As Long = 1
+Public Action As Long = 0
+Public RequestId As Long = 0
+Public CompletedId As Long = 0
+Public Ident As String * 100
+Public AddressReply As String * 100
+Public Reading(5)
+Public Batt_volt
+Public PTemp
+Public WDogTimer As Long
+Dim Cmd As String * 8
+Dim I As Long
+
+BeginProg
+    Scan(1,Sec,0,0)
+        WDogTimer = WatchdogTimer(0,Sec)
+        Battery(Batt_volt)
+        PanelTemp(PTemp,15000)
+        If RequestId <> CompletedId Then
+            Ident = ""
+            AddressReply = ""
+            For I = 1 To 5
+                Reading(I) = NAN
+            Next I
+            If SensorAddress >= 0 AND SensorAddress <= 9 Then
+                If Action = 1 Then
+                    SDI12Recorder(Ident,C1,SensorAddress,"I!",1,0)
+                    SDI12Recorder(Reading(),C1,SensorAddress,"MC!",1,0,-1)
+                ElseIf Action = 2 AND TargetAddress >= 0 AND TargetAddress <= 6 Then
+                    Cmd = "A" + FormatLong(TargetAddress,"%d") + "!"
+                    SDI12Recorder(AddressReply,C1,SensorAddress,Cmd,1,0)
+                EndIf
+            EndIf
+            CompletedId = RequestId
+        EndIf
+    NextScan
+EndProg

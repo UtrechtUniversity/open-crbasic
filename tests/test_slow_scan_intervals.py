@@ -6,7 +6,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "slow_scan_intervals.json").read_text(encoding="utf-8"))
 
 

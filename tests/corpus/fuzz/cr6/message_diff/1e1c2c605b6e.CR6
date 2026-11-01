@@ -1,0 +1,2 @@
+' fuzz: seed=repo/InStrHeaderFilterTest.CR6 ops=add_argument+insert_whitespace class=message_diff
+    LogDebug("=========================================================================")

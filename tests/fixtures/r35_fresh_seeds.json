@@ -1,0 +1,2973 @@
+{
+ "observation_date": "2026-10-24",
+ "cases": [
+  {
+   "id": "cr6-avw00",
+   "logger": "cr6",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,Nope,200,200,Mux2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-avw00",
+   "logger": "cr1000x",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,Nope,200,200,Mux2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-avw01",
+   "logger": "cr6",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1,(1+2)),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-avw01",
+   "logger": "cr1000x",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1,(1+2)),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-avw02",
+   "logger": "cr6",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,Nope,200,200,Mux2(1,1,(1+2)),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-avw02",
+   "logger": "cr1000x",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,Nope,200,200,Mux2(1,1,(1+2)),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-avw03",
+   "logger": "cr6",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,Nope,200,200,Mux2(1,1,3),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Mux2 out of bounds.\nline 5: Invalid symbol in expression: Nope.",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr1000x-avw03",
+   "logger": "cr1000x",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,Nope,200,200,Mux2(1,1,3),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Mux2 out of bounds.\nline 5: Invalid symbol in expression: Nope.",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr6-avw04",
+   "logger": "cr6",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1,3),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Mux2 out of bounds."
+  },
+  {
+   "id": "cr1000x-avw04",
+   "logger": "cr1000x",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1,3),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Mux2 out of bounds."
+  },
+  {
+   "id": "cr6-avw05",
+   "logger": "cr6",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,Nope,200,200,M1(1,2),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable M1 out of bounds.\nline 5: Invalid symbol in expression: Nope.",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr1000x-avw05",
+   "logger": "cr1000x",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,Nope,200,200,M1(1,2),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable M1 out of bounds.\nline 5: Invalid symbol in expression: Nope.",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr6-avw06",
+   "logger": "cr6",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,COMC1,200,200,M1(1,2),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable M1 out of bounds."
+  },
+  {
+   "id": "cr1000x-avw06",
+   "logger": "cr1000x",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,COMC1,200,200,M1(1,2),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable M1 out of bounds."
+  },
+  {
+   "id": "cr6-avw07",
+   "logger": "cr6",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,Nope,200,200,Mux2(1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-avw07",
+   "logger": "cr1000x",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,Nope,200,200,Mux2(1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-avw08",
+   "logger": "cr6",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,Nope,200,200,Mux2(20,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Mux2 out of bounds.\nline 5: Invalid symbol in expression: Nope.",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr1000x-avw08",
+   "logger": "cr1000x",
+   "source": "Public Data2, Mux2(16,6), M1(16)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data2,Nope,200,200,Mux2(20,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Mux2 out of bounds.\nline 5: Invalid symbol in expression: Nope.",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr6-avw09",
+   "logger": "cr6",
+   "source": "Public X, Mux2(16,6)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Mux2(1,1,3)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-avw09",
+   "logger": "cr1000x",
+   "source": "Public X, Mux2(16,6)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Mux2(1,1,3)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-avw10",
+   "logger": "cr6",
+   "source": "Public X, Mux2(16,6)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(Mux2(1,1,3),1,mV5000,1,True,0,60,Nope,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Mux2 out of bounds.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid symbol in expression: Nope.",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr1000x-avw10",
+   "logger": "cr1000x",
+   "source": "Public X, Mux2(16,6)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(Mux2(1,1,3),1,mV5000,1,True,0,60,Nope,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Mux2 out of bounds.\nline 4: Invalid symbol in expression: Nope.",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr6-avw11",
+   "logger": "cr6",
+   "source": "Public X, Mux2(16,6)\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery(Mux2(1,1,3))\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Mux2 out of bounds."
+  },
+  {
+   "id": "cr1000x-avw11",
+   "logger": "cr1000x",
+   "source": "Public X, Mux2(16,6)\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery(Mux2(1,1,3))\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Mux2 out of bounds."
+  },
+  {
+   "id": "cr6-avw200",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Nope,COMC1,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-avw200",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Nope,COMC1,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-avw201",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,Nope,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-avw201",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,Nope,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-avw202",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,Nope,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-avw202",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,Nope,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-avw203",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,Nope,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Invalid symbol in expression: ���������.",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr1000x-avw203",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,Nope,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Invalid symbol in expression: ���������.",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr6-avw204",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,Nope,2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Scan interval 90 secs is too small; AVW200 measurement time is 28224 secs (2 secs per sensor).",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr1000x-avw204",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,Nope,2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Scan interval 90 secs is too small; AVW200 measurement time is 30892 secs (2 secs per sensor).",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr6-avw205",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),Nope,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr1000x-avw205",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),Nope,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr6-avw206",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,Nope,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr1000x-avw206",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,Nope,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr6-avw207",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,Nope,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr1000x-avw207",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,Nope,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr6-avw208",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,16,Nope,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr1000x-avw208",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,16,Nope,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr6-avw209",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,16,450,Nope,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr1000x-avw209",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,16,450,Nope,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr6-avw210",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,16,450,3000,Nope,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr1000x-avw210",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,16,450,3000,Nope,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope.\nline 6: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+   "not_modelled": "round 35: a second AVW200: garbled or reordered reference messages (both reject)"
+  },
+  {
+   "id": "cr6-avw211",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,16,450,3000,2,Nope,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-avw211",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,16,450,3000,2,Nope,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-avw212",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,Nope,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-avw212",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,Nope,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-avw213",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,Nope)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-avw213",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,COMC1,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,Nope)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-avw214",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n\n    AVW200(D2,Nope,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-avw214",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n\n    AVW200(D2,Nope,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-avw215",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC3,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,Nope,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-avw215",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC3,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,Nope,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-avw216",
+   "logger": "cr6",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,Nope,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan interval 90 secs is too small; AVW200 measurement time is 96 secs (2 secs per sensor)."
+  },
+  {
+   "id": "cr1000x-avw216",
+   "logger": "cr1000x",
+   "source": "Public D1, D2, M1(16,6), M2(16,6)\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D1,COMC1,200,200,M1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(D2,Nope,200,200,M2(1,1),2,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan interval 90 secs is too small; AVW200 measurement time is 96 secs (2 secs per sensor)."
+  },
+  {
+   "id": "cr6-conv11",
+   "logger": "cr6",
+   "source": "Public L As String * 999999999999\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv11",
+   "logger": "cr1000x",
+   "source": "Public L As String * 999999999999\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv12",
+   "logger": "cr6",
+   "source": "Public L As String * 2147483647\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv12",
+   "logger": "cr1000x",
+   "source": "Public L As String * 2147483647\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv13",
+   "logger": "cr6",
+   "source": "Public L As String * 2147483648\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv13",
+   "logger": "cr1000x",
+   "source": "Public L As String * 2147483648\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv14",
+   "logger": "cr6",
+   "source": "Public L As String * 4294967296\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv14",
+   "logger": "cr1000x",
+   "source": "Public L As String * 4294967296\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv15",
+   "logger": "cr6",
+   "source": "Public L As String * 4294967312\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv15",
+   "logger": "cr1000x",
+   "source": "Public L As String * 4294967312\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv16",
+   "logger": "cr6",
+   "source": "Public L As String * 100000\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv16",
+   "logger": "cr1000x",
+   "source": "Public L As String * 100000\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv17",
+   "logger": "cr6",
+   "source": "Public L As String * 1E12\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv17",
+   "logger": "cr1000x",
+   "source": "Public L As String * 1E12\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv18",
+   "logger": "cr6",
+   "source": "Public L As String * 65535\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv18",
+   "logger": "cr1000x",
+   "source": "Public L As String * 65535\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv19",
+   "logger": "cr6",
+   "source": "Public L As String * 16777216\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv19",
+   "logger": "cr1000x",
+   "source": "Public L As String * 16777216\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv200",
+   "logger": "cr6",
+   "source": "Public L As String * 100000000\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-conv200",
+   "logger": "cr1000x",
+   "source": "Public L As String * 100000000\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-conv201",
+   "logger": "cr6",
+   "source": "Public L As String * 1000000000\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory."
+  },
+  {
+   "id": "cr1000x-conv201",
+   "logger": "cr1000x",
+   "source": "Public L As String * 1000000000\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory."
+  },
+  {
+   "id": "cr6-conv202",
+   "logger": "cr6",
+   "source": "Public L As String * 2000000000\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory."
+  },
+  {
+   "id": "cr1000x-conv202",
+   "logger": "cr1000x",
+   "source": "Public L As String * 2000000000\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory."
+  },
+  {
+   "id": "cr6-conv203",
+   "logger": "cr6",
+   "source": "Public L As String * 2147483520\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory."
+  },
+  {
+   "id": "cr1000x-conv203",
+   "logger": "cr1000x",
+   "source": "Public L As String * 2147483520\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory."
+  },
+  {
+   "id": "cr6-conv204",
+   "logger": "cr6",
+   "source": "Public L As String * 2147483583\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory."
+  },
+  {
+   "id": "cr1000x-conv204",
+   "logger": "cr1000x",
+   "source": "Public L As String * 2147483583\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory."
+  },
+  {
+   "id": "cr6-conv205",
+   "logger": "cr6",
+   "source": "Public L As String * 2147483584\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory."
+  },
+  {
+   "id": "cr1000x-conv205",
+   "logger": "cr1000x",
+   "source": "Public L As String * 2147483584\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory."
+  },
+  {
+   "id": "cr6-conv206",
+   "logger": "cr6",
+   "source": "Public L As String * 67108864\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr1000x-conv206",
+   "logger": "cr1000x",
+   "source": "Public L As String * 67108864\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nOut of memory."
+  },
+  {
+   "id": "cr6-conv207",
+   "logger": "cr6",
+   "source": "Public L As String * 16777217\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv207",
+   "logger": "cr1000x",
+   "source": "Public L As String * 16777217\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv208",
+   "logger": "cr6",
+   "source": "Dim L As String * 2147483648\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv208",
+   "logger": "cr1000x",
+   "source": "Dim L As String * 2147483648\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv209",
+   "logger": "cr6",
+   "source": "Public L As String * 2147483648\nDataTable(T,True,-1)\n  Sample(1,L,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv209",
+   "logger": "cr1000x",
+   "source": "Public L As String * 2147483648\nDataTable(T,True,-1)\n  Sample(1,L,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv210",
+   "logger": "cr6",
+   "source": "Dim L As String * 999999999999\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv210",
+   "logger": "cr1000x",
+   "source": "Dim L As String * 999999999999\nBeginProg\n  Scan (1,Sec,3,0)\n    L = \"a\"\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv211",
+   "logger": "cr6",
+   "source": "Public L As String * 999999999999\nDataTable(T,True,-1)\n  Sample(1,L,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-conv211",
+   "logger": "cr1000x",
+   "source": "Public L As String * 999999999999\nDataTable(T,True,-1)\n  Sample(1,L,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv212",
+   "logger": "cr6",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,0,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 0, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-conv212",
+   "logger": "cr1000x",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,0,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-conv213",
+   "logger": "cr6",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,255,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 55 exceeds number of valid channels."
+  },
+  {
+   "id": "cr1000x-conv213",
+   "logger": "cr1000x",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,255,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 255, must use 1..8."
+  },
+  {
+   "id": "cr6-conv214",
+   "logger": "cr6",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,256,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid start channel for Differential Measurement. Must be U1, U3, U5 ..."
+  },
+  {
+   "id": "cr1000x-conv214",
+   "logger": "cr1000x",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,256,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 256, must use 1..8."
+  },
+  {
+   "id": "cr6-conv215",
+   "logger": "cr6",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,264,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid start channel for Differential Measurement. Must be U1, U3, U5 ..."
+  },
+  {
+   "id": "cr1000x-conv215",
+   "logger": "cr1000x",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,264,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 264, must use 1..8."
+  },
+  {
+   "id": "cr6-conv216",
+   "logger": "cr6",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,265,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 65 exceeds number of valid channels."
+  },
+  {
+   "id": "cr1000x-conv216",
+   "logger": "cr1000x",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,265,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 265, must use 1..8."
+  },
+  {
+   "id": "cr6-conv217",
+   "logger": "cr6",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,-9,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -9, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-conv217",
+   "logger": "cr1000x",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,-9,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 9, must use 1..8."
+  },
+  {
+   "id": "cr6-conv218",
+   "logger": "cr6",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,127,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 127, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-conv218",
+   "logger": "cr1000x",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,127,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 127, must use 1..8."
+  },
+  {
+   "id": "cr6-conv219",
+   "logger": "cr6",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,128,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 128, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-conv219",
+   "logger": "cr1000x",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,128,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 128, must use 1..8."
+  },
+  {
+   "id": "cr6-conv220",
+   "logger": "cr6",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,2147483520,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid start channel for Differential Measurement. Must be U1, U3, U5 ..."
+  },
+  {
+   "id": "cr1000x-conv220",
+   "logger": "cr1000x",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,2147483520,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483520, must use 1..8."
+  },
+  {
+   "id": "cr6-conv221",
+   "logger": "cr6",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,2147483583,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 183 exceeds number of valid channels.",
+   "not_modelled": "round 35: CR6 differential channel messages for values near or past INT_MAX (both reject)"
+  },
+  {
+   "id": "cr1000x-conv221",
+   "logger": "cr1000x",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,2147483583,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483583, must use 1..8."
+  },
+  {
+   "id": "cr6-conv222",
+   "logger": "cr6",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,2147483584,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid start channel for Differential Measurement. Must be U1, U3, U5 ..."
+  },
+  {
+   "id": "cr1000x-conv222",
+   "logger": "cr1000x",
+   "source": "Public PTemp, TCTemp\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff (TCTemp,1,mv200C,2147483584,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483584, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan00",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(R(1),1,mV5000,2147483647,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483647, must use 1..16."
+  },
+  {
+   "id": "cr1000x-chan01",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483647,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan02",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff(R(1),2,mv200C,2147483647,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan03",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    TCSe(R(1),1,mv200C,2147483647,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483647, must use 1..16."
+  },
+  {
+   "id": "cr1000x-chan04",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(R(1),1,mV5000,2147483646,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483646, must use 1..16."
+  },
+  {
+   "id": "cr1000x-chan05",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483646,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan06",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff(R(1),2,mv200C,2147483646,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan07",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    TCSe(R(1),1,mv200C,2147483646,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483646, must use 1..16."
+  },
+  {
+   "id": "cr1000x-chan08",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(R(1),1,mV5000,2147483648,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -2147483648, must use 1..16."
+  },
+  {
+   "id": "cr1000x-chan09",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483648,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan10",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff(R(1),2,mv200C,2147483648,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan11",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    TCSe(R(1),1,mv200C,2147483648,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -2147483648, must use 1..16."
+  },
+  {
+   "id": "cr1000x-chan12",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(R(1),1,mV5000,999999999999,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -2147483648, must use 1..16."
+  },
+  {
+   "id": "cr1000x-chan13",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,999999999999,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan14",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff(R(1),2,mv200C,999999999999,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan15",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    TCSe(R(1),1,mv200C,999999999999,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -2147483648, must use 1..16."
+  },
+  {
+   "id": "cr1000x-chan16",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(R(1),1,mV5000,-2147483648,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -2147483648, must use 1..16."
+  },
+  {
+   "id": "cr1000x-chan17",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,-2147483648,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan18",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff(R(1),2,mv200C,-2147483648,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan19",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    TCSe(R(1),1,mv200C,-2147483648,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -2147483648, must use 1..16."
+  },
+  {
+   "id": "cr1000x-chan20",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(R(1),1,mV5000,-2147483647,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483647, must use 1..16."
+  },
+  {
+   "id": "cr1000x-chan21",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,-2147483647,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan22",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    TCDiff(R(1),2,mv200C,-2147483647,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan23",
+   "logger": "cr1000x",
+   "source": "Public PTemp, R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    TCSe(R(1),1,mv200C,-2147483647,TypeT,PTemp,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483647, must use 1..16."
+  },
+  {
+   "id": "cr1000x-chan200",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483590,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483590, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan201",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483600,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483600, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan202",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483610,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483610, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan203",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483620,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483620, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan204",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483630,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483630, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan205",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483638,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483638, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan206",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483640,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483640, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan207",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483641,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan208",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483642,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan209",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483643,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan210",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483644,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan211",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,2147483645,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan212",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,-2147483646,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan213",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),1,mV5000,-2147483640,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483640, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan214",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,2147483590,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483590, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan215",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,2147483600,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483600, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan216",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,2147483610,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483610, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan217",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,2147483620,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483620, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan218",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,2147483630,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483630, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan219",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,2147483638,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483638, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan220",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,2147483640,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483640, must use 1..8."
+  },
+  {
+   "id": "cr1000x-chan221",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,2147483641,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan222",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,2147483642,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan223",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,2147483643,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan224",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,2147483644,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan225",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,2147483645,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan226",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,-2147483646,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-chan227",
+   "logger": "cr1000x",
+   "source": "Public R(4)\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltDiff(R(1),2,mV5000,-2147483640,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 2147483640, must use 1..8."
+  },
+  {
+   "id": "cr6-delay00",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,IEEE4,Ux)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Ux."
+  },
+  {
+   "id": "cr1000x-delay00",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,IEEE4,Ux)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Ux."
+  },
+  {
+   "id": "cr6-delay01",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,FP2,X)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-delay01",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,FP2,X)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-delay02",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,Ux)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Ux."
+  },
+  {
+   "id": "cr1000x-delay02",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,Ux)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Ux."
+  },
+  {
+   "id": "cr6-delay03",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay03",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay04",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay04",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay05",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay05",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,Long)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay06",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay06",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,S,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay07",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay07",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay08",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,FP2,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay08",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,FP2,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay09",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Average(1,FP2,X,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-delay09",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Average(1,FP2,X,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-delay10",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Maximum(1,X,Ux,False,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Ux."
+  },
+  {
+   "id": "cr1000x-delay10",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Maximum(1,X,Ux,False,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Ux."
+  },
+  {
+   "id": "cr6-delay11",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,UINT2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay11",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,UINT2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay12",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,Boolean)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay12",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,Boolean)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay13",
+   "logger": "cr6",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,Nope)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-delay13",
+   "logger": "cr1000x",
+   "source": "Public X, Ux, A(5), S As String * 8\nDataTable(T,True,-1)\n  Sample(1,X,Nope)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-delay14",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(2,0,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid time specified."
+  },
+  {
+   "id": "cr1000x-delay14",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(2,0,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid time specified."
+  },
+  {
+   "id": "cr6-delay15",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(1,0,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay15",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(1,0,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay16",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,0,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay16",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,0,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay17",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(2,1,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay17",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(2,1,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay18",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(2,-1,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay18",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(2,-1,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay19",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,-1,mSec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "cr1000x-delay19",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,-1,mSec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "cr6-delay20",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(1,-1,mSec)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay20",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(1,-1,mSec)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay21",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,-1,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "cr1000x-delay21",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,-1,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "cr6-delay22",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,3600,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 3590 Sec."
+  },
+  {
+   "id": "cr1000x-delay22",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,3600,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 3590 Sec."
+  },
+  {
+   "id": "cr6-delay23",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,3601,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 5: Scan interval too short for measurement by 3591 Sec."
+  },
+  {
+   "id": "cr1000x-delay23",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,3601,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 5: Scan interval too short for measurement by 3591 Sec."
+  },
+  {
+   "id": "cr6-delay24",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,60,Min)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 3590 Sec."
+  },
+  {
+   "id": "cr1000x-delay24",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,60,Min)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 3590 Sec."
+  },
+  {
+   "id": "cr6-delay25",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,61,Min)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 5: Scan interval too short for measurement by 3650 Sec."
+  },
+  {
+   "id": "cr1000x-delay25",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,61,Min)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 5: Scan interval too short for measurement by 3650 Sec."
+  },
+  {
+   "id": "cr6-delay26",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,X,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement delay must have constant interval."
+  },
+  {
+   "id": "cr1000x-delay26",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,X,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement delay must have constant interval."
+  },
+  {
+   "id": "cr6-delay27",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(3,1,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal option 3"
+  },
+  {
+   "id": "cr1000x-delay27",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(3,1,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal option 3"
+  },
+  {
+   "id": "cr6-delay28",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,0.5,mSec)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay28",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,0.5,mSec)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay29",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,3600001,mSec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 5: Scan interval too short for measurement by 3591 Sec."
+  },
+  {
+   "id": "cr1000x-delay29",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,3600001,mSec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 5: Scan interval too short for measurement by 3591 Sec."
+  },
+  {
+   "id": "cr6-delay30",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,3600000,mSec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 3590 Sec."
+  },
+  {
+   "id": "cr1000x-delay30",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,Sec,0,0)\n    Delay(0,3600000,mSec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 3590 Sec."
+  },
+  {
+   "id": "cr6-alias00",
+   "logger": "cr6",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nDataTable(T,True,-1)\n  Sample(1,IEEE4,Ux)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Ux."
+  },
+  {
+   "id": "cr1000x-alias00",
+   "logger": "cr1000x",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nDataTable(T,True,-1)\n  Sample(1,IEEE4,Ux)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Ux."
+  },
+  {
+   "id": "cr6-alias01",
+   "logger": "cr6",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nDataTable(T,True,-1)\n  Sample(1,IEEE4,Vy)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Vy."
+  },
+  {
+   "id": "cr1000x-alias01",
+   "logger": "cr1000x",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nDataTable(T,True,-1)\n  Sample(1,IEEE4,Vy)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Vy."
+  },
+  {
+   "id": "cr6-alias02",
+   "logger": "cr6",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nDataTable(T,True,-1)\n  Sample(1,Ux,Vy)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Vy."
+  },
+  {
+   "id": "cr1000x-alias02",
+   "logger": "cr1000x",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nDataTable(T,True,-1)\n  Sample(1,Ux,Vy)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Vy."
+  },
+  {
+   "id": "cr6-alias03",
+   "logger": "cr6",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(A(),1,Ux,1,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable illegal in Parameter: Ux."
+  },
+  {
+   "id": "cr1000x-alias03",
+   "logger": "cr1000x",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(A(),1,Ux,1,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable illegal in Parameter: Ux."
+  },
+  {
+   "id": "cr6-alias04",
+   "logger": "cr6",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(A(),Vy,mV5000,1,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable illegal in Parameter: Vy."
+  },
+  {
+   "id": "cr1000x-alias04",
+   "logger": "cr1000x",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(A(),Vy,mV5000,1,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable illegal in Parameter: Vy."
+  },
+  {
+   "id": "cr6-alias05",
+   "logger": "cr6",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(Ux,1,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable illegal in Parameter: Ux."
+  },
+  {
+   "id": "cr1000x-alias05",
+   "logger": "cr1000x",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(Ux,1,Sec)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable illegal in Parameter: Ux."
+  },
+  {
+   "id": "cr6-alias06",
+   "logger": "cr6",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,Vy)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable illegal in Parameter: Vy."
+  },
+  {
+   "id": "cr1000x-alias06",
+   "logger": "cr1000x",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,Vy)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable illegal in Parameter: Vy."
+  },
+  {
+   "id": "cr6-alias07",
+   "logger": "cr6",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nPublic B(Vy)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Vy."
+  },
+  {
+   "id": "cr1000x-alias07",
+   "logger": "cr1000x",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nPublic B(Vy)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Vy."
+  },
+  {
+   "id": "cr6-alias08",
+   "logger": "cr6",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nPublic S As String * Vy\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Vy.\nline 9: Out of memory."
+  },
+  {
+   "id": "cr1000x-alias08",
+   "logger": "cr1000x",
+   "source": "Public A(3), X\nAlias A(1) = Ux\nAlias X = Vy\nPublic S As String * Vy\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Vy.\nline 9: Out of memory."
+  },
+  {
+   "id": "cr6-reps00",
+   "logger": "cr6",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),\"fuzz\",P2,5,1,0.098,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: P2."
+  },
+  {
+   "id": "cr1000x-reps00",
+   "logger": "cr1000x",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),\"fuzz\",P2,5,1,0.098,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-reps01",
+   "logger": "cr6",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),\"fuzz\",C1,1,1,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-reps01",
+   "logger": "cr1000x",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),\"fuzz\",C1,1,1,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-reps02",
+   "logger": "cr6",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),\"2\",C1,1,1,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-reps02",
+   "logger": "cr1000x",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),\"2\",C1,1,1,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-reps03",
+   "logger": "cr6",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),0,C1,1,1,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+  },
+  {
+   "id": "cr1000x-reps03",
+   "logger": "cr1000x",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),0,C1,1,1,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps 0, must be > 0"
+  },
+  {
+   "id": "cr6-reps04",
+   "logger": "cr6",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),-1,C1,1,1,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-reps04",
+   "logger": "cr1000x",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),-1,C1,1,1,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -1, must be > 0\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-reps05",
+   "logger": "cr6",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(R(1),\"fuzz\",mV5000,1,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds.\nline 4: Invalid channel 1, must use U1..U12.\nline 5: Scan interval too short for measurement by -2148 Sec.",
+   "not_modelled": "round 35: string Reps: later diagnostics differ"
+  },
+  {
+   "id": "cr1000x-reps05",
+   "logger": "cr1000x",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(R(1),\"fuzz\",mV5000,1,True,0,60,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-reps06",
+   "logger": "cr6",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    TCDiff(R(1),\"a\",mv200C,1,TypeT,N,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds.\nline 4: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-reps06",
+   "logger": "cr1000x",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    TCDiff(R(1),\"a\",mv200C,1,TypeT,N,True,0,15000,1.0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-reps07",
+   "logger": "cr6",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PeriodAvg(R(1),\"a\",mV5000,1,0,0,10,10,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Invalid channel 1, must use U1..U12.",
+   "not_modelled": "round 35: string Reps: later diagnostics differ"
+  },
+  {
+   "id": "cr1000x-reps07",
+   "logger": "cr1000x",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PeriodAvg(R(1),\"a\",mV5000,1,0,0,10,10,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0",
+   "not_modelled": "round 35: string Reps: later diagnostics differ"
+  },
+  {
+   "id": "cr6-reps08",
+   "logger": "cr6",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),\"fuzz\",P1,1,1,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: P1."
+  },
+  {
+   "id": "cr1000x-reps08",
+   "logger": "cr1000x",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),\"fuzz\",P1,1,1,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-reps09",
+   "logger": "cr6",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),\"\",C1,1,1,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-reps09",
+   "logger": "cr1000x",
+   "source": "Public R(4), N\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(R(1),\"\",C1,1,1,1,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid reps -2147483648, must be > 0\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-runs00",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MinRun(D,3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs00",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MinRun(D,3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs01",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MinRun(D,4,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-runs01",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MinRun(D,4,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-runs02",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MinRun(D(2),2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs02",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MinRun(D(2),2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs03",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MinRun(D(2),3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-runs03",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MinRun(D(2),3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-runs04",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MinRun(X,1,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs04",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MinRun(X,1,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs05",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MinRun(X,2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+  },
+  {
+   "id": "cr1000x-runs05",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MinRun(X,2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+  },
+  {
+   "id": "cr6-runs06",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxRun(D,3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs06",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxRun(D,3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs07",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxRun(D,4,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-runs07",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxRun(D,4,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-runs08",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxRun(D(2),2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs08",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxRun(D(2),2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs09",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxRun(D(2),3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-runs09",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxRun(D(2),3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-runs10",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxRun(X,1,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs10",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxRun(X,1,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs11",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxRun(X,2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+  },
+  {
+   "id": "cr1000x-runs11",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    MaxRun(X,2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+  },
+  {
+   "id": "cr6-runs12",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(D,3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs12",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(D,3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs13",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(D,4,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-runs13",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(D,4,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-runs14",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(D(2),2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs14",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(D(2),2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs15",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(D(2),3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-runs15",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(D(2),3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-runs16",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(X,1,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs16",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(X,1,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs17",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(X,2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+  },
+  {
+   "id": "cr1000x-runs17",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(X,2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+  },
+  {
+   "id": "cr6-runs18",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(D,3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs18",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(D,3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs19",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(D,4,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-runs19",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(D,4,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-runs20",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(D(2),2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs20",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(D(2),2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs21",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(D(2),3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-runs21",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(D(2),3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-runs22",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(X,1,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs22",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(X,1,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs23",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(X,2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+  },
+  {
+   "id": "cr1000x-runs23",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    TotalRun(X,2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+  },
+  {
+   "id": "cr6-runs24",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(D,3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs24",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(D,3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs25",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(D,4,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-runs25",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(D,4,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-runs26",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(D(2),2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs26",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(D(2),2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs27",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(D(2),3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr1000x-runs27",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(D(2),3,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable D out of bounds."
+  },
+  {
+   "id": "cr6-runs28",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(X,1,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs28",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(X,1,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs29",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(X,2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+  },
+  {
+   "id": "cr1000x-runs29",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    StdDevRun(X,2,S,10,RS)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable X out of bounds."
+  },
+  {
+   "id": "cr6-runs30",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nSub R(Q As Float)\n  MinRun(Q,3,S,10,RS)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+  },
+  {
+   "id": "cr1000x-runs30",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nSub R(Q As Float)\n  MinRun(Q,3,S,10,RS)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+  },
+  {
+   "id": "cr6-runs31",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nSub R(Q As Float)\n  MinRun(Q,1,S,10,RS)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-runs31",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nSub R(Q As Float)\n  MinRun(Q,1,S,10,RS)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-runs32",
+   "logger": "cr6",
+   "source": "Public X, D(3), S(3), RS As Boolean\nSub R(Q)\n  MinRun(Q,2,S,10,RS)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+  },
+  {
+   "id": "cr1000x-runs32",
+   "logger": "cr1000x",
+   "source": "Public X, D(3), S(3), RS As Boolean\nSub R(Q)\n  MinRun(Q,2,S,10,RS)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Q out of bounds."
+  },
+  {
+   "id": "cr6-baud00",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComUSB,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud00",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComUSB,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud01",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComUSB,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud01",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComUSB,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud02",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComUSB,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud02",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComUSB,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud03",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComUSB,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud03",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComUSB,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud04",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComUSB,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud04",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComUSB,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud05",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC1,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud05",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC1,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud06",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC1,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud06",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC1,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud07",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC1,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud07",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC1,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud08",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC1,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud08",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC1,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud09",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC1,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud09",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC1,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud10",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC3,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud10",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC3,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud11",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC3,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud11",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC3,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud12",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC3,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud12",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC3,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud13",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC3,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud13",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC3,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud14",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC3,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud14",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComC3,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud15",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComU1,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud15",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComU1,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal."
+  },
+  {
+   "id": "cr6-baud16",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComU1,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud16",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComU1,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal."
+  },
+  {
+   "id": "cr6-baud17",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComU1,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud17",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComU1,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal."
+  },
+  {
+   "id": "cr6-baud18",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComU1,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud18",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComU1,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal."
+  },
+  {
+   "id": "cr6-baud19",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComU1,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud19",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComU1,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal."
+  },
+  {
+   "id": "cr6-baud20",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComSDC7,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud20",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComSDC7,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud21",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComSDC7,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud21",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComSDC7,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud22",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComSDC7,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud22",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComSDC7,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud23",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComSDC7,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud23",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComSDC7,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud24",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComSDC7,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud24",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComSDC7,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud25",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComME,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud25",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComME,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud26",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComME,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud26",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComME,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud27",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComME,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud27",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComME,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud28",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComME,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud28",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComME,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud29",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComME,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud29",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComME,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud30",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComRS232,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud30",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComRS232,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud31",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComRS232,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud31",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComRS232,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud32",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComRS232,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud32",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComRS232,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud33",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComRS232,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud33",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComRS232,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud34",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComRS232,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud34",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(ComRS232,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud35",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(32,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud35",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(32,255,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud36",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(32,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-baud36",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(32,&HFF,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 255 is illegal baud rate."
+  },
+  {
+   "id": "cr6-baud37",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(32,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud37",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(32,9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud38",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(32,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud38",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(32,-9600,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-baud39",
+   "logger": "cr6",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(32,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-baud39",
+   "logger": "cr1000x",
+   "source": "Public S As String * 10\nBeginProg\n  SerialOpen(32,0,0,0,1000)\n  Scan(5,Sec,0,0)\n  NextScan\nEndProg",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

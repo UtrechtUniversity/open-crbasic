@@ -1,0 +1,2 @@
+' fuzz: seed=repo/PortSleep_tester.CR6 ops=drop_argument class=message_diff
+				SerialOpen(PortUnderTest, PortBaud, PortFormat, 0, PortBuffer, PortCommsMode)

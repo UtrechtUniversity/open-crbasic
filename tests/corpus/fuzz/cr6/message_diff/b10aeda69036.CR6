@@ -1,0 +1,2 @@
+' fuzz: seed=repo/FinApp_tester.CR6 ops=replace_argument+drop_argument class=message_diff
+	For N = 1 To FinAppDetectorCount

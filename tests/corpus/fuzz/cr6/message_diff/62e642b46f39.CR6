@@ -1,0 +1,9 @@
+' fuzz: seed=repo/PowerProfile_tester.CR6 ops=insert_whitespace+change_declared_type class=message_diff
+            Call InitPowerProfile
+            LogDebug(">>> library reinitialised")
+        Case Else
+            Call ShowMenu
+            ExitSub
+    EndSelect
+
+    MenuPending = True

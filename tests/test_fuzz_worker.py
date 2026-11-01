@@ -2,10 +2,10 @@
 import concurrent.futures
 import multiprocessing
 import os
-from pathlib import Path
 import time
 
 import fuzz
+
 from opencrbasic import profiles
 
 

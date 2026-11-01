@@ -1,0 +1,2 @@
+' fuzz: seed=repo/PortSleep_tester.CR6 ops=insert_whitespace class=message_diff
+	Const Po  rtCommsMode = 0

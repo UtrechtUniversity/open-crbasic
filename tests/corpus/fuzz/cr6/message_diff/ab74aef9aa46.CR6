@@ -1,0 +1,2 @@
+' fuzz: seed=repo/Main.CR6 ops=duplicate_line class=message_diff
+#EndIf

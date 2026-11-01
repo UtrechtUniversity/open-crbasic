@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_accept/16b8e7a5e759.CR6",
+  "logger": "cr6",
+  "class": "false_accept",
+  "seed": "repo/PortSleep_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "replace_argument"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "16b8e7a5e759.CR6 -- Compiled in SequentialMode.",
+  "theirs": "16b8e7a5e759.CR6 -- Compile Failed!\n\nline 58: CommsMode Option 400 not supported on ComC3.\nline 58: No Matching, or out of place ) in expression: \t\t\t\tSerialOpen(PortUnderTest, PortBaud, PortFormat,UndeclaredFuzzName123, PortBuffer, PortCommsMode)."
+}

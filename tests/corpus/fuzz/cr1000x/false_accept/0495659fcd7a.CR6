@@ -1,0 +1,58 @@
+' fuzz: seed=repo/SerialProbe.CR6 ops=insert_foreign_statement+change_interval class=false_accept
+Const ProbePort = ComC3
+Const ProbeBaud = 19200
+Const ProbeFormat = 3
+Const ProbeCommsMode = 0
+Const ProbeTimeout = 100
+
+Public PTemp
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+Public ProbeBytes As Long
+Public ProbeResp As String * 64
+Public ScopePattern As String * 40
+
+Dim ProbeRaw As String * 64
+Dim DebugMsg As String * 200
+
+Const ProbeCRLF = CHR(13) + CHR(10)
+
+Sub ProbeLog(Message As String * 200)
+	DebugMsg = Message
+	SerialOut(ComUSB, DebugMsg + ProbeCRLF, "", 0, 0)
+EndSub
+
+BeginProg
+	SerialOpen(ComUSB, 115200, 0, 0, 1000)
+	Call ProbeLog("")
+	Call ProbeLog("SerialProbe: port=ComC3 baud=19200 format=3 CommsMode=0")
+
+	ScopePattern = "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
+
+	SW12(SW12_2, 1)
+	Delay(0, 10, Sec)
+
+	SerialOpen(ProbePort, ProbeBaud, ProbeFormat, 0, 400, ProbeCommsMode)
+
+	Scan(0, Sec, 0, 0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		FuzzVar = 1
+		EndIf
+
+		PanelTemp(PTemp, 15000)
+
+		SerialFlush(ProbePort)
+		SerialOut(ProbePort, ScopePattern, "", 0, 0)
+		SerialOut(ProbePort, "AT" + ProbeCRLF, "", 0, 0)
+
+		ProbeRaw = ""
+		SerialIn(ProbeRaw, ProbePort, ProbeTimeout, -1, 64)
+		ProbeResp = ProbeRaw
+		ProbeBytes = Len(ProbeResp)
+
+		Call ProbeLog("bytes=" + FormatLong(ProbeBytes, "%d") + " resp=[" + ProbeResp + "]")
+	NextScan
+EndProg

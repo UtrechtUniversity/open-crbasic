@@ -1,0 +1,161 @@
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public DisableWDog As Boolean = False
+
+Dim ComUSBOpen As Boolean = False
+
+ConstTable(GlobalConfigTable)
+	IncludeSection("ConstTable", "CPU:StationConfig.crb")
+
+	Const LowPowerRailMask = &B10
+
+	Const LowPowerSettleSecs = 10
+
+	Const BattScanSecs = 10
+
+	Const TempCycleSecs = 300
+
+	Const FinAppTickSecs = 60
+
+	Const FinAppReadSecs = 900
+
+	IncludeSection("ConstTable", "CPU:PowerProfileLib.crb")
+	IncludeSection("ConstTable", "CPU:ShuntLib.crb")
+	IncludeSection("ConstTable", "CPU:AcclimaTDRLib.crb")
+	IncludeSection("ConstTable", "CPU:GeoPrecisionTStringLib.crb")
+	IncludeSection("ConstTable", "CPU:PT1000Lib.crb")
+	IncludeSection("ConstTable", "CPU:FinAppLib.crb")
+	IncludeSection("ConstTable", "CPU:SBDIridiumLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:StationConfig.crb")
+IncludeSection("Definitions", "CPU:ShuntLib.crb")
+IncludeSection("Definitions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Definitions", "CPU:GeoPrecisionTStringLib.crb")
+IncludeSection("Definitions", "CPU:PT1000Lib.crb")
+IncludeSection("Definitions", "CPU:FinAppLib.crb")
+IncludeSection("Definitions", "CPU:SBDIridiumLib.crb")
+
+Public TapU1_V
+Public TapU2_V
+Public ShuntOk As Boolean
+Public PT1000Ok As Boolean
+Public TStringOk As Boolean
+Public TStringSupplyOk As Boolean
+Public FinAppSampleOk As Boolean
+Public FinAppReads As Long
+Public FinAppFailedReads As Long
+
+Dim TapMv(2)
+
+Units TapU1_V = Volts
+Units TapU2_V = Volts
+
+DataTable(Battery_Data,True,-1)
+	DataInterval(0,60,Sec,10)
+	Average(1,Batt_volt,IEEE4,False)
+	Minimum(1,Batt_volt,IEEE4,False,False)
+	Maximum(1,Batt_volt,IEEE4,False,False)
+	Average(1,TapU1_V,IEEE4,False)
+	Average(1,TapU2_V,IEEE4,False)
+	Minimum(1,TapU1_V,IEEE4,False,False)
+	Average(1,Shunt_mV,IEEE4,False)
+	Minimum(1,Shunt_mV,IEEE4,False,False)
+	Maximum(1,Shunt_mV,IEEE4,False,False)
+	Average(1,PTemp,FP2,False)
+	Sample(1,FinApp_Powered,Boolean)
+EndTable
+
+DataTable(FinApp_Reads,True,-1)
+	Sample(1,FinApp_MasterOk,Boolean)
+	Sample(1,FinApp_DetectorsOk,Boolean)
+	Sample(1,FinApp_WaterOk,Boolean)
+	Sample(1,FinApp_NewData,Boolean)
+	Sample(1,FinApp_MasterCounter,IEEE4)
+	Sample(1,FinApp_WaterCounter,IEEE4)
+	Sample(FinAppDetectorCount,FinApp_DetCounter(),IEEE4)
+	Sample(FinAppDetectorCount,FinApp_HV_V(),IEEE4)
+	Sample(1,FinApp_BoardTemp_C,IEEE4)
+	Sample(1,FinApp_Batt_V,IEEE4)
+	Sample(1,Batt_volt,IEEE4)
+EndTable
+
+DataTable(FinApp_Starts,True,-1)
+	Sample(1,FinApp_Responding,Boolean)
+	Sample(1,Batt_volt,IEEE4)
+	Sample(1,PTemp,FP2)
+EndTable
+
+Public DebugMsg As String * 500
+
+Function LogDebug(Message As String * 500)
+	If NOT ComUSBOpen Then
+		SerialOpen(ComUSB, 115200, 0, 0, 1000)
+		ComUSBOpen = True
+	EndIf
+	DebugMsg = Message
+	SerialOut(ComUSB, DebugMsg + CRLF, "", 0, 0)
+EndFunction
+
+IncludeSection("Functions", "CPU:ShuntLib.crb")
+IncludeSection("Functions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Functions", "CPU:GeoPrecisionTStringLib.crb")
+IncludeSection("Functions", "CPU:PT1000Lib.crb")
+IncludeSection("Functions", "CPU:FinAppLib.crb")
+IncludeSection("Functions", "CPU:SBDIridiumLib.crb")
+
+BeginProg
+	Call ParkIridiumPort
+
+	Scan (BattScanSecs,Sec,0,0)
+		If DisableWDog Then
+			WDogTimer = WatchdogTimer(10,Min)
+		Else
+			WDogTimer = WatchdogTimer(0,Sec)
+		EndIf
+
+		PanelTemp (PTemp,15000)
+		Battery (Batt_volt)
+
+		ShuntOk = SampleShunt()
+		VoltSe(TapMv(), 2, mV5000, U1, True, ShuntSettleUs, ShuntInteg, 1.0, 0)
+		TapU1_V = TapMv(1) * 0.001 / ShuntDividerK
+		TapU2_V = TapMv(2) * 0.001 / ShuntDividerK
+
+		CallTable Battery_Data
+		CallTable Shunt_Data
+	NextScan
+
+SlowSequence
+	Scan (TempCycleSecs,Sec,0,0)
+		WriteIO(LowPowerRailMask, LowPowerRailMask)
+		Delay(1,LowPowerSettleSecs,Sec)
+
+		PT1000Ok = SamplePT1000()
+		CallTable PT1000_Data
+
+		SampleTDRs()
+		CallTable Acclima_Data
+
+		TStringOk = SampleTString()
+		TStringSupplyOk = SampleTStringSupply()
+		CallTable TString_Data
+
+		WriteIO(LowPowerRailMask, 0)
+	NextScan
+
+SlowSequence
+	Scan (FinAppTickSecs,Sec,0,0)
+		If NOT FinApp_Powered Then
+			FinAppSampleOk = StartFinApp()
+			CallTable FinApp_Starts
+		ElseIf TimeIntoInterval(0,FinAppReadSecs,Sec) Then
+			FinAppSampleOk = SampleFinApp()
+			FinAppReads = FinAppReads + 1
+			FinAppFailedReads = FinAppFailedReads + IIF(FinApp_MasterOk AND FinApp_DetectorsOk AND FinApp_WaterOk,0,1)
+			CallTable FinApp_Reads
+			CallTable FinApp_Data
+		EndIf
+	NextScan
+EndProg

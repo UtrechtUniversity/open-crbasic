@@ -1,6 +1,5 @@
 """The stdio language server, driven as a real subprocess (LSP-01b)."""
 
-from .assertions import required
 import json
 import os
 import shutil
@@ -15,12 +14,13 @@ from opencrbasic import profiles
 from opencrbasic.analysis import AnalysisRequest, analyze
 from opencrbasic.lsp import config as lsp_config
 
+from .assertions import required
 from .lspclient import SRC, LspClient
 
 pytestmark = pytest.mark.server
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
 FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000}
 
 SMALL = """Public x As Long
@@ -124,8 +124,9 @@ def test_startup_banner_is_also_an_info_log_message(make_client, tmp_path):
     assert client.shutdown() == 0
 
 
+@pytest.mark.skipif(not (ROOT.parent / "open-crbasic-vsix" / "package.json").is_file(), reason="needs an open-crbasic-vsix checkout next to this one")
 def test_vscode_language_covers_logger_extensions():
-    manifest = json.loads((ROOT / "vscode" / "package.json").read_text(encoding="utf-8"))
+    manifest = json.loads((ROOT.parent / "open-crbasic-vsix" / "package.json").read_text(encoding="utf-8"))
     language = next(lang for lang in manifest["contributes"]["languages"] if lang["id"] == "crbasic")
     declared = language["extensions"]
     lowered = {ext.lower() for ext in declared}
@@ -149,8 +150,9 @@ SERVER_KEY_ATTRS = {
 INTERNAL_SERVER_KEYS = {"featureWaitMs"}
 
 
+@pytest.mark.skipif(not (ROOT.parent / "open-crbasic-vsix" / "package.json").is_file(), reason="needs an open-crbasic-vsix checkout next to this one")
 def test_vscode_contributes_server_tuning_keys():
-    manifest = json.loads((ROOT / "vscode" / "package.json").read_text(encoding="utf-8"))
+    manifest = json.loads((ROOT.parent / "open-crbasic-vsix" / "package.json").read_text(encoding="utf-8"))
     props = manifest["contributes"]["configuration"]["properties"]
     contributed = {name.removeprefix("opencrbasic."): prop for name, prop in props.items()
                    if name.startswith("opencrbasic.")}

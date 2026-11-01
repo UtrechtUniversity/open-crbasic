@@ -552,7 +552,8 @@ def test_lex_error_never_raises():
 
 
 def test_structuretype_bare_members_and_statements():
-    from opencrbasic import parser, syntax as S
+    from opencrbasic import parser
+    from opencrbasic import syntax as S
     prog, _ = parser.parse_text(
         "StructureType gps_t\n  Lat\n  Lon As Double\n  A, B, C\n  S(2) As String * 110\n"
         "  Units Lat = deg\n  ReadOnly Lat, Lon\nEndStructureType\n")

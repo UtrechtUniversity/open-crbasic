@@ -1,0 +1,7 @@
+' fuzz: seed=repo/SBD_tester.CR6 ops=change_keyword_case+add_argument class=message_diff
+
+	If RunTxTests Then
+		Ok = AcquireIridiumSignal()
+		Call LogResult("AcquireIridiumSignal", Ok, "rssi=" + FormatLong(IridiumRSSI, "%d") + " avail=" + IIF(IridiumNetworkAvailable, "1", "0",(1+2)))
+
+

@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/077c84b27d9a.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/Main.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "insert_continuation",
+    "insert_whitespace"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "077c84b27d9a.CR6 -- Compile Failed!\n\nline 2: #EndIf without #If.",
+  "theirs": "077c84b27d9a.CR6 -- Compile Failed!\n\nline 2: Unknown instruction: #EndIf\n."
+}

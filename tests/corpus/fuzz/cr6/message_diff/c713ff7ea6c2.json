@@ -1,0 +1,14 @@
+{
+  "file": "scratch/r36/fuzz-426/cr6/message_diff/c713ff7ea6c2.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/Preflight_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "add_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "c713ff7ea6c2.CR6 -- Compile Failed!\n\nline 12: Invalid, or out of place expression: Sub RunPreflight(WithFinApp As Boolean, WithModem As Boolean,\"fuzz\").",
+  "theirs": "c713ff7ea6c2.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: \tLogDebug(\"----------------------------------------------------------------\").\nline 2: Expr illegally occurs before BeginProg."
+}

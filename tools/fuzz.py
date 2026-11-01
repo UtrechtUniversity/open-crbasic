@@ -59,15 +59,16 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-REPO = ROOT.parent
+REPO = ROOT
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(HERE))
 
-from opencrbasic import profiles  # noqa: E402
-from opencrbasic.compiler import compile_file  # noqa: E402
 import oracle  # noqa: E402
 
-CRBASIC_DIR = REPO / "crbasic"
+from opencrbasic import profiles  # noqa: E402
+from opencrbasic.compiler import compile_file  # noqa: E402
+
+CRBASIC_DIR = REPO / "tests" / "corpus" / "firnmelt"
 CHM_DIR = ROOT / "tests" / "corpus" / "chm"
 # GEUS station programs (human decision 2026-10-24, `PLAN.md` "GEUS corpus"): CR1000X seeds
 GEUS_DIR = REPO / "examples" / "Logger Programs"
@@ -83,12 +84,15 @@ HANG_TIMEOUT = 8.0
 SIBLINGS_MARKER = "' fuzz-needs-siblings: crbasic"
 
 
+SOURCE_SUFFIXES = {".cr6", ".crb", ".cr1x", ".cr300", ".cr350"}
+
+
 def siblings_digest(directory: Path = CRBASIC_DIR) -> str:
     """SHA-256 over the sibling files a `needs_siblings` reproducer compiles against: a recorded
     reference result is stale once they change (round 40)."""
     h = hashlib.sha256()
     for entry in sorted(directory.iterdir()):
-        if entry.is_file():
+        if entry.is_file() and entry.suffix.lower() in SOURCE_SUFFIXES:   # not the compiler's *.xxx output
             h.update(entry.name.encode() + b"\0" + entry.read_bytes() + b"\0")
     return h.hexdigest()
 
@@ -774,8 +778,7 @@ def save_reproducer(out_dir: Path, logger: str, cls: str, seed: Seed, lines: lis
 
     # Re-run on the exact saved bytes (header comments shift line numbers but never the verdict)
     # so the recorded verdict matches what fuzz_replay.py will see.
-    with tempfile.TemporaryDirectory(prefix="fuzz-save-") as tmp:
-        tmp_dir = Path(tmp)
+    with tempfile.TemporaryDirectory(prefix="fuzz-save-"):
         siblings = CRBASIC_DIR if needs_siblings else None
         fake_seed = Seed(seed.group, seed.path, siblings)
         final_lines = full_text.splitlines()

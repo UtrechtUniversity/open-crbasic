@@ -1,0 +1,69 @@
+#If Section = "ConstTable" Then
+    Const StationProfile = 0
+    Const UnitSecs = 60
+    Const UnitsPerDay = 1440
+    Const BatteryTempSensor = 11
+#EndIf
+
+#If Section = "Definitions" Then
+    Const StationProfileDevelopment = 0
+    Const StationProfileFirst = 1
+    Const StationProfileLast = 7
+
+    #If StationProfile < StationProfileDevelopment Then
+        ERROR__STATIC_ASSERT__StationProfile_below_valid_range
+    #EndIf
+
+    #If StationProfile > StationProfileLast Then
+        ERROR__STATIC_ASSERT__StationProfile_above_valid_range
+    #EndIf
+
+    #If StationProfile = 0 Then
+        Const StationId = 1
+        Const ExpectedIridiumIMEI = "301434062025180"
+        Const SbdSendUnitOfDay = 1205
+        Const TDRCount = 2
+        Const TDRStartAddress = 1
+        Const TStringCount = 48
+        Const SnowVueSDIAddress = 0
+        Const FinAppSDIAddress = "F"
+        Const FinAppDetectorCount = 2
+        Const FinAppDetectorFirstId = 2
+    #Else
+        Const StationId = StationProfile
+        Const ExpectedIridiumIMEI = ""
+        Const SbdSendUnitOfDay = 0
+        Const TDRCount = 1
+        Const TDRStartAddress = 0
+        Const TStringCount = 1
+        Const SnowVueSDIAddress = 0
+        Const FinAppSDIAddress = ""
+        Const FinAppDetectorCount = 1
+        Const FinAppDetectorFirstId = 1
+        ERROR__STATIC_ASSERT__Deployment_station_manifest_not_configured
+    #EndIf
+
+    #If (StationProfile <> StationProfileDevelopment) AND ((UnitSecs <> 60) OR (UnitsPerDay <> 1440)) Then
+        ERROR__STATIC_ASSERT__Schedule_compression_is_development_only
+    #EndIf
+
+    #If StationId < 0 Then
+        ERROR__STATIC_ASSERT__StationId_below_0
+    #EndIf
+
+    #If StationId > 255 Then
+        ERROR__STATIC_ASSERT__StationId_above_255
+    #EndIf
+
+    #If SbdSendUnitOfDay < 0 Then
+        ERROR__STATIC_ASSERT__SbdSendUnitOfDay_below_0
+    #EndIf
+
+    #If SbdSendUnitOfDay >= UnitsPerDay Then
+        ERROR__STATIC_ASSERT__SbdSendUnitOfDay_outside_day
+    #EndIf
+
+    #If (BatteryTempSensor < 0) OR (BatteryTempSensor > TStringCount) Then
+        ERROR__STATIC_ASSERT__BatteryTempSensor_outside_string
+    #EndIf
+#EndIf

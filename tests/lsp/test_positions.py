@@ -1,6 +1,5 @@
 """Source positions (LSP-02a): provenance pieces, reported-line map, LSP position conversion."""
 
-from .assertions import required
 from pathlib import Path
 
 import pytest
@@ -8,8 +7,10 @@ import pytest
 from opencrbasic import lexer, parser, positions, profiles, source
 from opencrbasic.analysis import AnalysisRequest, analyze
 
+from .assertions import required
+
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
 CHM = sorted((ROOT / "tests" / "corpus" / "chm").glob("*.CR6"))
 
 LOGGERS = [("cr6", "t.CR6"), ("cr300", "t.CR300")]
@@ -344,6 +345,7 @@ def test_property_crbasic_tokens_map_to_their_text(entry):
     assert _check_program(entry) > 0
 
 
+@pytest.mark.skipif(not CHM, reason="CRBasic help examples not extracted; see tests/corpus/README.md")
 def test_property_chm_corpus_sample():
     assert CHM
     total = sum(_check_program(p) for p in CHM[:: max(1, len(CHM) // 150)])

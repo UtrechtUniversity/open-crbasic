@@ -1,0 +1,378 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/SBD_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/SBD_tester.CR6 ops=rename_identifier class=false_accept
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+ConstTable(GlobalConfigTable)
+  IncludeSection("ConstTable", "CPU:SBDIridiumLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:SBDIridiumLib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:SBDIridiumLib.crb")
+
+Const IridiumRegistrationTimeout = 6000
+
+Public IridiumRegStatus As Long
+Public IridiumRegError As Long
+Public IridiumLockStatus As Long
+
+Function GetIridiumRegistration() As Boolean
+	Dim Pos As Long
+	If NOT SendIridiumATCommand("AT+SBDREG?", "+SBDREG:") Then Return False
+	Pos = InStr(1, IridiumSerialResp, "+SBDREG:", 4)
+	SplitStr(IridiumFields(), Mid(IridiumSerialResp, Pos, 20), "", 1, 0)
+	IridiumRegStatus = IridiumFields(1)
+	Return True
+EndFunction
+
+Function GetIridiumLockStatus() As Boolean
+	Dim Pos As Long
+	If NOT SendIridiumATCommand("AT+CULK?", "+CULK:") Then Return False
+	Pos = InStr(1, IridiumSerialResp, "+CULK:", 4)
+	SplitStr(IridiumFields(), Mid(IridiumSerialResp, Pos, 20), "", 1, 0)
+	IridiumLockStatus = IridiumFields(1)
+	Return True
+EndFunction
+
+Function RegisterIridium() As Boolean
+	Dim WaitResult As Long
+	LogDebug("> AT+SBDREG")
+	SerialFlush(IridiumComPort)
+	SerialOut(IridiumComPort, "AT+SBDREG" + CRLF, "", 0, 0)
+	WaitResult = SerialOut(IridiumComPort, "", "+SBDREG:", 1, IridiumRegistrationTimeout)
+	If WaitResult = 0 Then Return False
+	SerialIn(IridiumSerialResp, IridiumComPort, IridiumATTimeout, "K", IridiumSerialRespLength)
+	LogDebug("< +SBDREG: " + IridiumSerialResp)
+	SplitStr(IridiumFields(), IridiumSerialResp, "", 2, 0)
+	IridiumRegStatus = IridiumFields(1)
+	IridiumRegError = IridiumFields(2)
+	Return (IridiumRegStatus = 2)
+EndFunction
+
+Public TestPayload As String * 200 = "FirnMelt SBDIridiumLib test payload"
+Public TestPayloadLength As Long
+
+Public ChecksumTestA As String * 8 = "AB"
+Public ChecksumTestB As String * 64 = "FirnMelt v2 checksum low-byte null testKK"
+
+Public RunTests As Boolean = False
+Public RunTxTests As Boolean = False
+
+Public TestIndex As Long
+Public TestsPassed As Long
+Public TestsFailed As Long
+Public TestsSkipped As Long
+
+Public DoStart As Boolean = False
+Public DoStop As Boolean = False
+Public DoIMEI As Boolean = False
+Public DoSignal As Boolean = False
+Public DoSysTime As Boolean = False
+Public DoBufferStatus As Boolean = False
+Public DoRegQuery As Boolean = False
+Public DoLockStatus As Boolean = False
+Public DoAcquire As Boolean = False
+Public DoWrite As Boolean = False
+Public DoSession As Boolean = False
+Public DoRegister As Boolean = False
+Public DoSend As Boolean = False
+
+Public LastResult As Boolean
+
+Dim MenuKey As String * 2
+Dim MenuPending As Boolean
+
+Sub LogResult(TestName As String * 60, Ok As Boolean, Detail As String * 100)
+	TestIndex = TestIndex + 1
+	TestsPassed = TestsPassed + IIF(Ok, 1, 0)
+	TestsFailed = TestsFailed + IIF(Ok, 0, 1)
+	LogDebug("[" + FormatLong(TestIndex, "%02d") + "] " + TestName + " | " + IIF(Ok, "PASS", "FAIL") + " | " + Detail)
+EndSub
+
+Sub SkipResult(TestName As String * 60, Reason As String * 100)
+	TestIndex = TestIndex + 1
+	TestsSkipped = TestsSkipped + 1
+	LogDebug("[" + FormatLong(TestIndex, "%02d") + "] " + TestName + " | SKIP | " + Reason)
+EndSub
+
+Sub LogSummary
+	LogDebug("------------------------------------------------")
+	LogDebug("RESULT passed=" + FormatLong(TestsPassed, "%d") + " failed=" + FormatLong(TestsFailed, "%d") + " skipped=" + FormatLong(TestsSkipped, "%d"))
+	LogDebug("================ END OF REPORT =================")
+EndSub
+
+Sub RunAllTests
+	Dim Ok As Boolean
+
+	TestIndex = 0
+	TestsPassed = 0
+	TestsFailed = 0
+	TestsSkipped = 0
+	TestPayloadLength = Len(TestPayload)
+
+	LogDebug("================================================")
+	LogDebug("SBDIridiumLib automated test report")
+	LogDebug("payload bytes=" + FormatLong(TestPayloadLength, "%d") + " txtests=" + IIF(RunTxTests, "on", "off"))
+	LogDebug("================================================")
+
+	LogDebug("--- phase 1: bring-up and free queries ---")
+
+	Ok = StartIridiumModem()
+	Call LogResult("StartIridiumModem", Ok, "")
+	If NOT Ok Then
+		LogDebug("ABORT: modem did not start, remaining tests are meaningless")
+		Call LogSummary
+		ExitSub
+	EndIf
+
+	Ok = GetIridiumIMEI()
+	Call LogResult("GetIridiumIMEI", Ok, "imei=" + IridiumIMEI)
+
+	Ok = GetIridiumSignal()
+	Call LogResult("GetIridiumSignal", Ok, "rssi=" + FormatLong(IridiumRSSI, "%d"))
+
+	Ok = GetIridiumSystemTime()
+	Call LogResult("GetIridiumSystemTime", Ok, "acquired=" + IIF(IridiumNetworkAcquired, "1", "0"))
+
+	Ok = GetIridiumRegistration()
+	Call LogResult("GetIridiumRegistration", Ok, "regstatus=" + FormatLong(IridiumRegStatus, "%d"))
+
+	Ok = GetIridiumLockStatus()
+	Call LogResult("GetIridiumLockStatus", Ok, "lock=" + FormatLong(IridiumLockStatus, "%d"))
+
+	Ok = GetIridiumBufferStatus()
+	Call LogResult("GetIridiumBufferStatus", Ok, "moflag=" + FormatLong(IridiumMOBufferFlag, "%d"))
+
+	LogDebug("--- phase 2: payload write and checksum (no airtime) ---")
+
+	IridiumMOBuffer = ChecksumTestA
+	Ok = WriteIridiumMessage(Len(ChecksumTestA))
+	Call LogResult("WriteIridiumMessage/chksum-hi-null", Ok, "len=" + FormatLong(Len_Fz(ChecksumTestA), "%d") + " wb=" + FormatLong(IridiumWriteResult, "%d"))
+
+	IridiumMOBuffer = ChecksumTestB
+	Ok = WriteIridiumMessage(Len(ChecksumTestB))
+	Call LogResult("WriteIridiumMessage/chksum-lo-null", Ok, "len=" + FormatLong(Len(ChecksumTestB), "%d") + " wb=" + FormatLong(IridiumWriteResult, "%d"))
+
+	IridiumMOBuffer = TestPayload
+	Ok = WriteIridiumMessage(TestPayloadLength)
+	Call LogResult("WriteIridiumMessage/payload", Ok, "len=" + FormatLong(TestPayloadLength, "%d") + " wb=" + FormatLong(IridiumWriteResult, "%d"))
+
+	Ok = GetIridiumBufferStatus()
+	Call LogResult("GetIridiumBufferStatus/after-write", (Ok AND (IridiumMOBufferFlag = 1)), "moflag=" + FormatLong(IridiumMOBufferFlag, "%d"))
+
+	LogDebug("--- phase 3: signal and transmit ---")
+
+	If RunTxTests Then
+		Ok = AcquireIridiumSignal()
+		Call LogResult("AcquireIridiumSignal", Ok, "rssi=" + FormatLong(IridiumRSSI, "%d") + " avail=" + IIF(IridiumNetworkAvailable, "1", "0"))
+
+		Ok = RegisterIridium()
+		Call LogResult("RegisterIridium", Ok, "regstatus=" + FormatLong(IridiumRegStatus, "%d") + " regerr=" + FormatLong(IridiumRegError, "%d"))
+
+		Ok = RunIridiumSession()
+		Call LogResult("RunIridiumSession", Ok, "mo=" + FormatLong(IridiumMOStatus, "%d") + " momsn=" + FormatLong(IridiumMOMSN, "%d"))
+
+		IridiumMOBuffer = TestPayload
+		Ok = SendIridiumMessage(TestPayloadLength)
+		Call LogResult("SendIridiumMessage", Ok AND (IridiumSendElapsedSecs <= IridiumSendTimeoutSecs), _
+			"txok=" + IIF(IridiumTxOk, "1", "0") + " mo=" + FormatLong(IridiumMOStatus, "%d") _
+			+ " momsn=" + FormatLong(IridiumMOMSN, "%d") _
+			+ " elapsed=" + FormatFloat(IridiumSendElapsedSecs, "%.1f") + "s")
+	Else
+		Call SkipResult("AcquireIridiumSignal", "RunTxTests=False")
+		Call SkipResult("RegisterIridium", "RunTxTests=False")
+		Call SkipResult("RunIridiumSession", "RunTxTests=False")
+		Call SkipResult("SendIridiumMessage", "RunTxTests=False")
+	EndIf
+
+	LogDebug("--- phase 4: shutdown ---")
+
+	Ok = StopIridiumModem()
+	Call LogResult("StopIridiumModem", Ok, "")
+
+	Call LogSummary
+EndSub
+
+Sub ShowMenu
+	LogDebug("")
+	LogDebug("================= MENU =================")
+	LogDebug(" 1  full suite (no airtime)")
+	LogDebug(" 2  full suite + TX tests   *airtime*")
+	LogDebug(" 3  StartIridiumModem")
+	LogDebug(" 4  StopIridiumModem")
+	LogDebug(" 5  GetIridiumIMEI          AT+CGSN")
+	LogDebug(" 6  GetIridiumSignal        AT+CSQF")
+	LogDebug(" 7  GetIridiumSystemTime    AT-MSSTM")
+	LogDebug(" 8  GetIridiumBufferStatus  AT+SBDSX")
+	LogDebug(" 9  GetIridiumRegistration  AT+SBDREG?")
+	LogDebug(" A  GetIridiumLockStatus    AT+CULK?")
+	LogDebug(" B  AcquireIridiumSignal    AT+CIER")
+	LogDebug(" C  WriteIridiumMessage     AT+SBDWB")
+	LogDebug(" D  RunIridiumSession       AT+SBDI   *airtime*")
+	LogDebug(" E  RegisterIridium         AT+SBDREG *airtime*")
+	LogDebug(" F  SendIridiumMessage                *airtime*")
+	LogDebug("========================================")
+	LogDebug("send a key (ENTER redisplays this menu)")
+EndSub
+
+Sub PollMenu
+	MenuKey = ReadMenuKey()
+	If MenuKey = "" Then ExitSub
+
+	Select Case MenuKey
+		Case "1"
+			RunTxTests = False
+			RunTests = True
+		Case "2"
+			RunTxTests = True
+			RunTests = True
+		Case "3"
+			DoStart = True
+		Case "4"
+			DoStop = True
+		Case "5"
+			DoIMEI = True
+		Case "6"
+			DoSignal = True
+		Case "7"
+			DoSysTime = True
+		Case "8"
+			DoBufferStatus = True
+		Case "9"
+			DoRegQuery = True
+		Case "A"
+			DoLockStatus = True
+		Case "B"
+			DoAcquire = True
+		Case "C"
+			DoWrite = True
+		Case "D"
+			DoSession = True
+		Case "E"
+			DoRegister = True
+		Case "F"
+			DoSend = True
+		Case Else
+			Call ShowMenu
+			ExitSub
+	EndSelect
+
+	LogDebug("")
+	LogDebug(">>> option " + MenuKey + " selected")
+	MenuPending = True
+EndSub
+
+BeginProg
+	LogDebug("SBDIridiumLib tester starting")
+	SerialFlush(ComUSB)
+	Call ShowMenu
+
+	Scan (1, Sec, 0, 0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+
+		PanelTemp (PTemp, 15000)
+		Battery (Batt_volt)
+
+		TestPayloadLength = Len(TestPayload)
+
+		Call PollMenu
+
+		If RunTests Then
+			RunTests = False
+			Call RunAllTests
+		EndIf
+
+		If DoStart Then
+			DoStart = False
+			LastResult = StartIridiumModem()
+		EndIf
+
+		If DoIMEI Then
+			DoIMEI = False
+			LastResult = GetIridiumIMEI()
+		EndIf
+
+		If DoSignal Then
+			DoSignal = False
+			LastResult = GetIridiumSignal()
+		EndIf
+
+		If DoSysTime Then
+			DoSysTime = False
+			LastResult = GetIridiumSystemTime()
+		EndIf
+
+		If DoBufferStatus Then
+			DoBufferStatus = False
+			LastResult = GetIridiumBufferStatus()
+		EndIf
+
+		If DoRegQuery Then
+			DoRegQuery = False
+			LastResult = GetIridiumRegistration()
+		EndIf
+
+		If DoLockStatus Then
+			DoLockStatus = False
+			LastResult = GetIridiumLockStatus()
+		EndIf
+
+		If DoAcquire Then
+			DoAcquire = False
+			LastResult = AcquireIridiumSignal()
+		EndIf
+
+		If DoWrite Then
+			DoWrite = False
+			IridiumMOBuffer = TestPayload
+			LastResult = WriteIridiumMessage(TestPayloadLength)
+		EndIf
+
+		If DoSession Then
+			DoSession = False
+			LastResult = RunIridiumSession()
+		EndIf
+
+		If DoRegister Then
+			DoRegister = False
+			LastResult = RegisterIridium()
+		EndIf
+
+		If DoSend Then
+			DoSend = False
+			IridiumMOBuffer = TestPayload
+			LastResult = SendIridiumMessage(TestPayloadLength)
+		EndIf
+
+		If DoStop Then
+			DoStop = False
+			LastResult = StopIridiumModem()
+		EndIf
+
+		If MenuPending Then
+			MenuPending = False
+			SerialFlush(ComUSB)
+			Call ShowMenu
+		EndIf
+
+		CallTable StationStatus
+	NextScan
+EndProg

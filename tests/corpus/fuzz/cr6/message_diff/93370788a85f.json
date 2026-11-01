@@ -1,0 +1,14 @@
+{
+  "file": "scratch/r36/fuzz-425/cr6/message_diff/93370788a85f.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/PowerBudget_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "replace_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "93370788a85f.CR6 -- Compile Failed!\n\nline 3: Case outside Select.\nline 5: Case outside Select.\nline 9: EndSelect w/o Select",
+  "theirs": "93370788a85f.CR6 -- Compile Failed!\n\nline 3: Case outside Select.\nline 5: Case outside Select."
+}

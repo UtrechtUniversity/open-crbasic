@@ -16,6 +16,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path[:0] = [str(HERE), str(ROOT / "src")]
 import tdftest  # noqa: E402
+
 from opencrbasic import profiles, tdf  # noqa: E402
 
 FIXTURE = ROOT / "tests" / "fixtures" / "tdf_expressions.json"
@@ -98,7 +99,7 @@ def observe(case_id, source, logger, use_cache):
         for attempt in range(2):
             try:
                 result = tdftest.run_oracle_tdf(path, Path(directory),
-                                              ROOT.parent / "compiler" / profile.exe_name,
+                                              ROOT / "compiler" / profile.exe_name,
                                               use_cache=use_cache)
                 break
             except tdftest.oracle.OracleError:
@@ -121,7 +122,7 @@ def main():
     args = parser.parse_args()
     recorded = json.loads(FIXTURE.read_text()) if args.audit else None
     result = {"observation_date": "2026-10-19", "compiler_sha256": {
-        logger: hashlib.sha256((ROOT.parent / "compiler" / profiles.get(logger).exe_name)
+        logger: hashlib.sha256((ROOT / "compiler" / profiles.get(logger).exe_name)
                                .read_bytes()).hexdigest() for logger in LOGGERS}, "cases": []}
     for case_id, source in CASES.items():
         for logger in LOGGERS:

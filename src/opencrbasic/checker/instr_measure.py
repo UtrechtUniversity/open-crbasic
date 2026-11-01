@@ -9,9 +9,8 @@ error. All rules below are oracle-confirmed per logger this round; see `docs/ins
 """
 
 import math
-from typing import TypeGuard, cast
-
 import re
+from typing import TypeGuard, cast
 
 from .. import consteval
 from .. import syntax as S

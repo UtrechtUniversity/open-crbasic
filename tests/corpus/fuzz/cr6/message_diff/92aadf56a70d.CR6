@@ -1,0 +1,36 @@
+' fuzz: seed=repo/SerialProbe.CR6 ops=replace_argument+rename_identifier class=message_diff
+Const ProbePort = ComC3
+Const ProbeBaud = 19200
+Const ProbeFormat = 3
+Const ProbeCommsMode = 0
+Const ProbeTimeout = 100
+
+Public PTemp
+Dim DebugMsg As String * 200
+
+Const ProbeCRLF = CHR(13) + CHR(10)
+
+Sub ProbeLog(Message As String * 200)
+	DebugMsg = Message
+	SerialOut(ComUSB, DebugMsg + ProbeCRLF, "", 0, 0)
+EndSub
+
+BeginProg
+	SerialOpen(ComUSB, 115200, 0, 0, 1000)
+	Call ProbeLog("")
+	Call ProbeLog("SerialProbe: port=ComC3 baud=19200 format=3 CommsMode=0")
+
+	ScopePattern = "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
+
+	SW122(SW12_2, 1)
+	Delay(0,UndeclaredFuzzName123, Sec)
+
+	SerialOpen(ProbePort, ProbeBaud, ProbeFormat, 0, 400, ProbeCommsMode)
+
+	Scan(2, Sec, 0, 0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+

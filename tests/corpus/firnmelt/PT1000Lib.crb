@@ -1,0 +1,73 @@
+#If Section = "ConstTable" Then
+
+    Const PT1000DiffChan = U9
+
+    Const PT1000IexChan = U11
+
+    Const PT1000ExciteUA = 100
+
+    Const PT1000R0 = 1000
+#EndIf
+
+#If Section = "Definitions" Then
+
+    Const PT1000Type = 1
+
+    Const PT1000Range = mV200
+    Const PT1000RangeMv = 200
+
+    Const PT1000SettleUs = 0
+
+    Const PT1000Integ = _50Hz
+
+    Const PT1000RevEx = True
+    Const PT1000RevDiff = True
+
+    Const PT1000RawToOhms = 1
+
+    Const PT1000MinOhms = 600
+    Const PT1000MaxOhms = 1400
+
+    #If PT1000ExciteUA * PT1000MaxOhms > PT1000RangeMv * 1000 Then
+        ERROR__STATIC_ASSERT__PT1000ExciteUA_overranges_PT1000Range
+    #EndIf
+
+    #If PT1000MinOhms >= PT1000MaxOhms Then
+        ERROR__STATIC_ASSERT__PT1000MinOhms_must_be_below_PT1000MaxOhms
+    #EndIf
+
+    Public PT1000_Raw
+    Public PT1000_Ohms
+    Public PT1000_Ratio
+    Public PT1000_Temp_C
+
+    Units PT1000_Ohms=Ohms
+    Units PT1000_Temp_C=C
+
+    DataTable(PT1000_Data,True,-1)
+        Sample(1,PT1000_Temp_C,IEEE4)
+        Sample(1,PT1000_Ohms,FP2)
+    EndTable
+#EndIf
+
+#If Section = "Functions" Then
+
+    Function SamplePT1000() As Boolean
+        Resistance(PT1000_Raw, 1, PT1000Range, PT1000DiffChan, PT1000IexChan, 1, PT1000ExciteUA, _
+            PT1000RevEx, PT1000RevDiff, PT1000SettleUs, PT1000Integ, 1.0, 0)
+
+        PT1000_Ohms = PT1000_Raw * PT1000RawToOhms
+
+        If (PT1000_Ohms = NAN) OR (PT1000_Ohms < PT1000MinOhms) OR (PT1000_Ohms > PT1000MaxOhms) Then
+            PT1000_Ohms = NAN
+            PT1000_Ratio = NAN
+            PT1000_Temp_C = NAN
+            Return False
+        EndIf
+
+        PT1000_Ratio = PT1000_Ohms / PT1000R0
+        PRTCalc(PT1000_Temp_C, 1, PT1000_Ratio, PT1000Type, 1.0, 0)
+
+        Return (PT1000_Temp_C <> NAN)
+    EndFunction
+#EndIf

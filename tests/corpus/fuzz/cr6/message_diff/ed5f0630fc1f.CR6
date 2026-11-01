@@ -1,0 +1,2 @@
+' fuzz: seed=repo/FinApp_tester.CR6 ops=rename_identifier+add_argument class=message_diff
+		CallTable StationStatus

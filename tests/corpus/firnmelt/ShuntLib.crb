@@ -1,0 +1,69 @@
+#If Section = "ConstTable" Then
+
+    Const ShuntDiffChan = U1
+
+    Const ShuntResistanceOhms = 0.1
+
+    Const ShuntDividerK = 0.0909091
+#EndIf
+
+#If Section = "Definitions" Then
+
+    Const ShuntRange = mV200
+
+    Const ShuntSettleUs = 3000
+
+    Const ShuntInteg = _50Hz
+
+    Const ShuntRevDiff = True
+
+    Const ShuntMaxMv = 190
+
+    Const ShuntMvToA = 0.001 / (ShuntDividerK * ShuntResistanceOhms)
+
+    #If ShuntResistanceOhms <= 0 Then
+        ERROR__STATIC_ASSERT__ShuntResistanceOhms_must_be_positive
+    #EndIf
+
+    #If ShuntDividerK <= 0 Then
+        ERROR__STATIC_ASSERT__ShuntDividerK_must_be_positive
+    #EndIf
+
+    Public Shunt_mV
+    Public Shunt_Current_A
+    Public Shunt_Ok As Boolean
+
+    Units Shunt_mV = mV
+    Units Shunt_Current_A = Amps
+
+    DataTable(Shunt_Data,True,-1)
+        DataInterval(0,60,Sec,10)
+        Average(1,Shunt_Current_A,IEEE4,False)
+        FieldNames("CurrentMean")
+        Minimum(1,Shunt_Current_A,IEEE4,False,False)
+        FieldNames("CurrentMin")
+        Maximum(1,Shunt_Current_A,IEEE4,False,False)
+        FieldNames("CurrentMax")
+        Average(1,Shunt_mV,IEEE4,False)
+        FieldNames("ShuntMeanMv")
+    EndTable
+#EndIf
+
+#If Section = "Functions" Then
+
+    Function SampleShunt() As Boolean
+        VoltDiff(Shunt_mV, 1, ShuntRange, ShuntDiffChan, ShuntRevDiff, ShuntSettleUs, _
+            ShuntInteg, 1.0, 0)
+
+        If (Shunt_mV = NAN) OR (ABS(Shunt_mV) > ShuntMaxMv) Then
+            Shunt_mV = NAN
+            Shunt_Current_A = NAN
+            Shunt_Ok = False
+            Return False
+        EndIf
+
+        Shunt_Current_A = ABS(Shunt_mV) * ShuntMvToA
+        Shunt_Ok = True
+        Return True
+    EndFunction
+#EndIf

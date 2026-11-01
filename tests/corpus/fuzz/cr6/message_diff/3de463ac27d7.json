@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/3de463ac27d7.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SerialProbe.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "insert_whitespace",
+    "rename_identifier"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "3de463ac27d7.CR6 -- Compile Failed!\n\nline 2: Scan illegally occurs before BeginProg.\nline 12: Warning: Call never reached at run time.",
+  "theirs": "3de463ac27d7.CR6 -- Compile Failed!\n\nline 2: Scan illegally occurs before BeginProg."
+}

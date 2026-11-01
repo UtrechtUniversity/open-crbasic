@@ -133,7 +133,7 @@ def code_text(source: str) -> str:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--decomp", type=Path, default=ROOT / "scratch" / "re" / "CR6Comp.decomp.c")
-    ap.add_argument("--exe", type=Path, default=ROOT.parent / "compiler" / "CR6Comp.exe")
+    ap.add_argument("--exe", type=Path, default=ROOT / "compiler" / "CR6Comp.exe")
     ap.add_argument("--out", type=Path, default=ROOT / "docs" / "inventory-cr6.json")
     ap.add_argument("--notices", type=Path, default=ROOT / "src" / "opencrbasic" / "data" / "notices_cr6.json")
     args = ap.parse_args()

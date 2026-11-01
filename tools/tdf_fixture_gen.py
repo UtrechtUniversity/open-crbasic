@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Regenerate tests/fixtures/tdf_rules.json from cases in tests/fixtures/tdf_rules_cases.json
 ({id, source}) using the real CR6Comp.exe: `python3 tools/tdf_fixture_gen.py`."""
-import base64, hashlib, json, sys, tempfile
+import base64
+import hashlib
+import json
+import sys
+import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent

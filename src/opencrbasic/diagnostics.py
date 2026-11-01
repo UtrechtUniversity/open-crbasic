@@ -20,7 +20,6 @@ from dataclasses import dataclass, field
 
 from .provenance import LoadProvenance
 
-
 _DRIVE_RE = re.compile(r"^(CPU|USR|CRD|USB):", re.IGNORECASE)
 
 # Messages the real compiler reports after the included file was closed (block pairing, placement

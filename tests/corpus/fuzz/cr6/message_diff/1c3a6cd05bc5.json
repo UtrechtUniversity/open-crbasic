@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/1c3a6cd05bc5.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/Preflight_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "swap_adjacent"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "1c3a6cd05bc5.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: NOT SDI12Answered(Info) .\nline 9: Invalid symbol in expression: PreRTime.\nline 12: Invalid, or out of place expression: \tPreTimeStr = FormatLong(PreRTime(1),\"%04u\") + \"-\" + FormatLong(PreRTime(2),\"%02u\") + \"-\" + FormatLong(PreRTime(3),\"%02u\") + \" \" + FormatLong(PreRTime(4),\"%02u\") + \":\" + FormatLong(PreRTime(5),\"%02u\") + \":\" + FormatLong(PreRTime(6),\"%02u\").\nline 14: Invalid, or out of place expression: \tLogDebug(\"--- logger, informational ---\").\nLogInfo is not declared as a Subroutine.\nLogInfo is not declared as a Subroutine.",
+  "theirs": "1c3a6cd05bc5.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: NOT SDI12Answered(Info) .\nline 9: Invalid symbol in expression: PreRTime.\nline 12: Invalid, or out of place expression: \tPreTimeStr = FormatLong(PreRTime(1),\"%04u\") + \"-\" + FormatLong(PreRTime(2),\"%02u\") \t\t+ \"-\" + FormatLong(PreRTime(3),\"%02u\") + \" \" + FormatLong(PreRTime(4),\"%02u\") \t\t+ \":\" + FormatLong(PreRTime(5),\"%02u\") + \":\" + FormatLong(PreRTime(6),\"%02u\").\nline 14: Invalid, or out of place expression: \tLogDebug(\"--- logger, informational ---\").\nline 15: Invalid symbol in expression: PreTimeStr.\nline 17: Invalid symbol in expression: FormatFloat(Batt_volt,\"%.3f\") + \" V  \" \t\t+ FormatFloat(PTemp,\"%.2f\") + \" C  lithium=\" + FormatFloat(Status.LithiumBattery,\"%.2f\") + \" V\".\nLogInfo is not declared as a Subroutine.\nLogInfo is not declared as a Subroutine."
+}

@@ -1,0 +1,240 @@
+#If Section = "ConstTable" Then
+#EndIf
+
+#If Section = "Definitions" Then
+    Const SbdPayloadMagic = 70
+    Const SbdPayloadVersion = 5
+
+    Const SbdHistoryDays = ProfileHistoryDays
+    Const SbdSamplesPerDay = DaySecs / MainScanSecs
+
+    Const SbdTempScale = 2
+    Const SbdTempOffset = -80
+    Const SbdVoltScale = 100
+    Const SbdDeciVoltScale = 10
+
+    Const SbdHourSecs = DaySecs / 24
+    Const SbdIntradayHours = 24
+    Const SbdIntradayStore = SbdIntradayHours * 2
+
+    Const SbdPayloadBytes = 215 + TStringCount + 3 * TDRCount + 9 * FinAppDetectorCount
+
+    #If SbdPayloadBytes > IridiumMaxMOMessageLength Then
+        ERROR__STATIC_ASSERT__SBD_payload_exceeds_one_MO_message
+    #EndIf
+
+    Public SbdPayloadLen As Long
+    Public SbdPayloadFlags As Long
+
+    Dim SbdCursor As Long
+    Dim SbdStartSec
+    Dim SbdFinAppLastSec
+
+    Public SbdFinAppSkip As Boolean = True
+    Public SbdIntraSkip As Boolean = True
+    Dim SbdFinAppLastCounter
+    Dim SbdOne = 1
+
+    DataTable(SbdFinAppDaily,True,ProfileHistoryDays)
+        DataInterval(0,DaySecs,Sec,10)
+        Totalize(1,SbdOne,IEEE4,SbdFinAppSkip)
+        FieldNames("Samples")
+        Average(1,FinApp_SWE_Areal_mm,IEEE4,SbdFinAppSkip)
+        FieldNames("SweAreal")
+        Average(1,FinApp_SWE_Local_mm,IEEE4,SbdFinAppSkip)
+        FieldNames("SweLocal")
+        Average(1,FinApp_SoilMoisture,IEEE4,SbdFinAppSkip)
+        FieldNames("SoilMoist")
+        Average(FinAppDetectorCount,FinApp_Neutrons(),IEEE4,SbdFinAppSkip)
+        FieldNames("Neutrons")
+        Average(FinAppDetectorCount,FinApp_Muons(),IEEE4,SbdFinAppSkip)
+        FieldNames("Muons")
+    EndTable
+
+    DataTable(SbdIntraday,True,SbdIntradayStore)
+        DataInterval(0,SbdHourSecs,Sec,10)
+        Average(1,AmbientTempC,IEEE4,SbdIntraSkip)
+        FieldNames("AmbMean")
+        Average(1,SnowVue_TCDistance_m,IEEE4,SbdIntraSkip)
+        FieldNames("DistMean")
+    EndTable
+#EndIf
+
+#If Section = "Functions" Then
+
+    Sub SbdPutRaw(Raw As Long, Width As Long)
+        MoveBytes(IridiumMOBuffer, SbdCursor - 1, Raw, 4 - Width, Width)
+        SbdCursor = SbdCursor + Width
+    EndSub
+
+    Function SbdEnc(Value, Scale, Offset, Width As Long) As Long
+        Dim NaNCode As Long
+        NaNCode = 2 ^ (8 * Width) - 1
+        SbdEnc = NaNCode
+        If Value = NAN Then ExitFunction
+        SbdEnc = Round((Value - Offset) * Scale, 0)
+        If (SbdEnc < 0) OR (SbdEnc > NaNCode - 2) Then SbdEnc = NaNCode - 1
+    EndFunction
+
+    Sub SbdPut8(Value, Scale, Offset)
+        Call SbdPutRaw(SbdEnc(Value, Scale, Offset, 1), 1)
+    EndSub
+
+    Sub SbdPut16(Value, Scale, Offset)
+        Call SbdPutRaw(SbdEnc(Value, Scale, Offset, 2), 2)
+    EndSub
+
+    Sub SbdPut32(Value As Double, Scale, Offset)
+        Dim Scaled As Double
+        Dim Raw As Long
+        Raw = -1
+        If Value <> NAN Then
+            Scaled = (Value - Offset) * Scale
+            Raw = -2
+            If (Scaled >= 0) AND (Scaled < 2147483647) Then Raw = Scaled + 0.5
+        EndIf
+        Call SbdPutRaw(Raw, 4)
+    EndSub
+
+    Function SbdBit(Flag As Boolean, BitNo As Long) As Long
+        SbdBit = 0
+        If Flag Then SbdBit = 2 ^ BitNo
+    EndFunction
+
+    Sub SbdBuildFlags
+        SbdPayloadFlags = 0
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(TStringOk, 0)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(SnowVueOk, 1)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(FinApp_Powered, 2)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(FinApp_Responding, 3)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(FinApp_NewData, 4)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(FinApp_MasterOk, 5)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(FinApp_DetectorsOk, 6)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(FinApp_WaterOk, 7)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(SbdLastOk, 8)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(IridiumEnabled, 9)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(FinAppDayActive, 10)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(IridiumIMEIOk, 11)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(ProfileOverride >= 0, 12)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(AmbientTempC = NAN, 13)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(SnowVue_Alert > 0, 14)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(PT1000Ok, 15)
+        SbdPayloadFlags = SbdPayloadFlags + SbdBit(TDROk, 16)
+    EndSub
+
+    Sub AccumulateFinAppDaily
+        SbdFinAppSkip = (FinApp_WaterCounter = NAN) OR (FinApp_WaterCounter = SbdFinAppLastCounter)
+        SbdFinAppLastCounter = FinApp_WaterCounter
+        CallTable SbdFinAppDaily
+    EndSub
+
+    Sub AccumulateIntraday(Measured As Boolean)
+        SbdIntraSkip = NOT Measured
+        CallTable SbdIntraday
+    EndSub
+
+    Sub BuildSbdPayload
+        Dim I As Long
+
+        SbdCursor = 1
+
+        Call SbdPutRaw(SbdPayloadMagic, 1)
+        Call SbdPutRaw(SbdPayloadVersion, 1)
+        Call SbdPutRaw(StationId, 1)
+        Call SbdPutRaw(NowSec, 4)
+        Call SbdPutRaw(TDRCount, 1)
+        Call SbdPutRaw(TStringCount, 1)
+        Call SbdPutRaw(FinAppDetectorCount, 1)
+        Call SbdPutRaw(SbdHistoryDays, 1)
+        Call SbdPutRaw(SbdIntradayHours, 1)
+
+        Call SbdBuildFlags
+        Call SbdPutRaw(PowerProfile, 1)
+        Call SbdPutRaw(SbdPayloadFlags, 4)
+        Call SbdPut8(ABS(Status.StartUpCode), 1, 0)
+        Call SbdPut8(Status.WatchdogErrors, 1, 0)
+        Call SbdPut8(Status.SkippedScan, 1, 0)
+        Call SbdPut8(Status.VarOutOfBound, 1, 0)
+        SbdStartSec = Status.StartTime
+        Call SbdPut16((NowSec - SbdStartSec) / 3600, 1, 0)
+        Call SbdPut16(Status.ProgSignature MOD 65536, 1, 0)
+        Call SbdPut8(Status.LithiumBattery, 50, 0)
+
+        Call SbdPut16(IIF(Status.CardBytesFree < 0, NAN, Status.CardBytesFree / 1048576), 1, 0)
+        Call SbdPut8(PTemp, SbdTempScale, SbdTempOffset)
+        Call SbdPut16(Batt_volt, SbdVoltScale, 0)
+        Call SbdPut8(AmbientTempC, SbdTempScale, SbdTempOffset)
+        Call SbdPut8(FinAppDropV, SbdVoltScale, 0)
+
+        For I = 1 To SbdHistoryDays
+            Call SbdPut16(DailyPower.BattMinQuiet(1,I), SbdVoltScale, 0)
+            Call SbdPut16(DailyPower.BattMin(1,I), SbdVoltScale, 0)
+            Call SbdPut16(DailyPower.BattMax(1,I), SbdVoltScale, 0)
+            Call SbdPut8(DailyPower.AmbMean(1,I), SbdTempScale, SbdTempOffset)
+            Call SbdPut8(DailyPower.QuietSamples(1,I) * 100 / SbdSamplesPerDay, 1, 0)
+            Call SbdPut8(DailyPower.Profile(1,I), 1, 0)
+        Next I
+
+        For I = 1 To TDRCount
+            Call SbdPut8(Acclima_VWC(I), 2, 0)
+            Call SbdPut8(Acclima_SoilTemp(I), SbdTempScale, SbdTempOffset)
+            Call SbdPut8(Acclima_SoilPerm(I), 2, 0)
+        Next I
+
+        Call SbdPut8(TString_ErrorCount, 1, 0)
+        Call SbdPut8(TString_Supply_V, SbdDeciVoltScale, 0)
+        For I = 1 To TStringCount
+            Call SbdPut8(TString_Temp_C(I), SbdTempScale, SbdTempOffset)
+        Next I
+
+        Call SbdPut16(SnowVue_TCDistance_m, 1000, 0)
+        Call SbdPut8(SnowVue_Quality, 0.25, 0)
+        Call SbdPut8(SnowVue_Pitch_deg, 1, -90)
+        Call SbdPut8(SnowVue_Roll_deg, 1, -90)
+        Call SbdPut8(SnowVue_ValidReadings, 1, 0)
+        Call SbdPut8(SnowVue_Supply_V, SbdDeciVoltScale, 0)
+        Call SbdPut8(SnowVue_IntTemp_C, SbdTempScale, SbdTempOffset)
+        Call SbdPut8(SnowVue_IntRH, 1, 0)
+        Call SbdPut8(SnowVue_ResFreq_kHz, 10, 40)
+
+        Call SbdPut8(FinApp_UnsafeStops, 1, 0)
+        Call SbdPut8(FinApp_StopPollsUsed, 1, 0)
+        Call SbdPut8(FinApp_Batt_V, SbdDeciVoltScale, 0)
+        Call SbdPut8(FinApp_BoardTemp_C, SbdTempScale, SbdTempOffset)
+        Call SbdPut16(FinApp_Pressure_Pa, 1, 50000)
+        Call SbdPut16(FinApp_SWE_Areal_mm, 10, 0)
+        Call SbdPut16(FinApp_SWE_Local_mm, 10, 0)
+        Call SbdPut8(FinApp_SoilMoisture, 250, 0)
+        Call SbdPut16(FinApp_WaterCounter, 1, 0)
+        For I = 1 To FinAppDetectorCount
+            Call SbdPut16(FinApp_Neutrons(I), 1, 0)
+            Call SbdPut16(FinApp_Muons(I), 1, 0)
+            Call SbdPut8(FinApp_HV_V(I), 50, 0)
+        Next I
+
+        Call SbdPut8(SbdFinAppDaily.Samples(1,1), 1, 0)
+        SbdFinAppLastSec = FinApp_Data.TimeStamp(1,1)
+        Call SbdPut16((NowSec - SbdFinAppLastSec) / 3600, 1, 0)
+        Call SbdPut16(SbdFinAppDaily.SweAreal(1,1), 10, 0)
+        Call SbdPut16(SbdFinAppDaily.SweLocal(1,1), 10, 0)
+        Call SbdPut8(SbdFinAppDaily.SoilMoist(1,1), 250, 0)
+        For I = 1 To FinAppDetectorCount
+            Call SbdPut16(SbdFinAppDaily.Neutrons(I,1), 1, 0)
+            Call SbdPut16(SbdFinAppDaily.Muons(I,1), 1, 0)
+        Next I
+
+        For I = 1 To SbdIntradayHours
+            Call SbdPut8(SbdIntraday.AmbMean(1,I), SbdTempScale, SbdTempOffset)
+            Call SbdPut16(SbdIntraday.DistMean(1,I), 1000, 0)
+        Next I
+
+        Call SbdPut32(GPS_Lat, 1000000, -90)
+        Call SbdPut32(GPS_Lon, 1000000, -180)
+        Call SbdPut8(GPS_Fixes, 1, 0)
+        Call SbdPut8(GPS_Satellites, 1, 0)
+        Call SbdPut16(GPS_FixSecs, 1, 0)
+        Call SbdPut16(GPS_ClockErrorSecs, 100, -300)
+
+        SbdPayloadLen = SbdCursor - 1
+    EndSub
+#EndIf

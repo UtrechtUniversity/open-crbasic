@@ -1,0 +1,6 @@
+' fuzz: seed=repo/PowerBudget_tester.CR6 ops=insert_whitespace+change_declared_type class=message_diff
+
+		If (PBSettled = 1) AND (Shunt_mV <> NAN) Then
+			PBSecs = PBSecs + 1
+			PBN = PBN + 1
+			PBSumMv = PBSumMv + ABS(Shunt_mV)

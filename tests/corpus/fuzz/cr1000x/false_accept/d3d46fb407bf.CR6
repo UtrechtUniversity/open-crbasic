@@ -1,0 +1,94 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/InStrHeaderFilterTest.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/InStrHeaderFilterTest.CR6 ops=change_keyword_case+add_argument class=false_accept
+Public Batt_volt
+
+Public wdog_timer As Long
+Public BenchWatchdogOff As Boolean = True
+
+Const CRLF = CHR(13) + CHR(10)
+
+Public Test1_Str As String * 60 = "+SBDI: 1, 1, 0, 0, 0, 0"
+Public Test2_Str As String * 60 = "+SBDI:1,1,0,0,0,0"
+Public Test3_Str As String * 60 = "+CIEV:0,3"
+
+Public Test1_Mode2_Pos As Long
+Public Test1_Mode4_Pos As Long
+Public Test1_Mode2_Context As String * 16
+Public Test1_Mode4_Context As String * 16
+
+Public Test2_Mode2_Pos As Long
+Public Test2_Mode4_Pos As Long
+Public Test2_Mode2_Context As String * 16
+Public Test2_Mode4_Context As String * 16
+
+Public Test3_Mode2_Pos As Long
+Public Test3_Mode4_Pos As Long
+Public Test3_Mode2_Context As String * 16
+Public Test3_Mode4_Context As String * 16
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+BeginProg
+  Scan (10, Sec, 0, 0)
+    If BenchWatchdogOff Then
+      wdog_timer = WatchdogTimer(0,Sec)
+    Else
+      wdog_timer = WatchdogTimer(10,Min)
+    EndIf
+
+    Battery(Batt_volt)
+
+    Test1_Mode2_Pos = InStr(1, Test1_Str, "+SBDI:", 2)
+    Test1_Mode4_Pos = InStr(1, Test1_Str, "+SBDI:", 4)
+    If Test1_Mode2_Pos > 0 Then
+      Test1_Mode2_Context = Mid(Test1_Str, Test1_Mode2_Pos, 16)
+    Else
+      Test1_Mode2_Context = "(not found)"
+    EndIf
+    If Test1_Mode4_Pos > 0 Then
+      Test1_Mode4_Context = Mid(Test1_Str, Test1_Mode4_Pos, 16)
+    Else
+      Test1_Mode4_Context = "(not found)"
+    EndIf
+
+    Test2_Mode2_Pos = InStr(1, Test2_Str, "+SBDI:", 2)
+    Test2_Mode4_Pos = InStr(1, Test2_Str, "+SBDI:", 4)
+    If Test2_Mode2_Pos > 0 Then
+      Test2_Mode2_Context = Mid(Test2_Str, Test2_Mode2_Pos, 16)
+    Else
+      Test2_Mode2_Context = "(not found)"
+    EndIf
+    if Test2_Mode4_Pos > 0 Then
+      Test2_Mode4_Context = Mid(Test2_Str, Test2_Mode4_Pos, 16)
+    Else
+      Test2_Mode4_Context = "(not found)"
+    EndIf
+
+    Test3_Mode2_Pos = InStr(1, Test3_Str, "+CIEV:0,", 2)
+    Test3_Mode4_Pos = InStr(1, Test3_Str, "+CIEV:0,", 4)
+    If Test3_Mode2_Pos > 0 Then
+      Test3_Mode2_Context = Mid(Test3_Str, Test3_Mode2_Pos, 16)
+    Else
+      Test3_Mode2_Context = "(not found)"
+    EndIf
+    If Test3_Mode4_Pos > 0 Then
+      Test3_Mode4_Context = Mid(Test3_Str, Test3_Mode4_Pos, 16)
+    Else
+      Test3_Mode4_Context = "(not found)"
+    EndIf
+
+    LogDebug("=== InStr SearchOption test (mode2=SEARCHSTRING, mode4=HEADERFILTER) ===")
+    LogDebug("Test1 [" + Test1_Str + "]")
+    LogDebug("  mode2 Pos=" + FormatLong(Test1_Mode2_Pos,"%u") + " ctx=[" + Test1_Mode2_Context + "]")
+    LogDebug("  mode4 Pos=" + FormatLong(Test1_Mode4_Pos,"%u") + " ctx=[" + Test1_Mode4_Context + "]")
+    LogDebug("Test2 [" + Test2_Str + "]")
+    LogDebug("  mode2 Pos=" + FormatLong(Test2_Mode2_Pos,"%u") + " ctx=[" + Test2_Mode2_Context + "]")
+    LogDebug("  mode4 Pos=" + FormatLong(Test2_Mode4_Pos,"%u") + " ctx=[" + Test2_Mode4_Context + "]")
+    LogDebug("Test3 [" + Test3_Str + "]",(1+2))
+    LogDebug("  mode2 Pos=" + FormatLong(Test3_Mode2_Pos,"%u") + " ctx=[" + Test3_Mode2_Context + "]")
+    LogDebug("  mode4 Pos=" + FormatLong(Test3_Mode4_Pos,"%u") + " ctx=[" + Test3_Mode4_Context + "]")
+    LogDebug("=========================================================================")
+  NextScan
+EndProg

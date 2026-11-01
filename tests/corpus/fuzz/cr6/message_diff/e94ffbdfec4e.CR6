@@ -1,0 +1,51 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/SnowVue_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/SnowVue_tester.CR6 ops=swap_adjacent class=message_diff
+Const CRLF = CHR(13) + CHR(10)
+Const CR = CHR(13)
+Const LF = CHR(10)
+
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+ConstTable(GlobalConfigTable)
+	Const SnowVueSDIAddress = 0
+	Const LowPowerRailMask = &B10
+	Const LowPowerSettleSecs = 10
+  IncludeSection("ConstTable", "CPU:SnowVue10Lib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:SnowVue10Lib.crb")
+
+Const SnowVueQualityGoodMax = 100
+Const SnowVueQualityWeakMax = 300
+Const SnowVueQualityMax = 600
+Const SnowVueResFreqMin = 40
+Const SnowVueResFreqMax = 60
+Const SnowVueRangeMin = 0.4
+Const SnowVueRangeMax = 10
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+IncludeSection("Rail", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:SnowVue10Lib.crb")
+
+Const ReportTimer = 1
+Const TimerResetAndStart = 2
+Const TimerReadOnly = 4
+
+Public SnowVueInfo As String * 100
+Public AirTemp_C
+Public LastResult As Boolean
+Public LastElapsedMs As Long
+	LogDebug(" distance corrected " + FormatFloat(SnowVue_TCDistance_m, "%10.4f") + " m")

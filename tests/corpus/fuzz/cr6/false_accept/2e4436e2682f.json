@@ -1,0 +1,16 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_accept/2e4436e2682f.CR6",
+  "logger": "cr6",
+  "class": "false_accept",
+  "seed": "repo/PowerProfile_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "delete_line",
+    "replace_numeric_literal"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "2e4436e2682f.CR6 -- Compiled in PipelineMode.",
+  "theirs": "2e4436e2682f.CR6 -- Compile Failed!\n\nline 142: Case outside Select.\nline 144: Case outside Select.\nline 151: Case outside Select.\nline 158: Case outside Select.\nline 161: Case outside Select.\nline 164: Case outside Select.\nline 167: Case outside Select.\nline 170: Case outside Select.\nline 172: Case outside Select.\nline 174: Case outside Select.\nline 176: Case outside Select.\nline 178: Case outside Select.\nline 180: Case outside Select.\nline 182: Case outside Select.\nline 184: Case outside Select.\nline 190: EndSelect w/o Select",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

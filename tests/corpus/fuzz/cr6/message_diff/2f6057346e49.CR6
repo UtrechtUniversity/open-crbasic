@@ -1,0 +1,125 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/SbdPayload_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/SbdPayload_tester.CR6 ops=insert_comment class=message_diff
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:PowerProfileLib.crb")
+IncludeSection("Functions", "CPU:SbdPayloadLib.crb")
+
+Public RunTests As Boolean = False
+
+Public FeedIntraday As Boolean = True
+
+Public TestIndex As Long
+Public TestsPassed As Long
+Public TestsFailed As Long
+
+Public ByteFidelityFirstBad As Long
+Public FirstNullAt As Long
+Dim ScanIdx As Long
+Public ParamCopyOurSum As Long
+Public ParamCopyTheirSum As Long
+
+Const MenuBufferLength = 16
+Dim MenuRaw As String * MenuBufferLength
+Dim MenuKey As String * 2
+Dim MenuBytes As Long
+
+Sub LogResult(TestName As String * 60, Ok As Boolean, Detail As String * 100)
+	TestIndex = TestIndex + 1
+	TestsPassed = TestsPassed + IIF(Ok, 1, 0)
+	TestsFailed = TestsFailed + IIF(Ok, 0, 1)
+	LogDebug("[" + FormatLong(TestIndex, "%02d") + "] " + TestName + " | " + IIF(Ok, "PASS", "FAIL") + " | " + Detail)
+EndSub
+
+Function ParamCopySum(Message As String * IridiumMaxMOMessageLength, MessageLength As Long) As Long
+	Dim I As Long
+	ParamCopySum = 0
+	For I = 1 To MessageLength
+		ParamCopySum = ParamCopySum + ASCII(Message(1,1,I))
+	Next I
+EndFunction
+
+Function BufferSum(Length As Long) As Long
+
+	SnowVue_TCDistance_m = 1.234
+	SnowVue_Quality = 180
+	SnowVue_Pitch_deg = -3
+	SnowVue_Roll_deg = 5
+	SnowVue_ValidReadings = 5
+	SnowVue_Supply_V = 12.1
+	SnowVue_IntTemp_C = -8.5
+	SnowVue_IntRH = 42
+	SnowVue_ResFreq_kHz = 51.2
+	SnowVue_Alert = 0
+
+	FinApp_Powered = True
+	FinApp_Responding = True
+	FinApp_NewData = True
+	FinApp_MasterOk = True
+	FinApp_DetectorsOk = True
+	FinApp_WaterOk = False
+	FinApp_UnsafeStops = 1
+	FinApp_StopPollsUsed = 3
+	FinApp_Batt_V = 12.2
+	FinApp_BoardTemp_C = -4.0
+	FinApp_Pressure_Pa = 96500
+	FinApp_SWE_Areal_mm = 123.4
+	FinApp_SWE_Local_mm = NAN
+	FinApp_SoilMoisture = 0.16
+	FinApp_WaterCounter = 4321
+	For I = 1 To FinAppDetectorCount
+		FinApp_Neutrons(I) = 1000 + I
+		FinApp_Muons(I) = 20000 + I
+		FinApp_HV_V(I) = 2.561 - ((I - 1) * 0.18)
+	Next I
+EndSub
+
+Sub RunAllTests
+	Dim Ok As Boolean
+
+	TestIndex = 0
+	TestsPassed = 0
+	TestsFailed = 0
+
+	LogDebug("================================================")
+	LogDebug("SbdPayloadLib automated test report")
+	LogDebug("schema=" + FormatLong(SbdPayloadVersion, "%d") + " station=" + FormatLong(StationId, "%d") _
+	         ' fuzz comment
+	         + " tdr=" + FormatLong(TDRCount, "%d") + " tstring=" + FormatLong(TStringCount, "%d") _
+	         + " det=" + FormatLong(FinAppDetectorCount, "%d") + " histdays=" + FormatLong(SbdHistoryDays, "%d"))
+	LogDebug("================================================")
+
+	LogDebug("--- phase 1: binary buffer mechanism ---")
+	Call TestByteFidelity
+
+	LogDebug("--- phase 2: encoder scalar checks ---")
+	Ok = (SbdEnc(NAN, SbdTempScale, SbdTempOffset, 1) = 255)
+	Call LogResult("SbdEnc8 NAN -> 255", Ok, "got=" + FormatLong(SbdEnc(NAN, SbdTempScale, SbdTempOffset, 1), "%d"))
+
+	Ok = (SbdEnc(-30, SbdTempScale, SbdTempOffset, 1) = 100)
+	Call LogResult("SbdEnc8 -30C -> 100", Ok, "got=" + FormatLong(SbdEnc(-30, SbdTempScale, SbdTempOffset, 1), "%d"))
+
+	Ok = (SbdEnc(999, SbdTempScale, SbdTempOffset, 1) = 254)
+	Call LogResult("SbdEnc8 out of range high -> 254", Ok, "got=" + FormatLong(SbdEnc(999, SbdTempScale, SbdTempOffset, 1), "%d"))
+
+	Ok = (SbdEnc(-999, SbdTempScale, SbdTempOffset, 1) = 254)
+	Call LogResult("SbdEnc8 out of range low -> 254", Ok, "got=" + FormatLong(SbdEnc(-999, SbdTempScale, SbdTempOffset, 1), "%d"))
+
+	Ok = (SbdEnc(12.34, SbdVoltScale, 0, 2) = 1234)
+	Call LogResult("SbdEnc16 12.34V -> 1234", Ok, "got=" + FormatLong(SbdEnc(12.34, SbdVoltScale, 0, 2), "%d"))
+
+	Ok = (SbdEnc(NAN, SbdVoltScale, 0, 2) = 65535)
+	Call LogResult("SbdEnc16 NAN -> 65535", Ok, "got=" + FormatLong(SbdEnc(NAN, SbdVoltScale, 0, 2), "%d"))
+
+	Ok = (SbdEnc(2.56, 50, 0, 1) = 128)
+	Call LogResult("FinAPP HV 2.56V -> 128", Ok, "got=" + FormatLong(SbdEnc(2.56, 50, 0, 1), "%d"))
+
+	LogDebug("--- phase 3: full payload build ---")
+	Call LoadSyntheticValues
+	Call BuildSbdPayload
+
+	Ok = (SbdPayloadLen <= IridiumMaxMOMessageLength)
+	Call LogResult("payload fits one SBD message", Ok, "len=" + FormatLong(SbdPayloadLen, "%d") + " max=" + FormatLong(IridiumMaxMOMessageLength, "%d"))
+
+	Ok = (ASCII(IridiumMOBuffer(1,1,1)) = SbdPayloadMagic) AND (ASCII(IridiumMOBuffer(1,1,2)) = SbdPayloadVersion)

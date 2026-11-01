@@ -1,0 +1,331 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r15_snmp_oid-36",
+   "logger": "cr6",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal OID since already declared."
+  },
+  {
+   "id": "cr6-r15_snmp_oid-55",
+   "logger": "cr6",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5.0,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_snmp_oid-56",
+   "logger": "cr6",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(MyTemp,1.3.6.1.4.1.6,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_snmp_oid-57",
+   "logger": "cr6",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.6,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_snmp_oid-58",
+   "logger": "cr6",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal OID since already declared."
+  },
+  {
+   "id": "cr6-r15_snmp_oid-65",
+   "logger": "cr6",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  PanelTemp(MyTemp,99999)\n  SNMPVariable(MyTemp,1.3.6.1.2.1.1.6,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SNMP OID must be greater than 1.3.6.1.2.1.1.7\nline 5: Illegal OID since already declared."
+  },
+  {
+   "id": "cr6-r15_snmp_oid-69",
+   "logger": "cr6",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1,Float,RONLY)\n  SNMPVariable(ValFlt,1,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal object id.\nline 4: SNMP OID must be greater than 1.3.6.1.2.1.1.7\nline 5: Illegal object id.\nline 5: SNMP OID must be greater than 1.3.6.1.2.1.1.7\nline 5: Illegal OID since already declared."
+  },
+  {
+   "id": "cr6-r15_snmp_oid-70",
+   "logger": "cr6",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5.,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_snmp_oid-71",
+   "logger": "cr6",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5.0.0,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_snmp_oid-72",
+   "logger": "cr6",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5.0,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_snmp_oid-73",
+   "logger": "cr6",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal OID since already declared.\nline 6: Illegal OID since already declared.\nline 6: Illegal OID since already declared."
+  },
+  {
+   "id": "cr1000x-r15_snmp_oid-36",
+   "logger": "cr1000x",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal OID since already declared."
+  },
+  {
+   "id": "cr1000x-r15_snmp_oid-55",
+   "logger": "cr1000x",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5.0,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_snmp_oid-56",
+   "logger": "cr1000x",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(MyTemp,1.3.6.1.4.1.6,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_snmp_oid-57",
+   "logger": "cr1000x",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.6,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_snmp_oid-58",
+   "logger": "cr1000x",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal OID since already declared."
+  },
+  {
+   "id": "cr1000x-r15_snmp_oid-65",
+   "logger": "cr1000x",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  PanelTemp(MyTemp,99999)\n  SNMPVariable(MyTemp,1.3.6.1.2.1.1.6,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SNMP OID must be greater than 1.3.6.1.2.1.1.7\nline 5: Illegal OID since already declared."
+  },
+  {
+   "id": "cr1000x-r15_snmp_oid-69",
+   "logger": "cr1000x",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1,Float,RONLY)\n  SNMPVariable(ValFlt,1,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal object id.\nline 4: SNMP OID must be greater than 1.3.6.1.2.1.1.7\nline 5: Illegal object id.\nline 5: SNMP OID must be greater than 1.3.6.1.2.1.1.7\nline 5: Illegal OID since already declared."
+  },
+  {
+   "id": "cr1000x-r15_snmp_oid-70",
+   "logger": "cr1000x",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5.,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_snmp_oid-71",
+   "logger": "cr1000x",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5.0.0,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_snmp_oid-72",
+   "logger": "cr1000x",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5.0,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_snmp_oid-73",
+   "logger": "cr1000x",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal OID since already declared.\nline 6: Illegal OID since already declared.\nline 6: Illegal OID since already declared."
+  },
+  {
+   "id": "cr300-r15_snmp_oid-36",
+   "logger": "cr300",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal OID since already declared.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r15_snmp_oid-55",
+   "logger": "cr300",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5.0,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r15_snmp_oid-56",
+   "logger": "cr300",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(MyTemp,1.3.6.1.4.1.6,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r15_snmp_oid-57",
+   "logger": "cr300",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.6,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r15_snmp_oid-58",
+   "logger": "cr300",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal OID since already declared.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r15_snmp_oid-65",
+   "logger": "cr300",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  PanelTemp(MyTemp,99999)\n  SNMPVariable(MyTemp,1.3.6.1.2.1.1.6,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SNMP OID must be greater than 1.3.6.1.2.1.1.7\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r15_snmp_oid-69",
+   "logger": "cr300",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1,Float,RONLY)\n  SNMPVariable(ValFlt,1,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal object id.\nline 4: SNMP OID must be greater than 1.3.6.1.2.1.1.7\nline 5: Illegal object id.\nline 5: SNMP OID must be greater than 1.3.6.1.2.1.1.7\nline 5: Illegal OID since already declared.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r15_snmp_oid-70",
+   "logger": "cr300",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5.,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r15_snmp_oid-71",
+   "logger": "cr300",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5.0.0,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r15_snmp_oid-72",
+   "logger": "cr300",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5.0,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r15_snmp_oid-73",
+   "logger": "cr300",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal OID since already declared.\nline 6: Illegal OID since already declared.\nline 6: Illegal OID since already declared.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r15_snmp_oid-36",
+   "logger": "cr350",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal OID since already declared.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r15_snmp_oid-55",
+   "logger": "cr350",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5.0,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_snmp_oid-56",
+   "logger": "cr350",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(MyTemp,1.3.6.1.4.1.6,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_snmp_oid-57",
+   "logger": "cr350",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.6,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_snmp_oid-58",
+   "logger": "cr350",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal OID since already declared.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r15_snmp_oid-65",
+   "logger": "cr350",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  PanelTemp(MyTemp,99999)\n  SNMPVariable(MyTemp,1.3.6.1.2.1.1.6,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SNMP OID must be greater than 1.3.6.1.2.1.1.7\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r15_snmp_oid-69",
+   "logger": "cr350",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1,Float,RONLY)\n  SNMPVariable(ValFlt,1,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal object id.\nline 4: SNMP OID must be greater than 1.3.6.1.2.1.1.7\nline 5: Illegal object id.\nline 5: SNMP OID must be greater than 1.3.6.1.2.1.1.7\nline 5: Illegal OID since already declared.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r15_snmp_oid-70",
+   "logger": "cr350",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5.,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_snmp_oid-71",
+   "logger": "cr350",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5.0.0,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_snmp_oid-72",
+   "logger": "cr350",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5.0,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_snmp_oid-73",
+   "logger": "cr350",
+   "source": "Public MyTemp, ValFlt, ValInt As Long, S As String * 20\nBeginProg\n  ESSInitialize(\"private,public\")\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(MyTemp,1.3.6.1.4.1.5,Float,RONLY)\n  SNMPVariable(ValFlt,1.3.6.1.4.1.5,Float,RONLY)\n  Scan (1,Sec,0,0)\n    MyTemp += 0.001\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal OID since already declared.\nline 6: Illegal OID since already declared.\nline 6: Illegal OID since already declared.\nline 7: Too many parameters:  Sec."
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/FinApp_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/FinApp_tester.CR6 ops=duplicate_line+drop_argument class=message_diff
+EndConstTable
+
+IncludeSection("Definitions", "CPU:FinAppLib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:FinAppLib.crb")
+
+Public DoStart As Boolean = False

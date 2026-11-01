@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/5239b3e5584c.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/PowerProfile_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "toggle_two_word",
+    "replace_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "5239b3e5584c.CR6 -- Compile Failed!\n\nline 7: EndSelect w/o Select",
+  "theirs": "5239b3e5584c.CR6 -- Compile Failed!\n\nline 2: Sub InitPowerProfile not defined."
+}

@@ -4,7 +4,6 @@ expected values are computed from the document text or from the core modules, so
 the adapter (refusal mapping, versions, positions, scheduling), not CRBasic rules.
 """
 
-from .assertions import required
 from pathlib import Path
 
 import pytest
@@ -12,6 +11,7 @@ import pytest
 from opencrbasic import formatting
 from opencrbasic.lsp.session import display_text
 
+from .assertions import required
 from .lspclient import LspClient
 
 pytestmark = pytest.mark.server
@@ -418,6 +418,7 @@ def test_feature_rename_reads_freshness_through_the_given_source(tmp_path):
     """LSP-R2a: the server passes the open buffers on top of the disk, so a buffer edited after
     the analysis is stale even though the analysed overlays and the disk still agree."""
     from lsprotocol import types
+
     from opencrbasic.analysis import AnalysisRequest, analyze
     from opencrbasic.lsp import features
     from opencrbasic.sources import DiskSource, OverlaySource

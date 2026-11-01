@@ -2,9 +2,18 @@
 
 A native re-implementation of Campbell Scientific's CRBasic pre-compilers for the CR6, CR1000X,
 CR300 and CR350 dataloggers (`CR6Comp.exe`, `cr1000xcomp.exe`, `cr300comp.exe`, `cr350comp.exe`),
-with a language server and a VS Code client. It runs on Linux, macOS and Windows with only Python
-3.15+, no Wine and no Windows binaries. **Version 1.0** ([release record](docs/release-1.0.md)) is
-for internal use only and is not published or redistributed ([legal notes](docs/legal.md)).
+with a language server. It runs on Linux, macOS and Windows with only Python 3.15+, no Wine and no
+Windows binaries. It is MIT licensed and not affiliated with Campbell Scientific; provenance and
+what this repository deliberately leaves out are in the [legal notes](docs/legal.md). Version 1.0:
+[release record](docs/release-1.0.md).
+
+```bash
+pip install opencrbasic           # crbc, the compiler
+pip install "opencrbasic[lsp]"    # also crbc-lsp, the language server
+```
+
+The VS Code extension lives in [open-crbasic-vsix](https://github.com/UtrechtUniversity/open-crbasic-vsix);
+agent skills for writing CRBasic in [open-crbasic-skills](https://github.com/UtrechtUniversity/open-crbasic-skills).
 
 Status, measured against the real compilers: `PROGRESS.md`. Design and the v1.0 milestones:
 [`PLAN.md`](PLAN.md#v10-milestones).
@@ -13,9 +22,10 @@ Status, measured against the real compilers: `PROGRESS.md`. Design and the v1.0 
 
 - **Gated profiles: CR6 and CR1000X.** On these, v1.0 gates the reference verdict in the relevant
   area (the FirnMelt/GEUS instruction set and language constructs), the execution mode, and the
-  first error for realistic mistakes on relevant rules, measured on the repository programs, the 507
+  first error for realistic mistakes on relevant rules, measured on the FirnMelt programs, the 507
   CRBasic help examples, the 66 GEUS programs, the saved fuzz replay and fresh `--relevant` fuzz
-  seeds. One relevant-area false accept is known: a `Sub` name that is also another routine's
+  seeds. The help examples and GEUS programs are not redistributed here; see
+  [tests/corpus/README.md](tests/corpus/README.md) for running against local copies. One relevant-area false accept is known: a `Sub` name that is also another routine's
   parameter, used as a value. CR300 and CR350 are best effort: measured and kept, not gated (human
   decision 2026-10-24).
 - **Outputs.** stdout, the message file, `-s`, `-u`, `-p`/`-i`, `-l`/`-c` and the CR6 TDF (`-z`) are
@@ -50,10 +60,10 @@ reference crashes are never counted as verdicts.
 
 ## Versions
 
-- The package version (`pyproject.toml`), `opencrbasic.__version__` and the VS Code extension
-  (`vscode/package.json`) are one number, released together (`tests/test_versions.py`). Major: a
-  change to the drop-in contract or a gated verdict policy; minor: new checks, notices or features;
-  patch: fixes.
+- The package version (`pyproject.toml`) and `opencrbasic.__version__` are one number
+  (`tests/test_versions.py`). Major: a change to the drop-in contract or a gated verdict policy;
+  minor: new checks, notices or features; patch: fixes. The VS Code extension has its own version
+  and checks `analysis.API_VERSION` at startup.
 - `analysis.API_VERSION` (now 2) versions the editor facade; the language server refuses to start
   with another (`docs/lsp-api.md`). `checks.SCHEMA_VERSION` (now 2) versions the `--report` JSON.
   Each is bumped only on an incompatible change.
@@ -61,17 +71,18 @@ reference crashes are never counted as verdicts.
 ## Use
 
 Python dependencies are managed with [uv](https://docs.astral.sh/uv/). The package itself has
-no runtime dependencies; the `dev` group adds pytest and pefile (for the reverse-engineering
-tools). Keep the environment outside the repository tree (`.envrc` does this with direnv):
+no runtime dependencies; the `dev` group adds pytest, pefile (for the reverse-engineering tools),
+pygls, pyrefly and pre-commit.
 
 ```bash
-cd opencrbasic
-export UV_PROJECT_ENVIRONMENT="$HOME/.uv-envs/opencrbasic"   # or: direnv allow
 uv sync                              # environment from uv.lock
+uv run pre-commit install            # ruff, pyrefly and file hygiene on every commit
 uv run crbc Program.CR6              # compile
-uv run pytest -q                     # tests
+uv run pytest -q -n auto             # tests
 uv tool install .                    # optional: `crbc` on PATH outside the project
 ```
+
+Contributor and agent conventions: [AGENTS.md](AGENTS.md).
 
 `crbc` is a drop-in for `CR6Comp.exe` (`docs/cli.md`):
 
@@ -114,8 +125,9 @@ result.tables          # list of tdf.TdfTable (Status, DataTables, DataTableInfo
 
 `parser.parse_file()` gives the syntax tree (`syntax.py`) for other tools.
 
-In this repository, `CR6COMP=opencrbasic uv run verify.py` (from `scripts/`) compiles every
-program with opencrbasic instead of the exe.
+[openloggernet](https://github.com/UtrechtUniversity/open-loggernet) uses opencrbasic when
+`CR6COMP=opencrbasic` is set, and the FirnMelt station repository compiles every program with it in
+CI.
 
 ## Editor support
 
@@ -123,7 +135,7 @@ program with opencrbasic instead of the exe.
 setting selects the CR6 profile (default) or CR1000X, CR300 or CR350. It reports the compiler's
 diagnostics and offers hover, completion, signature help, outline, folding, go to definition,
 references, highlighting, rename, formatting and quick fixes. Its highlighting names are the CR6 ones.
-A small VS Code client is in [`vscode/`](vscode/README.md). Setup, settings, feature limits and the
+The VS Code client is [open-crbasic-vsix](https://github.com/UtrechtUniversity/open-crbasic-vsix). Setup, settings, feature limits and the
 host-tested status are in [`docs/lsp-user-guide.md`](docs/lsp-user-guide.md). It also shows the
 opencrbasic checks and, with `opencrbasic.coverageNotices`, the coverage notices. The editor features
 were host-tested in VS Code on macOS (T-01 to T-18, `LSP_TO_BE_TESTED.md`); the check and notice display
@@ -145,6 +157,10 @@ everything is checked differentially:
 | `tools/artifact_matrix.py` | every output file per profile and option set, with a baseline gate |
 | `tools/inventory.py` | the CR6 evidence inventory and the coverage-notice table |
 | `uv run pytest -q` | unit tests, corpus parse tests, TDF fixtures |
+
+The tools that run the real compilers need them in a local, git-ignored `compiler/` directory
+(copy `CR6Comp.exe`, `cr1000xcomp.exe`, `cr300comp.exe` and `cr350comp.exe` from a CRBasic Editor
+install) and Wine on macOS and Linux.
 
 Differential and replay runs default to reporting differences without failing on known gaps. Use
 the gates when a nonzero exit is required:
@@ -181,3 +197,10 @@ tools/        oracle, difftest, tdftest, fuzzing, table extraction, Ghidra scrip
 tests/        unit tests, corpora, fixtures
 docs/         behaviour of the original compilers, with evidence
 ```
+
+## Releasing
+
+Every push to `dev` that passes CI is published to TestPyPI as `<version>.dev<run number>`. A push
+to `main` publishes to PyPI when `version` in `pyproject.toml` (and `opencrbasic.__version__`) has
+not been released yet. Publishing uses PyPI trusted publishing from the `pypi` and `testpypi` GitHub
+environments; no API token is stored in the repository.

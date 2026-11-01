@@ -27,7 +27,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("function", help="decompiled function name, e.g. FUN_005077e0")
     ap.add_argument("--decomp", type=Path, default=ROOT / "scratch" / "re" / "CR6Comp.decomp.c")
-    ap.add_argument("--exe", type=Path, default=ROOT.parent / "compiler" / "CR6Comp.exe")
+    ap.add_argument("--exe", type=Path, default=ROOT / "compiler" / "CR6Comp.exe")
     args = ap.parse_args()
 
     pe = pefile.PE(str(args.exe), fast_load=True)

@@ -1,0 +1,2 @@
+' fuzz: seed=repo/Shunt_tester.CR6 ops=drop_argument class=message_diff
+		+ "  current=" + FormatFloat(Shunt_Current_A, "%.4f") + " A" _

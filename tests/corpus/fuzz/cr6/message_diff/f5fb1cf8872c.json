@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/f5fb1cf8872c.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SBD_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "change_keyword_case",
+    "add_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "f5fb1cf8872c.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: \t\tCall LogResult(\"AcquireIridiumSignal\", Ok, \"rssi=\" + FormatLong(IridiumRSSI, \"%d\") + \" avail=\" + IIF(IridiumNetworkAvailable, \"1\", \"0\",(1+2))).",
+  "theirs": "f5fb1cf8872c.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: RunTxTests .\nline 3: If illegally occurs before BeginProg."
+}

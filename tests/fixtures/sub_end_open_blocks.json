@@ -1,0 +1,359 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-p1_two_open",
+   "logger": "cr6",
+   "source": "Public D As Long\n\nSub S\n  Select Case 1\n    Case 7\n      If 1 = 1 Then\n        D = 1\nEndSub\n  EndSelect\n  EndIf\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: If without EndIf inside of Sub.\nline 9: EndSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-p1_two_open",
+   "logger": "cr1000x",
+   "source": "Public D As Long\n\nSub S\n  Select Case 1\n    Case 7\n      If 1 = 1 Then\n        D = 1\nEndSub\n  EndSelect\n  EndIf\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: If without EndIf inside of Sub.\nline 9: EndSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-p1_two_open",
+   "logger": "cr300",
+   "source": "Public D As Long\n\nSub S\n  Select Case 1\n    Case 7\n      If 1 = 1 Then\n        D = 1\nEndSub\n  EndSelect\n  EndIf\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: If without EndIf inside of Sub.\nline 9: EndSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-p1_two_open",
+   "logger": "cr350",
+   "source": "Public D As Long\n\nSub S\n  Select Case 1\n    Case 7\n      If 1 = 1 Then\n        D = 1\nEndSub\n  EndSelect\n  EndIf\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: If without EndIf inside of Sub.\nline 9: EndSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-p2_inline_if",
+   "logger": "cr6",
+   "source": "Public D As Long\n\nSub S\n  If 1 = 1 Then D = 1\n  D = 2\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-p2_inline_if",
+   "logger": "cr1000x",
+   "source": "Public D As Long\n\nSub S\n  If 1 = 1 Then D = 1\n  D = 2\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-p2_inline_if",
+   "logger": "cr300",
+   "source": "Public D As Long\n\nSub S\n  If 1 = 1 Then D = 1\n  D = 2\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-p2_inline_if",
+   "logger": "cr350",
+   "source": "Public D As Long\n\nSub S\n  If 1 = 1 Then D = 1\n  D = 2\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-p3_if_closed_then_open",
+   "logger": "cr6",
+   "source": "Public D As Long\n\nSub S\n  If 1 = 1 Then\n    D = 1\n  EndIf\n  If 1 = 1 Then\n    D = 2\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr1000x-p3_if_closed_then_open",
+   "logger": "cr1000x",
+   "source": "Public D As Long\n\nSub S\n  If 1 = 1 Then\n    D = 1\n  EndIf\n  If 1 = 1 Then\n    D = 2\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr300-p3_if_closed_then_open",
+   "logger": "cr300",
+   "source": "Public D As Long\n\nSub S\n  If 1 = 1 Then\n    D = 1\n  EndIf\n  If 1 = 1 Then\n    D = 2\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr350-p3_if_closed_then_open",
+   "logger": "cr350",
+   "source": "Public D As Long\n\nSub S\n  If 1 = 1 Then\n    D = 1\n  EndIf\n  If 1 = 1 Then\n    D = 2\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr6-p4_endsub_eof",
+   "logger": "cr6",
+   "source": "Public D As Long\n\nSub S\n  If 1 = 1 Then\n    D = 1\nEndSub\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr1000x-p4_endsub_eof",
+   "logger": "cr1000x",
+   "source": "Public D As Long\n\nSub S\n  If 1 = 1 Then\n    D = 1\nEndSub\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr300-p4_endsub_eof",
+   "logger": "cr300",
+   "source": "Public D As Long\n\nSub S\n  If 1 = 1 Then\n    D = 1\nEndSub\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr350-p4_endsub_eof",
+   "logger": "cr350",
+   "source": "Public D As Long\n\nSub S\n  If 1 = 1 Then\n    D = 1\nEndSub\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr6-p5_sub_block_in_prog",
+   "logger": "cr6",
+   "source": "Public D As Long\n\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    If 1 = 1 Then\n      D = 3\n    EndIf\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr1000x-p5_sub_block_in_prog",
+   "logger": "cr1000x",
+   "source": "Public D As Long\n\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    If 1 = 1 Then\n      D = 3\n    EndIf\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr300-p5_sub_block_in_prog",
+   "logger": "cr300",
+   "source": "Public D As Long\n\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    If 1 = 1 Then\n      D = 3\n    EndIf\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr350-p5_sub_block_in_prog",
+   "logger": "cr350",
+   "source": "Public D As Long\n\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    If 1 = 1 Then\n      D = 3\n    EndIf\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr6-p7_do_if",
+   "logger": "cr6",
+   "source": "Public D As Long\n\nSub S\n  Do While D < 3\n    If 1 = 1 Then\n      D = D + 1\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr1000x-p7_do_if",
+   "logger": "cr1000x",
+   "source": "Public D As Long\n\nSub S\n  Do While D < 3\n    If 1 = 1 Then\n      D = D + 1\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr300-p7_do_if",
+   "logger": "cr300",
+   "source": "Public D As Long\n\nSub S\n  Do While D < 3\n    If 1 = 1 Then\n      D = D + 1\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr350-p7_do_if",
+   "logger": "cr350",
+   "source": "Public D As Long\n\nSub S\n  Do While D < 3\n    If 1 = 1 Then\n      D = D + 1\nEndSub\n\nBeginProg\n  Scan (1,Sec,3,0)\n    S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr6-t4_sub_select_endsub_then_endselect_prog",
+   "logger": "cr6",
+   "source": "Public D\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\nEndSelect\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 7: EndSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-t4_sub_select_endsub_then_endselect_prog",
+   "logger": "cr1000x",
+   "source": "Public D\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\nEndSelect\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 7: EndSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-t4_sub_select_endsub_then_endselect_prog",
+   "logger": "cr300",
+   "source": "Public D\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\nEndSelect\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 7: EndSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-t4_sub_select_endsub_then_endselect_prog",
+   "logger": "cr350",
+   "source": "Public D\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\nEndSelect\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 7: EndSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-t5_endsub_then_endselect_in_prog",
+   "logger": "cr6",
+   "source": "Public D\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n  EndSelect\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 9: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr1000x-t5_endsub_then_endselect_in_prog",
+   "logger": "cr1000x",
+   "source": "Public D\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n  EndSelect\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 9: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr300-t5_endsub_then_endselect_in_prog",
+   "logger": "cr300",
+   "source": "Public D\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n  EndSelect\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 9: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr350-t5_endsub_then_endselect_in_prog",
+   "logger": "cr350",
+   "source": "Public D\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n  EndSelect\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 9: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr6-t6_if_open_endselect",
+   "logger": "cr6",
+   "source": "Public D\nSub S\n  If 1 = 1 Then\n    D = 1\nEndSub\nEndSelect\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: EndSelect w/o Select"
+  },
+  {
+   "id": "cr1000x-t6_if_open_endselect",
+   "logger": "cr1000x",
+   "source": "Public D\nSub S\n  If 1 = 1 Then\n    D = 1\nEndSub\nEndSelect\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: EndSelect w/o Select"
+  },
+  {
+   "id": "cr300-t6_if_open_endselect",
+   "logger": "cr300",
+   "source": "Public D\nSub S\n  If 1 = 1 Then\n    D = 1\nEndSub\nEndSelect\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: EndSelect w/o Select\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-t6_if_open_endselect",
+   "logger": "cr350",
+   "source": "Public D\nSub S\n  If 1 = 1 Then\n    D = 1\nEndSub\nEndSelect\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: EndSelect w/o Select\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-t7_select_open_endif",
+   "logger": "cr6",
+   "source": "Public D\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\nEndIf\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 7: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-t7_select_open_endif",
+   "logger": "cr1000x",
+   "source": "Public D\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\nEndIf\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 7: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-t7_select_open_endif",
+   "logger": "cr300",
+   "source": "Public D\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\nEndIf\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 7: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-t7_select_open_endif",
+   "logger": "cr350",
+   "source": "Public D\nSub S\n  Select Case 1\n    Case 7\n      D = 1\nEndSub\nEndIf\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 7: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-t8_nested_endselect",
+   "logger": "cr6",
+   "source": "Public D\nSub S\n  If 1 = 1 Then\n    Select Case 1\n    Case 7\n      D = 1\nEndSub\nEndSelect\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub.\nline 8: EndSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-t8_nested_endselect",
+   "logger": "cr1000x",
+   "source": "Public D\nSub S\n  If 1 = 1 Then\n    Select Case 1\n    Case 7\n      D = 1\nEndSub\nEndSelect\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub.\nline 8: EndSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-t8_nested_endselect",
+   "logger": "cr300",
+   "source": "Public D\nSub S\n  If 1 = 1 Then\n    Select Case 1\n    Case 7\n      D = 1\nEndSub\nEndSelect\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub.\nline 8: EndSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-t8_nested_endselect",
+   "logger": "cr350",
+   "source": "Public D\nSub S\n  If 1 = 1 Then\n    Select Case 1\n    Case 7\n      D = 1\nEndSub\nEndSelect\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub.\nline 8: EndSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-t11_endsub_sel_ok_endsel_in_sub",
+   "logger": "cr6",
+   "source": "Public D\nSub S\n  If 1 = 1 Then\n    Select Case 1\n    Case 7\n      D = 1\n    EndSelect\n  EndIf\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-t11_endsub_sel_ok_endsel_in_sub",
+   "logger": "cr1000x",
+   "source": "Public D\nSub S\n  If 1 = 1 Then\n    Select Case 1\n    Case 7\n      D = 1\n    EndSelect\n  EndIf\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-t11_endsub_sel_ok_endsel_in_sub",
+   "logger": "cr300",
+   "source": "Public D\nSub S\n  If 1 = 1 Then\n    Select Case 1\n    Case 7\n      D = 1\n    EndSelect\n  EndIf\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-t11_endsub_sel_ok_endsel_in_sub",
+   "logger": "cr350",
+   "source": "Public D\nSub S\n  If 1 = 1 Then\n    Select Case 1\n    Case 7\n      D = 1\n    EndSelect\n  EndIf\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

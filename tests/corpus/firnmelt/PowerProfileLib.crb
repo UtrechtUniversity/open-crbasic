@@ -1,0 +1,268 @@
+#If Section = "ConstTable" Then
+    Const SeqTickSecs = 5
+    Const MainScanSecs = 15
+    Const ProfileHistoryDays = 7
+
+    Const MinQuietPercent = 25
+
+    Const MeasUnitsSummer = 5
+    Const MeasUnitsConservative = 15
+    Const MeasUnitsDire = 60
+
+    Const SbdDaysSummer = 1
+    Const SbdDaysConservative = 3
+    Const SbdDaysDire = 7
+
+    Const FinAppDaysSummer = 1
+    Const FinAppDaysConservative = 3
+    Const FinAppDaysDire = 0
+
+    Const DireEnterV25 = 12.405 ' see architecture.md#power
+    Const DireLeaveV25 = 12.505
+    Const ConservativeEnterV25 = 12.60
+    Const SummerEnterV25 = 12.75
+    Const V25TempCoeff = 0.001
+    Const FinAppMinTempC = -25.0
+    Const FinAppDropMaxV = 0.5
+    Const ClockValidFromYear = 2026
+#EndIf
+
+#If Section = "Definitions" Then
+
+    Const DaySecs = UnitSecs * UnitsPerDay
+    Const MinQuietSamples = (DaySecs / MainScanSecs) * MinQuietPercent / 100
+
+    #If SeqTickSecs > UnitSecs Then
+        ERROR__STATIC_ASSERT__SeqTickSecs_exceeds_UnitSecs
+    #EndIf
+
+    #If (DireEnterV25 >= DireLeaveV25) OR (DireLeaveV25 >= ConservativeEnterV25) OR (ConservativeEnterV25 >= SummerEnterV25) Then
+        ERROR__STATIC_ASSERT__V25_thresholds_out_of_order
+    #EndIf
+
+    Const ProfileSummer = 0
+    Const ProfileConservative = 1
+    Const ProfileDire = 2
+
+    Const SeqLowPower = 1
+    Const SeqComms = 2
+    Const SeqFinApp = 3
+    Const SeqSlotCount = 3
+
+    Public PowerProfile As Long
+    Public ProfileOverride As Long = -1
+
+    Public NowSec As Long
+    Public SecOfDay As Long
+    Public UnitOfDay As Long
+    Public UnitIndex As Long
+    Public DayIndex As Long
+    Public PowerRTime(9) As Long
+
+    Public PowerBattV
+    Public AmbientTempC
+    Public AmbientForDecision
+    Public DecisionTempC
+    Public HighPowerActive As Boolean
+    Public FinAppLoadOn As Boolean
+    Public FinAppDropV
+    Public FinAppDayActive As Boolean
+
+    Public PowerClockValid As Boolean
+
+    Public PrevDayBattMinQuiet
+    Public PrevDayBattMin
+    Public PrevDayQuietSamples
+    Public PrevDayBattMinFinApp
+    Public PrevDayFinAppSamples
+    Public PrevDayFinAppDropV
+    Public PrevDayDecisionV
+    Public PrevDayDecisionTempC
+    Public PrevDayV25
+
+    Dim MeasUnitsByProfile(3) As Long = {MeasUnitsSummer, MeasUnitsConservative, MeasUnitsDire}
+    Dim SbdDaysByProfile(3) As Long = {SbdDaysSummer, SbdDaysConservative, SbdDaysDire}
+    Dim FinAppDaysByProfile(3) As Long = {FinAppDaysSummer, FinAppDaysConservative, FinAppDaysDire}
+
+    Dim SampleUnit = 1
+    Dim NotQuiet As Boolean
+    Dim NotFinAppSample As Boolean
+    Dim FinAppLatchedDay As Long
+    Dim LastRunUnit(SeqSlotCount) As Long
+    Dim PowerTimeStr As String * 30
+
+    Units PowerBattV = Volts
+    Units AmbientForDecision = C
+    Units DecisionTempC = C
+
+    DataTable(DailyPower,True,ProfileHistoryDays)
+        DataInterval(0,DaySecs,Sec,10)
+        Minimum(1,PowerBattV,IEEE4,NotQuiet,False)
+        FieldNames("BattMinQuiet")
+        Minimum(1,PowerBattV,IEEE4,False,False)
+        FieldNames("BattMin")
+        Average(1,PowerBattV,IEEE4,False)
+        FieldNames("BattMean")
+        Maximum(1,PowerBattV,IEEE4,False,False)
+        FieldNames("BattMax")
+        Totalize(1,SampleUnit,IEEE4,NotQuiet)
+        FieldNames("QuietSamples")
+        Minimum(1,PowerBattV,IEEE4,NotFinAppSample,False)
+        FieldNames("BattMinFinApp")
+        Totalize(1,SampleUnit,IEEE4,NotFinAppSample)
+        FieldNames("FinAppSamples")
+        Sample(1,FinAppDropV,IEEE4)
+        FieldNames("FinAppDrop")
+        Minimum(1,AmbientForDecision,FP2,False,False)
+        FieldNames("AmbMin")
+        Average(1,AmbientForDecision,FP2,False)
+        FieldNames("AmbMean")
+        Maximum(1,AmbientForDecision,FP2,False,False)
+        FieldNames("AmbMax")
+        Average(1,DecisionTempC,FP2,False)
+        FieldNames("DecTempMean")
+        Sample(1,PowerProfile,Long)
+        FieldNames("Profile")
+    EndTable
+#EndIf
+
+#If Section = "Functions" Then
+
+    Sub ReadPreviousDay
+        PrevDayBattMinQuiet = DailyPower.BattMinQuiet(1,1)
+        PrevDayBattMin = DailyPower.BattMin(1,1)
+        PrevDayQuietSamples = DailyPower.QuietSamples(1,1)
+        PrevDayDecisionTempC = DailyPower.DecTempMean(1,1)
+        PrevDayBattMinFinApp = DailyPower.BattMinFinApp(1,1)
+        PrevDayFinAppSamples = DailyPower.FinAppSamples(1,1)
+        PrevDayFinAppDropV = DailyPower.FinAppDrop(1,1)
+
+        PrevDayDecisionV = NAN
+        If PrevDayQuietSamples >= MinQuietSamples Then PrevDayDecisionV = PrevDayBattMinQuiet
+        If (PrevDayFinAppSamples >= MinQuietSamples) AND (PrevDayFinAppDropV <> NAN) Then
+            If (PrevDayDecisionV = NAN) OR (PrevDayBattMinFinApp + PrevDayFinAppDropV < PrevDayDecisionV) Then
+                PrevDayDecisionV = PrevDayBattMinFinApp + PrevDayFinAppDropV
+            EndIf
+        EndIf
+        If PrevDayDecisionV = NAN Then PrevDayDecisionV = PrevDayBattMin
+        PrevDayV25 = PrevDayDecisionV + V25TempCoeff * (25 - PrevDayDecisionTempC)
+    EndSub
+
+    Sub RestorePowerProfile
+        Call ReadPreviousDay
+        If ProfileOverride >= 0 Then
+            PowerProfile = ProfileOverride
+            ExitSub
+        EndIf
+        PowerProfile = ProfileDire
+        If PrevDayV25 > DireLeaveV25 Then PowerProfile = ProfileConservative
+        If PrevDayV25 > SummerEnterV25 Then PowerProfile = ProfileSummer
+    EndSub
+
+    Sub InitPowerProfile
+        Dim I As Long
+        PowerClockValid = False
+        AmbientTempC = NAN
+        AmbientForDecision = NAN
+        DecisionTempC = NAN
+        HighPowerActive = False
+        FinAppLoadOn = False
+        FinAppDropV = NAN
+        FinAppDayActive = False
+        FinAppLatchedDay = -1
+        For I = 1 To SeqSlotCount
+            LastRunUnit(I) = -1
+        Next I
+        Call RestorePowerProfile
+    EndSub
+
+    Sub UpdatePowerClock
+        RealTime(PowerRTime)
+        PowerTimeStr = FormatLong(PowerRTime(1),"%04u") + "-" + FormatLong(PowerRTime(2),"%02u") _
+                       + "-" + FormatLong(PowerRTime(3),"%02u") + " " + FormatLong(PowerRTime(4),"%02u") _
+                       + ":" + FormatLong(PowerRTime(5),"%02u") + ":" + FormatLong(PowerRTime(6),"%02u")
+        NowSec = SecsSince1990(PowerTimeStr,4)
+        DayIndex = NowSec INTDV DaySecs
+        SecOfDay = NowSec MOD DaySecs
+        UnitOfDay = SecOfDay INTDV UnitSecs
+        UnitIndex = DayIndex * UnitsPerDay + UnitOfDay
+        PowerClockValid = (PowerRTime(1) >= ClockValidFromYear)
+    EndSub
+
+    Sub UpdatePowerInputs(BattV, PanelTempC, BoxTempC)
+        PowerBattV = BattV
+        AmbientForDecision = AmbientTempC
+        If AmbientForDecision = NAN Then AmbientForDecision = PanelTempC
+        DecisionTempC = BoxTempC
+        If DecisionTempC = NAN Then DecisionTempC = AmbientForDecision
+    EndSub
+
+    Function MeasIntervalUnits() As Long
+        Return MeasUnitsByProfile(PowerProfile + 1)
+    EndFunction
+
+    Function SbdPeriodDays() As Long
+        Return SbdDaysByProfile(PowerProfile + 1)
+    EndFunction
+
+    Function FinAppPeriodDays() As Long
+        Return FinAppDaysByProfile(PowerProfile + 1)
+    EndFunction
+
+    Function DueNow(SeqIndex As Long, IntervalUnits As Long, OffsetUnits As Long) As Boolean
+        DueNow = False
+        If NOT PowerClockValid Then ExitFunction
+        If IntervalUnits <= 0 Then ExitFunction
+        If (UnitIndex <> LastRunUnit(SeqIndex)) AND (((UnitIndex - OffsetUnits) MOD IntervalUnits) = 0) Then
+            LastRunUnit(SeqIndex) = UnitIndex
+            DueNow = True
+        EndIf
+    EndFunction
+
+    Sub LatchFinAppDay
+        Dim PeriodDays As Long
+        PeriodDays = FinAppPeriodDays()
+        FinAppDayActive = False
+        If PeriodDays <= 0 Then ExitSub
+        FinAppDayActive = ((DayIndex MOD PeriodDays) = 0) AND (AmbientForDecision > FinAppMinTempC)
+    EndSub
+
+    Sub EvaluatePowerProfile
+        Call ReadPreviousDay
+        If ProfileOverride >= 0 Then
+            PowerProfile = ProfileOverride
+            ExitSub
+        EndIf
+
+        Select Case PowerProfile
+            Case ProfileSummer
+                If PrevDayV25 < ConservativeEnterV25 Then PowerProfile = ProfileConservative
+            Case ProfileConservative
+                If PrevDayV25 < DireEnterV25 Then
+                    PowerProfile = ProfileDire
+                ElseIf PrevDayV25 > SummerEnterV25 Then
+                    PowerProfile = ProfileSummer
+                EndIf
+            Case Else
+                If PrevDayV25 > DireLeaveV25 Then PowerProfile = ProfileConservative
+        EndSelect
+    EndSub
+
+    Sub RecordFinAppDrop(LoadedV, UnloadedV)
+        Dim Drop
+        Drop = UnloadedV - LoadedV
+        If (Drop >= 0) AND (Drop <= FinAppDropMaxV) Then FinAppDropV = Drop
+    EndSub
+
+    Sub UpdatePowerProfile
+        NotQuiet = HighPowerActive OR FinAppLoadOn
+        NotFinAppSample = HighPowerActive OR (NOT FinAppLoadOn)
+        CallTable DailyPower
+        If DailyPower.Output(1,1) Then Call EvaluatePowerProfile
+
+        If PowerClockValid AND (DayIndex <> FinAppLatchedDay) Then
+            FinAppLatchedDay = DayIndex
+            Call LatchFinAppDay
+        EndIf
+    EndSub
+#EndIf

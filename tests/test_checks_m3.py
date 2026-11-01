@@ -25,7 +25,7 @@ def test_check_evidence(case, tmp_path):
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x"])
 def test_firnmelt_programs_have_no_findings(logger):
     """Each firing on `crbasic/` programs is fixed or justified (PLAN M3): there are none."""
-    root = Path(__file__).resolve().parents[2] / "crbasic"
+    root = Path(__file__).resolve().parents[1] / "tests" / "corpus" / "firnmelt"
     for path in sorted(root.glob("*.CR6")):
         result = compile_file(path, profiles.get(logger), display_name=path.name, provenance=False)
         if result.ok:
@@ -33,11 +33,12 @@ def test_firnmelt_programs_have_no_findings(logger):
 
 
 @pytest.mark.slow
+@pytest.mark.skipif(not any((Path(__file__).parent / "corpus" / "chm").glob("*.CR6")), reason="CRBasic help examples not extracted; see tests/corpus/README.md")
 def test_corpus_findings_are_justified():
     """Accepted CHM examples and GEUS programs: the one firing is OCB001 on a GEUS `Alias
     D2out(3)= Status`, the case the check was made for (`docs/checker.md` "Alias names that are
     CRBasic names (round 33)")."""
-    repo = Path(__file__).resolve().parents[2]
+    repo = Path(__file__).resolve().parents[1]
     corpora = [("cr6", sorted((Path(__file__).parent / "corpus" / "chm").glob("*.CR6"))),
                ("cr1000x", sorted((repo / "examples" / "Logger Programs").rglob("*.CR1X")))]
     found = []

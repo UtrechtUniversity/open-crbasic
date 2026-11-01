@@ -7,11 +7,12 @@ from pathlib import Path
 
 import pytest
 
-from opencrbasic import bindings, navigation, quickfix as Q
+from opencrbasic import bindings, navigation
+from opencrbasic import quickfix as Q
 from opencrbasic.analysis import AnalysisRequest, analyze
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
 
 HEAD = "Public Temp, Humidity\nConst Kfoo = 5\nSub DoThing(p As Long)\n  Temp = p\nEndSub\n"
 
@@ -191,7 +192,7 @@ def test_missing_include_case_and_drive_forms(tmp_path):
     entry = write(tmp_path, "a.CR6", 'Include "CPU:lbi.CRB"\n' + prog("FromLib = 1"))
     acts = actions_for(run(entry), entry)
     assert acts and acts[0][1].edits[0].new_text == "Lib.crb"
-    edit = acts[0][1].edits[0]
+    acts[0][1].edits[0]
     assert fixed(entry, acts[0][1]).decode().startswith('Include "CPU:Lib.crb"')
     assert verdict_after(tmp_path, entry, acts[0][1]).ok
 

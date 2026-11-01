@@ -1,0 +1,13 @@
+' fuzz: seed=repo/SerialProbe.CR6 ops=add_argument class=mode_diff
+Dim DebugMsg As String * 200
+
+Const ProbeCRLF = CHR(13) + CHR(10)
+
+Sub ProbeLog(Message As String * 200)
+	DebugMsg = Message
+	SerialOut(ComUSB, DebugMsg + ProbeCRLF, "", 0, 0)
+EndSub
+
+BeginProg
+	SerialOpen(ComUSB, 115200, 0, 0, 1000,(1+2))
+	Call ProbeLog("")

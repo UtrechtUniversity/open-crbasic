@@ -20,7 +20,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 OPENCRBASIC_ROOT = Path(__file__).resolve().parent.parent
-REPO_ROOT = OPENCRBASIC_ROOT.parent
+REPO_ROOT = OPENCRBASIC_ROOT
 CHM_ROOT = REPO_ROOT / "extracted_chm"
 CHM_SUBDIRS = ["Instructions", "Info", "parameters", "terms"]
 OUT_DIR = OPENCRBASIC_ROOT / "tests" / "corpus" / "chm"

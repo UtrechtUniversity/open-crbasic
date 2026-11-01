@@ -1,0 +1,211 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-epi_scan_buffers-1",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (100,msec,19,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Insufficient Scan buffers to read EPI data, minimum is 20."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-2",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (100,msec,20,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-3",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (10,msec,0,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Insufficient Scan buffers to read EPI data, minimum is 100."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-4",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (1,msec,99,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Insufficient Scan buffers to read EPI data, minimum is 100."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-5",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (1,msec,100,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-6",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (500,msec,3,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Insufficient Scan buffers to read EPI data, minimum is 4."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-7",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (500,msec,4,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-8",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-9",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (2,Sec,0,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Output Rate.\nline 8: Maximum Scan interval for CDM_BridgeFilt is 1 Sec."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-10",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (1500,msec,0,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Output Rate.\nline 8: Maximum Scan interval for CDM_BridgeFilt is 1 Sec."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-11",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (60,Sec,0,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Output Rate.\nline 8: Maximum Scan interval for CDM_BridgeFilt is 1 Sec."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-12",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (750,msec,0,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Output Rate."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-13",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (300,msec,5,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Insufficient Scan buffers to read EPI data, minimum is 6.\nline 8: Invalid Output Rate."
+  },
+  {
+   "id": "cr6-epi_scan_buffers-14",
+   "logger": "cr6",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (300,msec,6,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Output Rate."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-1",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (100,msec,19,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Insufficient Scan buffers to read EPI data, minimum is 20."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-2",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (100,msec,20,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-3",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (10,msec,0,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Insufficient Scan buffers to read EPI data, minimum is 100."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-4",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (1,msec,99,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Insufficient Scan buffers to read EPI data, minimum is 100."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-5",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (1,msec,100,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-6",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (500,msec,3,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Insufficient Scan buffers to read EPI data, minimum is 4."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-7",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (500,msec,4,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-8",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-9",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (2,Sec,0,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Output Rate.\nline 8: Maximum Scan interval for CDM_BridgeFilt is 1 Sec."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-10",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (1500,msec,0,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Output Rate.\nline 8: Maximum Scan interval for CDM_BridgeFilt is 1 Sec."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-11",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (60,Sec,0,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Output Rate.\nline 8: Maximum Scan interval for CDM_BridgeFilt is 1 Sec."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-12",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (750,msec,0,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Output Rate."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-13",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (300,msec,5,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Insufficient Scan buffers to read EPI data, minimum is 6.\nline 8: Invalid Output Rate."
+  },
+  {
+   "id": "cr1000x-epi_scan_buffers-14",
+   "logger": "cr1000x",
+   "source": "Public Dest, Strain, StMeas, Z\nDataTable (S,True,-1)\n  DataInterval (0,1,Min,0)\n  Average (1,Strain,IEEE4,0)\nEndTable\nBeginProg\n  Scan (300,msec,6,0)\n    CDM_BridgeFilt (SPECTRUM103,1,Dest,1,mV200,1,4,1,1,1.0,0)\n    CallTable S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Output Rate."
+  }
+ ]
+}

@@ -9,11 +9,14 @@ import pytest
 from opencrbasic import compiler, profiles, tdf
 from opencrbasic.analysis import AnalysisRequest, analyze
 from opencrbasic.formatting import (
-    TextEdit, apply_edits, format_indentation, format_range, format_refusal,
+    apply_edits,
+    format_indentation,
+    format_range,
+    format_refusal,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
 CHM = sorted((ROOT / "tests" / "corpus" / "chm").glob("*.CR6"))
 BLANKS = re.compile(r"\s+")
 
@@ -288,6 +291,7 @@ def test_crbasic_programs_compile_identically_after_formatting(tmp_path, indent)
 
 
 @pytest.mark.slow
+@pytest.mark.skipif(not CHM, reason="CRBasic help examples not extracted; see tests/corpus/README.md")
 def test_chm_programs_compile_identically_after_formatting(tmp_path):
     """Every CHM program. Accepted: identical `ok`, mode, diagnostics, TDF bytes, table list.
     Rejected: only the blanks echoed in messages may differ (one program differs in more)."""

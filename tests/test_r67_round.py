@@ -9,7 +9,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 FIXTURES = Path(__file__).parent / "fixtures"
 CASES = [case for name in ("r67_ctype_typing", "r67_ftpclient_overflow", "r67_nested_builtin",
                            "r67_function_tail", "r67_measurement_reps", "r67_calltable_const",

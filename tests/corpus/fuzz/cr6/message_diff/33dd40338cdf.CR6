@@ -1,0 +1,2 @@
+' fuzz: seed=repo/Freezer_tester.CR6 ops=delete_line class=message_diff
+		ElseIf TimeIntoInterval(0,FinAppReadSecs,Sec) Then

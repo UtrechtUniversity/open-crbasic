@@ -1,0 +1,2 @@
+' fuzz: seed=repo/PowerBudget_tester.CR6 ops=change_interval+replace_argument class=message_diff
+		EndSelect

@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/a5ce30c8f8f6.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/TDR_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "replace_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "a5ce30c8f8f6.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Sub Identify((1+2), Last As Long).",
+  "theirs": "a5ce30c8f8f6.CR6 -- Compile Failed!\n\nline 3: Variable name 1+2 illegal, starts with a number."
+}

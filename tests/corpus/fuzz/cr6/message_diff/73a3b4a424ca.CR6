@@ -1,0 +1,4 @@
+' fuzz: seed=repo/SbdPayload_tester.CR6 ops=drop_argument+swap_adjacent class=message_diff
+Function ParamCopySum(Message As String * IridiumMaxMOMessageLength, MessageLength As Long) As Long
+	Dim I As Long
+	ParamCopySum = 0

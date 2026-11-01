@@ -28,9 +28,8 @@ handling.
 
 import collections
 import dataclasses
-
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import cast
 
@@ -150,7 +149,6 @@ def _split_text_segments(text: str) -> list[str]:
     """
     segments: list[str] = []
     current: list[str] = []
-    depth = 0
     in_string = False
     i = 0
     n = len(text)
@@ -558,7 +556,6 @@ def _split_colon_segments(tokens: list[Token]) -> list[list[Token]]:
     """Split a fully-tokenised logical line on every `:`."""
     segments: list[list[Token]] = []
     current: list[Token] = []
-    depth = 0
     eof = tokens[-1]
     for t in tokens[:-1]:
         if t.kind == "OP" and t.text == ":":
@@ -1851,7 +1848,7 @@ class _Parser:
             var = self._parse_atom(p, line, file)  # lvalue only; see `_parse_assignment_or_call`
             p.expect_op("=")
         except _ParseError:
-            raise _ParseError("For missing parameter")
+            raise _ParseError("For missing parameter") from None
         if p.at_end():
             raise _ParseError("For missing parameter")
         start = self._parse_expr(p, line, file)

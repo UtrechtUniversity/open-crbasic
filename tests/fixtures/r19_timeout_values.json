@@ -1,0 +1,891 @@
+{
+ "observation_date": "2026-10-17",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r19_timeout_values-g84",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,+2147483647)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g85",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,+2147483647)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-r19_timeout_values-g86",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,+2147483647)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-g87",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,+2147483647)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-g88",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,02147483647)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g89",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,02147483647)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-r19_timeout_values-g90",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,02147483647)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-g91",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,02147483647)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-g92",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,+2147483648)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g93",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,+2147483648)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g94",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,+2147483648)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-g95",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,+2147483648)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-g96",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&H7FFFFFFF)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g97",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&H7FFFFFFF)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-r19_timeout_values-g98",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&H7FFFFFFF)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-g99",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&H7FFFFFFF)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-g100",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&H80000000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g101",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&H80000000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g102",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&H80000000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-g103",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&H80000000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r19_timeout_values-g104",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&HFFFFFFF6)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g105",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&HFFFFFFF6)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-r19_timeout_values-g106",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&HFFFFFFF6)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-g107",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&HFFFFFFF6)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-g108",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&H00000001)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g109",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&H00000001)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g110",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&H00000001)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-g111",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,&H00000001)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r19_timeout_values-g112",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,FALSE)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g113",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,FALSE)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g114",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,FALSE)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-g115",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,FALSE)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r19_timeout_values-g116",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g117",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g118",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-g119",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r19_timeout_values-g120",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483646)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g121",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483646)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-r19_timeout_values-g122",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483646)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-g123",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483646)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-g124",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483646)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g125",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483646)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g126",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483646)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-g127",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483646)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r19_timeout_values-g128",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483649)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g129",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483649)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g130",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483649)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-g131",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483649)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-g132",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483650)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g133",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483650)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g134",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483650)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-g135",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483650)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r19_timeout_values-g136",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483775)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g137",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483775)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g138",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483775)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-g139",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483775)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-g140",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483776)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g141",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483776)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g142",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483776)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-g143",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483776)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-g144",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483777)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g145",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483777)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g146",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483777)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r19_timeout_values-g147",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,2147483777)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r19_timeout_values-g148",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483776)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g149",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483776)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g150",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483776)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-g151",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483776)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r19_timeout_values-g152",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483777)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g153",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483777)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g154",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483777)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r19_timeout_values-g155",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483777)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r19_timeout_values-g156",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-4294967295)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g157",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-4294967295)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g158",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-4294967295)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r19_timeout_values-g159",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-4294967295)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r19_timeout_values-g160",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483649.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g161",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483649.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g162",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483649.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r19_timeout_values-g163",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-2147483649.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r19_timeout_values-g164",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-g165",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr300-r19_timeout_values-g166",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr350-r19_timeout_values-g167",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nBeginProg\n  Scan (30,Sec,3,0)\n    PTemp = IfTime(0,1,Min)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,-1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+  },
+  {
+   "id": "cr6-r19_timeout_values-ca168",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 214748365\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-ca169",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 214748365\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-r19_timeout_values-ca170",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 214748365\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-ca171",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 214748365\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-ca172",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 214748365\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-ca173",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 214748365\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-r19_timeout_values-ca174",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 214748365\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-ca175",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 214748365\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-cb176",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483649\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-cb177",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483649\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r19_timeout_values-cb178",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483649\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-cb179",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483649\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r19_timeout_values-cb180",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483649\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-cb181",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483649\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r19_timeout_values-cb182",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483649\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-cb183",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483649\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r19_timeout_values-cc184",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-cc185",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be a constant integer:     Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)."
+  },
+  {
+   "id": "cr300-r19_timeout_values-cc186",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-cc187",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-cc188",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-cc189",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be a constant integer:     Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)."
+  },
+  {
+   "id": "cr300-r19_timeout_values-cc190",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-r19_timeout_values-cc191",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-r19_timeout_values-cd192",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 429496730\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-cd193",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 429496730\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r19_timeout_values-cd194",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 429496730\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-cd195",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 429496730\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r19_timeout_values-cd196",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 429496730\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-cd197",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 429496730\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r19_timeout_values-cd198",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 429496730\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-cd199",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = 429496730\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r19_timeout_values-cf208",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-cf209",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r19_timeout_values-cf210",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-cf211",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = FTPClient(Server,\"u\",\"p\",\"Test\",\"Ex5_\",2,0,-5,Min,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r19_timeout_values-cf212",
+   "logger": "cr6",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r19_timeout_values-cf213",
+   "logger": "cr1000x",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r19_timeout_values-cf214",
+   "logger": "cr300",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r19_timeout_values-cf215",
+   "logger": "cr350",
+   "source": "Public PTemp, BattV\nPublic Result(7)\nPublic Resp As String * 200\nPublic Hdr As String * 100\nConst Server = \"server.com\"\nConst KT = -2147483648\nBeginProg\n  Scan (30,Sec,3,0)\n    Result(5) = HTTPPut(\"http://x/\",\"f\",Resp,Hdr,0,1,Hr,8,KT)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

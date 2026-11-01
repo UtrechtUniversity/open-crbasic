@@ -1,0 +1,281 @@
+#If Section = "ConstTable" Then
+    Const IridiumComPort = ComC3
+    Const IridiumBaud = 19200
+    Const IridiumSerialFormat = 3
+    Const IridiumCommsMode = 0
+    Const IridiumSerialBuffer = 400
+    Const IridiumPowerSettle = 5
+    Const IridiumStartRetryMax = 5
+    Const IridiumRetryDelay = 10
+    Const IridiumMinRSSI = 2
+    Const IridiumSendTimeoutSecs = 600
+    Const IridiumSignalAcquireTimeoutSecs = 60
+    Const IridiumATTimeout = 50
+    Const IridiumPollTimeout = 20
+    Const IridiumWriteTimeout = 6200
+    Const IridiumSessionTimeoutSecs = 60
+#EndIf
+
+#If Section = "Definitions" Then
+    Const CRLF = CHR(13) + CHR(10)
+    Const CR = CHR(13)
+    Const LF = CHR(10)
+
+    Const IridiumSignalAcquireTimer = 4
+    Const IridiumSendTimer = 5
+    Const TimerResetAndStart = 2
+    Const TimerReadOnly = 4
+    Const IridiumSerialRespLength As Long = 400
+    Const IridiumMaxMOMessageLength As Long = 340
+
+    Const IridiumMOBufferLen As Long = IridiumMaxMOMessageLength + 1
+    Public IridiumMOBuffer As String * IridiumMOBufferLen
+
+    Public IridiumEnabled As Boolean = True
+    Public IsIridiumStarted As Boolean = False
+    ReadOnly IsIridiumStarted
+
+    Public IridiumIMEI As String * 40
+    Public IridiumRSSI As Long
+    Public IridiumNetworkAvailable As Boolean
+    Public IridiumNetworkAcquired As Boolean
+    Public IridiumWriteResult As Long
+    Public IridiumMOStatus As Long
+    Public IridiumMOMSN As Long
+    Public IridiumMTStatus As Long
+    Public IridiumMOBufferFlag As Long
+    Public IridiumTxOk As Boolean
+    Public IridiumIMEIOk As Boolean
+    Public IridiumSendElapsedSecs
+    Public IridiumSendBudgetActive As Boolean
+
+    Public IridiumSerialResp As String * IridiumSerialRespLength
+    Dim IridiumSerialChunk As String * IridiumSerialRespLength
+    Dim IridiumChecksumBytes As String * 4
+    Dim IridiumFields(6) As Long
+#EndIf
+
+#If Section = "Functions" Then
+    Function SendIridiumATCommand(ATCmd As String * 40, CheckFor As String * 20) As Boolean
+        LogDebug("> " + ATCmd)
+        SerialFlush(IridiumComPort)
+        SerialOut(IridiumComPort, ATCmd + CRLF, "", 0, 0)
+        SerialIn(IridiumSerialResp, IridiumComPort, IridiumATTimeout, -1, IridiumSerialRespLength)
+        LogDebug("< " + IridiumSerialResp)
+        If CheckFor = "" Then
+            Return True
+        EndIf
+        Return (InStr(1, IridiumSerialResp, CheckFor, 2) > 0)
+    EndFunction
+
+    Function StartIridiumModem() As Boolean
+        Dim I As Long
+        LogDebug("Starting Iridium modem")
+        Delay(0, IridiumPowerSettle, Sec)
+        SerialOpen(IridiumComPort, IridiumBaud, IridiumSerialFormat, 0, IridiumSerialBuffer, IridiumCommsMode)
+        If SerialInChk(IridiumComPort) = -1 Then
+            LogDebug("Failed to open Iridium serial port")
+            SerialClose(IridiumComPort)
+            Return False
+        EndIf
+        For I = 1 To IridiumStartRetryMax
+            If SendIridiumATCommand("AT", "OK") Then
+                If SendIridiumATCommand("ATE0", "OK") Then
+                    IsIridiumStarted = True
+                    LogDebug("Iridium modem started")
+                    Return True
+                EndIf
+                LogDebug("Modem did not acknowledge ATE0, echo may still be on")
+            EndIf
+            If I < IridiumStartRetryMax Then Delay(0, IridiumRetryDelay, Sec)
+        Next I
+        LogDebug("Failed to communicate with Iridium modem")
+        SerialClose(IridiumComPort)
+        Return False
+    EndFunction
+
+    Sub ParkIridiumPort
+        SerialOpen(IridiumComPort, IridiumBaud, IridiumSerialFormat, 0, IridiumSerialBuffer, IridiumCommsMode)
+        SerialClose(IridiumComPort)
+        IsIridiumStarted = False
+    EndSub
+
+    Function StopIridiumModem() As Boolean
+        LogDebug("Stopping Iridium modem")
+        SerialClose(IridiumComPort)
+        IsIridiumStarted = False
+        LogDebug("Iridium modem stopped")
+        Return True
+    EndFunction
+
+    Function GetIridiumIMEI() As Boolean
+        Dim Pos As Long
+        If NOT SendIridiumATCommand("AT+CGSN", "OK") Then
+            Return False
+        EndIf
+        Pos = InStr(1, IridiumSerialResp, CRLF, 4)
+        IridiumIMEI = Mid(IridiumSerialResp, Pos, 15)
+        LogDebug("Modem IMEI: " + IridiumIMEI)
+        Return True
+    EndFunction
+
+    Function GetIridiumSignal() As Boolean
+        Dim Pos As Long
+        If NOT SendIridiumATCommand("AT+CSQF", "+CSQF:") Then
+            Return False
+        EndIf
+        Pos = InStr(1, IridiumSerialResp, "+CSQF:", 4)
+        SplitStr(IridiumFields(), Mid(IridiumSerialResp, Pos, 20), "", 1, 0)
+        IridiumRSSI = IridiumFields(1)
+        LogDebug("Cached RSSI: " + FormatLong(IridiumRSSI, "%d"))
+        Return True
+    EndFunction
+
+    Function GetIridiumSystemTime() As Boolean
+        If NOT SendIridiumATCommand("AT-MSSTM", "-MSSTM:") Then
+            Return False
+        EndIf
+        IridiumNetworkAcquired = (InStr(1, IridiumSerialResp, "no network service", 2) = 0)
+        LogDebug("Network acquired: " + IridiumNetworkAcquired)
+        Return IridiumNetworkAcquired
+    EndFunction
+
+    Function GetIridiumBufferStatus() As Boolean
+        Dim Pos As Long
+        If NOT SendIridiumATCommand("AT+SBDSX", "+SBDSX: ") Then
+            Return False
+        EndIf
+        Pos = InStr(1, IridiumSerialResp, "+SBDSX: ", 4)
+        SplitStr(IridiumFields(), Mid(IridiumSerialResp, Pos, 40), "", 6, 0)
+        IridiumMOBufferFlag = IridiumFields(1)
+        LogDebug("MO buffer flag: " + FormatLong(IridiumMOBufferFlag, "%d"))
+        Return True
+    EndFunction
+
+    Function LatestIridiumIndicator(IndicatorFilter As String * 12) As String * 2
+        Dim Pos As Long
+        Dim NextPos As Long
+        Pos = 0
+        NextPos = InStr(1, IridiumSerialResp, IndicatorFilter, 4)
+        Do While NextPos > 0
+            Pos = NextPos
+            NextPos = InStr(Pos + 1, IridiumSerialResp, IndicatorFilter, 4)
+        Loop
+        If Pos = 0 Then
+            Return ""
+        EndIf
+        Return Mid(IridiumSerialResp, Pos, 1)
+    EndFunction
+
+    Sub ParseIridiumIndicators
+        Dim IndicatorValue As String * 2
+        IndicatorValue = LatestIridiumIndicator("+CIEV:0,")
+        If IndicatorValue <> "" Then
+            IridiumRSSI = IndicatorValue
+        EndIf
+        IndicatorValue = LatestIridiumIndicator("+CIEV:1,")
+        If IndicatorValue <> "" Then
+            IridiumNetworkAvailable = (IndicatorValue = "1")
+        EndIf
+    EndSub
+
+    Function IridiumNoRoomForSession() As Boolean
+        IridiumNoRoomForSession = IridiumSendBudgetActive AND _
+            (Timer(IridiumSendTimer, Sec, TimerReadOnly) > _
+            (IridiumSendTimeoutSecs - IridiumSessionTimeoutSecs))
+    EndFunction
+
+    Function AcquireIridiumSignal() As Boolean
+        LogDebug("Acquiring Iridium signal")
+        IridiumNetworkAvailable = False
+        IridiumRSSI = 0
+        If IridiumNoRoomForSession() Then Return False
+        If NOT SendIridiumATCommand("AT+CIER=1,1,1", "OK") Then Return False
+        Call ParseIridiumIndicators
+        Timer(IridiumSignalAcquireTimer, Sec, TimerResetAndStart)
+        Do Until IridiumNetworkAvailable AND (IridiumRSSI >= IridiumMinRSSI)
+            If (Timer(IridiumSignalAcquireTimer, Sec, TimerReadOnly) >= IridiumSignalAcquireTimeoutSecs) _
+                OR IridiumNoRoomForSession() Then
+                LogDebug("Signal acquisition timed out, RSSI: " + FormatLong(IridiumRSSI, "%d") + " available: " + IIF(IridiumNetworkAvailable, "1", "0"))
+                SendIridiumATCommand("AT+CIER=0,0,0", "OK")
+                Return False
+            EndIf
+            SerialIn(IridiumSerialResp, IridiumComPort, IridiumPollTimeout, -1, IridiumSerialRespLength)
+            Call ParseIridiumIndicators
+        Loop
+        LogDebug("Iridium signal acquired, RSSI: " + FormatLong(IridiumRSSI, "%d"))
+        SendIridiumATCommand("AT+CIER=0,0,0", "OK")
+        Return True
+    EndFunction
+
+    Function WriteIridiumMessage(MessageLength As Long) As Boolean
+        Dim Sum As Long
+        LogDebug("Writing SBD payload, bytes: " + FormatLong(MessageLength, "%u"))
+        If NOT SendIridiumATCommand("AT+SBDD2", CRLF + "0" + CRLF) Then
+            LogDebug("Failed to clear SBD buffers")
+            Return False
+        EndIf
+        If NOT SendIridiumATCommand("AT+SBDWB=" + FormatLong(MessageLength, "%u"), "READY") Then
+            LogDebug("Modem did not signal READY")
+            Return False
+        EndIf
+        Sum = CheckSum(IridiumMOBuffer, 23, MessageLength) MOD 65536
+        MoveBytes(IridiumChecksumBytes, 0, Sum, 2, 2)
+        SerialOutBlock(IridiumComPort, IridiumMOBuffer, MessageLength)
+        SerialOutBlock(IridiumComPort, IridiumChecksumBytes, 2)
+        SerialIn(IridiumSerialResp, IridiumComPort, IridiumWriteTimeout, "K", IridiumSerialRespLength)
+        LogDebug("< " + IridiumSerialResp)
+        SplitStr(IridiumFields(), IridiumSerialResp, "", 1, 0)
+        IridiumWriteResult = IridiumFields(1)
+        LogDebug("AT+SBDWB result: " + FormatLong(IridiumWriteResult, "%d"))
+        Return (IridiumWriteResult = 0)
+    EndFunction
+
+    Function RunIridiumSession() As Boolean
+        Dim Pos As Long
+        LogDebug("> AT+SBDI")
+        SerialFlush(IridiumComPort)
+        SerialOut(IridiumComPort, "AT+SBDI" + CRLF, "", 0, 0)
+        IridiumSerialResp = ""
+        Timer(IridiumSignalAcquireTimer, Sec, TimerResetAndStart)
+        Do
+            If Timer(IridiumSignalAcquireTimer, Sec, TimerReadOnly) >= IridiumSessionTimeoutSecs Then
+                LogDebug("No +SBDI response within session timeout")
+                Return False
+            EndIf
+            IridiumSerialChunk = ""
+            SerialIn(IridiumSerialChunk, IridiumComPort, IridiumPollTimeout, -1, IridiumSerialRespLength)
+            IridiumSerialResp = IridiumSerialResp + IridiumSerialChunk
+            Pos = InStr(1, IridiumSerialResp, "+SBDI: ", 4)
+        Loop Until (Pos > 0) AND (InStr(Pos, IridiumSerialResp, "OK", 2) > 0)
+        LogDebug("< " + IridiumSerialResp)
+        SplitStr(IridiumFields(), Mid(IridiumSerialResp, Pos, 80), "", 6, 0)
+        IridiumMOStatus = IridiumFields(1)
+        IridiumMOMSN = IridiumFields(2)
+        IridiumMTStatus = IridiumFields(3)
+        LogDebug("MO status: " + FormatLong(IridiumMOStatus, "%d") + " MOMSN: " + FormatLong(IridiumMOMSN, "%d"))
+        Return (IridiumMOStatus = 1)
+    EndFunction
+
+    Function SendIridiumMessage(MessageLength As Long) As Boolean
+        IridiumTxOk = False
+        IridiumSendBudgetActive = True
+        Timer(IridiumSendTimer, Sec, TimerResetAndStart)
+        If IsIridiumStarted Then
+            If WriteIridiumMessage(MessageLength) Then
+                Do
+                    If AcquireIridiumSignal() Then IridiumTxOk = RunIridiumSession()
+                    If IridiumTxOk Then ExitDo
+                    If Timer(IridiumSendTimer, Sec, TimerReadOnly) > _
+                        (IridiumSendTimeoutSecs - IridiumRetryDelay - IridiumSessionTimeoutSecs) Then ExitDo
+                    Delay(0, IridiumRetryDelay, Sec)
+                Loop
+            EndIf
+        EndIf
+        IridiumSendElapsedSecs = Timer(IridiumSendTimer, Sec, TimerReadOnly)
+        IridiumSendBudgetActive = False
+        LogDebug("SBD send ok=" + IIF(IridiumTxOk, "T", "F"))
+        Return IridiumTxOk
+    EndFunction
+
+#EndIf

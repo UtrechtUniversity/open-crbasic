@@ -2,13 +2,17 @@
 """Regenerate tests/fixtures/tdf_anonymous.json (docs/tdf-rules.md §9c) with the real compilers:
 `python3 tools/tdf_anonymous_fixture_gen.py`. Each case is run on all four loggers; the expected value
 is the user tables (name, size, fields) of the real TDF, `summarize()` below."""
-import hashlib, json, sys, tempfile
+import hashlib
+import json
+import sys
+import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "src"))
 import tdftest  # noqa: E402
+
 from opencrbasic import profiles, tdf  # noqa: E402
 
 FIX = HERE.parent / "tests" / "fixtures" / "tdf_anonymous.json"

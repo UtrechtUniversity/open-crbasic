@@ -1,0 +1,4 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/InStrHeaderFilterTest.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/InStrHeaderFilterTest.CR6 ops=replace_argument class=message_diff
+IncludeSection("Functions", "CPU:BenchLib.crb")
+

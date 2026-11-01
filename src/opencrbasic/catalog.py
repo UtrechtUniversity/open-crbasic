@@ -6,8 +6,8 @@ from each logger's compiler by `tools/extract_tables.py`). There is no second in
 """
 
 import functools
-from dataclasses import dataclass
 from collections.abc import Iterator
+from dataclasses import dataclass
 
 from . import profiles
 

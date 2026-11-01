@@ -1,0 +1,14 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/PT1000_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/PT1000_tester.CR6 ops=delete_line class=message_diff
+IncludeSection("Definitions", "CPU:PT1000Lib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:PT1000Lib.crb")
+
+Const ReportTimer = 1
+Const TimerResetAndStart = 2
+Const TimerReadOnly = 4
+	LogDebug("PT1000Lib read | 4-wire, " + FormatLong(PT1000ExciteUA, "%d") + " uA excitation")

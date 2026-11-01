@@ -1,0 +1,331 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/PowerBudget_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/PowerBudget_tester.CR6 ops=replace_argument class=false_accept
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+ConstTable(GlobalConfigTable)
+	IncludeSection("ConstTable", "CPU:StationConfig.crb")
+
+	Const LowPowerRailMask = &B10
+
+	Const LowPowerSettleSecs = 10
+
+	Const ReportEverySecs = 5
+
+	Const FinAppSampleEverySecs = 60
+
+	Const ModemPollEverySecs = 15
+
+	IncludeSection("ConstTable", "CPU:PowerProfileLib.crb")
+	IncludeSection("ConstTable", "CPU:ShuntLib.crb")
+	IncludeSection("ConstTable", "CPU:AcclimaTDRLib.crb")
+	IncludeSection("ConstTable", "CPU:GeoPrecisionTStringLib.crb")
+	IncludeSection("ConstTable", "CPU:SnowVue10Lib.crb")
+	IncludeSection("ConstTable", "CPU:PT1000Lib.crb")
+	IncludeSection("ConstTable", "CPU:FinAppLib.crb")
+	IncludeSection("ConstTable", "CPU:SBDIridiumLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:StationConfig.crb")
+IncludeSection("Definitions", "CPU:ShuntLib.crb")
+IncludeSection("Definitions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Definitions", "CPU:GeoPrecisionTStringLib.crb")
+IncludeSection("Definitions", "CPU:SnowVue10Lib.crb")
+IncludeSection("Definitions", "CPU:PT1000Lib.crb")
+IncludeSection("Definitions", "CPU:FinAppLib.crb")
+IncludeSection("Definitions", "CPU:SBDIridiumLib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:ShuntLib.crb")
+IncludeSection("Functions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Functions", "CPU:GeoPrecisionTStringLib.crb")
+IncludeSection("Functions", "CPU:SnowVue10Lib.crb")
+IncludeSection("Functions", "CPU:PT1000Lib.crb")
+IncludeSection("Functions", "CPU:FinAppLib.crb")
+IncludeSection("Functions", "CPU:SBDIridiumLib.crb")
+
+Const StateCount = 10
+
+Public PBRequested As Long = 0
+Public PBState As Long = -1
+Public PBSettled As Long = 0
+Public PBRailOn As Boolean = False
+Public PBSecs As Long
+Public PBN As Long
+Public PBSumMv
+Public PBMinMv
+Public PBMaxMv
+Public PBSumBatt
+Public PBMark As Long
+Public PBNowMa
+Public PBMeanMa
+Public PBMinMa
+Public PBMaxMa
+
+Dim PBOk As Boolean
+Dim PBTick As Long
+Dim PBClear As Boolean
+Dim PBDoMark As Boolean
+Dim PBDoConfig As Boolean
+Dim PBName(StateCount) As String * 16 = {"all off", "rail idle", "pt1000 loop", "tdr loop", "string loop", _
+	"snowvue loop", "finapp idle", "finapp sample", "modem idle", "all on"}
+
+Dim MenuKey As String * 2
+Dim MenuPending As Boolean
+
+DataTable(PowerBudget_Samples,True,-1)
+	Sample(1,PBState,Long)
+	Sample(1,PBSettled,Long)
+	Sample(1,Shunt_mV,IEEE4)
+	Sample(1,Batt_volt,FP2)
+EndTable
+
+Function NeedsRail(S As Long) As Boolean
+	Return ((S = 1) OR (S = 3) OR (S = 4) OR (S = 5) OR (S = 9))
+EndFunction
+
+Function NeedsFinApp(S As Long) As Boolean
+	Return ((S = 6) OR (S = 7) OR (S = 9))
+EndFunction
+
+Function NeedsModem(S As Long) As Boolean
+	Return ((S = 8) OR (S = 9))
+EndFunction
+
+Function StateName(S As Long) As String * 16
+	If (S < 0) OR (S >= StateCount) Then Return "transition"
+	Return PBName(S + 1)
+EndFunction
+
+Sub ResetStats
+	PBSecs = 0
+	PBN = 0
+	PBSumMv = 0
+	PBMinMv = NAN
+	PBMaxMv = NAN
+	PBSumBatt = 0
+EndSub
+
+Sub LogStats(Label As String * 12)
+	LogDebug(Label + " S" + FormatLong(PBState, "%d") + " " + StateName(PBState) _
+		+ " t=" + FormatLong(PBSecs, "%4d") + "s" _
+		+ "  now " + FormatFloat(Shunt_mV, "%8.4f") + " mV " + FormatFloat(PBNowMa, "%6.1f") + " mA" _
+		+ " | mean " + FormatFloat(PBMeanMa, "%6.1f") _
+		+ " min " + FormatFloat(PBMinMa, "%6.1f") _
+		+ " max " + FormatFloat(UndeclaredFuzzName123, "%6.1f") + " mA" _
+		+ " n=" + FormatLong(PBN, "%d") _
+		+ " | batt " + FormatFloat(IIF(PBN > 0, PBSumBatt / PBN, Batt_volt), "%.3f") + " V")
+EndSub
+
+Sub ShowConfig
+	LogDebug("")
+	LogDebug("=============== CONFIG =================")
+	LogDebug(" shunt              " + FormatFloat(ShuntResistanceOhms, "%.3f") + " ohm, divider k=" _
+		+ FormatFloat(ShuntDividerK, "%.5f") + ", " + FormatFloat(ShuntMvToA * 1000, "%.1f") + " mA per mV")
+	LogDebug(" rail settle        " + FormatLong(LowPowerSettleSecs, "%d") + " s")
+	LogDebug(" finapp boot        " + FormatLong(FinAppPowerSettleSecs, "%d") + " s, sample every " _
+		+ FormatLong(FinAppSampleEverySecs, "%d") + " s in state 7")
+	LogDebug(" modem              free AT+CSQF every " + FormatLong(ModemPollEverySecs, "%d") _
+		+ " s; no session, no airtime")
+	LogDebug(" 1 Hz samples       table PowerBudget_Samples, kept while USB is unplugged")
+	LogDebug("========================================")
+EndSub
+
+Sub ShowMenu
+	LogDebug("")
+	LogDebug("================= MENU =================")
+	LogDebug(" 0  all off")
+	LogDebug(" 1  C2 rail on, sensors idle")
+	LogDebug(" 2  PT1000 measuring continuously, rail off")
+	LogDebug(" 3  TDR measuring continuously")
+	LogDebug(" 4  string measuring continuously")
+	LogDebug(" 5  SnowVue measuring continuously")
+	LogDebug(" 6  FinAPP powered, idle            150 s boot")
+	LogDebug(" 7  FinAPP powered, sampling")
+	LogDebug(" 8  modem powered, idle             no airtime")
+	LogDebug(" 9  all on: rail, FinAPP, modem")
+	LogDebug(" C  clear statistics     M  mark a reading     S  configuration")
+	LogDebug("========================================")
+	LogDebug("current state: S" + FormatLong(PBState, "%d") + " " + StateName(PBState))
+EndSub
+
+Sub PollMenu
+	MenuKey = ReadMenuKey()
+	If MenuKey = "" Then ExitSub
+
+	Select Case MenuKey
+		Case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
+			PBRequested = MenuKey
+			LogDebug(">>> state " + MenuKey + " " + StateName(PBRequested) + " requested")
+		Case "C"
+			PBClear = True
+		Case "M"
+			PBDoMark = True
+		Case "S"
+			PBDoConfig = True
+		Case Else
+			MenuPending = True
+	EndSelect
+EndSub
+
+Sub ApplyState(Target As Long)
+	Dim Want As Boolean
+
+	PBSettled = 0
+	LogDebug("--- entering S" + FormatLong(Target, "%d") + " " + StateName(Target) + " ---")
+
+	Want = NeedsModem(Target)
+	If (NOT Want) AND IsIridiumStarted Then PBOk = StopIridiumModem()
+
+	Want = NeedsFinApp(Target)
+	If (NOT Want) AND FinApp_Powered Then
+		PBOk = StopFinApp()
+		LogDebug("finapp powered off, answered=" + IIF(PBOk, "1", "0") _
+			+ " polls=" + FormatLong(FinApp_StopPollsUsed, "%d"))
+	EndIf
+
+	Want = NeedsRail(Target)
+	If (NOT Want) AND PBRailOn Then
+		WriteIO(LowPowerRailMask, 0)
+		PBRailOn = False
+		LogDebug("rail off")
+	EndIf
+	If Want AND (NOT PBRailOn) Then
+		WriteIO(LowPowerRailMask, LowPowerRailMask)
+		PBRailOn = True
+		LogDebug("rail on, settling " + FormatLong(LowPowerSettleSecs, "%d") + " s")
+		Delay(1, LowPowerSettleSecs, Sec)
+	EndIf
+
+	Want = NeedsFinApp(Target)
+	If Want AND (NOT FinApp_Powered) Then
+		LogDebug("finapp powering up, " + FormatLong(FinAppPowerSettleSecs, "%d") + " s boot")
+		PBOk = StartFinApp()
+		LogDebug("finapp answered=" + IIF(PBOk, "1", "0") + " ident=" + FinApp_Ident)
+	EndIf
+
+	Want = NeedsModem(Target)
+	If Want AND (NOT IsIridiumStarted) Then
+		PBOk = StartIridiumModem()
+		LogDebug("modem started=" + IIF(PBOk, "1", "0"))
+	EndIf
+
+	PBState = Target
+	PBTick = 0
+	PBClear = True
+	PBSettled = 1
+	LogDebug("--- S" + FormatLong(Target, "%d") + " " + StateName(Target) + " ready, statistics reset ---")
+EndSub
+
+BeginProg
+	LogDebug("")
+	LogDebug("FirnMelt power budget tester starting")
+	SerialFlush(ComUSB)
+	WriteIO(LowPowerRailMask, 0)
+	Call ResetStats
+	Call ShowConfig
+	Call ShowMenu
+
+	Scan (1,Sec,0,0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+
+		PanelTemp (PTemp,15000)
+		Battery (Batt_volt)
+
+		Call PollMenu
+
+		PBOk = SampleShunt()
+		PBNowMa = Shunt_Current_A * 1000
+
+		If PBClear Then
+			PBClear = False
+			Call ResetStats
+		EndIf
+
+		If (PBSettled = 1) AND (Shunt_mV <> NAN) Then
+			PBSecs = PBSecs + 1
+			PBN = PBN + 1
+			PBSumMv = PBSumMv + ABS(Shunt_mV)
+			PBSumBatt = PBSumBatt + Batt_volt
+			If (PBMinMv = NAN) OR (ABS(Shunt_mV) < PBMinMv) Then PBMinMv = ABS(Shunt_mV)
+			If (PBMaxMv = NAN) OR (ABS(Shunt_mV) > PBMaxMv) Then PBMaxMv = ABS(Shunt_mV)
+		EndIf
+
+		If PBN > 0 Then
+			PBMeanMa = PBSumMv / PBN * ShuntMvToA * 1000
+			PBMinMa = PBMinMv * ShuntMvToA * 1000
+			PBMaxMa = PBMaxMv * ShuntMvToA * 1000
+		Else
+			PBMeanMa = NAN
+			PBMinMa = NAN
+			PBMaxMa = NAN
+		EndIf
+
+		If PBDoMark Then
+			PBDoMark = False
+			PBMark = PBMark + 1
+			Call LogStats("MARK " + FormatLong(PBMark, "%02d"))
+		ElseIf (PBSettled = 1) AND (PBSecs MOD ReportEverySecs = 0) AND (PBSecs > 0) Then
+			Call LogStats("    ")
+		ElseIf (PBSettled = 0) AND (TimeIntoInterval(0, ReportEverySecs, Sec)) Then
+			Call LogStats("  ..")
+		EndIf
+
+		If PBDoConfig Then
+			PBDoConfig = False
+			Call ShowConfig
+		EndIf
+
+		If MenuPending Then
+			MenuPending = False
+			SerialFlush(ComUSB)
+			Call ShowMenu
+		EndIf
+
+		CallTable Shunt_Data
+		CallTable PowerBudget_Samples
+	NextScan
+
+	SlowSequence
+	Scan (1,Sec,0,0)
+		If PBRequested <> PBState Then Call ApplyState(PBRequested)
+
+		PBTick = PBTick + 1
+		Select Case PBState
+			Case 2
+				PBOk = SamplePT1000()
+				CallTable PT1000_Data
+			Case 3
+				SampleTDRs()
+				CallTable Acclima_Data
+			Case 4
+				PBOk = SampleTString()
+				PBOk = SampleTStringSupply()
+				CallTable TString_Data
+			Case 5
+				PBOk = SamplePT1000()
+				PBOk = SampleSnowVue(PT1000_Temp_C)
+				CallTable SnowVue_Data
+				CallTable SnowVue_Diagnostics
+			Case 7
+				If PBTick MOD FinAppSampleEverySecs = 1 Then
+					PBOk = SampleFinApp()
+					CallTable FinApp_Data
+					LogDebug("finapp sample newData=" + IIF(FinApp_NewData, "1", "0") _
+						+ " counter=" + FormatFloat(FinApp_WaterCounter, "%.0f"))
+				EndIf
+			Case 8, 9
+				If PBTick MOD ModemPollEverySecs = 1 Then PBOk = GetIridiumSignal()
+		EndSelect
+	NextScan
+EndProg

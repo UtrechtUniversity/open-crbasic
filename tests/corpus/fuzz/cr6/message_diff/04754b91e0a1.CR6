@@ -1,0 +1,11 @@
+' fuzz: seed=repo/SbdPayload_tester.CR6 ops=replace_argument+insert_whitespace class=message_diff
+EndSub
+
+Sub TestByt  eFidelity
+	Dim I As Long
+	Dim Ok As Boolean
+	SbdCursor = 1
+	For I = 0 To 254
+		Call SbdPutRaw(I, 1)
+	Next I
+	SbdPayloadLen = SbdCursor - 1

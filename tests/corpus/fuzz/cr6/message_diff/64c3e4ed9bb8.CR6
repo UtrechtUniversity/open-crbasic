@@ -1,0 +1,29 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/RailsOff.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/RailsOff.CR6 ops=swap_arguments class=message_diff
+
+	IncludeSection("ConstTable", "CPU:ShuntLib.crb")
+	IncludeSection("ConstTable", "CPU:PT1000Lib.crb")
+EndConstTable
+
+IncludeSection( "CPU:ShuntLib.crb","Definitions")
+IncludeSection("Definitions", "CPU:PT1000Lib.crb")
+
+Public TapU1_V
+	Minimum(1,Shunt_mV,IEEE4,False,False)
+	Maximum(1,Shunt_mV,IEEE4,False,False)
+	Average(1,PTemp,FP2,False)
+EndTable
+
+IncludeSection("Functions", "CPU:ShuntLib.crb")
+IncludeSection("Functions", "CPU:PT1000Lib.crb")
+
+BeginProg
+	SW12(SW12_1,0)
+	SW12(SW12_2,0)
+
+	Scan (BattScanSecs,Sec,0,0)
+		If DisableWDog Then
+			WDogTimer = WatchdogTimer(10,Min)
+		Else
+			WDogTimer = WatchdogTimer(0,Sec)
+		EndIf

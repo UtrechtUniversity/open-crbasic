@@ -1,0 +1,238 @@
+Const ProbeCount = 3
+Const DetectorIds = 4
+Const MasterValues = 6
+Const DetectorValues = 5
+Const WaterValues = 5
+Const DetectorFields = DetectorIds * DetectorValues
+Const Groups = DetectorIds + 2
+Const RawSize = 9
+Const PollSecs = 300
+Const RecoverySecs = 4
+Const DefaultAddress = "F"
+Const VendorTag = "Finapp"
+Const AddressAlphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+
+Const PollTimer = 1
+Const TimerResetAndStart = 2
+Const TimerReadOnly = 4
+
+Public PTemp, Batt_volt
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+Public DoDiscover As Boolean = False
+Public ConsoleOn As Boolean = False
+Public PollNumber As Long
+
+Public Address(ProbeCount) As String * 2
+Public Ident(ProbeCount) As String * 64
+
+Public Probe As Long
+Public RowAddress As String * 2
+Public RowIdent As String * 64
+Public Returned(Groups) As Long
+Public Master(MasterValues)
+Public Detector(DetectorFields)
+Public Water(WaterValues)
+Public Unanswered As Long
+Public ProbeSecs As Long
+Public LoggerBatt
+
+Dim Raw(RawSize)
+Dim RawCount As Long
+Dim IdentScratch As String * 64
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+DataTable(FinApp_Poll,True,-1)
+	Sample(1,PollNumber,Long)
+	Sample(1,Probe,Long)
+	Sample(1,RowAddress,String)
+	Sample(1,RowIdent,String)
+	Sample(Groups,Returned(),Long)
+	Sample(MasterValues,Master(),IEEE4)
+	Sample(DetectorFields,Detector(),IEEE4)
+	Sample(WaterValues,Water(),IEEE4)
+	Sample(1,Unanswered,Long)
+	Sample(1,ProbeSecs,Long)
+	Sample(1,LoggerBatt,FP2)
+	Sample(1,PTemp,FP2)
+EndTable
+
+Sub AskIdent(A As String * 2)
+	IdentScratch = ""
+	Select Case Probe
+		Case 1
+			SDI12Recorder(IdentScratch,C1,A,"I!",1,0)
+		Case 2
+			SDI12Recorder(IdentScratch,C3,A,"I!",1,0)
+		Case 3
+			SDI12Recorder(IdentScratch,C5,A,"I!",1,0)
+	EndSelect
+EndSub
+
+Function IsFinApp() As Boolean
+	Return (InStr(1,IdentScratch,VendorTag,2) > 0)
+EndFunction
+
+Sub FindAddress
+	Dim I As Long
+	Dim A As String * 2
+
+	Address(Probe) = ""
+	Ident(Probe) = ""
+	Call AskIdent(DefaultAddress)
+	If IsFinApp() Then
+		Address(Probe) = DefaultAddress
+	Else
+		For I = 1 To Len(AddressAlphabet)
+			A = Mid(AddressAlphabet,I,1)
+			Call AskIdent(A)
+			If IsFinApp() Then
+				Address(Probe) = A
+				ExitFor
+			EndIf
+		Next I
+	EndIf
+	If Address(Probe) <> "" Then Ident(Probe) = IdentScratch
+	If ConsoleOn Then LogDebug("P" + FormatLong(Probe,"%d") + " address=[" + Address(Probe) + "] ident=[" + Ident(Probe) + "]")
+EndSub
+
+Sub ReadGroup(Cmd As String * 8)
+	Dim I As Long
+
+	For I = 1 To RawSize
+		Raw(I) = NAN
+	Next I
+	Select Case Probe
+		Case 1
+			SDI12Recorder(Raw(),C1,Address(1),Cmd,1,0,-1)
+		Case 2
+			SDI12Recorder(Raw(),C3,Address(2),Cmd,1,0,-1)
+		Case 3
+			SDI12Recorder(Raw(),C5,Address(3),Cmd,1,0,-1)
+	EndSelect
+	RawCount = 0
+	For I = 1 To RawSize
+		If Raw(I) <> NAN Then RawCount = RawCount + 1
+	Next I
+	If Raw(1) = NAN Then
+		Unanswered = Unanswered + 1
+		Delay(1,RecoverySecs,Sec)
+	EndIf
+EndSub
+
+Sub ClearRow
+	Dim I As Long
+
+	RowAddress = Address(Probe)
+	RowIdent = ""
+	Unanswered = 0
+	For I = 1 To Groups
+		Returned(I) = 0
+	Next I
+	For I = 1 To MasterValues
+		Master(I) = NAN
+	Next I
+	For I = 1 To DetectorFields
+		Detector(I) = NAN
+	Next I
+	For I = 1 To WaterValues
+		Water(I) = NAN
+	Next I
+EndSub
+
+Sub PollProbe
+	Dim G As Long
+	Dim I As Long
+	Dim Cmd As String * 8
+
+	Timer(PollTimer,Sec,TimerResetAndStart)
+	If Address(Probe) = "" Then Call FindAddress
+	Call ClearRow
+	If Address(Probe) = "" Then ExitSub
+
+	Call AskIdent(Address(Probe))
+	RowIdent = IdentScratch
+	If NOT IsFinApp() Then
+		Unanswered = Unanswered + 1
+		Delay(1,RecoverySecs,Sec)
+	EndIf
+
+	Call ReadGroup("M!")
+	Returned(1) = RawCount
+	For I = 1 To MasterValues
+		Master(I) = Raw(I)
+	Next I
+
+	For G = 1 To DetectorIds
+		Cmd = "M" + FormatLong(G,"%d") + "!"
+		Call ReadGroup(Cmd)
+		Returned(G + 1) = RawCount
+		For I = 1 To DetectorValues
+			Detector((G - 1) * DetectorValues + I) = Raw(I)
+		Next I
+	Next G
+
+	Call ReadGroup("M5!")
+	Returned(Groups) = RawCount
+	For I = 1 To WaterValues
+		Water(I) = Raw(I)
+	Next I
+EndSub
+
+Sub LogRow
+	Dim G As Long
+	Dim B As Long
+
+	LogDebug("poll " + FormatLong(PollNumber,"%d") + " P" + FormatLong(Probe,"%d") _
+	         + " addr=[" + RowAddress + "] unanswered=" + FormatLong(Unanswered,"%d") _
+	         + " secs=" + FormatLong(ProbeSecs,"%d") + " ident=[" + RowIdent + "]")
+	LogDebug("  M!  n=" + FormatLong(Returned(1),"%d") _
+	         + " cnt=" + FormatFloat(Master(1),"%.0f") + " batt=" + FormatFloat(Master(2),"%.0f") + "mV" _
+	         + " p=" + FormatFloat(Master(3),"%.0f") + "Pa t=" + FormatFloat(Master(4),"%.0f") + "mC" _
+	         + " v5=" + FormatFloat(Master(5),"%.0f") + " v6=" + FormatFloat(Master(6),"%.0f") _
+	         + " logger=" + FormatFloat(LoggerBatt,"%.2f") + "V")
+	For G = 1 To DetectorIds
+		B = (G - 1) * DetectorValues
+		LogDebug("  M" + FormatLong(G,"%d") + "! n=" + FormatLong(Returned(G + 1),"%d") _
+		         + " cnt=" + FormatFloat(Detector(B + 1),"%.0f") + " hv=" + FormatFloat(Detector(B + 2),"%.0f") + "mV" _
+		         + " acq=" + FormatFloat(Detector(B + 3),"%.0f") + "ms neutrons=" + FormatFloat(Detector(B + 4),"%.0f") _
+		         + " muons=" + FormatFloat(Detector(B + 5),"%.0f"))
+	Next G
+	LogDebug("  M5! n=" + FormatLong(Returned(Groups),"%d") _
+	         + " cnt=" + FormatFloat(Water(1),"%.0f") + " sm=" + FormatFloat(Water(2),"%.0f") _
+	         + " areal=" + FormatFloat(Water(3),"%.0f") + " local=" + FormatFloat(Water(4),"%.0f") _
+	         + " backup=" + FormatFloat(Water(5),"%.0f"))
+EndSub
+
+BeginProg
+	Scan(10,Sec,0,0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+		PanelTemp(PTemp,15000)
+		Battery(Batt_volt)
+	NextScan
+
+	SlowSequence
+	Scan(PollSecs,Sec,0,0)
+		If DoDiscover Then
+			DoDiscover = False
+			For Probe = 1 To ProbeCount
+				Address(Probe) = ""
+			Next Probe
+		EndIf
+		PollNumber = PollNumber + 1
+		For Probe = 1 To ProbeCount
+			Call PollProbe
+			ProbeSecs = Timer(PollTimer,Sec,TimerReadOnly)
+			LoggerBatt = Batt_volt
+			If ConsoleOn Then Call LogRow
+			CallTable FinApp_Poll
+		Next Probe
+	NextScan
+EndProg

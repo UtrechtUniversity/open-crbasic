@@ -1,0 +1,4 @@
+' fuzz: seed=repo/TDR_tester.CR6 ops=replace_argument class=message_diff
+
+Sub Identify((1+2), Last As Long)
+	For Address = First To Last

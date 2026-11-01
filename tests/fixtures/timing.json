@@ -1,0 +1,173 @@
+{
+ "observation_date": "2026-10-08",
+ "compiler": {
+  "exe": "CR6Comp.exe",
+  "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+ },
+ "cases": [
+  {
+   "id": "scan-sub-if-inline-delay",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nSub Zero\n  Scan(100,mSec,0,5)\n    PanelTemp(x,15000)\n    Delay(0,10,mSec)\n  NextScan\nEndSub\nBeginProg\n  PipeLineMode\n  Scan(1,Sec,0,0)\nPanelTemp(x,15000)\n Delay(0,10,mSec)\n Delay(1,10,mSec)\n If x=1 Then Delay(0,20,mSec)\n If x=1 Then Delay(0,30,mSec) Else Delay(0,40,mSec)\n Call Zero\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 4: Scan: 0 (Subroutine)\r\nline 5: PanelTemp = 1100\r\nline 5: PanelTemp = 1100\r\nline 6: Delay = 10100\r\n\r\nline 11: Scan: 1\r\nline 12: PanelTemp = 1100\r\nline 12: PanelTemp = 1100\r\nline 13: Delay = 10100\r\nline 15: Delay = 20100\r\nline 16: Delay = 30100\r\nline 16: Delay = 40100\r\n"
+  },
+  {
+   "id": "delay-units-wrap",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nBeginProg\n  PipeLineMode\n  Scan(1,Sec,0,0)\n Delay(0,100,Min)\n Delay(0,3,Sec)\n Delay(0,7,uSec)\n Delay(0,0,mSec)\n Delay(0,1.5,mSec)\n Delay(0,1,MSEC)\n Delay(0,250,USEC)\n Delay(0,50,sec)\n Delay(0,99,usec)\n Delay(0,35,min)\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 5: Scan: 0\r\nline 6: Delay = 1705032800\r\nline 7: Delay = 3000100\r\nline 8: Delay = 100\r\nline 10: Delay = 1600\r\nline 11: Delay = 1100\r\nline 12: Delay = 300\r\nline 13: Delay = 50000100\r\nline 14: Delay = 100\r\nline 15: Delay = 2100000100\r\n"
+  },
+  {
+   "id": "delay-sequential-untimed",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nBeginProg\n  Scan(1,Sec,0,0)\n Delay(0,10,mSec)\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 4: Scan: 0\r\nline 5: Delay = 10100\r\n"
+  },
+  {
+   "id": "meas-voltse",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nBeginProg\n  PipeLineMode\n  Scan(1,Sec,0,0)\n VoltSe(T(1),1,mV5000,1,0,0,15000,1,0)\n VoltSe(T(1),3,mV200C,4,1,100,250,1,0)\n VoltSe(T(1),2,mV1000C,U3,1,0,_60Hz,1,0)\n VoltSe(T(1),5,mV5000C,U2,True,2500,0,1,0)\n VoltSe(T(1),4,820,U5,0,333,50000,1,0)\n VoltSe(T(1),7,mV1000,U1,1,1,8333,1,0)\n VoltSe(T(1),6,mV200C,7,0,12345,_50Hz,1,0)\n VoltSe(T(1),2,804,99,2,1000,16667,1,0)\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 5: Scan: 0\r\nline 6: VoltSe = 1500\r\nline 7: VoltSe = 19900\r\nline 8: VoltSe = 54300\r\nline 9: VoltSe = 22100\r\nline 10: VoltSe = 5200\r\nline 11: VoltSe = 7600\r\nline 12: VoltSe = 199300\r\nline 13: VoltSe = 5700\r\n"
+  },
+  {
+   "id": "meas-voltdiff",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nBeginProg\n  PipeLineMode\n  Scan(1,Sec,0,0)\n VoltDiff(T(1),1,mV5000,1,0,0,15000,1,0)\n VoltDiff(T(1),3,mV200C,4,1,100,250,1,0)\n VoltDiff(T(1),2,mV1000C,U3,1,0,_60Hz,1,0)\n VoltDiff(T(1),5,mV5000C,U2,True,2500,0,1,0)\n VoltDiff(T(1),4,820,U5,0,333,50000,1,0)\n VoltDiff(T(1),7,mV1000,U1,1,1,8333,1,0)\n VoltDiff(T(1),6,mV200C,7,0,12345,_50Hz,1,0)\n VoltDiff(T(1),2,804,99,2,1000,16667,1,0)\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 5: Scan: 0\r\nline 6: VoltDiff = 1500\r\nline 7: VoltDiff = 29700\r\nline 8: VoltDiff = 72400\r\nline 9: VoltDiff = 36000\r\nline 10: VoltDiff = 5200\r\nline 11: VoltDiff = 13200\r\nline 12: VoltDiff = 199300\r\nline 13: VoltDiff = 7600\r\n"
+  },
+  {
+   "id": "meas-tcse",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nBeginProg\n  PipeLineMode\n  Scan(1,Sec,0,0)\n TCSe(T(1),1,mV5000,1,TypeT,x,0,0,15000,1,0)\n TCSe(T(1),3,mV200C,4,TypeT,x,1,100,250,1,0)\n TCSe(T(1),2,mV1000C,U3,TypeT,x,1,0,_60Hz,1,0)\n TCSe(T(1),5,mV5000C,U2,TypeT,x,True,2500,0,1,0)\n TCSe(T(1),4,820,U5,TypeT,x,0,333,50000,1,0)\n TCSe(T(1),7,mV1000,U1,TypeT,x,1,1,8333,1,0)\n TCSe(T(1),6,mV200C,7,TypeT,x,0,12345,_50Hz,1,0)\n TCSe(T(1),2,804,99,TypeT,x,2,1000,16667,1,0)\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 5: Scan: 0\r\nline 6: TCSe = 1500\r\nline 7: TCSe = 19900\r\nline 8: TCSe = 54300\r\nline 9: TCSe = 22100\r\nline 10: TCSe = 5200\r\nline 11: TCSe = 7600\r\nline 12: TCSe = 199300\r\nline 13: TCSe = 5700\r\n"
+  },
+  {
+   "id": "meas-tcdiff",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nBeginProg\n  PipeLineMode\n  Scan(1,Sec,0,0)\n TCDiff(T(1),1,mV5000,1,TypeT,x,0,0,15000,1,0)\n TCDiff(T(1),3,mV200C,4,TypeT,x,1,100,250,1,0)\n TCDiff(T(1),2,mV1000C,U3,TypeT,x,1,0,_60Hz,1,0)\n TCDiff(T(1),5,mV5000C,U2,TypeT,x,True,2500,0,1,0)\n TCDiff(T(1),4,820,U5,TypeT,x,0,333,50000,1,0)\n TCDiff(T(1),7,mV1000,U1,TypeT,x,1,1,8333,1,0)\n TCDiff(T(1),6,mV200C,7,TypeT,x,0,12345,_50Hz,1,0)\n TCDiff(T(1),2,804,99,TypeT,x,2,1000,16667,1,0)\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 5: Scan: 0\r\nline 6: TCDiff = 1500\r\nline 7: TCDiff = 29700\r\nline 8: TCDiff = 72400\r\nline 9: TCDiff = 36000\r\nline 10: TCDiff = 5200\r\nline 11: TCDiff = 13200\r\nline 12: TCDiff = 199300\r\nline 13: TCDiff = 7600\r\n"
+  },
+  {
+   "id": "closed-pulse-excite",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nBeginProg\n  PipeLineMode\n  Scan(1,Sec,0,0)\n PulsePort(C1,-3)\n PulsePort(C1,49)\n PulsePort(C1,5000)\n PulsePort(C2,123456)\n ExciteV(U1,2500,0)\n ExciteV(U4,0,101)\n ExciteV(1,2500,12345)\n ExciteV(U1,2500,-3)\n PulseCount(T(1),2,U2,1,0,1,0)\n CS616(T(1),3,U1,U2,1,1,0)\n Calibrate(x)\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 5: Scan: 0\r\nline 6: PulsePort = 100\r\nline 7: PulsePort = 100\r\nline 8: PulsePort = 10100\r\nline 9: PulsePort = 247000\r\nline 10: ExciteV = 100\r\nline 11: ExciteV = 200\r\nline 12: ExciteV = 12400\r\nline 13: ExciteV = 100\r\nline 14: Pulsecount = 100\r\nline 15: CS616 = 1700\r\nline 16: Calibrate = 2000\r\nline 16: Calibrate = 7700\r\nline 16: Calibrate = 2000\r\nline 16: Calibrate = 7700\r\nline 16: Calibrate = 2000\r\nline 16: Calibrate = 7700\r\n"
+  },
+  {
+   "id": "closed-periodavg-wrap",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nBeginProg\n  PipeLineMode\n  Scan(1,Sec,0,0)\n PeriodAvg(T(1),1,mV5000,1,0,0,10,0,1,0)\n PeriodAvg(T(1),2,mV5000,1,0,0,10,7,1,0)\n PeriodAvg(T(1),1,mV5000,1,0,0,10,2500,1,0)\n PeriodAvg(T(1),1,mV5000,1,0,0,10,4294967,1,0)\n PeriodAvg(T(1),3,mV5000,1,0,0,10,2000000,1,0)\n PeriodAvg(T(1),1,mV5000,1,0,0,10,-5,1,0)\n PeriodAvg(T(1),1,mV5000,1,0,0,10,1.5,1,0)\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 5: Scan: 0\r\nline 6: PeriodAvg = 200\r\nline 7: PeriodAvg = 14200\r\nline 8: PeriodAvg = 2500200\r\nline 9: PeriodAvg = -96\r\nline 10: PeriodAvg = 1705032904\r\nline 11: PeriodAvg = -4800\r\nline 12: PeriodAvg = 1200\r\n"
+  },
+  {
+   "id": "closed-muxselect-pipeline",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nBeginProg\n  PipeLineMode\n  Scan(1,Sec,0,0)\n MuxSelect(C1,C2,1,1,0)\n MuxSelect(C1,C2,1,1,1)\n MuxSelect(C1,C2,2,4,2)\n MuxSelect(C1,C2,20,16,0)\n MuxSelect(C1,C2,5,2,3)\n MuxSelect(C1,C2,20,1,-1)\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 5: Scan: 0\r\nline 6: MuxSelect = 2100\r\nline 7: MuxSelect = 15000\r\nline 8: MuxSelect = 29200\r\nline 9: MuxSelect = 640900\r\nline 10: MuxSelect = 33100\r\nline 11: MuxSelect = 53000\r\n"
+  },
+  {
+   "id": "closed-sequential-untimed",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nBeginProg\n  Scan(1,Sec,0,0)\n WriteIO(0,0)\n MuxSelect(C1,C2,20,1,1)\n Delay(0,5,mSec)\n ExciteV(U1,2500,1000)\n PulsePort(C1,500)\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 4: Scan: 0\r\nline 8: ExciteV = 1100\r\nline 9: PulsePort = 1100\r\n"
+  },
+  {
+   "id": "closed-acpower",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nBeginProg\n  PipeLineMode\n  Scan(1,Sec,0,0)\n ACPower(T(),1,60,U1,1,120,U3,1,15,2)\n ACPower(T(),1,50,1,1,120,2,1,15,1)\n ACPower(T(),1,60,U1,1,120,2,1,15,0)\n ACPower(T(),2,50,U1,1,120,U3,1,15,1)\n ACPower(T(),3,60,1,1,120,U3,1,15,1)\n ACPower(T(),0,60,U1,1,120,2,1,15,3)\n ACPower(T(),4,50,U5,1,120,U1,1,15,2)\n ACPower(T(),1,60,U1,1,120,U3,1,15,-1)\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 5: Scan: 0\r\nline 6: ACPower = 1000\r\nline 6: ACPower = 51200\r\nline 6: ACPower = 34500\r\nline 6: ACPower = 51200\r\nline 6: ACPower = 34500\r\nline 6: ACPower = 51200\r\nline 6: ACPower = 34500\r\nline 7: ACPower = 1000\r\nline 7: ACPower = 61200\r\nline 7: ACPower = 278300\r\nline 7: ACPower = 61200\r\nline 7: ACPower = 278300\r\nline 8: ACPower = 1000\r\nline 8: ACPower = 51200\r\nline 8: ACPower = 34500\r\nline 9: ACPower = 1000\r\nline 9: ACPower = 61200\r\nline 9: ACPower = 41100\r\nline 9: ACPower = 61200\r\nline 9: ACPower = 41100\r\nline 9: ACPower = 61200\r\nline 9: ACPower = 41100\r\nline 10: ACPower = 1000\r\nline 10: ACPower = 51200\r\nline 10: ACPower = 231900\r\nline 10: ACPower = 51200\r\nline 10: ACPower = 34500\r\nline 10: ACPower = 51200\r\nline 10: ACPower = 231900\r\nline 10: ACPower = 51200\r\nline 10: ACPower = 34500\r\nline 10: ACPower = 51200\r\nline 10: ACPower = 231900\r\nline 10: ACPower = 51200\r\nline 10: ACPower = 34500\r\nline 11: ACPower = 1000\r\nline 11: ACPower = 51200\r\nline 11: ACPower = 34500\r\nline 11: ACPower = 51200\r\nline 11: ACPower = 231900\r\nline 12: ACPower = 1000\r\nline 12: ACPower = 61200\r\nline 12: ACPower = 41100\r\nline 12: ACPower = 61200\r\nline 12: ACPower = 41100\r\nline 13: ACPower = 1000\r\nline 13: ACPower = 51200\r\nline 13: ACPower = 34500\r\n"
+  },
+  {
+   "id": "delay-negative-wrap",
+   "source": "Public x,y(8),z,i\nPublic T(4)\nBeginProg\n  PipeLineMode\n  Scan(1,Sec,0,0)\n Delay(0,36,Min)\n Delay(0,-5,mSec)\n Delay(0,-5,Min)\n Delay(0,0.5,Sec)\n  NextScan\nEndProg\n",
+   "expected_times": "\r\nline 5: Scan: 0\r\nline 6: Delay = -2134967196\r\nline 7: Delay = -4996\r\nline 8: Delay = -299999996\r\nline 9: Delay = 500100\r\n"
+  },
+  {
+   "id": "therm-107-109",
+   "source": "Public T(40),V(40),R(40),x,y\nBeginProg\n Scan(1,Sec,0,0)\n Therm107(T(1),1,U3,U12,0,15000,1,0)\n Therm107(T(1),3,U3,U12,100,250,1,0)\n Therm107(T(1),2,U3,U12,5000,0,1,0)\n Therm107(T(1),1,U3,U12,1,300000,1,0)\n Therm108(T(1),1,U3,U12,0,15000,1,0)\n Therm108(T(1),3,U3,U12,100,250,1,0)\n Therm108(T(1),2,U3,U12,5000,0,1,0)\n Therm108(T(1),1,U3,U12,1,300000,1,0)\n Therm109(T(1),1,U3,U12,0,15000,1,0)\n Therm109(T(1),3,U3,U12,100,250,1,0)\n Therm109(T(1),2,U3,U12,5000,0,1,0)\n Therm109(T(1),1,U3,U12,1,300000,1,0)\n NextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: Therm107 = 2900\r\nline 5: Therm107 = 29600\r\nline 6: Therm107 = 24400\r\nline 7: Therm107 = 1700\r\nline 8: Therm108 = 2900\r\nline 9: Therm108 = 29600\r\nline 10: Therm108 = 24400\r\nline 11: Therm108 = 1700\r\nline 12: Therm109 = 2900\r\nline 13: Therm109 = 29600\r\nline 14: Therm109 = 24400\r\nline 15: Therm109 = 1700\r\n"
+  },
+  {
+   "id": "voltse-integ-floor",
+   "source": "Public T(40),V(40),R(40),x,y\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(V(1),40,mV200,1,0,50,187500,1,0)\n VoltSe(V(1),40,mV200,1,0,50,188000,1,0)\n VoltSe(V(1),40,mV200,1,0,50,5000000,1,0)\n NextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: VoltSe = 35300\r\nline 5: VoltSe = 35300\r\nline 6: VoltSe = 35300\r\n"
+  },
+  {
+   "id": "bridge-brhalf",
+   "source": "Public T(40),V(40),R(40),x,y\nBeginProg\n Scan(1,Sec,0,0)\n BrHalf(T(1),1,mV5000,U1,U3,1,2500,False,0,15000,1,0)\n BrHalf(T(1),5,mV200C,U2,U3,2,2500,True,100,250,1,0)\n BrHalf(T(1),3,mV200C,5,U3,0,1000,True,3000,0,1,0)\n NextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: BrHalf = 1500\r\nline 5: BrHalf = 20100\r\nline 5: BrHalf = 20100\r\nline 5: BrHalf = 10100\r\nline 6: BrHalf = 8300\r\nline 6: BrHalf = 8300\r\nline 6: BrHalf = 8300\r\n"
+  },
+  {
+   "id": "bridge-brhalf3w",
+   "source": "Public T(40),V(40),R(40),x,y\nBeginProg\n Scan(1,Sec,0,0)\n BrHalf3W(T(1),1,mV5000,U1,U3,1,2500,False,0,15000,1,0)\n BrHalf3W(T(1),5,mV200C,U2,U3,3,2500,True,100,250,1,0)\n NextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: BrHalf3W = 2900\r\nline 5: BrHalf3W = 60000\r\nline 5: BrHalf3W = 40000\r\n"
+  },
+  {
+   "id": "bridge-brhalf4w",
+   "source": "Public T(40),V(40),R(40),x,y\nBeginProg\n Scan(1,Sec,0,0)\n BrHalf4W(T(1),1,mV5000,mV5000,U1,U3,1,2500,False,False,0,15000,1,0)\n BrHalf4W(T(1),3,mV5000,mV200C,U1,U8,2,1000,True,True,100,250,1,0)\n BrHalf4W(T(1),2,mV200C,mV5000,3,U8,100,1000,True,False,0,0,1,0)\n NextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: BrHalf4W = 2900\r\nline 5: BrHalf4W = 79700\r\nline 5: BrHalf4W = 39900\r\nline 6: BrHalf4W = 12900\r\n"
+  },
+  {
+   "id": "bridge-brfull",
+   "source": "Public T(40),V(40),R(40),x,y\nBeginProg\n Scan(1,Sec,0,0)\n BrFull(T(1),1,mV5000,U1,U3,1,2500,False,False,0,15000,1,0)\n BrFull(T(1),5,mV200C,U1,U3,2,2500,True,True,100,250,1,0)\n BrFull(T(1),3,mV200C,U2,U3,3,1000,True,False,3000,0,1,0)\n BrFull(T(1),3,mV1000,U5,U8,0,1000,False,2,0,0,1,0)\n NextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: BrFull = 1500\r\nline 5: BrFull = 39900\r\nline 5: BrFull = 39900\r\nline 5: BrFull = 20000\r\nline 6: BrFull = 24700\r\nline 7: BrFull = 3200\r\nline 7: BrFull = 3200\r\nline 7: BrFull = 3200\r\n"
+  },
+  {
+   "id": "bridge-brfull6w",
+   "source": "Public T(40),V(40),R(40),x,y\nBeginProg\n Scan(1,Sec,0,0)\n BrFull6W(T(1),1,mV5000,mV5000,U1,U3,1,2500,False,False,0,15000,1,0)\n BrFull6W(T(1),5,mV1000C,mV5000,U1,U3,2,2500,True,True,100,250,1,0)\n NextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: BrFull6W = 2900\r\nline 5: BrFull6W = 79700\r\nline 5: BrFull6W = 79700\r\nline 5: BrFull6W = 39900\r\n"
+  },
+  {
+   "id": "bridge-resistance",
+   "source": "Public T(40),V(40),R(40),x,y\nBeginProg\n Scan(1,Sec,0,0)\n Resistance(T(1),1,mV5000,U1,U3,1,2500,False,False,0,15000,1,0)\n Resistance(T(1),5,mV200C,U1,U3,2,2500,True,True,100,250,1,0)\n Resistance(T(1),3,mV200,3,U8,100,1000,False,True,3000,0,1,0)\n NextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: Resistance = 1500\r\nline 4: Resistance = 1500\r\nline 5: Resistance = 19700\r\nline 5: Resistance = 39400\r\nline 5: Resistance = 19700\r\nline 5: Resistance = 39400\r\nline 5: Resistance = 19700\r\nline 5: Resistance = 19700\r\nline 6: Resistance = 8200\r\nline 6: Resistance = 24500\r\n"
+  },
+  {
+   "id": "autorange-se",
+   "source": "Public T(40),V(40),R(40),x,y\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(V(1),1,AutoRange,U1,0,0,15000,1,0)\n VoltSe(V(1),3,AutoRangeC,U2,1,100,250,1,0)\n TCSe(V(1),2,AutoRange,5,TypeT,x,True,3000,0,1,0)\n NextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: VoltSe = 2800\r\nline 5: VoltSe = 23000\r\nline 6: TCSe = 19900\r\n"
+  },
+  {
+   "id": "autorange-diff",
+   "source": "Public T(40),V(40),R(40),x,y\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(V(1),1,AutoRange,U1,0,0,15000,1,0)\n VoltDiff(V(1),3,AutoRangeC,U5,True,100,250,1,0)\n TCDiff(V(1),2,AutoRange,3,TypeT,x,1,3000,60,1,0)\n TCDiff(V(1),7,AutoRangeC,U2,TypeT,x,0,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: VoltDiff = 2800\r\nline 5: VoltDiff = 35800\r\nline 6: TCDiff = 97300\r\nline 7: TCDiff = 13600\r\n"
+  },
+  {
+   "id": "acpower-other-freq",
+   "source": "Public T(40),x\nBeginProg\n Scan(1,Sec,0,0)\n ACPower(T(),1,1,U1,1,120,U3,1,15,1)\n ACPower(T(),1,1,1,1,120,3,1,15,1)\n ACPower(T(),1,13,U1,1,120,U3,1,15,1)\n ACPower(T(),1,13,1,1,120,3,1,15,1)\n ACPower(T(),1,24,U1,1,120,U3,1,15,1)\n ACPower(T(),1,24,1,1,120,3,1,15,1)\n ACPower(T(),1,55,U1,1,120,U3,1,15,1)\n ACPower(T(),1,55,1,1,120,3,1,15,1)\n ACPower(T(),1,100,U1,1,120,U3,1,15,1)\n ACPower(T(),1,100,1,1,120,3,1,15,1)\n ACPower(T(),1,101.7,U1,1,120,U3,1,15,1)\n ACPower(T(),1,101.7,1,1,120,3,1,15,1)\n ACPower(T(),1,400,U1,1,120,U3,1,15,1)\n ACPower(T(),1,400,1,1,120,3,1,15,1)\n ACPower(T(),1,2500,U1,1,120,U3,1,15,1)\n ACPower(T(),1,2500,1,1,120,3,1,15,1)\n ACPower(T(),2,45,U1,1,120,3,1,15,1)\n ACPower(T(),3,7,1,1,120,U3,1,15,1)\n NextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: ACPower = 1000\r\nline 4: ACPower = 2001200\r\nline 4: ACPower = 1005100\r\nline 4: ACPower = 2001200\r\nline 4: ACPower = 1005100\r\nline 5: ACPower = 1000\r\nline 5: ACPower = 2001200\r\nline 5: ACPower = 2023100\r\nline 5: ACPower = 2001200\r\nline 5: ACPower = 2023100\r\nline 6: ACPower = 1000\r\nline 6: ACPower = 154200\r\nline 6: ACPower = 78300\r\nline 6: ACPower = 154200\r\nline 6: ACPower = 78300\r\nline 7: ACPower = 1000\r\nline 7: ACPower = 154200\r\nline 7: ACPower = 155700\r\nline 7: ACPower = 154200\r\nline 7: ACPower = 155700\r\nline 8: ACPower = 1000\r\nline 8: ACPower = 84200\r\nline 8: ACPower = 43200\r\nline 8: ACPower = 84200\r\nline 8: ACPower = 43200\r\nline 9: ACPower = 1000\r\nline 9: ACPower = 84200\r\nline 9: ACPower = 85000\r\nline 9: ACPower = 84200\r\nline 9: ACPower = 85000\r\nline 10: ACPower = 1000\r\nline 10: ACPower = 37200\r\nline 10: ACPower = 20200\r\nline 10: ACPower = 37200\r\nline 10: ACPower = 20200\r\nline 11: ACPower = 1000\r\nline 11: ACPower = 37200\r\nline 11: ACPower = 38500\r\nline 11: ACPower = 37200\r\nline 11: ACPower = 38500\r\nline 12: ACPower = 1000\r\nline 12: ACPower = 21200\r\nline 12: ACPower = 12200\r\nline 12: ACPower = 21200\r\nline 12: ACPower = 12200\r\nline 13: ACPower = 1000\r\nline 13: ACPower = 21200\r\nline 13: ACPower = 22300\r\nline 13: ACPower = 21200\r\nline 13: ACPower = 22300\r\nline 14: ACPower = 1000\r\nline 14: ACPower = 20200\r\nline 14: ACPower = 11100\r\nline 14: ACPower = 20200\r\nline 14: ACPower = 11100\r\nline 15: ACPower = 1000\r\nline 15: ACPower = 20200\r\nline 15: ACPower = 20300\r\nline 15: ACPower = 20200\r\nline 15: ACPower = 20300\r\nline 16: ACPower = 1000\r\nline 16: ACPower = 6200\r\nline 16: ACPower = 4100\r\nline 16: ACPower = 6200\r\nline 16: ACPower = 4100\r\nline 17: ACPower = 1000\r\nline 17: ACPower = 6200\r\nline 17: ACPower = 6200\r\nline 17: ACPower = 6200\r\nline 17: ACPower = 6200\r\nline 18: ACPower = 1000\r\nline 18: ACPower = 1200\r\nline 18: ACPower = 2100\r\nline 18: ACPower = 1200\r\nline 18: ACPower = 2100\r\nline 19: ACPower = 1000\r\nline 19: ACPower = 1200\r\nline 19: ACPower = 2100\r\nline 19: ACPower = 1200\r\nline 19: ACPower = 2100\r\nline 20: ACPower = 1000\r\nline 20: ACPower = 45200\r\nline 20: ACPower = 24200\r\nline 20: ACPower = 45200\r\nline 20: ACPower = 46600\r\nline 20: ACPower = 45200\r\nline 20: ACPower = 46600\r\nline 21: ACPower = 1000\r\nline 21: ACPower = 286200\r\nline 21: ACPower = 289100\r\nline 21: ACPower = 286200\r\nline 21: ACPower = 144500\r\nline 21: ACPower = 286200\r\nline 21: ACPower = 289100\r\nline 21: ACPower = 286200\r\nline 21: ACPower = 144500\r\nline 21: ACPower = 286200\r\nline 21: ACPower = 289100\r\nline 21: ACPower = 286200\r\nline 21: ACPower = 144500\r\n"
+  },
+  {
+   "id": "am25t",
+   "source": "Public T(40),V(40),R(40),x,y\nBeginProg\n Scan(1,Sec,0,0)\n AM25T(T(),1,mV200,U1,1,TypeT,x,C1,C2,U3,False,0,60,1,0)\n AM25T(T(),10,mV200C,U5,1,TypeT,x,C1,C2,U3,True,100,250,1,0)\n AM25T(T(),3,AutoRange,3,2,TypeK,x,C1,C2,2,False,3000,15000,1,0)\n AM25T(T(),7,AutoRangeC,U2,24,TypeT,x,C1,C2,U9,True,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: AM25T = 18100\r\nline 4: AM25T = 18100\r\nline 4: AM25T = 18100\r\nline 4: AM25T = 300\r\nline 4: AM25T = 18200\r\nline 4: AM25T = 40600\r\nline 5: AM25T = 10000\r\nline 5: AM25T = 10000\r\nline 5: AM25T = 10000\r\nline 5: AM25T = 300\r\nline 5: AM25T = 100400\r\nline 5: AM25T = 41400\r\nline 6: AM25T = 23600\r\nline 6: AM25T = 1000\r\nline 7: AM25T = 2300\r\nline 7: AM25T = 2300\r\nline 7: AM25T = 2300\r\nline 7: AM25T = 300\r\nline 7: AM25T = 29100\r\nline 7: AM25T = 40800\r\n"
+  },
+  {
+   "id": "periodavg_cr300_timeout_arg5",
+   "file": "t.CR300",
+   "exe": "cr300comp.exe",
+   "exe_sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1",
+   "source": "Public X(2)\r\nBeginProg\r\nScan(1,Sec,0,0)\r\nPeriodAvg(X,2,mV2500,1,10,100,1,5)\r\nNextScan\r\nEndProg\r\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: PeriodAvg = 200200\r\n"
+  },
+  {
+   "id": "periodavg_cr350_timeout_arg5",
+   "file": "t.CR350",
+   "exe": "cr350comp.exe",
+   "exe_sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381",
+   "source": "Public X(2)\r\nBeginProg\r\nScan(1,Sec,0,0)\r\nPeriodAvg(X,1,mV2500,1,10,300,1,5)\r\nNextScan\r\nEndProg\r\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: PeriodAvg = 300200\r\n"
+  },
+  {
+   "id": "periodavg_cr1000x_timeout_arg7",
+   "file": "t.CR1000X",
+   "exe": "cr1000xcomp.exe",
+   "exe_sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175",
+   "source": "Public X(2)\r\nBeginProg\r\nScan(1,Sec,0,0)\r\nPeriodAvg(X(1),2,mV2500,1,10,100,1,100,1,0)\r\nNextScan\r\nEndProg\r\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: PeriodAvg = 200200\r\n"
+  },
+  {
+   "id": "end-sub-two-word",
+   "source": "Public X\r\nSub Foo\r\n  X = 1\r\nEnd Sub\r\nBeginProg\r\n  Scan (1,Sec,0,0)\r\n    Call Foo\r\n  NextScan\r\nEndProg\r\n",
+   "expected_times": "\r\nline 6: Scan: 0\r\n"
+  },
+  {
+   "id": "end-function-two-word",
+   "source": "Public X\r\nFunction Foo\r\n  Return 1\r\nEnd Function\r\nBeginProg\r\n  Scan (1,Sec,0,0)\r\n    X = Foo\r\n  NextScan\r\nEndProg\r\n",
+   "expected_times": "\r\nline 6: Scan: 0\r\n"
+  },
+  {
+   "id": "scan-in-sub-two-word-end",
+   "source": "Public X\r\nSub Foo\r\n  Scan (1,Sec,0,0)\r\n    X = 1\r\n  NextScan\r\nEnd Sub\r\nBeginProg\r\n  Scan (1,Sec,0,0)\r\n    X = 2\r\n  NextScan\r\nEndProg\r\n",
+   "expected_times": "\r\nline 3: Scan: 0 (Subroutine)\r\n\r\nline 8: Scan: 1\r\n"
+  }
+ ]
+}

@@ -3,15 +3,15 @@
 usage: uv run --no-sync python tools/probe.py <template-file> <cases-file> [loggers...]
 template contains `$BODY$`; cases file has one case per line (`\\n` escapes allowed).
 """
-import subprocess
-import sys
 import hashlib
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "src"))
 import oracle  # noqa: E402
+
 from opencrbasic import profiles  # noqa: E402
 from opencrbasic.compiler import compile_file  # noqa: E402
 
@@ -27,7 +27,7 @@ for case in cases:
     path.write_text(text.replace("\n", "\r\n"))
     for lg in loggers:
         prof = profiles.get(lg)
-        theirs = oracle.run_oracle(path, compiler_path=ROOT.parent / "compiler" / prof.exe_name)
+        theirs = oracle.run_oracle(path, compiler_path=ROOT / "compiler" / prof.exe_name)
         ours = compile_file(path, prof, provenance=False)
         t = "\n".join(theirs["stdout"].splitlines()).replace(path.name + " -- ", "").strip() if isinstance(theirs, dict) else str(theirs)
         o = "\n".join(ours.result_lines()).replace(path.name + " -- ", "").strip()

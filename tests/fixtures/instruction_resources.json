@@ -1,0 +1,2606 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "emailrecv-cr6-ok",
+   "logger": "cr6",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",Result)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "emailrecv-cr1000x-ok",
+   "logger": "cr1000x",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",Result)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "emailrecv-cr6-ok-extra-string",
+   "logger": "cr6",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",Result,Result)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "emailrecv-cr1000x-ok-extra-string",
+   "logger": "cr1000x",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",Result,Result)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "emailrecv-cr6-ok-array-elem",
+   "logger": "cr6",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",Arr(2),Arr(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "emailrecv-cr1000x-ok-array-elem",
+   "logger": "cr1000x",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",Arr(2),Arr(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "emailrecv-cr6-long-dest",
+   "logger": "cr6",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",N)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required"
+  },
+  {
+   "id": "emailrecv-cr1000x-long-dest",
+   "logger": "cr1000x",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",N)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required"
+  },
+  {
+   "id": "emailrecv-cr6-const-dest",
+   "logger": "cr6",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",CS)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required"
+  },
+  {
+   "id": "emailrecv-cr1000x-const-dest",
+   "logger": "cr1000x",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",CS)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required"
+  },
+  {
+   "id": "emailrecv-cr6-literal-dest",
+   "logger": "cr6",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",\"x\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required"
+  },
+  {
+   "id": "emailrecv-cr1000x-literal-dest",
+   "logger": "cr1000x",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",\"x\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required"
+  },
+  {
+   "id": "emailrecv-cr6-bad-extra",
+   "logger": "cr6",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",Result,N)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required"
+  },
+  {
+   "id": "emailrecv-cr1000x-bad-extra",
+   "logger": "cr1000x",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",Result,N)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required"
+  },
+  {
+   "id": "emailrecv-cr6-long-array-dest",
+   "logger": "cr6",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",LArr(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required"
+  },
+  {
+   "id": "emailrecv-cr1000x-long-array-dest",
+   "logger": "cr1000x",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",LArr(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required"
+  },
+  {
+   "id": "emailrecv-cr6-missing-9-of-8",
+   "logger": "cr6",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",Result)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required\nline 11: Expression expects , :     Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",Result)."
+  },
+  {
+   "id": "emailrecv-cr1000x-missing-9-of-8",
+   "logger": "cr1000x",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",Result)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required\nline 11: Expression expects , :     Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",Result)."
+  },
+  {
+   "id": "emailrecv-cr6-missing-6",
+   "logger": "cr6",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required\nline 11: Expression expects , :     Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\")."
+  },
+  {
+   "id": "emailrecv-cr1000x-missing-6",
+   "logger": "cr1000x",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required\nline 11: Expression expects , :     Ok = EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\")."
+  },
+  {
+   "id": "emailrecv-cr6-missing-5",
+   "logger": "cr6",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required\nline 11: Expression expects , :     Ok = EmailRecv(Srv,\"\",\"\",\"\",Message)."
+  },
+  {
+   "id": "emailrecv-cr1000x-missing-5",
+   "logger": "cr1000x",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    Ok = EmailRecv(Srv,\"\",\"\",\"\",Message)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required\nline 11: Expression expects , :     Ok = EmailRecv(Srv,\"\",\"\",\"\",Message)."
+  },
+  {
+   "id": "emailrecv-cr6-bare-call-long",
+   "logger": "cr6",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",N)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required"
+  },
+  {
+   "id": "emailrecv-cr1000x-bare-call-long",
+   "logger": "cr1000x",
+   "source": "Public Message As String * 250\nPublic Result As String * 50\nPublic Arr(3) As String * 20\nPublic LArr(3) As Long\nPublic Ok As Boolean\nPublic N As Long\nConst Srv = \"a:1\"\nConst CS = \"abc\"\nBeginProg\n  Scan(1,Sec,0,0)\n    EmailRecv(Srv,\"\",\"\",\"\",Message,\"Plain\",\"u\",\"p\",N)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: A string variable destination is required"
+  },
+  {
+   "id": "pulsecount-cr6-dup-c1",
+   "logger": "cr6",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,C1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr1000x-dup-c1",
+   "logger": "cr1000x",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,C1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Pulsecount: channel C1 already in use or unavailable.\nline 5: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr6-dup-twice",
+   "logger": "cr6",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,C1,2,0,1,0)\n    PulseCount(D,1,C1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: C1 already used as PulseCount in this scan.\nline 6: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr1000x-dup-twice",
+   "logger": "cr1000x",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,C1,2,0,1,0)\n    PulseCount(D,1,C1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Pulsecount: channel C1 already in use or unavailable.\nline 5: C1 already used as PulseCount in this scan.\nline 6: Pulsecount: channel C1 already in use or unavailable.\nline 6: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr6-two-channels-ok",
+   "logger": "cr6",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,C2,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "pulsecount-cr1000x-two-channels-ok",
+   "logger": "cr1000x",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,C2,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "pulsecount-cr6-dup-lowercase",
+   "logger": "cr6",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,c1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr1000x-dup-lowercase",
+   "logger": "cr1000x",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,c1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Pulsecount: channel C1 already in use or unavailable.\nline 5: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr6-dup-other-option",
+   "logger": "cr6",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,C1,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr1000x-dup-other-option",
+   "logger": "cr1000x",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,C1,0,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Pulsecount: channel C1 already in use or unavailable.\nline 5: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr6-dup-in-else",
+   "logger": "cr6",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    If A>1 Then\n    PulseCount(A,1,C1,2,0,1,0)\n    Else\n    PulseCount(B,1,C1,2,0,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr1000x-dup-in-else",
+   "logger": "cr1000x",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    If A>1 Then\n    PulseCount(A,1,C1,2,0,1,0)\n    Else\n    PulseCount(B,1,C1,2,0,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Pulsecount: channel C1 already in use or unavailable.\nline 7: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr6-dup-inline-if",
+   "logger": "cr6",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    If A>1 Then PulseCount(A,1,C1,2,0,1,0)\n    If B>1 Then PulseCount(B,1,C1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr1000x-dup-inline-if",
+   "logger": "cr1000x",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    If A>1 Then PulseCount(A,1,C1,2,0,1,0)\n    If B>1 Then PulseCount(B,1,C1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Pulsecount: channel C1 already in use or unavailable.\nline 5: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr6-dup-with-tier-b-error",
+   "logger": "cr6",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    D = Qx\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,C1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     D = Qx.\nline 6: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr1000x-dup-with-tier-b-error",
+   "logger": "cr1000x",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    D = Qx\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,C1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     D = Qx.\nline 6: Pulsecount: channel C1 already in use or unavailable.\nline 6: C1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "pulsecount-cr6-pass1-error-hides",
+   "logger": "cr6",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery()\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,C1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "pulsecount-cr1000x-pass1-error-hides",
+   "logger": "cr1000x",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery()\n    PulseCount(A,1,C1,2,0,1,0)\n    PulseCount(B,1,C1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "pulsecount-cr6-loop-single-ok",
+   "logger": "cr6",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    For D=1 To 2\n    PulseCount(A,1,C1,2,0,1,0)\n    Next D\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "pulsecount-cr1000x-loop-single-ok",
+   "logger": "cr1000x",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    For D=1 To 2\n    PulseCount(A,1,C1,2,0,1,0)\n    Next D\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "pulsecount-cr6-dup-u1",
+   "logger": "cr6",
+   "source": "Public A, B, C(3), D\nBeginProg\n  Scan(1,Sec,0,0)\n    PulseCount(A,1,U1,2,0,1,0)\n    PulseCount(B,1,U1,2,0,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 already used as PulseCount in this scan."
+  },
+  {
+   "id": "spi-cr6-write-no-open",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr1000x-write-no-open",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr6-open-write-ok",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr1000x-open-write-ok",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr6-write-then-open",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIWrite(C1,zero,1)\n  SPIOpen(C1,100000,&H60)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr1000x-write-then-open",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIWrite(C1,zero,1)\n  SPIOpen(C1,100000,&H60)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr6-read-no-open",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIRead(C1,D,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIRead."
+  },
+  {
+   "id": "spi-cr1000x-read-no-open",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIRead(C1,D,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIRead."
+  },
+  {
+   "id": "spi-cr6-open-read-ok",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  SPIRead(C1,D,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr1000x-open-read-ok",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  SPIRead(C1,D,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr6-read-write-no-open",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIRead(C1,D,1)\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIRead.\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr1000x-read-write-no-open",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIRead(C1,D,1)\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIRead.\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr6-write-in-scan-no-open",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SPIWrite(C1,zero,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr1000x-write-in-scan-no-open",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  Scan(1,Sec,0,0)\n    SPIWrite(C1,zero,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr6-open-before-scan-write-in-scan",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  Scan(1,Sec,0,0)\n    SPIWrite(C1,zero,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr1000x-open-before-scan-write-in-scan",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  Scan(1,Sec,0,0)\n    SPIWrite(C1,zero,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr6-write-twice",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIWrite(C1,zero,1)\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite.\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr1000x-write-twice",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIWrite(C1,zero,1)\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite.\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr6-sub-write-open-after",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nSub Foo\n  SPIWrite(C1,zero,1)\nEndSub\nBeginProg\n  Call Foo\n  SPIOpen(C1,100000,&H60)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr1000x-sub-write-open-after",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nSub Foo\n  SPIWrite(C1,zero,1)\nEndSub\nBeginProg\n  Call Foo\n  SPIOpen(C1,100000,&H60)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr6-sub-write-open-before-call",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nSub Foo\n  SPIWrite(C1,zero,1)\nEndSub\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  Call Foo\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr1000x-sub-write-open-before-call",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nSub Foo\n  SPIWrite(C1,zero,1)\nEndSub\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  Call Foo\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr6-open-in-if-ok",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  If zero=1 Then\n  SPIOpen(C1,100000,&H60)\n  EndIf\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr1000x-open-in-if-ok",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  If zero=1 Then\n  SPIOpen(C1,100000,&H60)\n  EndIf\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr6-inline-if-write",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  If zero=1 Then SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr1000x-inline-if-write",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  If zero=1 Then SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr6-tier-b-error-before",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  D = Qx\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:   D = Qx.\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr1000x-tier-b-error-before",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  D = Qx\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:   D = Qx.\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr6-tier-b-error-after",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIWrite(C1,zero,1)\n  D = Qx\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite.\nline 5: Invalid symbol in expression:   D = Qx."
+  },
+  {
+   "id": "spi-cr1000x-tier-b-error-after",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIWrite(C1,zero,1)\n  D = Qx\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite.\nline 5: Invalid symbol in expression:   D = Qx."
+  },
+  {
+   "id": "spi-cr6-pass1-error-hides",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  Battery()\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "spi-cr1000x-pass1-error-hides",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  Battery()\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "spi-cr6-before-beginprog",
+   "logger": "cr6",
+   "source": "Public zero As Long\nSPIWrite(C1,zero,1)\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: SPIOpen must precede SPIWrite.\nline 2: SPIWrite illegally occurs before BeginProg."
+  },
+  {
+   "id": "spi-cr1000x-before-beginprog",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nSPIWrite(C1,zero,1)\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: SPIOpen must precede SPIWrite.\nline 2: SPIWrite illegally occurs before BeginProg."
+  },
+  {
+   "id": "spi-cr6-bad-write-port",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIWrite(C1,zero,1)\n  SPIWrite(C3,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite.\nline 5: SPI Port must be C1, U1, U5, or U9."
+  },
+  {
+   "id": "spi-cr1000x-bad-write-port",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIWrite(C1,zero,1)\n  SPIWrite(C3,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SPIOpen must precede SPIWrite.\nline 5: SPI Port must be C1 or C5."
+  },
+  {
+   "id": "spi-cr6-bad-open-port",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(7,100000,&H60)\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 7, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "spi-cr6-cr6-port-C1-U1",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  SPIWrite(U1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr6-cr6-port-U1-C1",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(U1,100000,&H60)\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr6-cr6-port-U5-U5",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(U5,100000,&H60)\n  SPIWrite(U5,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr6-cr6-port-U1-U1",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(U1,100000,&H60)\n  SPIWrite(U1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr6-cr6-port-U9-U1",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(U9,100000,&H60)\n  SPIWrite(U1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr6-cr6-port-C1-101",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  SPIWrite(101,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr6-cr6-port-101-C1",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(101,100000,&H60)\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr6-cr6-port-201-U1",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(201,100000,&H60)\n  SPIWrite(U1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr6-cr6-port-U5-U1",
+   "logger": "cr6",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(U5,100000,&H60)\n  SPIWrite(U1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr1000x-cr1000x-port-C1-C5",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  SPIWrite(C5,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr1000x-cr1000x-port-C5-C1",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(C5,100000,&H60)\n  SPIWrite(C1,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SPIOpen must precede SPIWrite."
+  },
+  {
+   "id": "spi-cr1000x-cr1000x-port-C5-C5",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(C5,100000,&H60)\n  SPIWrite(C5,zero,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "spi-cr1000x-read-port-mismatch",
+   "logger": "cr1000x",
+   "source": "Public zero As Long\nPublic D As Long\nBeginProg\n  SPIOpen(C1,100000,&H60)\n  SPIRead(C5,D,1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: SPIOpen must precede SPIRead."
+  },
+  {
+   "id": "dnpupdate-cr6-variable-then-update",
+   "logger": "cr6",
+   "source": "Public Binput(5) As Boolean\nPublic Port As Long\nBeginProg\n  DNP(20000,115200,1000)\n  DNPVariable (Binput(),5,1,1,0,&B00000000,0,0)\n  Scan(1,Sec,1,0)\n    DNPUpdate(1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "dnpupdate-cr1000x-variable-then-update",
+   "logger": "cr1000x",
+   "source": "Public Binput(5) As Boolean\nPublic Port As Long\nBeginProg\n  DNP(20000,115200,1000)\n  DNPVariable (Binput(),5,1,1,0,&B00000000,0,0)\n  Scan(1,Sec,1,0)\n    DNPUpdate(1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "dnpupdate-cr300-variable-then-update",
+   "logger": "cr300",
+   "source": "Public Binput(5) As Boolean\nPublic Port As Long\nBeginProg\n  DNP(20000,115200,1000)\n  DNPVariable (Binput(),5,1,1,0,&B00000000,0,0)\n  Scan(1,Sec,1,0)\n    DNPUpdate(1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "dnpupdate-cr350-variable-then-update",
+   "logger": "cr350",
+   "source": "Public Binput(5) As Boolean\nPublic Port As Long\nBeginProg\n  DNP(20000,115200,1000)\n  DNPVariable (Binput(),5,1,1,0,&B00000000,0,0)\n  Scan(1,Sec,1,0)\n    DNPUpdate(1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "dnpupdate-cr6-variable-in-scan-before",
+   "logger": "cr6",
+   "source": "Public Binput(5) As Boolean\nPublic Port As Long\nBeginProg\n  DNP(20000,115200,1000)\n  Scan(1,Sec,1,0)\n    DNPVariable (Binput(),5,1,1,0,&B00000000,0,0)\n    DNPUpdate(1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "dnpupdate-cr1000x-variable-in-scan-before",
+   "logger": "cr1000x",
+   "source": "Public Binput(5) As Boolean\nPublic Port As Long\nBeginProg\n  DNP(20000,115200,1000)\n  Scan(1,Sec,1,0)\n    DNPVariable (Binput(),5,1,1,0,&B00000000,0,0)\n    DNPUpdate(1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "dnpupdate-cr300-variable-in-scan-before",
+   "logger": "cr300",
+   "source": "Public Binput(5) As Boolean\nPublic Port As Long\nBeginProg\n  DNP(20000,115200,1000)\n  Scan(1,Sec,1,0)\n    DNPVariable (Binput(),5,1,1,0,&B00000000,0,0)\n    DNPUpdate(1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "dnpupdate-cr350-variable-in-scan-before",
+   "logger": "cr350",
+   "source": "Public Binput(5) As Boolean\nPublic Port As Long\nBeginProg\n  DNP(20000,115200,1000)\n  Scan(1,Sec,1,0)\n    DNPVariable (Binput(),5,1,1,0,&B00000000,0,0)\n    DNPUpdate(1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "dnpupdate-cr6-inline-if-update",
+   "logger": "cr6",
+   "source": "Public Binput(5) As Boolean\nPublic Port As Long\nBeginProg\n  Scan(1,Sec,1,0)\n    If Port=1 Then DNPUpdate(1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "dnpupdate-cr1000x-inline-if-update",
+   "logger": "cr1000x",
+   "source": "Public Binput(5) As Boolean\nPublic Port As Long\nBeginProg\n  Scan(1,Sec,1,0)\n    If Port=1 Then DNPUpdate(1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "dnpupdate-cr300-inline-if-update",
+   "logger": "cr300",
+   "source": "Public Binput(5) As Boolean\nPublic Port As Long\nBeginProg\n  Scan(1,Sec,1,0)\n    If Port=1 Then DNPUpdate(1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "dnpupdate-cr350-inline-if-update",
+   "logger": "cr350",
+   "source": "Public Binput(5) As Boolean\nPublic Port As Long\nBeginProg\n  Scan(1,Sec,1,0)\n    If Port=1 Then DNPUpdate(1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "portbridge-cr6-long-ok",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "portbridge-cr1000x-long-ok",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "portbridge-cr300-long-ok",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "portbridge-cr350-long-ok",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "portbridge-cr6-boolean",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-boolean",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-boolean",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-boolean",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-float",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3)\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-float",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3)\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-float",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3)\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-float",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3)\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-string",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As String\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-string",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As String\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-string",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As String\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-string",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As String\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-dims-3-3",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(3,3) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-dims-3-3",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(3,3) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-dims-3-3",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(3,3) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-dims-3-3",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(3,3) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-dims-2-2",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,2) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-dims-2-2",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,2) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-dims-2-2",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,2) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-dims-2-2",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,2) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-dims-2-4",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,4) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-dims-2-4",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,4) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-dims-2-4",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,4) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-dims-2-4",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,4) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-dims-3-2",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(3,2) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-dims-3-2",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(3,2) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-dims-3-2",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(3,2) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-dims-3-2",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(3,2) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-dims-6",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(6) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-dims-6",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(6) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-dims-6",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(6) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-dims-6",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(6) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-scalar",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-scalar",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-scalar",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-scalar",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-dims-2-3-1-ok",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3,1) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "portbridge-cr1000x-dims-2-3-1-ok",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3,1) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "portbridge-cr300-dims-2-3-1-ok",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3,1) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "portbridge-cr350-dims-2-3-1-ok",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3,1) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "portbridge-cr6-whole-array-ok",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,B())\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "portbridge-cr1000x-whole-array-ok",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,B())\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "portbridge-cr300-whole-array-ok",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,B())\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "portbridge-cr350-whole-array-ok",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,B())\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "portbridge-cr6-element-ok",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,B(1,1))\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "portbridge-cr1000x-element-ok",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,B(1,1))\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "portbridge-cr300-element-ok",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,B(1,1))\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "portbridge-cr350-element-ok",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,B(1,1))\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "portbridge-cr6-literal",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,5)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-literal",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,5)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-literal",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,5)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-literal",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPortBridge(Enable,5)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-dim-boolean",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nDim B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-dim-boolean",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nDim B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-dim-boolean",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nDim B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-dim-boolean",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nDim B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-dim-long-ok",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nDim B(2,3) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "portbridge-cr1000x-dim-long-ok",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nDim B(2,3) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "portbridge-cr300-dim-long-ok",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nDim B(2,3) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "portbridge-cr350-dim-long-ok",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nDim B(2,3) As Long\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "portbridge-cr6-second-call",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPublic C(2,3) As Boolean\nPortBridge(Enable,B)\nPortBridge(Enable,C)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-second-call",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPublic C(2,3) As Boolean\nPortBridge(Enable,B)\nPortBridge(Enable,C)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-second-call",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPublic C(2,3) As Boolean\nPortBridge(Enable,B)\nPortBridge(Enable,C)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-second-call",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Long\nPublic C(2,3) As Boolean\nPortBridge(Enable,B)\nPortBridge(Enable,C)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-in-scan",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    PortBridge(Enable,B)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr1000x-in-scan",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    PortBridge(Enable,B)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr300-in-scan",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    PortBridge(Enable,B)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr350-in-scan",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    PortBridge(Enable,B)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bridge parameter must be an Array(2,3) of type long."
+  },
+  {
+   "id": "portbridge-cr6-missing-arg-hides",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "portbridge-cr1000x-missing-arg-hides",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "portbridge-cr300-missing-arg-hides",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "portbridge-cr350-missing-arg-hides",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable)\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "portbridge-cr6-tier-b-error",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n    Qx = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long.\nline 6: Invalid, or out of place expression:     Qx = 1."
+  },
+  {
+   "id": "portbridge-cr1000x-tier-b-error",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n    Qx = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bridge parameter must be an Array(2,3) of type long.\nline 6: Invalid, or out of place expression:     Qx = 1."
+  },
+  {
+   "id": "portbridge-cr300-tier-b-error",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n    Qx = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Qx is not defined."
+  },
+  {
+   "id": "portbridge-cr350-tier-b-error",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n    Qx = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Qx is not defined."
+  },
+  {
+   "id": "portbridge-cr6-pass1-error",
+   "logger": "cr6",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "portbridge-cr1000x-pass1-error",
+   "logger": "cr1000x",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "portbridge-cr300-pass1-error",
+   "logger": "cr300",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "portbridge-cr350-pass1-error",
+   "logger": "cr350",
+   "source": "Public Enable As Boolean = True\nPublic B(2,3) As Boolean\nPortBridge(Enable,B)\nBeginProg\n  Scan(1,Sec,0,0)\n    Battery()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "cdm-address-cr6-same-type-ok",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-address-cr1000x-same-type-ok",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-address-cr6-different-type",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-different-type",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-different-address-ok",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,2,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-address-cr1000x-different-address-ok",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,2,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-address-cr6-cdm-a116-vs-volt116",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(CDM_A116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-cdm-a116-vs-volt116",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(CDM_A116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-literal-type-1",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(1,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-literal-type-1",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(1,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-literal-type-equal-ok",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(223,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-address-cr1000x-literal-type-equal-ok",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(223,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-address-cr6-delay-clash",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_Delay(VOLT108,1,0,500,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-delay-clash",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_Delay(VOLT108,1,0,500,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-voltdiff-clash",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_VoltDiff(VOLT108,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-voltdiff-clash",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_VoltDiff(VOLT108,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-three-same-ok",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_VoltDiff(VOLT116,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n    CDM_Delay(VOLT116,1,0,500,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-address-cr1000x-three-same-ok",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_VoltDiff(VOLT116,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n    CDM_Delay(VOLT116,1,0,500,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-address-cr6-back-to-first-type-ok",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-back-to-first-type-ok",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-two-clashes",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM.\nline 6: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-two-clashes",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM.\nline 6: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-sw5-clash",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW5(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-sw5-clash",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW5(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-battery-clash",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Battery(VOLT116,1,V)\n    CDM_SW12(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-battery-clash",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Battery(VOLT116,1,V)\n    CDM_SW12(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-variable-address-skipped",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,A1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: A1."
+  },
+  {
+   "id": "cdm-address-cr1000x-variable-address-skipped",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,A1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: A1."
+  },
+  {
+   "id": "cdm-address-cr6-in-if",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    If V>1 Then\n    CDM_SW12(VOLT108,1,1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-in-if",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    If V>1 Then\n    CDM_SW12(VOLT108,1,1,1,0)\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-tier-b-error-after",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n    V = Qx\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM.\nline 6: Invalid symbol in expression:     V = Qx."
+  },
+  {
+   "id": "cdm-address-cr1000x-tier-b-error-after",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n    V = Qx\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM.\nline 6: Invalid symbol in expression:     V = Qx."
+  },
+  {
+   "id": "cdm-address-cr6-tier-b-error-before",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    V = Qx\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     V = Qx.\nline 6: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-tier-b-error-before",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    V = Qx\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     V = Qx.\nline 6: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-pass1-error-hides",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery()\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cdm-address-cr1000x-pass1-error-hides",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery()\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cdm-address-cr6-tier-c-port-error",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n    PortSet(7,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM.\nline 6: Invalid port 7, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cdm-address-cr1000x-tier-c-port-error",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1,1,1,0)\n    PortSet(7,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM.\nline 6: Invalid port 7, use C1..C8."
+  },
+  {
+   "id": "cdm-address-cr6-float-address",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1.0,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-float-address",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(VOLT108,1.0,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-address-120",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,120,1,1,0)\n    CDM_SW12(VOLT108,120,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 120 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-address-120",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,120,1,1,0)\n    CDM_SW12(VOLT108,120,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 120 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr6-four-arg-sw12",
+   "logger": "cr6",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(1,1,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-address-cr1000x-four-arg-sw12",
+   "logger": "cr1000x",
+   "source": "Public V, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(VOLT116,1,1,1,0)\n    CDM_SW12(1,1,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-null-cr6-Battery",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Battery(3,1,V)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_Battery instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-Battery",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Battery(3,1,V)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_Battery instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-VoltSe",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltSe(3,1,V,1,mV5000,1,0,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-VoltSe",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltSe(3,1,V,1,mV5000,1,0,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-VoltDiff",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-VoltDiff",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-TCSe",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_TCSE(3,1,V,1,mV5000,1,TypeT,Ref,0,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-TCSe",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_TCSE(3,1,V,1,mV5000,1,TypeT,Ref,0,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-PanelTemp",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_PanelTemp(3,1,V,1,1,60)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-PanelTemp",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_PanelTemp(3,1,V,1,1,60)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-BrFull6W",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_BrFull6W(3,1,V,1,mV5000,mv200,1,X1,1,2500,True,True,0,60,2.3067,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-BrFull6W",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_BrFull6W(3,1,V,1,mV5000,mv200,1,X1,1,2500,True,True,0,60,2.3067,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-BrHalf3W",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_BrHalf3W(3,1,V,1,mV5000,1,X1,1,2500,True,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-BrHalf3W",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_BrHalf3W(3,1,V,1,mV5000,1,X1,1,2500,True,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-ExciteV",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_ExciteV(3,1,1,2500,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_Excite instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-ExciteV",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_ExciteV(3,1,1,2500,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_Excite instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-ExciteI",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_ExciteI(3,1,1,2500,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_Excite instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-ExciteI",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_ExciteI(3,1,1,2500,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_Excite instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-SW12",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(3,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-SW12",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW12(3,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-SW5",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW5(3,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-SW5",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SW5(3,1,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-SWPower",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SWPower(3,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_SWPower instruction not supported by module NULL.\nline 4: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-SWPower",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_SWPower(3,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_SWPower instruction not supported by module NULL.\nline 4: SW instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-Delay",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Delay(3,1,0,500,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_Delay instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-Delay",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Delay(3,1,0,500,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_Delay instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-PulsePort",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_PulsePort(3,1,1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-PulsePort",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_PulsePort(3,1,1,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_PulsePort instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-MuxSelect",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_MuxSelect(3,1,1,2,10,4,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-MuxSelect",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_MuxSelect(3,1,1,2,10,4,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-Therm107",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Therm107(3,1,V,1,1,1,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-Therm107",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Therm107(3,1,V,1,1,1,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-Resistance",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Resistance(3,1,V,1,mV200,1,1,1,2500,True,True,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-Resistance",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Resistance(3,1,V,1,mV200,1,1,1,2500,True,True,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-CurrentDiff",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_CurrentDiff(3,1,V,1,mV5000,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_CurrentDiff instruction not supported by module NULL.\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-CurrentDiff",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_CurrentDiff(3,1,V,1,mV5000,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_CurrentDiff instruction not supported by module NULL.\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-TCComp",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_TCComp(3,1,V,1,1,TypeT,True,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_TCComp instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-TCComp",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_TCComp(3,1,V,1,1,TypeT,True,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_TCComp instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-ACPower",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_ACPower(3,1,V,1,60,1,1.0,100,1.0,0,1.0,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ACPower instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-ACPower",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_ACPower(3,1,V,1,60,1,1.0,100,1.0,0,1.0,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ACPower instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-VoltDiff-badchan",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,99,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-VoltDiff-badchan",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,99,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-VoltDiff-badrange",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,99,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-VoltDiff-badrange",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,99,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-VoltDiff-reps0",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,0,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-VoltDiff-reps0",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,0,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-VoltDiff-twice",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n        CDM_VoltDiff(3,2,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL.\nline 5: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-VoltDiff-twice",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n        CDM_VoltDiff(3,2,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL.\nline 5: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-VoltDiff-null-then-named",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n        CDM_VoltDiff(VOLT116,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL.\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-null-cr1000x-VoltDiff-null-then-named",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n        CDM_VoltDiff(VOLT116,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL.\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-null-cr6-VoltDiff-named-then-null",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(VOLT116,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n        CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-null-cr1000x-VoltDiff-named-then-null",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(VOLT116,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n        CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-null-cr6-VoltDiff-null-then-other-null",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n        CDM_VoltDiff(4,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL.\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-null-cr1000x-VoltDiff-null-then-other-null",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n        CDM_VoltDiff(4,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL.\nline 5: Address 1 already used with a different type CDM."
+  },
+  {
+   "id": "cdm-null-cr6-VoltDiff-null-addr-then-other-addr-named",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n        CDM_VoltDiff(VOLT116,2,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-VoltDiff-null-addr-then-other-addr-named",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n        CDM_VoltDiff(VOLT116,2,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-tier-b",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    V = Qx\n        CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     V = Qx.\nline 5: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-tier-b",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    V = Qx\n        CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     V = Qx.\nline 5: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-pass1",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery()\n        CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cdm-null-cr1000x-pass1",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery()\n        CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cdm-null-cr6-with-portset-7",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n        PortSet(7,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL.\nline 5: Invalid port 7, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cdm-null-cr1000x-with-portset-7",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(3,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n        PortSet(7,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL.\nline 5: Invalid port 7, use C1..C8."
+  },
+  {
+   "id": "cdm-null-cr6-type-0",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(0,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-type-99",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(99,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-type-106",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(106,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-type-199",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(199,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-type-203",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(203,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-type-219",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(219,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-type-232",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(232,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-type-259",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(259,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-type-262",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(262,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-type-299",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(299,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-type-65536",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(65536,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr6-type-VOLT116",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(VOLT116,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-null-cr6-type-CDM_A108",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(CDM_A108,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-null-cr6-type-TEMP120",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(TEMP120,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-null-cr1000x-type-259",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(259,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cdm-null-cr1000x-type-VOLT108",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_VoltDiff(VOLT108,1,V,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-null-cr6-delay-option-1",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Delay(3,1,1,500,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-null-cr1000x-delay-option-1",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Delay(3,1,1,500,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cdm-null-cr6-delay-option-2",
+   "logger": "cr6",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Delay(3,1,2,500,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal option 2"
+  },
+  {
+   "id": "cdm-null-cr1000x-delay-option-2",
+   "logger": "cr1000x",
+   "source": "Public V, T(2), Ref, A1\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_Delay(3,1,2,500,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal option 2"
+  },
+  {
+   "id": "avw200-cr6-three-16-in-90",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data3,COMC1,200,200,Mux3(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Scan interval 90 secs is too small; AVW200 measurement time is 96 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-three-16-in-90",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(90,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data3,COMC1,200,200,Mux3(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Scan interval 90 secs is too small; AVW200 measurement time is 96 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-three-16-in-96-ok",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(96,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data3,COMC1,200,200,Mux3(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr1000x-three-16-in-96-ok",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(96,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data3,COMC1,200,200,Mux3(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr6-three-16-in-95",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(95,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data3,COMC1,200,200,Mux3(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Scan interval 95 secs is too small; AVW200 measurement time is 96 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-three-16-in-95",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(95,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data3,COMC1,200,200,Mux3(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Scan interval 95 secs is too small; AVW200 measurement time is 96 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-two-16-in-64-ok",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(64,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr1000x-two-16-in-64-ok",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(64,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr6-two-16-in-63",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(63,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Scan interval 63 secs is too small; AVW200 measurement time is 64 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-two-16-in-63",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(63,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Scan interval 63 secs is too small; AVW200 measurement time is 64 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-one-16-in-32-ok",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(32,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr1000x-one-16-in-32-ok",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(32,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr6-one-16-in-31",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(31,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Scan interval 31 secs is too small; AVW200 measurement time is 32 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-one-16-in-31",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(31,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Scan interval 31 secs is too small; AVW200 measurement time is 32 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-minute-interval",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(1,Min,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data3,COMC1,200,200,Mux3(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Scan interval 60 secs is too small; AVW200 measurement time is 64 secs (2 secs per sensor).\nline 11: Scan interval 60 secs is too small; AVW200 measurement time is 96 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-minute-interval",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(1,Min,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data3,COMC1,200,200,Mux3(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Scan interval 60 secs is too small; AVW200 measurement time is 64 secs (2 secs per sensor).\nline 11: Scan interval 60 secs is too small; AVW200 measurement time is 96 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-two-minute-ok",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(2,Min,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data3,COMC1,200,200,Mux3(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr1000x-two-minute-ok",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(2,Min,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n    AVW200(Data3,COMC1,200,200,Mux3(1,1),1,1,16,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr6-msec-interval-1000",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(1000,mSec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Scan interval 1 secs is too small; AVW200 measurement time is 2 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-msec-interval-1000",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(1000,mSec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Scan interval 1 secs is too small; AVW200 measurement time is 2 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-msec-interval-2000-ok",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(2000,mSec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr1000x-msec-interval-2000-ok",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(2000,mSec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr6-two-1-in-3",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(3,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Scan interval 3 secs is too small; AVW200 measurement time is 4 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-two-1-in-3",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(3,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Scan interval 3 secs is too small; AVW200 measurement time is 4 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-two-1-in-4-ok",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(4,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr1000x-two-1-in-4-ok",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(4,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr6-five-in-9",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-five-in-9",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-five-in-10-ok",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(10,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr1000x-five-in-10-ok",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(10,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr6-mixed-reps-in-9",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,3,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,2,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-mixed-reps-in-9",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,3,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,2,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-mixed-reps-in-10-ok",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(10,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,3,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,2,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr1000x-mixed-reps-in-10-ok",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(10,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,3,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC1,200,200,Mux2(1,1),1,1,2,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr6-two-comports-in-9",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC3,200,200,Mux2(1,1),1,1,4,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-two-comports-in-9",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,1,450,3000,2,_60Hz,1,0)\n    AVW200(Data2,COMC3,200,200,Mux2(1,1),1,1,4,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-battery-between",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    Battery(BattV)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-battery-between",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    Battery(BattV)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-same-instruction-twice",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor).\nline 10: Scan interval 9 secs is too small; AVW200 measurement time is 20 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-same-instruction-twice",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor).\nline 10: Scan interval 9 secs is too small; AVW200 measurement time is 20 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-slow-sequence-ok",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  SlowSequence\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr1000x-slow-sequence-ok",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  SlowSequence\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "avw200-cr6-sequential-mode-ok",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  SequentialMode\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "avw200-cr1000x-sequential-mode-ok",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  SequentialMode\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "avw200-cr6-tier-b-error",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    Cond = Qx\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression:     Cond = Qx.\nline 10: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr1000x-tier-b-error",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    Cond = Qx\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression:     Cond = Qx.\nline 10: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor)."
+  },
+  {
+   "id": "avw200-cr6-pass1-error",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    Battery()\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid or missing parameter."
+  },
+  {
+   "id": "avw200-cr1000x-pass1-error",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    Battery()\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid or missing parameter."
+  },
+  {
+   "id": "avw200-cr6-port-error-after",
+   "logger": "cr6",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n    PortSet(7,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor).\nline 10: Invalid port 7, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "avw200-cr1000x-port-error-after",
+   "logger": "cr1000x",
+   "source": "Public BattV\nPublic Data1, Data2, Data3\nPublic Mux1(16,6), Mux2(16,6), Mux3(16,6)\nPublic Cond\nBeginProg\n  SerialOpen (COMC1,38400,0,0,0)\n  SerialOpen (COMC3,38400,0,0,0)\n  Scan(9,Sec,1,0)\n    AVW200(Data1,COMC1,200,200,Mux1(1,1),1,1,5,450,3000,2,_60Hz,1,0)\n    PortSet(7,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Scan interval 9 secs is too small; AVW200 measurement time is 10 secs (2 secs per sensor).\nline 10: Invalid port 7, use C1..C8."
+  },
+  {
+   "id": "dnpupdate-cr6-before-beginprog",
+   "logger": "cr6",
+   "source": "Public Binput(5) As Boolean\nDNPUpdate(1,10)\nBeginProg\n  Scan(1,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DNP3Statics and/or DNP3Events are not defined\nline 2: DNPUpdate illegally occurs before BeginProg."
+  },
+  {
+   "id": "dnpupdate-cr1000x-before-beginprog",
+   "logger": "cr1000x",
+   "source": "Public Binput(5) As Boolean\nDNPUpdate(1,10)\nBeginProg\n  Scan(1,Sec,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: DNP3Statics and/or DNP3Events are not defined\nline 2: DNPUpdate illegally occurs before BeginProg."
+  }
+ ]
+}

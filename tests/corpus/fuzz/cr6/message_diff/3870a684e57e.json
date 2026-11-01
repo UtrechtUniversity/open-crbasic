@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/3870a684e57e.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/FinApp_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "toggle_two_word",
+    "insert_whitespace"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "3870a684e57e.CR6 -- Compile Failed!\n\nline 2: Case outside Select.\nline 7: EndSelect w/o Select",
+  "theirs": "3870a684e57e.CR6 -- Compile Failed!\n\nline 2: Case outside Select."
+}

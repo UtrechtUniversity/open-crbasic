@@ -7,10 +7,10 @@ and prose are display information only: they never influence checker rules.
 """
 
 import re
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, field, replace
 from html.parser import HTMLParser
 from pathlib import Path
-from collections.abc import Iterable, Mapping, Sequence
 from typing import Protocol
 
 __all__ = [

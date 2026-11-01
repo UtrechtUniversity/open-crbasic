@@ -31,10 +31,11 @@ ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(ROOT / "src"))
 import oracle  # noqa: E402
+
 from opencrbasic import profiles  # noqa: E402
 
 CACHE = oracle.CACHE_DIR / "matrix"
-CRBASIC = ROOT.parent / "crbasic"
+CRBASIC = ROOT / "tests" / "corpus" / "firnmelt"
 CHM = ROOT / "tests" / "corpus" / "chm"
 # option set -> arguments; `P` is the program
 OPTIONS = {
@@ -157,7 +158,7 @@ def main() -> int:
     ap.add_argument("--show", type=int, default=10)
     args = ap.parse_args()
 
-    exe = ROOT.parent / "compiler" / profiles.get(args.logger).exe_name
+    exe = ROOT / "compiler" / profiles.get(args.logger).exe_name
     cells = [(option, prog) for prog in corpus(args.stride) for option in OPTIONS]
 
     def one(cell):

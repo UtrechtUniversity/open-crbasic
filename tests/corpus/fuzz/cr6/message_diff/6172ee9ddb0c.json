@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/6172ee9ddb0c.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/PortSleep_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "insert_whitespace"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "6172ee9ddb0c.CR6 -- Compile Failed!\n\nline 49: Invalid, or out of place expression: \t\tRealTime(PortRT  ime).",
+  "theirs": "6172ee9ddb0c.CR6 -- Compile Failed!\n\nline 49: Invalid symbol in expression: PortRT  ime."
+}

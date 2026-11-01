@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/false_accept/ee26b0ad7cda.CR6",
+  "logger": "cr1000x",
+  "class": "false_accept",
+  "seed": "repo/PortSleep_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "add_argument"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "ee26b0ad7cda.CR6 -- Compiled in SequentialMode.",
+  "theirs": "ee26b0ad7cda.CR6 -- Compile Failed!\n\nline 58: No Matching, or out of place ) in expression: \t\t\t\tSerialOpen(PortUnderTest, PortBaud, PortFormat, 0, PortBuffer, PortCommsMode,\"fuzz\")."
+}

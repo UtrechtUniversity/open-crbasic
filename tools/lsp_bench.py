@@ -42,8 +42,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent                       # opencrbasic/
-REPO = ROOT.parent                       # the worktree (or checkout) root
-CRBASIC = REPO / "crbasic"
+REPO = ROOT                       # the worktree (or checkout) root
+CRBASIC = REPO / "tests" / "corpus" / "firnmelt"
 MAIN = (CRBASIC / "Main.CR6").absolute()
 HELP_DIR = REPO / "extracted_chm"
 PROFILE = "cr6"
@@ -52,7 +52,8 @@ TARGETS = {"hover_p95_ms": 100.0, "completion_p95_ms": 100.0, "diagnostics_after
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "tests" / "lsp"))
 
-from opencrbasic import editing, hover as H, navigation  # noqa: E402
+from opencrbasic import editing, navigation  # noqa: E402
+from opencrbasic import hover as H
 from opencrbasic.analysis import AnalysisRequest, analyze  # noqa: E402
 from opencrbasic.helpdocs import HelpProvider  # noqa: E402
 

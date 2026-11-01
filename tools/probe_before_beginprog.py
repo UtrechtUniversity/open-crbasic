@@ -19,11 +19,12 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import oracle
+
 from opencrbasic import parser, profiles
 from opencrbasic import syntax as S
 
 ROOT = Path(__file__).resolve().parents[1]
-REPO = ROOT.parent
+REPO = ROOT
 
 
 def probes(logger: str, out: Path) -> dict[str, list[str]]:

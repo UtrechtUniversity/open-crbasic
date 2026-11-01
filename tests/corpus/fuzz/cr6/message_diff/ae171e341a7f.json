@@ -1,0 +1,16 @@
+{
+  "file": "scratch/r38/fuzz-430/cr6/message_diff/ae171e341a7f.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/Shunt_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "insert_foreign_statement",
+    "change_declared_type"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "ae171e341a7f.CR6 -- Compile Failed!\n\nline 20: Incomplete expression: \t\t+ \"  shunt=\" + FormatFloat(Shunt_mV, \"%.4f\") + \" mV\" \t\t+ \"  current=\" + FormatFloat(Shunt_Current_A, \"%.4f\") + \" A\" Sub RunCommonMode.",
+  "theirs": "ae171e341a7f.CR6 -- Compile Failed!\n\nline 20: Invalid, or out of place expression: \t\t+ \"  shunt=\" + FormatFloat(Shunt_mV, \"%.4f\") + \" mV\" \t\t+ \"  current=\" + FormatFloat(Shunt_Current_A, \"%.4f\") + \" A\" Sub RunCommonMode.",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r36/fuzz-425/cr6/message_diff/8ea35989a0b3.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SnowVue_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "toggle_two_word",
+    "drop_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "8ea35989a0b3.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Const CRLF = CHR(13) + CHR().\nline 2: Expr illegally occurs before BeginProg.",
+  "theirs": "8ea35989a0b3.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: CHR(13) + CHR()."
+}

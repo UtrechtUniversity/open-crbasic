@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_accept/c5308208dfc0.CR6",
+  "logger": "cr6",
+  "class": "false_accept",
+  "seed": "repo/Preflight_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "duplicate_line"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "c5308208dfc0.CR6 -- Compiled in SequentialMode.",
+  "theirs": "c5308208dfc0.CR6 -- Compile Failed!\n\nline 478: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 478: END IF without IF or END SELECT without SELECT.\nline 489: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 500: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 505: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 510: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 516: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 525: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 530: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 536: IF or SELECT statement illegally has SCAN without NEXT SCAN.",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

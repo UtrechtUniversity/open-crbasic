@@ -1,0 +1,181 @@
+#If Section = "ConstTable" Then
+    Const FinAppComPort = C1
+    Const FinAppPowerPort = SW12_1
+
+    Const FinAppPowerSettleSecs = 150
+    Const FinAppStopPolls = 12
+    Const FinAppStopPollSecs = 5
+    Const FinAppDetectorRecoverySecs = 4
+#EndIf
+
+#If Section = "Definitions" Then
+    Const MaxFinAppDetectorCount = 4
+    Const FinAppMasterValues = 6
+    Const FinAppDetectorValues = 5
+    Const FinAppWaterValues = 5
+    Const FinAppVendorTag = "Finapp"
+
+    #If FinAppDetectorCount < 1 Then
+        ERROR__STATIC_ASSERT__FinAppDetectorCount_must_be_at_least_1
+    #EndIf
+
+    #If FinAppDetectorCount > MaxFinAppDetectorCount Then
+        ERROR__STATIC_ASSERT__FinAppDetectorCount_exceeds_MaxFinAppDetectorCount
+    #EndIf
+
+    #If FinAppDetectorFirstId < 1 Then
+        ERROR__STATIC_ASSERT__FinAppDetectorFirstId_must_be_at_least_1
+    #EndIf
+
+    #If (FinAppDetectorFirstId + FinAppDetectorCount - 1) > 9 Then
+        ERROR__STATIC_ASSERT__FinApp_detector_ids_run_past_M9
+    #EndIf
+
+    Public FinApp_Powered As Boolean
+    Public FinApp_Responding As Boolean
+    Public FinApp_NewData As Boolean
+    Public FinApp_MasterOk As Boolean
+    Public FinApp_DetectorsOk As Boolean
+    Public FinApp_WaterOk As Boolean
+    Public FinApp_UnsafeStops As Long
+    Public FinApp_StopPollsUsed As Long
+    Public FinApp_Ident As String * 60
+
+    Public FinApp_MasterCounter
+    Public FinApp_Batt_V
+    Public FinApp_Pressure_Pa
+    Public FinApp_BoardTemp_C
+
+    Public FinApp_DetCounter(FinAppDetectorCount)
+    Public FinApp_HV_V(FinAppDetectorCount)
+    Public FinApp_AcqTime_ms(FinAppDetectorCount)
+    Public FinApp_Neutrons(FinAppDetectorCount)
+    Public FinApp_Muons(FinAppDetectorCount)
+
+    Public FinApp_WaterCounter
+    Public FinApp_SoilMoisture
+    Public FinApp_SWE_Areal_mm
+    Public FinApp_SWE_Local_mm
+    Public FinApp_SWE_Backup_mm
+
+    Units FinApp_Batt_V = Volts
+    Units FinApp_Pressure_Pa = Pa
+    Units FinApp_BoardTemp_C = C
+    Units FinApp_HV_V() = Volts
+    Units FinApp_AcqTime_ms() = ms
+    Units FinApp_Neutrons() = counts
+    Units FinApp_Muons() = counts
+    Units FinApp_SoilMoisture = fraction
+    Units FinApp_SWE_Areal_mm = mm
+    Units FinApp_SWE_Local_mm = mm
+    Units FinApp_SWE_Backup_mm = mm
+
+    Dim FinAppMasterRaw(FinAppMasterValues)
+    Dim FinAppDetRaw(FinAppDetectorValues)
+    Dim FinAppWaterRaw(FinAppWaterValues)
+    Dim FinAppLastWaterCounter
+
+    DataTable(FinApp_Data,FinApp_NewData,-1)
+        Sample(1,FinApp_WaterCounter,IEEE4)
+        Sample(1,FinApp_SWE_Areal_mm,IEEE4)
+        Sample(1,FinApp_SWE_Local_mm,IEEE4)
+        Sample(1,FinApp_SWE_Backup_mm,IEEE4)
+        Sample(1,FinApp_SoilMoisture,IEEE4)
+        Sample(FinAppDetectorCount,FinApp_Neutrons(),IEEE4)
+        Sample(FinAppDetectorCount,FinApp_Muons(),IEEE4)
+        Sample(FinAppDetectorCount,FinApp_AcqTime_ms(),IEEE4)
+        Sample(FinAppDetectorCount,FinApp_HV_V(),FP2)
+        Sample(1,FinApp_Batt_V,FP2)
+        Sample(1,FinApp_Pressure_Pa,IEEE4)
+        Sample(1,FinApp_BoardTemp_C,FP2)
+        Sample(1,FinApp_UnsafeStops,UINT2)
+    EndTable
+#EndIf
+
+#If Section = "Functions" Then
+    Function ProbeFinApp() As Boolean
+        FinApp_Ident = ""
+        SDI12Recorder(FinApp_Ident,FinAppComPort,FinAppSDIAddress,"I!",1,0)
+        Return (InStr(1,FinApp_Ident,FinAppVendorTag,2) > 0)
+    EndFunction
+
+    Function StartFinApp() As Boolean
+        SW12(FinAppPowerPort,1)
+        FinApp_Powered = True
+        Delay(1,FinAppPowerSettleSecs,Sec)
+        FinApp_Responding = ProbeFinApp()
+        Return FinApp_Responding
+    EndFunction
+
+    Function StopFinApp() As Boolean
+        Dim I As Long
+
+        FinApp_Responding = False
+        For I = 1 To FinAppStopPolls
+            FinApp_StopPollsUsed = I
+            FinApp_Responding = ProbeFinApp()
+            If FinApp_Responding Then ExitFor
+            If I < FinAppStopPolls Then Delay(1,FinAppStopPollSecs,Sec)
+        Next I
+
+        SW12(FinAppPowerPort,0)
+        FinApp_Powered = False
+        FinApp_UnsafeStops = FinApp_UnsafeStops + IIF(FinApp_Responding,0,1)
+        Return FinApp_Responding
+    EndFunction
+
+    Function ReadFinAppMaster() As Boolean
+        SDI12Recorder(FinAppMasterRaw(),FinAppComPort,FinAppSDIAddress,"M!",1,0,-1)
+        FinApp_MasterCounter = FinAppMasterRaw(1)
+        FinApp_Batt_V = FinAppMasterRaw(2) * 0.001
+        FinApp_Pressure_Pa = FinAppMasterRaw(3)
+        FinApp_BoardTemp_C = FinAppMasterRaw(4) * 0.001
+        Return (FinApp_MasterCounter <> NAN)
+    EndFunction
+
+    Function ReadFinAppDetectors() As Boolean
+        Dim N As Long
+        Dim Cmd As String * 8
+        Dim Ok As Boolean
+
+        Ok = True
+        For N = 1 To FinAppDetectorCount
+            Cmd = "M" + FormatLong(FinAppDetectorFirstId + N - 1,"%d") + "!"
+            SDI12Recorder(FinAppDetRaw(),FinAppComPort,FinAppSDIAddress,Cmd,1,0,-1)
+            FinApp_DetCounter(N) = FinAppDetRaw(1)
+            FinApp_HV_V(N) = FinAppDetRaw(2) * 0.001
+            FinApp_AcqTime_ms(N) = FinAppDetRaw(3)
+            FinApp_Neutrons(N) = FinAppDetRaw(4)
+            FinApp_Muons(N) = FinAppDetRaw(5)
+            If FinApp_DetCounter(N) = NAN Then
+                Ok = False
+                If N < FinAppDetectorCount Then Delay(1,FinAppDetectorRecoverySecs,Sec)
+            ElseIf FinApp_Neutrons(N) + FinApp_Muons(N) = 0 Then ' see knowledge/finapp/lessons.md#a-detector-can-answer-sdi-12-without-acquiring
+                Ok = False
+            EndIf
+        Next N
+
+        Return Ok
+    EndFunction
+
+    Function ReadFinAppWater() As Boolean
+        SDI12Recorder(FinAppWaterRaw(),FinAppComPort,FinAppSDIAddress,"M5!",1,0,-1)
+        FinApp_WaterCounter = FinAppWaterRaw(1)
+        FinApp_SoilMoisture = FinAppWaterRaw(2) * 0.001
+        FinApp_SWE_Areal_mm = FinAppWaterRaw(3) * 0.1
+        FinApp_SWE_Local_mm = FinAppWaterRaw(4) * 0.1
+        FinApp_SWE_Backup_mm = FinAppWaterRaw(5) * 0.1
+        Return (FinApp_WaterCounter <> NAN)
+    EndFunction
+
+    Function SampleFinApp() As Boolean
+        FinApp_MasterOk = ReadFinAppMaster()
+        FinApp_DetectorsOk = ReadFinAppDetectors()
+        FinApp_WaterOk = ReadFinAppWater()
+
+        FinApp_NewData = (FinApp_WaterCounter <> NAN) AND (FinApp_WaterCounter <> FinAppLastWaterCounter)
+        FinAppLastWaterCounter = FinApp_WaterCounter
+
+        Return FinApp_NewData
+    EndFunction
+#EndIf

@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r36/fuzz-425/cr6/message_diff/93a915ffa9c4.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SerialProbe.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "replace_argument",
+    "add_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "93a915ffa9c4.CR6 -- Compile Failed!\n\nline 20: Invalid symbol in expression: UndeclaredFuzzName123.\nline 20: Call to ProbeLog with 2 parameters, requires 1 arguments.\nline 23: Invalid, or out of place expression: \tScopePattern = \"UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\".\nline 26: Invalid symbol in expression: UndeclaredFuzzName123.\nline 26: Measurement delay must have constant interval.\nline 31: Invalid symbol in expression: BenchWatchdogOff .\nline 32: Invalid, or out of place expression: \t\t\tWDogTimer = WatchdogTimer(0,Sec).\nline 34: Invalid, or out of place expression: \t\t\tWDogTimer = WatchdogTimer(10,Min).",
+  "theirs": "93a915ffa9c4.CR6 -- Compile Failed!\n\nline 20: Invalid symbol in expression: UndeclaredFuzzName123.\nline 20: Call to ProbeLog with 2 parameters, requires 1 arguments.\nline 23: Invalid, or out of place expression: \tScopePattern = \"UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\".\nline 26: Invalid symbol in expression: UndeclaredFuzzName123.\nline 31: Invalid symbol in expression: BenchWatchdogOff .\nline 32: Invalid, or out of place expression: \t\t\tWDogTimer = WatchdogTimer(0,Sec).\nline 34: Invalid, or out of place expression: \t\t\tWDogTimer = WatchdogTimer(10,Min)."
+}

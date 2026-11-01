@@ -1,0 +1,82 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/ScanSyncTest.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/ScanSyncTest.CR6 ops=insert_comment+delete_line class=message_diff
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+Const CRLF = CHR(13) + CHR(10)
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+Const SeqCount = 4
+Public SeqFires(SeqCount) As Long
+Public SeqAlignedFires(SeqCount) As Long
+Public SeqLastDelta(SeqCount) As Long
+Dim SeqLastSec(SeqCount) As Long
+Dim rt1(9) As Long
+Dim rt2(9) As Long
+Dim rt3(9) As Long
+Dim rt4(9) As Long
+
+Const ClockSem = 1
+
+Function ClockString(Yr As Long, Mo As Long, Dy As Long, Hh As Long, Mn As Long, Sc As Long) As String * 30
+    ClockString = FormatLong(Yr,"%04u") + "-" + FormatLong(Mo,"%02u") + "-" + FormatLong(Dy,"%02u") _
+                  + " " + FormatLong(Hh,"%02u") + ":" + FormatLong(Mn,"%02u") + ":" + FormatLong(Sc,"%02u")
+EndFunction
+
+Sub ReportFire(SeqIndex As Long, SeqLabel As String * 12, PeriodSecs As Long, _
+               Yr As Long, Mo As Long, Dy As Long, Hh As Long, Mn As Long, Sc As Long)
+    Dim NowOfDay As Long
+    Dim Aligned As Boolean
+    Dim Delta As Long
+    Dim FireStr As String * 30
+    Dim FireSecs1990 As Long
+
+    NowOfDay = Hh * 3600 + Mn * 60 + Sc
+    Aligned = ((NowOfDay MOD PeriodSecs) = 0)
+    Delta = NowOfDay - SeqLastSec(SeqIndex)
+    If SeqFires(SeqIndex) = 0 Then Delta = -1
+
+    SeqFires(SeqIndex) = SeqFires(SeqIndex) + 1
+    If Aligned Then SeqAlignedFires(SeqIndex) = SeqAlignedFires(SeqIndex) + 1
+    SeqLastDelta(SeqIndex) = Delta
+    SeqLastSec(SeqIndex) = NowOfDay
+
+    SemaphoreGet(ClockSem)
+    FireStr = ClockString(Yr,Mo,Dy,Hh,Mn,Sc)
+    FireSecs1990 = SecsSince1990(FireStr,4)
+    LogDebug(SeqLabel + " " + FireStr _
+             + "  secOfDay=" + FormatLong(NowOfDay,"%u") _
+             + " aligned=" + FormatLong(Aligned,"%d") _
+             ' fuzz comment
+             + " delta=" + FormatLong(Delta,"%d") _
+             + " fires=" + FormatLong(SeqFires(SeqIndex),"%u") _
+             + " alignedfires=" + FormatLong(SeqAlignedFires(SeqIndex),"%u") _
+             + " ss1990=" + FormatLong(FireSecs1990,"%u"))
+    SemaphoreRelease(ClockSem)
+EndSub
+
+BeginProg
+    RealTime(rtMain)
+    LogDebug("")
+    LogDebug("=== ScanSyncTest start " + ClockString(rtMain(1),rtMain(2),rtMain(3),rtMain(4),rtMain(5),rtMain(6)) + " ===")
+    LogDebug("SEQ1=10s SEQ2=1min SEQ3=7s(does not divide 86400) SEQ4=15min")
+    LogDebug("aligned=-1 means the fire landed on a round multiple of that period within the day")
+
+    Scan (15,Sec,0,0)
+        If BenchWatchdogOff Then
+            WDogTimer = WatchdogTimer(0,Sec)
+        Else
+            WDogTimer = WatchdogTimer(10,Min)
+        EndIf
+
+        PanelTemp (PTemp,15000)
+        Battery (Batt_volt)
+
+        RealTime(rtMain)
+        MainTimeStr = ClockString(rtMain(1),rtMain(2),rtMain(3),rtMain(4),rtMain(5),rtMain(6))
+        MainSecs1990 = SecsSince1990(MainTimeStr,4)

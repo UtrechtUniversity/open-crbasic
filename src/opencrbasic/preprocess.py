@@ -42,7 +42,7 @@ from pathlib import Path
 
 from . import lexer, source
 from .diagnostics import Diagnostics
-from .parser import _DIRECTIVE_RE, _Parser, _TokStream, _split_text_segments
+from .parser import _DIRECTIVE_RE, _Parser, _split_text_segments, _TokStream
 from .profiles import Profile
 
 

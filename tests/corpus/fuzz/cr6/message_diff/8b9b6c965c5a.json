@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/8b9b6c965c5a.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/TString_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument",
+    "drop_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "8b9b6c965c5a.CR6 -- Compile Failed!\n\nline 2: Expression expects , : \tLogDebug(\" supply command     MC\" + FormatLong( \"%d\") + \"!\").",
+  "theirs": "8b9b6c965c5a.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: \tLogDebug(\" supply command     MC\" + FormatLong( \"%d\") + \"!\").\nline 2: Expr illegally occurs before BeginProg."
+}

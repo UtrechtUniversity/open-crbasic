@@ -1,0 +1,10 @@
+' fuzz: seed=repo/TString_tester.CR6 ops=drop_argument class=message_diff
+Const CRLF = CHR(13) + CHR(10)
+Const CR = CHR(13)
+Const LF = CHR()
+
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+ConstTable(GlobalConfigTable)

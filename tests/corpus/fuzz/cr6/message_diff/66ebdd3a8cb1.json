@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/66ebdd3a8cb1.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/Preflight_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "replace_argument",
+    "replace_numeric_literal"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "66ebdd3a8cb1.CR6 -- Compile Failed!\n\nline 2: No BeginProg in Program.",
+  "theirs": "66ebdd3a8cb1.CR6 -- Compile Failed!\n\nline 2: Could not find DataTable StationStatus."
+}

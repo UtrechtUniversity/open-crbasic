@@ -3,9 +3,8 @@ import json
 import subprocess
 from types import SimpleNamespace
 
-import pytest
-
 import oracle
+import pytest
 
 
 @pytest.fixture

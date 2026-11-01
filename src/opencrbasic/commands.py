@@ -4,9 +4,9 @@ program defines. No second pipeline: `compiler_output` is `compiler.compile_file
 Neither writes a file. See `docs/lsp-api.md` "Commands (LSP-09b)".
 """
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
-from collections.abc import Mapping
 
 from . import profiles
 from .compiler import compile_file

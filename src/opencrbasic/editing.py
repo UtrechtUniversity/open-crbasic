@@ -18,10 +18,10 @@ the parsed program and the table definitions `tables.build_tables` computes.
 import functools
 import os
 import re
-from dataclasses import dataclass, field
+from collections.abc import Sequence
+from dataclasses import dataclass
 from pathlib import Path
 from typing import NamedTuple
-from collections.abc import Sequence
 
 from . import lexer, positions, profiles, source
 from . import syntax as S

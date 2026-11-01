@@ -1,0 +1,6 @@
+' fuzz: seed=repo/PowerBudget_tester.CR6 ops=typo_identifier+insert_continuation class=message_diff
+		Case Else
+			MenuPending = True
+	EndSelect
+EndSub
+

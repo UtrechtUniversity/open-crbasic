@@ -1,10 +1,9 @@
 
 import pytest
 
-from opencrbasic import profiles
-from opencrbasic import mode, signature
-from opencrbasic.compiler import compile_file
+from opencrbasic import mode, profiles, signature
 from opencrbasic.checker import structure
+from opencrbasic.compiler import compile_file
 
 
 def _program(tmp_path):

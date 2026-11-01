@@ -4,7 +4,7 @@ not any one checker pass's concern -- the file-origin `<file>` prefix (`diagnost
 """
 
 from opencrbasic import profiles
-from opencrbasic.compiler import CompileResult, _MESSAGE_BUFFER_LIMIT, _bounded_by_message_buffer
+from opencrbasic.compiler import _MESSAGE_BUFFER_LIMIT, CompileResult, _bounded_by_message_buffer
 from opencrbasic.diagnostics import Diagnostics
 
 PROFILE = profiles.get("cr6")

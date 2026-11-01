@@ -1,0 +1,392 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/SnowVue_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/SnowVue_tester.CR6 ops=insert_foreign_statement+duplicate_line class=false_accept
+Const CRLF = CHR(13) + CHR(10)
+Const CR = CHR(13)
+Const LF = CHR(10)
+
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+ConstTable(GlobalConfigTable)
+	Const SnowVueSDIAddress = 0
+	Const LowPowerRailMask = &B10
+	Const LowPowerSettleSecs = 10
+  IncludeSection("ConstTable", "CPU:SnowVue10Lib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:SnowVue10Lib.crb")
+
+Const SnowVueQualityGoodMax = 100
+Const SnowVueQualityWeakMax = 300
+Const SnowVueQualityMax = 600
+Const SnowVueResFreqMin = 40
+Const SnowVueResFreqMax = 60
+Const SnowVueRangeMin = 0.4
+Const SnowVueRangeMax = 10
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+IncludeSection("Rail", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:SnowVue10Lib.crb")
+
+Const ReportTimer = 1
+Const TimerResetAndStart = 2
+Const TimerReadOnly = 4
+
+Public SnowVueInfo As String * 100
+Public AirTemp_C
+Public LastResult As Boolean
+Public LastElapsedMs As Long
+Public RepeatSample As Boolean = False
+
+Public DoSample As Boolean = False
+Public DoDistance As Boolean = False
+Public DoMeta As Boolean = False
+Public DoIdentify As Boolean = False
+Public DoVersion As Boolean = False
+Public DoReadGround As Boolean = False
+Public DoReadRefTemp As Boolean = False
+Public DoAddressScan As Boolean = False
+Public DoShowConfig As Boolean = False
+Public DoMedianTest As Boolean = False
+Public DoToggleRail As Boolean = False
+
+Dim MenuKey As String * 2
+Dim MenuPending As Boolean
+
+Function QualityLabel(Q As Float) As String * 16
+	If Q = NAN Then Return "no answer"
+	If Q = SnowVueNoEcho Then Return "no echo"
+	If Q <= SnowVueQualityGoodMax Then Return "good"
+	If Q <= SnowVueQualityWeakMax Then Return "weak echo"
+	If Q <= SnowVueQualityMax Then Return "uncertain"
+	Return "off scale"
+EndFunction
+
+Function RangeLabel(D As Float) As String * 16
+	If D = NAN Then Return "no answer"
+	If D = SnowVueNoEcho Then Return "no echo"
+	If D < SnowVueRangeMin Then Return "below range"
+	If D > SnowVueRangeMax Then Return "above range"
+	Return "in range"
+EndFunction
+
+Sub LogSnowVueStats
+	LogDebug("dist=" + FormatFloat(SnowVue_Distance_m, "%8.4f") _
+		+ " tcdist=" + FormatFloat(SnowVue_TCDistance_m, "%8.4f") _
+		+ " q=" + FormatFloat(SnowVue_Quality, "%6.1f") _
+		+ " n=" + FormatLong(SnowVue_ValidReadings, "%d") + "/" + FormatLong(SnowVueBurstCount, "%d") _
+		+ " ms=" + FormatLong(LastElapsedMs, "%d"))
+EndSub
+
+Sub LogSnowVueReport
+	LogDebug("")
+	LogDebug("================================================")
+	LogDebug("SnowVue10Lib sample | air temp " + FormatFloat(AirTemp_C, "%8.3f") + " C (panel)")
+	LogDebug("------------------------------------------------")
+	LogDebug(" distance raw       " + FormatFloat(SnowVue_Distance_m, "%10.4f") + " m   " + RangeLabel(SnowVue_Distance_m))
+	LogDebug(" distance corrected " + FormatFloat(SnowVue_TCDistance_m, "%10.4f") + " m")
+	LogDebug(" quality            " + FormatFloat(SnowVue_Quality, "%10.1f") + "     " + QualityLabel(SnowVue_Quality))
+	LogDebug(" valid readings     " + FormatLong(SnowVue_ValidReadings, "%10d") + "     of " + FormatLong(SnowVueBurstCount, "%d"))
+	LogDebug("------------------------------------------------")
+	LogDebug(" pitch              " + FormatFloat(SnowVue_Pitch_deg, "%10.2f") + " deg")
+	LogDebug(" roll               " + FormatFloat(SnowVue_Roll_deg, "%10.2f") + " deg")
+	LogDebug(" tilt magnitude     " + FormatFloat(SQR(SnowVue_Pitch_deg * SnowVue_Pitch_deg + SnowVue_Roll_deg * SnowVue_Roll_deg), "%10.2f") + " deg")
+	LogDebug("------------------------------------------------")
+	LogDebug(" reference temp     " + FormatFloat(SnowVue_RefTemp_C, "%10.2f") + " C   (sensor-side, unused)")
+	LogDebug(" internal temp      " + FormatFloat(SnowVue_IntTemp_C, "%10.2f") + " C")
+	LogDebug(" internal RH        " + FormatFloat(SnowVue_IntRH, "%10.2f") + " %")
+	LogDebug(" supply             " + FormatFloat(SnowVue_Supply_V, "%10.2f") + " V")
+	LogDebug(" resonant freq      " + FormatFloat(SnowVue_ResFreq_kHz, "%10.2f") + " kHz " _
+		+ IIF((SnowVue_ResFreq_kHz >= SnowVueResFreqMin) AND (SnowVue_ResFreq_kHz <= SnowVueResFreqMax), "in tolerance", "OUT OF TOLERANCE"))
+	LogDebug(" alert flag         " + FormatFloat(SnowVue_Alert, "%10.0f") + "     " + IIF(SnowVue_Alert = 0, "good", "TRANSDUCER ALERT"))
+	LogDebug("------------------------------------------------")
+	Call LogSnowVueStats
+	LogDebug(" result             " + IIF(LastResult, "ok", "FAILED"))
+	LogDebug("================ END OF REPORT =================")
+EndSub
+
+Sub RunSample
+	AirTemp_C = PTemp
+	Timer(ReportTimer, mSec, TimerResetAndStart)
+	LastResult = SampleSnowVue(AirTemp_C)
+	LastElapsedMs = Timer(ReportTimer, mSec, TimerReadOnly)
+	Call LogSnowVueReport
+EndSub
+
+Sub RunDistance
+	Timer(ReportTimer, mSec, TimerResetAndStart)
+	LastResult = ReadSnowVueDistance()
+	LastElapsedMs = Timer(ReportTimer, mSec, TimerReadOnly)
+	LogDebug("M1! -> dist=" + FormatFloat(SnowVue_Distance_m, "%10.4f") + " m" _
+		+ " q=" + FormatFloat(SnowVue_Quality, "%7.1f") _
+		+ "  " + RangeLabel(SnowVue_Distance_m) _
+		+ ", " + QualityLabel(SnowVue_Quality) _
+		+ ", ms=" + FormatLong(LastElapsedMs, "%d"))
+EndSub
+
+Sub RunMeta
+	Timer(ReportTimer, mSec, TimerResetAndStart)
+	LastResult = ReadSnowVueMeta()
+	LastElapsedMs = Timer(ReportTimer, mSec, TimerReadOnly)
+	LogDebug("M9! -> reftemp=" + FormatFloat(SnowVue_RefTemp_C, "%8.2f") _
+		+ " inttemp=" + FormatFloat(SnowVue_IntTemp_C, "%8.2f") _
+		+ " intrh=" + FormatFloat(SnowVue_IntRH, "%7.2f") _
+		+ " pitch=" + FormatFloat(SnowVue_Pitch_deg, "%7.2f") _
+		+ " roll=" + FormatFloat(SnowVue_Roll_deg, "%7.2f") _
+		+ " supply=" + FormatFloat(SnowVue_Supply_V, "%6.2f") _
+		+ " resfreq=" + FormatFloat(SnowVue_ResFreq_kHz, "%7.2f") _
+		+ " alert=" + FormatFloat(SnowVue_Alert, "%3.0f") _
+		+ " ms=" + FormatLong(LastElapsedMs, "%d"))
+EndSub
+
+Sub RunSDICommand(Cmd As String * 16)
+	SnowVueInfo = ""
+	SDI12Recorder(SnowVueInfo, SnowVueComPort, SnowVueSDIAddress, Cmd, 1, 0)
+	LogDebug(Cmd + " -> " + SnowVueInfo)
+EndSub
+
+Sub RunAddressScan
+	Dim A As Long
+
+	LogDebug("")
+	LogDebug("address scan, aI! on 0-9 (unanswered addresses take a few seconds each)")
+	For A = 0 To 9
+		SnowVueInfo = ""
+		SDI12Recorder(SnowVueInfo, SnowVueComPort, A, "I!", 1, 0)
+		LogDebug("addr " + FormatLong(A, "%d") + ": " + SnowVueInfo)
+	Next A
+	LogDebug("address scan done")
+EndSub
+
+Sub RunMedianTest
+	Dim Passed As Long
+	Dim Failed As Long
+	Dim I As Long
+
+	For I = 1 To SnowVueBurstCount
+		SnowVueBurstDist(I) = SnowVueUnread
+	Next I
+	SnowVueBurstDist(1) = 4
+	SnowVueBurstDist(2) = 1
+	SnowVueBurstDist(3) = 2
+	SnowVueBurstQual(1) = 300
+	SnowVueBurstQual(2) = 10
+	SnowVueBurstQual(3) = 100
+
+	SnowVue_ValidReadings = 3
+	Call SelectSnowVueMedian
+	If (SnowVue_Distance_m = 2) AND (SnowVue_Quality = 100) Then
+		Passed = Passed + 1
+	Else
+		Failed = Failed + 1
+	EndIf
+	EndIf
+
+	SnowVueBurstDist(4) = 8
+	SnowVueBurstQual(4) = 20
+	SnowVue_ValidReadings = 4
+	Call SelectSnowVueMedian
+	If (SnowVue_Distance_m = 3) AND (SnowVue_Quality = 300) Then
+		Passed = Passed + 1
+	Else
+		Failed = Failed + 1
+	EndIf
+
+	SnowVue_ValidReadings = 0
+	Call SelectSnowVueMedian
+	If (SnowVue_Distance_m = NAN) AND (SnowVue_Quality = NAN) Then
+		Passed = Passed + 1
+	Else
+		Failed = Failed + 1
+	EndIf
+
+	LogDebug("median self-test passed=" + FormatLong(Passed, "%d") _
+		+ " failed=" + FormatLong(Failed, "%d"))
+EndSub
+
+Sub ShowConfig
+	LogDebug("")
+	LogDebug("=============== CONFIG =================")
+	LogDebug(" sdi-12 address     " + FormatLong(SnowVueSDIAddress, "%d"))
+	LogDebug(" burst readings     " + FormatLong(SnowVueBurstCount, "%d") + " (median kept)")
+	LogDebug(" measure command    M1!")
+	LogDebug(" metadata command   M9!")
+	LogDebug(" spec range         " + FormatFloat(SnowVueRangeMin, "%.2f") + " to " + FormatFloat(SnowVueRangeMax, "%.2f") + " m")
+	LogDebug(" quality bands      <=" + FormatLong(SnowVueQualityGoodMax, "%d") + " good, <=" _
+		+ FormatLong(SnowVueQualityWeakMax, "%d") + " weak, <=" + FormatLong(SnowVueQualityMax, "%d") + " uncertain")
+	LogDebug(" resonant freq ok   " + FormatLong(SnowVueResFreqMin, "%d") + " to " + FormatLong(SnowVueResFreqMax, "%d") + " kHz")
+	LogDebug(" rail settle        " + FormatLong(LowPowerSettleSecs, "%d") + " s on C2")
+	LogDebug("========================================")
+EndSub
+
+Sub ShowMenu
+	LogDebug("")
+	LogDebug("================= MENU =================")
+	LogDebug(" 1  full sample             M1! x" + FormatLong(SnowVueBurstCount, "%d") + " + M9!  *slow*")
+	LogDebug(" 2  single distance read    M1!")
+	LogDebug(" 3  metadata read           M9!")
+	LogDebug(" 4  identification          I!")
+	LogDebug(" 5  version                 V!")
+	LogDebug(" 6  distance to ground      XRM!")
+	LogDebug(" 7  reference temperature   XRT!")
+	LogDebug(" 8  address scan 0-9        I!        *slow*")
+	LogDebug(" 9  repeat sample on/off    currently " + IIF(RepeatSample, "on", "off"))
+	LogDebug(" 0  show configuration")
+	LogDebug(" A  median self-test        no sensor needed")
+	LogDebug(" R  sensor rail on/off      currently " + IIF(RailOn, "on", "off"))
+	LogDebug("========================================")
+	LogDebug("send a key (ENTER redisplays this menu)")
+EndSub
+
+Sub PollMenu
+
+	MenuKey = ReadMenuKey()
+	If MenuKey = "" Then ExitSub
+
+	Select Case MenuKey
+		Case "1"
+			DoSample = True
+		Case "2"
+			DoDistance = True
+		Case "3"
+			DoMeta = True
+		Case "4"
+			DoIdentify = True
+		Case "5"
+			DoVersion = True
+		Case "6"
+			DoReadGround = True
+		Case "7"
+			DoReadRefTemp = True
+		Case "8"
+			DoAddressScan = True
+		Case "9"
+			RepeatSample = NOT RepeatSample
+		Case "0"
+			DoShowConfig = True
+		Case "A"
+			DoMedianTest = True
+		Case "R"
+			DoToggleRail = True
+		Case Else
+			Call ShowMenu
+			ExitSub
+	EndSelect
+
+	LogDebug("")
+	LogDebug(">>> option " + MenuKey + " selected")
+	MenuPending = True
+EndSub
+
+BeginProg
+	LogDebug("SnowVue10Lib tester starting")
+	SerialFlush(ComUSB)
+	Call SetRail(False)
+	Call ShowConfig
+	Call ShowMenu
+
+	Scan (1, Sec, 0, 0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+
+		PanelTemp (PTemp, 15000)
+		Battery (Batt_volt)
+
+		Call PollMenu
+
+		If DoSample Then
+			DoSample = False
+			Call RunSample
+		EndIf
+
+		If DoDistance Then
+			DoDistance = False
+			Call RunDistance
+		EndIf
+
+		If DoMeta Then
+			DoMeta = False
+			Call RunMeta
+		EndIf
+
+		If DoIdentify Then
+			DoIdentify = False
+			Call RunSDICommand("I!")
+		EndIf
+
+		If DoVersion Then
+			DoVersion = False
+			Delay(0,1,Sec)
+			Call RunSDICommand("V!")
+		EndIf
+
+		If DoReadGround Then
+			DoReadGround = False
+			Call RunSDICommand("XRM!")
+		EndIf
+
+		If DoReadRefTemp Then
+			DoReadRefTemp = False
+			Call RunSDICommand("XRT!")
+		EndIf
+
+		If DoAddressScan Then
+			DoAddressScan = False
+			Call RunAddressScan
+		EndIf
+
+		If DoShowConfig Then
+			DoShowConfig = False
+			Call ShowConfig
+		EndIf
+
+		If DoMedianTest Then
+			DoMedianTest = False
+			Call RunMedianTest
+		EndIf
+
+		If RepeatSample Then
+			AirTemp_C = PTemp
+			Timer(ReportTimer, mSec, TimerResetAndStart)
+			LastResult = SampleSnowVue(AirTemp_C)
+			LastElapsedMs = Timer(ReportTimer, mSec, TimerReadOnly)
+			Call LogSnowVueStats
+		EndIf
+
+		If DoToggleRail Then
+			DoToggleRail = False
+			Call SetRail(NOT RailOn)
+			If RailOn Then
+				Delay(1, LowPowerSettleSecs, Sec)
+				LogDebug("sensor rail on, settled " + FormatLong(LowPowerSettleSecs, "%d") + " s")
+			Else
+				LogDebug("sensor rail off")
+			EndIf
+		EndIf
+
+		If MenuPending Then
+			MenuPending = False
+			SerialFlush(ComUSB)
+			Call ShowMenu
+		EndIf
+
+		CallTable SnowVue_Data
+		CallTable SnowVue_Diagnostics
+		CallTable StationStatus
+	NextScan
+EndProg

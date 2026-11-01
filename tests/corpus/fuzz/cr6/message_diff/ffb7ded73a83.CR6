@@ -1,0 +1,57 @@
+' fuzz: seed=repo/Main.CR6 ops=delete_line+insert_foreign_statement class=message_diff
+		BoxTempC = NAN
+#EndIf
+
+		Call UpdatePowerClock
+		Call UpdatePowerInputs(Batt_volt, PTemp, BoxTempC)
+
+		FinAppLoadOn = FinApp_Powered
+		SemaphoreGet(ProfileSem)
+		Call UpdatePowerProfile
+		SemaphoreRelease(ProfileSem)
+		If DebugTrace Then
+			DebugScanCount = DebugScanCount + 1
+
+			If PowerProfile <> DebugLastProfile Then
+				DebugLine = "PROFILE " + FormatLong(DebugLastProfile,"%d") + " -> " + FormatLong(PowerProfile,"%d") _
+					+ "  prevDayV25=" + FormatFloat(PrevDayV25,"%.3f") _
+					+ " T=" + FormatFloat(PrevDayDecisionTempC,"%.1f") _
+					+ " prevDayV=" + FormatFloat(PrevDayDecisionV,"%.3f") _
+					+ " min=" + FormatFloat(PrevDayBattMin,"%.3f") _
+					+ " quietMin=" + FormatFloat(PrevDayBattMinQuiet,"%.3f")
+				DebugLine = DebugLine + " quietN=" + FormatFloat(PrevDayQuietSamples,"%.0f") _
+					+ "  measUnits=" + FormatLong(MeasIntervalUnits(),"%d") _
+					+ " sbdDays=" + FormatLong(SbdPeriodDays(),"%d") _
+					+ " finappDays=" + FormatLong(FinAppPeriodDays(),"%d")
+				LogDebug(DebugLine)
+				DebugLastProfile = PowerProfile
+			EndIf
+
+			If DayIndex <> DebugLastDay Then
+				LogDebug("DAY " + FormatLong(DebugLastDay,"%d") + " -> " + FormatLong(DayIndex,"%d") _
+					+ "  " + PowerTimeStr _
+					+ "  finAppDayActive=" + IIF(FinAppDayActive,"T","F") _
+					+ " amb=" + FormatFloat(AmbientForDecision,"%.2f"))
+				DebugLastDay = DayIndex
+			EndIf
+
+			If DebugScanCount MOD DebugHeartbeatScans = 0 Then
+				DebugLine = "HB " + PowerTimeStr _
+					+ " prof=" + FormatLong(PowerProfile,"%d") _
+					+ " unit=" + FormatLong(UnitOfDay,"%d") _
+					+ " day=" + FormatLong(DayIndex,"%d") _
+					+ " batt=" + FormatFloat(Batt_volt,"%.3f")
+				DebugLine = DebugLine _
+					+ " panel=" + FormatFloat(PTemp,"%.2f") _
+					+ " amb=" + FormatFloat(AmbientForDecision,"%.2f") _
+					+ " pt1000=" + FormatFloat(PT1000_Temp_C,"%.3f") _
+					+ " finPwr=" + IIF(FinApp_Powered,"T","F") _
+					+ " hiPwr=" + IIF(HighPowerActive,"T","F")
+				DebugLine = DebugLine _
+					+ " skip=" + FormatLong(Status.SkippedScan,"%d") _
+					+ " wdog=" + FormatLong(Status.WatchdogErrors,"%d") _
+					+ " varOOB=" + FormatLong(Status.VarOutOfBound,"%d") _
+					+ " scans=" + FormatLong(DebugScanCount,"%d")
+				LogDebug(DebugLine)
+			EndIf
+		EndIf

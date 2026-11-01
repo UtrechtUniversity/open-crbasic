@@ -28,16 +28,17 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-REPO = ROOT.parent
+REPO = ROOT
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(HERE))
 
-from opencrbasic import cli, profiles  # noqa: E402
 import oracle  # noqa: E402
+
+from opencrbasic import cli, profiles  # noqa: E402
 
 CACHE_DIR = ROOT / ".oracle-cache" / "times"
 GROUPS = {
-    "repo": (REPO / "crbasic", "*.CR6"),
+    "repo": (REPO / "tests" / "corpus" / "firnmelt", "*.CR6"),
     "chm": (ROOT / "tests" / "corpus" / "chm", "*.CR6"),
 }
 

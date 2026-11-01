@@ -1,0 +1,4 @@
+' fuzz: seed=repo/SbdPayload_tester.CR6 ops=drop_argument+insert_comment class=message_diff
+	Ok = (SbdPayloadLen <= IridiumMaxMOMessageLength)
+	Call LogResult("payload fits one SBD message", Ok, "len=" + FormatLong(SbdPayloadLen, "%d") + " max=" + FormatLong( "%d"))
+

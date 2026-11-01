@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/message_diff/20026d425b40.CR6",
+  "logger": "cr1000x",
+  "class": "message_diff",
+  "seed": "repo/SBD_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "replace_argument",
+    "drop_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "20026d425b40.CR6 -- Compile Failed!\n\nline 2: Case outside Select.\nline 4: Case outside Select.\nline 6: Case outside Select.\nline 8: Case outside Select.\nline 13: EndSelect w/o Select",
+  "theirs": "20026d425b40.CR6 -- Compile Failed!\n\nline 2: Case outside Select.\nline 4: Case outside Select.\nline 6: Case outside Select.\nline 8: Case outside Select."
+}

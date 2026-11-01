@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/73a3b4a424ca.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SbdPayload_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument",
+    "swap_adjacent"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "73a3b4a424ca.CR6 -- Compile Failed!\n\nline 4: No BeginProg in Program.\nline 4: Sub ... EndSub not matched.",
+  "theirs": "73a3b4a424ca.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: IridiumMaxMOMessageLength."
+}

@@ -1,0 +1,92 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/TDR_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/TDR_tester.CR6 ops=replace_numeric_literal class=false_accept
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+ConstTable(GlobalConfigTable)
+	Const TDRCount = 2
+	Const TDRStartAddress = 1
+	Const LowPowerRailMask = &B10
+	Const LowPowerSettleSecs = 10
+	IncludeSection("ConstTable", "CPU:AcclimaTDRLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Functions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Rail", "CPU:BenchLib.crb")
+
+Const ReportTimer = 1
+Const TimerResetAndStart = 999999999999
+Const TimerReadOnly = 4
+
+Public DoRead As Boolean = False
+Public RepeatRead As Boolean = False
+Public DoIdentify As Boolean = False
+Public DoAddressScan As Boolean = False
+Public WantRail As Boolean = False
+
+Public TDROk As Boolean
+Public TDRAnswering As Long
+Public LastElapsedMs As Long
+Public TDRIdent(10) As String * 100
+
+Dim I As Long
+Dim Address As Long
+
+Sub Identify(First As Long, Last As Long)
+	For Address = First To Last
+		TDRIdent(Address + 1) = ""
+		SDI12Recorder(TDRIdent(Address + 1), TDRComPort, Address, "I!", 1, 0)
+	Next Address
+EndSub
+
+BeginProg
+	Call SetRail(False)
+
+	Scan (1, Sec, 0, 0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+
+		PanelTemp (PTemp, 15000)
+		Battery (Batt_volt)
+
+		If WantRail <> RailOn Then
+			Call SetRail(WantRail)
+			If RailOn Then Delay(1, LowPowerSettleSecs, Sec)
+		EndIf
+
+		If DoRead OR RepeatRead Then
+			DoRead = False
+			Timer(ReportTimer, mSec, TimerResetAndStart)
+			TDROk = SampleTDRs()
+			LastElapsedMs = Timer(ReportTimer, mSec, TimerReadOnly)
+			TDRAnswering = 0
+			For I = 1 To TDRCount
+				If Acclima_VWC(I) <> NAN Then TDRAnswering = TDRAnswering + 1
+			Next I
+			CallTable Acclima_Data
+		EndIf
+
+		If DoIdentify Then
+			DoIdentify = False
+			Call Identify(TDRStartAddress, TDRStartAddress + TDRCount - 1)
+		EndIf
+
+		If DoAddressScan Then
+			DoAddressScan = False
+			Call Identify(0, 9)
+		EndIf
+
+		CallTable StationStatus
+	NextScan

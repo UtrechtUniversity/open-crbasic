@@ -1,0 +1,61 @@
+' fuzz: seed=repo/PortSleep_tester.CR6 ops=delete_line class=false_accept
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+Public PortOpenFlag As Long
+Public PortMinute As Long
+Public PortScans As Long
+Public PortUntouched As Boolean = True
+Dim PortRTime(9) As Long
+
+ConstTable(GlobalConfigTable)
+	Const PortBlockMinutes = 5
+
+	Const PortUntouchedScans = 40
+
+EndConstTable
+
+DataTable(PortSleep_Scans,True,-1)
+	Sample(1,PortOpenFlag,Long)
+	Sample(1,Batt_volt,FP2)
+EndTable
+
+BeginProg
+	SW12(SW12_1, 0)
+	SW12(SW12_2, 0)
+	PortOpenFlag = -1
+
+	Scan (15,Sec,0,0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+
+		PanelTemp (PTemp,15000)
+		Battery (Batt_volt)
+
+		RealTime(PortRTime)
+		PortMinute = PortRTime(5)
+		PortScans = PortScans + 1
+		PortUntouched = (PortScans <= PortUntouchedScans)
+
+		If PortUntouched Then
+			PortOpenFlag = -1
+		ElseIf ((PortMinute INTDV PortBlockMinutes) MOD 2) = 1 Then
+			If PortOpenFlag <> 1 Then
+				SerialOpen(PortUnderTest, PortBaud, PortFormat, 0, PortBuffer, PortCommsMode)
+				PortOpenFlag = 1
+			EndIf
+		Else
+			If PortOpenFlag <> 0 Then
+				SerialClose(PortUnderTest)
+				PortOpenFlag = 0
+			EndIf
+		EndIf
+
+		CallTable PortSleep_Scans
+	NextScan
+EndProg

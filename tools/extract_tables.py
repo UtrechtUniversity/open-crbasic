@@ -21,7 +21,7 @@ import pefile
 
 HERE = Path(__file__).resolve().parent
 DATA = HERE.parent / "src" / "opencrbasic" / "data"
-DEFAULT_EXE = HERE.parents[1] / "compiler" / "CR6Comp.exe"
+DEFAULT_EXE = HERE.parent / "compiler" / "CR6Comp.exe"
 
 IDENT = re.compile(rb"^[A-Za-z_][A-Za-z0-9_$]*$")
 

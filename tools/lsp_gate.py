@@ -3,14 +3,12 @@
 
     uv run --no-sync python tools/lsp_gate.py [--base REV] [--run] [--jobs N]
 
-Run from `opencrbasic/` with `UV_PROJECT_ENVIRONMENT` and `PYTHONPATH=$PWD/src` set (see
-docs/lsp-api.md "Test tiers"). The changed files are `git diff --name-only <base>...HEAD` plus the
+Run from the repository root (see docs/lsp-api.md "Test tiers"). The changed files are `git diff --name-only <base>...HEAD` plus the
 working tree (staged, unstaged and untracked). The gates, strongest first:
 
 * compiler or unclassified `src`/`tests`/`tools` files -> the full suite plus selfdiff;
 * LSP-only files (analysis, sources, positions, editor modules, `lsp/**`, `tests/lsp/**`,
-  `../crbasic/**`) -> selfdiff plus `tests/lsp` (fast and slow tiers, once);
-* `vscode/**` -> `npm test`;
+  `tools/lsp_*.py`) -> selfdiff plus `tests/lsp` (fast and slow tiers, once);
 * any file in `[tool.pyrefly].project-includes` of pyproject.toml, or pyproject.toml itself ->
   `pyrefly check` (only selected here; its error count is not judged);
 * only documentation changed -> a relative-link check (`--check-links FILE...`).
@@ -43,7 +41,6 @@ LSP_ONLY = ("src/opencrbasic/analysis.py", "src/opencrbasic/sources.py",
             "src/opencrbasic/helpdocs.py", "src/opencrbasic/rename.py",
             "src/opencrbasic/formatting.py", "src/opencrbasic/quickfix.py",
             "src/opencrbasic/lsp/**", "tests/lsp/**", "tools/lsp_*.py")
-VSCODE = ("vscode/**",)
 DOCS = ("docs/**", "*.md")
 
 
@@ -97,28 +94,17 @@ def pyrefly_includes(pyproject_text: str, force_fallback: bool = False) -> list[
 
 def classify(paths, includes=()) -> list[tuple[str, str]]:
     """The gates for changed `paths` (relative to the repository root): [(label, command)]."""
-    local, outside = [], []
-    for p in paths:
-        p = p.replace("\\", "/")
-        if p.startswith("opencrbasic/"):
-            local.append(p[len("opencrbasic/"):])
-        else:
-            outside.append(p)
-    tiers = {"compiler": False, "lsp": False, "vscode": False, "docs": False}
+    local = [p.replace("\\", "/").removeprefix("opencrbasic/") for p in paths]
+    tiers = {"compiler": False, "lsp": False, "docs": False}
     for p in local:
         if matches(p, LSP_ONLY):
             tiers["lsp"] = True
-        elif matches(p, VSCODE):
-            tiers["vscode"] = True
         elif matches(p, DOCS) and not matches(p, ("tests/**", "src/**", "tools/**")):
             tiers["docs"] = True
         elif p == "pyproject.toml" or p.startswith("scratch/"):
             continue
         else:       # compiler modules, the tests and tools around them, and anything unclassified
             tiers["compiler"] = True
-    for p in outside:
-        if p.startswith("crbasic/"):            # the corpus the LSP tests and selfdiff read
-            tiers["lsp"] = True
     gates: list[tuple[str, str]] = []
     if tiers["compiler"]:
         gates.append(("full suite (compiler or unclassified change; includes every LSP tier)",
@@ -128,13 +114,11 @@ def classify(paths, includes=()) -> list[tuple[str, str]]:
         gates.append(("selfdiff", f"uv run --no-sync python tools/selfdiff.py --compare {SELFDIFF_BASE}"))
         gates.append(("LSP tests, fast and slow tiers once",
                       "uv run --no-sync pytest tests/lsp -q -n {jobs}"))
-    if tiers["vscode"]:
-        gates.append(("vscode extension", "npm --prefix vscode test"))
     py_changed = [p for p in local if p == "pyproject.toml" or matches(p, includes)]
     if py_changed:
         gates.append(("pyrefly (LSP modules; error count not judged here)",
                       "uv run --no-sync pyrefly check"))
-    if tiers["docs"] and not (tiers["compiler"] or tiers["lsp"] or tiers["vscode"]):
+    if tiers["docs"] and not (tiers["compiler"] or tiers["lsp"]):
         markdown = sorted(p for p in local if matches(p, DOCS) and p.endswith(".md"))
         if markdown:    # evidence assets (images, JSON, logs) are docs but have no links to read
             gates.append(("documentation links", "uv run --no-sync python tools/lsp_gate.py "

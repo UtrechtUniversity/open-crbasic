@@ -1,0 +1,2 @@
+' fuzz: seed=repo/SBD_tester.CR6 ops=change_declared_type+add_argument class=message_diff
+		If DoRegister Then

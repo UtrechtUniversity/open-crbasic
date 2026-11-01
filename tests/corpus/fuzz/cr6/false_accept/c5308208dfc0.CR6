@@ -1,0 +1,540 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/Preflight_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/Preflight_tester.CR6 ops=duplicate_line class=false_accept
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+ConstTable(GlobalConfigTable)
+	IncludeSection("ConstTable", "CPU:StationConfig.crb")
+
+	Const LowPowerRailMask = &B10
+
+	Const LowPowerSettleSecs = 10
+
+	IncludeSection("ConstTable", "CPU:PowerProfileLib.crb")
+	IncludeSection("ConstTable", "CPU:AcclimaTDRLib.crb")
+	IncludeSection("ConstTable", "CPU:GeoPrecisionTStringLib.crb")
+	IncludeSection("ConstTable", "CPU:SnowVue10Lib.crb")
+	IncludeSection("ConstTable", "CPU:PT1000Lib.crb")
+	IncludeSection("ConstTable", "CPU:FinAppLib.crb")
+	IncludeSection("ConstTable", "CPU:SBDIridiumLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:StationConfig.crb")
+IncludeSection("Definitions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Definitions", "CPU:GeoPrecisionTStringLib.crb")
+IncludeSection("Definitions", "CPU:SnowVue10Lib.crb")
+IncludeSection("Definitions", "CPU:PT1000Lib.crb")
+IncludeSection("Definitions", "CPU:FinAppLib.crb")
+IncludeSection("Definitions", "CPU:SBDIridiumLib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+IncludeSection("Rail", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Functions", "CPU:GeoPrecisionTStringLib.crb")
+IncludeSection("Functions", "CPU:SnowVue10Lib.crb")
+IncludeSection("Functions", "CPU:PT1000Lib.crb")
+IncludeSection("Functions", "CPU:FinAppLib.crb")
+IncludeSection("Functions", "CPU:SBDIridiumLib.crb")
+
+Const PreTimer = 1
+Const PreStepTimer = 2
+
+Public PreIdent As String * 100
+Public PreTimeStr As String * 30
+Public PreRTime(9) As Long
+
+Public PreIndex As Long
+Public PrePassed As Long
+Public PreFailed As Long
+Public PreSkipped As Long
+Public PreReady As Boolean
+Public PreElapsedMs As Long
+Public PreStepMs As Long
+
+Public PreTDRFound As Long
+Public PreTStringFound As Long
+
+Public DoFull As Boolean = False
+Public DoLowPower As Boolean = False
+Public DoFinApp As Boolean = False
+Public DoModem As Boolean = False
+Public DoAddressScan As Boolean = False
+Public DoShowConfig As Boolean = False
+Public DoToggleRail As Boolean = False
+
+Dim StoreSensorRecords As Boolean = False
+Dim StoreFinAppRecord As Boolean = False
+
+Dim MenuKey As String * 2
+Dim MenuPending As Boolean
+
+Sub LogCheck(CheckName As String * 40, Ok As Boolean, Detail As String * 200)
+	PreIndex = PreIndex + 1
+	PrePassed = PrePassed + IIF(Ok, 1, 0)
+	PreFailed = PreFailed + IIF(Ok, 0, 1)
+	LogDebug("[" + FormatLong(PreIndex, "%02d") + "] " + CheckName + " | " + IIF(Ok, "PASS", "FAIL") + " | " + Detail)
+EndSub
+
+Sub LogSkip(CheckName As String * 40, Reason As String * 200)
+	PreIndex = PreIndex + 1
+	PreSkipped = PreSkipped + 1
+	LogDebug("[" + FormatLong(PreIndex, "%02d") + "] " + CheckName + " | SKIP | " + Reason)
+EndSub
+
+Sub LogInfo(InfoName As String * 40, Detail As String * 200)
+	LogDebug("     " + InfoName + " | INFO | " + Detail)
+EndSub
+
+Function SDI12Answered(Info As String * 100) As Boolean
+	Return ((Info <> "") AND (Info <> "NAN"))
+EndFunction
+
+Function SDI12AtAddress(Info As String * 100, Addr As String * 2) As Boolean
+	If NOT SDI12Answered(Info) Then Return False
+	Return (Mid(Info, 1, 1) = Addr)
+EndFunction
+
+Sub CheckLogger
+	RealTime(PreRTime)
+	PreTimeStr = FormatLong(PreRTime(1),"%04u") + "-" + FormatLong(PreRTime(2),"%02u") _
+		+ "-" + FormatLong(PreRTime(3),"%02u") + " " + FormatLong(PreRTime(4),"%02u") _
+		+ ":" + FormatLong(PreRTime(5),"%02u") + ":" + FormatLong(PreRTime(6),"%02u")
+
+	LogDebug("--- logger, informational ---")
+	Call LogInfo("logger clock, must be UTC", PreTimeStr)
+	Call LogInfo("battery and panel", FormatFloat(Batt_volt,"%.3f") + " V  " _
+		+ FormatFloat(PTemp,"%.2f") + " C  lithium=" + FormatFloat(Status.LithiumBattery,"%.2f") + " V")
+	Call LogInfo("card bytes free", FormatFloat(Status.CardBytesFree,"%.0f") + "  (-1 means no card fitted)")
+	Call LogInfo("startup, watchdog, skipped, oob", FormatFloat(Status.StartUpCode,"%.0f") _
+		+ "  " + FormatFloat(Status.WatchdogErrors,"%.0f") _
+		+ "  " + FormatFloat(Status.SkippedScan,"%.0f") _
+		+ "  " + FormatFloat(Status.VarOutOfBound,"%.0f"))
+EndSub
+
+Sub CheckPT1000
+	Dim Ok As Boolean
+
+	LogDebug("--- PT1000, U9 U10 U11 ---")
+	Timer(PreStepTimer, mSec, TimerResetAndStart)
+	Ok = SamplePT1000()
+	PreStepMs = Timer(PreStepTimer, mSec, TimerReadOnly)
+	Call LogCheck("pt1000 4-wire resistance", Ok, "ohms=" + FormatFloat(PT1000_Ohms,"%.3f") _
+		+ " degC=" + FormatFloat(PT1000_Temp_C,"%.3f") _
+		+ " limits=" + FormatLong(PT1000MinOhms,"%d") + "-" + FormatLong(PT1000MaxOhms,"%d") _
+		+ " ms=" + FormatLong(PreStepMs,"%d"))
+EndSub
+
+Sub CheckTDR
+	Dim I As Long
+	Dim SDIAddr As String * 2
+	Dim Ok As Boolean
+
+	LogDebug("--- Acclima TDR, " + FormatLong(TDRCount,"%d") + " probes on U5 ---")
+	PreTDRFound = 0
+	For I = 1 To TDRCount
+		SDIAddr = TDRStartAddress + I - 1
+		PreIdent = ""
+		SDI12Recorder(PreIdent, TDRComPort, SDIAddr, "I!", 1, 0)
+		Ok = SDI12AtAddress(PreIdent, SDIAddr)
+		PreTDRFound = PreTDRFound + IIF(Ok, 1, 0)
+		Call LogCheck("tdr probe " + FormatLong(I,"%d") + " identification at " + SDIAddr, Ok, PreIdent)
+	Next I
+
+	Timer(PreStepTimer, mSec, TimerResetAndStart)
+	SampleTDRs()
+	PreStepMs = Timer(PreStepTimer, mSec, TimerReadOnly)
+
+	PreTDRFound = 0
+	For I = 1 To TDRCount
+		PreTDRFound = PreTDRFound + IIF(Acclima_VWC(I) <> NAN, 1, 0)
+	Next I
+
+	Call LogCheck("tdr MC! measurement", (PreTDRFound = TDRCount), "answering=" _
+		+ FormatLong(PreTDRFound,"%d") + "/" + FormatLong(TDRCount,"%d") _
+		+ " vwc1=" + FormatFloat(Acclima_VWC(1),"%.3f") _
+		+ " temp1=" + FormatFloat(Acclima_SoilTemp(1),"%.3f") _
+		+ " ms=" + FormatLong(PreStepMs,"%d"))
+EndSub
+
+Sub CheckTString
+	Dim I As Long
+	Dim SDIAddr As String * 2
+	Dim Ok As Boolean
+
+	LogDebug("--- GeoPrecision string, " + FormatLong(TStringCount,"%d") + " sensors on U3 ---")
+	SDIAddr = TStringSDIAddress
+	PreIdent = ""
+	SDI12Recorder(PreIdent, TStringComPort, TStringSDIAddress, "I!", 1, 0)
+	Ok = SDI12AtAddress(PreIdent, SDIAddr)
+	Call LogCheck("string identification at " + SDIAddr, Ok, PreIdent)
+
+	Timer(PreStepTimer, mSec, TimerResetAndStart)
+	Ok = SampleTString()
+	PreStepMs = Timer(PreStepTimer, mSec, TimerReadOnly)
+
+	PreTStringFound = 0
+	For I = 1 To TStringCount
+		PreTStringFound = PreTStringFound + IIF(TString_Temp_C(I) <> NAN, 1, 0)
+	Next I
+
+	Call LogCheck("string MC! groups", (PreTStringFound = TStringCount), "answering=" _
+		+ FormatLong(PreTStringFound,"%d") + "/" + FormatLong(TStringCount,"%d") _
+		+ " faults=" + FormatLong(TString_ErrorCount,"%d") _
+		+ " t1=" + FormatFloat(TString_Temp_C(1),"%.3f") _
+		+ " tN=" + FormatFloat(TString_Temp_C(TStringCount),"%.3f") _
+		+ " ms=" + FormatLong(PreStepMs,"%d"))
+
+	Ok = SampleTStringSupply()
+	Call LogCheck("string supply MC9!", Ok, "supply=" + FormatFloat(TString_Supply_V,"%.3f") + " V")
+EndSub
+
+Sub CheckSnowVue
+	Dim SDIAddr As String * 2
+	Dim Ok As Boolean
+
+	LogDebug("--- SnowVue10 on U7 ---")
+	SDIAddr = SnowVueSDIAddress
+	PreIdent = ""
+	SDI12Recorder(PreIdent, SnowVueComPort, SnowVueSDIAddress, "I!", 1, 0)
+	Ok = SDI12AtAddress(PreIdent, SDIAddr)
+	Call LogCheck("snowvue identification at " + SDIAddr, Ok, PreIdent)
+
+	Timer(PreStepTimer, mSec, TimerResetAndStart)
+	Ok = SampleSnowVue(PT1000_Temp_C)
+	PreStepMs = Timer(PreStepTimer, mSec, TimerReadOnly)
+
+	Call LogCheck("snowvue M1! and M9! sample", Ok, "valid=" _
+		+ FormatLong(SnowVue_ValidReadings,"%d") + "/" + FormatLong(SnowVueBurstCount,"%d") _
+		+ " dist=" + FormatFloat(SnowVue_Distance_m,"%.3f") _
+		+ " tcdist=" + FormatFloat(SnowVue_TCDistance_m,"%.3f") _
+		+ " qual=" + FormatFloat(SnowVue_Quality,"%.0f") _
+		+ " supply=" + FormatFloat(SnowVue_Supply_V,"%.2f") _
+		+ " ms=" + FormatLong(PreStepMs,"%d"))
+EndSub
+
+Sub CheckFinApp
+	Dim N As Long
+	Dim Ok As Boolean
+	Dim Detail As String * 200
+
+	LogDebug("--- FinAPP on C1, SW12-1, " + FormatLong(FinAppPowerSettleSecs,"%d") + " s power-up ---")
+	Ok = StartFinApp()
+	Call LogCheck("finapp power-up and I!", Ok, "address=" + FinAppSDIAddress + " ident=" + FinApp_Ident)
+
+	If Ok Then
+		Ok = SampleFinApp()
+
+		Call LogCheck("finapp master M!", FinApp_MasterOk, "counter=" _
+			+ FormatFloat(FinApp_MasterCounter,"%.0f") _
+			+ " batt=" + FormatFloat(FinApp_Batt_V,"%.2f") + " V" _
+			+ " board=" + FormatFloat(FinApp_BoardTemp_C,"%.2f") + " C" _
+			+ " pressure=" + FormatFloat(FinApp_Pressure_Pa,"%.0f") + " Pa")
+
+		Detail = "detectors from id " + FormatLong(FinAppDetectorFirstId,"%d") + ":"
+		For N = 1 To FinAppDetectorCount
+			Detail = Detail + "  counter=" + FormatFloat(FinApp_DetCounter(N),"%.0f") _
+				+ " hv=" + FormatFloat(FinApp_HV_V(N),"%.1f") _
+				+ " n=" + FormatFloat(FinApp_Neutrons(N),"%.0f")
+		Next N
+		Call LogCheck("finapp detectors", FinApp_DetectorsOk, Detail)
+
+		Call LogCheck("finapp water M5!", FinApp_WaterOk, "counter=" _
+			+ FormatFloat(FinApp_WaterCounter,"%.0f") _
+			+ " swe_areal=" + FormatFloat(FinApp_SWE_Areal_mm,"%.3f") + " mm" _
+			+ " newdata=" + IIF(FinApp_NewData,"1","0"))
+
+		StoreFinAppRecord = True
+	Else
+		Call LogSkip("finapp master, detectors, water", "probe did not answer after power-up")
+	EndIf
+
+	Ok = StopFinApp()
+	Call LogCheck("finapp guarded power-off", Ok, "polls=" + FormatLong(FinApp_StopPollsUsed,"%d") _
+		+ " unsafestops=" + FormatLong(FinApp_UnsafeStops,"%d"))
+EndSub
+
+Sub CheckModem
+	Dim Ok As Boolean
+
+	LogDebug("--- STREAM200 on ComC3, SW12-2, free queries only ---")
+	Ok = StartIridiumModem()
+	Call LogCheck("modem power-up, AT and ATE0", Ok, "")
+
+	If NOT Ok Then
+		Call LogSkip("modem identity and signal", "modem did not start")
+		ExitSub
+	EndIf
+
+	Ok = GetIridiumIMEI()
+	Call LogCheck("modem AT+CGSN identity", Ok, "imei=" + IridiumIMEI)
+	Call LogCheck("modem imei matches station config", (IridiumIMEI = ExpectedIridiumIMEI), _
+		"expected=" + ExpectedIridiumIMEI)
+
+	Ok = GetIridiumSignal()
+	Call LogInfo("cached RSSI AT+CSQF", "ok=" + IIF(Ok,"1","0") _
+		+ " rssi=" + FormatLong(IridiumRSSI,"%d") _
+		+ " send needs >=" + FormatLong(IridiumMinRSSI,"%d"))
+
+	Ok = GetIridiumSystemTime()
+	Call LogInfo("network AT-MSSTM", "acquired=" + IIF(IridiumNetworkAcquired,"1","0"))
+
+	Ok = GetIridiumBufferStatus()
+	Call LogInfo("buffers AT+SBDSX", "ok=" + IIF(Ok,"1","0") _
+		+ " mo_flag=" + FormatLong(IridiumMOBufferFlag,"%d"))
+
+	Ok = StopIridiumModem()
+	Call LogInfo("modem powered off", "ok=" + IIF(Ok,"1","0"))
+EndSub
+
+Sub LogVerdict
+	PreElapsedMs = Timer(PreTimer, mSec, TimerReadOnly)
+	PreReady = (PreFailed = 0)
+	LogDebug("----------------------------------------------------------------")
+	LogDebug("RESULT pass=" + FormatLong(PrePassed,"%d") _
+		+ " fail=" + FormatLong(PreFailed,"%d") _
+		+ " skip=" + FormatLong(PreSkipped,"%d") _
+		+ " elapsed=" + FormatFloat(PreElapsedMs / 1000,"%.1f") + " s")
+	LogDebug("VERDICT " + IIF(PreReady, "all selected sensors present and reachable", _
+		"one or more sensors missing, see the FAIL lines above"))
+	LogDebug("========================= END OF REPORT =========================")
+EndSub
+
+Sub RunPreflight(WithFinApp As Boolean, WithModem As Boolean)
+	PreIndex = 0
+	PrePassed = 0
+	PreFailed = 0
+	PreSkipped = 0
+	Timer(PreTimer, mSec, TimerResetAndStart)
+
+	LogDebug("")
+	LogDebug("================================================================")
+	LogDebug("FirnMelt sensor preflight, station " + FormatLong(StationId,"%d") _
+		+ ", profile " + FormatLong(StationProfile,"%d"))
+	LogDebug("no message is transmitted and no airtime is used")
+	LogDebug("================================================================")
+
+	Call CheckLogger
+
+	LogDebug("--- low-power SDI-12 rail on C2 ---")
+	Call SetRail(True)
+	Delay(1,LowPowerSettleSecs,Sec)
+	Call LogInfo("rail raised and settled", FormatLong(LowPowerSettleSecs,"%d") + " s")
+
+	Call CheckPT1000
+	Call CheckTDR
+	Call CheckTString
+	Call CheckSnowVue
+
+	Call SetRail(False)
+	LogDebug("--- low-power SDI-12 rail off ---")
+	StoreSensorRecords = True
+
+	If WithFinApp Then
+		Call CheckFinApp
+	Else
+		Call LogSkip("finapp", "not selected for this run")
+	EndIf
+
+	If WithModem Then
+		Call CheckModem
+	Else
+		Call LogSkip("modem", "not selected for this run")
+	EndIf
+
+	Call LogVerdict
+EndSub
+
+Sub RunAddressScan
+	Dim A As Long
+	Dim WasOn As Boolean
+
+	WasOn = RailOn
+	If NOT WasOn Then
+		Call SetRail(True)
+		Delay(1,LowPowerSettleSecs,Sec)
+	EndIf
+
+	LogDebug("")
+	LogDebug("address scan, aI! on 0-9 for U3 string, U5 tdr and U7 snowvue")
+	For A = 0 To 9
+		PreIdent = ""
+		SDI12Recorder(PreIdent, TStringComPort, A, "I!", 1, 0)
+		If SDI12Answered(PreIdent) Then LogDebug("  U3 addr " + FormatLong(A,"%d") + ": " + PreIdent)
+
+		PreIdent = ""
+		SDI12Recorder(PreIdent, TDRComPort, A, "I!", 1, 0)
+		If SDI12Answered(PreIdent) Then LogDebug("  U5 addr " + FormatLong(A,"%d") + ": " + PreIdent)
+
+		PreIdent = ""
+		SDI12Recorder(PreIdent, SnowVueComPort, A, "I!", 1, 0)
+		If SDI12Answered(PreIdent) Then LogDebug("  U7 addr " + FormatLong(A,"%d") + ": " + PreIdent)
+	Next A
+
+	If NOT WasOn Then Call SetRail(False)
+	LogDebug("address scan done, unanswered addresses are not listed, rail " + IIF(RailOn,"on","off"))
+	LogDebug("the C1 FinAPP bus is scanned by FinApp_tester.CR6 while SW12-1 is on")
+EndSub
+
+Sub ShowConfig
+	LogDebug("")
+	LogDebug("=============== CONFIG =================")
+	LogDebug(" station id           " + FormatLong(StationId,"%d"))
+	LogDebug(" station profile      " + FormatLong(StationProfile,"%d"))
+	LogDebug(" tdr probes           " + FormatLong(TDRCount,"%d") + " from address " + FormatLong(TDRStartAddress,"%d") + " on U5")
+	LogDebug(" string sensors       " + FormatLong(TStringCount,"%d") + " at address " + FormatLong(TStringSDIAddress,"%d") + " on U3")
+	LogDebug(" snowvue              address " + FormatLong(SnowVueSDIAddress,"%d") + " on U7")
+	LogDebug(" pt1000               U9 U10 U11, " + FormatLong(PT1000ExciteUA,"%d") + " uA")
+	LogDebug(" finapp               address " + FinAppSDIAddress + " on C1, " + FormatLong(FinAppDetectorCount,"%d") + " detectors from id " + FormatLong(FinAppDetectorFirstId,"%d"))
+	LogDebug(" modem imei           " + ExpectedIridiumIMEI)
+	LogDebug(" rail settle          " + FormatLong(LowPowerSettleSecs,"%d") + " s")
+	LogDebug("========================================")
+EndSub
+
+Sub ShowMenu
+	LogDebug("")
+	LogDebug("================= MENU =================")
+	LogDebug(" 1  full preflight          all sensors, about 5 min")
+	LogDebug(" 2  low-power sensors       pt1000, tdr, string, snowvue")
+	LogDebug(" 3  finapp only             about 4 min")
+	LogDebug(" 4  modem only              free queries, no airtime")
+	LogDebug(" 5  address scan            U3 U5 U7 with the rail on      *slow*")
+	LogDebug(" 6  show configuration")
+	LogDebug(" 7  sensor rail on/off      currently " + IIF(RailOn,"on","off"))
+	LogDebug("========================================")
+	LogDebug("send a key (ENTER redisplays this menu)")
+EndSub
+
+Sub PollMenu
+
+	MenuKey = ReadMenuKey()
+	If MenuKey = "" Then ExitSub
+
+	Select Case MenuKey
+		Case "1"
+			DoFull = True
+		Case "2"
+			DoLowPower = True
+		Case "3"
+			DoFinApp = True
+		Case "4"
+			DoModem = True
+		Case "5"
+			DoAddressScan = True
+		Case "6"
+			DoShowConfig = True
+		Case "7"
+			DoToggleRail = True
+		Case Else
+			Call ShowMenu
+			ExitSub
+	EndSelect
+
+	LogDebug("")
+	LogDebug(">>> option " + MenuKey + " selected")
+	MenuPending = True
+EndSub
+
+BeginProg
+	LogDebug("")
+	LogDebug("FirnMelt preflight tester starting")
+	SerialFlush(ComUSB)
+	Call SetRail(False)
+	Call ShowConfig
+	Call ShowMenu
+
+	Scan (5,Sec,0,0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+
+		PanelTemp (PTemp,15000)
+		Battery (Batt_volt)
+
+		Call PollMenu
+
+		If DoFull Then
+			DoFull = False
+			Call RunPreflight(True, True)
+		EndIf
+
+		If DoLowPower Then
+			DoLowPower = False
+			Call RunPreflight(False, False)
+		EndIf
+		EndIf
+
+		If DoFinApp Then
+			DoFinApp = False
+			PreIndex = 0
+			PrePassed = 0
+			PreFailed = 0
+			PreSkipped = 0
+			Timer(PreTimer, mSec, TimerResetAndStart)
+			Call CheckFinApp
+			Call LogVerdict
+		EndIf
+
+		If DoModem Then
+			DoModem = False
+			PreIndex = 0
+			PrePassed = 0
+			PreFailed = 0
+			PreSkipped = 0
+			Timer(PreTimer, mSec, TimerResetAndStart)
+			Call CheckModem
+			Call LogVerdict
+		EndIf
+
+		If DoAddressScan Then
+			DoAddressScan = False
+			Call RunAddressScan
+		EndIf
+
+		If DoShowConfig Then
+			DoShowConfig = False
+			Call ShowConfig
+		EndIf
+
+		If DoToggleRail Then
+			DoToggleRail = False
+			Call SetRail(NOT RailOn)
+			LogDebug("sensor rail now " + IIF(RailOn,"on","off"))
+		EndIf
+
+		If StoreSensorRecords Then
+			StoreSensorRecords = False
+			CallTable PT1000_Data
+			CallTable Acclima_Data
+			CallTable TString_Data
+			CallTable SnowVue_Data
+			CallTable SnowVue_Diagnostics
+		EndIf
+
+		If StoreFinAppRecord Then
+			StoreFinAppRecord = False
+			CallTable FinApp_Data
+		EndIf
+
+		If MenuPending Then
+			MenuPending = False
+			SerialFlush(ComUSB)
+			Call ShowMenu
+		EndIf
+
+		CallTable StationStatus
+	NextScan
+EndProg

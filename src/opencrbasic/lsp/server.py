@@ -17,9 +17,9 @@ import os
 import subprocess
 import sys
 import traceback
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any, BinaryIO
-from collections.abc import Iterator
 
 EXPECTED_API_VERSION = 2       # the `analysis.API_VERSION` this server was written for
 SECTION = "opencrbasic"
@@ -55,6 +55,7 @@ def _git_revision(src_dir: Path) -> str | None:
 
 def startup_line() -> str:
     import opencrbasic
+
     from .. import analysis
 
     where = Path(opencrbasic.__file__).resolve()
@@ -79,8 +80,7 @@ def build_server():
     from pygls.lsp.server import LanguageServer
     from pygls.uris import to_fs_path
 
-    from .. import __version__
-    from .. import commands, formatting
+    from .. import __version__, commands, formatting
     from ..sources import DiskSource, OverlaySource
     from . import features
     from .config import Config, parse_config, watch_pattern
@@ -599,7 +599,7 @@ def build_server():
         try:
             path = fs_path(args[0])
         except ValueError as exc:
-            raise refuse(what, "bad_arguments", str(exc))
+            raise refuse(what, "bad_arguments", str(exc)) from exc
         await session.configured()
         reading = await session.entries_reading(path)
         if path in session.entries:

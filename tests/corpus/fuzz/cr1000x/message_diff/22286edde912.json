@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/message_diff/22286edde912.CR6",
+  "logger": "cr1000x",
+  "class": "message_diff",
+  "seed": "repo/ScanSyncTest.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument",
+    "replace_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "22286edde912.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:              + \" delta=\" + FormatLong(Delta,\"%d\") .\nline 3: Expr illegally occurs before BeginProg.",
+  "theirs": "22286edde912.CR6 -- Compile Failed!\n\nline 2: No BeginProg in Program."
+}

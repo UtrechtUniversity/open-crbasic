@@ -1,0 +1,7 @@
+' fuzz: seed=repo/PortSleep_tester.CR6 ops=replace_argument class=false_accept
+DataTable(PortSleep_Scans,True,-1)
+	Sample(1,PortOpenFlag,Long)
+	Sample(1,Batt_volt,FP2)
+EndTable
+
+BeginProg

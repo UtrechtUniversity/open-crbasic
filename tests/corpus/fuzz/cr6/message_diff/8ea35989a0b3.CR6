@@ -1,0 +1,13 @@
+' fuzz: seed=repo/SnowVue_tester.CR6 ops=toggle_two_word+drop_argument class=message_diff
+Const CRLF = CHR(13) + CHR()
+Const CR = CHR(13)
+Const LF = CHR(10)
+
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)

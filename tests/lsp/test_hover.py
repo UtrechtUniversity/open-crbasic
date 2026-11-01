@@ -1,7 +1,6 @@
 """Hover and signature-help logic tests. Help text in these tests is synthetic (written here); the
 optional real-help tests run only when ../extracted_chm exists and assert structure, not text."""
 
-from .assertions import required
 from pathlib import Path
 
 import pytest
@@ -10,9 +9,11 @@ from opencrbasic import hover as H
 from opencrbasic.analysis import AnalysisRequest, analyze
 from opencrbasic.helpdocs import HelpProvider, InstructionHelp, ParamHelp
 
+from .assertions import required
+
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
-CHM = ROOT.parent / "extracted_chm"
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
+CHM = ROOT / "extracted_chm"
 
 
 def _at(text: str, marker: str = "|"):
@@ -623,8 +624,8 @@ def test_no_help_placeholders_in_signature_documentation():
 
 
 def test_no_help_placeholders_in_hover_markdown(prog):
-    from opencrbasic.hover import _callable_markdown
     from opencrbasic import hover as HH
+    from opencrbasic.hover import _callable_markdown
     cat = HH._catalog("cr6")
     entry = cat.get("Sample", "instruction")
     assert entry is not None
@@ -652,9 +653,10 @@ def test_call_stack_is_innermost_first_and_context_is_its_head():
 
 
 def test_signature_help_falls_through_an_array_index_to_the_instruction():
+    from lsprotocol import types
+
     from opencrbasic.lsp import features
     from opencrbasic.lsp.features import Ctx
-    from lsprotocol import types
     path = Path("/nowhere/x.cr6")
     for text, col, name in (("Sample(1, Temp(1), FP2)", 15, "Sample"),
                             ("VoltSe(Temp(1), ", 16, "VoltSe"),

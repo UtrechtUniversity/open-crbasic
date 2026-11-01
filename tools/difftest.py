@@ -23,18 +23,19 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-REPO = ROOT.parent
+REPO = ROOT
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(HERE))
 
-from opencrbasic import profiles  # noqa: E402
-from opencrbasic.compiler import compile_file  # noqa: E402
-import oracle  # noqa: E402
 import fuzz  # noqa: E402
 import impact  # noqa: E402
+import oracle  # noqa: E402
+
+from opencrbasic import profiles  # noqa: E402
+from opencrbasic.compiler import compile_file  # noqa: E402
 
 GROUPS = {
-    "repo": (REPO / "crbasic", "*.CR6"),
+    "repo": (REPO / "tests" / "corpus" / "firnmelt", "*.CR6"),
     "chm": (ROOT / "tests" / "corpus" / "chm", "*.CR6"),
 }
 # GEUS station programs (human decision 2026-10-24, `PLAN.md` "GEUS corpus"): every program with

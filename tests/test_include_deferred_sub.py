@@ -4,10 +4,9 @@ from pathlib import Path
 import pytest
 
 from opencrbasic import profiles
+from opencrbasic.checker.structure import CallLinks, commit_deferred_sub_error
 from opencrbasic.compiler import compile_file
 from opencrbasic.diagnostics import Diagnostics
-from opencrbasic.checker.structure import CallLinks, commit_deferred_sub_error
-
 
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "include_deferred_sub.json").read_text(encoding="utf-8"))
 

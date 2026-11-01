@@ -1,0 +1,282 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/PowerProfile_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/PowerProfile_tester.CR6 ops=add_argument class=false_accept
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+Const CR = CHR(13)
+Const LF = CHR(10)
+Const CRLF = CR + LF
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+ConstTable(GlobalConfigTable)
+    Const UnitSecs = 60
+    Const UnitsPerDay = 1440
+    IncludeSection("ConstTable", "CPU:PowerProfileLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:PowerProfileLib.crb")
+IncludeSection("Functions", "CPU:PowerProfileLib.crb")
+
+Public ForceInputs As Boolean = False
+Public ForceAmbientNaN As Boolean = False
+Public ForcedBattV = 13.2
+Public ForcedTempC = -10.0
+
+Public SeqFires(SeqSlotCount) As Long
+Alias SeqFires(1) = LowPowerFires
+Alias SeqFires(2) = CommsFires
+Alias SeqFires(3) = FinAppFires
+
+Public FinAppRailOn As Boolean = False
+Public ClockCheckOk As Boolean
+Public ClockCheckFails As Long
+
+Const SbdSendUnitOfDay = 0
+Const FinAppReadUnits = 60
+Const CommsHoldSecs = 120
+Const CommsHoldTicks = CommsHoldSecs / SeqTickSecs
+Dim CommsHoldLeft As Long
+
+Const FastUnitsPerDay = 1200
+Const ProdUnitsPerDay = 1440
+
+Dim MenuKey As String * 2
+Dim MenuPending As Boolean
+
+Const StateSem = 1
+
+Function ProfileName(P As Long) As String * 14
+    Select Case P
+        Case ProfileSummer
+            ProfileName = "SUMMER"
+        Case ProfileConservative
+            ProfileName = "CONSERVATIVE"
+        Case Else
+            ProfileName = "DIRE"
+    EndSelect
+EndFunction
+
+Sub ShowMenu
+    LogDebug("")
+    LogDebug("=========== PowerProfileLib tester ===========")
+    LogDebug(" 1  show state")
+    LogDebug(" 2  fast time base: tick=1s unit=1s, a day = 1200s (RECOMPILES + RESETS TABLES)")
+    LogDebug(" 0  production time base: tick=5s unit=60s (RECOMPILES + RESETS TABLES)")
+    LogDebug(" 3  force profile SUMMER")
+    LogDebug(" 4  force profile CONSERVATIVE")
+    LogDebug(" 5  force profile DIRE")
+    LogDebug(" 6  release override (automatic)")
+    LogDebug(" 7  toggle forced battery/temperature inputs")
+    LogDebug(" 8  forced battery -0.10 V")
+    LogDebug(" 9  forced battery +0.10 V")
+    LogDebug(" D  forced ambient -5 C (cross FinAppMinTempC to exercise the day latch)")
+    LogDebug(" E  forced ambient +5 C")
+    LogDebug(" A  toggle HighPowerActive (excludes samples from the load-free minimum)")
+    LogDebug(" B  toggle forced-NAN ambient (exercise the PTemp fallback)")
+    LogDebug(" C  reinitialise the library")
+    LogDebug("==============================================")
+    LogDebug("send a key (ENTER redisplays this menu)")
+EndSub
+
+Sub ShowState
+    LogDebug("clock   " + PowerTimeStr + "  nowsec=" + FormatLong(NowSec,"%u") _
+             + " day=" + FormatLong(DayIndex,"%u") + " unitofday=" + FormatLong(UnitOfDay,"%u") _
+             + " unitidx=" + FormatLong(UnitIndex,"%u") + " unitsecs=" + FormatLong(UnitSecs,"%d") _
+             + " daysecs=" + FormatLong(DaySecs,"%d"))
+    LogDebug("profile " + ProfileName(PowerProfile,"fuzz") + " override=" + FormatLong(ProfileOverride,"%d") _
+             + "  meas=" + FormatLong(MeasIntervalUnits(),"%d") + "u" _
+             + " sbd=" + FormatLong(SbdPeriodDays(),"%d") + "d" _
+             + " finapp=" + FormatLong(FinAppPeriodDays(),"%d") + "d" _
+             + " dayactive=" + FormatLong(FinAppDayActive,"%d"))
+    LogDebug("inputs  batt=" + FormatFloat(Batt_volt,"%.2f") + " ptemp=" + FormatFloat(PTemp,"%.2f") _
+             + " ambient=" + FormatFloat(AmbientTempC,"%.2f") + " decide=" + FormatFloat(AmbientForDecision,"%.2f") _
+             + " forced=" + FormatLong(ForceInputs,"%d") + " highpower=" + FormatLong(HighPowerActive,"%d"))
+    LogDebug("prevday v25=" + FormatFloat(PrevDayV25,"%.3f") _
+             + " decideV=" + FormatFloat(PrevDayDecisionV,"%.3f") _
+             + " decideT=" + FormatFloat(PrevDayDecisionTempC,"%.2f") _
+             + " minquiet=" + FormatFloat(PrevDayBattMinQuiet,"%.3f") _
+             + " min=" + FormatFloat(PrevDayBattMin,"%.3f") _
+             + " mean=" + FormatFloat(DailyPower.BattMean(1,1),"%.3f") _
+             + " max=" + FormatFloat(DailyPower.BattMax(1,1),"%.3f"))
+    LogDebug("prevday ambmean=" + FormatFloat(DailyPower.AmbMean(1,1),"%.2f") _
+             + " quietn=" + FormatFloat(PrevDayQuietSamples,"%.0f") _
+             + " minquietn=" + FormatFloat(MinQuietSamples,"%.0f") _
+             + " records=" + FormatFloat(DailyPower.Record(1,1),"%.0f"))
+    LogDebug("fires   lowpower=" + FormatLong(SeqFires(SeqLowPower),"%u") _
+             + " comms=" + FormatLong(SeqFires(SeqComms),"%u") _
+             + " finapp=" + FormatLong(SeqFires(SeqFinApp),"%u") _
+             + " rail=" + FormatLong(FinAppRailOn,"%d") _
+             + " clockfails=" + FormatLong(ClockCheckFails,"%d"))
+EndSub
+
+Sub CheckClock
+    Dim ExpectSecOfDay As Long
+    Dim ExpectUnitOfDay As Long
+
+    ExpectSecOfDay = PowerRTime(4) * 3600 + PowerRTime(5) * 60 + PowerRTime(6)
+    ExpectUnitOfDay = ExpectSecOfDay INTDV UnitSecs
+    ClockCheckOk = True
+
+    #If UnitSecs = 60 Then
+        ClockCheckOk = (SecOfDay = ExpectSecOfDay) AND (UnitOfDay = ExpectUnitOfDay)
+    #EndIf
+    If (UnitIndex MOD UnitsPerDay) <> UnitOfDay Then ClockCheckOk = False
+
+    If NOT ClockCheckOk Then
+        ClockCheckFails = ClockCheckFails + 1
+        LogDebug("CLOCKFAIL secofday=" + FormatLong(SecOfDay,"%u") + " expect=" + FormatLong(ExpectSecOfDay,"%u") _
+                 + " unitofday=" + FormatLong(UnitOfDay,"%u") + " expect=" + FormatLong(ExpectUnitOfDay,"%u") _
+                 + " unitidx=" + FormatLong(UnitIndex,"%u"))
+    EndIf
+EndSub
+
+Sub PollMenu
+    MenuKey = ReadMenuKey()
+    If MenuKey = "" Then ExitSub
+
+    Select Case MenuKey
+        Case "1"
+            MenuPending = True
+        Case "2"
+            LogDebug(">>> fast time base, recompiling; a day becomes " _
+                     + FormatLong(FastUnitsPerDay,"%d") + " s")
+            SetSetting("GlobalConfigTable.SeqTickSecs", 1)
+            SetSetting("GlobalConfigTable.UnitSecs", 1)
+            SetSetting("GlobalConfigTable.UnitsPerDay", FastUnitsPerDay)
+            SetSetting("GlobalConfigTable.ApplyAndRestart", True)
+        Case "0"
+            LogDebug(">>> production time base, recompiling; a day becomes " _
+                     + FormatLong(60 * ProdUnitsPerDay,"%d") + " s")
+            SetSetting("GlobalConfigTable.UnitSecs", 60)
+            SetSetting("GlobalConfigTable.SeqTickSecs", 5)
+            SetSetting("GlobalConfigTable.UnitsPerDay", ProdUnitsPerDay)
+            SetSetting("GlobalConfigTable.ApplyAndRestart", True)
+        Case "3"
+            ProfileOverride = ProfileSummer
+            Call EvaluatePowerProfile
+        Case "4"
+            ProfileOverride = ProfileConservative
+            Call EvaluatePowerProfile
+        Case "5"
+            ProfileOverride = ProfileDire
+            Call EvaluatePowerProfile
+        Case "6"
+            ProfileOverride = -1
+            LogDebug(">>> override released, profile follows the daily evaluation")
+        Case "7"
+            ForceInputs = NOT ForceInputs
+        Case "8"
+            ForcedBattV = ForcedBattV - 0.1
+        Case "9"
+            ForcedBattV = ForcedBattV + 0.1
+        Case "D"
+            ForcedTempC = ForcedTempC - 5
+        Case "E"
+            ForcedTempC = ForcedTempC + 5
+        Case "A"
+            HighPowerActive = NOT HighPowerActive
+        Case "B"
+            ForceAmbientNaN = NOT ForceAmbientNaN
+        Case "C"
+            Call InitPowerProfile
+            LogDebug(">>> library reinitialised")
+        Case Else
+            Call ShowMenu
+            ExitSub
+    EndSelect
+
+    MenuPending = True
+EndSub
+
+BeginProg
+    Call InitPowerProfile
+    LogDebug("")
+    LogDebug("PowerProfileLib tester starting")
+    SerialFlush(ComUSB)
+    Call ShowMenu
+
+    Scan (MainScanSecs,Sec,0,0)
+        If BenchWatchdogOff Then
+            WDogTimer = WatchdogTimer(0,Sec)
+        Else
+            WDogTimer = WatchdogTimer(10,Min)
+        EndIf
+
+        PanelTemp (PTemp,15000)
+        Battery (Batt_volt)
+
+        If ForceInputs Then
+            Batt_volt = ForcedBattV
+            AmbientTempC = ForcedTempC
+        EndIf
+        If ForceAmbientNaN Then AmbientTempC = NAN
+
+        Call UpdatePowerClock
+        Call CheckClock
+        Call UpdatePowerInputs(Batt_volt, PTemp, NAN)
+        Call UpdatePowerProfile
+        Call PollMenu
+
+        If MenuPending Then
+            MenuPending = False
+            SerialFlush(ComUSB)
+            Call ShowState
+        EndIf
+    NextScan
+
+SlowSequence
+    Scan (SeqTickSecs,Sec,0,0)
+        If DueNow(SeqLowPower, MeasIntervalUnits(), 0) Then
+            SemaphoreGet(StateSem)
+            SeqFires(SeqLowPower) = SeqFires(SeqLowPower) + 1
+            LogDebug("FIRE lowpower  " + PowerTimeStr + " unitidx=" + FormatLong(UnitIndex,"%u") _
+                     + " every=" + FormatLong(MeasIntervalUnits(),"%d") + "u profile=" + ProfileName(PowerProfile) _
+                     + " n=" + FormatLong(SeqFires(SeqLowPower),"%u"))
+            SemaphoreRelease(StateSem)
+        EndIf
+    NextScan
+
+SlowSequence
+    Scan (SeqTickSecs,Sec,0,0)
+        If DueNow(SeqComms, SbdPeriodDays() * UnitsPerDay, SbdSendUnitOfDay) Then
+            SemaphoreGet(StateSem)
+            SeqFires(SeqComms) = SeqFires(SeqComms) + 1
+            HighPowerActive = True
+            CommsHoldLeft = CommsHoldTicks
+            LogDebug("FIRE comms     " + PowerTimeStr + " day=" + FormatLong(DayIndex,"%u") _
+                     + " every=" + FormatLong(SbdPeriodDays(),"%d") + "d profile=" + ProfileName(PowerProfile) _
+                     + " n=" + FormatLong(SeqFires(SeqComms),"%u") _
+                     + " holding highpower " + FormatLong(CommsHoldSecs,"%d") + "s")
+            SemaphoreRelease(StateSem)
+        EndIf
+
+        If CommsHoldLeft > 0 Then
+            CommsHoldLeft = CommsHoldLeft - 1
+            If CommsHoldLeft = 0 Then HighPowerActive = False
+        EndIf
+    NextScan
+
+SlowSequence
+    Scan (SeqTickSecs,Sec,0,0)
+        If FinAppRailOn <> FinAppDayActive Then
+            FinAppRailOn = FinAppDayActive
+            SemaphoreGet(StateSem)
+            LogDebug("FINAPP rail=" + FormatLong(FinAppRailOn,"%d") + " " + PowerTimeStr _
+                     + " day=" + FormatLong(DayIndex,"%u") + " every=" + FormatLong(FinAppPeriodDays(),"%d") + "d" _
+                     + " ambient=" + FormatFloat(AmbientForDecision,"%.2f"))
+            SemaphoreRelease(StateSem)
+        EndIf
+
+        If FinAppRailOn AND DueNow(SeqFinApp, FinAppReadUnits, 0) Then
+            SemaphoreGet(StateSem)
+            SeqFires(SeqFinApp) = SeqFires(SeqFinApp) + 1
+            LogDebug("FIRE finapp    " + PowerTimeStr + " unitidx=" + FormatLong(UnitIndex,"%u") _
+                     + " n=" + FormatLong(SeqFires(SeqFinApp),"%u"))
+            SemaphoreRelease(StateSem)
+        EndIf
+    NextScan

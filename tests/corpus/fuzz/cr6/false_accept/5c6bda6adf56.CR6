@@ -1,0 +1,362 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/FinApp_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/FinApp_tester.CR6 ops=change_interval+add_argument class=false_accept
+Const CRLF = CHR(13,(1+2)) + CHR(10)
+Const CR = CHR(13)
+Const LF = CHR(10)
+
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+ConstTable(GlobalConfigTable)
+	Const FinAppSDIAddress = "F"
+	Const FinAppDetectorCount = 2
+	Const FinAppDetectorFirstId = 2
+  IncludeSection("ConstTable", "CPU:FinAppLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:FinAppLib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:FinAppLib.crb")
+
+Public DoStart As Boolean = False
+Public DoStop As Boolean = False
+Public DoKill As Boolean = False
+Public DoProbe As Boolean = False
+Public DoMaster As Boolean = False
+Public DoDetectors As Boolean = False
+Public DoWater As Boolean = False
+Public DoSample As Boolean = False
+Public DoState As Boolean = False
+Public DoAddressScan As Boolean = False
+Public DoDetectorScan As Boolean = False
+Public DoRepeatCycles As Boolean = False
+Public DoLinkMonitor As Boolean = False
+
+Public RepeatCycles As Long = 5
+Public RepeatGapSecs As Long = 30
+Public MonitorPolls As Long = 40
+Public MonitorGapSecs As Long = 5
+
+Public MonitorOk As Long
+Public MonitorFail As Long
+Public MonitorLongestFailRun As Long
+Public DetectorScanGapSecs As Long = 3
+
+Dim MonitorLast As Boolean
+
+Dim RepeatI As Long
+Dim RepeatNewCount As Long
+
+Public FinAppScanInfo As String * 60
+Dim FinAppScanRaw(FinAppDetectorValues)
+
+Public LastResult As Boolean
+Public StopSeconds As Long
+
+Const FinAppAddressAlphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+Dim MenuKey As String * 2
+Dim MenuPending As Boolean
+
+Const StopTimer = 1
+Const TimerResetAndStart = 2
+Const TimerReadOnly = 4
+
+Sub ShowState
+	Dim N As Long
+
+	LogDebug("power=" + FormatLong(FinApp_Powered,"%d") _
+	         + " responding=" + FormatLong(FinApp_Responding,"%d") _
+	         + " newdata=" + FormatLong(FinApp_NewData,"%d") _
+	         + " ok(m/d/w)=" + FormatLong(FinApp_MasterOk,"%d") + "/" + FormatLong(FinApp_DetectorsOk,"%d") + "/" + FormatLong(FinApp_WaterOk,"%d") _
+	         + " unsafestops=" + FormatLong(FinApp_UnsafeStops,"%d") _
+	         + " stoppolls=" + FormatLong(FinApp_StopPollsUsed,"%d"))
+	LogDebug("ident=[" + FinApp_Ident + "]")
+	LogDebug("master  cnt=" + FormatFloat(FinApp_MasterCounter,"%.0f") _
+	         + " batt=" + FormatFloat(FinApp_Batt_V,"%.3f") + "V" _
+	         + " press=" + FormatFloat(FinApp_Pressure_Pa,"%.0f") + "Pa" _
+	         + " boardtemp=" + FormatFloat(FinApp_BoardTemp_C,"%.3f") + "C")
+	For N = 1 To FinAppDetectorCount
+		LogDebug("det" + FormatLong(FinAppDetectorFirstId + N - 1,"%d") _
+		         + "    cnt=" + FormatFloat(FinApp_DetCounter(N),"%.0f") _
+		         + " hv=" + FormatFloat(FinApp_HV_V(N),"%.3f") + "V" _
+		         + " acq=" + FormatFloat(FinApp_AcqTime_ms(N),"%.0f") + "ms" _
+		         + " neutrons=" + FormatFloat(FinApp_Neutrons(N),"%.0f") _
+		         + " muons=" + FormatFloat(FinApp_Muons(N),"%.0f"))
+	Next N
+	LogDebug("water   cnt=" + FormatFloat(FinApp_WaterCounter,"%.0f") _
+	         + " sm=" + FormatFloat(FinApp_SoilMoisture,"%.4f") _
+	         + " sweareal=" + FormatFloat(FinApp_SWE_Areal_mm,"%.1f") + "mm" _
+	         + " swelocal=" + FormatFloat(FinApp_SWE_Local_mm,"%.1f") + "mm" _
+	         + " swebackup=" + FormatFloat(FinApp_SWE_Backup_mm,"%.1f") + "mm")
+EndSub
+
+Sub RunAddressScan
+	Dim I As Long
+	Dim A As String * 2
+
+	LogDebug("")
+	LogDebug("address scan, aI! on 0-9 and A-Z (unanswered addresses take a few seconds each)")
+	For I = 1 To Len(FinAppAddressAlphabet)
+		A = Mid(FinAppAddressAlphabet, I, 1)
+		FinAppScanInfo = ""
+		SDI12Recorder(FinAppScanInfo, FinAppComPort, A, "I!", 1, 0)
+		LogDebug("addr " + A + ": " + FinAppScanInfo)
+	Next I
+	LogDebug("address scan done")
+EndSub
+
+Sub RunDetectorScan
+	Dim I As Long
+	Dim Cmd As String * 8
+
+	LogDebug("")
+	LogDebug("detector scan, aMN!/D0! for N=1..9 -- finds the probe's own Finapp detector IDs")
+	For I = 1 To 9
+		Cmd = "M" + FormatLong(I,"%d") + "!"
+		SDI12Recorder(FinAppScanRaw(),FinAppComPort,FinAppSDIAddress,Cmd,1,0,-1)
+		LogDebug(Cmd + " cnt=" + FormatFloat(FinAppScanRaw(1),"%.0f") _
+		         + " hv=" + FormatFloat(FinAppScanRaw(2),"%.0f") + "mV" _
+		         + " acq=" + FormatFloat(FinAppScanRaw(3),"%.0f") + "ms" _
+		         + " v4=" + FormatFloat(FinAppScanRaw(4),"%.0f") _
+		         + " v5=" + FormatFloat(FinAppScanRaw(5),"%.0f"))
+		If I < 9 Then Delay(1,DetectorScanGapSecs,Sec)
+	Next I
+	LogDebug("detector scan done -- v4 is neutrons for every detector model")
+EndSub
+
+Sub RunLinkMonitor
+	Dim I As Long
+	Dim Run As Long
+
+	MonitorOk = 0
+	MonitorFail = 0
+	MonitorLongestFailRun = 0
+	Run = 0
+
+	LogDebug("")
+	LogDebug("link monitor: " + FormatLong(MonitorPolls,"%d") + " x I!, " _
+	         + FormatLong(MonitorGapSecs,"%d") + "s apart -- measures how long the probe stays busy")
+	For I = 1 To MonitorPolls
+		MonitorLast = ProbeFinApp()
+		If MonitorLast Then
+			MonitorOk = MonitorOk + 1
+			Run = 0
+		Else
+			MonitorFail = MonitorFail + 1
+			Run = Run + 1
+			If Run > MonitorLongestFailRun Then MonitorLongestFailRun = Run
+		EndIf
+		LogDebug("poll " + FormatLong(I,"%d") + " ok=" + FormatLong(MonitorLast,"%d") _
+		         + " failrun=" + FormatLong(Run,"%d"))
+		If I < MonitorPolls Then Delay(1,MonitorGapSecs,Sec)
+	Next I
+	LogDebug("link monitor done: ok=" + FormatLong(MonitorOk,"%d") _
+	         + " fail=" + FormatLong(MonitorFail,"%d") _
+	         + " longest unanswered run=" + FormatLong(MonitorLongestFailRun,"%d") _
+	         + " polls (~" + FormatLong(MonitorLongestFailRun * MonitorGapSecs,"%d") + "s)")
+EndSub
+
+Sub ShowMenu
+	LogDebug("")
+	LogDebug("============== FinAppLib tester ==============")
+	LogDebug(" 1  ProbeFinApp              I!")
+	LogDebug(" 2  StartFinApp              power on, settle, probe")
+	LogDebug(" 3  StopFinApp               GUARDED power off")
+	LogDebug(" 4  cut power, no guard      contrast case only")
+	LogDebug(" 5  ReadFinAppMaster         M!  / D0!")
+	LogDebug(" 6  ReadFinAppDetectors      MN! / D0!")
+	LogDebug(" 7  ReadFinAppWater          M5! / D0!")
+	LogDebug(" 8  SampleFinApp             all three, sets FinApp_NewData")
+	LogDebug(" 9  show state")
+	LogDebug(" 0  address scan             aI! on 0-9 and A-Z, ~35 s, probe must be powered")
+	LogDebug(" A  detector scan            aMN!/D0! for N=1..9, finds fitted detector IDs")
+	LogDebug(" B  repeat sample cycles     RepeatCycles x SampleFinApp, RepeatGapSecs apart")
+	LogDebug(" C  link monitor             MonitorPolls x I!, measures busy-period length")
+	LogDebug("==============================================")
+	LogDebug("send a key (ENTER redisplays this menu)")
+EndSub
+
+Sub PollMenu
+	MenuKey = ReadMenuKey()
+	If MenuKey = "" Then ExitSub
+
+	Select Case MenuKey
+		Case "1"
+			DoProbe = True
+		Case "2"
+			DoStart = True
+		Case "3"
+			DoStop = True
+		Case "4"
+			DoKill = True
+		Case "5"
+			DoMaster = True
+		Case "6"
+			DoDetectors = True
+		Case "7"
+			DoWater = True
+		Case "8"
+			DoSample = True
+		Case "9"
+			DoState = True
+		Case "0"
+			DoAddressScan = True
+		Case "A"
+			DoDetectorScan = True
+		Case "B"
+			DoRepeatCycles = True
+		Case "C"
+			DoLinkMonitor = True
+		Case Else
+			Call ShowMenu
+			ExitSub
+	EndSelect
+
+	LogDebug("")
+	LogDebug(">>> option " + MenuKey + " selected")
+	MenuPending = True
+EndSub
+
+BeginProg
+	LogDebug("")
+	LogDebug("FinAppLib tester starting")
+	SerialFlush(ComUSB)
+	Call ShowMenu
+
+	Scan (5,Sec,0,0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+
+		PanelTemp (PTemp,15000)
+		Battery (Batt_volt)
+
+		Call PollMenu
+
+		If DoProbe Then
+			DoProbe = False
+			LastResult = ProbeFinApp()
+			LogDebug("ProbeFinApp -> " + FormatLong(LastResult,"%d") + "  ident=[" + FinApp_Ident + "]")
+		EndIf
+
+		If DoStart Then
+			DoStart = False
+			LastResult = StartFinApp()
+			LogDebug("StartFinApp -> " + FormatLong(LastResult,"%d") _
+			         + "  (settled " + FormatLong(FinAppPowerSettleSecs,"%d") + "s, power now " _
+			         + FormatLong(FinApp_Powered,"%d") + ")")
+		EndIf
+
+		If DoStop Then
+			DoStop = False
+			Timer(StopTimer,Sec,TimerResetAndStart)
+			LastResult = StopFinApp()
+			StopSeconds = Timer(StopTimer,Sec,TimerReadOnly)
+			LogDebug("StopFinApp -> " + FormatLong(LastResult,"%d") _
+			         + "  polls=" + FormatLong(FinApp_StopPollsUsed,"%d") _
+			         + " held=" + FormatLong(StopSeconds,"%d") + "s" _
+			         + " unsafestops=" + FormatLong(FinApp_UnsafeStops,"%d"))
+			LogDebug("   1 = probe answered before power was cut; 0 = cut blind after the budget")
+		EndIf
+
+		If DoKill Then
+			DoKill = False
+			SW12(FinAppPowerPort,0)
+			FinApp_Powered = False
+			LogDebug("power cut with no guard")
+		EndIf
+
+		If DoMaster Then
+			DoMaster = False
+			LastResult = ReadFinAppMaster()
+			LogDebug("ReadFinAppMaster -> " + FormatLong(LastResult,"%d"))
+		EndIf
+
+		If DoDetectors Then
+			DoDetectors = False
+			LastResult = ReadFinAppDetectors()
+			LogDebug("ReadFinAppDetectors -> " + FormatLong(LastResult,"%d"))
+		EndIf
+
+		If DoWater Then
+			DoWater = False
+			LastResult = ReadFinAppWater()
+			LogDebug("ReadFinAppWater -> " + FormatLong(LastResult,"%d"))
+		EndIf
+
+		If DoSample Then
+			DoSample = False
+			LastResult = SampleFinApp()
+			LogDebug("SampleFinApp -> newdata=" + FormatLong(LastResult,"%d") _
+			         + "  (0 means the progressive counter had not advanced)")
+			CallTable FinApp_Data
+		EndIf
+
+		If DoState Then
+			DoState = False
+			Call ShowState
+		EndIf
+
+		If DoAddressScan Then
+			DoAddressScan = False
+			Call RunAddressScan
+		EndIf
+
+		If DoDetectorScan Then
+			DoDetectorScan = False
+			Call RunDetectorScan
+		EndIf
+
+		If DoRepeatCycles Then
+			DoRepeatCycles = False
+			RepeatNewCount = 0
+			LogDebug("")
+			LogDebug("repeat: " + FormatLong(RepeatCycles,"%d") + " SampleFinApp cycles, " _
+			         + FormatLong(RepeatGapSecs,"%d") + "s apart")
+			For RepeatI = 1 To RepeatCycles
+				LastResult = SampleFinApp()
+				RepeatNewCount = RepeatNewCount + IIF(LastResult,1,0)
+				LogDebug("cycle " + FormatLong(RepeatI,"%d") _
+				         + " newdata=" + FormatLong(LastResult,"%d") _
+				         + " ok(m/d/w)=" + FormatLong(FinApp_MasterOk,"%d") + "/" + FormatLong(FinApp_DetectorsOk,"%d") + "/" + FormatLong(FinApp_WaterOk,"%d") _
+				         + " watercnt=" + FormatFloat(FinApp_WaterCounter,"%.0f") _
+				         + " detcnt=" + FormatFloat(FinApp_DetCounter(1),"%.0f") _
+				         + " acq=" + FormatFloat(FinApp_AcqTime_ms(1),"%.0f") + "ms")
+				CallTable FinApp_Data
+				If RepeatI < RepeatCycles Then Delay(1,RepeatGapSecs,Sec)
+			Next RepeatI
+			LogDebug("repeat done: " + FormatLong(RepeatNewCount,"%d") + " of " _
+			         + FormatLong(RepeatCycles,"%d") + " cycles stored new data")
+		EndIf
+
+		If DoLinkMonitor Then
+			DoLinkMonitor = False
+			Call RunLinkMonitor
+		EndIf
+
+		If MenuPending Then
+			MenuPending = False
+			Call ShowState
+			SerialFlush(ComUSB)
+			Call ShowMenu
+		EndIf
+
+		CallTable StationStatus
+	NextScan
+EndProg

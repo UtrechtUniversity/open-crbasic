@@ -3,9 +3,8 @@ import base64
 import json
 from types import SimpleNamespace
 
-import pytest
-
 import oracle
+import pytest
 import tdf_probe
 import tdftest
 

@@ -1,0 +1,64 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/PT1000_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/PT1000_tester.CR6 ops=swap_adjacent class=message_diff
+Const CRLF = CHR(13) + CHR(10)
+Const CR = CHR(13)
+Const LF = CHR(10)
+
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+ConstTable(GlobalConfigTable)
+  IncludeSection("ConstTable", "CPU:PT1000Lib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:PT1000Lib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:PT1000Lib.crb")
+
+Const ReportTimer = 1
+Const TimerResetAndStart = 2
+Const TimerReadOnly = 4
+	LogDebug("------------------------------------------------")
+	LogDebug(" PT1000RawToOhms = 1")
+	LogDebug("   ohms " + FormatFloat(ProbeOhmsX1, "%.3f") + "   degC " + FormatFloat(ProbeTempX1, "%.4f"))
+	LogDebug(" PT1000RawToOhms = 1000")
+	LogDebug("   ohms " + FormatFloat(ProbeOhmsX1000, "%.3f") + "   degC " + FormatFloat(ProbeTempX1000, "%.4f"))
+	LogDebug("------------------------------------------------")
+	LogDebug(" in use: PT1000RawToOhms = " + FormatLong(PT1000RawToOhms, "%d"))
+	LogDebug(" plausibility band " + FormatLong(PT1000MinOhms, "%d") + " to " _
+		+ FormatLong(PT1000MaxOhms, "%d") + " ohms")
+	LogDebug("================================================")
+EndSub
+
+Sub RunRead
+	Timer(ReportTimer, mSec, TimerResetAndStart)
+	LastOk = SamplePT1000()
+	LastElapsedMs = Timer(ReportTimer, mSec, TimerReadOnly)
+	Call LogPT1000Report
+EndSub
+
+Sub RunPanelCompare
+	Dim I As Long
+	Dim Sum, Lo, Hi
+
+	Sum = 0
+	Lo = NAN
+	Hi = NAN
+
+	LogDebug("")
+	LogDebug("=========== PANEL COMPARISON, 10 READS =========")
+	LogDebug("  n       ohms       degC      panel       diff")
+	For I = 1 To 10

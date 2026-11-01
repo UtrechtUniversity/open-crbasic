@@ -17,8 +17,8 @@ from pathlib import Path
 import pytest
 
 OPENCRBASIC_ROOT = Path(__file__).resolve().parent.parent
-REPO_ROOT = OPENCRBASIC_ROOT.parent
-CRBASIC_DIR = REPO_ROOT / "crbasic"
+REPO_ROOT = OPENCRBASIC_ROOT
+CRBASIC_DIR = REPO_ROOT / "tests" / "corpus" / "firnmelt"
 FIXTURES_DIR = OPENCRBASIC_ROOT / "tests" / "fixtures" / "tdf"
 
 sys.path.insert(0, str(OPENCRBASIC_ROOT / "tools"))
@@ -168,7 +168,7 @@ def test_explode_indices_is_bounded():
     # enumerate an unbounded number of index tuples, regardless of how large a field's `dimension`
     # claims to be -- defense in depth alongside `checker/structure.py`'s declaration-time check,
     # for any `TdfField` this module derives a huge `dimension` for by some other path.
-    from opencrbasic.tables import _explode_indices, _MAX_EXPLODE_COUNT
+    from opencrbasic.tables import _MAX_EXPLODE_COUNT, _explode_indices
 
     out = list(_explode_indices([999_999_999_999], False, 1, 999_999_999_999))
     assert len(out) == _MAX_EXPLODE_COUNT

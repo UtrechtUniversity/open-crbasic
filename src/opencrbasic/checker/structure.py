@@ -6,15 +6,14 @@ a statement our parser could not turn into a recognised shape. Rules and oracle 
 
 import dataclasses
 import re
-from collections.abc import Container, Set as AbstractSet
+from collections.abc import Container
+from collections.abc import Set as AbstractSet
 from typing import TypeGuard
 
-from .. import consteval
-from .. import lexer
-from .. import parser
+from .. import consteval, lexer, parser
 from .. import syntax as S
-from ..profiles import DottedName, Profile
 from ..diagnostics import Diagnostics
+from ..profiles import DottedName, Profile
 from . import expressions, instr_data, instr_rules, symbols
 
 # Array-dimension limits on a `Public`/`Dim` declaration (oracle-confirmed, `docs/checker.md`
@@ -1175,14 +1174,12 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     if env is None:
         env = consteval.Env(profile, dict(program.consts))
 
-    seen_beginprog = False
     scan_depth = 0
     cond_depth = 0
     select_depth = 0
     in_table = False
-    table_name: str | None = None
     nested_table_line: int | None = None
-    last_line = program.statements[-1].line if program.statements else 1
+    program.statements[-1].line if program.statements else 1
     # See `_check_declaration`'s docstring: the physical line right after a nameless `Public`/
     # `Dim` is never itself reported, even though it plainly failed to parse as anything valid.
     suppress_line: int | None = None
@@ -1661,7 +1658,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 if isinstance(sub, S.Case) and not _is_case_else(sub):
                     diags.error(sub.line, "Case outside Select.", sub.file)
         if kw == "BEGINPROG":
-            seen_beginprog = True
+            pass
         elif kw == "SCAN":
             scan_depth += 1
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(args) == "SCAN"):
@@ -1691,7 +1688,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         # while the second is also still open adds no second diagnostic).
         elif kw == "DATATABLE" and not in_table:
             in_table = True
-            table_name = args[0].name if args and isinstance(args[0], S.Name) else None
+            args[0].name if args and isinstance(args[0], S.Name) else None
         elif kw == "DATATABLE" and in_table and nested_table_line is None:
             nested_table_line = stmt.line
         elif kw == "ENDTABLE":
@@ -1767,7 +1764,7 @@ def open_program_at_slowsequence(program: S.Program, profile: Profile) -> S.Prog
     in-program (`Scan without NextScan.` at `EndProg`, no `... before BeginProg`). Only when the
     statements hold no `BeginProg` (the parser stops at the first `EndProg`, so a later one is never
     seen): a `BeginProg` is inserted ahead of it. Returns `program` itself otherwise."""
-    for n, st in enumerate(program.statements):
+    for n, st in enumerate(program.statements):  # noqa: B007 -- n is read after the loop
         kw = _keyword(st)
         if kw in ("BEGINPROG", "ENDPROG"):
             return program

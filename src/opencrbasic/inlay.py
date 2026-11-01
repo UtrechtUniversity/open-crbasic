@@ -7,7 +7,6 @@ See `docs/lsp-api.md` "Inlay hints (LSP-09a)".
 """
 
 import re
-
 from dataclasses import dataclass
 from pathlib import Path
 

@@ -6,7 +6,6 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-
 CASES = json.loads((Path(__file__).parent / "fixtures" / "trailing_empty_args.json").read_text(encoding="utf-8"))["cases"]
 
 

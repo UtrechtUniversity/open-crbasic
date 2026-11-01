@@ -1,0 +1,18 @@
+' fuzz: seed=repo/Preflight_tester.CR6 ops=add_argument class=message_diff
+	LogDebug("----------------------------------------------------------------")
+	LogDebug("RESULT pass=" + FormatLong(PrePassed,"%d") _
+		+ " fail=" + FormatLong(PreFailed,"%d") _
+		+ " skip=" + FormatLong(PreSkipped,"%d") _
+		+ " elapsed=" + FormatFloat(PreElapsedMs / 1000,"%.1f") + " s")
+	LogDebug("VERDICT " + IIF(PreReady, "all selected sensors present and reachable", _
+		"one or more sensors missing, see the FAIL lines above"))
+	LogDebug("========================= END OF REPORT =========================")
+EndSub
+
+Sub RunPreflight(WithFinApp As Boolean, WithModem As Boolean,"fuzz")
+	PreIndex = 0
+	PrePassed = 0
+	PreFailed = 0
+	PreSkipped = 0
+	Timer(PreTimer, mSec, TimerResetAndStart)
+	Call CheckTDR

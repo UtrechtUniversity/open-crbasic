@@ -10,14 +10,14 @@ module docstring). Rules and oracle evidence: `docs/checker.md` (the required-pa
 
 import math
 import re
-from typing import cast
 import struct
+from typing import cast
 
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
-from . import longconv, symbols
 from ..tables import _unit_value
+from . import longconv, symbols
 from .expressions import _arg_text, _known_names, _type_code_kinds, _undefined_names, _variable_refs
 
 # `type_codes.json` codes exempt from the "missing required parameter" error: when the
@@ -1363,7 +1363,7 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
     rule. Gated per-`profile.instructions` (not just the keyword spelling) so this is a no-op on
     CR300/CR350, which do not have either instruction at all.
     """
-    from . import instr_data   # (a one-line If's statement too, round 52)
+    from . import instr_data  # (a one-line If's statement too, round 52)
     known: set[str] | None = None
     variable_names: set[str] | None = None
     str_consts: set[str] | None = None
@@ -2953,7 +2953,7 @@ def check_epi_scan_buffers(program: S.Program, profile, diags: Diagnostics, env)
                 if us not in _EPI_RATES_US:
                     diags.error(st.line, "Invalid Output Rate.", st.file)
                 if us > 1_000_000:
-                    diags.error(st.line, f"Maximum Scan interval for CDM_BridgeFilt is 1 Sec.", st.file)
+                    diags.error(st.line, "Maximum Scan interval for CDM_BridgeFilt is 1 Sec.", st.file)
 
 
 _EPI_RATES_US = frozenset(ms * 1000 for ms in (1, 2, 5, 10, 20, 50, 100, 200, 500, 1000))

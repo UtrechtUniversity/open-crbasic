@@ -1,0 +1,6 @@
+' fuzz: seed=repo/PowerBudget_tester.CR6 ops=rename_identifier+insert_comment class=message_diff
+			MenuPending = True
+	EndSelect
+EndSub
+
+Sub ApplyState(Target As Long)

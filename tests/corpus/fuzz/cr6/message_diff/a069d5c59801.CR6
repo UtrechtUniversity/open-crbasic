@@ -1,0 +1,9 @@
+' fuzz: seed=repo/PT1000_tester.CR6 ops=drop_argument+insert_foreign_statement class=message_diff
+			+ FormatFloat(PT1000_Ohms, "%11.3f") _
+			+ FormatFloat(PT1000_Temp_C, "%11.4f") _
+			+ FormatFloat(PTemp, "%11.4f") _
+			+ FormatFloat(PT1000_Temp_C - PTemp, "%11.4f"))
+
+		Sum = Sum + PT1000_Temp_C
+		If() OR (PT1000_Temp_C < Lo) Then Lo = PT1000_Temp_C
+	LogDebug(" panel " + FormatFloat(PTemp, "%.4f") + " C")

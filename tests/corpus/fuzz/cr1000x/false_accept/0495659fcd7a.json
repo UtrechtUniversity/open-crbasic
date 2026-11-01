@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/false_accept/0495659fcd7a.CR6",
+  "logger": "cr1000x",
+  "class": "false_accept",
+  "seed": "repo/SerialProbe.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "insert_foreign_statement",
+    "change_interval"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "0495659fcd7a.CR6 -- Compiled in SequentialMode.",
+  "theirs": "0495659fcd7a.CR6 -- Compile Failed!\n\nline 37: Scan 0uSec invalid must be at least 1mSec.\nline 42: Invalid, or out of place expression: \t\tFuzzVar = 1."
+}

@@ -1,0 +1,16 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_reject/b48d6843b286.CR6",
+  "logger": "cr6",
+  "class": "false_reject",
+  "seed": "repo/Shunt_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "replace_numeric_literal",
+    "duplicate_line"
+  ],
+  "our_exit": 1,
+  "their_exit": 0,
+  "ours": "b48d6843b286.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Const LF = CHR(-1).\nline 5: Expr illegally occurs before BeginProg.",
+  "theirs": "b48d6843b286.CR6 -- Compiled in SequentialMode.",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

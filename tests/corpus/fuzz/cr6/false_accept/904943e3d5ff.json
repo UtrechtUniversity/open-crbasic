@@ -1,0 +1,15 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_accept/904943e3d5ff.CR6",
+  "logger": "cr6",
+  "class": "false_accept",
+  "seed": "repo/SbdPayload_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "duplicate_line"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "904943e3d5ff.CR6 -- Compiled in SequentialMode.\nWarning: Table Acclima_Data, is declared but never called.\nWarning: Table TString_Data, is declared but never called.\nWarning: Table SnowVue_Data, is declared but never called.\nWarning: Table SnowVue_Diagnostics, is declared but never called.\nWarning: Table FinApp_Data, is declared but never called.",
+  "theirs": "904943e3d5ff.CR6 -- Compile Failed!\n\nline 19: FinAppDetectorCount is already declared as a CONST.",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

@@ -1,0 +1,2 @@
+' fuzz: seed=repo/TString_tester.CR6 ops=drop_argument class=message_diff
+		If() AND (V >= TStringErrorLimit) Then

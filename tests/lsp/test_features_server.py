@@ -6,7 +6,6 @@ modules applied to the same program, so these tests check the adapter (positions
 scheduling), not CRBasic rules.
 """
 
-from .assertions import required
 import shutil
 import time
 from pathlib import Path
@@ -16,13 +15,14 @@ import pytest
 from opencrbasic import editing, navigation
 from opencrbasic.analysis import AnalysisRequest, analyze
 
+from .assertions import required
 from .lspclient import LspClient
 
 pytestmark = pytest.mark.server
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
-CHM = ROOT.parent / "extracted_chm"
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
+CHM = ROOT / "extracted_chm"
 FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000}
 
 EXPECTED_CAPABILITIES = {

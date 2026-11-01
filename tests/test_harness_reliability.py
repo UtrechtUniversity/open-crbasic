@@ -1,14 +1,13 @@
 
 import json
-from pathlib import Path
 import subprocess
 import sys
-
-import pytest
+from pathlib import Path
 
 import difftest
 import fuzz
 import fuzz_replay
+import pytest
 
 
 def _row(cls: str | None) -> dict:

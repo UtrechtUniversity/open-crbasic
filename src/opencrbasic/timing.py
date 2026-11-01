@@ -5,8 +5,8 @@ prints no entry.
 """
 
 import re
-
 from typing import TypeGuard, cast
+
 from . import consteval, mode
 from . import syntax as S
 from .profiles import Profile

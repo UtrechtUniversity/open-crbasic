@@ -1,0 +1,26 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/InStrHeaderFilterTest.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/InStrHeaderFilterTest.CR6 ops=replace_argument class=message_diff
+Public Test3_Mode2_Context As String * 16
+Public Test3_Mode4_Context As String * 16
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+BeginProg
+  Scan(10,"fuzz", 0, 0)
+    If BenchWatchdogOff Then
+      wdog_timer = WatchdogTimer(0,Sec)
+    Else
+      wdog_timer = WatchdogTimer(10,Min)
+    EndIf
+
+    Battery(Batt_volt)
+
+    Test1_Mode2_Pos = InStr(1, Test1_Str, "+SBDI:", 2)
+    Test1_Mode4_Pos = InStr(1, Test1_Str, "+SBDI:", 4)
+    If Test1_Mode2_Pos > 0 Then
+      Test1_Mode2_Context = Mid(Test1_Str, Test1_Mode2_Pos, 16)
+    Else
+  NextScan
+EndProg

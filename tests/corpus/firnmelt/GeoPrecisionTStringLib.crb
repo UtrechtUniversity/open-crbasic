@@ -1,0 +1,97 @@
+#If Section = "ConstTable" Then
+    Const TStringSDIAddress = 0
+    Const TStringComPort = U3
+#EndIf
+
+#If Section = "Definitions" Then
+    Const TStringValuesPerGroup = 9
+    Const TStringSupplyGroup = 9
+    Const TStringErrorLimit = -90
+    Const MaxTStringCount = 50
+
+    #If TStringCount < 1 Then
+        ERROR__STATIC_ASSERT__TStringCount_must_be_at_least_1
+    #EndIf
+
+    #If TStringCount > MaxTStringCount Then
+        ERROR__STATIC_ASSERT__TStringCount_exceeds_MaxTStringCount
+    #EndIf
+
+    Public TString_Temp_C(TStringCount)
+    Public TString_Supply_V
+    Public TString_ErrorCount As Long
+
+    Units TString_Temp_C()=C
+    Units TString_Supply_V=Volts
+
+    Dim TStringGroup(TStringValuesPerGroup)
+
+    DataTable(TString_Data,True,-1)
+        Sample(TStringCount,TString_Temp_C(),IEEE4)
+        Sample(1,TString_Supply_V,FP2)
+        Sample(1,TString_ErrorCount,UINT2)
+    EndTable
+#EndIf
+
+#If Section = "Functions" Then
+    Function ReadTString(MeasureCmd As String * 4) As Boolean
+        Dim First As Long
+        Dim Group As Long
+        Dim GroupSize As Long
+        Dim I As Long
+        Dim Cmd As String * 8
+
+        For First = 1 To TStringCount Step TStringValuesPerGroup
+            Group = (First - 1) / TStringValuesPerGroup
+            Cmd = MeasureCmd + "!"
+            If Group > 0 Then Cmd = MeasureCmd + FormatLong(Group, "%d") + "!"
+
+            GroupSize = TStringCount - First + 1
+            GroupSize = IIF(GroupSize > TStringValuesPerGroup, TStringValuesPerGroup, GroupSize)
+
+            SDI12Recorder(TStringGroup(), TStringComPort, TStringSDIAddress, Cmd, 1, 0, -1)
+
+            For I = 1 To GroupSize
+                TString_Temp_C(First + I - 1) = TStringGroup(I)
+            Next I
+        Next First
+
+        TString_ErrorCount = 0
+        For I = 1 To TStringCount
+            TString_ErrorCount = TString_ErrorCount + IIF((TString_Temp_C(I) = NAN) OR (TString_Temp_C(I) < TStringErrorLimit), 1, 0)
+        Next I
+
+        Return (TString_ErrorCount = 0)
+    EndFunction
+
+    Function ReadTStringSupply(MeasureCmd As String * 4) As Boolean
+        Dim Cmd As String * 8
+
+        Cmd = MeasureCmd + FormatLong(TStringSupplyGroup, "%d") + "!"
+        SDI12Recorder(TStringGroup(), TStringComPort, TStringSDIAddress, Cmd, 1, 0, -1)
+        TString_Supply_V = TStringGroup(1)
+
+        Return (TString_Supply_V <> NAN)
+    EndFunction
+
+    Sub CollapseTStringErrors
+        Dim I As Long
+
+        For I = 1 To TStringCount
+            If TString_Temp_C(I) < TStringErrorLimit Then TString_Temp_C(I) = NAN
+        Next I
+    EndSub
+
+    Function SampleTString() As Boolean
+        Dim Ok As Boolean
+
+        Ok = ReadTString("MC")
+        Call CollapseTStringErrors
+
+        Return Ok
+    EndFunction
+
+    Function SampleTStringSupply() As Boolean
+        Return ReadTStringSupply("MC")
+    EndFunction
+#EndIf

@@ -1,0 +1,14 @@
+{
+  "file": "scratch/r38/fuzz-432/cr1000x/message_diff/6d4a8d9e40eb.CR6",
+  "logger": "cr1000x",
+  "class": "message_diff",
+  "seed": "repo/PortSleep_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "insert_whitespace"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "6d4a8d9e40eb.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: \tConst Po  rtCommsMode = 0.\nline 2: Expr illegally occurs before BeginProg.",
+  "theirs": "6d4a8d9e40eb.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: rtCommsMode = 0."
+}

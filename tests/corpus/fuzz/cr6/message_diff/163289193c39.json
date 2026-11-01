@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/163289193c39.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SerialProbe.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "163289193c39.CR6 -- Compile Failed!\n\nline 2: Expression expects , : \t\tCall ProbeLog(\"bytes=\" + FormatLong(ProbeBytes) + \" resp=[\" + ProbeResp + \"]\").",
+  "theirs": "163289193c39.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: \"bytes=\" + FormatLong(ProbeBytes) + \" resp=[\" + ProbeResp + \"]\".\nline 2: Sub ProbeLog not defined."
+}

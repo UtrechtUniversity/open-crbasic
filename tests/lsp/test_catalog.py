@@ -1,5 +1,4 @@
 
-from .assertions import required
 import json
 from pathlib import Path
 
@@ -9,8 +8,10 @@ from opencrbasic import parser, profiles
 from opencrbasic import syntax as S
 from opencrbasic.catalog import EXTRA_KEYWORDS, KINDS, TABLE_KEYWORDS, CatalogEntry, InstructionCatalog
 
+from .assertions import required
+
 ROOT = Path(__file__).resolve().parents[2]
-MAIN = (ROOT.parent / "crbasic" / "Main.CR6").resolve()
+MAIN = (ROOT / "tests" / "corpus" / "firnmelt" / "Main.CR6").resolve()
 LOGGERS = list(profiles.PROFILES)
 
 

@@ -1,0 +1,12 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/SbdPayload_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/SbdPayload_tester.CR6 ops=typo_identifier class=message_diff
+IncludeSection("Definitions", "CPU:SBDIridiumLib.crb")
+IncludeSection("Definitions", "CPU:GPSLib.crb")
+
+Public SbdLastOk As Boolean
+Public TDROk As Boolean
+Public TStringOk As Boolean
+Public SnowVueOk As Boolean
+Public PT1000Ok As Boolean
+
+IncludeSection("Definitions", "CPU:SbdPayloadLib.crb")

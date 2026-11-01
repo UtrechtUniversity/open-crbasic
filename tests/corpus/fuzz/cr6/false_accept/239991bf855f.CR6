@@ -1,0 +1,330 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/SbdPayload_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/SbdPayload_tester.CR6 ops=duplicate_line class=false_accept
+SequentialMode
+
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+ConstTable(GlobalConfigTable)
+	Const StationId = 3
+
+	Const TDRCount = 2
+	Const TDRStartAddress = 1
+	Const TStringCount = 48
+	Const SnowVueBurstCount = 5
+	Const FinAppDetectorCount = 2
+	Const FinAppDetectorCount = 2
+	Const FinAppDetectorFirstId = 2
+
+	Const UnitSecs = 60
+	Const UnitsPerDay = 1440
+
+	IncludeSection("ConstTable", "CPU:PowerProfileLib.crb")
+	IncludeSection("ConstTable", "CPU:SbdPayloadLib.crb")
+EndConstTable
+
+IncludeSection("Definitions", "CPU:PowerProfileLib.crb")
+IncludeSection("Definitions", "CPU:AcclimaTDRLib.crb")
+IncludeSection("Definitions", "CPU:GeoPrecisionTStringLib.crb")
+IncludeSection("Definitions", "CPU:SnowVue10Lib.crb")
+IncludeSection("Definitions", "CPU:FinAppLib.crb")
+IncludeSection("Definitions", "CPU:SBDIridiumLib.crb")
+
+Public SbdLastOk As Boolean
+Public TDROk As Boolean
+Public TStringOk As Boolean
+Public SnowVueOk As Boolean
+Public PT1000Ok As Boolean
+
+IncludeSection("Definitions", "CPU:SbdPayloadLib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:PowerProfileLib.crb")
+IncludeSection("Functions", "CPU:SbdPayloadLib.crb")
+
+Public RunTests As Boolean = False
+
+Public FeedIntraday As Boolean = True
+
+Public TestIndex As Long
+Public TestsPassed As Long
+Public TestsFailed As Long
+
+Public ByteFidelityFirstBad As Long
+Public FirstNullAt As Long
+Dim ScanIdx As Long
+Public ParamCopyOurSum As Long
+Public ParamCopyTheirSum As Long
+
+Const MenuBufferLength = 16
+Dim MenuRaw As String * MenuBufferLength
+Dim MenuKey As String * 2
+Dim MenuBytes As Long
+
+Sub LogResult(TestName As String * 60, Ok As Boolean, Detail As String * 100)
+	TestIndex = TestIndex + 1
+	TestsPassed = TestsPassed + IIF(Ok, 1, 0)
+	TestsFailed = TestsFailed + IIF(Ok, 0, 1)
+	LogDebug("[" + FormatLong(TestIndex, "%02d") + "] " + TestName + " | " + IIF(Ok, "PASS", "FAIL") + " | " + Detail)
+EndSub
+
+Function ParamCopySum(Message As String * IridiumMaxMOMessageLength, MessageLength As Long) As Long
+	Dim I As Long
+	ParamCopySum = 0
+	For I = 1 To MessageLength
+		ParamCopySum = ParamCopySum + ASCII(Message(1,1,I))
+	Next I
+EndFunction
+
+Function BufferSum(Length As Long) As Long
+	Dim I As Long
+	BufferSum = 0
+	For I = 1 To Length
+		BufferSum = BufferSum + ASCII(IridiumMOBuffer(1,1,I))
+	Next I
+EndFunction
+
+Sub DumpPayload
+	Dim I As Long
+	Dim HexLine As String * 80
+	LogDebug("--- PAYLOAD BEGIN len=" + FormatLong(SbdPayloadLen, "%d") + " ---")
+	HexLine = ""
+	For I = 1 To SbdPayloadLen
+		HexLine = HexLine + FormatLong(ASCII(IridiumMOBuffer(1,1,I)), "%02X")
+		If (I MOD 32) = 0 Then
+			LogDebug(HexLine)
+			HexLine = ""
+		EndIf
+	Next I
+	If Len(HexLine) > 0 Then LogDebug(HexLine)
+	LogDebug("--- PAYLOAD END ---")
+EndSub
+
+Sub TestByteFidelity
+	Dim I As Long
+	Dim Ok As Boolean
+	SbdCursor = 1
+	For I = 0 To 254
+		Call SbdPutRaw(I, 1)
+	Next I
+	SbdPayloadLen = SbdCursor - 1
+
+	ByteFidelityFirstBad = 0
+	For I = 1 To SbdPayloadLen
+		If ASCII(IridiumMOBuffer(1,1,I)) <> (I - 1) AND ByteFidelityFirstBad = 0 Then
+			ByteFidelityFirstBad = I
+		EndIf
+	Next I
+
+	Ok = (SbdPayloadLen = 255) AND (ByteFidelityFirstBad = 0)
+	Call LogResult("byte fidelity 0..254 round-trip", Ok, "len=" + FormatLong(SbdPayloadLen, "%d") + " firstbad=" + FormatLong(ByteFidelityFirstBad, "%d"))
+
+	ParamCopyOurSum = BufferSum(SbdPayloadLen)
+	Ok = (ParamCopyOurSum = 32385)
+	Call LogResult("MO buffer holds every byte 0..254", Ok, "sum=" + FormatLong(ParamCopyOurSum, "%d") + " expect=32385")
+
+	ParamCopyTheirSum = ParamCopySum(IridiumMOBuffer, SbdPayloadLen)
+	Ok = (ParamCopyTheirSum = 0)
+	Call LogResult("String parameter copy truncates at 0x00 (known)", Ok, "param=" + FormatLong(ParamCopyTheirSum, "%d") + " expect=0 -- why the MO buffer is global")
+EndSub
+
+Sub LoadSyntheticValues
+	Dim I As Long
+
+	PTemp = -12.5
+	Batt_volt = 12.34
+	AmbientTempC = -31.5
+	PowerProfile = ProfileConservative
+	ProfileOverride = -1
+	HighPowerActive = True
+	FinAppDayActive = True
+	SbdLastOk = True
+	TStringOk = True
+	SnowVueOk = False
+	PT1000Ok = True
+	IridiumIMEIOk = True
+
+	For I = 1 To TDRCount
+		Acclima_VWC(I) = 10.5 + I
+		Acclima_SoilTemp(I) = -20.0 - I
+		Acclima_SoilPerm(I) = 4.5 + I
+	Next I
+	Acclima_VWC(1) = NAN
+
+	TString_ErrorCount = 2
+	TString_Supply_V = 11.9
+	For I = 1 To TStringCount
+		TString_Temp_C(I) = -5.0 - (I * 0.5)
+	Next I
+	TString_Temp_C(2) = NAN
+	TString_Temp_C(3) = 999
+	TString_Temp_C(4) = -999
+
+	SnowVue_TCDistance_m = 1.234
+	SnowVue_Quality = 180
+	SnowVue_Pitch_deg = -3
+	SnowVue_Roll_deg = 5
+	SnowVue_ValidReadings = 5
+	SnowVue_Supply_V = 12.1
+	SnowVue_IntTemp_C = -8.5
+	SnowVue_IntRH = 42
+	SnowVue_ResFreq_kHz = 51.2
+	SnowVue_Alert = 0
+
+	FinApp_Powered = True
+	FinApp_Responding = True
+	FinApp_NewData = True
+	FinApp_MasterOk = True
+	FinApp_DetectorsOk = True
+	FinApp_WaterOk = False
+	FinApp_UnsafeStops = 1
+	FinApp_StopPollsUsed = 3
+	FinApp_Batt_V = 12.2
+	FinApp_BoardTemp_C = -4.0
+	FinApp_Pressure_Pa = 96500
+	FinApp_SWE_Areal_mm = 123.4
+	FinApp_SWE_Local_mm = NAN
+	FinApp_SoilMoisture = 0.16
+	FinApp_WaterCounter = 4321
+	For I = 1 To FinAppDetectorCount
+		FinApp_Neutrons(I) = 1000 + I
+		FinApp_Muons(I) = 20000 + I
+		FinApp_HV_V(I) = 2.561 - ((I - 1) * 0.18)
+	Next I
+EndSub
+
+Sub RunAllTests
+	Dim Ok As Boolean
+
+	TestIndex = 0
+	TestsPassed = 0
+	TestsFailed = 0
+
+	LogDebug("================================================")
+	LogDebug("SbdPayloadLib automated test report")
+	LogDebug("schema=" + FormatLong(SbdPayloadVersion, "%d") + " station=" + FormatLong(StationId, "%d") _
+	         + " tdr=" + FormatLong(TDRCount, "%d") + " tstring=" + FormatLong(TStringCount, "%d") _
+	         + " det=" + FormatLong(FinAppDetectorCount, "%d") + " histdays=" + FormatLong(SbdHistoryDays, "%d"))
+	LogDebug("================================================")
+
+	LogDebug("--- phase 1: binary buffer mechanism ---")
+	Call TestByteFidelity
+
+	LogDebug("--- phase 2: encoder scalar checks ---")
+	Ok = (SbdEnc(NAN, SbdTempScale, SbdTempOffset, 1) = 255)
+	Call LogResult("SbdEnc8 NAN -> 255", Ok, "got=" + FormatLong(SbdEnc(NAN, SbdTempScale, SbdTempOffset, 1), "%d"))
+
+	Ok = (SbdEnc(-30, SbdTempScale, SbdTempOffset, 1) = 100)
+	Call LogResult("SbdEnc8 -30C -> 100", Ok, "got=" + FormatLong(SbdEnc(-30, SbdTempScale, SbdTempOffset, 1), "%d"))
+
+	Ok = (SbdEnc(999, SbdTempScale, SbdTempOffset, 1) = 254)
+	Call LogResult("SbdEnc8 out of range high -> 254", Ok, "got=" + FormatLong(SbdEnc(999, SbdTempScale, SbdTempOffset, 1), "%d"))
+
+	Ok = (SbdEnc(-999, SbdTempScale, SbdTempOffset, 1) = 254)
+	Call LogResult("SbdEnc8 out of range low -> 254", Ok, "got=" + FormatLong(SbdEnc(-999, SbdTempScale, SbdTempOffset, 1), "%d"))
+
+	Ok = (SbdEnc(12.34, SbdVoltScale, 0, 2) = 1234)
+	Call LogResult("SbdEnc16 12.34V -> 1234", Ok, "got=" + FormatLong(SbdEnc(12.34, SbdVoltScale, 0, 2), "%d"))
+
+	Ok = (SbdEnc(NAN, SbdVoltScale, 0, 2) = 65535)
+	Call LogResult("SbdEnc16 NAN -> 65535", Ok, "got=" + FormatLong(SbdEnc(NAN, SbdVoltScale, 0, 2), "%d"))
+
+	Ok = (SbdEnc(2.56, 50, 0, 1) = 128)
+	Call LogResult("FinAPP HV 2.56V -> 128", Ok, "got=" + FormatLong(SbdEnc(2.56, 50, 0, 1), "%d"))
+
+	LogDebug("--- phase 3: full payload build ---")
+	Call LoadSyntheticValues
+	Call BuildSbdPayload
+
+	Ok = (SbdPayloadLen <= IridiumMaxMOMessageLength)
+	Call LogResult("payload fits one SBD message", Ok, "len=" + FormatLong(SbdPayloadLen, "%d") + " max=" + FormatLong(IridiumMaxMOMessageLength, "%d"))
+
+	Ok = (ASCII(IridiumMOBuffer(1,1,1)) = SbdPayloadMagic) AND (ASCII(IridiumMOBuffer(1,1,2)) = SbdPayloadVersion)
+	Call LogResult("magic and schema version lead", Ok, "magic=" + FormatLong(ASCII(IridiumMOBuffer(1,1,1)), "%d") + " ver=" + FormatLong(ASCII(IridiumMOBuffer(1,1,2)), "%d"))
+
+	Ok = (ASCII(IridiumMOBuffer(1,1,3)) = StationId)
+	Call LogResult("station id in header", Ok, "got=" + FormatLong(ASCII(IridiumMOBuffer(1,1,3)), "%d"))
+
+	FirstNullAt = 0
+	For ScanIdx = 1 To SbdPayloadLen
+		If ASCII(IridiumMOBuffer(1,1,ScanIdx)) = 0 AND FirstNullAt = 0 Then FirstNullAt = ScanIdx
+	Next ScanIdx
+	ParamCopyOurSum = BufferSum(SbdPayloadLen)
+	ParamCopyTheirSum = BufferSum(FirstNullAt - 1)
+	Ok = (FirstNullAt > 0) AND (FirstNullAt < SbdPayloadLen) AND (ParamCopyOurSum > ParamCopyTheirSum)
+	Call LogResult("MO buffer retains bytes past the first 0x00", Ok, "firstnull=" + FormatLong(FirstNullAt, "%d") + " full=" + FormatLong(ParamCopyOurSum, "%d") + " truncated=" + FormatLong(ParamCopyTheirSum, "%d"))
+
+	LogDebug("Status probe: StartUpCode=" + FormatFloat(Status.StartUpCode, "%g") _
+	         + " WatchdogErrors=" + FormatFloat(Status.WatchdogErrors, "%g") _
+	         + " SkippedScan=" + FormatFloat(Status.SkippedScan, "%g") _
+	         + " VarOutOfBound=" + FormatFloat(Status.VarOutOfBound, "%g"))
+	LogDebug("Status probe: ProgSignature=" + FormatFloat(Status.ProgSignature, "%g") _
+	         + " LithiumBattery=" + FormatFloat(Status.LithiumBattery, "%g") _
+	         + " CardBytesFree=" + FormatFloat(Status.CardBytesFree, "%g") _
+	         + " StartTime=" + FormatFloat(Status.StartTime, "%g"))
+
+	Call DumpPayload
+
+	LogDebug("------------------------------------------------")
+	LogDebug("RESULT passed=" + FormatLong(TestsPassed, "%d") + " failed=" + FormatLong(TestsFailed, "%d"))
+	LogDebug("Decode with: uv run sbd_decode.py --hex <paste>")
+	LogDebug("================ END OF REPORT =================")
+EndSub
+
+Sub ShowMenu
+	LogDebug("")
+	LogDebug("SbdPayloadLib tester -- no hardware, no airtime")
+	LogDebug("  1  run full report")
+	LogDebug("  2  rebuild payload from current Public values and dump hex")
+	LogDebug("  3  toggle feeding the hourly table (off = simulate a measurement gap)")
+EndSub
+
+BeginProg
+	LogDebug("")
+	LogDebug("SbdPayloadLib tester starting")
+	Call ShowMenu
+
+	Scan (MainScanSecs,Sec,0,0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+
+		PanelTemp (PTemp,15000)
+		Battery (Batt_volt)
+		Call UpdatePowerClock
+
+		Call AccumulateIntraday(FeedIntraday)
+		Call AccumulateFinAppDaily
+
+		MenuBytes = SerialInChk(ComUSB)
+		If MenuBytes > 0 Then
+			SerialInBlock(ComUSB, MenuRaw, MenuBufferLength)
+			MenuKey = Mid(MenuRaw, 1, 1)
+			Select Case MenuKey
+				Case "1"
+					RunTests = True
+				Case "2"
+					Call BuildSbdPayload
+					Call DumpPayload
+				Case "3"
+					FeedIntraday = NOT FeedIntraday
+					LogDebug("FeedIntraday=" + IIF(FeedIntraday, "on", "off"))
+				Case Else
+					Call ShowMenu
+			EndSelect
+			SerialFlush(ComUSB)
+		EndIf
+
+		If RunTests Then
+			RunTests = False
+			Call RunAllTests
+		EndIf
+	NextScan

@@ -1,0 +1,6 @@
+' fuzz: seed=repo/FinApp_tester.CR6 ops=add_argument class=message_diff
+	LogDebug("power=" + FormatLong(FinApp_Powered,"%d") _
+	         + " responding=" + FormatLong(FinApp_Responding,"%d") _
+	         + " newdata=" + FormatLong(FinApp_NewData,"%d") _
+	         + " ok(m/d/w)=" + FormatLong(FinApp_MasterOk,"%d") + "/" + FormatLong(FinApp_DetectorsOk,"%d") + "/" + FormatLong(FinApp_WaterOk,"%d") _
+	         + " unsafestops=" + FormatLong(FinApp_UnsafeStops,"%d",(1+2)) _

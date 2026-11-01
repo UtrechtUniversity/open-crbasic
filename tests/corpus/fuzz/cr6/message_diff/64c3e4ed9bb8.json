@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r36/fuzz-425/cr6/message_diff/64c3e4ed9bb8.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/RailsOff.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "swap_arguments"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "64c3e4ed9bb8.CR6 -- Compile Failed!\n\nline 6: EndConstTable with no ConstTable.\nline 8: Include file Definitions must have valid program file extension.\n<ShuntLib.crb> line 56: Invalid symbol in expression: ShuntRange.\nline 24: Invalid symbol in expression: BattScanSecs.",
+  "theirs": "64c3e4ed9bb8.CR6 -- Compile Failed!\n\nline 6: EndConstTable with no ConstTable.\nline 8: Include file Definitions must have valid program file extension.\nline 24: Invalid symbol in expression: BattScanSecs.",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

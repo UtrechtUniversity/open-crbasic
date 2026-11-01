@@ -1,0 +1,61 @@
+#If Section = "Definitions" Then
+    Const BenchKeyBufferLength = 16
+    Dim BenchComUSBOpen As Boolean = False
+    Dim BenchKeyRaw As String * BenchKeyBufferLength
+    Public DebugMsg As String * 500
+#EndIf
+
+#If Section = "Rail" Then
+    Public RailOn As Boolean = False
+
+    Sub SetRail(Enable As Boolean)
+        If Enable Then
+            WriteIO(LowPowerRailMask, LowPowerRailMask)
+        Else
+            WriteIO(LowPowerRailMask, 0)
+        EndIf
+        RailOn = Enable
+    EndSub
+#EndIf
+
+#If Section = "CommsRail" Then
+    Public CommsRailOn As Boolean = False
+
+    Sub SetCommsRail(Enable As Boolean)
+        If Enable Then
+            SW12(CommsRailPort, 1)
+        Else
+            SW12(CommsRailPort, 0)
+        EndIf
+        CommsRailOn = Enable
+    EndSub
+#EndIf
+
+#If Section = "Functions" Then
+    Function LogDebug(Message As String * 500)
+        If NOT BenchComUSBOpen Then
+            SerialOpen(ComUSB, 115200, 0, 0, 1000)
+            BenchComUSBOpen = True
+        EndIf
+        DebugMsg = Message
+        SerialOut(ComUSB, DebugMsg + CHR(13) + CHR(10), "", 0, 0)
+    EndFunction
+
+    Function ReadMenuKey() As String * 2
+        Dim Count As Long
+        Dim I As Long
+        Dim C As String * 2
+
+        ReadMenuKey = ""
+        Count = SerialInBlock(ComUSB, BenchKeyRaw, BenchKeyBufferLength)
+        If Count = 0 Then ExitFunction
+        ReadMenuKey = " "
+        For I = 1 To Count
+            C = Mid(BenchKeyRaw, I, 1)
+            If (C <> CHR(13)) AND (C <> CHR(10)) AND (C <> " ") Then
+                ReadMenuKey = UpperCase(C)
+                ExitFunction
+            EndIf
+        Next I
+    EndFunction
+#EndIf

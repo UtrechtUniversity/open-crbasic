@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/5a2eba9de874.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/TString_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "drop_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "5a2eba9de874.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Const LF = CHR().\nline 4: Expr illegally occurs before BeginProg.",
+  "theirs": "5a2eba9de874.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: CHR()."
+}

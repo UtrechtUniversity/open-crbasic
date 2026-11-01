@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r36/fuzz-425/cr6/message_diff/4d76a7279a6f.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/InStrHeaderFilterTest.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "replace_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "4d76a7279a6f.CR6 -- Compile Failed!\n\n<BenchLib.crb> line 36: Invalid symbol in expression: NOT BenchComUSBOpen .\nline 38: Invalid, or out of place expression:             BenchComUSBOpen = True.\nline 40: Invalid, or out of place expression:         DebugMsg = Message.\n<BenchLib.crb> line 41: Invalid symbol in expression:         SerialOut(ComUSB, DebugMsg + CHR(13) + CHR(10), \"\", 0, 0).\n<BenchLib.crb> line 50: Invalid symbol in expression:         Count = SerialInBlock(ComUSB, BenchKeyRaw, BenchKeyBufferLength).\n<BenchLib.crb> line 54: Invalid symbol in expression:             C = Mid(BenchKeyRaw, I, 1).",
+  "theirs": "4d76a7279a6f.CR6 -- Compile Failed!\n\nline 36: Invalid symbol in expression: NOT BenchComUSBOpen .\nline 38: Invalid, or out of place expression:             BenchComUSBOpen = True.\nline 40: Invalid, or out of place expression:         DebugMsg = Message.\nline 41: Invalid symbol in expression:         SerialOut(ComUSB, DebugMsg + CHR(13) + CHR(10), \"\", 0, 0).\nline 50: Invalid symbol in expression:         Count = SerialInBlock(ComUSB, BenchKeyRaw, BenchKeyBufferLength).\nline 54: Invalid symbol in expression:             C = Mid(BenchKeyRaw, I, 1).",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

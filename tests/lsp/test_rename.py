@@ -5,7 +5,6 @@ The semantic-preservation sweep renames program-declared names of `../crbasic` t
 tmp copies, compiles the affected entries and compares them with the unrenamed compile. By default
 a stride sample runs; `RENAME_SWEEP=full` runs every declaration and prints the counts."""
 
-from .assertions import required
 import dataclasses
 import hashlib
 import os
@@ -21,8 +20,10 @@ from opencrbasic import rename as R
 from opencrbasic.analysis import AnalysisRequest, analyze
 from opencrbasic.compiler import compile_file
 
+from .assertions import required
+
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
 
 
 def write(tmp_path: Path, name: str, text: str, newline: str = "\n") -> Path:
@@ -86,7 +87,7 @@ def sample(tmp_path):
 
 def test_global_rename_skips_shadowing_local(sample):
     p, r = sample
-    line, col = pos(p, "a", 0, 7 - 0)[0], 7
+    line, _col = pos(p, "a", 0, 7 - 0)[0], 7
     res = R.rename([r], p, 0, 7, "Alpha")
     assert res.ok and res.refusal is None
     assert spots(res, p) == [(0, 7, 8), (8, 4, 5), (9, 8, 9)]       # not the Dim a / `a = p + K`

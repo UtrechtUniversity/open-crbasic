@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r36/fuzz-425/cr6/message_diff/413bcc38eb1a.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/Freezer_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "change_declared_type",
+    "swap_arguments"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "413bcc38eb1a.CR6 -- Compile Failed!\n\nline 2: Case with no Select.",
+  "theirs": "413bcc38eb1a.CR6 -- Compile Failed!\n\nline 2: Warning: Parameter will truncate to the nearest integer.\nline 2: Warning: Parameter will truncate to the nearest integer.\nline 2: Warning: Parameter will truncate to the nearest integer.\nline 2: Warning: Parameter will truncate to the nearest integer.\nline 2: Case with no Select."
+}

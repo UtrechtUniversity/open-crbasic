@@ -2,17 +2,16 @@
 evidence: `docs/checker.md`.
 """
 
-import re
-from typing import cast
-
 import json
+import re
 from functools import lru_cache
 from pathlib import Path
+from typing import cast
 
 from .. import consteval
-from ..profiles import DottedName
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
+from ..profiles import DottedName
 from . import instr_data, symbols
 
 _TYPE_CODES_PATH = Path(__file__).resolve().parent.parent / "data" / "type_codes.json"

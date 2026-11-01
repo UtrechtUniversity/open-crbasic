@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r35/fuzz-421/cr6/message_diff/04754b91e0a1.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SbdPayload_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "replace_argument",
+    "insert_whitespace"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "04754b91e0a1.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Sub TestByt  eFidelity.",
+  "theirs": "04754b91e0a1.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs.\nline 7: Invalid, or out of place expression: \tSbdCursor = 1.\nline 11: Invalid, or out of place expression: \tSbdPayloadLen = SbdCursor - 1.\nSbdPutRaw is not declared as a Subroutine."
+}

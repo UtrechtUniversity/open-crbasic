@@ -1,7 +1,6 @@
 """LSP-05b-core: protocol-independent navigation (`opencrbasic.navigation`). Policies:
 docs/lsp-api.md "Navigation (LSP-05b-core)"."""
 
-from .assertions import required
 import shutil
 from pathlib import Path
 
@@ -11,8 +10,10 @@ from opencrbasic import navigation as N
 from opencrbasic import positions
 from opencrbasic.analysis import AnalysisRequest, analyze
 
+from .assertions import required
+
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT.parent / "crbasic").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
 
 
 def write(tmp_path: Path, name: str, text: str, newline: str = "\n") -> Path:

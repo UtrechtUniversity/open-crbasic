@@ -1,0 +1,779 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-member-unknown-rhs",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX"
+  },
+  {
+   "id": "cr1000x-member-unknown-rhs",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX"
+  },
+  {
+   "id": "cr300-member-unknown-rhs",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1)."
+  },
+  {
+   "id": "cr350-member-unknown-rhs",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1)."
+  },
+  {
+   "id": "cr6-member-unknown-lhs",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX"
+  },
+  {
+   "id": "cr1000x-member-unknown-lhs",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX"
+  },
+  {
+   "id": "cr300-member-unknown-lhs",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1).\nline 9: Invalid assignment in expression:     inp.flagX = 1\n."
+  },
+  {
+   "id": "cr350-member-unknown-lhs",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1).\nline 9: Invalid assignment in expression:     inp.flagX = 1\n."
+  },
+  {
+   "id": "cr6-member-unknown-both-sides",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = inp.flagY\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX\nline 9: In structure inp, could not find .flagY"
+  },
+  {
+   "id": "cr1000x-member-unknown-both-sides",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = inp.flagY\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX\nline 9: In structure inp, could not find .flagY"
+  },
+  {
+   "id": "cr300-member-unknown-both-sides",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = inp.flagY\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1).\nline 9: Invalid assignment in expression:     inp.flagX = inp.flagY\n."
+  },
+  {
+   "id": "cr350-member-unknown-both-sides",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = inp.flagY\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1).\nline 9: Invalid assignment in expression:     inp.flagX = inp.flagY\n."
+  },
+  {
+   "id": "cr6-member-unknown-two-in-rhs",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX + inp.flagY\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX\nline 9: In structure inp, could not find .flagY"
+  },
+  {
+   "id": "cr1000x-member-unknown-two-in-rhs",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX + inp.flagY\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX\nline 9: In structure inp, could not find .flagY"
+  },
+  {
+   "id": "cr300-member-unknown-two-in-rhs",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX + inp.flagY\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1).\nline 9: Could not find inp.flagY(1)."
+  },
+  {
+   "id": "cr350-member-unknown-two-in-rhs",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX + inp.flagY\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1).\nline 9: Could not find inp.flagY(1)."
+  },
+  {
+   "id": "cr6-member-unknown-array-element",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa(1).flagX = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure sa, could not find .flagX"
+  },
+  {
+   "id": "cr1000x-member-unknown-array-element",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa(1).flagX = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure sa, could not find .flagX"
+  },
+  {
+   "id": "cr300-member-unknown-array-element",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa(1).flagX = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find sa.flagX(1).\nline 9: Invalid assignment in expression:     sa(1).flagX = 1\n."
+  },
+  {
+   "id": "cr350-member-unknown-array-element",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa(1).flagX = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find sa.flagX(1).\nline 9: Invalid assignment in expression:     sa(1).flagX = 1\n."
+  },
+  {
+   "id": "cr6-member-unknown-index-argument",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX(2)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX"
+  },
+  {
+   "id": "cr1000x-member-unknown-index-argument",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX(2)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX"
+  },
+  {
+   "id": "cr300-member-unknown-index-argument",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX(2)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(2)."
+  },
+  {
+   "id": "cr350-member-unknown-index-argument",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX(2)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(2)."
+  },
+  {
+   "id": "cr6-member-below-scalar-member",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.value.x = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .value.x"
+  },
+  {
+   "id": "cr1000x-member-below-scalar-member",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.value.x = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .value.x"
+  },
+  {
+   "id": "cr300-member-below-scalar-member",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.value.x = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.value.x(1).\nline 9: Invalid assignment in expression:     inp.value.x = 1\n."
+  },
+  {
+   "id": "cr350-member-below-scalar-member",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.value.x = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.value.x(1).\nline 9: Invalid assignment in expression:     inp.value.x = 1\n."
+  },
+  {
+   "id": "cr6-member-unknown-several-statements",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = 1\n    inp.flagY = 2\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX\nline 10: In structure inp, could not find .flagY"
+  },
+  {
+   "id": "cr1000x-member-unknown-several-statements",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = 1\n    inp.flagY = 2\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX\nline 10: In structure inp, could not find .flagY"
+  },
+  {
+   "id": "cr300-member-unknown-several-statements",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = 1\n    inp.flagY = 2\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1).\nline 9: Invalid assignment in expression:     inp.flagX = 1\n.\nline 10: Could not find inp.flagY(1).\nline 10: Invalid assignment in expression:     inp.flagY = 2\n."
+  },
+  {
+   "id": "cr350-member-unknown-several-statements",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = 1\n    inp.flagY = 2\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1).\nline 9: Invalid assignment in expression:     inp.flagX = 1\n.\nline 10: Could not find inp.flagY(1).\nline 10: Invalid assignment in expression:     inp.flagY = 2\n."
+  },
+  {
+   "id": "cr6-member-unknown-with-system-table",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = Public.Record MOD 2\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX"
+  },
+  {
+   "id": "cr1000x-member-unknown-with-system-table",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = Public.Record MOD 2\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: In structure inp, could not find .flagX"
+  },
+  {
+   "id": "cr300-member-unknown-with-system-table",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = Public.Record MOD 2\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1).\nline 9: Invalid assignment in expression:     inp.flagX = Public.Record MOD 2\n."
+  },
+  {
+   "id": "cr350-member-unknown-with-system-table",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.flagX = Public.Record MOD 2\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1).\nline 9: Invalid assignment in expression:     inp.flagX = Public.Record MOD 2\n."
+  },
+  {
+   "id": "cr300-member-unknown-keeps-fnotch-warning",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1)."
+  },
+  {
+   "id": "cr350-member-unknown-keeps-fnotch-warning",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp.flagX\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Could not find inp.flagX(1)."
+  },
+  {
+   "id": "cr6-member-known-accepted",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.value = 1\n    G = sa(2).value + inp.flag\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr350-member-known-accepted",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.value = 1\n    G = sa(2).value + inp.flag\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-member-unknown-case-insensitive-accepted",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.Value = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr350-member-unknown-case-insensitive-accepted",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp.Value = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-member-unknown-with-undefined-name",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = Nope + inp.flagX\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression:     G = Nope + inp.flagX."
+  },
+  {
+   "id": "cr350-member-unknown-with-undefined-name",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = Nope + inp.flagX\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Nope is not defined."
+  },
+  {
+   "id": "cr6-assign-struct-from-number",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = 5\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-struct-from-number",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = 5\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-struct-from-number",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = 5\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type"
+  },
+  {
+   "id": "cr350-assign-struct-from-number",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = 5\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type"
+  },
+  {
+   "id": "cr6-assign-struct-from-float",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = G\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-struct-from-float",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = G\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-struct-from-float",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = G\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type"
+  },
+  {
+   "id": "cr350-assign-struct-from-float",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = G\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type"
+  },
+  {
+   "id": "cr6-assign-struct-element-from-float-array",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa(1) = H(1)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-struct-element-from-float-array",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa(1) = H(1)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-struct-element-from-float-array",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa(1) = H(1)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type"
+  },
+  {
+   "id": "cr350-assign-struct-element-from-float-array",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa(1) = H(1)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type"
+  },
+  {
+   "id": "cr6-assign-struct-from-expression",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = G+1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-struct-from-expression",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = G+1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-struct-from-expression",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = G+1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type"
+  },
+  {
+   "id": "cr350-assign-struct-from-expression",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = G+1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type"
+  },
+  {
+   "id": "cr6-assign-struct-from-negated-struct",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = -inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-struct-from-negated-struct",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = -inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-struct-from-negated-struct",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = -inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type"
+  },
+  {
+   "id": "cr350-assign-struct-from-negated-struct",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = -inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type"
+  },
+  {
+   "id": "cr6-assign-float-from-struct",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-float-from-struct",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-float-from-struct",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Illegal structure type assignment"
+  },
+  {
+   "id": "cr350-assign-float-from-struct",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Illegal structure type assignment"
+  },
+  {
+   "id": "cr6-assign-float-array-element-from-struct",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    H(1) = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-float-array-element-from-struct",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    H(1) = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-float-array-element-from-struct",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    H(1) = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Illegal structure type assignment"
+  },
+  {
+   "id": "cr350-assign-float-array-element-from-struct",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    H(1) = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Illegal structure type assignment"
+  },
+  {
+   "id": "cr6-assign-float-from-struct-array-element",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = sa(1)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-float-from-struct-array-element",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = sa(1)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-float-from-struct-array-element",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = sa(1)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Illegal structure type assignment"
+  },
+  {
+   "id": "cr350-assign-float-from-struct-array-element",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = sa(1)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Illegal structure type assignment"
+  },
+  {
+   "id": "cr300-assign-float-from-struct-array",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = sa\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Illegal structure type assignment"
+  },
+  {
+   "id": "cr350-assign-float-from-struct-array",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = sa\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Illegal structure type assignment"
+  },
+  {
+   "id": "cr300-assign-float-from-parenthesised-struct",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = (inp)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Illegal structure type assignment"
+  },
+  {
+   "id": "cr350-assign-float-from-parenthesised-struct",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = (inp)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Illegal structure type assignment"
+  },
+  {
+   "id": "cr6-assign-struct-array-all-from-struct",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa() = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-struct-array-all-from-struct",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa() = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-struct-array-all-from-struct",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa() = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type\nline 9: Invalid, or out of place expression:     sa() = inp\n."
+  },
+  {
+   "id": "cr350-assign-struct-array-all-from-struct",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa() = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type\nline 9: Invalid, or out of place expression:     sa() = inp\n."
+  },
+  {
+   "id": "cr300-assign-struct-array-all-from-number",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa() = 5\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type\nline 9: Invalid, or out of place expression:     sa() = 5\n."
+  },
+  {
+   "id": "cr350-assign-struct-array-all-from-number",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa() = 5\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type\nline 9: Invalid, or out of place expression:     sa() = 5\n."
+  },
+  {
+   "id": "cr6-assign-struct-array-all-from-member",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa() = inp.value\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-struct-array-all-from-member",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa() = inp.value\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-struct-array-all-from-member",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa() = inp.value\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type\nline 9: Invalid, or out of place expression:     sa() = inp.value\n."
+  },
+  {
+   "id": "cr350-assign-struct-array-all-from-member",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa() = inp.value\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type\nline 9: Invalid, or out of place expression:     sa() = inp.value\n."
+  },
+  {
+   "id": "cr300-assign-struct-array-all-to-struct-array-all",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa() = sa()\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type\nline 9: Invalid, or out of place expression:     sa() = sa()\n."
+  },
+  {
+   "id": "cr350-assign-struct-array-all-to-struct-array-all",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa() = sa()\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type\nline 9: Invalid, or out of place expression:     sa() = sa()\n."
+  },
+  {
+   "id": "cr6-assign-struct-from-struct-array-all",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = sa()\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-struct-from-struct-array-all",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = sa()\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-struct-from-struct-array-all",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = sa()\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Invalid, or out of place expression:     inp = sa()\n."
+  },
+  {
+   "id": "cr350-assign-struct-from-struct-array-all",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = sa()\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Invalid, or out of place expression:     inp = sa()\n."
+  },
+  {
+   "id": "cr300-assign-float-from-struct-array-all",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = sa()\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Illegal structure type assignment\nline 9: Invalid, or out of place expression:     G = sa()\n."
+  },
+  {
+   "id": "cr350-assign-float-from-struct-array-all",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = sa()\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Illegal structure type assignment\nline 9: Invalid, or out of place expression:     G = sa()\n."
+  },
+  {
+   "id": "cr6-assign-struct-pair-accepted",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa(1) = inp\n    inp = sa(2)\n    inp = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-struct-pair-accepted",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa(1) = inp\n    inp = sa(2)\n    inp = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-struct-pair-accepted",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa(1) = inp\n    inp = sa(2)\n    inp = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-assign-struct-pair-accepted",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    sa(1) = inp\n    inp = sa(2)\n    inp = inp\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-assign-scalar-member-to-struct-accepted",
+   "logger": "cr6",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = inp.value\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign-scalar-member-to-struct-accepted",
+   "logger": "cr1000x",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = inp.value\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign-scalar-member-to-struct-accepted",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = inp.value\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-assign-scalar-member-to-struct-accepted",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = inp.value\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-assign-struct-no-cascade-after",
+   "logger": "cr300",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = 5\n    PanelTemp (PT,15000)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type\nline 10: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-assign-struct-no-cascade-after",
+   "logger": "cr350",
+   "source": "StructureType ST\n  value As Float\n  flag As Boolean\nEndStructureType\nPublic sa(10) As ST, inp As ST, G, H(3), PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    inp = 5\n    PanelTemp (PT,15000)\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Structured Variable assignment illegal, wrong type\nline 10: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  }
+ ]
+}

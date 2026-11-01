@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r38/fuzz-429/cr6/message_diff/ffb7ded73a83.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/Main.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "delete_line",
+    "insert_foreign_statement"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "ffb7ded73a83.CR6 -- Compile Failed!\n\nline 3: #EndIf without #If.\nline 9: Invalid symbol in expression: ProfileSem.\nline 11: Invalid symbol in expression: ProfileSem.",
+  "theirs": "ffb7ded73a83.CR6 -- Compile Failed!\n\nline 3: Unknown instruction: #EndIf\n."
+}

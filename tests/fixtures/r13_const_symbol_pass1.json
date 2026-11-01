@@ -1,0 +1,155 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r13_const_symbol_pass1-32",
+   "logger": "cr6",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  PanelTemp (x, Zork)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork."
+  },
+  {
+   "id": "cr1000x-r13_const_symbol_pass1-33",
+   "logger": "cr1000x",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  PanelTemp (x, Zork)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork."
+  },
+  {
+   "id": "cr6-r13_const_symbol_pass1-34",
+   "logger": "cr6",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  PanelTemp (x, Zork Y)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Y."
+  },
+  {
+   "id": "cr1000x-r13_const_symbol_pass1-35",
+   "logger": "cr1000x",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  PanelTemp (x, Zork Y)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork Y."
+  },
+  {
+   "id": "cr6-r13_const_symbol_pass1-36",
+   "logger": "cr6",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  PanelTemp (x, Zork+1)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork+1."
+  },
+  {
+   "id": "cr1000x-r13_const_symbol_pass1-37",
+   "logger": "cr1000x",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  PanelTemp (x, Zork+1)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Zork+1."
+  },
+  {
+   "id": "cr6-r13_const_symbol_pass1-38",
+   "logger": "cr6",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  PanelTemp (Zork, 15000)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Foo Bar.\nline 5: Invalid symbol in expression: Zork.\nline 6: Invalid, or out of place expression:   Foo Bar."
+  },
+  {
+   "id": "cr1000x-r13_const_symbol_pass1-39",
+   "logger": "cr1000x",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  PanelTemp (Zork, 15000)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Foo Bar.\nline 5: Invalid symbol in expression: Zork.\nline 6: Invalid, or out of place expression:   Foo Bar."
+  },
+  {
+   "id": "cr6-r13_const_symbol_pass1-40",
+   "logger": "cr6",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  PanelTemp (Zork Y, 15000)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Foo Bar.\nline 5: Invalid symbol in expression: Zork Y.\nline 6: Invalid, or out of place expression:   Foo Bar."
+  },
+  {
+   "id": "cr1000x-r13_const_symbol_pass1-41",
+   "logger": "cr1000x",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  PanelTemp (Zork Y, 15000)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Foo Bar.\nline 5: Invalid symbol in expression: Zork Y.\nline 6: Invalid, or out of place expression:   Foo Bar."
+  },
+  {
+   "id": "cr6-r13_const_symbol_pass1-42",
+   "logger": "cr6",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  Battery (Zork Y)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Foo Bar.\nline 5: Invalid symbol in expression: Zork Y.\nline 6: Invalid, or out of place expression:   Foo Bar."
+  },
+  {
+   "id": "cr1000x-r13_const_symbol_pass1-43",
+   "logger": "cr1000x",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  Battery (Zork Y)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Foo Bar.\nline 5: Invalid symbol in expression: Zork Y.\nline 6: Invalid, or out of place expression:   Foo Bar."
+  },
+  {
+   "id": "cr6-r13_const_symbol_pass1-44",
+   "logger": "cr6",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  Battery (Zork Y)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Foo Bar.\nline 5: Invalid symbol in expression: Zork Y.\nline 6: Invalid, or out of place expression:   Foo Bar."
+  },
+  {
+   "id": "cr1000x-r13_const_symbol_pass1-45",
+   "logger": "cr1000x",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Foo Bar\n  Battery (Zork Y)\n  Foo Bar\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Foo Bar.\nline 5: Invalid symbol in expression: Zork Y.\nline 6: Invalid, or out of place expression:   Foo Bar."
+  },
+  {
+   "id": "cr6-r13_const_symbol_pass1-46",
+   "logger": "cr6",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Scan (1,S  ec,3,1)\n  Foo Bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: S  ec."
+  },
+  {
+   "id": "cr1000x-r13_const_symbol_pass1-47",
+   "logger": "cr1000x",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Scan (1,S  ec,3,1)\n  Foo Bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: S  ec."
+  },
+  {
+   "id": "cr6-r13_const_symbol_pass1-48",
+   "logger": "cr6",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Scan (1,S  ec,3,1)\n  x = Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: S  ec."
+  },
+  {
+   "id": "cr1000x-r13_const_symbol_pass1-49",
+   "logger": "cr1000x",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Scan (1,S  ec,3,1)\n  x = Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: S  ec."
+  },
+  {
+   "id": "cr6-r13_const_symbol_pass1-50",
+   "logger": "cr6",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Scan (1,S  ec,3,1)\n  x = 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: S  ec.\nline 5: Invalid, or out of place expression:   x = 1 +."
+  },
+  {
+   "id": "cr1000x-r13_const_symbol_pass1-51",
+   "logger": "cr1000x",
+   "source": "Public x, y\nDim z(3)\nBeginProg\n  Scan (1,S  ec,3,1)\n  x = 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: S  ec.\nline 5: Invalid, or out of place expression:   x = 1 +."
+  }
+ ]
+}

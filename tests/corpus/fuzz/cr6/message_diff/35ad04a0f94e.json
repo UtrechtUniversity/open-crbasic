@@ -1,0 +1,16 @@
+{
+  "file": "tests/corpus/fuzz/cr6/message_diff/35ad04a0f94e.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SnowVue_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "drop_argument",
+    "change_declared_type"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "35ad04a0f94e.CR6 -- Compile Failed!\n\nline 51: Call illegally occurs before BeginProg.",
+  "theirs": "35ad04a0f94e.CR6 -- Compile Failed!\n\nline 51: Expr illegally occurs before BeginProg.",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

@@ -9,20 +9,18 @@ help (LSP-04b-core)".
 import dataclasses
 import json
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-from collections.abc import Mapping
 
-from . import positions, profiles
+from . import positions
 from . import syntax as S
 from .bindings import closes_routine
 from .catalog import CatalogEntry, InstructionCatalog
-from .checker.expressions import (_ARITY_ALLOWED, _ARITY_MAX_SAFE, _ARITY_MIN_SAFE,
-                                  _ARITY_RANGE)
+from .checker.expressions import _ARITY_ALLOWED, _ARITY_MAX_SAFE, _ARITY_MIN_SAFE, _ARITY_RANGE
 from .editing import _declared_name_arg
-from .helpdocs import HelpLookup, InstructionHelp, pair_signature
-from .helpdocs import _md
+from .helpdocs import HelpLookup, InstructionHelp, _md, pair_signature
 from .source import _is_continuation, _strip_comment
 
 __all__ = [
@@ -583,7 +581,6 @@ def hover(result, text: str, line: int, column: int, profile,
     entry = cat.get(name)
     if entry is None:
         return None
-    others = tuple(e for e in cat.entries(name) if e is not entry)
     callable_entry = _callable_entry(cat, name)
     if callable_entry is not None:
         help = help_provider.lookup(callable_entry.name) if help_provider is not None else None

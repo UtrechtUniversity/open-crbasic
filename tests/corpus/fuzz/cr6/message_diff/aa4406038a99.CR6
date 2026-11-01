@@ -1,0 +1,26 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/InStrHeaderFilterTest.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/InStrHeaderFilterTest.CR6 ops=insert_whitespace+change_declared_type class=message_diff
+Public Test3_Mode2_Context As String * 16
+Public Test3_Mode4_Context As String * 16
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+BeginProg
+  Scan (10, Sec, 0, 0)
+    If BenchWatchdogOff Then
+      wdog_timer = WatchdogTimer(0,Sec)
+    LogDebug("=== InStr SearchOption test (mode2=SEARCHSTRING, mode4=HEADERFILTER) ===")
+    LogDebug("Test1 [" + Test1_Str + "]")
+    LogDebug("  mode2 Pos=" + FormatLong(Test1_Mode2_Pos,"%u") + " ctx=[" + Test1_Mode2_Context + "]")
+    LogDebug("  mode4 Pos=" + FormatLong(Test1_Mode4_Pos,"%u") + " ctx=[" + Test1_Mode4_Context + "]")
+    LogDebug("Test2 [" + Test2_Str + "]")
+    LogDebug("  mode2 Pos=" + FormatLong(Test2_Mod  e2_Pos,"%u") + " ctx=[" + Test2_Mode2_Context + "]")
+    LogDebug("  mode4 Pos=" + FormatLong(Test2_Mode4_Pos,"%u") + " ctx=[" + Test2_Mode4_Context + "]")
+    LogDebug("Test3 [" + Test3_Str + "]")
+    LogDebug("  mode2 Pos=" + FormatLong(Test3_Mode2_Pos,"%u") + " ctx=[" + Test3_Mode2_Context + "]")
+    LogDebug("  mode4 Pos=" + FormatLong(Test3_Mode4_Pos,"%u") + " ctx=[" + Test3_Mode4_Context + "]")
+    LogDebug("=========================================================================")
+  NextScan
+EndProg

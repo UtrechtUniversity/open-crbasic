@@ -8,8 +8,9 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
-GRAMMAR = ROOT / "vscode" / "syntaxes" / "crbasic.tmLanguage.json"
+GRAMMAR = ROOT.parent / "open-crbasic-vsix" / "syntaxes" / "crbasic.tmLanguage.json"
 GEN = ROOT / "tools" / "gen_grammar.py"
+pytestmark = pytest.mark.skipif(not GRAMMAR.is_file(), reason="needs an open-crbasic-vsix checkout next to this one")
 
 
 def _load() -> dict:

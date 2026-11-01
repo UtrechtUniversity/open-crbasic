@@ -7,13 +7,15 @@ pipeline (`checker/__init__.py`); the tests below call the ordinary `checker.che
 hook's own effect.
 """
 
+from pathlib import Path
+
 import pytest
 
 from opencrbasic import checker, parser, profiles
 from opencrbasic import syntax as S
-from opencrbasic.diagnostics import Diagnostics
 from opencrbasic.checker import cr3xx
 from opencrbasic.compiler import CompileResult
+from opencrbasic.diagnostics import Diagnostics
 
 PROFILE = profiles.get("cr300")
 
@@ -380,6 +382,7 @@ def test_undefined_call_argument_scan_matches_oracle(profile_name, args, names):
     assert got == ["Foo is not defined."] + [f"{n} is not defined." for n in names.split()]
 
 
+@pytest.mark.skipif(not (Path(__file__).parent / "corpus" / "chm" / "cdmvoltse_1.CR6").is_file(), reason="CRBasic help examples not extracted; see tests/corpus/README.md")
 def test_cdmvoltse_corpus_declaration_cascade_order():
     from pathlib import Path
     path = Path(__file__).parent / "corpus" / "chm" / "cdmvoltse_1.CR6"

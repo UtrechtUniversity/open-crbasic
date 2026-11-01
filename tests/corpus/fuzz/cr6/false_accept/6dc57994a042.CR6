@@ -1,0 +1,251 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/Shunt_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/Shunt_tester.CR6 ops=add_argument class=false_accept
+Const CRLF = CHR(13) + CHR(10)
+Const CR = CHR(13)
+Const LF = CHR(10)
+
+Public PTemp, Batt_volt
+
+Public WDogTimer As Long
+Public BenchWatchdogOff As Boolean = True
+
+
+DataTable (StationStatus,1,-1)
+	DataInterval (0,5,Min,10)
+	Minimum (1,Batt_volt,FP2,False,False)
+	Sample (1,PTemp,FP2)
+EndTable
+
+ConstTable(GlobalConfigTable)
+	IncludeSection("ConstTable", "CPU:ShuntLib.crb")
+
+	Const ShuntTesterRailMask = &B10
+EndConstTable
+
+IncludeSection("Definitions", "CPU:ShuntLib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:ShuntLib.crb")
+
+Const ReportTimer = 1
+Const TimerResetAndStart = 2
+Const TimerReadOnly = 4
+
+Public LastElapsedMs As Long
+Public LastOk As Boolean
+Public RepeatRead As Boolean = False
+
+Public DoRead As Boolean = False
+Public DoLoadStep As Boolean = False
+Public DoCommonMode As Boolean = False
+Public DoShowConfig As Boolean = False
+
+Public ProbeSeU1
+Public ProbeSeU2
+
+Dim MenuKey As String * 2
+Dim MenuPending As Boolean
+
+Sub LogShuntStats
+	LogDebug("ok=" + IIF(LastOk, "yes", "no ") _
+		+ " shunt=" + FormatFloat(Shunt_mV, "%.4f") + " mV" _
+		+ " current=" + FormatFloat(Shunt_Current_A, "%.4f") + " A" _
+		+ " batt=" + FormatFloat(Batt_volt, "%.3f") _
+		+ " ms=" + FormatLong(LastElapsedMs, "%d"))
+EndSub
+
+Sub ReadLabelled(Label As String * 40)
+	LastOk = SampleShunt()
+	LogDebug("  " + Label _
+		+ "  shunt=" + FormatFloat(Shunt_mV, "%.4f") + " mV" _
+		+ "  current=" + FormatFloat(Shunt_Current_A, "%.4f") + " A" _
+		+ "  batt=" + FormatFloat(Batt_volt, "%.3f") + " V")
+EndSub
+
+Sub RunRead
+	Timer(ReportTimer, mSec, TimerResetAndStart)
+	LastOk = SampleShunt()
+	LastElapsedMs = Timer(ReportTimer, mSec, TimerReadOnly)
+	LogDebug("")
+	LogDebug("========================================================================")
+	LogDebug("ShuntLib read | " + FormatFloat(ShuntResistanceOhms, "%.3f") + " ohm shunt, divider k=" _
+		+ FormatFloat(ShuntDividerK, "%.4f"))
+	LogDebug("------------------------------------------------------------------------")
+	LogDebug(" differential (mV)  " + FormatFloat(Shunt_mV, "%.5f"))
+	LogDebug(" current (A)        " + FormatFloat(Shunt_Current_A, "%.5f"))
+	LogDebug(" battery (V)        " + FormatFloat(Batt_volt, "%.4f"))
+	LogDebug(" panel temp (C)     " + FormatFloat(PTemp, "%.3f"))
+	LogDebug("------------------------------------------------------------------------")
+	Call LogShuntStats
+	LogDebug("========================= END OF REPORT =========================")
+EndSub
+
+Sub RunLoadStep
+	LogDebug("","fuzz")
+	LogDebug("================== LOAD STEP ===================")
+	LogDebug("switches SW12-1, SW12-2 and the C2 sensor rail and reads the shunt")
+	LogDebug("a known resistive load on SW12-1 turns this into a calibration point")
+
+	SW12(SW12_1, 0)
+	SW12(SW12_2, 0)
+	WriteIO(ShuntTesterRailMask, 0)
+	Delay(1, 5, Sec)
+	Call ReadLabelled("all off        ")
+
+	SW12(SW12_1, 1)
+	Delay(1, 5, Sec)
+	Call ReadLabelled("SW12-1 on      ")
+
+	SW12(SW12_1, 0)
+	SW12(SW12_2, 1)
+	Delay(1, 5, Sec)
+	Call ReadLabelled("SW12-2 on      ")
+
+	SW12(SW12_2, 0)
+	WriteIO(ShuntTesterRailMask, ShuntTesterRailMask)
+	Delay(1, 5, Sec)
+	Call ReadLabelled("C2 rail on     ")
+
+	SW12(SW12_1, 1)
+	SW12(SW12_2, 1)
+	Delay(1, 5, Sec)
+	Call ReadLabelled("all on         ")
+
+	SW12(SW12_1, 0)
+	SW12(SW12_2, 0)
+	WriteIO(ShuntTesterRailMask, 0)
+	Delay(1, 5, Sec)
+	Call ReadLabelled("all off again  ")
+
+	LogDebug("================================================")
+EndSub
+
+Sub RunCommonMode
+	VoltSe(ProbeSeU1, 1, mV5000, U1, True, ShuntSettleUs, ShuntInteg, 1.0, 0)
+	VoltSe(ProbeSeU2, 1, mV5000, U2, True, ShuntSettleUs, ShuntInteg, 1.0, 0)
+	LastOk = SampleShunt()
+
+	LogDebug("")
+	LogDebug("=============== COMMON MODE ====================")
+	LogDebug(" single ended U1 (mV)  " + FormatFloat(ProbeSeU1, "%.3f"))
+	LogDebug(" single ended U2 (mV)  " + FormatFloat(ProbeSeU2, "%.3f"))
+	LogDebug(" differential (mV)     " + FormatFloat(Shunt_mV, "%.5f"))
+	LogDebug(" battery (V)           " + FormatFloat(Batt_volt, "%.4f"))
+	LogDebug("------------------------------------------------")
+	LogDebug(" both single ended readings must stay inside the CR6 input range")
+	LogDebug(" k from common mode = seU1 / 1000 / battery")
+	LogDebug(" implied k             " + FormatFloat(ProbeSeU1 / 1000 / Batt_volt, "%.5f"))
+	LogDebug(" configured k          " + FormatFloat(ShuntDividerK, "%.5f"))
+	LogDebug("================================================")
+EndSub
+
+Sub ShowConfig
+	LogDebug("")
+	LogDebug("=============== CONFIG =================")
+	LogDebug(" sense pair         diff chan code " + FormatLong(ShuntDiffChan, "%d"))
+	LogDebug(" shunt resistance   " + FormatFloat(ShuntResistanceOhms, "%.4f") + " ohms")
+	LogDebug(" divider k          " + FormatFloat(ShuntDividerK, "%.5f") + " provisional")
+	LogDebug(" mV to A            " + FormatFloat(ShuntMvToA, "%.6f"))
+	LogDebug(" plausibility limit " + FormatLong(ShuntMaxMv, "%d") + " mV")
+	LogDebug("----------------------------------------")
+	LogDebug(" current is an estimate, not a calibrated value")
+	LogDebug(" the stored differential mV rescales retrospectively")
+	LogDebug("========================================")
+EndSub
+
+Sub ShowMenu
+	LogDebug("")
+	LogDebug("================= MENU =================")
+	LogDebug(" 1  read once")
+	LogDebug(" 2  load step               switches both SW12 rails and C2   *35 s*")
+	LogDebug(" 3  common mode             single ended U1 and U2, implied k")
+	LogDebug(" 4  repeat read on/off      currently " + IIF(RepeatRead, "on", "off"))
+	LogDebug(" 5  show configuration")
+	LogDebug("========================================")
+	LogDebug("send a key (ENTER redisplays this menu)")
+EndSub
+
+Sub PollMenu
+
+	MenuKey = ReadMenuKey()
+	If MenuKey = "" Then ExitSub
+
+	Select Case MenuKey
+		Case "1"
+			DoRead = True
+		Case "2"
+			DoLoadStep = True
+		Case "3"
+			DoCommonMode = True
+		Case "4"
+			RepeatRead = NOT RepeatRead
+		Case "5"
+			DoShowConfig = True
+		Case Else
+			Call ShowMenu
+			ExitSub
+	EndSelect
+
+	LogDebug("")
+	LogDebug(">>> option " + MenuKey + " selected")
+	MenuPending = True
+EndSub
+
+BeginProg
+	LogDebug("ShuntLib tester starting")
+	SerialFlush(ComUSB)
+	Call ShowConfig
+	Call ShowMenu
+
+	Scan (1, Sec, 0, 0)
+		If BenchWatchdogOff Then
+			WDogTimer = WatchdogTimer(0,Sec)
+		Else
+			WDogTimer = WatchdogTimer(10,Min)
+		EndIf
+
+		PanelTemp (PTemp, 15000)
+		Battery (Batt_volt)
+
+		Call PollMenu
+
+		If DoRead Then
+			DoRead = False
+			Call RunRead
+		EndIf
+
+		If DoLoadStep Then
+			DoLoadStep = False
+			Call RunLoadStep
+		EndIf
+
+		If DoCommonMode Then
+			DoCommonMode = False
+			Call RunCommonMode
+		EndIf
+
+		If DoShowConfig Then
+			DoShowConfig = False
+			Call ShowConfig
+		EndIf
+
+		If RepeatRead Then
+			Timer(ReportTimer, mSec, TimerResetAndStart)
+			LastOk = SampleShunt()
+			LastElapsedMs = Timer(ReportTimer, mSec, TimerReadOnly)
+			Call LogShuntStats
+		EndIf
+
+		If MenuPending Then
+			MenuPending = False
+			SerialFlush(ComUSB)
+			Call ShowMenu
+		EndIf
+
+		CallTable Shunt_Data
+		CallTable StationStatus
+	NextScan
+EndProg

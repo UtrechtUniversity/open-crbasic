@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/message_diff/5da8aec30003.CR6",
+  "logger": "cr1000x",
+  "class": "message_diff",
+  "seed": "repo/PortSleep_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "replace_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "5da8aec30003.CR6 -- Compile Failed!\n\nline 39: Scan 0uSec invalid must be at least 1mSec.",
+  "theirs": "5da8aec30003.CR6 -- Compile Failed!\n\nline 39: Scan 0uSec invalid must be at least 1mSec.\nline 68: Cannot autoallocate memory for DataTable PortSleep_Scans called outside of Scan, e.g., called by Sub."
+}

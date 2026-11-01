@@ -27,7 +27,7 @@ from pathlib import Path
 import pefile
 
 ROOT = Path(__file__).resolve().parent.parent
-COMPILERS = ROOT.parent / "compiler"
+COMPILERS = ROOT / "compiler"
 CACHE = ROOT / "scratch" / "re"
 WINE = Path.home() / ".local/wine/Wine Devel.app/Contents/Resources/wine/bin/wine"
 MAGIC = 0xDEADBEEF

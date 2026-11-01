@@ -1,0 +1,16 @@
+{
+  "file": "tests/corpus/fuzz/cr6/false_accept/69184ebf976a.CR6",
+  "logger": "cr6",
+  "class": "false_accept",
+  "seed": "repo/TDR_tester.CR6",
+  "needs_siblings": true,
+  "operators": [
+    "replace_argument",
+    "toggle_two_word"
+  ],
+  "our_exit": 0,
+  "their_exit": 1,
+  "ours": "69184ebf976a.CR6 -- Compiled in SequentialMode.",
+  "theirs": "69184ebf976a.CR6 -- Compile Failed!\n\nline 71: Parameter must be a constant integer: \t\t\tTimer(ReportTimer,\"fuzz\", TimerResetAndStart).",
+  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+}

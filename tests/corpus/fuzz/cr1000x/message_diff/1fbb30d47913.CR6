@@ -1,0 +1,26 @@
+' fuzz-needs-siblings: crbasic -- from crbasic/FinApp_tester.CR6, needs its sibling .crb library files alongside this file to compile
+' fuzz: seed=repo/FinApp_tester.CR6 ops=swap_adjacent class=message_diff
+
+IncludeSection("Definitions", "CPU:FinAppLib.crb")
+
+
+IncludeSection("Definitions", "CPU:BenchLib.crb")
+IncludeSection("Functions", "CPU:BenchLib.crb")
+
+IncludeSection("Functions", "CPU:FinAppLib.crb")
+
+Public DoStart As Boolean = False
+Public DoStop As Boolean = False
+Public DoKill As Boolean = False
+Public DoProbe As Boolean = False
+Public DoMaster As Boolean = False
+Public DoDetectors As Boolean = False
+Public DoWater As Boolean = False
+Public DoSample As Boolean = False
+Public DoState As Boolean = False
+Public DoAddressScan As Boolean = False
+Public DoDetectorScan As Boolean = False
+Public DoRepeatCycles As Boolean = False
+Public DoLinkMonitor As Boolean = False
+	         + " boardtemp=" + FormatFloat(FinApp_BoardTemp_C,"%.3f") + "C")
+	For N = 1 To FinAppDetectorCount

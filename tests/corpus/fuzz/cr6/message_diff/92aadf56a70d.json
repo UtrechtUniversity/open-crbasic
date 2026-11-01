@@ -1,0 +1,15 @@
+{
+  "file": "scratch/r35/fuzz-422/cr6/message_diff/92aadf56a70d.CR6",
+  "logger": "cr6",
+  "class": "message_diff",
+  "seed": "repo/SerialProbe.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "replace_argument",
+    "rename_identifier"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "92aadf56a70d.CR6 -- Compile Failed!\n\nline 23: Invalid, or out of place expression: \tScopePattern = \"UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\".\nline 25: Invalid, or out of place expression: \tSW122(SW12_2, 1).\nline 26: Invalid symbol in expression: UndeclaredFuzzName123.\nline 26: Measurement delay must have constant interval.\nline 31: Invalid symbol in expression: BenchWatchdogOff .\nline 32: Invalid, or out of place expression: \t\t\tWDogTimer = WatchdogTimer(0,Sec).\nline 34: Invalid, or out of place expression: \t\t\tWDogTimer = WatchdogTimer(10,Min).",
+  "theirs": "92aadf56a70d.CR6 -- Compile Failed!\n\nline 23: Invalid, or out of place expression: \tScopePattern = \"UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\".\nline 25: Invalid, or out of place expression: \tSW122(SW12_2, 1).\nline 26: Invalid symbol in expression: UndeclaredFuzzName123.\nline 26: Delay interval cannot be of type String.\nline 31: Invalid symbol in expression: BenchWatchdogOff .\nline 32: Invalid, or out of place expression: \t\t\tWDogTimer = WatchdogTimer(0,Sec).\nline 34: Invalid, or out of place expression: \t\t\tWDogTimer = WatchdogTimer(10,Min)."
+}

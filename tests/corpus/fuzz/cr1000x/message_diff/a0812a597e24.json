@@ -1,0 +1,14 @@
+{
+  "file": "tests/corpus/fuzz/cr1000x/message_diff/a0812a597e24.CR6",
+  "logger": "cr1000x",
+  "class": "message_diff",
+  "seed": "repo/FinApp_tester.CR6",
+  "needs_siblings": false,
+  "operators": [
+    "add_argument"
+  ],
+  "our_exit": 1,
+  "their_exit": 1,
+  "ours": "a0812a597e24.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: \tLogDebug(\"power=\" + FormatLong(FinApp_Powered,\"%d\") \t         + \" responding=\" + FormatLong(FinApp_Responding,\"%d\") \t         + \" newdata=\" + FormatLong(FinApp_NewData,\"%d\") \t         + \" ok(m/d/w)=\" + FormatLong(FinApp_MasterOk,\"%d\") + \"/\" + FormatLong(FinApp_DetectorsOk,\"%d\") + \"/\" + FormatLong(FinApp_WaterOk,\"%d\") \t         + \" unsafestops=\" + FormatLong(FinApp_UnsafeStops,\"%d\",(1+2)) .",
+  "theirs": "a0812a597e24.CR6 -- Compile Failed!\n\nline 6: No BeginProg in Program."
+}

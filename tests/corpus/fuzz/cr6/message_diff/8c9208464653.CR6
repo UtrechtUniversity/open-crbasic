@@ -1,0 +1,16 @@
+' fuzz: seed=repo/PT1000_tester.CR6 ops=insert_whitespace+insert_comment class=message_diff
+
+Public LastElapsedMs As Long
+Public LastOk As Boolean
+Public RepeatRead As Boolean = False
+
+Public DoRead As Boolean = False
+Public Do  Scaling As Boolean = False
+Public DoPanelCompare As Boolean = False
+Public DoShowConfig As Boolean = False
+
+Public ProbeRaw
+Public ProbeOhmsX1
+Public ProbeOhmsX1000
+Public ProbeTempX1
+Public ProbeTempX1000

@@ -2,7 +2,7 @@ from pathlib import Path
 
 from opencrbasic.signature import csi_signature, program_signature
 
-CRBASIC = Path(__file__).resolve().parents[2] / "crbasic"
+CRBASIC = Path(__file__).resolve().parents[1] / "tests" / "corpus" / "firnmelt"
 
 
 def test_csi_signature_empty_is_seed():
