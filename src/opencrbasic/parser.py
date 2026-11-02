@@ -3174,6 +3174,7 @@ def parse_file(
     pull_limit: tuple[int, ...] | None = None,
     source: SourceProvider | None = None,
     provenance: bool = True,
+    macros: bool = False,
 ) -> tuple[S.Program, Diagnostics]:
     """`provenance=False` skips the pieces/line-map/origin data only the language server reads (the CLI
     path); everything the checker sees is unchanged. `profile` is normally left to the file's own extension (`profiles.for_file`, the historical
@@ -3191,6 +3192,7 @@ def parse_file(
         _CR3XX_INCLUDE_EXTS.get((profile or _profile_for(path.name)).name),
         source,
         provenance,
+        macros,
     )
     pull_log = diags.pull_log
     parser = _Parser(profile or _profile_for(path.name), diags, provenance)

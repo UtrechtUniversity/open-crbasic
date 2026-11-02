@@ -29,6 +29,7 @@ from pathlib import Path
 from typing import NamedTuple
 
 from .diagnostics import Diagnostics
+from .macros import MacroError, Macros
 from .sources import DiskSource, SourceProvider
 
 _INCLUDE_RE = re.compile(r'^\s*Include\s*\(?\s*"([^"]*)"\s*\)?\s*$', re.IGNORECASE)
@@ -302,7 +303,9 @@ class _Loader:
         cr3xx_exts: tuple[str, ...] | None = None,
         source: SourceProvider | None = None,
         provenance: bool = True,
+        macros: bool = False,
     ):
+        self.macros = Macros() if macros else None  # the entry file's macros (`macros.py`)
         self.provenance = provenance  # False: skip `LogicalLine.pieces` (only the language server reads them)
         self.source = source or DiskSource()
         self.includes: dict[str, Path] = {}  # include display name -> the path it resolved to
@@ -416,6 +419,22 @@ class _Loader:
             if text.strip() == "":
                 i += 1
                 continue
+            if self.macros is not None and occ == 0:
+                try:
+                    expanded = self.macros.feed(text, start_line)
+                except MacroError as e:
+                    self.diags.error(e.line, str(e), filename)
+                    expanded = None
+                if expanded != text:
+                    # an expansion is reported, and spans, where the macro is used; no `pieces`
+                    for part in (expanded or "").split("\n"):
+                        if part.strip():
+                            phys = (start_line, i + 1)
+                            out.append(
+                                LogicalLine(part, last_line - shift, filename, section, phys=phys, occurrence=occ)
+                            )
+                    i += 1
+                    continue
             pulls, bad = 0, None
             orig = text
             orig_pieces = pieces
@@ -570,13 +589,19 @@ def load_program(
     cr3xx_exts: tuple[str, ...] | None = None,
     source: SourceProvider | None = None,
     provenance: bool = True,
+    macros: bool = False,
 ) -> tuple[list[LogicalLine], Diagnostics]:
     """Load `path` and every file it `Include`s/`IncludeSection`s, as one logical-line stream."""
     path = Path(path)
     diags = Diagnostics()
-    loader = _Loader(path.parent, diags, own_ext, pull_init, cr3xx_exts, source, provenance)
+    loader = _Loader(path.parent, diags, own_ext, pull_init, cr3xx_exts, source, provenance, macros)
     loader.pull_limit = pull_limit
     lines = loader.load_file(path, section=None, in_include=False)
+    try:
+        if loader.macros is not None:
+            loader.macros.finish()
+    except MacroError as e:
+        diags.error(e.line, str(e), path.name)
     diags.pull_log = loader.pull_log
     diags.pull_site = loader.site
     diags.include_paths = loader.includes
