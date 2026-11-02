@@ -95,7 +95,9 @@ def main() -> int:
     with pakbus.PakBusLink(args.port) as link, args.out.open("w", encoding="utf-8") as out:
         if not link.hello():
             raise SystemExit(f"no answer on {args.port}")
-        print(f"{args.logger} {link.get_program_stats()['os_version']}; PC compiler: {pc or 'none'}; {len(cases)} cases")
+        print(
+            f"{args.logger} {link.get_program_stats()['os_version']}; PC compiler: {pc or 'none'}; {len(cases)} cases"
+        )
         for i, case in enumerate(cases, 1):
             data = case["source"].encode("latin-1", "replace")
             try:
@@ -121,8 +123,11 @@ def main() -> int:
             tally["crbc=pc"] += row["crbc_exit"] == reference
             tally["logger=recorded"] += row["logger_exit"] == row["recorded_exit"]
             same = row["logger_exit"] == reference == row["crbc_exit"]
-            print(f"{i:3d} {case['id'][:48]:48s} pc {reference} logger {row['logger_exit']} crbc {row['crbc_exit']}"
-                  + ("" if same else "  <-- differs"), flush=True)
+            print(
+                f"{i:3d} {case['id'][:48]:48s} pc {reference} logger {row['logger_exit']} crbc {row['crbc_exit']}"
+                + ("" if same else "  <-- differs"),
+                flush=True,
+            )
     print(json.dumps(tally))
     return 0
 
