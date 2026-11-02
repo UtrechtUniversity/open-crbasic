@@ -90,7 +90,7 @@ def build() -> dict:
             ],
         },
         "directive": {
-            "match": r"(?i)^\s*(#\s*(?:If_no_remove|ElseIf|UnDef|EndIf|Else|If))(?![A-Za-z0-9_$])",
+            "match": r"(?i)^\s*(#\s*(?:If_no_remove|EndMacro|ElseIf|Define|Macro|UnDef|EndIf|Else|If))(?![A-Za-z0-9_$])",
             "captures": {"1": {"name": "keyword.control.directive.crbasic"}},
         },
         "keyword": {

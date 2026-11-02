@@ -44,7 +44,7 @@ def test_expand():
 
 
 def test_expand_keeps_text_without_macros():
-    text = 'Public X\r\nX = &HFF ' + "' X\r\n"
+    text = "Public X\r\nX = &HFF " + "' X\r\n"
     assert expand(text) == text
 
 
