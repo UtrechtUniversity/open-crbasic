@@ -11,7 +11,8 @@ accepted (matching the exe's own option set) but has no implemented effect: orac
 have none observable from the CLI either. Extra long options: --logger
 {cr6,cr1000x,cr300,cr350} (default: from the file extension, else cr6) and --no-message-file (do
 not write the message file), --strict (opencrbasic checks, `checks.py`, on stderr only), --report FILE
-(JSON report, `docs/checker.md` "Check configuration and report file"), --config FILE and
+(JSON report, `docs/checker.md` "Check configuration and report file"), --expand FILE (expand
+`#Define`/`#Macro` macros into FILE and compile FILE instead, `macros.py`), --config FILE and
 --check CODE=SEVERITY (check configuration; both only act together with --strict or --report).
 Output goes to stdout and to the message file (`<LOGGER>cmple.xxx` by default, e.g. CR6cmple.xxx;
 CRLF line endings);
@@ -47,6 +48,7 @@ class _Options(TypedDict):
     strict: bool
     report: str | None
     config: str | None
+    expand: str | None
     check: list[str]
 
 
@@ -68,6 +70,7 @@ def _parse(argv: list[str]) -> tuple[_Options, list[str]]:
         "strict": False,
         "report": None,
         "config": None,
+        "expand": None,
         "check": [],
     }
     positional: list[str] = []
@@ -75,10 +78,10 @@ def _parse(argv: list[str]) -> tuple[_Options, list[str]]:
     while i < len(argv):
         arg = argv[i]
         if arg.startswith("--"):
-            if arg in ("--logger", "--report", "--config", "--check"):
+            if arg in ("--logger", "--report", "--config", "--expand", "--check"):
                 value = argv[i + 1] if i + 1 < len(argv) else ""
                 i += 2
-            elif arg.split("=", 1)[0] in ("--logger", "--report", "--config", "--check"):
+            elif arg.split("=", 1)[0] in ("--logger", "--report", "--config", "--expand", "--check"):
                 arg, value = arg.split("=", 1)
                 i += 1
             else:
@@ -87,7 +90,7 @@ def _parse(argv: list[str]) -> tuple[_Options, list[str]]:
                 if arg == "--check":
                     opts["check"].append(value)
                 else:
-                    opts[cast(Literal["logger", "report", "config"], arg[2:])] = value  # noqa: F821 -- ruff reads the Literal strings as names
+                    opts[cast(Literal["logger", "report", "config", "expand"], arg[2:])] = value  # noqa: F821 -- ruff reads the Literal strings as names
                 continue
             if arg == "--no-message-file":
                 opts["message_file"] = False
@@ -253,6 +256,20 @@ def main(argv: list[str] | None = None) -> int:
 
             _write_report(opts["report"], checks.missing_program_report(program.name, profile.name, opts["strict"]))
         return 1
+
+    if opts["expand"]:
+        from . import macros
+
+        try:
+            expanded = macros.expand(program.read_bytes().decode("latin-1"))
+        except macros.MacroError as e:
+            lines = [f"{positional[0]} -- Compile Failed!", "", f"line {e.line}: {e}"]
+            print("\n".join(lines))
+            if opts["message_file"]:
+                _write_message_file(message_path, lines)
+            return 1
+        program = Path(opts["expand"])
+        program.write_bytes(expanded.encode("latin-1", "replace"))
 
     result = compile_file(program, profile, display_name=program.name, warn_unused=opts["u"], provenance=False)
     if opts["p"]:

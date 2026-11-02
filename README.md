@@ -101,6 +101,22 @@ crbc [options] program [messagefile]
   --report FILE write a JSON report (reference verdict and diagnostics, check findings)
   --config FILE use this opencrbasic.toml (default: nearest ancestor of the program)
   --check CODE=SEVERITY   set a check severity (error|warning|info|off); repeatable
+  --expand FILE expand #Define/#Macro macros into FILE, then compile FILE instead
+```
+
+`#Define` and `#Macro` are an opencrbasic extension, not CRBasic: the reference compilers reject
+them. `--expand` writes plain CRBasic (definitions commented out, uses expanded inline) that
+`CR6Comp.exe` accepts and that is the file to send to the logger; write it next to the source so
+its `Include`s resolve. The language server expands them the same way, so the editor reports
+the expansion's diagnostics on the line of each use. Syntax and rules:
+[`macros.py`](src/opencrbasic/macros.py).
+
+```crbasic
+#Define LOGD(msg) DebugMsg = msg    ' release build: #Define LOGD(msg)
+#Macro LOGV(name, value)
+  DebugMsg = name & "=" & value
+  CallTable Debug
+#EndMacro
 ```
 
 Check configuration and the report schema: `docs/checker.md` "Check configuration and report file".

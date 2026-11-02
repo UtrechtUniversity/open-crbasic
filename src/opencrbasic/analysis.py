@@ -120,6 +120,7 @@ def analyze(request: AnalysisRequest) -> AnalysisResult:
         warn_unused=request.warn_unused,
         source=recorder,
         signature=request.signature,
+        macros=True,
     )
     includes = getattr(result.program_ast, "include_paths", None) or {}
     lowered = {name.lower(): path for name, path in includes.items()}
