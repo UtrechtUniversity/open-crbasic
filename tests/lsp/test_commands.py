@@ -12,7 +12,7 @@ from opencrbasic.commands import CompilerOutput, compiler_output, render_table_f
 from opencrbasic.tables import build_tables
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "station").resolve()
 CHM = sorted((ROOT / "tests" / "corpus" / "chm").glob("*.CR6"))
 CRBASIC_PROGRAMS = sorted(CRBASIC.glob("*.CR6"))
 

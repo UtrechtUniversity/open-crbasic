@@ -225,7 +225,7 @@ EndSub
 
 BeginProg
 	LogDebug("")
-	LogDebug("FirnMelt power budget tester starting")
+	LogDebug("Station power budget tester starting")
 	SerialFlush(ComUSB)
 	WriteIO(LowPowerRailMask, 0)
 	Call ResetStats

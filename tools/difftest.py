@@ -35,7 +35,7 @@ from opencrbasic import profiles  # noqa: E402
 from opencrbasic.compiler import compile_file  # noqa: E402
 
 GROUPS = {
-    "repo": (REPO / "tests" / "corpus" / "firnmelt", "*.CR6"),
+    "repo": (REPO / "tests" / "corpus" / "station", "*.CR6"),
     "chm": (ROOT / "tests" / "corpus" / "chm", "*.CR6"),
 }
 # GEUS station programs (human decision 2026-10-24, `PLAN.md` "GEUS corpus"): every program with

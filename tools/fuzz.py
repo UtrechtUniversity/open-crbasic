@@ -37,7 +37,7 @@ first-line marker comment `' fuzz-needs-siblings: crbasic` that `tools/fuzz_repl
 Usage:
     python3 tools/fuzz.py --logger cr6 --count 1500 --seed 1
     python3 tools/fuzz.py --logger all               # cr6 1500, others 300, seed 1
-    python3 tools/fuzz.py --logger cr6 --relevant    # help seeds limited to FirnMelt/GEUS instructions
+    python3 tools/fuzz.py --logger cr6 --relevant    # help seeds limited to station/GEUS instructions
 
 Budget: real compiles run under Wine at ~2s each; a 4-worker pool overlaps them (`--workers`).
 """
@@ -68,7 +68,7 @@ import oracle  # noqa: E402
 from opencrbasic import profiles  # noqa: E402
 from opencrbasic.compiler import compile_file  # noqa: E402
 
-CRBASIC_DIR = REPO / "tests" / "corpus" / "firnmelt"
+CRBASIC_DIR = REPO / "tests" / "corpus" / "station"
 CHM_DIR = ROOT / "tests" / "corpus" / "chm"
 # GEUS station programs (human decision 2026-10-24, `PLAN.md` "GEUS corpus"): CR1000X seeds
 GEUS_DIR = REPO / "examples" / "Logger Programs"
@@ -121,7 +121,7 @@ def _names_used(path: Path, names: set[str]) -> set[str]:
 
 
 def relevant_names(profile: profiles.Profile) -> set[str]:
-    """Instructions and functions the FirnMelt and GEUS programs use, `Archive/` left out
+    """Instructions and functions the station and GEUS programs use, `Archive/` left out
     (`PLAN.md` "Relevant instruction set")."""
     names = {n.lower() for n in (*profile.instructions, *profile.functions)}
     files = [*CRBASIC_DIR.glob("*.CR6"), *CRBASIC_DIR.glob("*.crb")]
@@ -881,7 +881,7 @@ def main() -> int:
     )
     ap.add_argument("--out", type=Path, default=FUZZ_CORPUS)
     ap.add_argument(
-        "--relevant", action="store_true", help="help-example seeds only where they use just FirnMelt/GEUS instructions"
+        "--relevant", action="store_true", help="help-example seeds only where they use just station/GEUS instructions"
     )
     args = ap.parse_args()
 

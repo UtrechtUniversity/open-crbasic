@@ -10,7 +10,7 @@ from opencrbasic.catalog import EXTRA_KEYWORDS, KINDS, TABLE_KEYWORDS, CatalogEn
 from .assertions import required
 
 ROOT = Path(__file__).resolve().parents[2]
-MAIN = (ROOT / "tests" / "corpus" / "firnmelt" / "Main.CR6").resolve()
+MAIN = (ROOT / "tests" / "corpus" / "station" / "Main.CR6").resolve()
 LOGGERS = list(profiles.PROFILES)
 
 

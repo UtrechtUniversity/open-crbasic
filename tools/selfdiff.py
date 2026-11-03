@@ -31,7 +31,7 @@ REPO = ROOT
 sys.path.insert(0, str(ROOT / "src"))
 
 LOGGERS = ("cr6", "cr1000x", "cr300", "cr350")
-CRBASIC_DIR = REPO / "tests" / "corpus" / "firnmelt"
+CRBASIC_DIR = REPO / "tests" / "corpus" / "station"
 CHM_DIR = ROOT / "tests" / "corpus" / "chm"
 FUZZ_DIR = ROOT / "tests" / "corpus" / "fuzz"
 SIBLINGS_MARKER = "' fuzz-needs-siblings: crbasic"

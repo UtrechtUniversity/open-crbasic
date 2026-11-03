@@ -13,7 +13,7 @@ from opencrbasic.analysis import AnalysisRequest, analyze
 from .assertions import required
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "station").resolve()
 
 
 def write(tmp_path: Path, name: str, text: str, newline: str = "\n") -> Path:

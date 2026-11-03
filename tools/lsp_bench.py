@@ -43,7 +43,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent  # opencrbasic/
 REPO = ROOT  # the worktree (or checkout) root
-CRBASIC = REPO / "tests" / "corpus" / "firnmelt"
+CRBASIC = REPO / "tests" / "corpus" / "station"
 MAIN = (CRBASIC / "Main.CR6").absolute()
 HELP_DIR = REPO / "extracted_chm"
 PROFILE = "cr6"

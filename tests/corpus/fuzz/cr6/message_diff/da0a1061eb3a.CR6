@@ -148,7 +148,7 @@ BeginProg
 	Call InitPowerProfile
 	Call ParkIridiumPort
 	LogDebug("")
-	LogDebug("FirnMelt station " + FormatLong(StationId,"%d") + " starting")
+	LogDebug("Station station " + FormatLong(StationId,"%d") + " starting")
 
 	Scan (MainScanSecs,Sec,0,0)
 		MainScanCount = MainScanCount + 1

@@ -51,7 +51,7 @@ TDF_CACHE_DIR = ROOT / ".oracle-cache" / "tdf"
 FIXTURES_DIR = ROOT / "tests" / "fixtures" / "tdf"
 
 GROUPS = {
-    "repo": (REPO / "tests" / "corpus" / "firnmelt", "*.CR6", REPO / "tests" / "corpus" / "firnmelt"),
+    "repo": (REPO / "tests" / "corpus" / "station", "*.CR6", REPO / "tests" / "corpus" / "station"),
     "chm": (ROOT / "tests" / "corpus" / "chm", "*.CR6", ROOT / "tests" / "corpus" / "chm"),
 }
 

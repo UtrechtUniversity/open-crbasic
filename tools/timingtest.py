@@ -38,7 +38,7 @@ from opencrbasic import cli, profiles  # noqa: E402
 
 CACHE_DIR = ROOT / ".oracle-cache" / "times"
 GROUPS = {
-    "repo": (REPO / "tests" / "corpus" / "firnmelt", "*.CR6"),
+    "repo": (REPO / "tests" / "corpus" / "station", "*.CR6"),
     "chm": (ROOT / "tests" / "corpus" / "chm", "*.CR6"),
 }
 

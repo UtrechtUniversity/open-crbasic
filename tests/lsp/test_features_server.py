@@ -21,7 +21,7 @@ from .lspclient import LspClient
 pytestmark = pytest.mark.server
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "station").resolve()
 CHM = ROOT / "extracted_chm"
 FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000}
 

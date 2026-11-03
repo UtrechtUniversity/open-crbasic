@@ -9,7 +9,7 @@ from opencrbasic.analysis import API_VERSION, AnalysisRequest, analyze
 from opencrbasic.compiler import compile_file
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "station").resolve()
 CHM = sorted((ROOT / "tests" / "corpus" / "chm").glob("*.CR6"))
 
 LIB = b"Public LibVar\n"

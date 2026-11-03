@@ -21,8 +21,8 @@ Status, measured against the real compilers: `PROGRESS.md`. Design and the v1.0 
 ## Scope
 
 - **Gated profiles: CR6 and CR1000X.** On these, v1.0 gates the reference verdict in the relevant
-  area (the FirnMelt/GEUS instruction set and language constructs), the execution mode, and the
-  first error for realistic mistakes on relevant rules, measured on the FirnMelt programs, the 507
+  area (the station/GEUS instruction set and language constructs), the execution mode, and the
+  first error for realistic mistakes on relevant rules, measured on the station programs, the 507
   CRBasic help examples, the 66 GEUS programs, the saved fuzz replay and fresh `--relevant` fuzz
   seeds. The help examples and GEUS programs are not redistributed here; see
   [tests/corpus/README.md](tests/corpus/README.md) for running against local copies. One relevant-area false accept is known: a `Sub` name that is also another routine's
@@ -142,8 +142,7 @@ result.tables  # list of tdf.TdfTable (Status, DataTables, DataTableInfo, ConstT
 `parser.parse_file()` gives the syntax tree (`syntax.py`) for other tools.
 
 [openloggernet](https://github.com/UtrechtUniversity/open-loggernet) uses opencrbasic when
-`CR6COMP=opencrbasic` is set, and the FirnMelt station repository compiles every program with it in
-CI.
+`CR6COMP=opencrbasic` is set.
 
 ## Editor support
 

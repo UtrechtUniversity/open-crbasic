@@ -63,11 +63,11 @@ Function RegisterIridium() As Boolean
 	Return (IridiumRegStatus = 2)
 EndFunction
 
-Public TestPayload As String * 200 = "FirnMelt SBDIridiumLib test payload"
+Public TestPayload As String * 200 = "Station SBDIridiumLib test payload"
 Public TestPayloadLength As Long
 
 Public ChecksumTestA As String * 8 = "AB"
-Public ChecksumTestB As String * 64 = "FirnMelt v2 checksum low-byte null testKK"
+Public ChecksumTestB As String * 64 = "Station v2 checksum low-byte null testKK"
 
 Public RunTests As Boolean = False
 Public RunTxTests As Boolean = False

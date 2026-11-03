@@ -2,7 +2,7 @@ from pathlib import Path
 
 from opencrbasic.signature import csi_signature, program_signature
 
-CRBASIC = Path(__file__).resolve().parents[1] / "tests" / "corpus" / "firnmelt"
+CRBASIC = Path(__file__).resolve().parents[1] / "tests" / "corpus" / "station"
 
 
 def test_csi_signature_empty_is_seed():
@@ -10,12 +10,12 @@ def test_csi_signature_empty_is_seed():
 
 
 def test_prog_signature_matches_cr6comp():
-    # CR6Comp.exe -s: re-observed 2026-10-22 after GPS and shared bench changes.
+    # CR6Comp.exe -s: re-observed 2026-11-03 after the corpus strings were renamed.
     expected = {
         "PT1000_tester.CR6": 45535,
-        "Main.CR6": 60721,
+        "Main.CR6": 26418,
         "TDR_tester.CR6": 60752,
-        "SBD_tester.CR6": 47622,
+        "SBD_tester.CR6": 60012,
         "FinApp_tester.CR6": 11702,
     }
     for name, value in expected.items():

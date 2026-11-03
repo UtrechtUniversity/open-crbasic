@@ -14,7 +14,7 @@ from .compiler import compile_file
 from .sources import DiskSource, LimitedSource, OverlaySource, RecordingSource, SourceProvider
 
 API_VERSION = 2  # 2: findings, notices, config_error, AnalysisRequest.checks (M6)
-DOCS = "https://github.com/UtrechtUniversity/firnmelt-datalogger/blob/main/opencrbasic/"
+DOCS = "https://github.com/UtrechtUniversity/open-crbasic/blob/main/"
 
 
 def _no_overlays() -> Mapping[Path, bytes]:

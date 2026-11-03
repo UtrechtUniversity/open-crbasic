@@ -144,7 +144,7 @@ BeginProg
 	Call ParkIridiumPort
 	Call InitGPSPort
 	LogDebug("")
-	LogDebug("FirnMelt station " + FormatLong(StationId,"%d") + " starting")
+	LogDebug("Station station " + FormatLong(StationId,"%d") + " starting")
 
 	Scan (MainScanSecs,Sec,0,0)
 		MainScanCount = MainScanCount + 1
