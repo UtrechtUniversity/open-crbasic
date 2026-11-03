@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 """Differential test for `tables.py`'s `-z` (TDF) and `-l` (table list) generation.
 
-For each program in `crbasic/*.CR6` (siblings: `crbasic/`) and `tests/corpus/chm/*.CR6`
+For each program in `tests/corpus/station/*.CR6` (siblings: that directory) and `tests/corpus/chm/*.CR6`
 (siblings: its own directory) that the real compiler accepts, this:
 
   1. Runs the real `CR6Comp.exe -z out.tdf -l out.lst <program>` under Wine (cached by
      sha256(compiler bytes, program bytes, sorted sibling bytes) under
-     `opencrbasic/.oracle-cache/tdf/<hash>.json`, base64-encoded `tdf`/`lst` bytes).
+     `.oracle-cache/tdf/<hash>.json`, base64-encoded `tdf`/`lst` bytes).
   2. Parses the program with `parser.parse_file` and derives tables with `tables.build_tables`,
      serialises with `tdf.serialize` and `tables.render_table_list`.
   3. Compares byte-for-byte and reports: TDF-identical count, table-list-identical count, and
      the first difference (table/field/attribute) for each mismatch.
 
-Usage (from `opencrbasic/`):
+Usage (from the repository root):
 
-    python3 tools/tdftest.py                     # crbasic/ + tests/corpus/chm/
-    python3 tools/tdftest.py --group repo         # crbasic/ only
+    python3 tools/tdftest.py                     # tests/corpus/station/ + tests/corpus/chm/
+    python3 tools/tdftest.py --group repo         # tests/corpus/station/ only
     python3 tools/tdftest.py --group chm --limit 50
     python3 tools/tdftest.py --write-fixtures     # also refresh tests/fixtures/tdf/*.json
     python3 tools/tdftest.py --logger cr300       # same, against cr300comp.exe (cr6|cr1000x|cr300|cr350)

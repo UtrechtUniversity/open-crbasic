@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """VSIX packaging check for the VS Code client (LSP-08f).
 
-    export UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/opencrbasic PYTHONPATH=$PWD/src
+    export PYTHONPATH=$PWD/src
     uv run --no-sync python tools/vsix_check.py [--keep]
 
-Needs `npm ci` in ../vscode first (it uses the pinned node_modules/.bin/vsce). Then:
+Needs `npm ci` in ../open-crbasic-vsix first (it uses the pinned node_modules/.bin/vsce). Then:
 
-1. runs `npm run compile` in vscode/ and `vsce package` into a directory made with
+1. runs `npm run compile` in ../open-crbasic-vsix and `vsce package` into a directory made with
    tempfile.mkdtemp(prefix="vsix-check-"); nothing is written to the repository;
 2. lists the archive and checks the include and exclude rules: every compiled `out/*.js` (not
    tests), `syntaxes/`, `language-configuration.json`, `package.json`, the README and the runtime
@@ -33,7 +33,7 @@ import tempfile
 import zipfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]  # opencrbasic/
+ROOT = Path(__file__).resolve().parents[1]  # the repository root
 VSCODE = ROOT.parent / "open-crbasic-vsix"
 VSCE = VSCODE / "node_modules" / ".bin" / "vsce"
 DROP_ENV = ("PYTHONPATH", "PYTHONHOME", "VIRTUAL_ENV", "UV_PROJECT_ENVIRONMENT")

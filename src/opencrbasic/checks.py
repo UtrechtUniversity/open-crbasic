@@ -147,7 +147,7 @@ def _ambiguous_names(program: S.Program) -> set[str]:
 def _numeric_concatenation(program: S.Program, profile) -> list[Finding]:
     """OCB002: a String `+` (or `&`) assigned to a numeric variable (`L = 2000 + Mid(S,5,2)`). The
     reference accepts it, but `+` with a String operand concatenates, and the variable receives
-    the converted text: a GPS clock set this way read 2057 (`knowledge/crbasic/lessons.md` "`+` with
+    the converted text: a GPS clock set this way read 2057 (open-crbasic-skills `lessons.md` "`+` with
     a string operand concatenates", hardware 2026-10-22). Only a chain mixing numeric and String
     operands is reported: a String alone (`X = Mid(...)`) is a plain conversion, and Strings joined
     into a number's text (`X = HexStr(6) + "." + HexStr(7)`, GEUS programs) are deliberate."""
@@ -263,8 +263,8 @@ def _zero_divisors(program: S.Program, profile) -> list[Finding]:
 
 def _unsized_string_parameters(program: S.Program, profile) -> list[Finding]:
     """OCB005: a `Sub`/`Function` String parameter without `* size`. It holds 23 characters (24
-    bytes with the terminator) and a longer argument is cut (hardware, `knowledge/crbasic/
-    lessons.md` "Default string parameter size"). Information only: a short argument is fine."""
+    bytes with the terminator) and a longer argument is cut (hardware, open-crbasic-skills
+    `lessons.md` "Default string parameter size"). Information only: a short argument is fine."""
     return [
         Finding(
             "OCB005",
@@ -284,7 +284,7 @@ def _unsized_string_parameters(program: S.Program, profile) -> list[Finding]:
 def _unaligned_intervals(program: S.Program, profile) -> list[Finding]:
     """OCB006: a constant `DataInterval` that divides neither an hour nor a day (`7 Min`, `25 Hr`).
     Its records are phased from the start hour and may not align with midnight (hardware,
-    `knowledge/crbasic/lessons.md` "`DataInterval` phase"). Information only; an interval of 0
+    open-crbasic-skills `lessons.md` "`DataInterval` phase"). Information only; an interval of 0
     (every call) is not reported."""
     env, out = _const_env(program, profile), []
     for st in _statements(program):

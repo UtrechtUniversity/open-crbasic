@@ -30,31 +30,28 @@ and per-module limits are in [lsp-api.md](lsp-api.md).
 ## 2. Install and launch
 
 Requirements: Python 3.15 or newer with [uv](https://docs.astral.sh/uv/) (`pyproject.toml`,
-`requires-python`); VS Code 1.95 or newer (`vscode/package.json`, `engines`); Node.js with npm, only
-to build the client. The macOS host run at `1b01311d` used Node 26.0.0 and npm 11.12.1.
+`requires-python`); VS Code 1.95 or newer (open-crbasic-vsix `package.json`, `engines`); Node.js with npm,
+only to build the client. The macOS host run at `1b01311d` used Node 26.0.0 and npm 11.12.1.
 
-From the repository:
+From this repository, with [open-crbasic-vsix](https://github.com/UtrechtUniversity/open-crbasic-vsix) checked out next to it:
 
 ```bash
-cd opencrbasic
-export UV_PROJECT_ENVIRONMENT="$HOME/.uv-envs/opencrbasic"   # the value opencrbasic/.envrc sets
-uv sync                                                      # installs the dev group, which includes pygls
-cd vscode && npm ci && npm run compile
+uv sync                                        # installs the dev group, which includes pygls
+cd ../open-crbasic-vsix && npm ci && npm run compile
 ```
 
 - `uv sync` installs the `dev` group, which includes pygls (`pyproject.toml`). For a runtime-only
   environment, install the `lsp` extra (`pygls>=2.1.1,<3`) into an environment you manage.
 - Set `opencrbasic.pythonPath` to that environment's interpreter, as an absolute path with `$HOME`
-  expanded, for example `/Users/<you>/.uv-envs/opencrbasic/bin/python`. VS Code does not expand
+  expanded, for example `/Users/<you>/open-crbasic/.venv/bin/python`. VS Code does not expand
   `$HOME` in settings.
-- Run from source: open `opencrbasic/vscode/`, press F5 ("Run Extension"), then open the repository
-  root in the Extension Development Host. The launch configuration (`vscode/.vscode/launch.json`)
-  passes only the extension path, so the host window opens without a folder. The repository's
-  `.vscode/settings.json` (section 3) applies only when the repository root is open. `vscode/`
-  has `compile`, `watch`, `test` and `package` scripts (`npm run package` builds the `.vsix`; see
-  [../vscode/README.md](../vscode/README.md)).
+- Run from source: open the open-crbasic-vsix checkout, press F5 ("Run Extension"), then open a
+  folder of CRBasic programs in the Extension Development Host. The launch configuration
+  (`.vscode/launch.json` there) passes only the extension path, so the host window opens without a
+  folder. That repository has `compile`, `watch`, `test` and `package` scripts (`npm run package`
+  builds the `.vsix`; see its README).
 - If the interpreter imports `opencrbasic` from another checkout (a git worktree, for example), set
-  `opencrbasic.serverEnv` to `{"PYTHONPATH": "<worktree>/opencrbasic/src"}`.
+  `opencrbasic.serverEnv` to `{"PYTHONPATH": "<worktree>/src"}`.
 
 **Restricted Mode (Workspace Trust).** Trust the folder to enable the extension: it runs a Python
 language server from the configured interpreter. Until then `.CR6` opens as Plain Text and the
@@ -74,14 +71,14 @@ when `analysis.API_VERSION` is not the version it was written for (`lsp-api.md`,
 
 Installed package: `tools/lsp_install_check.py` builds the wheel, installs it into fresh environments
 outside the repository, and checks `crbc`, `crbc-lsp` and the core import without pygls. It passed 15 of 15
-checks on a cloud Linux VM with Python 3.13.16 (`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-08c-install-cloud.md`)
+checks on a cloud Linux VM with Python 3.13.16
 and on macOS at `7d6db3b1` and `679f2f70` (host records in section 8). The later
-Windows/WSL record (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md`) reports Windows path
+Windows/WSL record reports Windows path
 failures (H-13); its passing Windows run used a host shim.
 
 ## 3. Settings
 
-Names and defaults come from `vscode/package.json`. "Applied" says how a change reaches the server.
+Names and defaults come from open-crbasic-vsix `package.json`. "Applied" says how a change reaches the server.
 
 | Setting | Default | Meaning | Applied |
 |---|---|---|---|
@@ -120,10 +117,6 @@ Names and defaults come from `vscode/package.json`. "Applied" says how a change 
   | `maxQueuedJobs` | 64 | Entries with an analysis running at once; the rest wait |
   | `maxCacheMb` | 256 | Parsed programs kept for the language features |
 
-- **Repository settings.** The repository's `.vscode/settings.json` sets `opencrbasic.entries` to
-  `["crbasic/*.CR6"]` and `opencrbasic.helpDirectory` to `"extracted_chm"` (a human decision,
-  commit `f306982`). The help path is relative to the first workspace folder, so it resolves when the
-  repository root is the workspace folder.
 
 ## 4. Entry programs
 
@@ -143,14 +136,12 @@ The server analyses each *entry* together with the files it includes.
   program includes this file; diagnostics come from the entry programs that include it." Observed at
   `7c450ed5`.
 - Changing `entries` or `exclude` re-discovers the entries; a file that drops out loses its
-  diagnostics. Observed at `7c450ed5`: excluding `crbasic/SbdPayload_tester.CR6` removed its warnings,
+  diagnostics. Observed at `7c450ed5`: excluding `SbdPayload_tester.CR6` removed its warnings,
   and removing the exclusion restored them.
-- **The repository root.** The default `**/*.CR6` matches 2,781 `.CR6` files at base `810b8f9`:
-  2,758 under `opencrbasic/tests/corpus/` (fuzz and CHM corpora), 16 in `crbasic/` and 4 in
-  `examples/`. The count uses the server's own discovery function. Opening the repository root uses
-  the repository's `.vscode/settings.json` instead, which matches the 16 station programs. Opening
-  `opencrbasic/` alone keeps the default. The cost of analysing all 2,781 files is not measured.
-  Observed at `7c450ed5`: an explicit restart with the `crbasic/*.CR6` entries gave a last initial
+- **Large workspaces.** The default `**/*.CR6` matches every `.CR6` file in the workspace; opened as
+  a workspace, this repository has thousands under `tests/corpus/` (fuzz and CHM corpora). Narrow
+  `entries` for such a folder. The cost of analysing them all is not measured.
+  Observed at `7c450ed5`: an explicit restart with the 16 station programs as entries gave a last initial
   publication 0.576 s after `initialize`. That is not an all-entries-complete signal, and the server
   exposes none.
 - The logger comes from `opencrbasic.logger` and never from the file extension. A `.CR300` file with
@@ -318,7 +309,7 @@ highlights were non-empty. Visual highlight rendering: **untested**.
 - When the client declares `workspace.semanticTokens.refreshSupport`, the server asks it to re-request
   tokens after each new analysis (`lsp-api.md`, Language features). Whether VS Code declares it was not
   checked here.
-- The TextMate grammar (`vscode/syntaxes/crbasic.tmLanguage.json`) colours comments, strings with `""`,
+- The TextMate grammar (open-crbasic-vsix `syntaxes/crbasic.tmLanguage.json`) colours comments, strings with `""`,
   numbers, directives, keywords, instructions, built-in functions, predefined constants and operators.
   It is generated from the CR6 catalog and uses the CR6 names whatever `opencrbasic.logger` is set to.
   Do not edit it by hand; see [lsp-api.md](lsp-api.md), "Generated TextMate grammar".
@@ -367,7 +358,7 @@ Known limits and the open review findings for rename and formatting are in secti
 ### 5.11 Parameter-name hints and output commands (LSP-09c)
 
 Both have stdio tests and client unit tests. Windows and Remote-WSL editor observations are in the
-2026-10-15 visual host record (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md`).
+2026-10-15 visual host record.
 
 - **Parameter-name hints.** A grey `Name:` before each positional argument of an instruction or
   builtin function call, for example `Dest:`, `Reps:`, `Range:` before the arguments of `VoltSe`. The
@@ -393,10 +384,9 @@ Both have stdio tests and client unit tests. Windows and Remote-WSL editor obser
 ## 6. Help directory
 
 `opencrbasic.helpDirectory` names a folder holding `Instructions/*.htm` and `parameters/*.htm`, the
-layout of the extracted CRBasic help. In this repository that is `extracted_chm/` at the repository
-root. A relative path is resolved against the first workspace folder, so with the workspace folder
-`opencrbasic/` use `../extracted_chm`. The repository's `.vscode/settings.json` (section 3) uses
-`extracted_chm` for the repository root.
+layout of the extracted CRBasic help; in a checkout of this repository a local copy usually sits in
+the git-ignored `extracted_chm/` ([legal notes](legal.md)). A relative path is resolved against the
+first workspace folder.
 
 - The index is built once, in a background thread, when the setting is applied. The `extracted_chm`
   index took about 0.5 s on the cloud measurement host (LSP-wire handoff). Changing the setting needs
@@ -445,25 +435,25 @@ after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and
 
 | Area | Observed | Record |
 |---|---|---|
-| Server starts in the Extension Development Host; startup line in the output channel | Yes, with `api_version=1` and the revision | 7c450ed5 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-7c450ed5/RESULTS.md`) |
+| Server starts in the Extension Development Host; startup line in the output channel | Yes, with `api_version=1` and the revision | 7c450ed5 |
 | Startup line logged at error level in the channel | Yes; a success shows as an error | `7c450ed5` |
-| Info copy of the startup line (LSP-01e) | Yes, as an info `window/logMessage`; the stderr copy still shows as `[error]` | 7d6db3b1 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-7d6db3b1/RESULTS.md`) |
+| Info copy of the startup line (LSP-01e) | Yes, as an info `window/logMessage`; the stderr copy still shows as `[error]` | 7d6db3b1 |
 | `Main.CR6`: no errors, expected tester warnings | Yes | `7c450ed5` |
 | Invalid edit: errors after debounce; undo clears them | Yes | `7c450ed5` |
 | Unsaved library overlay merges diagnostics; Don't Save restores them | Yes | `7c450ed5` |
-| Library edit on physical line 32 covers lines 32 and 33 | Yes (fixed by LSP-01d; was line 33) | e77ee5cc (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/RESULTS.md`) |
+| Library edit on physical line 32 covers lines 32 and 33 | Yes (fixed by LSP-01d; was line 33) | e77ee5cc |
 | `debounceMs` and `exclude` change without restart | Yes | `7c450ed5` |
 | `opencrbasic: Restart Server` | Yes | `7c450ed5` |
 | Interpreter path change restarts the server | Yes, a new server starts; an error toast also appears (H-02) | `7c450ed5` |
-| Interpreter path change without the toast (LSP-01e) | Two valid changes restarted the server and republished; no failure message in the trace. Toast absence is a visual gap | `7d6db3b1`, 679f2f70 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-679f2f70/RESULTS.md`) |
-| `.CR300` opens as CRBasic automatically (LSP-01e) | **Fails** at `1b01311d` (H-03: plain text); `.CR300`, `.CR1X`, `.CR350` open as `crbasic` and logger `cr300` gives live diagnostics at `7d6db3b1` and `679f2f70` | 1b01311d (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-1b01311d/RESULTS.md`) |
+| Interpreter path change without the toast (LSP-01e) | Two valid changes restarted the server and republished; no failure message in the trace. Toast absence is a visual gap | `7d6db3b1`, 679f2f70 |
+| `.CR300` opens as CRBasic automatically (LSP-01e) | **Fails** at `1b01311d` (H-03: plain text); `.CR300`, `.CR1X`, `.CR350` open as `crbasic` and logger `cr300` gives live diagnostics at `7d6db3b1` and `679f2f70` | 1b01311d |
 | Open `.crb` with no entry shows the information note | Yes | `7c450ed5` |
 | Include name with a space: one URI, opened or not | Yes | `7c450ed5` |
 | UTF-8 non-ASCII include name: mojibake in the message (H-04) | Yes at `7c450ed5`; with the display fix the message reads `É space.crb` with no `Ã` (diagnostic level; Problems rendering not seen) at `7d6db3b1`, `679f2f70` | `7c450ed5` |
-| Syntax highlighting, scope checks | 12 of 12 pass | 602f6462 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md`) |
+| Syntax highlighting, scope checks | 12 of 12 pass | 602f6462 |
 | Syntax highlighting, visual check, Dark Modern | Yes | `7c450ed5` |
 | Help hover, variable hover, completion, signature help, outline, folding, links, navigation, semantic tokens, Unicode, after-edit update (provider and API level) | 16 checks pass | `1b01311d` |
-| Same, visual rendering, repaint, typing responsiveness | Observed (screenshots), with the record's qualifications: cross-entry references then incomplete (H-08, fixed in LSP-R4a and passed at `e18cdf52`), full nested outline not exhaustively inspected | ccba3666 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-ccba3666/RESULTS.md`) |
+| Same, visual rendering, repaint, typing responsiveness | Observed (screenshots), with the record's qualifications: cross-entry references then incomplete (H-08, fixed in LSP-R4a and passed at `e18cdf52`), full nested outline not exhaustively inspected | ccba3666 |
 | F2 box, refusal text, Ctrl+. menu, format refusal toast, Problems rendering (T-12 visuals) | Observed | `ccba3666` |
 | Full pytest suite, client tests, repository verifier | 22,182 passed, 311 skipped; client 10 pass; `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` (H-05 strict-mode leak fixed) | `1b01311d` |
 | Benchmark on an idle macOS host: hover p95 0.856 ms, completion p95 3.948 ms (in-process core calls); diagnostics p95 133.740 ms after the debounce, from an end-to-end edit-to-publish of 433.740 ms (20 edits, stdio) | Measured once; not a guarantee | `e77ee5cc` |
@@ -472,9 +462,9 @@ after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and
 | Completion cap (200) and `isIncomplete` | 200 items with `isIncomplete=true`; `Vo` gives 14 items including `VoltSe` (provider level; list refresh not seen) | `7d6db3b1`, `679f2f70` |
 | Rename, formatting, quick fixes and their refusals (T-12) | Pass at API level (cross-file rename, refusals, formatting, format-on-save, quick fix); F2 box, refusal text and Ctrl+. menu not seen. One `undo` restores all texts; whether the files the rename opened are then open, clean or dirty varies (VS Code behaviour; section 9) | `7d6db3b1`, `679f2f70`, `ccba3666`, `e18cdf52` |
 | Unmatched `.CR300` information note (H-06) and rename of an unsaved library collision (R2a), Latin-1 positions (R2b) | Pass at provider level | `679f2f70` |
-| Install check (LSP-08c, T-11) | macOS 15 of 15 at `7d6db3b1` and `679f2f70`; cloud Linux 15 of 15 (`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-08c-install-cloud.md`); Windows **untested** | `7d6db3b1`, `679f2f70` |
+| Install check (LSP-08c, T-11) | macOS 15 of 15 at `7d6db3b1` and `679f2f70`; cloud Linux 15 of 15; Windows **untested** | `7d6db3b1`, `679f2f70` |
 | Packaged `.vsix` installs into an empty profile, activates, uninstalls (LSP-08f, T-14) | Pass | `ccba3666`, `e18cdf52` |
-| Inlay hints and output commands (LSP-09c, T-15) | Pass (the five checks; extended hint gestures not exhaustive) | e18cdf52 (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md`) |
+| Inlay hints and output commands (LSP-09c, T-15) | Pass (the five checks; extended hint gestures not exhaustive) | e18cdf52 |
 | Review round 3 fixes, macOS items (LSP-R3, T-16); references across entries and comment refusal (LSP-R4a) | Pass | `e18cdf52` |
 | Member completion before the first analysis (LSP-R4b, T-17 item 1) | 6 of 6 cold requests return the fields in 462-498 ms over stdio (0 items before R4b); later GUI fallback observations are in section 9 | `e18cdf52` (on `e1769132`) |
 | Typing latency (T-17 item 2) | Server after-debounce p95 149 ms; GUI squiggle upper bounds 984-1249 ms | `e18cdf52` |
@@ -482,8 +472,8 @@ after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and
 
 ## 9. Known limits
 
-- Windows and Remote-WSL have API/protocol (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md`)
-  and visual (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md`) host records, including
+- Windows and Remote-WSL have API/protocol
+  and visual host records, including
   the following limits. Client changes after those records still need the T-19 host re-checks in
   [LSP_TO_BE_TESTED.md](../LSP_TO_BE_TESTED.md).
 - **Completion before the first analysis (H-21).** If `Status.` or `Public.` completion exceeds
@@ -498,12 +488,12 @@ after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and
 - **Problems after closing an out-of-glob file.** VS Code sent `didClose` about three minutes
   after its tab closed on Windows and Remote-WSL. Its Problems entries remain until that
   notification; the server then clears them (both host records above).
-- **Review findings from round 2** (review (`git show 2612abad:opencrbasic/docs/lsp-rounds/review-2026-10-11-f3069825.md`)) are fixed
+- **Review findings from round 2** are fixed
   in LSP-R2a (`463a565`: rename checks every dependency's current bytes and `Public.<name>`
   captures) and LSP-R2b (`3d76e93`: positions map through the editor text when the encoding
   replaces characters); the server passes open buffers to rename's freshness check (LSP-06c).
   Remaining rename limit: a file that did not exist at analysis time and appears later is not
-  detected (LSP-R2a handoff (`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-R2a-handoff.md`)). The unsaved-library collision and the
+  detected (LSP-R2a). The unsaved-library collision and the
   Latin-1 position checks passed at provider level at `679f2f70`.
 - **Undo after a multi-file rename**: one Ctrl+Z restores all texts (observed in every host run).
   The open and dirty state of the files the rename opened is VS Code's, not the server's, and it

@@ -8,7 +8,7 @@ Builds the sdist and wheel with `uv build`, then:
 1. checks the wheel and sdist: every profile data file under src/opencrbasic/data is present,
    the console entry points and the `lsp` extra are declared, no tests/scratch/cache entries;
 2. installs the wheel with the `lsp` extra into a fresh virtual environment; runs `crbc --help`
-   and compiles a copy of ../crbasic (Main.CR6 and its includes) with `crbc`; the same compile is
+   and compiles a copy of tests/corpus/station (Main.CR6 and its includes) with `crbc`; the same compile is
    then run from the checkout (PYTHONPATH=src) and stdout, stderr, exit status and every written
    file must match;
 3. starts `crbc-lsp` from that environment and performs initialize, initialized, shutdown, exit
@@ -39,7 +39,7 @@ import time
 import zipfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]  # opencrbasic/
+ROOT = Path(__file__).resolve().parents[1]  # the repository root
 CRBASIC = ROOT / "tests" / "corpus" / "station"  # the checkout's CRBasic sources
 SRC = ROOT / "src"
 DATA = SRC / "opencrbasic" / "data"
@@ -218,7 +218,7 @@ def make_venv(uv: str, tmp: Path, name: str, requirement: str, report: Report, l
 
 
 def compile_under(argv_prefix: list, base: Path, env: dict[str, str]) -> dict:
-    """Copy ../crbasic to a fixed path under `base` and run the compile commands there."""
+    """Copy tests/corpus/station to a fixed path under `base` and run the compile commands there."""
     if base.exists():
         shutil.rmtree(base)
     work = base / "crbasic"
@@ -278,7 +278,7 @@ def check_compile(report: Report, venv: Path, tmp: Path) -> None:
     installed = compile_under([crbc], tmp / "compile", clean_env())
     rcs = [r["rc"] for r in installed["runs"]]
     report.record(
-        "installed crbc compiles a copy of ../crbasic (Main.CR6)",
+        "installed crbc compiles a copy of tests/corpus/station (Main.CR6)",
         all(rc == 0 for rc in rcs),
         f"exit statuses {rcs}; {len(installed['written'])} files written\n"
         + "\n".join(f"{k}  {v[:12]}" for k, v in sorted(installed["written"].items())),

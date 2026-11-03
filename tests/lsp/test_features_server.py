@@ -1,6 +1,6 @@
 """Language features over real stdio transcripts (LSP-03b/04b/05b-wire).
 
-The shared server works on a temporary copy of `../crbasic/` (entry `Main.CR6`); tests that edit
+The shared server works on a temporary copy of `tests/corpus/station/` (entry `Main.CR6`); tests that edit
 use their own small project. Expected values are computed from the document text or from the core
 modules applied to the same program, so these tests check the adapter (positions, encodings,
 scheduling), not CRBasic rules.

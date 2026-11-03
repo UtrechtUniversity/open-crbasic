@@ -14,17 +14,13 @@ validation alone (T-19, the Windows/WSL re-check after LSP-R6, is not a release 
   tokens, rename, formatting, quick fixes, inlay hints, "Show Compiler Output" and "Show Table
   Fields"; workspace watching, folders and limits; VS Code client and packaged VSIX; user guide,
   benchmarks, install check, test tiers, Pyrefly gate) and review/host fix rounds R1-R7.
-- Reviews: rounds 1 (`39286384`), 2 (`f3069825`), 3 (astra (`git show 2612abad:opencrbasic/docs/lsp-rounds/review-2026-10-11-ccba3666.md`),
-  Fable (`git show 2612abad:opencrbasic/docs/lsp-rounds/review-2026-10-11-ccba3666-fable.md`)), 4
-  (`743da2ac` (`git show 2612abad:opencrbasic/docs/lsp-rounds/review-2026-10-12-743da2ac.md`)) and 5
-  (`de6affff` (`git show 2612abad:opencrbasic/docs/lsp-rounds/review-2026-10-16-de6affff.md`), R5/R6, no findings). Every finding
+- Reviews: rounds 1 (`39286384`), 2 (`f3069825`), 3 (`ccba3666`, astra and Fable), 4
+  (`743da2ac`) and 5 (`de6affff`, R5/R6, no findings). Every finding
   is fixed; the last open ones (round-3 F2, F12, F15) in LSP-R7a: `Alias` junk tokens counted in
   the ordinals, `BeginBurstTrigger` pair, `TO` dropped from read-position quick fixes.
 - Host: macOS T-01..T-17 and H-01..H-10 accepted (last record `e18cdf52`); T-18 passed on Windows
   and Remote-WSL (`73479946`, `f76901b2`). The raw host records under `docs/lsp-rounds/host-tests/`
-  were removed in the pre-merge cleanup; their summaries stay in [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md)
-  and the files in git history (`git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/`).
-- Gates at the release revision: `git show 2612abad:opencrbasic/LSP_PROGRESS.md` (round ledger row LSP-R7).
+  were removed in the pre-merge cleanup; their summaries stay in [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md).
 
 ## Remaining work (after the first release)
 
@@ -58,5 +54,3 @@ validation alone (T-19, the Windows/WSL re-check after LSP-R6, is not a release 
 
 1. Read LSP_PLAN.md and this file.
 2. If `scratch/lsp/selfdiff-base.json` is missing, recreate it at the round's base SHA.
-
-Work rules, review and integration notes, host findings, final gates, the round ledger and the handoff/gate templates are in git history: `git show 2612abad:opencrbasic/LSP_PROGRESS.md`.

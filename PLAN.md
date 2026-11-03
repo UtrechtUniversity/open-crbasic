@@ -9,7 +9,7 @@ runs natively on Linux, macOS and Windows and does three jobs:
    opencrbasic diagnostics.
 3. **Editor:** serve both through the language server ([LSP_PLAN.md](LSP_PLAN.md)).
 
-CR6 must remain a drop-in for `openloggernet/src/openloggernet/cr6comp.py`.
+CR6 must remain a drop-in for the `cr6comp` module of the open-loggernet package.
 
 **Human decision, 2026-10-24.** Exact parity with the reference compilers is not a goal in
 itself. Priorities, from most to least important:
@@ -224,7 +224,7 @@ channel only. With `crbc --strict`:
 - `--report FILE` writes a JSON report (round 52, `docs/checker.md` "Check configuration and report
   file") and also holds the CR6 coverage notices ([inventory](docs/inventory.md)).
 
-`openloggernet/src/openloggernet/cr6comp.py` judges success from the output text, so strict findings must never appear in
+open-loggernet's `cr6comp` judges success from the output text, so strict findings must never appear in
 stdout. `--strict` does not imply `-u`; the language server enables `-u`-equivalent unused warnings
 as a separate setting.
 
@@ -234,8 +234,7 @@ per-profile overrides, holds:
 - scoped suppressions, each with a reason.
 
 CLI options and LSP settings override the file in a documented precedence. The configuration is
-part of the analysis identity, including the LSP cache key. Source comments are never used, because
-owned `crbasic/` files allow only pointer comments.
+part of the analysis identity, including the LSP cache key.
 
 Format (read with `tomllib`, so no runtime dependency):
 
@@ -289,19 +288,19 @@ exact form probed before it is implemented.
 |---|---|---|
 | `Alias` named after an instruction, function, system table, keyword or special value (`Alias D(3)=Status`) | compiles, all four (2026-10-24) | **shipped as `OCB001`, error, default on under `--strict`** (human request 2026-10-24); the name shadows the original ([checker notes](docs/checker.md#alias-names-that-are-crbasic-names-round-33)). Predefined CONSTs are reference errors and excluded |
 | Constant index past the declared storage (`A(7)` on `A(6)`) | compiles | outside the declaration; the runtime effect is not observed. Must resolve scope, aliases with backing storage (`docs/checker.md` round 30), flattened multidimensional indexing and String character indices |
-| Whole array to a `Function` parameter whose body uses more than one element | compiles | only the first element arrives (`functionendfunction.htm`, [lessons](../knowledge/crbasic/lessons.md#arrays-passed-to-helpers)); exclude pointer parameters and scalar intent |
+| Whole array to a `Function` parameter whose body uses more than one element | compiles | only the first element arrives (`functionendfunction.htm`, [lessons](https://github.com/UtrechtUniversity/open-crbasic-skills/blob/main/plugins/crbasic/skills/crbasic/references/lessons.md#arrays-passed-to-helpers)); exclude pointer parameters and scalar intent |
 | A String-producing `+` feeding a numeric destination (`L = 2000 + Mid(...)`) | compiles, all four (2026-10-30) | **shipped as `OCB002`, warning** ([checker notes](docs/checker.md#opencrbasic-checks-ocb002-ocb007-m3)); only chains mixing numeric and String operands, since GEUS programs join Strings into a number's text on purpose. Feeding arithmetic (`(2000 + Mid(...)) * 2`) is a reference error since round 65 |
 | String literal longer than the proven destination capacity | compiles, all four (2026-10-30) | **shipped as `OCB007`, warning**; capacity follows the round-29 slot rule and the `String * 1` case (`dim.htm`); the runtime truncation is not observed |
 | Runtime division by a literal zero | compiles, all four (2026-10-30) | **shipped as `OCB004`, warning**; a constant zero divisor including a `Const` or a fold; compile-time rejections stay in the reference channel |
 | Negative or wrapped delay: `Delay(1,-5,Sec)`, `Delay(2,-1,Sec)`, `ExciteV(Vx1,0,-10)` | `Delay` forms compile, all four; negative `ExciteV` compiles on CR300/CR350 only, a reference error on CR6/CR1000X (2026-10-30) | **shipped as `OCB003`, warning**, for a constant negative interval (human proposal 2026-10-28; [round 57](docs/checker.md#task-memory-overflow-of-long-delays-round-57)). Not shipped: a `Delay` interval of 2^31 or more. The runtime effect is not observed; delay 0 is legitimate |
-| `DataInterval` that divides neither an hour nor a day | compiles, all four (2026-10-30) | **shipped as `OCB006`, info**; respects `Interval=0` and offsets ([lessons](../knowledge/crbasic/lessons.md#datainterval-phase), `datainterval.htm`) |
-| Unsized `String` parameter | compiles, all four (2026-10-30) | **shipped as `OCB005`, info**; 23-character limit ([lessons](../knowledge/crbasic/lessons.md#default-string-parameter-size)), escalate only with a proven longer argument |
-| Derived constant inside `ConstTable` that depends on another editable field | not probed | not recomputed ([lessons](../knowledge/crbasic/lessons.md#derived-constants-in-consttable)) |
-| String argument with a proven embedded `0x00` | not probed | truncated ([lessons](../knowledge/crbasic/lessons.md#binary-strings-passed-as-parameters)) |
+| `DataInterval` that divides neither an hour nor a day | compiles, all four (2026-10-30) | **shipped as `OCB006`, info**; respects `Interval=0` and offsets ([lessons](https://github.com/UtrechtUniversity/open-crbasic-skills/blob/main/plugins/crbasic/skills/crbasic/references/lessons.md#datainterval-phase), `datainterval.htm`) |
+| Unsized `String` parameter | compiles, all four (2026-10-30) | **shipped as `OCB005`, info**; 23-character limit ([lessons](https://github.com/UtrechtUniversity/open-crbasic-skills/blob/main/plugins/crbasic/skills/crbasic/references/lessons.md#default-string-parameter-size)), escalate only with a proven longer argument |
+| Derived constant inside `ConstTable` that depends on another editable field | not probed | not recomputed ([lessons](https://github.com/UtrechtUniversity/open-crbasic-skills/blob/main/plugins/crbasic/skills/crbasic/references/lessons.md#derived-constants-in-consttable)) |
+| String argument with a proven embedded `0x00` | not probed | truncated ([lessons](https://github.com/UtrechtUniversity/open-crbasic-skills/blob/main/plugins/crbasic/skills/crbasic/references/lessons.md#binary-strings-passed-as-parameters)) |
 | Indexed `CHR` writes that overwrite an earlier byte with the terminator | not probed | documented example in `chr.htm` |
 | Binary data read through `SerialOpen` formats 0/16, which filter NUL and bytes above 127 | not probed | `serialopen.htm`; needs evidence that binary bytes are expected |
 | A `Function` path that returns no value | not probed | returns NAN (`functionendfunction.htm`); exempt side-effect-only functions |
-| A non-day-dividing `SlowSequence` interval used for a clock gate | not probed | free-running ([lessons](../knowledge/crbasic/lessons.md#slow-sequence-alignment)); free-running sequences are valid |
+| A non-day-dividing `SlowSequence` interval used for a clock gate | not probed | free-running ([lessons](https://github.com/UtrechtUniversity/open-crbasic-skills/blob/main/plugins/crbasic/skills/crbasic/references/lessons.md#slow-sequence-alignment)); free-running sequences are valid |
 | Proven overflow before assignment, or values outside the FP2 range in a table | not probed | `public.htm`, `datatypes.htm`; needs conservative value analysis |
 
 `SerialOpen` without an explicit communication mode is not a defect check: SDM-SIO devices

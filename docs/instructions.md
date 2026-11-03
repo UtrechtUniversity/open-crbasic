@@ -231,7 +231,7 @@ and gated the same way as the `Scan` checks above.
 
 ## `DataTable interval %d uSec not integrally divisible by scan interval %d uSec.` (all four loggers)
 
-Confirmed project knowledge (`knowledge/crbasic/lessons.md` "`DataInterval` versus `Scan`": "a
+Confirmed project knowledge ([crbasic skill lessons](https://github.com/UtrechtUniversity/open-crbasic-skills/blob/main/plugins/crbasic/skills/crbasic/references/lessons.md#datainterval-versus-scan): "a
 table interval must be at least the scan interval and an exact integer multiple of it", human-
 verified against `CR6Comp.exe` 2026-08-21), now oracle-re-confirmed with the exact message text
 and, unlike the two checks just above, found identical on **all four loggers including CR300**

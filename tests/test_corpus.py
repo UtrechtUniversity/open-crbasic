@@ -91,7 +91,7 @@ def test_chm_programs_never_raise(path):
 
 @pytest.mark.parametrize("path", CRBASIC_ENTRY_PROGRAMS, ids=lambda p: p.name)
 def test_crbasic_entry_programs_fully_parse(path):
-    """Every program this repository actually compiles (`scripts/verify.py`) must parse with
+    """Every station corpus entry program must parse with
     zero `Unparsed` statements -- these are known-good, currently-compiling CRBasic."""
     prog, diags = parser.parse_file(path)
     bad = _unparsed(prog)
