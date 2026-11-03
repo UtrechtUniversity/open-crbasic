@@ -2186,7 +2186,7 @@ def check_pass2(
     "Before `BeginProg`" only means the top level of the program, never a statement lexically
     inside a `Sub`/`Function` body (regardless of that body's own textual position, almost always
     before `BeginProg` itself, `docs/checker.md` "Pass model": found as a **regression** against
-    this repository's own `crbasic/Main.CR6` and several siblings, all of which call a built-in
+    the station corpus's `Main.CR6` and several siblings, all of which call a built-in
     function bare, with no `Call` keyword, e.g. `SerialOpen(...)` inside a `Function`/`Sub` defined
     above `BeginProg` -- perfectly ordinary CRBasic, since the body only executes when the
     `Sub`/`Function` is later called from inside `Scan`/`NextScan`, oracle-reconfirmed by re-running
@@ -5120,8 +5120,7 @@ def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.En
     separate variables of the same declaration.
 
     A dimension that does not fold to a constant at all (`NotConstant`) is left alone: no oracle
-    evidence this session found supports guessing at that shape, and AGENTS.md's priority (never
-    reject an accepted program) rules out it.
+    evidence supports guessing at that shape, and a guess could reject an accepted program.
     """
     for index, v in enumerate(stmt.vars):
         before = len(diags.items)
@@ -5779,24 +5778,17 @@ def _check_alias_dims(
        check in this project) into a single **row-major flat offset** (`_alias_flat_offset`:
        `flat = i_n + sum_{k<n} (i_k - 1) * prod(d_{k+1..n})`, the ordinary multi-dimensional-array-
        as-flat-buffer formula, last index varying fastest) that must land in `[1,
-       prod(all declared dims)]`. Round 6's own original account of this check ("only the *first*
-       index is ever checked, however far out of range a later one is") is **superseded**: it was
-       built from two probes (`Public grid(3,3)`: `Alias grid(2,4) = Ts` compiles, `Alias grid(4,2)
-       = Ts` fails) that happen to *also* agree with the flat-offset formula purely by coincidence
-       (`(2-1)*3+4=7` and `(4-1)*3+2=11`, both landing on the correct side of `[1,9]` for unrelated
-       reasons) -- a fresh, wider oracle sweep this round (`docs/checker.md` "Round 7") found the
-       "first index alone" account is wrong in general: `Alias grid(4,-2) = Ts` (first index `4`,
-       out of `[1,3]` by the old account) **compiles clean** (`(4-1)*3+(-2)=7`, in `[1,9]`), while
-       `Alias grid(2,-1) = Ts` (a valid first index, an out-of-range *second* index by the old
-       account, which the old rule never checked at all) also compiles clean
-       (`(2-1)*3+(-1)=2`, in `[1,9]`) -- both correctly predicted by the flat formula, neither by
-       "only check position 0". A **scalar** (no declared dimensions at all) behaves exactly like a
+       prod(all declared dims)]`. Oracle evidence (`docs/checker.md` "Round 7"), for
+       `Public grid(3,3)`: `Alias grid(2,4) = Ts` compiles (`(2-1)*3+4=7`), `Alias grid(4,2) = Ts`
+       fails (`11`), and `Alias grid(4,-2) = Ts` (`7`) and `Alias grid(2,-1) = Ts` (`2`) both
+       compile clean: the first index is not checked on its own. A **scalar** (no declared
+       dimensions at all) behaves exactly like a
        size-1 array (`Public y` / `Alias y(1) = Ts` compiles, `Alias y(2) = Ts` fails: flat
        formula with `dims=(1,)` reduces to `flat=i1`, range `[1,1]`), which is why `declared_all_
        dims` maps every declared variable, not just array ones, the same convention `dim0_sizes`
        already used. Skipped (no check at all, under-reporting only) when any declared dimension or
        any index argument does not fold to a constant (`declared_all_dims`/the tuple-folding loop
-       below, both AGENTS.md-conservative the same way check 3 already was) or when the index
+       below, both conservative the same way check 3 is) or when the index
        tuple's own length does not match the variable's own declared dimension count (no oracle
        evidence gathered for that shape either way).
     3. **`Duplicate Alias`** (round 7; no trailing period, no echoed name): the source side's own

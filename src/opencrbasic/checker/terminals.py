@@ -1,8 +1,8 @@
 """Per-logger analog-channel and port terminal model.
 
-Generalises the analog-channel range check (originally CR6-only, hard-coded `U1..U12`) across all
-four loggers, driven by oracle-probed per-logger data (`data/<logger>/terminals.json`; evidence,
-probes and the message-text differences: `docs/loggers.md`, `docs/instructions.md`).
+Models the analog-channel range check for all four loggers, driven by oracle-probed per-logger
+data (`data/<logger>/terminals.json`; evidence, probes and the message-text differences:
+`docs/loggers.md`, `docs/instructions.md`).
 
 Each logger's `terminals.json` names its own channel "kinds" -- CR6 has separate `u_terminal`
 (single-ended-shaped: any `U1..U12`, no oddness constraint; `ACPower`, `CS616`'s `CS616Chan`,

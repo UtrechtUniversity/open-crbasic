@@ -20,13 +20,10 @@ own diagnostic, in ascending line order together with the other errors (oracle: 
 `di9.cr6`/`di10.cr6` scratch probes, this session). `checker/warnings.py`'s `check_early` is the
 single call site (`checker/__init__.py`, one additive line, ungated); `instr_rules.py`'s
 `check_scan_params`/`check_data_interval` are called from there rather than from
-`checker/__init__.py` directly, to keep that file's edit to one line.
+`checker/__init__.py` directly.
 
-A second, unrelated finding needed to make any of this visible in `crbc`'s own output: warnings
-with a real line number print `line N: Warning: <message>` (not bare `Warning: <message>`, which
-`diagnostics.py` previously assumed for every warning because the only warning that existed before
-this round, "table declared but never called", has no line at all). A line-less warning still
-prints bare, and sorts *after* every numbered line (oracle: `t10.cr6` -- a `Delay never reached at
+Warnings with a real line number print `line N: Warning: <message>`. A line-less warning (such as
+"table declared but never called") prints bare, and sorts *after* every numbered line (oracle: `t10.cr6` -- a `Delay never reached at
 run time.` warning at line 12 printed *before* a `Table Foo, is declared but never called.`
 warning that has no line). `diagnostics.py`'s `cr6comp()` and `compiler.py`'s `result_lines()` were
 adjusted for both (a stable sort by `(line == 0, line)` over errors and warnings together,
@@ -175,10 +172,10 @@ Pass and ordering (all oracle-confirmed on both loggers unless noted):
   missing). A bad `Mult`/`Offset` name (general family) is not reported. Two fnotch errors on one
   line (`:` separated) are both printed, and an inline `If ... Then PanelTemp(PTemp,-1)` counts.
 - A variable at the fN1 slot (`PanelTemp(PTemp,PTemp)`, `X(1)`, `PTemp+1`) is `Variable illegal in
-  Parameter: <text>.` on CR6/CR1000X (previously a false accept; CR300/CR350 not touched).
+  Parameter: <text>.` on CR6/CR1000X (CR300/CR350 not covered).
 - `Range` code (`Invalid range code, valid options are: ...`) is the same kind of check: it is
   reported after `Dim Z banana` and `Delay(0,5,Foo)` errors on both loggers (CR1000X cases use
-  channel `1`). It used to be gated as a tier-C check; it now runs in the same pass-1 function
+  channel `1`). It runs in the same pass-1 function
   (`instr_measure.check_pass1_values`).
 
 CR350/CR300 fuzz reproducers that were listed as fnotch false accepts (`cr350/false_accept/2e32a4ebade7`,
@@ -424,18 +421,11 @@ Deliberately does **not** reuse `result.tables`' already-computed field *count* 
 does not yet derive output fields for several instructions this project already knows are real
 field producers (`RainFlow`/`LevelCrossing`/`Histogram4D`/`SampleFieldCal`, `docs/tdf-rules.md`'s
 open gaps), so that shortcut would misreport a table containing *only* one of those as having no
-output fields too. **Found as a regression during this round's own development, fixed before
-landing**: `FFT` is exactly this shape (not handled by `tables.py`'s `_emit_output_fields` at all)
-and was originally left out of both `TABLE_ONLY_INSTRUCTIONS` and `_FIELD_PRODUCING_INSTRUCTIONS`
-for lack of a confident decompiled-call-site attribution (an unlabelled string constant, `"FFT"`,
-this document's own instruction-set section originally logged as one of two it could not attribute
-with confidence) -- a full `tools/difftest.py --logger <l> --group all` re-run after first landing
-this check caught two real CHM corpus files (`fft_1.CR6`, and CR1000X's `covspa_1.CR6`, both
-`DataTable` bodies containing only `FFT(...)` calls) going from accepted to a false reject on the
-loggers that have `FFT`. A fresh scratch probe (a bare `FFT(...)` outside any table) confirmed `FFT`
-does belong in `TABLE_ONLY_INSTRUCTIONS` too (`FFT must be used inside a table declaration.`,
-digit for digit), and it is now included in both sets; the one remaining unattributed string,
-`"Et"`, stays excluded.
+output fields too. `FFT` is exactly this shape (not handled by `tables.py`'s `_emit_output_fields`
+at all): it is in both `TABLE_ONLY_INSTRUCTIONS` and `_FIELD_PRODUCING_INSTRUCTIONS`. CHM corpus
+files `fft_1.CR6` and CR1000X's `covspa_1.CR6` have `DataTable` bodies containing only `FFT(...)`
+calls and compile, and a bare `FFT(...)` outside any table gives `FFT must be used inside a table
+declaration.`. The unattributed string constant `"Et"` stays excluded.
 
 `GoesTable`/`MQTTPublishTable` are included in `_FIELD_PRODUCING_INSTRUCTIONS` leniently, without
 oracle confirmation that either alone (with no accompanying `Sample`/`GOESField`, a shape not seen
@@ -447,7 +437,7 @@ reject.
 
 `check_duplicate_fields` deliberately does not re-derive each output instruction's own default
 field-naming rule (`_Avg`/`_Min`/`_TMx`/... suffixes, `FieldNames` renaming, reps-array expansion)
-a second time; it reuses the names `tables.py` (a concurrently-owned module) has already computed
+a second time; it reuses the names `tables.py` has already computed
 in `result.tables`, once per table, flagging every field beyond the first that shares an
 already-seen name (oracle-confirmed shape: exactly one diagnostic for a name that occurs twice, not
 one per pair -- `tests/corpus/fuzz/cr6/false_accept/{0004dc1d7a39,7076907a77b3,
@@ -460,8 +450,7 @@ CHM corpus's own `ch400status_2.CR6`). No line number (oracle-confirmed, matchin
 `_source_name` returns the fixed sentinel `"Anonymous"` for any output-instruction source that is
 not a plain `Name`/`Index` expression (a `Table.Field` cross-table reference, or a string literal
 source) -- not a real field name, just a "cannot derive one" placeholder that is never itself
-exercised by the TDF/`-l` output this project has verified byte-identical, so it was never
-previously visible as a bug. Two or more such sources in the same table collide on this one shared
+exercised by the TDF/`-l` output this project has verified byte-identical. Two or more such sources in the same table collide on this one shared
 sentinel and were flagged as duplicates of each other, even though the real compiler accepts the
 file cleanly: `tests/corpus/chm/goestable_1.CR6` (two `Sample`s of a cross-table `HR_DATA.
 battery_voltage_Avg`/`HR_DATA.panel_temperature_Avg`) went from accepted to a false reject on all
@@ -593,9 +582,9 @@ U1..U12.` -- confirmed by direct call before any other change this round. Root c
 this round with a `U1`..`U12`/`-U1`..`-U12`/plain-integer-literal boundary sweep on `CR6Comp.exe`:
 
 - `u_terminal_se` (`VoltSe`/`TCSe` position 4): any `U1..U12`, burst negative allowed (`transform:
-  "abs"`) -- unchanged range, only the missing burst allowance added.
-- `u_terminal_diff` (`VoltDiff`/`TCDiff` position 4): burst negative allowed, **plus** a second,
-  previously entirely missing constraint -- the (absolute) value must be an *odd* terminal
+  "abs"`).
+- `u_terminal_diff` (`VoltDiff`/`TCDiff` position 4): burst negative allowed, **plus** a second
+  constraint -- the (absolute) value must be an *odd* terminal
   (`U1,U3,U5,...,U11`); an even one in range (`U2`..`U12`) gets a distinct message, `Invalid start
   channel for Differential Measurement. Must be U1, U3, U5 ...` (`terminals.py`'s new `odd_only`/
   `odd_message` fields). `docs/checker.md`'s round-2 entry claiming `VoltDiff`'s `DiffChan` is "a
@@ -1596,7 +1585,8 @@ four compilers), checked in `check_dnp_update`:
   counts as assigned, so `32` then fails the same way); groups `1` and `2` fail for a Float, Long
   or String variable (`For DNP3 group <g> variable must be of type Boolean.`). A statement already
   failing the "must assign" rule gets no type line.
-- Not modelled: `Illegal DNP3 group 42.` (other groups unprobed), the `Scan never reached at run
+- Group and argument checks, including `Illegal DNP3 group N.`, are in "`DNPVariable` argument
+  rules" below. Not modelled: the `Scan never reached at run
   time.` warning on CR300/CR350 beside a failing `DNPVariable` (seen once), `DNPVariable` in
   `Sub`s or with a non-constant group. Reproducers: cr6 `false_accept/d94ad3ccba51`, cr300
   `false_accept/48e3374d062a`.
@@ -1993,8 +1983,7 @@ duplicate lists there are long and not re-verified here). R14, `tests/fixtures/r
 value) only when `Option & 0x7FFF` is above 4. `65536`, `65540`, `32768`, `32772`, `-65532`, `-65536`,
 `-16777216`, `-2^31` and the INT_MIN foldings (a string such as `"fuzz"`, `NAN`, numbers beyond the Long
 range) all compile; `5`, `32773`, `65541`, `-65531`, `-1`, `65535` and `INF` (saturates to
-2147483647) are rejected. Identical on CR6, CR1000X, CR300, CR350. Before this the check was `0..4` on the
-whole value, a false reject for the mutant `MoveBytes(little,m,big,n,1,"fuzz")`. R15,
+2147483647) are rejected. Identical on CR6, CR1000X, CR300, CR350. R15,
 `tests/fixtures/r15_movebytes_option.json` (audited 0 differing), fuzz false reject
 `cr1000x/false_reject/240340975c77`.
 
@@ -2029,8 +2018,7 @@ and `DestArray(1,-1)` (the last subscript) compile, `DestArray(-1)`, `DestArray(
 
 ### `DNPVariable` argument rules (all four loggers, round 15)
 
-Fixture `r15_dnp_variable_args.json` (audited against the real compilers). Supersedes the "Not modelled:
-`Illegal DNP3 group 42.`" note of "DNPVariable groups". Constant arguments convert like `Long` ones
+Fixture `r15_dnp_variable_args.json` (audited against the real compilers). Constant arguments convert like `Long` ones
 (`longconv`; `TRUE` is -1; a string or NAN is -2147483648); `Group` and `Variation` keep their low 16 bits as a
 signed value (`65537` is 1, `65536` is 0, `32768` is negative). Checks per statement, in this order, with
 `instr_rules.check_dnp_update`:
@@ -2071,10 +2059,9 @@ cr350 `9ad721676cb3`.
 
 ### `SNMPVariable` object identifiers (all four loggers, round 15)
 
-Fixture `r15_snmp_oid.json`. `instr_rules.check_snmp_oid`; the parser (`parser.SNMP_OID_REASON`) now leaves
-any statement whose OID is a digits-and-dots literal as the known `Unparsed` gap (it used to be only the ones
-whose third component printed as `.6`: `1.4.9`, `2.5.7.1`, `5.5.5` and `10.20.30.40` compile on the real
-compilers and were false rejects here).
+Fixture `r15_snmp_oid.json`. `instr_rules.check_snmp_oid`; the parser (`parser.SNMP_OID_REASON`) leaves
+any statement whose OID is a digits-and-dots literal as the known `Unparsed` gap (`1.4.9`, `2.5.7.1`,
+`5.5.5` and `10.20.30.40` compile on the real compilers).
 
 - Floor `1.3.6.1.2.1.1.7`: an OID that sorts at or below it (component by component, a shorter prefix is
   lower, an empty component such as a leading dot counts as 0) is `SNMP OID must be greater than
@@ -2112,7 +2099,7 @@ Statement order of the messages: `MeasVar`, `Illegal Reps`, `Mult`, `Offset`, `M
   `FieldCal MeasVar|Mode must be a declared public variable that can be resolved during compilation.`, every
   option. (A literal or a string variable there differs per logger, not modelled.)
 - `KnownVar` (arg 7), options 1, 2 and 3 only (0 and 4 never resolve it, so `Meter(3)` of `Meter(2)` compiles
-  there, which used to be a false `Variable Meter out of bounds.`): a string, any number, `-1`, an expression,
+  there): a string, any number, `-1`, an expression,
   a String variable, an element with a string subscript, or an out-of-range element (`Meter(3)`, after
   `Variable Meter out of bounds.`) -> `FieldCal KnownVar must be a declared public variable that can be
   resolved during compilation.`
@@ -2147,11 +2134,10 @@ instructions is not modelled. Fuzz reproducers cr1000x `false_accept/496cca6dbce
 
 Fixture `r15_cdm_channels.json`. `CDM_VoltSe`, `CDM_VoltDiff`, `CDM_TCSE` and `CDM_TCDiff` on the four
 standard modules (`measure.json` `const_ranges` entries with `channel_by_module`, handled by
-`instr_measure._apply_cdm_channel`; other modules keep the old rules):
+`instr_measure._apply_cdm_channel`; other modules keep the general channel rules):
 
 - Last channel: single-ended (`VoltSe`, `TCSE`) 16 for CDM-A108 and VOLT108, 32 for CDM-A116 and VOLT116;
-  differential (`VoltDiff`, `TCDiff`) 8 and 16. (`VoltDiff` was 1..16 for every module, which rejected the
-  negative channels below and wrongly accepted 9..16 on the 8-channel modules.)
+  differential (`VoltDiff`, `TCDiff`) 8 and 16.
 - A negative `SEChan` is a two-measurement pair counted by magnitude: `-1`, `-16` (and `-1.5`, `TRUE`) compile when
   the magnitude is in range; a larger magnitude gives `Input channel: <magnitude>, out of range (1 - N).` and
   `Two-measurement instruction starting on last input channel!` after the `Reps` lines.

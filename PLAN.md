@@ -11,9 +11,8 @@ runs natively on Linux, macOS and Windows and does three jobs:
 
 CR6 must remain a drop-in for `openloggernet/src/openloggernet/cr6comp.py`.
 
-**Human decision, 2026-10-24.** Exact parity with the reference compilers was the first step, and
-it built the needed understanding of the language. It is no longer the goal in itself.
-Priorities, from most to least important:
+**Human decision, 2026-10-24.** Exact parity with the reference compilers is not a goal in
+itself. Priorities, from most to least important:
 
 1. False accepts and false rejects.
 2. Execution mode.
@@ -21,8 +20,8 @@ Priorities, from most to least important:
 4. Diagnostics beyond the reference compiler, which raise the quality and strictness of the
    output.
 
-Order, wording and cascades of later diagnostics now matter only where they would mislead a
-programmer. The [v1.0 roadmap](#remaining-work-strategy) replaces the old Phase 6 parity gate.
+Order, wording and cascades of later diagnostics matter only where they would mislead a
+programmer. Releases are gated by the [v1.0 roadmap](#remaining-work-strategy).
 
 This document is the stable plan. Live state is in `PROGRESS.md`; reverse-engineering findings
 are in `docs/`. If work stops mid-way, resume from `PROGRESS.md` -> "Next steps". The editor
@@ -51,8 +50,7 @@ workstream has its own [plan](LSP_PLAN.md) and [ledger](LSP_PROGRESS.md).
 
 Required profiles: CR6 (`CR6Comp.exe` CR6.14.2.0), CR1000X (`cr1000xcomp.exe` CR1000X.8.2.0),
 CR300 (`cr300comp.exe` CR300.Std.11.02), CR350 (`cr350comp.exe` CR350.Std.1.07), all in
-`compiler/`. The 2026-10-01 continuation made all four required profiles. Under the 2026-10-24
-decision all four stay supported, but only CR6 and CR1000X gate v1.0; CR300/CR350 are best effort
+`compiler/`. All four are supported; only CR6 and CR1000X gate v1.0, and CR300/CR350 are best effort
 ([profile scope](#v10-milestones)). Granite 6/9/10 and legacy CR1000/CR3000/CR800/CR9000X/CR5000 remain
 outside this plan. All four share the language front end and
 the table-driven design; they differ in instruction set, predefined symbols (terminals, COM
@@ -60,8 +58,8 @@ ports, ranges), parameter type codes of some instructions, and output convention
 print `<file> -- Compiled OK.` instead of a mode). The implementation therefore takes a *logger
 profile*: `data/<logger>/{instructions,functions,symbols}.json` extracted from each exe by
 `tools/extract_tables.py --exe ... --out ...`, plus a small hand-written profile module
-(terminal model, messages that differ). CR6 data stays at `data/` root; relocating working tables
-does not improve parity. Differences measured 2026-09-25: CR1000X vs CR6
+(terminal model, messages that differ). CR6 data is at the `data/` root. Differences measured
+2026-09-25: CR1000X vs CR6
 share 402 instructions and all 134 functions (CR1000X adds `SWVX`, C5-C8, P1/P2, VX1-VX4);
 CR300/CR350 share 240 instructions with the CR6, 23-24 of them with different signatures.
 
@@ -92,19 +90,16 @@ checker/       semantic passes: structure (BeginProg/Scan nesting, declaration p
                (DataInterval vs Scan, field naming), terminals (port conflicts), mode selection
 diagnostics.py CR6Comp-compatible message text and ordering
 cli.py         `crbc` command: CR6Comp-compatible stdout, CR6cmple.xxx, exit status
-tdf.py         (phase 5) table definition file
+tdf.py         table definition file
 timing.py      -t timing estimates
 ```
 
 ## Explicit exclusions from parity
 
-This exclusion stays in force under the v1.0 roadmap.
-
 - **CDM binary image (`-b`).** The CPI Device Module image that `CR6Comp.exe -b <file>` writes
-  for programs using `CDM*`, `CPIAddModule2`, `CPISpeed2` or `CPIFileSend` is out of scope. It is
-  not required for the Phase 5 or Phase 6 exit criteria, and its absence is not a parity
-  difference, a known output difference, or a reason to keep Phase 6 open. No station program
-  uses CPI/CDM hardware, and `verify.py` and `flash` do not pass `-b`.
+  for programs using `CDM*`, `CPIAddModule2`, `CPISpeed2` or `CPIFileSend` is out of scope. Its
+  absence is not a parity difference or a known output difference. No station corpus program
+  uses CPI/CDM hardware.
   - Kept behavior: `-b` still prints the real `No CDM devices used in this program ` message when
     the program uses no CDM instruction, and still validates CDM instruction arguments, port sets
     and channel rules like any other instruction (those checks stay in scope).
@@ -139,15 +134,9 @@ diagnostics without a line number:
 | False reject | 0 | 0 | 0 | 0 | 0 | highest (gated) |
 | Reference or runner failure | 19 | 6 | 4 | 3 | 6 | no verdict |
 
-Rounds 34-35 fixed the four probe false accepts below and 13 replay false accepts, then fresh
-seeds 421-424 added 17 more, 8 of them fixed. Round 36 seeds 425-428, weighted to the relevant
-instruction set (`tools/fuzz.py --relevant`), added 13, 12 of them fixed; round 37 fixed the
-thirteenth with a terminal-ownership model. Round 38 seeds 429-432 added 2, both fixed.
-`PROGRESS.md` lists the flagged rest. M2 started in round 39: CR6/CR1000X first-error misses in
-the replay fell from 58 to 24 (round 40) and earlier first locations from 13 to 6. Recordings of
-reproducers that compile against `crbasic/` carry a sibling digest since round 40, so a stale one
-is reported instead of measured. Outside the replay baseline, four 2026-10-24 probes were also false
-accepts:
+How the replay classes changed since this baseline is in `PROGRESS.md`. Recordings of reproducers
+that compile against station corpus siblings carry a sibling digest, so a stale one is reported
+instead of measured. Outside the replay baseline, four 2026-10-24 probes were also false accepts:
 - an unknown table field (`Tbl.NoSuchField(1,1)`, CR6);
 - an unknown `Settings.` name (CR6);
 - an assignment to an unknown `Status.` field (CR6);
@@ -161,7 +150,7 @@ results on any profile. The parser accepts every corpus program without an excep
 constructs remain `Unparsed` nodes, for example in `samplemaxmin_1.CR6` and `snmpvariable_1.CR6`
 (`tests/test_corpus.py`). Unparsed statements escape checks of every channel.
 
-station programs use 67 of the 410 CR6 instructions. A name search finds 83 instructions with no
+Station programs use 67 of the 410 CR6 instructions. A name search finds 83 instructions with no
 rule beyond signature and parameter types. Only `ClockSet`, `ExitFunction` and `IncludeSection` of
 those are used here, and `IncludeSection` is handled in `source.py`. This search does not measure
 rule coverage.
@@ -188,27 +177,17 @@ compilers and opencrbasic:
 - as false-positive controls for opencrbasic checks.
 
 The contact sent every program they had, so some may not be functional or compilable. A reference
-rejection is therefore a verdict to match, not a defect in the corpus. The programs stay
-historical prior art for the station's own CRBasic (`AGENTS.md`).
+rejection is therefore a verdict to match, not a defect in the corpus.
 
-**First GEUS measurement (2026-10-24, `scratch/r32/geus/`).** All 66 `.CR1X` programs under
-`examples/Logger Programs/`, including `Archive/`, `Testing/` and `Development/`, were compiled with
-`cr1000xcomp.exe` and opencrbasic, with each program's directory supplied as siblings.
-
-The reference accepted all 66. opencrbasic matched 64 exactly and **falsely rejected two**: the
-first false rejects seen on any corpus.
-- **`Archive/QAS_B_LoggerProgramV2.CR1X`:** a user `Alias D2out(3)=Status` followed by
-  `Sample(1,Status,FP2)`; we report `Invalid symbol in expression: Status.`
-- **`GIOS_WAT_BR_V4_0.CR1X`:** a one-line `If ... Then (wind_direction = 0)`; we report
-  `Invalid, or out of place expression`.
-
-Whether that parenthesized body assigns on the logger is not observed. If it compares and discards
-the result, it is a silent no-op and a strong check candidate.
-
-Round 33 fixed both: a parenthesized assignment or instruction is that statement on all four
-loggers, and an alias named `Status`, `Public` or `Settings` makes the name a value
-([checker notes](docs/checker.md#parenthesized-statements-round-33)). `tools/difftest.py --group geus
---logger cr1000x` now reports 66/66 exact. There are no GEUS `.CR6` programs.
+**GEUS measurement.** All 66 `.CR1X` programs under `examples/Logger Programs/`, including
+`Archive/`, `Testing/` and `Development/`, compile with `cr1000xcomp.exe`, each with its directory
+supplied as siblings; `tools/difftest.py --group geus --logger cr1000x` reports 66/66 exact.
+There are no GEUS `.CR6` programs. A parenthesized assignment or instruction
+(`If ... Then (wind_direction = 0)`) is that statement on all four loggers, and an alias named
+`Status`, `Public` or `Settings` makes the name a value
+([checker notes](docs/checker.md#parenthesized-statements-round-33)). Whether the parenthesized
+body assigns on the logger is not observed; if it compares and discards the result, it is a silent
+no-op and a check candidate.
 
 ### Three diagnostic channels
 
@@ -236,14 +215,14 @@ as a CRBasic diagnostic.
    [evidence inventory](#v10-milestones). A notice is information only and never counts as verdict
    safety.
 
-**Output contract (decided in round 33, tested in `tests/test_checks.py`).** `crbc` default output
-is unchanged. With `crbc --strict`:
+**Output contract (tested in `tests/test_checks.py`).** `crbc` default output is the reference
+channel only. With `crbc --strict`:
 - checks go to stderr as `<file> line N: <severity> <code>: <message>`; stdout and `CR6cmple.xxx`
   stay byte-identical;
 - the exit status keeps 0/1 for the reference verdict and is 3 for "reference accepted, strict
   error";
 - `--report FILE` writes a JSON report (round 52, `docs/checker.md` "Check configuration and report
-  file"); since M4 it also holds the CR6 coverage notices ([inventory](docs/inventory.md)).
+  file") and also holds the CR6 coverage notices ([inventory](docs/inventory.md)).
 
 `openloggernet/src/openloggernet/cr6comp.py` judges success from the output text, so strict findings must never appear in
 stdout. `--strict` does not imply `-u`; the language server enables `-u`-equivalent unused warnings
@@ -258,7 +237,7 @@ CLI options and LSP settings override the file in a documented precedence. The c
 part of the analysis identity, including the LSP cache key. Source comments are never used, because
 owned `crbasic/` files allow only pointer comments.
 
-Format (recorded in round 35, implemented with M3; `tomllib`, so still no runtime dependency):
+Format (read with `tomllib`, so no runtime dependency):
 
 ```toml
 [checks]                      # severity per code: "error" | "warning" | "info" | "off"
@@ -312,7 +291,6 @@ exact form probed before it is implemented.
 | Constant index past the declared storage (`A(7)` on `A(6)`) | compiles | outside the declaration; the runtime effect is not observed. Must resolve scope, aliases with backing storage (`docs/checker.md` round 30), flattened multidimensional indexing and String character indices |
 | Whole array to a `Function` parameter whose body uses more than one element | compiles | only the first element arrives (`functionendfunction.htm`, [lessons](../knowledge/crbasic/lessons.md#arrays-passed-to-helpers)); exclude pointer parameters and scalar intent |
 | A String-producing `+` feeding a numeric destination (`L = 2000 + Mid(...)`) | compiles, all four (2026-10-30) | **shipped as `OCB002`, warning** ([checker notes](docs/checker.md#opencrbasic-checks-ocb002-ocb007-m3)); only chains mixing numeric and String operands, since GEUS programs join Strings into a number's text on purpose. Feeding arithmetic (`(2000 + Mid(...)) * 2`) is a reference error since round 65 |
-| Measurement-task `PortSet` (no processing-task option) under a runtime condition | not a defect the reference accepts (2026-10-30): SequentialMode on CR6/CR1000X, a reference error under `PipelineMode`; no Option on CR300/CR350 | **closed, no check** ([checker notes](docs/checker.md#opencrbasic-checks-ocb002-ocb007-m3)); the conditional works in SequentialMode (`sequentialmodepipeli2.htm`) |
 | String literal longer than the proven destination capacity | compiles, all four (2026-10-30) | **shipped as `OCB007`, warning**; capacity follows the round-29 slot rule and the `String * 1` case (`dim.htm`); the runtime truncation is not observed |
 | Runtime division by a literal zero | compiles, all four (2026-10-30) | **shipped as `OCB004`, warning**; a constant zero divisor including a `Const` or a fold; compile-time rejections stay in the reference channel |
 | Negative or wrapped delay: `Delay(1,-5,Sec)`, `Delay(2,-1,Sec)`, `ExciteV(Vx1,0,-10)` | `Delay` forms compile, all four; negative `ExciteV` compiles on CR300/CR350 only, a reference error on CR6/CR1000X (2026-10-30) | **shipped as `OCB003`, warning**, for a constant negative interval (human proposal 2026-10-28; [round 57](docs/checker.md#task-memory-overflow-of-long-delays-round-57)). Not shipped: a `Delay` interval of 2^31 or more. The runtime effect is not observed; delay 0 is legitimate |
@@ -326,30 +304,24 @@ exact form probed before it is implemented.
 | A non-day-dividing `SlowSequence` interval used for a clock gate | not probed | free-running ([lessons](../knowledge/crbasic/lessons.md#slow-sequence-alignment)); free-running sequences are valid |
 | Proven overflow before assignment, or values outside the FP2 range in a table | not probed | `public.htm`, `datatypes.htm`; needs conservative value analysis |
 
-`SerialOpen` without an explicit communication mode is a project convention, not a defect check:
-SDM-SIO devices require it omitted (`serialopen.htm`). It belongs in a station profile, if
-anywhere.
+`SerialOpen` without an explicit communication mode is not a defect check: SDM-SIO devices
+require it omitted (`serialopen.htm`).
 
 The probes confirm that the reference itself rejects unknown table fields and unknown
 `Status`/`Settings` names, so those stay in the reference channel as the false accepts above.
-The lesson that said otherwise could not be reproduced and was corrected on 2026-10-24
-([`Status` names are compile-checked](../knowledge/crbasic/lessons.md#status-names-are-compile-checked)).
 
 ### v1.0 milestones
 
-Round counts are estimates in the one-family-per-worker rounds of 29–31, with Codex research and
-review. M1 and M2 are re-estimated after their family triage.
-
-| # | Milestone | Content | Exit criterion | Rounds |
-|---|---|---|---|---:|
-| M0 | Metric, policy and CI | Separate verdict, mode, first error, warnings, later diagnostics and operational failure as independent dimensions in `fuzz_replay.py`/`difftest.py`, with per-profile denominators. Add machine gates for new false accepts, mode changes and first-error regressions. Run fixtures and saved-oracle tests without Wine in a CI workflow. Decide the output contract, the configuration format, and the GEUS corpus harness. Improve the realism of the existing mutation operators | Impact table produced by a tool and gated; CI runs on every commit; decisions recorded here | 1–2 |
-| M1 | Verdict safety | Fix the two GEUS false rejects first. Triage the 48 replay plus four probe false accepts into rule families, fix them under the decision rule, and run fresh realistic seeds | No crash, hang or implementation exception on any corpus. On the gated profiles, no false accept or false reject in the relevant area (see M1 gate scope below) in repository, help, replay or fresh `--relevant` fuzz corpora; every other false accept or reject listed by identity | 3–6 after triage |
-| M2 | Mode and first error | Fix the mode difference and the 93 first-location differences; review the 220 same-location messages for misleading causes | Mode equal on every corpus. First error (file, line and cause) equal on repository and help corpora; per-profile rate on rejected replay cases reported and not lower than the round-30 baseline; every remaining misleading-cause case listed | 2–4 |
-| M3 | opencrbasic checks | Framework (codes, severities, configuration, `--strict`, report file, separate result field) and the first checks from the table | Every shipped check meets the evidence-quality bar above, with positive tests, accepted controls and its default decision. Each firing on `crbasic/` programs is fixed or justified. The output contract is tested, including `cr6comp`, `--no-message-file` and existing option combinations | 2–3 |
-| M4 | Evidence inventory and notices | Generate a CR6 inventory per instruction: builder, helper call sites, direct and reachable diagnostic strings, unresolved calls, linked Python rules and fixtures (`tools/builder_map.py`, `tools/message_catalog.py`). It is an inventory, not a coverage percentage | Generated by a tool with pinned binary hashes; states marked "unknown" or "partially tested" where evidence is missing; notices fire only on an identified missing rule | 1–2 (CR6) |
-| M5 | Artifacts | Matrix of stdout, message-file bytes, TDF, table list, signature, preprocessing and timing per profile and option, with expected, missing and empty outputs | CR6 matrix rerun with no regression; each other output marked supported or best effort | 1–2 |
-| M6 | Editor | Carry channel, code and evidence link through the analysis result, worker serialization, per-entry composition and publication. Match quick fixes by code rather than text | LSP tests: unsaved includes, several entry contexts, configuration changes clearing findings, stale results, partial syntax suppressing unsound checks, strict errors not disabling formatting | 1–2 |
-| M7 | Internal release | Version policy for the package, `__version__`, VSIX and facade API; installed-package check (`tools/lsp_install_check.py`); README on channels, scope and the accepted-difference normalization. Internal use only (`docs/legal.md`) | Tagged v1.0 with revision, configuration, corpus hashes, commands, known failures and exclusions recorded | 1 |
+| # | Milestone | Content | Exit criterion |
+|---|---|---|---|
+| M0 | Metric, policy and CI | Separate verdict, mode, first error, warnings, later diagnostics and operational failure as independent dimensions in `fuzz_replay.py`/`difftest.py`, with per-profile denominators. Add machine gates for new false accepts, mode changes and first-error regressions. Run fixtures and saved-oracle tests without Wine in a CI workflow. Decide the output contract, the configuration format, and the GEUS corpus harness. Improve the realism of the existing mutation operators | Impact table produced by a tool and gated; CI runs on every commit; decisions recorded here |
+| M1 | Verdict safety | Triage the 48 replay plus four probe false accepts into rule families, fix them under the decision rule, and run fresh realistic seeds | No crash, hang or implementation exception on any corpus. On the gated profiles, no false accept or false reject in the relevant area (see M1 gate scope below) in repository, help, replay or fresh `--relevant` fuzz corpora; every other false accept or reject listed by identity |
+| M2 | Mode and first error | Fix the mode difference and the 93 first-location differences; review the 220 same-location messages for misleading causes | Mode equal on every corpus. First error (file, line and cause) equal on repository and help corpora; per-profile rate on rejected replay cases reported and not lower than the round-30 baseline; every remaining misleading-cause case listed |
+| M3 | opencrbasic checks | Framework (codes, severities, configuration, `--strict`, report file, separate result field) and the first checks from the table | Every shipped check meets the evidence-quality bar above, with positive tests, accepted controls and its default decision. Each firing on `crbasic/` programs is fixed or justified. The output contract is tested, including `cr6comp`, `--no-message-file` and existing option combinations |
+| M4 | Evidence inventory and notices | Generate a CR6 inventory per instruction: builder, helper call sites, direct and reachable diagnostic strings, unresolved calls, linked Python rules and fixtures (`tools/builder_map.py`, `tools/message_catalog.py`). It is an inventory, not a coverage percentage | Generated by a tool with pinned binary hashes; states marked "unknown" or "partially tested" where evidence is missing; notices fire only on an identified missing rule |
+| M5 | Artifacts | Matrix of stdout, message-file bytes, TDF, table list, signature, preprocessing and timing per profile and option, with expected, missing and empty outputs | CR6 matrix rerun with no regression; each other output marked supported or best effort |
+| M6 | Editor | Carry channel, code and evidence link through the analysis result, worker serialization, per-entry composition and publication. Match quick fixes by code rather than text | LSP tests: unsaved includes, several entry contexts, configuration changes clearing findings, stale results, partial syntax suppressing unsound checks, strict errors not disabling formatting |
+| M7 | Release | Version policy for the package, `__version__`, VSIX and facade API; installed-package check (`tools/lsp_install_check.py`); README on channels, scope and the accepted-difference normalization | Tagged v1.0 with revision, configuration, corpus hashes, commands, known failures and exclusions recorded |
 
 **Status (2026-10-30, round 70).** M0 done. **M1 and M2 done**: signed off by the Codex `gpt-6.1-sol`
 read-only review of round 68 (M2 complete; `scratch/r68/codex-signoff.log`, local only) after round
@@ -359,11 +331,6 @@ evidence and remaining listed cases are in `PROGRESS.md` ("Round 69") and the
 `OCB001`-`OCB007` meet the exit criterion, signed off by a Codex `gpt-6.1-sol` read-only review
 (`scratch/m3b/codex-review3.log`, local only); see `PROGRESS.md` "Round 70". **M4 done (round 72)** for CR6: `tools/inventory.py` writes the pinned
 [evidence inventory](docs/inventory.md) and the coverage-notice table; see `PROGRESS.md` "Round 72". **M6 done (round 73)**: checks and notices reach the language server with channel, code and evidence link; see `PROGRESS.md` "Round 73". **M5 done (round 74)**: the [artifact matrix](docs/artifacts.md) is gated on CR6 and every other output is marked supported or best effort; see `PROGRESS.md` "Round 74". **M7 done (round 75)**: opencrbasic 1.0.0, tag `opencrbasic-v1.0.0`, [release record](docs/release-1.0.md). The v1.0 roadmap is complete.
-
-Total: about 12–22 rounds, against an open-ended 20–40+ for full parity.
-
-M0 comes first because it changes what every later round measures and gates. M3 and M4 can then
-run in parallel with M1/M2. M6 follows M3.
 
 **Profile scope (human decision, 2026-10-24).** v1.0 gates verdict safety, mode and first error on
 CR6 and CR1000X. CR300 and CR350 are best effort: they keep their tests, fixtures and replay
@@ -384,7 +351,7 @@ only where they come from a mistake a programmer could realistically make, the k
 or in token-splitting fuzz noise stays listed in the [first-error review](docs/first-error-review.md)
 and does not block M2.
 
-### Round method (unchanged in substance)
+### Round method
 
 Work on one observed rule family at a time:
 
@@ -406,14 +373,13 @@ reason it is wrong, and its false-positive boundary. Then the code. Each round e
 2. Fixture audits.
 3. The four-profile difftest and the saved replay, with the impact table compared to the previous
    round.
-4. `cd scripts && uv run verify.py`, also with `CR6COMP=opencrbasic`.
 
 ## Agreement metric
 
 `tools/difftest.py` and `tools/fuzz_replay.py` classify every case as one of: exact (equal exit
 code and normalized output), verdict match with different messages, false accept, false reject,
-mode difference, or reference/runner failure. Runner failures are never verdicts. From M0 on,
-message differences are reported in the impact classes of the table above, and those classes,
+mode difference, or reference/runner failure. Runner failures are never verdicts. Message
+differences are reported in the impact classes of the table above, and those classes,
 not the exact count, drive priorities. Artifact parity (TDF, table list, signature) needs byte
 comparisons, separately per profile.
 

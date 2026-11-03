@@ -2,10 +2,9 @@
 
 The language server and VS Code extension shipped (rounds LSP-00..R7); live state and remaining
 work are in [LSP_PROGRESS.md](LSP_PROGRESS.md). This file keeps the design, contracts and
-acceptance criteria. Compiler parity remains a separate workstream under [PLAN.md](PLAN.md).
-Since 2026-10-24 the compiler's v1.0 roadmap adds opencrbasic checks and coverage notices beside the
-reference diagnostics; carrying those channels through the server is milestone M6 in
-[PLAN.md](PLAN.md#three-diagnostic-channels).
+acceptance criteria. Compiler parity is a separate workstream under [PLAN.md](PLAN.md). The server
+carries all three diagnostic channels (reference diagnostics, opencrbasic checks and coverage
+notices; [PLAN.md](PLAN.md#three-diagnostic-channels)).
 
 Goal: a VS Code extension backed by a Python language server that imports opencrbasic, so fixes
 to its parser, profiles, instruction rules, and checker also improve editor behaviour. Deliver
@@ -14,27 +13,23 @@ useful features in bounded rounds without sacrificing the existing compiler cont
 This file owns the language-server design and acceptance criteria. Live work,
 measured results, and the next session's starting point belong in
 [LSP_PROGRESS.md](LSP_PROGRESS.md). Compiler state and compiler-worker policy remain in
-[PROGRESS.md](PROGRESS.md); do not duplicate its counts or backlog here. Station requirements
-remain in [../architecture.md](../architecture.md).
+[PROGRESS.md](PROGRESS.md); do not duplicate its counts or backlog here.
 
 ## Scope and boundaries
 
-- Initial editor target: CR6 programs and their `.crb` includes. Preserve existing compiler support
-  for all four logger profiles when changing shared code. Additional editor profiles are later
-  work, not an implicit expansion of the repository's CR6 station scope.
+- Editor target: programs for the four logger profiles (the `logger` setting, default CR6) and
+  their `.crb` includes.
 - Core release: highlighting, completion, instruction/variable hover, signature help, compiler
   diagnostics, definition navigation, references, outline, folding, and include links.
 - Later release: safe rename, richer semantic highlighting, limited formatting and quick fixes.
   Advertise only capabilities with passing acceptance tests.
-- Local analysis only: no flashing, serial access, airtime, or runtime simulation. Compiler
-  agreement establishes static behaviour, not logger execution or sensor correctness.
+- Local analysis only: no logger communication or runtime simulation. Compiler agreement
+  establishes static behaviour, not logger execution or sensor correctness.
 - Do not implement another CRBasic parser or checker in TypeScript. A TextMate grammar may
   describe lexical colouring, but it must not become an independent semantic authority.
-- Do not require complete compiler parity before a useful editor release. Keep known compiler
-  limitations visible and keep their fixes in the compiler workstream. This plan does not change
-  the current scheduling priority in PLAN.md or authorize implementation ahead of that priority.
-- Start with a configured Python interpreter and an installable server extra. A self-contained
-  runtime, other editors, remote hosts, and multi-profile UX require later acceptance rounds.
+- Keep known compiler limitations visible and keep their fixes in the compiler workstream.
+- The server runs from a configured Python interpreter with the installable `lsp` extra. A
+  self-contained runtime, other editors and remote hosts require their own acceptance rounds.
 
 ## Shared Python architecture
 
@@ -55,28 +50,26 @@ opencrbasic analysis facade
   immutable analysis result consumed by CLI and server
 ```
 
-Proposed package layout, created only in the applicable rounds:
+Package layout:
 
 - `src/opencrbasic/analysis.py`: supported facade and analysis request/result contracts.
 - `src/opencrbasic/positions.py`, `bindings.py`, `catalog.py`: shared source mapping, symbol
-  resolution, and instruction metadata, if these warrant separate modules.
+  resolution, and instruction metadata.
 - `src/opencrbasic/lsp/`: protocol and editor scheduling; no language rules.
 - `tests/lsp/`: request transcripts, workspace fixtures, integration and edit-sequence tests.
-- `vscode/`: TypeScript client, grammar, language configuration, extension tests and packaging.
-- `docs/lsp-api.md`: implemented API contracts and extension setup, added as code becomes real.
-- `docs/lsp-rounds/`: round briefs, worker handoffs, reviews, and gate summaries. LSP-00..R7 were
-  removed on 2026-10-27; read them with `git show 2612abad:opencrbasic/docs/lsp-rounds/<file>`.
+- `docs/lsp-api.md`: implemented API contracts and extension setup.
+- The TypeScript client, grammar, language configuration, extension tests and packaging live in
+  [open-crbasic-vsix](https://github.com/UtrechtUniversity/open-crbasic-vsix).
 
 Use the existing opencrbasic uv project for package code and tests, with environments outside
 the repository. Keep compiler installation dependency-free; server protocol dependencies go in
-an optional extra, pinned through uv. Choose a maintained LSP library in round LSP-00 instead of
-writing the JSON-RPC transport. Keep repository orchestration scripts under `../scripts/` and
-its existing uv project. The TypeScript client has its own locked Node dependencies.
+an optional extra, pinned through uv. The transport is a maintained LSP library (pygls), not a
+hand-written JSON-RPC layer. The TypeScript client has its own locked Node dependencies.
 
 ### Analysis facade and compatibility
 
 Introduce a small additive API rather than importing private checker passes into request
-handlers. Proposed contracts, to be finalized and documented in LSP-00/01:
+handlers. Contracts (documented in [docs/lsp-api.md](docs/lsp-api.md)):
 
 - `SourceSnapshot`: canonical document identities, original text, versions/content hashes,
   disk fallback, and unsaved overlays for every included file.
@@ -88,18 +81,17 @@ handlers. Proposed contracts, to be finalized and documented in LSP-00/01:
 - `InstructionCatalog`: instruction/function names and parameter-kind metadata from the same
   `profiles.py` data used by the compiler, plus optional human-readable documentation.
 
-Extract the current driver incrementally. The same driver must retain pass ordering, diagnostic
-suppression, profile-specific reparsing, and compiler options; calling `parse_text()` followed by
-`checker.check()` alone is not an equivalent replacement for `compile_file()`. Characterize
-these differences before extracting code. Make CLI/disk compilation and editor/snapshot
-analysis invoke the shared implementation. Keep signature and artifact work optional for editor
+CLI/disk compilation and editor/snapshot analysis invoke one shared driver, which retains pass
+ordering, diagnostic suppression, profile-specific reparsing, and compiler options; calling
+`parse_text()` followed by `checker.check()` alone is not an equivalent replacement for
+`compile_file()`. Keep signature and artifact work optional for editor
 requests; preserve the existing CLI path and its outputs. Editor analysis must not write message
 files, tables, or temporary source into the workspace.
 
 Preserve original compiler diagnostic text, ordering and exit semantics. Keep rendered CLI
 message-buffer limits separate from the structured collection available to the editor. Expose
 implementation exceptions as analysis failures, not misleading CRBasic syntax errors. Tests
-continue to fail on implementation exceptions. Incremental work must not silently remove
+continue to fail on implementation exceptions. Changes must not silently remove
 checker passes or invent alternate instruction validation.
 
 Document the facade's compatibility version independently from package release versions.
@@ -150,9 +142,8 @@ defined policies, not speculative binding.
 
 ### Editing and workspace model
 
-Configure entry programs rather than checking every `.crb` as a standalone program. The
-repository's Main.CR6 and testers are useful configured entries; discovering a `.crb` alone must
-not create spurious missing-BeginProg errors. Show the selected entry context for shared files.
+Configure entry programs rather than checking every `.crb` as a standalone program; discovering
+a `.crb` alone must not create spurious missing-BeginProg errors. Show the selected entry context for shared files.
 When several entries use a library, maintain separate analysis results and identify their context
 in diagnostics; rename considers all configured affected entries.
 
@@ -162,8 +153,8 @@ configuration, or disk-dependency changes; closing a document restores disk cont
 the whole request identity and all transitive dependency contents, including missing include
 paths that might later appear, not just the entry file's timestamp.
 
-Analyze immutable snapshots away from the protocol event loop. Prefer bounded process workers
-initially for timeout/restart isolation; prototype and measure this in LSP-01. Cancel or discard
+Analyze immutable snapshots away from the protocol event loop, in bounded process workers for
+timeout/restart isolation. Cancel or discard
 superseded work, and publish only results whose complete snapshot is still current. Limit queued
 jobs, file sizes, include depth/cycles, and cache memory with clear failure reporting. Requests,
 cancellation, shutdown, and subsequent edits must remain usable after malformed source or a
@@ -183,11 +174,11 @@ CI. A compiler metadata improvement should need no manual edit to a second instr
 
 Parameter type codes alone do not supply friendly parameter names, complete signatures,
 optionality, or prose. Build a separate documentation provider indexed by catalog identity.
-It may read the local `extracted_chm/` and may copy its text (internal use only, human decision in
-[docs/legal.md](docs/legal.md)).
-Test the importer with permitted minimal fixtures and record provenance. Missing help falls
-back to the metadata actually known. Help-only information does not override checker rules.
-No public packaging is planned ([docs/legal.md](docs/legal.md)). Documentation coverage and compiler-rule coverage are separate measurements.
+It reads a local copy of the extracted help (`extracted_chm/`, `helpDirectory`), which is never
+packaged or committed ([docs/legal.md](docs/legal.md)). Test the importer with permitted minimal
+fixtures and record provenance. Missing help falls back to the metadata actually known.
+Help-only information does not override checker rules. Documentation coverage and compiler-rule
+coverage are separate measurements.
 
 ## Verification and compiler improvements
 
@@ -208,9 +199,7 @@ against the recorded base revision; require no new false rejects, false accepts,
 failures, hangs, or unexplained decreases in agreement. Known oracle faults remain separate from
 language verdicts; a nonzero existing gate needs interpretation, never an automatic pass label.
 
-Finish repository work with `cd scripts && uv run verify.py` as required by AGENTS.md. Record the
-observed BUILD line. The opencrbasic-native alternate gate is additional evidence, not a
-replacement for the reference compiler. Do not claim an unavailable gate passed.
+Do not claim an unavailable gate passed.
 
 Every compiler change affecting an editor feature adds or exercises a bridge regression:
 
@@ -239,7 +228,7 @@ p95 below 100 ms and fresh diagnostics below 500 ms after debounce on normal rep
 these are targets, not observations. Record host, fixture, revision and measurement procedure.
 Correctness, bounded resource use and responsiveness are required even if targets need revision.
 
-For LSP-08, verify a clean install on macOS, Windows and Linux, or explicitly narrow the release
+Verify a clean install on macOS, Windows and Linux, or explicitly narrow the release
 claim to tested hosts. No Wine or reference compiler is needed by the installed language server;
 they remain development oracle dependencies. Protocol and feature implementation follows the
 [LSP 3.17 specification](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/)
@@ -251,5 +240,3 @@ A chunk is **accepted** only after focused checks and its required evidence are 
 is **accepted** only after integration, applicable combined gates and review resolution. A
 capability is **released** only after real protocol and VS Code acceptance, packaging/install
 validation and documentation of its supported contexts.
-
-The round table and the round workflow, usage-limit and session-handoff procedure are in git history: `git show 2612abad:opencrbasic/LSP_PLAN.md`.

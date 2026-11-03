@@ -41,12 +41,10 @@ commands are given so they can be re-run.
 - **`IncludeSection` tolerates (and ignores) a trailing third argument**: found by fuzzing
   (`docs/fuzz-findings.md` "3. False reject"), oracle-confirmed --
   `IncludeSection("Rail", "CPU:BenchLib.crb",(1+2))` compiles exactly as the two-argument form
-  would. `source.py`'s `_INCLUDE_SECTION_RE` used to require the call to end (`\)\s*$`) right
-  after the second quoted string, so a call with a third argument matched nothing at all and fell
-  through to being parsed as an ordinary, meaningless statement -- silently *not* expanding the
-  include. The regex now allows (and discards) `,` followed by anything up to the closing `)`,
-  which handles a parenthesised extra argument (nested parens included) because the match is
-  still anchored on the statement's own trailing `\)\s*$`.
+  would. `source.py`'s `_INCLUDE_SECTION_RE` allows (and discards) `,` followed by anything up
+  to the closing `)` after the second quoted string, which handles a parenthesised extra argument
+  (nested parens included) because the match is anchored on the statement's own trailing
+  `\)\s*$`.
 - **An include inside an included file is an error, `Include` and `IncludeSection` alike**
   (oracle, 2026-10-12, all four loggers, fixture `tests/fixtures/r13_include_nesting.json`, 104
   cases): `Include file within an Include file is illegal.` at the nested statement's line in the

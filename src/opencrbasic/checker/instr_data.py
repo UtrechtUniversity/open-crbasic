@@ -45,13 +45,11 @@ from . import symbols
 # `docs/instructions.md`'s "not independently oracle-confirmed" list for exactly which those are.
 # One more call site exists (the unlabelled string `"Et"`, near the `SampleFieldCal` call site)
 # that could not be attributed to a specific instruction with confidence and is deliberately left
-# out -- AGENTS.md: never guess into a false reject. The other originally-unlabelled string this
-# round found nearby, `"FFT"`, *was* independently confirmed (a fresh scratch probe, `tfft.cr6`,
-# and two CHM corpus files whose `DataTable` bodies contain only `FFT(...)` calls, `fft_1.CR6`/
-# `covspa_1.CR6` -- both were a **false-reject regression** this round's own full difftest re-run
-# caught, from `check_table_structure`'s sibling `Table %s declared with no output fields.` rule
-# below not yet recognising `FFT` as a field producer, before `FFT` was added here too) and is
-# included as `FFT`.
+# out: never guess into a false reject. The other unlabelled string nearby, `"FFT"`, is
+# independently confirmed (a scratch probe, `tfft.cr6`, and two CHM corpus files whose
+# `DataTable` bodies contain only `FFT(...)` calls, `fft_1.CR6`/`covspa_1.CR6`, which compile
+# only when `FFT` also counts as a field producer for `Table %s declared with no output
+# fields.`) and is included as `FFT`.
 TABLE_ONLY_INSTRUCTIONS: dict[str, str] = {
     "CARDOUT": "CardOut",  # checked with the oracle
     "MQTTPUBLISHTABLE": "MQTTPublishTable",

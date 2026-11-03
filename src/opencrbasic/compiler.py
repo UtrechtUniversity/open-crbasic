@@ -156,7 +156,7 @@ class CompileResult:
         # no-line `-u` warning, regardless of which included file declared it, prints before every
         # "table declared but never called" warning). `_no_line_kind` below reproduces that
         # ordering by message shape rather than by which module raised it, so this stays correct
-        # without `checker/warnings.py` (a concurrently-owned module) needing to tag its own
+        # without `checker/warnings.py` needing to tag its own
         # diagnostics; a stable sort keeps each kind's own relative (insertion) order within itself.
         # On one line the reachability warning follows that line's errors (oracle: 15 of 15 corpus
         # and fuzz transcripts); other warnings keep their check order.
