@@ -142,10 +142,8 @@ shown.
 
 ## Terminal / channel model
 
-`checker/terminals.py` + `data/<logger>/terminals.json` replace the CR6-only hard-coded
-`U1..U12`/`[201,212]` check that `checker/instructions.py` used to apply, unconditionally, to every
-logger (a "CR6-hard-coded assumption", item 1: the old code accepted a `profile` argument but never
-used it). All four loggers validate the same four instructions' same argument position (`TCDiff`
+`checker/terminals.py` + `data/<logger>/terminals.json` model the terminals per logger. All four
+loggers validate the same four instructions' same argument position (`TCDiff`
 `DiffChan`, `TCSe` `SEChan`, `VoltSe` `SEChan`, `VoltDiff` `DiffChan`, each the 4th argument --
 `data/<logger>/instructions.json` confirms identical `params` type-code lists across loggers for
 all four), but with different valid ranges, value semantics, and message text:

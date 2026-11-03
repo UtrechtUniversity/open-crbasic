@@ -138,9 +138,9 @@ function_arg_count_classes(profile, provider, names=None) -> tuple[ArgCountRow(n
   type-code count and otherwise returns `matched=False` with a note and placeholder labels
   (`arg1`...): no guessing. Help names never change checker rules; types come from the catalog.
 - Rendering is separate from parsing and returns text; Markdown escapes the help text.
-- Provenance: the help is Campbell Scientific documentation, read from the local directory.
-  Internal use only, so copying it is permitted ([legal.md](legal.md), 2026-10-11); LSP-04a's
-  tests nevertheless use synthetic fixtures (`tests/lsp/fixtures/help/`). The server (LSP-04b) takes the directory from the
+- Provenance: the help is Campbell Scientific documentation, read from a local copy that is never
+  committed or packaged ([legal.md](legal.md)); the tests use synthetic fixtures
+  (`tests/lsp/fixtures/help/`). The server (LSP-04b) takes the directory from the
   setting `opencrbasic.helpDirectory`, default none: no help is shown unless configured.
 - Function coverage (LSP-04c) is a separate report over `profile.functions`. A row is checked only
   when its table has `nargs`: the help parameter count must equal it. Rows with help and no `nargs`
@@ -460,7 +460,7 @@ the disk file for every analysis. When replacement happened the document gets on
   one is in flight discards that job's result and runs once more, unless every such request came
   from a change to a file the result neither read (nor missed) nor could find through a listed
   directory, and not the entry itself: the result is then kept and those requests count as done
-  (LSP-R3c; an unrelated open or edit no longer postpones a first analysis). A result is also
+  (LSP-R3c; an unrelated open or edit does not postpone a first analysis). A result is also
   discarded when an open document it depends on changed version since the snapshot.
 - Jobs run in a spawn-context `ProcessPoolExecutor` (2 workers), at most 2 concurrently, awaited
   from asyncio so the event loop never blocks on analysis.
@@ -962,7 +962,8 @@ declarations(program) -> {UPPER_NAME: [Declaration, ...]}
 
 Not covered, and not observed: rendering in an editor, UTF-16 conversion (the server's job), the
 effect of a stale analysis while typing. Help text is Campbell Scientific documentation shown
-verbatim-reduced (internal use, `docs/legal.md`); help names never change checker rules.
+verbatim-reduced from the user's local copy (`docs/legal.md`); help names never change checker
+rules.
 
 ## Editing features (LSP-03b-core)
 

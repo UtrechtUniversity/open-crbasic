@@ -25,9 +25,8 @@ _TYPE_CODES_PATH = Path(__file__).resolve().parent.parent / "data" / "type_codes
 # separate function (`4`/`16`/`17`/`19` `FUN_004b5db0`, a different failure message). Restricting
 # to this explicit include-list (rather than excluding the handful of kinds known *not* to
 # resolve) is deliberate: the default for an unrecognised kind is "don't check", so a gap in this
-# list only under-reports, never falsely rejects (AGENTS.md's priority order); the `ConstTable`
-# regression this session found during development (`crbasic/Main.CR6`'s
-# `ConstTable(GlobalConfigTable)`, kind `expr_marker`) is the concrete case that shape of bug
+# list only under-reports, never falsely rejects; the station corpus's `Main.CR6`
+# `ConstTable(GlobalConfigTable)` (kind `expr_marker`) is the concrete case that shape of bug
 # looks like.
 _RESOLVED_KINDS = frozenset(
     {
@@ -74,8 +73,7 @@ _CONST_FAMILY_KINDS = frozenset({"const_expr", "const_expr_only", "datatype_kw"}
 # separate `FooBar is not defined.` / `BazQux is not defined.` lines on CR300/CR350, in the source
 # (left-to-right) order `_undefined_names` already walks in. Modelled below as a plain per-logger
 # branch on `profile.name` (both loggers in each pair share identical behaviour, oracle-confirmed
-# side by side) rather than a new `Profile` field, to keep this session's change inside
-# `checker/expressions.py`/`checker/symbols.py` (`PLAN.md`'s ownership split).
+# side by side) rather than a new `Profile` field.
 _WHOLE_EXPR_ECHO_LOGGERS = frozenset({"cr6", "cr1000x"})
 
 # `NAN`/`INF` are accepted as predefined float constants on all four loggers (oracle-confirmed,

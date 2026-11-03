@@ -953,10 +953,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
 
     if not diags.errors:
         # `When Main Sequence Scan %d is running, background calibration will be disabled.`:
-        # round 6, moved here from the unconditional `warnings.check_early` call above -- oracle-
-        # confirmed *not* ungated the way `_check_reachability`/`_check_fnotch` are, unlike this
-        # module's own docstring previously claimed for all of `check_early` (`checker/warnings.py`'s
-        # `check_background_calibration` docstring has the oracle evidence). Independent of
+        # oracle-confirmed *not* ungated the way `_check_reachability`/`_check_fnotch` are
+        # (`checker/warnings.py`'s `check_background_calibration` docstring has the oracle evidence).
+        # Independent of
         # `tables_hook`'s own availability, so called ahead of that guard rather than inside it.
         _run_pass(warnings.check_background_calibration, program, profile, diags, env)
         _run_pass(warnings.check_slow_scan_skips, program, profile, diags, env)

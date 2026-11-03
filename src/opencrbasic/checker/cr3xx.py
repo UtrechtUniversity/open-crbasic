@@ -389,9 +389,8 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
 # `acceptdatarecords_1.CR6`, `SerialOpen (COMC1,...)`'s `COMC1 is not defined.` taints every
 # following two-plus-argument instruction to end of file, `Scan`'s own `Sec` and
 # `AcceptDataRecords`'s own `32769`, despite that finding being **ungated** and thus, in this
-# project's own pass model, skipping tier B -- where the *previous*, narrower version of this
-# function lived -- entirely), this is no longer called from inside the `if not diags.errors:`
-# tier-B block the way `check_expr_cascade` was: `checker/__init__.py` now calls it once,
+# project's own pass model, skipping tier B entirely), this is not called from inside the
+# `if not diags.errors:` tier-B block: `checker/__init__.py` calls it once,
 # unconditionally, after every other diagnostic-producing pass has run, so it can see -- and rewrite
 # -- the complete, final diagnostic list regardless of which tier first tainted the file. It is
 # still a no-op when nothing in the file ever taints (no `_is_cascade_trigger` match and no
@@ -555,7 +554,7 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
     """CR300/CR350 only; a no-op on every other logger and when nothing in the file ever taints
     (see this module's comment above for the oracle evidence and the exact shape implemented).
     Called from `checker/__init__.py` once, unconditionally, after every other pass -- see that
-    comment for why this can no longer be tier-B-only the way `check_expr_cascade` was.
+    comment for why this cannot be tier-B-only.
     """
     if profile.name not in ("cr300", "cr350"):
         return

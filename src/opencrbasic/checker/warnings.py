@@ -405,15 +405,10 @@ def check_background_calibration(program: S.Program, profile: Profile, diags: Di
     `Invalid symbol in expression` error present (`Delay never reached at run time.` alongside it,
     same probe file). A warning-only file (no errors, e.g. a reachability warning with no error
     anywhere) still gets *both* warnings together, confirming this is specifically errors, not "any
-    diagnostic", that gates it. Moved to `checker/__init__.py`'s own final `if not diags.errors:`
-    tier (alongside `warnings.check`/`tables_hook.attach`, the same "only on an otherwise-clean
-    compile" gate already used there) instead of `check_early`'s unconditional call site -- this is
-    the only change; the rule and message above are unchanged. Found as a side effect of developing
-    `instr_rules.check_scan_min_interval` (this round): dozens of pre-existing `false_accept`/
-    `message_diff` fuzz reproducers (`tests/corpus/fuzz/cr6/message_diff/ba333c2ee146.CR6` and
-    siblings) already showed this exact extra, spurious warning line alongside an unrelated real
-    error -- a genuine, previously-undocumented false-accept-shaped bug independent of this round's
-    own `Scan`-interval work, not a regression it introduced.
+    diagnostic", that gates it. It is therefore called from `checker/__init__.py`'s final
+    `if not diags.errors:` tier (alongside `warnings.check`/`tables_hook.attach`), not from
+    `check_early`'s unconditional call site. Fuzz reproducers such as
+    `tests/corpus/fuzz/cr6/message_diff/ba333c2ee146.CR6` cover the gate.
     """
     data = profile.background_calibration
     if not data:

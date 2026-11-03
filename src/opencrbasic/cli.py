@@ -142,7 +142,7 @@ def _message_bytes(lines: list[str]) -> bytes:
     """`lines` joined the way the message file actually wants them: CRLF throughout, except the
     blank line straight after a `-- Compile Failed!` header, which the real exe writes as a bare
     LF (oracle-confirmed on both a plain failing compile and a `-t`/`-b` one, `docs/cli.md`
-    "Message file layout" -- previously assumed to be a uniform CRLF join, which this replaces).
+    "Message file layout").
     """
     if len(lines) >= 2 and lines[1] == "" and lines[0].endswith("Failed!"):
         return (lines[0] + "\r\n\n" + "\r\n".join(lines[2:]) + "\r\n").encode("latin-1", "replace")
