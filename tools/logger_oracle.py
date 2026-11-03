@@ -5,7 +5,7 @@ fixtures record. This sends a sample of fixture cases to a logger attached by US
 each one (File Control 1, which also runs it), and puts the logger's verdict beside the recorded
 one, crbc's, and -- when it is installed -- the PC compiler's own on the same bytes.
 
-    uv run --with ../open-loggernet python tools/logger_oracle.py COM5 cr6 out.jsonl
+    uv run python tools/logger_oracle.py COM5 cr6 out.jsonl
 
 Needs open-loggernet (https://github.com/UtrechtUniversity/open-loggernet) for PakBus. **It
 replaces the logger's program, and so deletes its data tables**: use a bench logger only. Cases

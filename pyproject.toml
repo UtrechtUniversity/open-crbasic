@@ -31,7 +31,8 @@ crbc-lsp = "opencrbasic.lsp.server:main"
 # `uv sync` installs `dev` by default: the test runner and the reverse-engineering tools
 # (`tools/extract_tables.py`, `tools/message_catalog.py` read the exe with pefile), and pygls
 # so the suite can test the language server; pytest-xdist for parallel test runs (`-n`); pyrefly
-# checks the repository (`[tool.pyrefly]`); pre-commit runs ruff and pyrefly before each commit.
+# checks the repository (`[tool.pyrefly]`); pre-commit runs ruff and pyrefly before each commit;
+# openloggernet drives a logger for `tools/logger_oracle.py`.
 dev = [
     "pytest>=8",
     "pefile>=2024.8.26",
@@ -39,6 +40,7 @@ dev = [
     "pytest-xdist>=3.6",
     "pyrefly==1.3.1",
     "pre-commit>=4",
+    "openloggernet>=0.3.0",
 ]
 
 [build-system]
