@@ -121,6 +121,7 @@ lsp = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "openloggernet" },
     { name = "pefile" },
     { name = "pre-commit" },
     { name = "pygls" },
@@ -135,12 +136,25 @@ provides-extras = ["lsp"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "openloggernet", specifier = ">=0.3.0" },
     { name = "pefile", specifier = ">=2024.8.26" },
     { name = "pre-commit", specifier = ">=4" },
     { name = "pygls", specifier = ">=2.1.1,<3" },
     { name = "pyrefly", specifier = "==1.3.1" },
     { name = "pytest", specifier = ">=8" },
     { name = "pytest-xdist", specifier = ">=3.6" },
+]
+
+[[package]]
+name = "openloggernet"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pyserial" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/55/92/3fe26f16810215d6e03e4ad1c1dff4a730ce46793d82744deb4e2b5b6c3c/openloggernet-0.3.0.tar.gz", hash = "sha256:41dbc4276f8eabe519790aca74b6f939701826cbea1acf636e6e295fe16d161f", size = 75403, upload-time = "2026-11-03T15:52:38.402Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9f/71/ba5c4d6e756ece7cec76960caecc60f1fd1295e22069aed03c02588f6675/openloggernet-0.3.0-py3-none-any.whl", hash = "sha256:71717214b7ffe2f826e3f506d47e9083fa30868b4b951e2ccc59c09156c061e0", size = 59077, upload-time = "2026-11-03T15:52:37.174Z" },
 ]
 
 [[package]]
@@ -235,6 +249,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/68/79/d31f8f0abf5b0610ec24183286ee8a1ee5b76c9aaaa91091399d7e1aaf60/pyrefly-1.3.1-py3-none-win32.whl", hash = "sha256:ea0d0349f1bc80fe8e00a7b3640e40db7486398b685f87b9bd5d2207063668f0", size = 14133005, upload-time = "2026-09-15T05:09:25.03Z" },
     { url = "https://files.pythonhosted.org/packages/3f/23/1859f47f536314755d80c4ec2a76d2698435ae8b73604bcd1dfa57ecb39b/pyrefly-1.3.1-py3-none-win_amd64.whl", hash = "sha256:4c24e7d99df9237916c33be23714219a7c8eaf22bad2ac0c3e1d45adcf7df8fb", size = 15066557, upload-time = "2026-09-15T05:09:28.265Z" },
     { url = "https://files.pythonhosted.org/packages/92/2a/73e3721921c2bb2c950a9f8c362ee5e2367556b5d4416eb4f8f88503e66f/pyrefly-1.3.1-py3-none-win_arm64.whl", hash = "sha256:1ed85e2b957a78e93353125d890ce3668ce450e49b74025a15c87b6e8ec7f3d1", size = 14348209, upload-time = "2026-09-15T05:09:31.422Z" },
+]
+
+[[package]]
+name = "pyserial"
+version = "3.5"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/1e/7d/ae3f0a63f41e4d2f6cb66a5b57197850f919f59e558159a4dd3a818f5082/pyserial-3.5.tar.gz", hash = "sha256:3c77e014170dfffbd816e6ffc205e9842efb10be9f58ec16d3e8675b4925cddb", size = 159125, upload-time = "2020-11-23T03:59:15.045Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/07/bc/587a445451b253b285629263eb51c2d8e9bcea4fc97826266d186f96f558/pyserial-3.5-py2.py3-none-any.whl", hash = "sha256:c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0", size = 90585, upload-time = "2020-11-23T03:59:13.41Z" },
 ]
 
 [[package]]
