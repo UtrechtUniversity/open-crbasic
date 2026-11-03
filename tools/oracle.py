@@ -18,7 +18,7 @@ Runner selection:
       otherwise the first of ``$HOME/.local/wine/Wine Devel.app/Contents/Resources/wine/bin/wine``
       (the macOS install documented in openloggernet/README.md) or ``wine`` on PATH is used.
 
-Results are cached in ``opencrbasic/.oracle-cache/<sha256>.json``, keyed by a hash of the compiler
+Results are cached in ``.oracle-cache/<sha256>.json``, keyed by a hash of the compiler
 exe bytes, the program name and bytes, and the sorted (name, bytes) of every sibling file, so a
 corpus re-run only re-invokes the real compiler for programs that actually changed.
 """

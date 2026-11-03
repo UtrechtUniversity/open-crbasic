@@ -1223,7 +1223,7 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
       per-logger difference, not shared with CR300/CR350 (`_SCAN_VALUE_CHECK_LOGGERS`; found the
       same way as `check_scan_params`'s own CR300/CR350 gate, same session).
     - `DataTable interval %d uSec not integrally divisible by scan interval %d uSec.` (function
-      `FUN_004f6540`) -- project knowledge (`knowledge/crbasic/lessons.md` "`DataInterval` versus
+      `FUN_004f6540`) -- project knowledge (open-crbasic-skills `lessons.md` "`DataInterval` versus
       `Scan`": "a table interval must be at least the scan interval and an exact integer multiple
       of it", human-verified against `CR6Comp.exe`), reported at each `CallTable <name>` site whose
       table has a `DataInterval` and which sits directly inside a `Scan...NextScan` block (main

@@ -5,9 +5,8 @@ download. Each item says what to run and what result accepts it. When one is don
 "Done" with the date, host, revision and observed result, and link the saved evidence. Design and
 acceptance criteria: [LSP_PLAN.md](LSP_PLAN.md); live state: [LSP_PROGRESS.md](LSP_PROGRESS.md).
 
-Environment for the Python checks (from `opencrbasic/`): `export
-UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/opencrbasic WINEPREFIX=$HOME/.wine-cr6 WINEDEBUG=-all`,
-`uv sync`.
+Environment for the Python checks (from the repository root): `export WINEPREFIX=$HOME/.wine-cr6
+WINEDEBUG=-all`, `uv sync`.
 
 ## Pending
 
@@ -24,21 +23,20 @@ and the fixture-backed pytest suite only.
 - `uv run --no-sync tools/fuzz_replay.py --json scratch/replay-lsp01.json`: same class counts as
   PROGRESS.md (1,843 exact, 4 false accepts, 0 false rejects, ...).
 - `uv run --no-sync tools/tdftest.py --group all`: unchanged.
-- `cd ../scripts && uv run verify.py` with the real exe: `CRBasic 16/16 compiled`.
 
 ### T-02 VS Code extension launch (LSP-01c/01b)
 
 On macOS (and Windows/Linux when available), VS Code with Python 3.15+ and this checkout:
 
-1. `cd opencrbasic && uv sync` (installs pygls into the dev environment).
-2. `cd vscode && npm ci && npm run compile`.
-3. Open `vscode/` in VS Code, run "Run Extension" (F5) with the extension host opening the
-   repository root; set `opencrbasic.pythonPath` to `$HOME/.uv-envs/opencrbasic/bin/python`.
+1. `uv sync` (installs pygls into the dev environment).
+2. `cd ../open-crbasic-vsix && npm ci && npm run compile`.
+3. Open the open-crbasic-vsix checkout in VS Code, run "Run Extension" (F5) with the extension host
+   opening `tests/corpus/station/`; set `opencrbasic.pythonPath` to this repository's `.venv` interpreter.
 4. Accept when: the "opencrbasic" output channel shows the server's startup line (import path,
-   API version, revision); opening `crbasic/Main.CR6` shows no errors (only the warnings
+   API version, revision); opening `Main.CR6` shows no errors (only the warnings
    `crbc` prints, e.g. `Table Shunt_Data, is declared but never called.`); typing an invalid
    line shows an error on that line after the debounce; undoing it clears it; editing
-   `crbasic/ShuntLib.crb` without saving updates `Main.CR6`'s and the testers' diagnostics;
+   `ShuntLib.crb` without saving updates `Main.CR6`'s and the testers' diagnostics;
    closing the edited file without saving restores the disk diagnostics.
 5. Record the VS Code version, OS, revision and screenshots/log excerpts.
 
@@ -66,8 +64,8 @@ s = "unterminated
 ### T-19 Windows/WSL re-checks after LSP-R6, appended 2026-10-16
 
 Re-check on Windows and Remote-WSL after LSP-R6. Inputs:
-H-11..H-17 and Workspace Trust (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-73479946/RESULTS.md`),
-H-18..H-21 and PanelTemp hover (host record removed in the pre-merge cleanup; `git show 8c359f49:opencrbasic/docs/lsp-rounds/host-tests/2026-10-15-f76901b2-visual/RESULTS.md`).
+H-11..H-17 and Workspace Trust,
+H-18..H-21 and PanelTemp hover.
 The macOS checks of the fixes do not establish Windows/WSL behaviour.
 
 1. **H-11 (Windows):** run the server-marked tests and `tools/lsp_bench.py` with a silent client,
@@ -105,5 +103,3 @@ until VS Code sends `didClose`.
 
 
 ## Done
-
-Accepted host reports, results and amendments (T-04..T-18 and the records of T-01..T-03) are in git history: `git show 2612abad:opencrbasic/LSP_TO_BE_TESTED.md`.

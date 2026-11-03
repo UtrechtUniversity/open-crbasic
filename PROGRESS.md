@@ -16,7 +16,7 @@ state and inspect `git status` before editing.
 Goal, priorities and the v1.0 roadmap: [PLAN.md](PLAN.md#remaining-work-strategy). The human
 decision of 2026-10-24 makes verdict safety, execution mode and the first error the priorities;
 later-diagnostic order and cascades no longer block a release. Previous measurements, round logs
-and superseded handoffs are in git history: `git show 2612abad:opencrbasic/docs/progress-history.md`. Language-server work has
+and superseded handoffs are not kept in this repository. Language-server work has
 its own [plan](LSP_PLAN.md) and [progress ledger](LSP_PROGRESS.md).
 
 ## Current status
@@ -39,7 +39,7 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 | Round-63 fixture audits (`r63_iif_missing_arm.json`, `r36_relevant_seeds.json`) | 168 + 2,414 cases, 0 differing, 0 without verdict; new fixture: 142 passed, 26 strict xfail |
 | Round-65 fixture audit (`r65_*.json`, `var_types.json`) | 648 + 469 cases, 0 differing, 0 without verdict; new fixtures: 644 passed, 4 strict xfail (CR300/CR350 only) |
 | Round-64 fixture audit (`r64_*.json`, `r62_function_syntax.json`) | 548 + 312 cases, 0 differing, 0 without verdict; new fixtures: 422 passed, 126 strict xfail (CR6/CR1000X: 8, all listed) |
-| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 66) | 3,338 inputs: 2,631 exact (round 63: 2,628; round 58: 2,596); CR6/CR1000X: 13 first-error misses (19), 25 false accepts, none in the relevant area; regression gate passes; `tests/replay_baseline.json` not refreshed. Earlier rounds: see git history (`git show 2612abad:opencrbasic/PROGRESS.md`) |
+| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 66) | 3,338 inputs: 2,631 exact (round 63: 2,628; round 58: 2,596); CR6/CR1000X: 13 first-error misses (19), 25 false accepts, none in the relevant area; regression gate passes; `tests/replay_baseline.json` not refreshed. |
 | GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 66) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
 | Fresh fuzz, seeds 469/470 (round 65, `--relevant`, 1,000 each, run on the round-65 code) | No false accept, false reject, mode difference, crash, hang or implementation exception (one warning-only row). First-error differences are fuzz arguments, token splits, two-edit inputs or outside the set, except `6b414530e683` (a swapped `IncludeSection`), fixed in round 66 ([review](docs/first-error-review.md#round-65-fresh-inputs)). Raw output in `scratch/r65/` |
 | Fresh fuzz, seeds 465/466 and 467/468 (round 64, `--relevant`, 1,000 each, CR6 odd / CR1000X even) | 465/466: 1 false accept (fixed), 31 message differences ([review](docs/first-error-review.md#round-64-fresh-inputs-and-round-60-classification)). 467/468, run after the round-64 fixes: 2 false accepts (`FTPClient` PutGetOption, `GetRecord` destination size), fixed in round 65; no mode difference (three warning-only rows). Raw output in `scratch/r64/` |
@@ -614,8 +614,7 @@ shrinking; one session).
 
 Rounds 49 and 50 (PipeLine Mode placement of further task instructions, fixture
 `tests/fixtures/r49_pipeline_task_instructions.json`, 868 observations) and all earlier round
-logs, review fixes and local maintenance queues are in git history
-(`git show 2612abad:opencrbasic/PROGRESS.md`). Rules are in
+logs, review fixes and local maintenance queues are not kept in this repository. Rules are in
 [task instructions in PipeLine Mode](docs/checker.md#task-instructions-in-pipeline-mode).
 
 ## Next steps
@@ -629,7 +628,7 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    - CR6 and CR1000X gate v1.0; CR300/CR350 are best effort;
    - the GEUS programs may be compiled as a corpus (`AGENTS.md` updated);
    - the `Status` lesson was corrected after the old observation could not be reproduced
-     ([lessons](../knowledge/crbasic/lessons.md#status-names-are-compile-checked));
+     ([lessons](https://github.com/UtrechtUniversity/open-crbasic-skills/blob/main/plugins/crbasic/skills/crbasic/references/lessons.md#status-names-are-compile-checked));
    - an `--strict` error for aliases named after CRBasic names (`OCB001`, round 33).
 3. **M3: done (round 70).** Checks `OCB001`-`OCB007` ship with the framework (codes, severities,
    `opencrbasic.toml`, `--strict`, `--report`, `CompileResult.findings`). Remaining PLAN candidates
@@ -678,15 +677,14 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    post-1.0: per-profile TDF Status tables, the open first-error candidates (item 6), host tests of
    the M6 editor display.
 11. The old next-step items (Const diagnostics, interval gaps, table metadata, artifact refresh)
-   are kept in the round-30 snapshot in `git show 2612abad:opencrbasic/docs/progress-history.md`.
+   are not kept in this repository.
    Re-rank each under the fix, flag or accept rule before working on it.
 
 ## Environment setup
 
-Run package tools from `opencrbasic/`, using its external uv environment:
+Run package tools from the repository root:
 
 ```bash
-export UV_PROJECT_ENVIRONMENT="$HOME/.uv-envs/opencrbasic"
 export PYTHONPATH="$PWD/src"
 uv sync
 ```
@@ -694,7 +692,7 @@ uv sync
 Python 3.15+ is required. The explicit `PYTHONPATH` also keeps
 worktree runs from importing the main checkout through the shared editable installation.
 
-The current macOS Wine setup is documented in [openloggernet/README.md](../openloggernet/README.md#compiling-on-macos).
+The current macOS Wine setup is documented in the open-loggernet README ("Compiling on macOS").
 The oracle uses `~/.wine-cr6`, `WINEDEBUG=-all`, and defaults to disabling GUI drivers through
 `WINEDLLOVERRIDES=winemac.drv,winex11.drv,winewayland.drv=d`; explicit overrides are preserved.
 For a new prefix, disable crash dialogs once:
@@ -719,7 +717,7 @@ Old scratch briefs, research notes and timing helpers mentioned in history may b
 
 ## Work method
 
-Follow [repository instructions](../AGENTS.md) and the current human request. Rounds 29–31 (human
+Follow [repository instructions](AGENTS.md) and the current human request. Rounds 29–31 (human
 instruction 2026-10-22) used Claude subagents for implementation and Codex `gpt-6.1-sol` for
 read-only decompilation research and review, run with the ChatGPT app's bundled CLI
 (`/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex exec
@@ -735,8 +733,6 @@ code informs the rules and is never pasted into `src/`.
 Run focused checks immediately, then the full pytest and server suites, four-profile differential
 comparison, saved replay and relevant artifact/fixture audits. Compare against a baseline;
 never prune reproducers just to improve agreement. Retry transient runner failures separately.
-Finish with `cd ../scripts && uv run verify.py` using the scripts environment
-`UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/scripts`.
 
 Keep heavy validation runs bounded and avoid overlapping them. Do not kill validation process
 trees: prior forced termination exhausted macOS multiprocessing semaphores. Before another

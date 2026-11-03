@@ -6,7 +6,7 @@
 
 The Markdown report goes to stdout, progress to stderr, the full data to `--json`. Measured:
 
-- cold analysis: `analysis.analyze` on each `../crbasic/*.CR6`, first call in a fresh child process
+- cold analysis: `analysis.analyze` on each `tests/corpus/station/*.CR6`, first call in a fresh child process
   (imports are excluded; catalog and table loads inside the first call are included);
 - warm analysis: p50/p95 over `--warm-runs` calls per program after one untimed call;
 - warm editor operations at deterministic positions of `Main.CR6`: completion, hover, signature
@@ -22,7 +22,7 @@ The Markdown report goes to stdout, progress to stderr, the full data to `--json
 
 Nothing is asserted against the targets in LSP_PLAN.md; the report only compares. Timings are
 wall-clock on whatever host runs the tool and are recorded with the host's load average and CPU
-count. Percentiles are nearest-rank. Procedure: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-08.md`.
+count. Percentiles are nearest-rank.
 """
 
 import argparse
@@ -41,7 +41,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parent  # opencrbasic/
+ROOT = HERE.parent  # the repository root
 REPO = ROOT  # the worktree (or checkout) root
 CRBASIC = REPO / "tests" / "corpus" / "station"
 MAIN = (CRBASIC / "Main.CR6").absolute()
@@ -63,7 +63,7 @@ SERVER_FAST = {"analysisTimeoutMs": 60000}
 
 @dataclass(frozen=True)
 class Config:
-    programs: tuple[Path, ...] = ()  # empty: every ../crbasic/*.CR6
+    programs: tuple[Path, ...] = ()  # empty: every tests/corpus/station/*.CR6
     cold_repeats: int = 3
     warm_runs: int = 10
     positions: int = 50

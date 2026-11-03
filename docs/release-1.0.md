@@ -38,7 +38,7 @@ Tag `opencrbasic-v1.0.0` (local, annotated) on the commit that adds this file; i
 | `uv.lock` | `c17ea90da44c9b9fa5236c3a4a49471a4cebe4832abf9695bbf474affbbd8b7c` |
 | `vscode/package-lock.json` | `6119e59f90f6096f8ce1df730ffec58d34b82e744c69113e3e3e644bfbb4fc75` |
 
-## Commands and results (2026-10-31, from `opencrbasic/` unless noted)
+## Commands and results (2026-10-31, from the repository root unless noted)
 
 | Command | Result |
 |---|---|
@@ -54,7 +54,6 @@ Tag `opencrbasic-v1.0.0` (local, annotated) on the commit that adds this file; i
 | `uv run python tools/timingtest.py --group all` | CR6: repository 20/20, help examples 506/507 (`pointervariable_2` is a reference crash) |
 | `uv run --no-sync python tools/lsp_install_check.py` | 15 of 15 checks passed (wheel and sdist, `crbc` and `crbc-lsp` from a fresh install, core install without `pygls`; `scratch/m7/install.log`) |
 | `npm ci` (in `vscode/`), `uv run --no-sync python tools/vsix_check.py` | 11 of 11 checks passed (`scratch/m7/vsix.log`); `npm audit` reports 6 vulnerabilities (4 moderate, 2 high) in the client's dependency tree, not changed (`scratch/m7/npm-audit.log`, full output) |
-| `cd ../scripts && uv run verify.py`, also with `CR6COMP=opencrbasic` | `BUILD  Pyrefly 514 files pass \| host tests 159 pass \| CRBasic 21/21 compiled, 6 warning(s) \| repository pass` (both) |
 
 No hardware tests: compilation and these comparisons do not establish logger runtime behaviour.
 

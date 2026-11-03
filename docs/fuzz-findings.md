@@ -14,7 +14,6 @@ python3 tools/fuzz_replay.py                # re-check every saved reproducer
 python3 tools/fuzz_replay.py --logger cr350 tests/corpus/fuzz/cr350/hang/*.CR6
 ```
 
-The first-pass counts and the per-round fuzz logs after round 9 are in git history: `git show 2612abad:opencrbasic/docs/fuzz-findings.md`.
 Current counts and classes come from a fresh `tools/fuzz_replay.py` report; the saved reproducers
 under `tests/corpus/fuzz/` stay.
 

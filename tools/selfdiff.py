@@ -7,7 +7,7 @@
 Unlike `tools/difftest.py`, this needs no reference compiler: it checks that a refactor leaves
 every observable `crbc` output unchanged. Each case runs the CLI in-process twice:
 `-s -t -z TDF -l LIST -p PRE <file> <msgfile>` and `-u -i PRE <file> <msgfile>`, recording exit
-status, stdout, and the bytes of every written file. Cases: `../crbasic/*.CR6` and
+status, stdout, and the bytes of every written file. Cases: `tests/corpus/station/*.CR6` and
 `tests/corpus/chm/*.CR6` on all four loggers, and every fuzz reproducer on its own logger.
 
 It establishes output equivalence of two opencrbasic revisions only, never agreement with the

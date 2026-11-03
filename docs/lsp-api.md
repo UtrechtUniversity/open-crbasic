@@ -1,7 +1,6 @@
 # Language-server API
 
-Contracts for editor tooling on top of the compiler. Specification history: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-00.md`
-("Contracts for LSP-01"). The server section is "Language server (LSP-01)" below.
+Contracts for editor tooling on top of the compiler. The server section is "Language server (LSP-01)" below.
 
 ## Analysis facade (API_VERSION 2)
 
@@ -149,12 +148,8 @@ function_arg_count_classes(profile, provider, names=None) -> tuple[ArgCountRow(n
 - Argument-count classes (LSP-04d): `function_arg_count_classes` lists the functions whose help count
   differs from `nargs` as `packing_cap` (`nargs` 6, the 16-bit `argspec` maximum), `optional_tail`
   (help required count equals `nargs`) or `other`. It is a classification only. Signature help uses help names only where the checker's
-  accepted-count tables support them (LSP-04e, see Hover); otherwise `argN`. Evidence and the decision are in
-  `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-04d-handoff.md`.
-- Coverage (observed, CR6 catalog against the local `extracted_chm/`): see
-  `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-04a-handoff.md` and, after the 2026-10-11 rules,
-  `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-04a-rules-handoff.md`. Documentation coverage is not
-  compiler-rule coverage.
+  accepted-count tables support them (LSP-04e, see Hover); otherwise `argN`.
+- Documentation coverage is not compiler-rule coverage.
 
 ## Instruction catalog (LSP-03a)
 
@@ -212,7 +207,8 @@ only knows `'`), so it is not highlighted as one.
 
 ### Generated TextMate grammar
 
-`tools/gen_grammar.py` writes `vscode/syntaxes/crbasic.tmLanguage.json` (scope `source.crbasic`)
+`tools/gen_grammar.py` writes `syntaxes/crbasic.tmLanguage.json` of the open-crbasic-vsix checkout next to
+this one (scope `source.crbasic`)
 from the CR6 catalog and the lexer's operator list. Patterns, in match order: comment (`'` to end
 of line), string (`"` with `""`), directive, number (decimal, `.5`, exponent, `R` suffix, `&H`,
 `&B`), keyword, word operator, instruction (`support.function.instruction.crbasic`), builtin
@@ -223,7 +219,6 @@ operator. A name that is in several kinds takes the first of that order. Every r
 trailing newline.
 
 ```bash
-cd opencrbasic
 uv run --no-sync python tools/gen_grammar.py           # regenerate
 uv run --no-sync python tools/gen_grammar.py --check   # exit 1 when the committed file is stale
 ```
@@ -238,7 +233,7 @@ intended text under Python `re`; it does not prove how VS Code renders the gramm
 
 `opencrbasic.positions` (LSP-02a) maps what the compiler reports back to the physical files. It is
 read-only over provenance the loader records; no compiler output changed (`tools/selfdiff.py
---compare` 0 differ). Brief and criteria: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-02.md`.
+--compare` 0 differ).
 
 ### Recorded provenance
 
@@ -332,7 +327,7 @@ LSP types; imports lsprotocol), `config.py`, `worker.py` (the pool job; imports 
 ### Launch
 
 `python -m opencrbasic.lsp` (or the `crbc-lsp` script, `opencrbasic.lsp.server:main`), stdio
-transport. With the editable install in a git worktree, set `PYTHONPATH=<worktree>/opencrbasic/src`
+transport. With the editable install in a git worktree, set `PYTHONPATH=<worktree>/src`
 or the main checkout is imported. First stderr line:
 
 ```
@@ -384,7 +379,7 @@ Keys (defaults in `config.py` follow LSP-00 "Configured entries"): `entries` (`[
 `exclude` (`[]`), `logger` (`"cr6"`), `encoding` (`"utf-8"`), `debounceMs` (300),
 `analysisTimeoutMs` (10000), `maxFileBytes` (2097152), `maxQueuedJobs` (64), `maxCacheMb` (256) ("Workspace (LSP-06a)"), `checks` (`{}`: a severity per check code, `error`/`warning`/`info`/`off`, above `opencrbasic.toml`; an invalid map is ignored with a log line), `coverageNotices` (`false`), `helpDirectory` (`""`: no help text), `inlayHints.parameterNames` (`true`; a nested object `{"inlayHints": {"parameterNames": false}}` or the flat key; "Inlay hints and commands (LSP-09c)") and `featureWaitMs` (1500, see
 "Language features"). The VS Code extension contributes every key except `featureWaitMs`, with the
-same defaults (`vscode/package.json`, checked by `test_vscode_contributes_server_tuning_keys`);
+same defaults (open-crbasic-vsix `package.json`, checked by `test_vscode_contributes_server_tuning_keys`);
 `featureWaitMs` is internal and set only by a client that sends it. Sources, in order: `initializationOptions`, then, when the client
 declares `workspace.configuration`, a `workspace/configuration` request for section `opencrbasic`
 (after `initialized` and on every `workspace/didChangeConfiguration`; a pulled value overrides the
@@ -542,8 +537,7 @@ with `tests/lsp/lspclient.py`.
 
 `lsp/features.py` turns the core modules' answers into LSP types (a synchronous adapter that runs in
 a worker thread via `asyncio.to_thread`); `lsp/server.py` registers the handlers; `lsp/session.py`
-supplies the program. No CRBasic rule is in `lsp/`. Handoff with the measurements and the host
-checklist: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-wire-handoff.md`.
+supplies the program. No CRBasic rule is in `lsp/`.
 
 **Where the program comes from (option b).** The analysis job in the worker pool also returns the
 parsed program pickled (`JobResult.program`, about 0.5 MB for `Main.CR6`, about 30 ms to pickle).
@@ -633,8 +627,7 @@ an empty prefix returns every catalog name (about a thousand items).
 
 `lsp/server.py` (handlers), `lsp/features.py` (conversion to LSP types), `lsp/session.py`
 (`entries_reading`, `current`, `unknown_entries`, `fresh_contributors`). No CRBasic rule is in
-`lsp/`: the cores are `rename.py`, `formatting.py` and `quickfix.py`. Handoff and host-test list:
-`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-07-wire-handoff.md`.
+`lsp/`: the cores are `rename.py`, `formatting.py` and `quickfix.py`.
 
 **Inputs.** `Analysed` now also keeps the job's `reads` (path to sha256), the raw diagnostics and
 `ok`/`failures`, and `build()` returns them in the rebuilt `AnalysisResult` (`dependencies.reads`,
@@ -684,7 +677,7 @@ edits outside the requested file are dropped.
 
 ### Inlay hints and commands (LSP-09c)
 
-Handoff: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-09c-handoff.md`. The cores are "Inlay hints (LSP-09a)"
+The cores are "Inlay hints (LSP-09a)"
 and "Commands (LSP-09b)"; the adapter adds no CRBasic rule.
 
 **`textDocument/inlayHint`.** Answers from `inlay.parameter_hints` over the whole file, computed once per
@@ -734,8 +727,7 @@ active CRBasic file; running the command again refreshes it.
 
 `opencrbasic.bindings` is a read-only index over the parsed program: every declaration, every name
 use, and the declarations each use resolves to. Nothing in the compiler or the checkers calls it,
-so compiler acceptance is unchanged (`tools/selfdiff.py`: 0 differ). Handoff with the observed
-corpus counts: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-05a-handoff.md`.
+so compiler acceptance is unchanged (`tools/selfdiff.py`: 0 differ).
 
 ```python
 ix = bindings.build(result.program, "cr6")  # AnalysisResult.program, or parser.parse_file()[0]
@@ -787,7 +779,7 @@ statement, resolved to the catalog).
 | Policy | Evidence |
 |---|---|
 | Resolution is case-insensitive on AST names; the declared spelling is kept. | `symbols.py` upper-cases every lookup. |
-| Outside a routine, `Public`/`Dim`/`Const`, `Sub`/`Function`, `Alias`, tables and structure types are global. A routine is the span from a `Sub`/`Function` statement to `EndSub`/`EndFunction` or the two-word `End Sub`/`End Function` (`bindings.closes_routine`, shared with hover; LSP-R1 finding 1). | `symbols.scoped_view` (`docs/checker.md` "Scope-aware lookups and statement identity (round 8)"; `tests/test_scope_shadow.py`). The compiler's `scoped_view` tests only the one-word closers; see `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-R1-handoff.md`. |
+| Outside a routine, `Public`/`Dim`/`Const`, `Sub`/`Function`, `Alias`, tables and structure types are global. A routine is the span from a `Sub`/`Function` statement to `EndSub`/`EndFunction` or the two-word `End Sub`/`End Function` (`bindings.closes_routine`, shared with hover; LSP-R1 finding 1). | `symbols.scoped_view` (`docs/checker.md` "Scope-aware lookups and statement identity (round 8)"; `tests/test_scope_shadow.py`). The compiler's `scoped_view` tests only the one-word closers. |
 | `Dim`, `Const` and parameters inside a routine are local and win over a global of the same name; the same parameter name in two routines is two declarations. | `docs/checker.md` ("`Sub` parameters and `Dim`s inside a `Sub`/`Function` may shadow"); `tests/fixtures/const_shadow_sub.json` and `sub_param_const.json` (a parameter named like a `Const` declared after the Sub is local). |
 | A local that shadows a global `Const` declared earlier is a compile error the index does not model; the local still wins. | `const_shadow_sub.json`. |
 | `Sub`/`Function` names are global and order-free (forward references resolve). Variables and constants are also resolved order-free, but `Reference.forward` is true when every candidate is declared in a later statement. | `symbols.declared_subs` (whole program); order for variables is unverified (`declared_names` "deliberately global"), hence the flag. |
@@ -796,7 +788,7 @@ statement, resolved to the catalog).
 | Two or more global candidates stay `ambiguous` with a reason: duplicate declarations (the compiler rejects them), the same include used twice, or a table sharing a variable's spelling. | `tests/fixtures/routine_names.json` (duplicate Sub, variable/Function clash). The vendor sample `avgrun_1.CR6` declares `Public TCTemp` and `DataTable (TCTemp,...)`; whether the namespaces are separate is not established here, so no choice is made. |
 | `Table.Field` of a user `DataTable`: resolves to the `field` declaration of that table (see "Table fields"). `Public.X` resolves to a global `Public`/`Alias` of that name (inference from the Public table's contents, not oracle-tested). `ConstTable.Name` resolves to the `Const` inside that table. | `symbols.system_table_names`, `const_table_fields`; `tests/fixtures/table_members_scope.json`; field names come from `tables.py`. |
 | Structure members resolve through the base variable's declared type (also through nested members); an unknown member is `unresolved`. | `checker/structs.py` model (`_structure_members`, `_member_chain`). |
-| Predefined targets: names the catalog has (symbols, functions, instructions, per profile), plus `NAN` and `INF`, are `external` declarations (`index == -1`, shared per entry). Instruction keywords resolve to the catalog instruction, and a token the parser made an instruction (`instruction` role) never resolves to a user declaration of the same spelling (LSP-R1 finding 2). | `catalog.py`; `checker/expressions._EXTRA_PREDEFINED_SYMBOLS`; the parser's `S.Instruction` classification (`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-R1-handoff.md`). |
+| Predefined targets: names the catalog has (symbols, functions, instructions, per profile), plus `NAN` and `INF`, are `external` declarations (`index == -1`, shared per entry). Instruction keywords resolve to the catalog instruction, and a token the parser made an instruction (`instruction` role) never resolves to a user declaration of the same spelling (LSP-R1 finding 2). | `catalog.py`; `checker/expressions._EXTRA_PREDEFINED_SYMBOLS`; the parser's `S.Instruction` classification. |
 | `Alias A(1) = N1, N2`: each right-hand name is an `alias` declaration with `alias_target` = the reference of `A`; `Units V = label`: `V` is a `units_target` reference. | `parser._parse_alias`, `_parse_units_segment`. |
 
 ### Inactive code, strings, includes
@@ -881,8 +873,7 @@ to the fields of the table's declaration.
 
 `opencrbasic.hover` is the protocol-independent logic behind hover and signature help (pure
 functions and frozen dataclasses; no pygls). Positions in and out are physical: 0-based line and
-decoded-character column, as in "Source positions"; the server converts encodings. Brief:
-`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-04.md`; handoff: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-04b-core-handoff.md`.
+decoded-character column, as in "Source positions"; the server converts encodings.
 
 ```python
 call_context(text, line, column) -> CallContext(name, active, line, column) | None
@@ -969,8 +960,7 @@ rules.
 
 `opencrbasic.editing` holds the logic behind the outline, folding, document links and completion.
 It is pure Python (no pygls), changes no compiler module (`tools/selfdiff.py --compare` 0 differ)
-and is wired to the protocol by LSP-03b-wire. Brief and criteria: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-03.md`;
-hand-off notes: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-03b-core-handoff.md`.
+and is wired to the protocol by LSP-03b-wire.
 
 ### Ranges
 
@@ -1089,7 +1079,7 @@ walk with a caller-built list. Program names sort before catalog names, then cas
 LSP-03c: at most `editing.COMPLETION_LIMIT` (200) items are returned, program names first, so the
 list is the first 200 of the complete order. `is_incomplete` is True when more matched; the server
 must then send `CompletionList.isIncomplete = true` so the client re-asks as the prefix grows (the
-current `lsp/features.py` sends `False`; see `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-03c-handoff.md`). The cap applies
+current `lsp/features.py` sends `False`). The cap applies
 to member lists too. The catalog's completion items are built once per profile (`_catalog_items`,
 cached; the items are immutable), not per call.
 
@@ -1097,8 +1087,7 @@ LSP-03d: the routine-scope scan (`_scan`, the block scan of the whole buffer tha
 find the current Sub / Function, and folding uses) is cached in a bounded LRU of 8 entries
 (`_SCAN_CACHE_SIZE`), keyed by `(text, profile)`; the key is the text itself, so a hit is exact. It
 returns a tuple. `_scan.__wrapped__` is the uncached function. A call on a buffer already scanned
-skips the scan: on `Main.CR6` the completion call drops from about 16 ms to about 2.4 ms (p50, see
-`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-03d-handoff.md`). A changed buffer is a miss and costs what it did before. The
+skips the scan: on `Main.CR6` the completion call drops from about 16 ms to about 2.4 ms (p50). A changed buffer is a miss and costs what it did before. The
 cache changes no result: `test_completion_on_main_cr6_cached_equals_uncached` compares every line
 of `Main.CR6` through the cache and through the uncached scan.
 
@@ -1119,7 +1108,6 @@ references, document highlights and semantic tokens (no pygls). It reads an `Ana
 the binding index ("Binding index (LSP-05a)"); it changes no compiler output. Positions in and out
 are physical: 0-based line and decoded-character column (a byte offset into the line, "Source
 positions"); the server converts to the client's position encoding with `positions.lsp_position`.
-Handoff: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-05b-core-handoff.md`.
 
 ```python
 definition(result, path, line, col, *, index=None)                  -> [Location]
@@ -1243,7 +1231,7 @@ table field-level references, references through a stale AST while typing.
 
 `opencrbasic.inlay` is the protocol-independent logic behind parameter-name inlay hints (no pygls).
 Positions are physical: 0-based line and decoded-character column ("Source positions"); the server
-converts encodings. Handoff: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-09a-handoff.md`.
+converts encodings.
 
 ```python
 parameter_hints(result, path, start_line, end_line, profile, help_provider) -> [InlayHint]
@@ -1277,8 +1265,7 @@ InlayHint(line, column, label, kind="parameter", padding_right=True)
 
 `opencrbasic.formatting` is the protocol-independent indentation formatter (no pygls, no other
 module changed). It imports `editing`'s private `_roles`, `_classify`, `_block_events` and
-`_tolerant_tokens`, so the block structure is the one folding and the outline use. Brief:
-`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-07.md`; evidence and counts: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-07b-handoff.md`.
+`_tolerant_tokens`, so the block structure is the one folding and the outline use.
 
 | Function | Result |
 |---|---|
@@ -1327,8 +1314,7 @@ separate statements.
 
 `opencrbasic.quickfix` is the protocol-independent core of quick fixes (no pygls; server wiring is
 a separate chunk). It imports `bindings` (resolution, `lookup`), `navigation` (exact token ranges;
-it reads `Navigation._site_of`, a private mapping) and `catalog`. Brief:
-`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-07.md`; handoff: `git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-07c-handoff.md`.
+it reads `Navigation._site_of`, a private mapping) and `catalog`.
 
 ```python
 quickfix.code_actions(result, path, diagnostic, profile, *, index=None, source=None) -> list[CodeAction]
@@ -1406,8 +1392,7 @@ for misspelled names. Names with a path separator get nothing.
 edits are the declaration's range plus the range of every reference that resolves to it, in every
 entry. No source text is searched to find occurrences. Positions in and out are physical, a 0-based
 line and a decoded-character column (a byte offset into the line, "Source positions"); the server
-converts to the client's encoding. Handoff with the observed sweep counts:
-`git show 2612abad:opencrbasic/docs/lsp-rounds/LSP-07a-handoff.md`.
+converts to the client's encoding.
 
 ```python
 prepare_rename(results, path, line, column, source=None)            -> PrepareResult(ok, refusal, path, line, start, end, placeholder, files)
@@ -1547,13 +1532,12 @@ render_table_fields(tables) -> str          # Markdown
   raises. It imports `tables.build_tables` and its private `_seconds_to_display` and reads the
   private `_interval_display` attribute that `render_table_list` also reads.
 - Tests: `tests/lsp/test_commands.py` (stdout equality with in-process `cli.main` on temp copies
-  for all `../crbasic/*.CR6`, every 25th CHM sample, an unsaved overlay and an overlay-only entry;
-  table names, fields, units and processing equal to `build_tables` for `../crbasic/`).
+  for all `tests/corpus/station/*.CR6`, every 25th CHM sample, an unsaved overlay and an overlay-only entry;
+  table names, fields, units and processing equal to `build_tables` for `tests/corpus/station/`).
 
 ## Test tiers (LSP-08d)
 
-Environment for every command, from `opencrbasic/`: `export UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/opencrbasic PYTHONPATH=$PWD/src`
-(and `uv run --no-sync`). `pytest-xdist` is in the dev group; `-n 4` runs four workers, and
+Run every command from the repository root with `uv run`. `pytest-xdist` is in the dev group; `-n 4` runs four workers, and
 `OPENCRBASIC_STRICT=1` is set by `tests/conftest.py` in every one of them
 (`tests/lsp/test_strict_mode.py` fails otherwise).
 
@@ -1570,7 +1554,7 @@ error. `server` is a module-level mark on the subprocess test files; the server 
 `tmp_path` and a private process each, so they run in parallel.
 
 `tests/lsp/conftest.py` provides `memo_analyze`: a per-process memoised `analyze()` for unmodified
-repository sources (`crbasic/`, `tests/corpus/`). The cache key is the request (entry, logger,
+repository sources (`tests/corpus/`). The cache key is the request (entry, logger,
 `warn_unused`, `signature`); a hit is returned only while every file and directory listing the
 stored result depends on still has the hash it was computed from. It raises for overlays and for
 paths outside the repository sources, so tests that write or overlay files cannot use it. The
@@ -1578,7 +1562,7 @@ returned result is shared: tests must not mutate it.
 
 `tools/lsp_gate.py [--base REV] [--run]` prints (or runs) the gates a change needs, from
 `git diff --name-only <base>...HEAD` plus the working tree: compiler or unclassified files -> full
-suite and selfdiff; LSP-only files -> selfdiff and `tests/lsp`; `vscode/**` -> `npm test`; files in
+suite and selfdiff; LSP-only files -> selfdiff and `tests/lsp`; files in
 `[tool.pyrefly].project-includes` or `pyproject.toml` -> `pyrefly check`; documentation only -> a
 relative-link check (`--check-links FILE...`) of the changed Markdown files only: evidence assets under
 `docs/` (images, JSON, logs) are documentation but are not passed to the link reader (LSP-R5b). Its

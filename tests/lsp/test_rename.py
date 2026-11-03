@@ -1,7 +1,7 @@
 """LSP-07a: protocol-independent rename (`opencrbasic.rename`). Policies:
 docs/lsp-api.md "Rename (LSP-07a)".
 
-The semantic-preservation sweep renames program-declared names of `../crbasic` to fresh names in
+The semantic-preservation sweep renames program-declared names of `tests/corpus/station/` to fresh names in
 tmp copies, compiles the affected entries and compares them with the unrenamed compile. By default
 a stride sample runs; `RENAME_SWEEP=full` runs every declaration and prints the counts."""
 
@@ -625,7 +625,7 @@ def _same_facts(base: dict, new: dict, old_name: str, new_name: str) -> list[str
 
 
 def sweep(stride: int = 1, offset: int = 0, verbose: bool = False, workdir: Path | None = None):
-    """Rename every `stride`-th program-declared name of `../crbasic/*.CR6` (and the libraries
+    """Rename every `stride`-th program-declared name of `tests/corpus/station/*.CR6` (and the libraries
     they include) and compile the affected entries. Returns (accepted, refused Counter, problems)."""
     work = workdir
     assert work is not None
