@@ -12,7 +12,7 @@ from opencrbasic import quickfix as Q
 from opencrbasic.analysis import AnalysisRequest, analyze
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "station").resolve()
 
 HEAD = "Public Temp, Humidity\nConst Kfoo = 5\nSub DoThing(p As Long)\n  Temp = p\nEndSub\n"
 

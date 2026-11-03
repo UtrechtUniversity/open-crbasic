@@ -35,7 +35,7 @@ import oracle  # noqa: E402
 from opencrbasic import profiles  # noqa: E402
 
 CACHE = oracle.CACHE_DIR / "matrix"
-CRBASIC = ROOT / "tests" / "corpus" / "firnmelt"
+CRBASIC = ROOT / "tests" / "corpus" / "station"
 CHM = ROOT / "tests" / "corpus" / "chm"
 # option set -> arguments; `P` is the program
 OPTIONS = {

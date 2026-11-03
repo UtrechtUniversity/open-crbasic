@@ -18,7 +18,7 @@ import opencrbasic  # noqa: E402
 from opencrbasic import analysis, checks, profiles  # noqa: E402
 
 CORPORA = {
-    "crbasic (repository programs)": (REPO / "tests" / "corpus" / "firnmelt", ("*.CR6", "*.crb", "*.csv")),
+    "crbasic (repository programs)": (REPO / "tests" / "corpus" / "station", ("*.CR6", "*.crb", "*.csv")),
     "CRBasic help examples": (ROOT / "tests" / "corpus" / "chm", ("*.CR6",)),
     "GEUS programs": (REPO / "examples" / "Logger Programs", ("**/*",)),
     "fuzz replay reproducers": (ROOT / "tests" / "corpus" / "fuzz", ("**/*",)),

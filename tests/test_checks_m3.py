@@ -23,9 +23,9 @@ def test_check_evidence(case, tmp_path):
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x"])
-def test_firnmelt_programs_have_no_findings(logger):
+def test_station_programs_have_no_findings(logger):
     """Each firing on `crbasic/` programs is fixed or justified (PLAN M3): there are none."""
-    root = Path(__file__).resolve().parents[1] / "tests" / "corpus" / "firnmelt"
+    root = Path(__file__).resolve().parents[1] / "tests" / "corpus" / "station"
     for path in sorted(root.glob("*.CR6")):
         result = compile_file(path, profiles.get(logger), display_name=path.name, provenance=False)
         if result.ok:

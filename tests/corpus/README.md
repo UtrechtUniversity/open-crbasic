@@ -2,8 +2,8 @@
 
 | Directory | Contents | In git |
 |---|---|---|
-| `firnmelt/` | The FirnMelt station programs and libraries, a snapshot of `crbasic/` in [firnmelt-station](https://github.com/UtrechtUniversity/firnmelt-station) at monorepo commit `bd4c30c1` (2026-11-01). Tests pin results to these exact files, so refresh them only together with the expectations. | yes |
-| `fuzz/` | Saved fuzz reproducers seeded from `firnmelt/`, replayed by `tools/fuzz_replay.py`. | yes |
+| `station/` | A field station's CR6 programs and libraries (2026-11-01 snapshot). Tests pin results to these exact files, so refresh them only together with the expectations. | yes |
+| `fuzz/` | Saved fuzz reproducers seeded from `station/`, replayed by `tools/fuzz_replay.py`. | yes |
 | `chm/` | The 507 complete example programs in Campbell's CRBasic help. | no |
 | `../../examples/Logger Programs/` | The 66 GEUS station programs used as a CR1000X corpus. | no |
 

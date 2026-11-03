@@ -320,7 +320,7 @@ Sub RunPreflight(WithFinApp As Boolean, WithModem As Boolean)
 
 	LogDebug("")
 	LogDebug("================================================================")
-	LogDebug("FirnMelt sensor preflight, station " + FormatLong(StationId,"%d") _
+	LogDebug("Station sensor preflight, station " + FormatLong(StationId,"%d") _
 		+ ", profile " + FormatLong(StationProfile,"%d"))
 	LogDebug("no message is transmitted and no airtime is used")
 	LogDebug("================================================================")
@@ -448,7 +448,7 @@ EndSub
 
 BeginProg
 	LogDebug("")
-	LogDebug("FirnMelt preflight tester starting")
+	LogDebug("Station preflight tester starting")
 	SerialFlush(ComUSB)
 	Call SetRail(False)
 	Call ShowConfig

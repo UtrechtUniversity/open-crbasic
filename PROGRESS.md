@@ -295,8 +295,8 @@ of positive forms and accepted controls), with positive tests, controls and a do
 - `OCB004` (warning): a division by a constant zero;
 - `OCB005` (info): an unsized `String` routine parameter (23 characters; hardware lesson);
 - `OCB006` (info): a constant `DataInterval` dividing neither an hour nor a day (hardware lesson).
-None fires on the FirnMelt programs in `crbasic/`, the accepted CHM examples or the 66 GEUS
-programs (`test_firnmelt_programs_have_no_findings`). `crbc --report` now also writes a report
+None fires on the station programs in `tests/corpus/station/`, the accepted CHM examples or the 66 GEUS
+programs (`test_station_programs_have_no_findings`). `crbc --report` now also writes a report
 when the entry file is missing; `crbc --strict` with only warnings keeps exit 0
 (`test_warning_checks_keep_exit_zero`). The check `OCB002` in an existing configuration test was
 renamed `OCB099` (an unknown code).
@@ -736,7 +736,7 @@ Run focused checks immediately, then the full pytest and server suites, four-pro
 comparison, saved replay and relevant artifact/fixture audits. Compare against a baseline;
 never prune reproducers just to improve agreement. Retry transient runner failures separately.
 Finish with `cd ../scripts && uv run verify.py` using the scripts environment
-`UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/firnmelt-scripts`.
+`UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/scripts`.
 
 Keep heavy validation runs bounded and avoid overlapping them. Do not kill validation process
 trees: prior forced termination exhausted macOS multiprocessing semaphores. Before another

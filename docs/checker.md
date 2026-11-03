@@ -7941,7 +7941,7 @@ collisions](#predefined-constant-name-collisions)).
 The accepted set is the scope of opencrbasic check `OCB001` (`checks.py`, `crbc --strict`; human
 request 2026-10-24): such a name shadows the original, and the result is easy to misread
 ([aliases named Status](#aliases-named-status-public-or-settings-round-33)). Controls: none of the 19
-FirnMelt programs fires; of the 66 GEUS programs only `QAS_B_LoggerProgramV2.CR1X`
+station programs fires; of the 66 GEUS programs only `QAS_B_LoggerProgramV2.CR1X`
 (`Alias D2out(3)= Status`) does.
 
 ## Positions outside the multi-report order (round 34)
@@ -8049,7 +8049,7 @@ difference for long delays (`Delay(0,3600,Sec)` in a 10 s scan: 3590) are modell
 
 Oracle, 2026-10-25; fixture `tests/fixtures/r36_relevant_seeds.json` (2,414 observations, 51
 strict xfail). Seeds 425-428 ran with `tools/fuzz.py --relevant`: help examples only where every
-instruction and function they use is also used by a FirnMelt or GEUS program (49 CR6 and 56
+instruction and function they use is also used by a station or GEUS program (49 CR6 and 56
 CR1000X examples, next to the repository and GEUS seeds). They found 13 false accepts and no false
 reject; 12 are fixed below.
 
@@ -9510,7 +9510,7 @@ and each form below compiles on every profile it is listed for (oracle, 2026-10-
 controls; all four loggers unless a row says otherwise). Default severity `warning` unless the
 row says `info`: `crbc --strict` prints them and keeps exit 0, so they never
 block a build unless a project raises them to `error` in `opencrbasic.toml`. None fires on the
-FirnMelt programs in `crbasic/` or the accepted CHM examples; in the GEUS corpus only `OCB001` fires,
+station programs in `tests/corpus/station/` or the accepted CHM examples; in the GEUS corpus only `OCB001` fires,
 on the `Alias D2out(3)= Status` it was made for (`test_corpus_findings_are_justified`, 2026-10-30).
 
 | Code | Fires on | Evidence that it is wrong | Does not fire on |

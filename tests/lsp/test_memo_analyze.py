@@ -6,7 +6,7 @@ from opencrbasic.analysis import AnalysisRequest, analyze
 
 from .conftest import ROOT, MemoAnalyze
 
-MAIN = ROOT / "tests" / "corpus" / "firnmelt" / "Main.CR6"
+MAIN = ROOT / "tests" / "corpus" / "station" / "Main.CR6"
 
 
 def _key(result):

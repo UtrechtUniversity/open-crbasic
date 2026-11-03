@@ -3,9 +3,9 @@
 **Human decision (2026-11-01): open source, published.** opencrbasic is MIT licensed and published
 to PyPI; the VS Code extension and the agent skills are published from their own repositories. This
 reverses the decision of 2026-10-11 ("internal use only, never published or redistributed"), which
-had allowed Campbell's CRBasic help text into sources, tests and fixtures. When the project left the
-FirnMelt monorepo on 2026-11-01 the following were therefore kept out of this repository and out of
-its git history:
+had allowed Campbell's CRBasic help text into sources, tests and fixtures. When the project moved
+to its own repository on 2026-11-01 the following were therefore kept out of this repository and
+out of its git history:
 
 - `CR6Comp.exe` and the other Campbell compilers (`compiler/` is git-ignored; see the README).
 - The extracted CRBasic help (`extracted_chm/`, git-ignored; `helpDirectory` points at a local copy).
@@ -13,8 +13,7 @@ its git history:
   `tools/extract_chm_examples.py`) and the GEUS station programs (`examples/`, git-ignored).
 - Fuzz reproducers seeded from those programs (3,117 of 3,338) and fixture cases whose program text
   is mostly a help example or GEUS program (about 1,200 of 60,000 cases in 30 files). Tests that need
-  them skip when the local copies are absent. The full corpus remains in the private FirnMelt
-  monorepo (`UtrechtUniversity/firnmelt-datalogger`).
+  them skip when the local copies are absent.
 
 Kept, as interoperability facts: the instruction, function and symbol tables read from the exe
 (`src/opencrbasic/data/`) and the compiler's short diagnostic strings, which existing tooling parses.

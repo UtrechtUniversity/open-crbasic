@@ -103,7 +103,7 @@ This exclusion stays in force under the v1.0 roadmap.
 - **CDM binary image (`-b`).** The CPI Device Module image that `CR6Comp.exe -b <file>` writes
   for programs using `CDM*`, `CPIAddModule2`, `CPISpeed2` or `CPIFileSend` is out of scope. It is
   not required for the Phase 5 or Phase 6 exit criteria, and its absence is not a parity
-  difference, a known output difference, or a reason to keep Phase 6 open. No FirnMelt program
+  difference, a known output difference, or a reason to keep Phase 6 open. No station program
   uses CPI/CDM hardware, and `verify.py` and `flash` do not pass `-b`.
   - Kept behavior: `-b` still prints the real `No CDM devices used in this program ` message when
     the program uses no CDM instruction, and still validates CDM instruction arguments, port sets
@@ -161,7 +161,7 @@ results on any profile. The parser accepts every corpus program without an excep
 constructs remain `Unparsed` nodes, for example in `samplemaxmin_1.CR6` and `snmpvariable_1.CR6`
 (`tests/test_corpus.py`). Unparsed statements escape checks of every channel.
 
-FirnMelt programs use 67 of the 410 CR6 instructions. A name search finds 83 instructions with no
+station programs use 67 of the 410 CR6 instructions. A name search finds 83 instructions with no
 rule beyond signature and parameter types. Only `ClockSet`, `ExitFunction` and `IncludeSection` of
 those are used here, and `IncludeSection` is handled in `source.py`. This search does not measure
 rule coverage.
@@ -169,10 +169,10 @@ rule coverage.
 **Relevant instruction set.** The GEUS station programs in `examples/Logger Programs/`
 (PROMICE, GC-Net, GIOS, SnowFox, WATSON; 42 `.CR1X`/`.CR6` files outside `Archive/`, read
 statically on 2026-10-24) cover the same kind of remote weather-station work. Together with the
-FirnMelt files they use about 100 instructions and functions
+station files they use about 100 instructions and functions
 (`scratch/r32/instruction_usage.txt`).
 
-GEUS adds instructions FirnMelt does not use:
+GEUS adds instructions the station does not use:
 - `CardOut`, `WindVector`, `GetRecord`;
 - `BrHalf`, `BrHalf4W`, `ExciteV`, `PulseCount`, `CurrentSE`, `PortSet`;
 - the `File*`, `FTPClient`, `PPPOpen` and `EmailRelay` functions.
@@ -189,7 +189,7 @@ compilers and opencrbasic:
 
 The contact sent every program they had, so some may not be functional or compilable. A reference
 rejection is therefore a verdict to match, not a defect in the corpus. The programs stay
-historical prior art for FirnMelt's own CRBasic (`AGENTS.md`).
+historical prior art for the station's own CRBasic (`AGENTS.md`).
 
 **First GEUS measurement (2026-10-24, `scratch/r32/geus/`).** All 66 `.CR1X` programs under
 `examples/Logger Programs/`, including `Archive/`, `Testing/` and `Development/`, were compiled with
@@ -290,7 +290,7 @@ Decide per *rule* (an instruction option, argument range or construct), not per 
   - the mode difference;
   - first-error differences.
 
-  This applies always to rules exercised by the relevant instruction set (FirnMelt and GEUS
+  This applies always to rules exercised by the relevant instruction set (station and GEUS
   programs) or the help examples, and otherwise whenever one shared rule clears a family. Fix a same-location message only where the reference
   names a different cause.
 - **Flag with a coverage notice:** a rule that needs a deep model and is exercised by neither
@@ -327,7 +327,7 @@ exact form probed before it is implemented.
 | Proven overflow before assignment, or values outside the FP2 range in a table | not probed | `public.htm`, `datatypes.htm`; needs conservative value analysis |
 
 `SerialOpen` without an explicit communication mode is a project convention, not a defect check:
-SDM-SIO devices require it omitted (`serialopen.htm`). It belongs in a FirnMelt profile, if
+SDM-SIO devices require it omitted (`serialopen.htm`). It belongs in a station profile, if
 anywhere.
 
 The probes confirm that the reference itself rejects unknown table fields and unknown
@@ -367,7 +367,7 @@ run in parallel with M1/M2. M6 follows M3.
 
 **Profile scope (human decision, 2026-10-24).** v1.0 gates verdict safety, mode and first error on
 CR6 and CR1000X. CR300 and CR350 are best effort: they keep their tests, fixtures and replay
-measurements, and a regression there is reported, but it does not block v1.0. FirnMelt uses CR6 and
+measurements, and a regression there is reported, but it does not block v1.0. The station corpus uses CR6 and
 the bench CR1000X, and the GEUS programs are almost all CR1000X.
 
 **M1 gate scope (human decision, 2026-10-28).** M1 gates false accepts and false rejects only in

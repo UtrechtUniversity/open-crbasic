@@ -18,7 +18,7 @@ import pytest
 
 OPENCRBASIC_ROOT = Path(__file__).resolve().parent.parent
 REPO_ROOT = OPENCRBASIC_ROOT
-CRBASIC_DIR = REPO_ROOT / "tests" / "corpus" / "firnmelt"
+CRBASIC_DIR = REPO_ROOT / "tests" / "corpus" / "station"
 FIXTURES_DIR = OPENCRBASIC_ROOT / "tests" / "fixtures" / "tdf"
 
 sys.path.insert(0, str(OPENCRBASIC_ROOT / "tools"))

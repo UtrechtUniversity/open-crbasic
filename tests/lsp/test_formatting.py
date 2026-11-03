@@ -16,7 +16,7 @@ from opencrbasic.formatting import (
 )
 
 ROOT = Path(__file__).resolve().parents[2]
-CRBASIC = (ROOT / "tests" / "corpus" / "firnmelt").resolve()
+CRBASIC = (ROOT / "tests" / "corpus" / "station").resolve()
 CHM = sorted((ROOT / "tests" / "corpus" / "chm").glob("*.CR6"))
 BLANKS = re.compile(r"\s+")
 

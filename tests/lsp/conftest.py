@@ -15,7 +15,7 @@ import pytest
 from opencrbasic.analysis import AnalysisRequest, AnalysisResult, analyze
 
 ROOT = Path(__file__).resolve().parents[2]
-ALLOWED = ((ROOT / "tests" / "corpus" / "firnmelt").resolve(), (ROOT / "tests" / "corpus").resolve())
+ALLOWED = ((ROOT / "tests" / "corpus" / "station").resolve(), (ROOT / "tests" / "corpus").resolve())
 
 
 class MemoAnalyze:
