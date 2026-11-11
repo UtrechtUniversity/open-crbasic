@@ -42,7 +42,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
                 sequential = is_sequential(program, profile, env)
             prefix = S.Program(program.name, statements[: pos + 1])
             scope = symbols.scoped_view(prefix, stmt, publics=True)
-            typer = var_types._Typer(program, scope)
+            typer = var_types._Typer(program, scope, profile=profile)
             _check_delay(stmt, measure["delay"], env, diags, sequential, slow, typer=typer)
         if kw == "EXCITEV" and measure.get("delay", {}).get("task_memory") and len(stmt.args) == 3:
             delay = _int_value(stmt.args[2], env)

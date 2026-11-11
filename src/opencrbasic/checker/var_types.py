@@ -11,9 +11,10 @@ import math
 import re
 from pathlib import Path
 
-from .. import consteval
+from .. import consteval, tables
 from .. import syntax as S
 from ..diagnostics import Diagnostics
+from ..profiles import Profile
 from . import symbols
 
 _NUMERIC = ("FLOAT", "LONG")
@@ -24,6 +25,9 @@ _STRING_FUNCTIONS = frozenset(
     for f in json.loads((Path(__file__).resolve().parents[1] / "data" / "functions.json").read_text())
     if f.get("kind") == 312
 ) - {"CTYPE"}
+_STATUS_STRING_FIELDS = frozenset(
+    field["name"].upper() for field in tables._STATUS_JSON["fields"] if field["type"] == 11
+)
 
 
 def _types(program: S.Program, *, scoped: bool = False) -> tuple[dict[str, str], dict[str, str]]:
@@ -49,7 +53,7 @@ def _types(program: S.Program, *, scoped: bool = False) -> tuple[dict[str, str],
 
 
 class _Typer:
-    def __init__(self, program: S.Program, scope: S.Program | None = None):
+    def __init__(self, program: S.Program, scope: S.Program | None = None, *, profile: Profile | None = None):
         visible = scope if scope is not None else program
         self.types, self.alias = _types(visible, scoped=scope is not None)
         self.consts = {st.name.upper(): st for st in visible.statements if isinstance(st, S.ConstDecl)}
@@ -58,6 +62,18 @@ class _Typer:
             for st in program.statements
             if isinstance(st, S.SubDef) and st.keyword.upper() == "FUNCTION" and st.return_type
         }
+        self.table_types: dict[str, dict[str, str]] = {}
+        self.structure_types: dict[str, dict[str, str]] = {}
+        if profile is not None:
+            from . import structs
+
+            self.structure_types = structs._structure_members(visible)
+            self.table_types["STATUS"] = {n: "STRING" for n in _STATUS_STRING_FIELDS & profile.status_members}
+            if profile.single_pass:
+                public: list[S.Stmt] = [
+                    st for st in visible.statements if isinstance(st, S.Declaration) and st.kind == "PUBLIC"
+                ]
+                self.table_types["PUBLIC"] = symbols.declared_variable_types(S.Program(visible.name, public))
 
     def base(self, name: str) -> str:
         return self.alias.get(name.upper(), name.upper())
@@ -81,6 +97,13 @@ class _Typer:
         var = self.variable(expr)
         if var is not None:
             return self.types[var]
+        if isinstance(expr, S.Member):
+            member = expr.member.upper()
+            if isinstance(expr.base, S.Name) and expr.base.name.upper() in self.table_types:
+                return self.table_types[expr.base.name.upper()].get(member)
+            if self.structure_types:
+                kind = self.of(expr.base, depth + 1)
+                return self.structure_types.get(kind or "", {}).get(member)
         if isinstance(expr, S.Index):
             # a String-returning built-in or Function, or an `IIF` with a String arm (oracle, all
             # four loggers, round 65, docs/instructions.md#string-operands)

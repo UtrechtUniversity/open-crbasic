@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 83** (verdict parity). Fixed String-valued `Status`, structure and single-pass `Public`
+fields as `Delay` intervals. Removed the unrecognised CR300 `Status.RecipeStatus` read name.
+See the [field-type probes](docs/instructions.md#delay-three-checks-split-by-option).
+Seed 775 on the round 82 code agreed on all 1,276 usable verdicts, with four reference failures.
+
 **Round 82** (verdict parity). Extended the indexed-constant checks to array dimensions,
 initializers, Alias subscripts, and assignment targets. See the [declaration probes](docs/checker.md#indexed-constants-round-79).
 Fresh seed 774 gave 1,197 usable reference verdicts across the four profiles on the round 81 code.

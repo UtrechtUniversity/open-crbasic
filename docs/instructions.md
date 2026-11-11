@@ -680,7 +680,10 @@ per logger (boundary values in `min`/`hr`/`sec` units, and a string/variable `In
   With option 2, a String interval gives `SDM Delay interval must be constant.`, including a
   String literal or `Const`. A local declared after the `Delay` does not shadow the global at that
   use site. See the dated probes and compiler hashes in `tests/fixtures/r81_delay_interval_type.json`.
-  String fields of system tables such as `Status.ProgName` are still a gap.
+  Round 83 covers String fields of `Status` and user structures, and `Public` fields on
+  CR300/CR350. CR300 rejects reads of `Status.RecipeStatus`. Direct `Public` field probes on
+  CR6/CR1000X faulted in the reference compiler. Usable observations and compiler hashes are in
+  `tests/fixtures/r83_delay_member_type.json`.
 - Then, by `Option`:
   - `Option=0` (measurement-task-sequence delay) -- **CR6/CR1000X only** (oracle: CR300/CR350 both
     compile `Delay(0,61,min)`/a variable interval clean, no error at all): `Interval` must itself be
