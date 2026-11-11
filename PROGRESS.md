@@ -92,6 +92,9 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 84** (verdict parity). Rejects assignments to unknown `Status` fields on CR300/CR350,
+including inline and compound assignments. See the [assignment probes](docs/checker.md#status-assignment-targets-round-84).
+
 **Round 83** (verdict parity). Fixed String-valued `Status`, structure and single-pass `Public`
 fields as `Delay` intervals. Removed the unrecognised CR300 `Status.RecipeStatus` read name.
 See the [field-type probes](docs/instructions.md#delay-three-checks-split-by-option).

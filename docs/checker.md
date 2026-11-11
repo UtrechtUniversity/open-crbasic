@@ -9613,3 +9613,12 @@ Round 82 covers indexed constants in declaration dimensions, scalar and array in
 and `Alias` subscripts. String lengths can accept the same syntax. A predefined constant used as
 an indexed assignment target gets the generic out-of-place expression diagnostic. The dated
 observations are in `tests/fixtures/r82_indexed_declarations.json`.
+
+## Status assignment targets (round 84)
+
+CR300 and CR350 report an unknown `Status` assignment target before errors in the right-hand
+expression and finish with `Invalid assignment in expression`. This also applies to compound
+and one-line `If` assignments. CR6 and CR1000X retain the unknown-field diagnostic when the
+right side is unresolved, followed by `Invalid symbol in expression`. Writes to known fields
+compile in the probe programs. The four-profile observations and hashes are in
+`tests/fixtures/r84_status_write_targets.json`.

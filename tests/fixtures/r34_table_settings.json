@@ -334,16 +334,14 @@
    "logger": "cr300",
    "source": "Public X, L As Long, S As String\nDataTable(Tbl,True,-1)\nDataInterval(0,60,Sec,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(10,Sec,0,0)\nCallTable Tbl\nStatus.NoSuchField = 0\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Could not find Status.NoSuchField(1).\nline 9: Invalid assignment in expression: Status.NoSuchField = 0\n.",
-   "not_modelled": "round 34: CR300/CR350 unknown table field, Settings name and Status target are not modelled (best-effort profiles)"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Could not find Status.NoSuchField(1).\nline 9: Invalid assignment in expression: Status.NoSuchField = 0\n."
   },
   {
    "id": "cr350-tbl11",
    "logger": "cr350",
    "source": "Public X, L As Long, S As String\nDataTable(Tbl,True,-1)\nDataInterval(0,60,Sec,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(10,Sec,0,0)\nCallTable Tbl\nStatus.NoSuchField = 0\nNextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Could not find Status.NoSuchField(1).\nline 9: Invalid assignment in expression: Status.NoSuchField = 0\n.",
-   "not_modelled": "round 34: CR300/CR350 unknown table field, Settings name and Status target are not modelled (best-effort profiles)"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Could not find Status.NoSuchField(1).\nline 9: Invalid assignment in expression: Status.NoSuchField = 0\n."
   },
   {
    "id": "cr6-tbl12",

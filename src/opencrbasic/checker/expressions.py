@@ -2137,6 +2137,27 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
             continue  # a function-named target (even a local scalar `exp(1) = 2`): same
         names = _undefined_names(stmt.value, known)
         whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
+        target = stmt.target
+        if (
+            (profile.single_pass or names)
+            and isinstance(target, S.Member)
+            and isinstance(target.base, S.Name)
+            and target.base.name.upper() == "STATUS"
+            and _unknown_status_member(target, profile)
+        ):
+            # CR300/CR350 check the target even when the right side is undefined. The
+            # two-pass profiles normally report it in check_digit_members, which skips
+            # assignments with an unresolved right side (oracle, round 84).
+            base = target.base.name if profile.single_pass else "Status"
+            diags.error(
+                stmt.line, f"Could not find {base}.{target.member}{_member_index_text(target.args)}.", stmt.file
+            )
+            if profile.single_pass:
+                for name in names:
+                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+                sep = "\n" if stmt.at_eol else ""
+                diags.error(stmt.line, f"Invalid assignment in expression: {stmt.text}{sep}.", stmt.file)
+                continue
         if _over_indexed(stmt.target, dim_counts, 3 if whole_echo else None):
             # `R(2,1) = 1` for `Public R(5)`: the fallback (CR6/CR1000X only past 3 subscripts)
             from . import structure

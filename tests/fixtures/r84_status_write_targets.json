@@ -1,0 +1,275 @@
+{
+ "observation_date": "2026-11-11",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-unknown",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid assignment in expression:  Status.NoSuchField=1."
+  },
+  {
+   "id": "cr6-unknown_array",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField(2)=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(2).\nline 3: Invalid assignment in expression:  Status.NoSuchField(2)=1."
+  },
+  {
+   "id": "cr6-unknown_compound",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField += 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid assignment in expression:  Status.NoSuchField += 1."
+  },
+  {
+   "id": "cr6-known_numeric",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Status.Battery=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-known_string",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Status.ProgName=\"x\"\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-recipe",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Status.RecipeStatus=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-rhs_unknown",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField=Bad\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid symbol in expression:  Status.NoSuchField=Bad."
+  },
+  {
+   "id": "cr6-inline",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n If Y Then Status.NoSuchField=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid assignment in expression: Status.NoSuchField=1."
+  },
+  {
+   "id": "cr6-included_member",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Status.NoSuchField\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1)."
+  },
+  {
+   "id": "cr1000x-unknown",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid assignment in expression:  Status.NoSuchField=1."
+  },
+  {
+   "id": "cr1000x-unknown_array",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField(2)=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(2).\nline 3: Invalid assignment in expression:  Status.NoSuchField(2)=1."
+  },
+  {
+   "id": "cr1000x-unknown_compound",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField += 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid assignment in expression:  Status.NoSuchField += 1."
+  },
+  {
+   "id": "cr1000x-known_numeric",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Status.Battery=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-known_string",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Status.ProgName=\"x\"\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-recipe",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Status.RecipeStatus=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-rhs_unknown",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField=Bad\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid symbol in expression:  Status.NoSuchField=Bad."
+  },
+  {
+   "id": "cr1000x-inline",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n If Y Then Status.NoSuchField=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid assignment in expression: Status.NoSuchField=1."
+  },
+  {
+   "id": "cr1000x-included_member",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Status.NoSuchField\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1)."
+  },
+  {
+   "id": "cr300-unknown",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid assignment in expression:  Status.NoSuchField=1\n."
+  },
+  {
+   "id": "cr300-unknown_array",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField(2)=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(2).\nline 3: Invalid assignment in expression:  Status.NoSuchField(2)=1\n."
+  },
+  {
+   "id": "cr300-unknown_compound",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField += 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid assignment in expression:  Status.NoSuchField += 1\n."
+  },
+  {
+   "id": "cr300-known_numeric",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Status.Battery=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-known_string",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Status.ProgName=\"x\"\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-recipe",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Status.RecipeStatus=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.RecipeStatus(1).\nline 3: Invalid assignment in expression:  Status.RecipeStatus=1\n."
+  },
+  {
+   "id": "cr300-rhs_unknown",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField=Bad\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Bad is not defined.\nline 3: Invalid assignment in expression:  Status.NoSuchField=Bad\n."
+  },
+  {
+   "id": "cr300-inline",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n If Y Then Status.NoSuchField=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid assignment in expression: Status.NoSuchField=1."
+  },
+  {
+   "id": "cr300-included_member",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Status.NoSuchField\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1)."
+  },
+  {
+   "id": "cr350-unknown",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid assignment in expression:  Status.NoSuchField=1\n."
+  },
+  {
+   "id": "cr350-unknown_array",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField(2)=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(2).\nline 3: Invalid assignment in expression:  Status.NoSuchField(2)=1\n."
+  },
+  {
+   "id": "cr350-unknown_compound",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField += 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid assignment in expression:  Status.NoSuchField += 1\n."
+  },
+  {
+   "id": "cr350-known_numeric",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Status.Battery=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-known_string",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Status.ProgName=\"x\"\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-recipe",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Status.RecipeStatus=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.RecipeStatus(1).\nline 3: Invalid assignment in expression:  Status.RecipeStatus=1\n."
+  },
+  {
+   "id": "cr350-rhs_unknown",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Status.NoSuchField=Bad\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Bad is not defined.\nline 3: Invalid assignment in expression:  Status.NoSuchField=Bad\n."
+  },
+  {
+   "id": "cr350-inline",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n If Y Then Status.NoSuchField=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1).\nline 3: Invalid assignment in expression: Status.NoSuchField=1."
+  },
+  {
+   "id": "cr350-included_member",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Status.NoSuchField\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Could not find Status.NoSuchField(1)."
+  }
+ ]
+}
