@@ -1404,16 +1404,14 @@
    "logger": "cr6",
    "source": "Public X,Y\nSub P(V As Long)\nEndSub\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: V+0.\nline 8: Optional number of distinct instances must be a constant of type long.",
-   "not_modelled": "a Sub name that is also another routine's parameter, used as a value"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: V+0.\nline 8: Optional number of distinct instances must be a constant of type long."
   },
   {
    "id": "cr1000x-sub_name_collision",
    "logger": "cr1000x",
    "source": "Public X,Y\nSub P(V As Long)\nEndSub\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: V+0.\nline 8: Optional number of distinct instances must be a constant of type long.",
-   "not_modelled": "a Sub name that is also another routine's parameter, used as a value"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: V+0.\nline 8: Optional number of distinct instances must be a constant of type long."
   },
   {
    "id": "cr300-sub_name_collision",
@@ -1574,16 +1572,14 @@
    "logger": "cr6",
    "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: V+0.\nline 6: Optional number of distinct instances must be a constant of type long.",
-   "not_modelled": "later diagnostic: the instances line after an undefined name is not printed"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: V+0.\nline 6: Optional number of distinct instances must be a constant of type long."
   },
   {
    "id": "cr1000x-sub_name_value",
    "logger": "cr1000x",
    "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,V+0,1)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: V+0.\nline 6: Optional number of distinct instances must be a constant of type long.",
-   "not_modelled": "later diagnostic: the instances line after an undefined name is not printed"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: V+0.\nline 6: Optional number of distinct instances must be a constant of type long."
   },
   {
    "id": "cr300-sub_name_value",

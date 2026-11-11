@@ -153,7 +153,8 @@ def out_of_scope_nodes(program: S.Program, resolvable: frozenset | set = frozens
     `Invalid, or out of place expression`, CR300/CR350 `Y is not defined.`). A name that is also
     declared outside a routine, or `Public`/`Const` inside one (both global), stays visible, and so
     does one that resolves without any declaration (`resolvable`: a predefined symbol, function...,
-    so a refused `Dim Sec` in a Sub leaves every `Sec` valid)."""
+    so a refused `Dim Sec` in a Sub leaves every `Sec` valid). A Sub name does not make
+    another routine's parameter visible as a value (oracle, all four loggers, round 76)."""
     locals_: dict[int, set[str]] = {}
     owners: list[tuple[S.Stmt, S.SubDef | None]] = []
     cur = None
@@ -176,6 +177,7 @@ def out_of_scope_nodes(program: S.Program, resolvable: frozenset | set = frozens
                 replace(st, params=[]) if isinstance(st, S.SubDef) else st
                 for st, r in owners
                 if not (r is not None and isinstance(st, S.Declaration) and st.kind == "DIM")
+                if not isinstance(st, S.SubDef) or st.keyword.upper() != "SUB"
             ],
         )
     )

@@ -1646,7 +1646,9 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics, env: c
     if not _RUNNING_AVG & profile.instructions.keys():
         return
     scopes = symbols.statement_scopes(program, profile)  # its own routine's parameters, also named like a later `Const`
-    from .expressions import _alias_names, _has_dotted_field
+    from .expressions import _alias_names, _has_dotted_field, _known_names, _undefined_names
+
+    known = None
 
     def variable_type(arg: S.Expr | None, view: S.Program) -> str | None:
         if not isinstance(arg, (S.Name, S.Index)):
@@ -1704,6 +1706,10 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics, env: c
                 value = None
             constant = not variable and not isinstance(value, str) and _operator_tree(args[at])
             instances = -int(value) if isinstance(value, bool) else number(args[at])
+            if constant and instances is None:
+                if known is None:
+                    known = _known_names(program, profile)
+                constant = not _undefined_names(args[at], known)
             if constant and instances is not None and instances < 0:
                 diags.error(stmt.line, "Out of memory.", stmt.file)  # (ends the compile, not modelled)
                 continue

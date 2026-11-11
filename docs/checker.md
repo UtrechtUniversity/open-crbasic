@@ -9575,8 +9575,11 @@ interval) after the whole file, so only pass-1 constant positions see the order:
   accepts before round 71 except the parameter cases.
 - A `Sub` name is no value on CR6/CR1000X: `X = V`, `If V Then`, `Delay(1,V,mSec)` and
   `AvgRun(...,V+0,1)` for `Sub V` are `Invalid symbol in expression` (`Function` names are values).
-  Not modelled: a `Sub` name that is also another routine's parameter. First error only (verdict
-  equal): `Alias X=V` before `Sub V` is `V already declared as a variable.` on the `Sub` line, and
+  Round 76 confirmed that sharing the name with a parameter leaves that parameter visible
+  only within its own routine on all four profiles. Direct calls still resolve the `Sub`.
+  The dated reference results and compiler hashes are in `tests/fixtures/r76_sub_parameter_scope.json`.
+  First error only (verdict equal): `Alias X=V` before `Sub V` is
+  `V already declared as a variable.` on the `Sub` line, and
   `Sec()` as the instance count is `Incomplete expression: Sec().`.
 
 Found by the three Codex `gpt-6.1-sol` reviews (`scratch/r71/codex-review*.log`, local only) and the probes that followed them.

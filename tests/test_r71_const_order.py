@@ -8,7 +8,12 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-CASES = json.loads((Path(__file__).parent / "fixtures" / "r71_const_order.json").read_text())["cases"]
+FIXTURES = Path(__file__).parent / "fixtures"
+CASES = [
+    case
+    for name in ("r71_const_order.json", "r76_sub_parameter_scope.json")
+    for case in json.loads((FIXTURES / name).read_text())["cases"]
+]
 
 
 @pytest.mark.parametrize(

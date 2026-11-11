@@ -92,6 +92,9 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 76** (verdict parity). A `Sub` name shared with another routine's parameter no longer
+makes that parameter visible as a value outside its routine. See the [scope probes](docs/checker.md#constants-declared-after-their-use-round-71).
+
 **Round 75: M7 done, opencrbasic 1.0.0** (single agent; Codex `gpt-6.1-sol` review in `scratch/m7/`,
 local only). Version 1.0.0 for the package, `__version__` and the VS Code extension
 (`tests/test_versions.py`; policy in README "Versions"); README rewritten for scope, the three
@@ -636,9 +639,8 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    storage) alias, flattened and String-index handling. The round-70 reference-channel false accept (a `Delay` unit parameter with a later
    same-name `Const`) is fixed in round 71. The language server does not run checks yet: that is M6
    (call `checks.analyze` with its settings, put the configuration in the cache key); done in round 73.
-4. **M1: done (round 69).** No relevant false accept or reject is open on CR6/CR1000X except a `Sub` name
-   that is also another routine's parameter, used as a value (round 71; an exception recorded in the
-   1.0 release record); the 25 replay
+4. **M1: done (round 69).** Round 76 closed the routine-parameter exception recorded in the
+   1.0 release record. The 25 historical replay
    false accepts outside the relevant set stay listed by identity (round 34: `072c74da6af5`,
    `51f39a5f2393`, `7b4b2177d56b`, `870ca9a9562e`, `e8c854e3493d`, `a0b2b0b059b3`, `ec6b11bc3176`,
    `022d98dd3efc`, `4156d89a014d`, `6ac24bd775f1`, `72f95eac103f`, `77636b10567c`, `7f9efa8af42c`,
