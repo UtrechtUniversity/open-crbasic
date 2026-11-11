@@ -1,6 +1,5 @@
 """Reference verdicts for indexed constants (round 79)."""
 
-
 import json
 from pathlib import Path
 
@@ -11,7 +10,6 @@ from opencrbasic.compiler import compile_file
 
 FIXTURES = Path(__file__).parent / "fixtures"
 CASES = json.loads((FIXTURES / "r79_indexed_constants.json").read_text())["cases"]
-
 
 
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])

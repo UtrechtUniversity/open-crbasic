@@ -221,3 +221,12 @@ fully parse; see `tests/test_corpus.py`'s `KNOWN_GAPS`):
 
 The active parser corpus covers `crbasic/*.CR6` and CHM examples. Historical root `examples/`
 programs are excluded under the repository instructions.
+
+## Declaration continuations
+
+A blank or comment-only line ends an explicit `_` continuation. If the following line
+contains a bare fragment such as `B As Long`, the reference parses it as a standalone
+expression outside `StructureType`. Before `BeginProg`, CR6 and CR1000X report the
+out-of-place expression and its placement error. A lone `_` on the intervening line
+keeps the continuation open. The dated four-profile reference results and hashes are in
+`tests/fixtures/r80_declaration_continuations.json`.

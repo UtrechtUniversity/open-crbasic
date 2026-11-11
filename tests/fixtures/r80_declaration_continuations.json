@@ -1,0 +1,303 @@
+{
+ "observation_date": "2026-11-11",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-no_marker",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A,\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:  B As Long.\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-continued",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A, _\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-continued_tail_comment",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A, _ ' note\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-comment_line",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A, _\n ' note\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  B As Long.\nline 4: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-continued_comment_marker",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A, _\n ' note _\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  B As Long.\nline 4: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-blank_line",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A, _\n\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  B As Long.\nline 4: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-lone_marker",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A, _\n _\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-init_comment",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A As Long = _\n ' note\n 1\nBeginProg\n Y=A\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-after_code",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A, _\n B, ' note\n C As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  C As Long.\nline 4: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-dim_comment",
+   "logger": "cr6",
+   "source": "Public Y\nDim A, _\n ' note\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  B As Long.\nline 4: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-no_marker",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A,\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:  B As Long.\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-continued",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A, _\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-continued_tail_comment",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A, _ ' note\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-comment_line",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A, _\n ' note\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  B As Long.\nline 4: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-continued_comment_marker",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A, _\n ' note _\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  B As Long.\nline 4: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-blank_line",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A, _\n\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  B As Long.\nline 4: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-lone_marker",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A, _\n _\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-init_comment",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A As Long = _\n ' note\n 1\nBeginProg\n Y=A\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-after_code",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A, _\n B, ' note\n C As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  C As Long.\nline 4: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-dim_comment",
+   "logger": "cr1000x",
+   "source": "Public Y\nDim A, _\n ' note\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  B As Long.\nline 4: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-no_marker",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A,\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: B is not defined.\nline 3: As is not defined.\nline 3: Invalid, or out of place expression:  B As Long\n."
+  },
+  {
+   "id": "cr300-continued",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A, _\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-continued_tail_comment",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A, _ ' note\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-comment_line",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A, _\n ' note\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B is not defined.\nline 4: As is not defined.\nline 4: Invalid, or out of place expression:  B As Long\n."
+  },
+  {
+   "id": "cr300-continued_comment_marker",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A, _\n ' note _\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B is not defined.\nline 4: As is not defined.\nline 4: Invalid, or out of place expression:  B As Long\n."
+  },
+  {
+   "id": "cr300-blank_line",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A, _\n\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B is not defined.\nline 4: As is not defined.\nline 4: Invalid, or out of place expression:  B As Long\n."
+  },
+  {
+   "id": "cr300-lone_marker",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A, _\n _\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-init_comment",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A As Long = _\n ' note\n 1\nBeginProg\n Y=A\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-after_code",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A, _\n B, ' note\n C As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C is not defined.\nline 4: As is not defined.\nline 4: Invalid, or out of place expression:  C As Long\n."
+  },
+  {
+   "id": "cr300-dim_comment",
+   "logger": "cr300",
+   "source": "Public Y\nDim A, _\n ' note\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B is not defined.\nline 4: As is not defined.\nline 4: Invalid, or out of place expression:  B As Long\n."
+  },
+  {
+   "id": "cr350-no_marker",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A,\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: B is not defined.\nline 3: As is not defined.\nline 3: Invalid, or out of place expression:  B As Long\n."
+  },
+  {
+   "id": "cr350-continued",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A, _\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-continued_tail_comment",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A, _ ' note\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-comment_line",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A, _\n ' note\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B is not defined.\nline 4: As is not defined.\nline 4: Invalid, or out of place expression:  B As Long\n."
+  },
+  {
+   "id": "cr350-continued_comment_marker",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A, _\n ' note _\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B is not defined.\nline 4: As is not defined.\nline 4: Invalid, or out of place expression:  B As Long\n."
+  },
+  {
+   "id": "cr350-blank_line",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A, _\n\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B is not defined.\nline 4: As is not defined.\nline 4: Invalid, or out of place expression:  B As Long\n."
+  },
+  {
+   "id": "cr350-lone_marker",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A, _\n _\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-init_comment",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A As Long = _\n ' note\n 1\nBeginProg\n Y=A\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-after_code",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A, _\n B, ' note\n C As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C is not defined.\nline 4: As is not defined.\nline 4: Invalid, or out of place expression:  C As Long\n."
+  },
+  {
+   "id": "cr350-dim_comment",
+   "logger": "cr350",
+   "source": "Public Y\nDim A, _\n ' note\n B As Long\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B is not defined.\nline 4: As is not defined.\nline 4: Invalid, or out of place expression:  B As Long\n."
+  }
+ ]
+}

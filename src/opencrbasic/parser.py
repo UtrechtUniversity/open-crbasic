@@ -1831,9 +1831,9 @@ class _Parser:
             if (result := self._try_logical_assign(p, start, line, file)) is not None:
                 return result
             p.i = end
-        if isinstance(target, S.Name) and p.is_ident("AS") and (self._in_struct or not self.profile.single_pass):
-            # (CR300/CR350 outside a StructureType read `Flag As Boolean` as an expression: oracle,
-            # 2026-10-11, `chm/not_1.CR6`)
+        if self._in_struct and isinstance(target, S.Name) and p.is_ident("AS"):
+            # Outside StructureType the bare text is an expression (oracle, all four profiles,
+            # round 80). This includes a declaration fragment after an interrupted continuation.
             # A StructureType member declaration (`Frequency As Float`, no Public/Dim prefix):
             # confirmed valid CRBasic inside StructureType...EndStructureType by corpus testing
             # (structuretype_1.CR6); see docs/frontend.md. Reuses `Declaration`/`VarDecl` with a

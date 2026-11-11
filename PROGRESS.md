@@ -92,6 +92,10 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 80** (verdict parity, fuzz seed 773). Fixed CR6 false accept `df2651cd7c31`.
+A declaration fragment following an interrupted continuation is parsed as a standalone expression.
+See the [continuation probes](docs/frontend.md#declaration-continuations).
+
 **Round 79** (verdict parity, fuzz seed 772). Fixed the CR6 false accept `aa708bc338ff`,
 an indexed predefined constant in an assignment. See the [four-profile probes](docs/checker.md#indexed-constants-round-79).
 The 640 mutations used three handwritten seeds accepted by all four compilers. One input yielded

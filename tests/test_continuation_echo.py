@@ -6,10 +6,15 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "continuation_echo.json").read_text(encoding="utf-8"))
+FIXTURES = Path(__file__).parent / "fixtures"
+CASES = [
+    case
+    for name in ("continuation_echo.json", "r80_declaration_continuations.json")
+    for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
+]
 
 
-@pytest.mark.parametrize("case", FIXTURE["cases"], ids=lambda case: case["id"])
+@pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
 def test_continuation_echo(case, tmp_path):
     program = tmp_path / "t.CR6"
     program.write_text(case["source"], encoding="utf-8")
