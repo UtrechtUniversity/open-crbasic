@@ -1,0 +1,183 @@
+{
+ "observation_date": "2026-11-11",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-five_0-1.5",
+   "logger": "cr6",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,1.5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(ComC3,19200,0,0,1.5)."
+  },
+  {
+   "id": "cr6-five_0-1.0",
+   "logger": "cr6",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,1.0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(ComC3,19200,0,0,1.0)."
+  },
+  {
+   "id": "cr6-five_0-999999999999",
+   "logger": "cr6",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,999999999999)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(ComC3,19200,0,0,999999999999)."
+  },
+  {
+   "id": "cr6-five_0-\"abc\"",
+   "logger": "cr6",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,\"abc\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(ComC3,19200,0,0,\"abc\")."
+  },
+  {
+   "id": "cr6-six_0-1.5",
+   "logger": "cr6",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,1.5,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-six_0-1.0",
+   "logger": "cr6",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,1.0,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-six_0-999999999999",
+   "logger": "cr6",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,999999999999,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-six_0-\"abc\"",
+   "logger": "cr6",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,\"abc\",0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-six_fmt_const-1.5",
+   "logger": "cr6",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,Fmt,0,1.5,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-six_fmt_const-1.0",
+   "logger": "cr6",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,Fmt,0,1.0,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-six_fmt_const-999999999999",
+   "logger": "cr6",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,Fmt,0,999999999999,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-six_fmt_const-\"abc\"",
+   "logger": "cr6",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,Fmt,0,\"abc\",0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-five_0-1.5",
+   "logger": "cr1000x",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,1.5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(ComC3,19200,0,0,1.5)."
+  },
+  {
+   "id": "cr1000x-five_0-1.0",
+   "logger": "cr1000x",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,1.0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(ComC3,19200,0,0,1.0)."
+  },
+  {
+   "id": "cr1000x-five_0-999999999999",
+   "logger": "cr1000x",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,999999999999)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(ComC3,19200,0,0,999999999999)."
+  },
+  {
+   "id": "cr1000x-five_0-\"abc\"",
+   "logger": "cr1000x",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,\"abc\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(ComC3,19200,0,0,\"abc\")."
+  },
+  {
+   "id": "cr1000x-six_0-1.5",
+   "logger": "cr1000x",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,1.5,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-six_0-1.0",
+   "logger": "cr1000x",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,1.0,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-six_0-999999999999",
+   "logger": "cr1000x",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,999999999999,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-six_0-\"abc\"",
+   "logger": "cr1000x",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,0,0,\"abc\",0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-six_fmt_const-1.5",
+   "logger": "cr1000x",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,Fmt,0,1.5,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-six_fmt_const-1.0",
+   "logger": "cr1000x",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,Fmt,0,1.0,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-six_fmt_const-999999999999",
+   "logger": "cr1000x",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,Fmt,0,999999999999,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-six_fmt_const-\"abc\"",
+   "logger": "cr1000x",
+   "source": "Const Port=ComC3\nConst Fmt=3\nBeginProg\n  SerialOpen(ComC3,19200,Fmt,0,\"abc\",0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

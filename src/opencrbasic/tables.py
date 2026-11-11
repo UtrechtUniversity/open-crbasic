@@ -1837,7 +1837,7 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
         # Scan/SlowSequence interval (§10 "scan-interval weighting"), 1 s if none was found.
         w = _f32(m["own_weight"] or scan_weights.get(t.name.upper(), 1.0))
         b = m["bytes_per_record"]
-        lapses = m["lapses"] if m["interval_seconds"] else 0
+        lapses = abs(consteval.to_long(m["lapses"])) if m["interval_seconds"] else 0
         dflt = _table_default_min(b) if lapses else 1
         if dflt < 2:
             dflt, lapses = 1, 0
@@ -1852,13 +1852,10 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
         # a CardOut/TableFile table (nonzero card size) skips the Lapses-buffer term
         reserved += m["_reserve"]
         if lapses and b and not m["has_card"]:
-            if (
-                0 < lapses < 1 << 31
-            ):  # `Lapses * 16` wraps to 32 bits before the division (CR6/CR1000X `Out of memory.`)
-                w16 = (lapses * 16 + (1 << 31)) % (1 << 32) - (1 << 31)
-                reserved += (int(w16 / b) + 1) * b
-            else:
-                reserved += ((lapses * 16) // b + 1) * b
+            # Out-of-range Lapses convert to INT_MIN. Its product, like any
+            # `Lapses * 16`, wraps to 32 bits before division.
+            w16 = (lapses * 16 + (1 << 31)) % (1 << 32) - (1 << 31)
+            reserved += (int(w16 / b) + 1) * b
         rate = _f32(m["_rate"] + rate)
     duration = _f32(_f32(_FREE_MEMORY - reserved) / rate) if rate else float("inf")
     if rate:

@@ -1252,7 +1252,10 @@ pool: each table, and each variable segment, is checked on its own. Three places
   `max(.., 2, k)` minimum is not applied) and the block `k = 1008 // B` fixed *before* the count is
   known (`1` if `< 2`), not capped by `M`; `a` is the Lapses term as above and the Lapses buffer in
   the auto-size reserve is `(tdiv(wrap32(16 * L), B) + 1) * B` (so `Lapses` in `[2^27, 2^28)` wraps
-  it negative and makes `N` huge). Consequences, all oracle-confirmed: ordinary auto tables never
+  it negative and makes `N` huge). Lapses outside the signed Long range use the INT_MIN conversion
+  before calculating this reserve. Using the unconverted value could falsely reject a different
+  table sharing the same pool (round 77, `tests/fixtures/r77_datainterval_lapses.json`).
+  Consequences, all oracle-confirmed: ordinary auto tables never
   fail (any Lapses below `2^27`, negative sizes, 20 M-element records ...); with
   `Lapses = 2^27 + x` `Out of memory.` holds for `x < x*` (`x* = 117714754` for 1 or 2 `FP2`
   fields, `...808` for 3, `...817` for 4, `...845822` for 10; with a 1 hr interval

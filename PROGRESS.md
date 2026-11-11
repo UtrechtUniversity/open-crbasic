@@ -92,6 +92,12 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 77** (verdict parity, fuzz seed 771). Fixed the two false rejects found in 700 CR6/CR1000X
+FirnMelt mutations: [oversized `DataInterval` lapses](docs/tdf-rules.md#cr6cr1000x-out-of-memory)
+and [six-argument `SerialOpen` buffers](docs/checker.md#serialopen-buffer-literals-round-77).
+The reference yielded no verdict for four inputs. The available FirnMelt seeds did not compile
+on CR300/CR350, so those profiles had no mutants in this run.
+
 **Round 76** (verdict parity). A `Sub` name shared with another routine's parameter no longer
 makes that parameter visible as a value outside its routine. See the [scope probes](docs/checker.md#constants-declared-after-their-use-round-71).
 

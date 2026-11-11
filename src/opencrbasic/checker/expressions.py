@@ -505,7 +505,6 @@ _ARITY_MAX_SAFE = {
 # argument-count handler.  Each entry is restricted to the directly observed boundary: a string
 # in a constant-integer position, or one argument beyond the extracted count.
 _FUNCTION_CONST_INTEGER_STRING_ARGS = {
-    "SERIALOPEN": frozenset({3, 4}),
     "TIMER": frozenset({1}),
 }
 _CONST_INTEGER_OVERFLOW_STRING = {"TCPOPEN": 3}
@@ -2368,7 +2367,10 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     upper = name.upper()
     if any(i < len(args) and isinstance(args[i], S.String) for i in _FUNCTION_CONST_INTEGER_STRING_ARGS.get(upper, ())):
         return "constint"
-    if any(i < n and _not_constant_integer(args[i]) for i in _CONST_INTEGER_BAD_ARGS.get(upper, ())):
+    integer_args = _CONST_INTEGER_BAD_ARGS.get(upper, ())
+    if upper == "SERIALOPEN" and n == 6 and not profile.single_pass:
+        integer_args = (3,)  # CR6/CR1000X accept non-integer buffer literals in this form (round 77)
+    if any(i < n and _not_constant_integer(args[i]) for i in integer_args):
         return "constint"
     if _TIMEOUT_GATE[0] is False and any(
         i < n and (_not_integer_type(args[i]) or _timeout_wide(args[i], profile))

@@ -1,0 +1,155 @@
+{
+ "observation_date": "2026-11-11",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-2147483647-0",
+   "logger": "cr6",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,2147483647)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-2147483647-1",
+   "logger": "cr6",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,2147483647)\n Sample(1,X,FP2)\nEndTable\nDataTable(U,1,-1)\n DataInterval(0,5,Sec,10)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n  CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-2147483648-0",
+   "logger": "cr6",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,2147483648)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-2147483648-1",
+   "logger": "cr6",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,2147483648)\n Sample(1,X,FP2)\nEndTable\nDataTable(U,1,-1)\n DataInterval(0,5,Sec,10)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n  CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6--2147483649-0",
+   "logger": "cr6",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,-2147483649)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6--2147483649-1",
+   "logger": "cr6",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,-2147483649)\n Sample(1,X,FP2)\nEndTable\nDataTable(U,1,-1)\n DataInterval(0,5,Sec,10)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n  CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-999999999999-0",
+   "logger": "cr6",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,999999999999)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-999999999999-1",
+   "logger": "cr6",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,999999999999)\n Sample(1,X,FP2)\nEndTable\nDataTable(U,1,-1)\n DataInterval(0,5,Sec,10)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n  CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6--999999999999-0",
+   "logger": "cr6",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,-999999999999)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6--999999999999-1",
+   "logger": "cr6",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,-999999999999)\n Sample(1,X,FP2)\nEndTable\nDataTable(U,1,-1)\n DataInterval(0,5,Sec,10)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n  CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-2147483647-0",
+   "logger": "cr1000x",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,2147483647)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-2147483647-1",
+   "logger": "cr1000x",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,2147483647)\n Sample(1,X,FP2)\nEndTable\nDataTable(U,1,-1)\n DataInterval(0,5,Sec,10)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n  CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-2147483648-0",
+   "logger": "cr1000x",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,2147483648)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-2147483648-1",
+   "logger": "cr1000x",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,2147483648)\n Sample(1,X,FP2)\nEndTable\nDataTable(U,1,-1)\n DataInterval(0,5,Sec,10)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n  CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x--2147483649-0",
+   "logger": "cr1000x",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,-2147483649)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x--2147483649-1",
+   "logger": "cr1000x",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,-2147483649)\n Sample(1,X,FP2)\nEndTable\nDataTable(U,1,-1)\n DataInterval(0,5,Sec,10)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n  CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-999999999999-0",
+   "logger": "cr1000x",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,999999999999)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-999999999999-1",
+   "logger": "cr1000x",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,999999999999)\n Sample(1,X,FP2)\nEndTable\nDataTable(U,1,-1)\n DataInterval(0,5,Sec,10)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n  CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x--999999999999-0",
+   "logger": "cr1000x",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,-999999999999)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x--999999999999-1",
+   "logger": "cr1000x",
+   "source": "SequentialMode\nPublic X\nDataTable(T,1,-1)\n DataInterval(0,5,Min,-999999999999)\n Sample(1,X,FP2)\nEndTable\nDataTable(U,1,-1)\n DataInterval(0,5,Sec,10)\n Sample(1,X,FP2)\nEndTable\nBeginProg\n Scan(5,Sec,0,0)\n  CallTable T\n  CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  }
+ ]
+}

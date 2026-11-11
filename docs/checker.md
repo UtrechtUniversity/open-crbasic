@@ -9589,3 +9589,10 @@ the `Const` names still to come), used by `check_const_family_args`, the declara
 check and `Alias` subscripts in `structure.check_pass1`, the `AvgRun` instance rule and, on CR300/CR350, the general
 argument check. Not modelled on CR300/CR350 (best effort, 8 strict xfails): an assignment or `If`
 before the `Const` it names, and a parameter in a `Dim` initializer.
+
+## SerialOpen buffer literals (round 77)
+
+On CR6 and CR1000X, a six-argument `SerialOpen` with a numeric format and mode `0` compiles
+with buffer literals `1.5`, `1.0`, `999999999999` and `"abc"`. In the five-argument form
+those literals still give `Parameter must be a constant integer`. The dated reference results
+and compiler hashes are in `tests/fixtures/r77_serialopen_buffer.json`.
