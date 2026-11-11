@@ -92,6 +92,10 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 85** (verdict parity, fuzz seed 776). Fixed CR1000X false accept `df473bc65461`
+and verified typed `RealTime` and `Move` destination bounds on all four profiles.
+See the [destination probes](docs/checker.md#destination-bounds-2026-10-02).
+
 **Round 84** (verdict parity). Rejects assignments to unknown `Status` fields on CR300/CR350,
 including inline and compound assignments. See the [assignment probes](docs/checker.md#status-assignment-targets-round-84).
 

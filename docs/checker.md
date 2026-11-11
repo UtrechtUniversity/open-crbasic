@@ -3171,10 +3171,13 @@ variable; a bare `X()` or scalar holds one):
 | `Therm107/108/109` | Reps | CR300, CR350 only (CR6/CR1000X accept an overrun) |
 | `SplitStr` | Reps > 1 overruns a scalar; a whole-array destination overruns past its element count (2026-10-11, `docs/instructions.md`) | all |
 
-Observed boundaries: an exact fit compiles; Reps 0 compiles; `CalFile` with negative Reps is out of
-bounds (the others were not probed with negative Reps). Float destinations only for the Reps and
-`RealTime` rules (a Long array is accepted by `CalFile(L,11,...)` on CR6/CR1000X, and `CalFile`
-rejects it as a type on CR300/CR350). `SplitStr` accepted an array destination with Reps 20 against
+An exact fit and Reps 0 compile. `CalFile` with negative Reps is out of bounds. Round 85
+confirmed that `RealTime` checks Float, Long, Double, and Boolean destinations, and that
+`Move` also checks String arrays. A parenthesized dimension expression such as `R((1+2))`
+produces Float storage even when the declaration has an explicit type. The four-profile
+observations and hashes are in `tests/fixtures/r85_realtime_move_bounds.json`.
+A Long array is accepted by `CalFile(L,11,...)` on CR6/CR1000X, and `CalFile`
+rejects it as a type on CR300/CR350. `SplitStr` accepted an array destination with Reps 20 against
 5 elements (superseded 2026-10-11: a whole-array destination with Reps above its element count is out of bounds, `docs/instructions.md`); the scalar overrun stands (Float or String scalar; a structure-typed scalar takes Reps 3, `chm/splitstr_5.CR6`). An `Alias` name as destination was not checked
 (`RealTime(RA)` with `Alias RT10(2) = RA` compiles, an exact fit, but no overrun was probed).
 

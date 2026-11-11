@@ -1,0 +1,919 @@
+{
+ "observation_date": "2026-11-11",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-plain_long_short",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-plain_float_short",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As Float\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-paren_long_short",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R((1+2)) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-paren_long_exact",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R((4+5)) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-paren_long_index",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R((4+5)) As Long\nBeginProg\n RealTime(R(2))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-paren_double_short",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R((1+2)) As Double\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-paren_string_short",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R((1+2)) As String * 16\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-dim_paren_long_short",
+   "logger": "cr6",
+   "source": "Public Y\nDim R((1+2)) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-routine_paren_long",
+   "logger": "cr6",
+   "source": "Public Y\nSub P\n Dim R((1+2)) As Long\n RealTime(R)\nEndSub\nBeginProg\n Call P\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-plain_move_short",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-paren_move_short",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R((1+2)) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-paren_battery",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R((1+2)) As Long\nBeginProg\n Battery(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-plain_long_short",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-plain_float_short",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As Float\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-paren_long_short",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R((1+2)) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-paren_long_exact",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R((4+5)) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-paren_long_index",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R((4+5)) As Long\nBeginProg\n RealTime(R(2))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-paren_double_short",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R((1+2)) As Double\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-paren_string_short",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R((1+2)) As String * 16\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-dim_paren_long_short",
+   "logger": "cr1000x",
+   "source": "Public Y\nDim R((1+2)) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-routine_paren_long",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub P\n Dim R((1+2)) As Long\n RealTime(R)\nEndSub\nBeginProg\n Call P\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-plain_move_short",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-paren_move_short",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R((1+2)) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-paren_battery",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R((1+2)) As Long\nBeginProg\n Battery(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-plain_long_short",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-plain_float_short",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As Float\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-paren_long_short",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R((1+2)) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-paren_long_exact",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R((4+5)) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-paren_long_index",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R((4+5)) As Long\nBeginProg\n RealTime(R(2))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-paren_double_short",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R((1+2)) As Double\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-paren_string_short",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R((1+2)) As String * 16\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-dim_paren_long_short",
+   "logger": "cr300",
+   "source": "Public Y\nDim R((1+2)) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-routine_paren_long",
+   "logger": "cr300",
+   "source": "Public Y\nSub P\n Dim R((1+2)) As Long\n RealTime(R)\nEndSub\nBeginProg\n Call P\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-plain_move_short",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-paren_move_short",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R((1+2)) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-paren_battery",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R((1+2)) As Long\nBeginProg\n Battery(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-plain_long_short",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-plain_float_short",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As Float\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-paren_long_short",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R((1+2)) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-paren_long_exact",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R((4+5)) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-paren_long_index",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R((4+5)) As Long\nBeginProg\n RealTime(R(2))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-paren_double_short",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R((1+2)) As Double\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-paren_string_short",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R((1+2)) As String * 16\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-dim_paren_long_short",
+   "logger": "cr350",
+   "source": "Public Y\nDim R((1+2)) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-routine_paren_long",
+   "logger": "cr350",
+   "source": "Public Y\nSub P\n Dim R((1+2)) As Long\n RealTime(R)\nEndSub\nBeginProg\n Call P\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-plain_move_short",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-paren_move_short",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R((1+2)) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-paren_battery",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R((1+2)) As Long\nBeginProg\n Battery(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-rt_Long_3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-rt_Long_9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(9) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-rt_Float_3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As Float\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-rt_Float_9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(9) As Float\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-rt_Boolean_3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As Boolean\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-rt_Boolean_9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(9) As Boolean\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-rt_String * 16_3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As String * 16\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-rt_String * 16_9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(9) As String * 16\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move_Long_3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-move_Long_9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(9) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move_Float_3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As Float\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-move_Float_9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(9) As Float\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move_Double_3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As Double\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-move_Double_9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(9) As Double\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move_Boolean_3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As Boolean\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-move_Boolean_9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(9) As Boolean\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move_String * 16_3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As String * 16\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-move_String * 16_9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(9) As String * 16\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-rt_Long_3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-rt_Long_9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(9) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-rt_Float_3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As Float\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-rt_Float_9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(9) As Float\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-rt_Double_3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As Double\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-rt_Double_9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(9) As Double\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-rt_Boolean_3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As Boolean\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-rt_Boolean_9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(9) As Boolean\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-rt_String * 16_3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As String * 16\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-rt_String * 16_9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(9) As String * 16\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move_Long_3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-move_Long_9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(9) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move_Float_3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As Float\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-move_Float_9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(9) As Float\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move_Double_3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As Double\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-move_Double_9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(9) As Double\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move_Boolean_3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As Boolean\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-move_Boolean_9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(9) As Boolean\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move_String * 16_3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(3) As String * 16\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-move_String * 16_9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(9) As String * 16\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-rt_Long_3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-rt_Long_9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(9) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-rt_Float_3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As Float\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-rt_Float_9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(9) As Float\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-rt_Double_3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As Double\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-rt_Double_9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(9) As Double\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-rt_Boolean_3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As Boolean\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-rt_Boolean_9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(9) As Boolean\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-rt_String * 16_3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As String * 16\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-rt_String * 16_9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(9) As String * 16\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-move_Long_3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-move_Long_9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(9) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-move_Float_3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As Float\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-move_Float_9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(9) As Float\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-move_Double_3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As Double\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-move_Double_9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(9) As Double\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-move_Boolean_3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As Boolean\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-move_Boolean_9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(9) As Boolean\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-move_String * 16_3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(3) As String * 16\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-move_String * 16_9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(9) As String * 16\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-rt_Long_3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-rt_Long_9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(9) As Long\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-rt_Float_3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As Float\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-rt_Float_9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(9) As Float\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-rt_Double_3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As Double\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-rt_Double_9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(9) As Double\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-rt_Boolean_3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As Boolean\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-rt_Boolean_9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(9) As Boolean\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-rt_String * 16_3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As String * 16\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-rt_String * 16_9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(9) As String * 16\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move_Long_3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-move_Long_9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(9) As Long\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move_Float_3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As Float\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-move_Float_9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(9) As Float\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move_Double_3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As Double\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-move_Double_9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(9) As Double\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move_Boolean_3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As Boolean\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-move_Boolean_9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(9) As Boolean\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move_String * 16_3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(3) As String * 16\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-move_String * 16_9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(9) As String * 16\nBeginProg\n Move(R,5,Y,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-rt_Double_3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(3) As Double\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-rt_Double_9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(9) As Double\nBeginProg\n RealTime(R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

@@ -439,7 +439,7 @@ def scope_tables(program: S.Program, env: consteval.Env, scalars: bool = False, 
             if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM"):
                 for v in st.vars:
                     if v.dims or scalars:
-                        types[v.name.upper()] = (v.type or "FLOAT").upper()
+                        types[v.name.upper()] = "FLOAT" if v.paren_dim else (v.type or "FLOAT").upper()
                     if v.dims:
                         arrays.add(v.name.upper())
         if routine is not None:

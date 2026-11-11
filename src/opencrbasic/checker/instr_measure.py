@@ -1311,10 +1311,14 @@ def _check_bridge_burst(program: S.Program, profile: Profile, diags: Diagnostics
 
 
 # Destination size rules (oracle, 2026-10-02; docs/checker.md#destination-bounds): elements the
-# Float destination must hold from its start -> `Variable %s out of bounds.`. `(per_rep,)` scales the
+# destination must hold from its start -> `Variable %s out of bounds.`. `(per_rep,)` scales the
 # Reps argument (index 1); `REALTIME` needs a fixed nine (Therm107-109: `check_reps`, round 31).
 # Only CalFile also rejects negative Reps.
 _DEST_FIXED = {"REALTIME": 9}
+_DEST_KINDS = {
+    "REALTIME": ("FLOAT", "LONG", "DOUBLE", "BOOLEAN"),
+    "MOVE": ("FLOAT", "LONG", "DOUBLE", "BOOLEAN", "STRING"),
+}
 _DEST_PER_REP = {
     "CALFILE": 1,
     "AVGRUN": 1,
@@ -1512,7 +1516,7 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, 
                 # CalFile, Move and the running statistics)
                 if _alias_overrun(stmt, dest, alias, -1 if negative else need, profile, env):
                     diags.error(stmt.line, f"Variable {alias[2]} out of bounds.", stmt.file)
-            elif overruns(dest, need, negative, ("FLOAT",)):
+            elif overruns(dest, need, negative, _DEST_KINDS.get(kw, ("FLOAT",))):
                 bad.append(dest)
         # single-pass loggers: before this line's warnings and channel errors (oracle)
         for arg in reversed(bad) if profile.single_pass else bad:
