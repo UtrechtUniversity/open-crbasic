@@ -1,0 +1,603 @@
+{
+ "observation_date": "2026-11-11",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "switch-cr6-switch--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,-1,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr6-switch-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,0,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr6-switch-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,1,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr6-switch-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,2,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr6-switch-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,3,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr6-switch-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,4,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr6-switch-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,5,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr6-switch-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,6,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr6-switch-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,7,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr6-switch-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,8,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr6-switch-255",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,255,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr6-switch-256",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,256,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr6-switch-257",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,257,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr6-switch-1.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,1.5,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr6-switch-999999999999",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,999999999999,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr6-switch-\"x\"",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,\"x\",1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr6-switch-Y",
+   "logger": "cr6",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,Y,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "switch-cr1000x-switch--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,-1,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr1000x-switch-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,0,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr1000x-switch-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,1,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr1000x-switch-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,2,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr1000x-switch-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,3,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr1000x-switch-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,4,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr1000x-switch-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,5,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr1000x-switch-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,6,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr1000x-switch-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,7,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr1000x-switch-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,8,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr1000x-switch-255",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,255,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option in SDMSW8A."
+  },
+  {
+   "id": "switch-cr1000x-switch-256",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,256,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr1000x-switch-257",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,257,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr1000x-switch-1.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,1.5,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr1000x-switch-999999999999",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,999999999999,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr1000x-switch-\"x\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,\"x\",1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "switch-cr1000x-switch-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic States(8)\nBeginProg\n Scan(1,Sec,0,0)\n SDMSW8A(States(),8,0,Y,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "clock-cr6--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,-1)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr6-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,0)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr6-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "clock-cr6-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,2)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "clock-cr6-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "clock-cr6-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,4)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr6-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,5)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr6-255",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,255)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr6-257",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,257)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr6-1.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1.5)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "clock-cr6-999999999999",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,999999999999)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr6-\"x\"",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,\"x\")\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr6-Y",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,Y)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "clock-cr1000x--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,-1)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr1000x-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,0)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr1000x-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "clock-cr1000x-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,2)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "clock-cr1000x-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "clock-cr1000x-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,4)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr1000x-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,5)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr1000x-255",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,255)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr1000x-257",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,257)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr1000x-1.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1.5)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "clock-cr1000x-999999999999",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,999999999999)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr1000x-\"x\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,\"x\")\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid clock set mode, must be 1..3."
+  },
+  {
+   "id": "clock-cr1000x-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,Y)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Y+1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "reset-cr6--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr6-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr6-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "reset-cr6-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "reset-cr6-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr6-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr6-255",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,255)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr6-257",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,257)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr6-1.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,1.5)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "reset-cr6-999999999999",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,999999999999)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr6-\"x\"",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr6-Y",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,Y)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "reset-cr1000x--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr1000x-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr1000x-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "reset-cr1000x-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "reset-cr1000x-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr1000x-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr1000x-255",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,255)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr1000x-257",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,257)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr1000x-1.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,1.5)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "reset-cr1000x-999999999999",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,999999999999)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr1000x-\"x\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid reset mode, must be 1..2."
+  },
+  {
+   "id": "reset-cr1000x-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Index As Long, StatusValue As Long\nTimedControl(2,60,Sec,0,Index,StatusValue,1)\nBeginProg\n Scan(1,Sec,0,0)\n TimedControl(2,60,Sec,0,Index,StatusValue,Y)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable illegal in Parameter: Y."
+  }
+ ]
+}

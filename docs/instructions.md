@@ -2372,3 +2372,10 @@ byte. Values 1–4 pass, including 257 and −255 after conversion. Other consta
 Long-converted delays 0–100000 inclusive. A String or overflow converts to −2147483648 and
 produces the same range diagnostic as a negative delay. See the dated results and compiler
 hashes in `tests/fixtures/r88_event_pulse_ranges.json`.
+
+## TimedControl and SDMSW8A options (round 90)
+
+On CR6 and CR1000X, `TimedControl` checks its seventh argument after conversion to Long.
+A declaration before `BeginProg` requires clock set mode 1–3. A reset inside the program
+requires mode 1–2. `SDMSW8A` checks the low byte of its fourth argument and accepts 0–3.
+The dated reference results and compiler hashes are in `tests/fixtures/r90_timed_switch_options.json`.

@@ -1771,16 +1771,24 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics, env: co
     literals = longconv.literal_names(program.statements)
     cr3 = profile.name in ("cr300", "cr350")
     matrix_shapes = None
+    seen_beginprog = False
+    supported = {
+        "SPLITSTR",
+        "IPROUTE",
+        "MATRIX",
+        "CDM_DELAY",
+        "MOVEBYTES",
+        "TRIGGERSEQUENCE",
+        "SDMSW8A",
+        "TIMEDCONTROL",
+    } | _CDM_SETTLING_ARG.keys()
     for stmt in program.statements:
         if not isinstance(stmt, (S.Instruction, S.Call)):
             continue
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else stmt.name.upper()
-        if (
-            kw
-            not in ("SPLITSTR", "IPROUTE", "MATRIX", "CDM_DELAY", "MOVEBYTES", "TRIGGERSEQUENCE")
-            + tuple(_CDM_SETTLING_ARG)
-            or kw not in profile.instructions
-        ):
+        if kw == "BEGINPROG":
+            seen_beginprog = True
+        if kw not in supported or kw not in profile.instructions:
             continue
         args = list(stmt.args)
 
@@ -1801,6 +1809,17 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics, env: co
             evt = value(0)
             if evt is not None and not 1 <= evt % 256 <= 4:
                 diags.error(stmt.line, "Illegal EVT, 1..4 are legal", stmt.file)
+        elif kw == "SDMSW8A":
+            option = value(3)
+            if option is not None and option % 256 > 3:
+                diags.error(stmt.line, "Invalid function option in SDMSW8A.", stmt.file)
+        elif kw == "TIMEDCONTROL":
+            mode = value(6)
+            if mode is not None and not 1 <= mode <= (2 if seen_beginprog else 3):
+                message = (
+                    "Invalid reset mode, must be 1..2." if seen_beginprog else "Invalid clock set mode, must be 1..3."
+                )
+                diags.error(stmt.line, message, stmt.file)
         elif kw in _CDM_SETTLING_ARG:
             v = value(_CDM_SETTLING_ARG[kw])
             if v is not None and v != 0 and not 100 <= v <= 100000:
