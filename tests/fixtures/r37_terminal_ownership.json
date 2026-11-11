@@ -440,8 +440,7 @@
    "logger": "cr300",
    "source": "'ser 11 then sdi C5\r\nPublic A(9)\r\nPublic S As String * 50\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nSerialOpen(11,9600,0,0,50)\r\nSDI12Recorder(A(),C5,0,\"M!\",1,0)\r\n  NextScan\r\nEndProg",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory.\nline 7: Too many parameters:  C5.",
-   "not_modelled": "round 37: message differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Out of memory.\nline 7: Too many parameters:  C5."
   },
   {
    "id": "cr350-own-c1-15",
@@ -469,16 +468,14 @@
    "logger": "cr300",
    "source": "'ser ComC1 in If then sdi C1\r\nPublic A(9)\r\nPublic S As String * 50\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nIf A(1) Then SerialOpen(ComC1,9600,0,0,50)\r\nSDI12Recorder(A(),C1,0,\"M!\",1,0)\r\n  NextScan\r\nEndProg",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: ComC1 is not defined.\nline 6: ComPort 0 illegal.\nline 6: Parameter must be a constant integer: SerialOpen(ComC1,9600,0,0,50).\nline 7: Too many parameters:  C1.",
-   "not_modelled": "round 37: message differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: ComC1 is not defined.\nline 6: ComPort 0 illegal.\nline 6: Parameter must be a constant integer: SerialOpen(ComC1,9600,0,0,50).\nline 7: Too many parameters:  C1."
   },
   {
    "id": "cr350-own-c1-16",
    "logger": "cr350",
    "source": "'ser ComC1 in If then sdi C1\r\nPublic A(9)\r\nPublic S As String * 50\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\nIf A(1) Then SerialOpen(ComC1,9600,0,0,50)\r\nSDI12Recorder(A(),C1,0,\"M!\",1,0)\r\n  NextScan\r\nEndProg",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: ComC1 is not defined.\nline 6: ComPort 0 illegal.\nline 6: Parameter must be a constant integer: SerialOpen(ComC1,9600,0,0,50).\nline 7: Too many parameters:  C1.",
-   "not_modelled": "round 37: message differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: ComC1 is not defined.\nline 6: ComPort 0 illegal.\nline 6: Parameter must be a constant integer: SerialOpen(ComC1,9600,0,0,50).\nline 7: Too many parameters:  C1."
   },
   {
    "id": "cr6-own-c1-17",

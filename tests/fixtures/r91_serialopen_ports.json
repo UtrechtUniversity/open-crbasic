@@ -1,0 +1,2017 @@
+{
+ "observation_date": "2026-11-11",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "sweep-cr300-port-0",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(0,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(0,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-1",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(1,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-2",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(2,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-3",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(3,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-4",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(4,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-5",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(5,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-6",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(6,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-7",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(7,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-8",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(8,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-9",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(9,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-10",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(10,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-11",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+  },
+  {
+   "id": "sweep-cr300-port-12",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(12,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-13",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(13,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 13 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(13,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-14",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(14,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 14 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(14,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-15",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(15,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 15 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(15,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-16",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(16,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 16 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(16,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-17",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(17,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 17 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(17,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-18",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(18,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 18 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(18,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-19",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(19,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 19 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(19,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-20",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(20,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 20 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(20,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-21",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(21,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 21 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(21,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-22",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(22,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 22 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(22,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-23",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(23,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 23 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(23,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-24",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(24,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 24 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(24,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-25",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(25,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 25 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(25,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-26",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(26,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 26 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(26,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-27",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(27,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 27 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(27,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-28",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(28,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 28 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(28,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-29",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(29,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 29 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(29,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-30",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(30,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 30 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(30,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-31",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(31,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 31 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(31,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-32",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(32,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-33",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(33,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-34",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(34,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-35",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(35,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-36",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(36,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-37",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(37,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-38",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(38,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-39",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(39,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-40",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(40,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-41",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(41,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-42",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(42,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-43",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(43,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-44",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(44,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-45",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(45,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-46",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(46,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-47",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(47,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr300-port-48",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(48,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 48 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(48,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-49",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(49,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 49 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(49,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-50",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(50,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 50 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(50,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-51",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(51,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 51 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(51,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-52",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(52,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 52 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(52,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-53",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(53,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 53 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(53,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-54",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(54,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 54 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(54,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-55",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(55,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 55 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(55,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-56",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(56,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 56 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(56,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-57",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(57,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 57 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(57,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-58",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(58,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 58 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(58,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-59",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(59,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 59 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(59,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-60",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(60,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 60 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(60,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-61",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(61,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 61 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(61,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-62",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(62,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 62 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(62,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-63",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(63,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 63 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(63,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-64",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(64,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 64 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(64,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-65",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(65,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 65 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(65,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-66",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(66,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 66 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(66,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-67",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(67,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 67 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(67,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-68",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(68,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 68 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(68,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-69",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(69,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 69 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(69,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-70",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(70,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 70 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(70,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-71",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(71,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 71 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(71,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-72",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(72,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 72 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(72,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-73",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(73,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 73 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(73,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-74",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(74,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 74 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(74,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-75",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(75,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 75 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(75,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-76",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(76,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 76 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(76,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-77",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(77,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 77 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(77,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-78",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(78,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 78 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(78,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-79",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(79,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 79 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(79,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-80",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(80,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 80 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(80,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-81",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(81,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 81 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(81,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-82",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(82,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 82 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(82,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-83",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(83,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 83 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(83,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-84",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(84,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 84 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(84,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-85",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(85,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 85 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(85,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-86",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(86,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 86 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(86,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-87",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(87,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 87 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(87,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-88",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(88,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 88 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(88,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-89",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(89,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 89 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(89,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-90",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(90,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 90 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(90,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-91",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(91,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 91 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(91,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-92",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(92,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 92 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(92,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-93",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(93,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 93 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(93,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-94",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(94,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 94 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(94,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-95",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(95,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 95 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(95,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-96",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(96,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 96 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(96,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-97",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(97,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 97 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(97,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-98",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(98,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 98 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(98,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-99",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(99,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 99 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(99,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-100",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(100,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 100 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(100,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-port-101",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(101,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 101 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(101,9600,0,0,64)\n."
+  },
+  {
+   "id": "sweep-cr300-compound-followup",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(10000,9600,0,0,64)\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 10000 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(10000,9600,0,0,64)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "sweep-cr300-port11-default",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,1000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+  },
+  {
+   "id": "sweep-cr300-port11-mode",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,1000,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+  },
+  {
+   "id": "sweep-cr350-port-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(0,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(1,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(2,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(3,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(4,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(5,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(6,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(7,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(8,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-9",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(9,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-10",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(10,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-11",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-12",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(12,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-13",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(13,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-14",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(14,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-15",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(15,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-16",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(16,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-17",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(17,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-18",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(18,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 18 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-19",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(19,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 19 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-20",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(20,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 20 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-21",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(21,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 21 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-22",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(22,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 22 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-23",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(23,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 23 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-24",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(24,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 24 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-25",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(25,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 25 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-26",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(26,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 26 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-27",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(27,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 27 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-28",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(28,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 28 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-29",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(29,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 29 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-30",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(30,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 30 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-31",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(31,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 31 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-32",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(32,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-33",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(33,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-34",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(34,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-35",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(35,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-36",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(36,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-37",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(37,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-38",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(38,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-39",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(39,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-40",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(40,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-41",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(41,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-42",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(42,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-43",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(43,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-44",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(44,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-45",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(45,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-46",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(46,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-47",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(47,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port-48",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(48,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 48 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-49",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(49,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 49 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-50",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(50,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 50 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-51",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(51,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 51 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-52",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(52,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 52 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-53",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(53,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 53 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-54",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(54,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 54 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-55",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(55,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 55 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-56",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(56,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 56 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-57",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(57,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 57 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-58",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(58,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 58 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-59",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(59,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 59 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-60",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(60,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 60 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-61",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(61,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 61 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-62",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(62,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 62 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-63",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(63,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 63 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-64",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(64,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 64 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-65",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(65,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 65 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-66",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(66,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 66 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-67",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(67,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 67 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-68",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(68,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 68 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-69",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(69,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 69 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-70",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(70,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 70 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-71",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(71,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 71 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-72",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(72,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 72 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-73",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(73,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 73 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-74",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(74,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 74 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-75",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(75,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 75 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-76",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(76,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 76 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-77",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(77,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 77 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-78",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(78,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 78 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-79",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(79,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 79 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-80",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(80,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 80 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-81",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(81,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 81 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-82",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(82,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 82 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-83",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(83,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 83 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-84",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(84,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 84 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-85",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(85,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 85 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-86",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(86,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 86 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-87",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(87,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 87 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-88",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(88,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 88 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-89",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(89,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 89 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-90",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(90,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 90 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-91",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(91,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 91 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-92",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(92,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 92 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-93",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(93,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 93 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-94",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(94,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 94 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-95",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(95,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 95 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-96",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(96,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 96 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-97",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(97,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 97 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-98",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(98,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 98 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-99",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(99,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 99 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-100",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(100,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 100 illegal."
+  },
+  {
+   "id": "sweep-cr350-port-101",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(101,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 101 illegal."
+  },
+  {
+   "id": "sweep-cr350-compound-followup",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(10000,9600,0,0,64)\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 10000 illegal.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "sweep-cr350-port11-default",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,1000)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sweep-cr350-port11-mode",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,1000,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr300-port-True",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(True,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort -1 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(True,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr300-port-False",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(False,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(False,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr300-port-1.0",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(1.0,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal.\nline 3: Parameter must be a constant integer:  SerialOpen(1.0,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr300-port-1+1",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(1+1,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr300-port-&H20",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(&H20,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr300-port-255",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(255,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 255 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(255,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr300-port-256",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(256,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 256 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(256,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr300-port-257",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(257,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 257 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(257,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr300-port-32768",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(32768,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 32768 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(32768,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr300-port-32769",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(32769,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 32769 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(32769,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr300-port-65535",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(65535,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 65535 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(65535,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr300-port-65536",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(65536,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 65536 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(65536,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr300-port-2147483648",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(2147483648,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 2147483647 illegal.\nline 3: No Matching, or out of place ) in expression:  SerialOpen(2147483648,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr300-port-999999999999",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(999999999999,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal.\nline 3: Parameter must be a constant integer:  SerialOpen(999999999999,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr300-p11-buffer--1",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,-1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr300-p11-buffer-0",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr300-p11-buffer-1",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+  },
+  {
+   "id": "edges-cr300-p11-buffer-2",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+  },
+  {
+   "id": "edges-cr300-p11-buffer-4",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,4)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+  },
+  {
+   "id": "edges-cr300-p11-buffer-8",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,8)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+  },
+  {
+   "id": "edges-cr300-p11-buffer-999999999999",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,999999999999)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,999999999999)\n."
+  },
+  {
+   "id": "edges-cr300-p11-baud",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,1,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 1 is illegal baud rate.\nline 3: Out of memory."
+  },
+  {
+   "id": "edges-cr300-p11-next",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,64)\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "edges-cr300-port-string-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=\"x\"\nBeginProg\n SerialOpen(R,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(R,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr350-port-True",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(True,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort -1 illegal."
+  },
+  {
+   "id": "edges-cr350-port-False",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(False,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal."
+  },
+  {
+   "id": "edges-cr350-port-1.0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(1.0,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal.\nline 3: Parameter must be a constant integer:  SerialOpen(1.0,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr350-port-1+1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(1+1,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr350-port-&H20",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(&H20,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr350-port-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(255,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 255 illegal."
+  },
+  {
+   "id": "edges-cr350-port-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(256,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 256 illegal."
+  },
+  {
+   "id": "edges-cr350-port-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(257,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 257 illegal."
+  },
+  {
+   "id": "edges-cr350-port-32768",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(32768,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 32768 illegal."
+  },
+  {
+   "id": "edges-cr350-port-32769",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(32769,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 32769 illegal."
+  },
+  {
+   "id": "edges-cr350-port-65535",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(65535,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 65535 illegal."
+  },
+  {
+   "id": "edges-cr350-port-65536",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(65536,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 65536 illegal."
+  },
+  {
+   "id": "edges-cr350-port-2147483648",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(2147483648,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 2147483647 illegal."
+  },
+  {
+   "id": "edges-cr350-port-999999999999",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(999999999999,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComPort 0 illegal.\nline 3: Parameter must be a constant integer:  SerialOpen(999999999999,9600,0,0,64)\n."
+  },
+  {
+   "id": "edges-cr350-p11-buffer--1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,-1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr350-p11-buffer-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr350-p11-buffer-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr350-p11-buffer-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr350-p11-buffer-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,4)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr350-p11-buffer-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,8)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr350-p11-buffer-999999999999",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,999999999999)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,999999999999)\n."
+  },
+  {
+   "id": "edges-cr350-p11-baud",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,1,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: 1 is illegal baud rate."
+  },
+  {
+   "id": "edges-cr350-p11-next",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0,64)\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "edges-cr350-port-string-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=\"x\"\nBeginProg\n SerialOpen(R,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(R,9600,0,0,64)\n."
+  },
+  {
+   "id": "scope-cr300-const-1",
+   "logger": "cr300",
+   "source": "Public Y\nConst P=1\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "scope-cr300-const-1.0",
+   "logger": "cr300",
+   "source": "Public Y\nConst P=1.0\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "scope-cr300-const-1+1",
+   "logger": "cr300",
+   "source": "Public Y\nConst P=1+1\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "scope-cr300-const-2/2",
+   "logger": "cr300",
+   "source": "Public Y\nConst P=2/2\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "scope-cr300-const-11",
+   "logger": "cr300",
+   "source": "Public Y\nConst P=11\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Out of memory."
+  },
+  {
+   "id": "scope-cr300-const-2147483648",
+   "logger": "cr300",
+   "source": "Public Y\nConst P=2147483648\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 2147483647 illegal.\nline 4: No Matching, or out of place ) in expression:  SerialOpen(P,9600,0,0,64)\n."
+  },
+  {
+   "id": "scope-cr300-const--2147483648",
+   "logger": "cr300",
+   "source": "Public Y\nConst P=-2147483648\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort -2147483647 illegal.\nline 4: No Matching, or out of place ) in expression:  SerialOpen(P,9600,0,0,64)\n."
+  },
+  {
+   "id": "scope-cr300-const-True",
+   "logger": "cr300",
+   "source": "Public Y\nConst P=True\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort -1 illegal.\nline 4: No Matching, or out of place ) in expression:  SerialOpen(P,9600,0,0,64)\n."
+  },
+  {
+   "id": "scope-cr300-const-False",
+   "logger": "cr300",
+   "source": "Public Y\nConst P=False\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 4: No Matching, or out of place ) in expression:  SerialOpen(P,9600,0,0,64)\n."
+  },
+  {
+   "id": "scope-cr300-port11-var-buffer",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n SerialOpen(11,9600,0,0,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,R)\n."
+  },
+  {
+   "id": "scope-cr300-port11-delay",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,-1,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: -1 usec delay before transmit is illegal, must be 0..14000000\nline 3: Out of memory."
+  },
+  {
+   "id": "scope-cr300-port11-missing",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects , :  SerialOpen(11,9600,0,0)\n."
+  },
+  {
+   "id": "scope-cr300-port11-negative-baud",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,-9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: -9600 is illegal baud rate.\nline 3: Out of memory."
+  },
+  {
+   "id": "scope-cr300-port11-inline",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n If Y Then SerialOpen(11,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+  },
+  {
+   "id": "scope-cr350-const-1",
+   "logger": "cr350",
+   "source": "Public Y\nConst P=1\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "scope-cr350-const-1.0",
+   "logger": "cr350",
+   "source": "Public Y\nConst P=1.0\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "scope-cr350-const-1+1",
+   "logger": "cr350",
+   "source": "Public Y\nConst P=1+1\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "scope-cr350-const-2/2",
+   "logger": "cr350",
+   "source": "Public Y\nConst P=2/2\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "scope-cr350-const-11",
+   "logger": "cr350",
+   "source": "Public Y\nConst P=11\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "scope-cr350-const-2147483648",
+   "logger": "cr350",
+   "source": "Public Y\nConst P=2147483648\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 2147483647 illegal."
+  },
+  {
+   "id": "scope-cr350-const--2147483648",
+   "logger": "cr350",
+   "source": "Public Y\nConst P=-2147483648\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort -2147483647 illegal."
+  },
+  {
+   "id": "scope-cr350-const-True",
+   "logger": "cr350",
+   "source": "Public Y\nConst P=True\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort -1 illegal."
+  },
+  {
+   "id": "scope-cr350-const-False",
+   "logger": "cr350",
+   "source": "Public Y\nConst P=False\nBeginProg\n SerialOpen(P,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "scope-cr350-port11-var-buffer",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n SerialOpen(11,9600,0,0,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,R)\n."
+  },
+  {
+   "id": "scope-cr350-port11-delay",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,-1,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: -1 usec delay before transmit is illegal, must be 0..14000000"
+  },
+  {
+   "id": "scope-cr350-port11-missing",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,9600,0,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects , :  SerialOpen(11,9600,0,0)\n."
+  },
+  {
+   "id": "scope-cr350-port11-negative-baud",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n SerialOpen(11,-9600,0,0,64)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: -9600 is illegal baud rate."
+  },
+  {
+   "id": "scope-cr350-port11-inline",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n If Y Then SerialOpen(11,9600,0,0,64)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

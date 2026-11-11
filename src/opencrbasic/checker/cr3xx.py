@@ -40,6 +40,8 @@ _SERIALOPEN = "SERIALOPEN"
 _SERIALOPEN_PORTS = {
     "cr6": frozenset(range(1, 19)) | frozenset(range(31, 100)),
     "cr1000x": frozenset(range(1, 15)) | frozenset(range(31, 100)),
+    "cr300": frozenset(range(1, 13)) | frozenset(range(32, 48)),
+    "cr350": frozenset(range(1, 18)) | frozenset(range(32, 48)),
 }
 _COMPORT_ARG_POSITION = 0
 # Every `Serial*` function whose first argument is a `ComPort` (`data/<logger>/functions.json`:
@@ -143,7 +145,7 @@ def _non_numeric(expr, profile, consts: dict | None, variable_names) -> bool:
     return isinstance(value, str) or expressions._not_constant_integer(expr)
 
 
-def _check_baud(stmt: S.Call, profile, diags: Diagnostics, consts: dict | None = None) -> None:
+def _check_baud(stmt: S.Call, profile, diags: Diagnostics, consts: dict | None = None, *, port11: bool = False) -> None:
     port = stmt.args[0] if stmt.args else None
     rs232 = isinstance(port, S.Name) and port.name.upper() == "COMRS232"
     # CR6/CR1000X check every valid port (oracle, 2026-10-25, round 35: ComUSB, ComC1, ComSDC7,
@@ -152,7 +154,7 @@ def _check_baud(stmt: S.Call, profile, diags: Diagnostics, consts: dict | None =
         isinstance(port, S.Name)
         and (port.name.upper() in profile.symbols or port.name.upper() in {str(c).upper() for c in consts or {}})
     )
-    if len(stmt.args) < 2 or not (rs232 or (not profile.single_pass and known_port)):
+    if len(stmt.args) < 2 or not (rs232 or port11 or (not profile.single_pass and known_port)):
         return
     arg = stmt.args[1]
     sign = 1
@@ -209,9 +211,11 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
     alongside `expressions.check_consts`.
     """
     cr3 = profile.name in ("cr300", "cr350")
+    from .instr_data import _with_inline
+
     known = expressions._known_names(program, profile)
     variable_names = symbols.declared_variable_names(program)
-    for stmt in program.statements:
+    for stmt in _with_inline(program.statements) if cr3 else program.statements:
         if not isinstance(stmt, S.Call):
             continue
         name = stmt.name.upper()
@@ -231,6 +235,8 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
             continue
         is_variable = bool(expressions._variable_refs(arg, variable_names))
         ports = _SERIALOPEN_PORTS.get(profile.name)
+        port = None
+        sep = "\n" if cr3 and stmt.at_eol else ""
         if ports and not (names or is_variable or isinstance(arg, S.String)):
             # a constant ComPort outside the port codes ends the statement (oracle, round 36/37,
             # docs/checker.md#serialopen-comport-codes-round-37)
@@ -238,16 +244,33 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                 port = consteval.value_of(arg, consteval.Env(profile, dict(program.consts or {})))
             except consteval.NotConstant, TypeError, ValueError, ZeroDivisionError:
                 port = None
+            if cr3 and isinstance(port, bool):
+                port = -int(port)
+            if cr3 and isinstance(port, (int, float)) and port in (-(2**31), 2**31):
+                port = max(-(2**31 - 1), min(2**31 - 1, int(port)))
+            elif (
+                consteval.is_finite_number(port)
+                and not isinstance(port, bool)
+                and (
+                    port != int(port)
+                    or not -(2**31) <= port < 2**31
+                    or (cr3 and expressions._not_constant_integer(arg))
+                )
+            ) or (cr3 and isinstance(port, str)):
+                diags.error(stmt.line, "ComPort 0 illegal.", stmt.file)
+                diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.", stmt.file)
+                continue
             if consteval.is_finite_number(port) and not isinstance(port, bool):
-                if port != int(port) or not -(2**31) <= port < 2**31:
-                    diags.error(stmt.line, "ComPort 0 illegal.", stmt.file)
-                    diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}.", stmt.file)
-                    continue
                 if int(port) not in ports:
-                    diags.error(stmt.line, f"ComPort {int(port)} illegal.", stmt.file)
-                    diags.error(stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}.", stmt.file)
+                    diags.items.append(
+                        Diagnostic("error", stmt.line, f"ComPort {int(port)} illegal.", stmt.file, trigger=cr3)
+                    )
+                    if profile.name != "cr350":
+                        diags.error(
+                            stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}{sep}.", stmt.file
+                        )
                     continue
-        _check_baud(stmt, profile, diags, program.consts)
+        _check_baud(stmt, profile, diags, program.consts, port11=cr3 and port == 11)
         constant_port = not (names or is_variable or isinstance(arg, S.String))
         # CR6/CR1000X: a String or variable `SerialOpenFormat` makes the 5th argument the CommsMode, with
         # no TXDelay range and at most 5 arguments (oracle, 2026-10-28, round 57,
@@ -327,13 +350,22 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
             diags.error(stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}.", stmt.file)
             continue
         if (
-            not (cr3 or names or is_variable or isinstance(arg, S.String))
+            not (names or is_variable or isinstance(arg, S.String))
             and len(stmt.args) > 4
             and expressions._variable_refs(stmt.args[4], variable_names)
         ):
             # a variable `BufferSize` (oracle, CR6/CR1000X, 2026-10-24, round 34)
-            diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}.", stmt.file)
+            diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.", stmt.file)
             continue
+        if profile.name == "cr300" and port == 11 and len(stmt.args) > 4:
+            buffer = stmt.args[4]
+            if not expressions._not_constant_integer(buffer):
+                try:
+                    size = consteval.value_of(buffer, consteval.Env(profile, dict(program.consts)))
+                except consteval.NotConstant:
+                    size = None
+                if consteval.is_finite_number(size) and 0 < size < 2**31:
+                    diags.items.append(Diagnostic("error", stmt.line, "Out of memory.", stmt.file, trigger=True))
         if names or is_variable or isinstance(arg, S.String):
             # A string or variable ComPort, all four loggers, pass 1 (oracle, 2026-10-01:
             # `SerialOpen("fuzz",...)`). CR300/CR350 echo the line end (`docs/loggers.md`).

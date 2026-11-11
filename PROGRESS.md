@@ -92,6 +92,9 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 91** (verdict parity, fuzz seed 777). Fixed CR350 false accept `8e745390446d`
+and checked the corresponding CR300 behavior. [SerialOpen port evidence](docs/checker.md#serialopen-ports-on-cr300-and-cr350-round-91).
+
 **Round 90** (archived verdict parity). Fixed false accepts `c060e9f1402f` and
 `77636b10567c` by validating `TimedControl` and `SDMSW8A` options. See the
 [option probes](docs/instructions.md#timedcontrol-and-sdmsw8a-options-round-90).

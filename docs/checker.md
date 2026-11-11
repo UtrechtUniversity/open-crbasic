@@ -8184,7 +8184,17 @@ non-integer or a value past 32 bits is `ComPort 0 illegal.` then `Parameter must
 integer: <statement>.` Both are pass 1 and end the statement: its baud, delay, buffer and arity
 errors are not reported, nor is an argument-count `Expression expects , :` after the older
 variable/string ComPort errors. A bare `SerialOpen()` keeps its `Invalid, or out of place
-expression`. CR300/CR350 not probed.
+expression`.
+
+### SerialOpen ports on CR300 and CR350 (round 91)
+
+The reference accepts integer port codes 1–12 and 32–47 on CR300, and 1–17 and 32–47
+on CR350. An illegal integer produces `ComPort N illegal.` on both profiles. CR300
+adds the unmatched-parenthesis diagnostic. A non-integer port produces
+`ComPort 0 illegal.` followed by the constant-integer diagnostic. CR300 reports
+`Out of memory.` for port 11 with a positive buffer after the baud and delay checks.
+The sweep, edge cases and compiler SHA-256s are recorded in
+[`r91_serialopen_ports.json`](../tests/fixtures/r91_serialopen_ports.json).
 
 ## Fresh-seed findings (round 38)
 
