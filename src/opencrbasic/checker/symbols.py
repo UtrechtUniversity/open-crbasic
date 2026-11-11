@@ -230,9 +230,10 @@ def ess_variable_names(program: S.Program) -> set[str]:
     return names
 
 
-def declared_variable_types(program: S.Program) -> dict[str, str]:
+def declared_variable_types(program: S.Program, *, prefer_last: bool = False) -> dict[str, str]:
     """Upper-case name -> declared type (`FLOAT` when none) of every Public/Dim/Static variable;
-    a name declared with two different types is left out."""
+    a name declared with two different types is left out unless a scoped view orders the
+    declarations for shadowing and the caller requests its last binding."""
     types: dict[str, str] = {}
     clash: set[str] = set()
     for st in program.statements:
@@ -241,7 +242,9 @@ def declared_variable_types(program: S.Program) -> dict[str, str]:
                 name, kind = v.name.upper(), (v.type or "FLOAT").upper()
                 if v.paren_dim:  # `Public A((1+2)) As Long` is a Float array (oracle, docs/checker.md)
                     kind = "FLOAT"
-                if types.setdefault(name, kind) != kind:
+                if prefer_last:
+                    types[name] = kind
+                elif types.setdefault(name, kind) != kind:
                     clash.add(name)
     for name in clash:
         del types[name]

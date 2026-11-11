@@ -26,11 +26,16 @@ _STRING_FUNCTIONS = frozenset(
 ) - {"CTYPE"}
 
 
-def _types(program: S.Program) -> tuple[dict[str, str], dict[str, str]]:
+def _types(program: S.Program, *, scoped: bool = False) -> tuple[dict[str, str], dict[str, str]]:
     """Declared variable types and `Alias` name -> target variable name (upper case)."""
-    types = symbols.declared_variable_types(program)
+    types = symbols.declared_variable_types(program, prefer_last=scoped)
     alias: dict[str, str] = {}
     for st in program.statements:
+        if scoped and isinstance(st, S.SubDef):
+            for p in st.params:
+                name = p.name.upper()
+                types[name] = (p.type or "FLOAT").upper()
+                alias.pop(name, None)
         if (
             isinstance(st, S.Instruction)
             and st.keyword.upper() == "ALIAS"
@@ -44,9 +49,10 @@ def _types(program: S.Program) -> tuple[dict[str, str], dict[str, str]]:
 
 
 class _Typer:
-    def __init__(self, program: S.Program):
-        self.types, self.alias = _types(program)
-        self.consts = {st.name.upper(): st for st in program.statements if isinstance(st, S.ConstDecl)}
+    def __init__(self, program: S.Program, scope: S.Program | None = None):
+        visible = scope if scope is not None else program
+        self.types, self.alias = _types(visible, scoped=scope is not None)
+        self.consts = {st.name.upper(): st for st in visible.statements if isinstance(st, S.ConstDecl)}
         self.function_types = {
             st.name.upper(): st.return_type.split("*")[0].strip().upper()
             for st in program.statements

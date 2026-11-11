@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 81** (verdict parity, fuzz seed 773). Fixed CR350 false accept `dfd1542832c1`
+and the equivalent String-interval cases on the other profiles. See the [Delay probes](docs/instructions.md#delay-three-checks-split-by-option).
+The 960 mutations in seed 773 found two false accepts. A four-profile rerun after the fixes
+had zero false accepts and zero false rejects, with a reference verdict for every input.
+
 **Round 80** (verdict parity, fuzz seed 773). Fixed CR6 false accept `df2651cd7c31`.
 A declaration fragment following an interrupted continuation is parsed as a standalone expression.
 See the [continuation probes](docs/frontend.md#declaration-continuations).

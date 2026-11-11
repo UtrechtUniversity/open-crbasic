@@ -674,9 +674,13 @@ per logger (boundary values in `min`/`hr`/`sec` units, and a string/variable `In
   interval on CR300/CR350 (`Delay(4294967297,25,Hr)` gives `Max Delay is 24 Hours` there); the
   `Scan interval too short` line that follows `Measurement Delay Exceeds 60 min.` is also missing for
   `Delay(256,61,min)` (and differs by one second for `Delay(0,61,min)`) on CR6/CR1000X.
-- `Delay interval cannot be of type String.` (all four loggers, any `Option`) when `Interval` folds
-  to a string constant -- this is the *only* diagnostic for a string interval (oracle: no
-  accompanying "must be constant" line, unlike a non-constant *variable* interval).
+- `Delay interval cannot be of type String.` (all four loggers) for String intervals with options
+  0 and 1. The same diagnostic follows an illegal option number. The rule covers literals,
+  variables, aliases, and String-valued expressions such as concatenation and `FormatLong`.
+  With option 2, a String interval gives `SDM Delay interval must be constant.`, including a
+  String literal or `Const`. A local declared after the `Delay` does not shadow the global at that
+  use site. See the dated probes and compiler hashes in `tests/fixtures/r81_delay_interval_type.json`.
+  String fields of system tables such as `Status.ProgName` are still a gap.
 - Then, by `Option`:
   - `Option=0` (measurement-task-sequence delay) -- **CR6/CR1000X only** (oracle: CR300/CR350 both
     compile `Delay(0,61,min)`/a variable interval clean, no error at all): `Interval` must itself be

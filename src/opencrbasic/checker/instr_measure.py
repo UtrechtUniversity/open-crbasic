@@ -16,7 +16,7 @@ from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
-from . import longconv, scan_time, symbols
+from . import longconv, scan_time, symbols, var_types
 
 
 def check(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -29,7 +29,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
 
     # a one-line If's statement too (oracle, CR6/CR1000X, round 58, docs/checker.md#one-line-if-statements-in-tier-c-round-58)
     slow = False
-    for stmt in _with_inline(program.statements):
+    statements = list(_with_inline(program.statements))
+    for pos, stmt in enumerate(statements):
         if not isinstance(stmt, S.Instruction):
             continue
         kw = stmt.keyword.upper()
@@ -39,7 +40,10 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if kw == "DELAY" and "delay" in measure:
             if sequential is None:
                 sequential = is_sequential(program, profile, env)
-            _check_delay(stmt, measure["delay"], env, diags, sequential, slow)
+            prefix = S.Program(program.name, statements[: pos + 1])
+            scope = symbols.scoped_view(prefix, stmt, publics=True)
+            typer = var_types._Typer(program, scope)
+            _check_delay(stmt, measure["delay"], env, diags, sequential, slow, typer=typer)
         if kw == "EXCITEV" and measure.get("delay", {}).get("task_memory") and len(stmt.args) == 3:
             delay = _int_value(stmt.args[2], env)
             if delay is not None and scan_time.task_memory_overflow(max(scan_time.excite_delay_us(delay) - 10, 0)):
@@ -566,8 +570,8 @@ def _check_sw12(stmt: S.Instruction, measure: dict, env: consteval.Env, diags: D
 # (`docs/instructions.md`):
 #   - `Illegal option %d` (all four loggers) when `Option` is not 0, 1 or 2 -- shown value is the
 #     folded number truncated to an unsigned byte (oracle: `Option=-1` shows as `255`).
-#   - `Delay interval cannot be of type String.` (all four loggers, any `Option`) when `Interval`
-#     folds to a string constant.
+#   - `Delay interval cannot be of type String.` when `Interval` is String-typed, except
+#     option 2, which requires a constant numeric interval (all four loggers, round 81).
 #   - Depending on `Option` (0 = measurement-task-sequence delay, 1 = processing delay, 2 = SDM
 #     delay): `Option=0` needs `Interval` to itself be a compile-time constant
 #     (`Measurement delay must have constant interval.`) and, once resolved, at most 60 minutes
@@ -602,7 +606,14 @@ def _task_memory_full(stmt: S.Instruction, diags: Diagnostics) -> None:
 
 
 def _check_delay(
-    stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diagnostics, sequential: bool = False, slow: bool = False
+    stmt: S.Instruction,
+    cfg: dict,
+    env: consteval.Env,
+    diags: Diagnostics,
+    sequential: bool = False,
+    slow: bool = False,
+    *,
+    typer: var_types._Typer,
 ) -> None:
     args = stmt.args
     option_arg = args[0] if len(args) > 0 else None
@@ -615,10 +626,13 @@ def _check_delay(
         if option not in (0, 1, 2):
             diags.error(stmt.line, f"Illegal option {option}", stmt.file)
 
+    if shadowed := typer.types.keys() & env.consts.keys():
+        env = consteval.Env(env.profile, {name: value for name, value in env.consts.items() if name not in shadowed})
     interval_value = _const_value(interval_arg, env)
-    if isinstance(interval_value, str):
-        diags.error(stmt.line, "Delay interval cannot be of type String.", stmt.file)
-        return  # oracle: the string-type rejection is the only diagnostic for a string interval.
+    if isinstance(interval_value, str) or typer.of(interval_arg) == "STRING":
+        message = "SDM Delay interval must be constant." if option == 2 else "Delay interval cannot be of type String."
+        diags.error(stmt.line, message, stmt.file)
+        return
 
     if option == 0 and cfg.get("option0_limit"):
         if sequential:
