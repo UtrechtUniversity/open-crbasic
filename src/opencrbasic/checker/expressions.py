@@ -3,6 +3,7 @@ evidence: `docs/checker.md`.
 """
 
 import json
+import math
 import re
 from functools import lru_cache
 from pathlib import Path
@@ -514,7 +515,8 @@ _CONST_INTEGER_OVERFLOW_STRING = {"TCPOPEN": 3}
 # `SerialOpen`'s 4th and 5th arguments (oracle, all four loggers, 2026-10-11: `1.0`, `999999999999`
 # -> `Parameter must be a constant integer`; `Hr`, `1+1`, `-1` compile on CR300 and also CR6/CR1000X
 # for `-1` only the range message `usec delay before transmit is illegal`, not modelled).
-_CONST_INTEGER_BAD_ARGS = {"TCPOPEN": frozenset({2}), "SERIALOPEN": frozenset({3, 4})}
+_CONST_INTEGER_BAD_ARGS = {"SERIALOPEN": frozenset({3, 4})}
+_NETWORK_INTEGER_ARGS = {"HTTPGET": 3, "TCPOPEN": 2}
 
 
 # Outside an earlier `IfTime`/`TimeIntoInterval` (`intervals.timeout_gate`; set per statement by
@@ -535,7 +537,8 @@ _CONST_INTEGER_TYPE_ARGS_ALWAYS = {"TIMER": frozenset({2})}
 # variable, a function call, `/`, `^`, a float literal, `INF` or a `Const` whose value is not an
 # integer or is above INT_MAX is `Parameter must be a constant integer`; an integer Option outside
 # 0..4 is `Legal options are 0..4` (oracle, all four loggers, 2026-10-25, `docs/checker.md` "Timer
-# arguments"). `(env, declared variables)` is set per program by `check_function_arity`.
+# arguments"). `(env, declared variables, Const expressions)` is set per program by
+# `check_function_arity` and shared with the network options.
 _TIMER_CONTEXT: list = [None]
 
 
@@ -565,7 +568,7 @@ def _timer_arg(arg, env, declared: frozenset[str]):
             return None
         if isinstance(value, str):
             return None
-        if value != value or value != int(value):
+        if isinstance(value, float) and (not math.isfinite(value) or value != int(value)):
             return "float"
         return wide(int(value)) if value > 2**31 - 1 else ("int", int(value))
     if isinstance(arg, S.Index):
@@ -595,6 +598,39 @@ def _timeout_wide(arg, profile) -> bool:
     from . import intervals  # lazy: `intervals` imports this package's modules
 
     return intervals.timeout_value(arg, None, profile, _TIMEOUT_WIDE[0]) == ("wide", 0)
+
+
+def _network_integer_problem(name, arg, profile):
+    from . import intervals
+
+    if arg is None:
+        return None
+    env, declared, const_exprs = _TIMER_CONTEXT[0]
+    if isinstance(arg, S.String):
+        return "network_constint"
+    if isinstance(arg, S.Name) and isinstance(env.consts.get(arg.name.upper()), str):
+        return "network_constint"
+    source = const_exprs.get(arg.name.upper()) if isinstance(arg, S.Name) else None
+    literal = source
+    while isinstance(literal, S.Unary) and literal.op in ("+", "-"):
+        literal = literal.operand
+    if isinstance(literal, S.Number) and isinstance(literal.value, int):
+        # A named integer literal preserves its decimal or radix conversion.
+        value = intervals.timeout_value(source, None, profile)
+    else:
+        value = intervals.timeout_value(arg, env, profile)
+    if value is None:
+        value = _timer_arg(arg, env, declared)
+    if value in ("float", ("wide", 0)) or (value is None and profile.single_pass):
+        return "network_constint"
+    if value is None:
+        return None
+    integer = value[1]
+    if name == "HTTPGET" and intervals._signed32(10 * integer) < 0:
+        return "Parameter TimeOut cannot be negative"
+    if name == "TCPOPEN" and integer < -1:
+        return f"Size {integer} cannot be negative"
+    return None
 
 
 def _not_integer_type(arg) -> bool:
@@ -2385,6 +2421,10 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     if nargs is None:
         return None
     upper = name.upper()
+    option = _NETWORK_INTEGER_ARGS.get(upper)
+    if option is not None and option < n and _TIMER_CONTEXT[0] is not None:
+        if problem := _network_integer_problem(upper, args[option], profile):
+            return problem
     if any(i < len(args) and isinstance(args[i], S.String) for i in _FUNCTION_CONST_INTEGER_STRING_ARGS.get(upper, ())):
         return "constint"
     integer_args = _CONST_INTEGER_BAD_ARGS.get(upper, ())
@@ -2400,7 +2440,8 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     if any(i < n and _not_integer_type(args[i]) for i in _CONST_INTEGER_TYPE_ARGS_ALWAYS.get(upper, ())):
         return "constint"
     if upper == "TIMER" and n == 3 and _TIMER_CONTEXT[0] is not None:
-        kinds = [_timer_arg(a, *_TIMER_CONTEXT[0]) if a is not None else None for a in args[1:]]
+        env, declared, _ = _TIMER_CONTEXT[0]
+        kinds = [_timer_arg(a, env, declared) if a is not None else None for a in args[1:]]
         if "float" in kinds:
             return "constint"
         if kinds[1] is not None and not 0 <= kinds[1][1] <= 4:
@@ -2502,8 +2543,14 @@ def _find_arity_problem(
 def _arity_message(kind: str, text: str, profile, at_eol: bool = True, whole_statement: bool = False) -> str:
     if kind == "timer_option":
         return "Legal options are 0..4"
-    if kind in ("constint", "incomplete", "indexed_const"):
-        verb = "Parameter must be a constant integer: " if kind == "constint" else "Incomplete expression: "
+    if kind.endswith(" cannot be negative"):
+        return kind
+    if kind in ("constint", "network_constint", "incomplete", "indexed_const"):
+        verb = (
+            "Parameter must be a constant integer: "
+            if kind in ("constint", "network_constint")
+            else "Incomplete expression: "
+        )
         sep = "\n" if profile.name in _ARITY_TRAILING_NEWLINE_LOGGERS and at_eol else ""
         return f"{verb}{text}{sep}."
     if kind == "empty":
@@ -2683,7 +2730,11 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
     in_table = False
     seen_timeint = False
     _TIMEOUT_WIDE[0] = intervals.wide_constants(program, profile)
-    _TIMER_CONTEXT[0] = (consteval.Env(profile, dict(program.consts)), frozenset(n.upper() for n in declared_variables))
+    _TIMER_CONTEXT[0] = (
+        consteval.Env(profile, dict(program.consts)),
+        frozenset(n.upper() for n in declared_variables),
+        {st.name.upper(): st.value for st in program.statements if isinstance(st, S.ConstDecl)},
+    )
     arity_known = _known_names(program, profile) if profile.name in _WHOLE_EXPR_ECHO_LOGGERS else None
     scopes = symbols.statement_scopes(program, profile)
     predefined = (profile.symbols.keys() | _EXTRA_PREDEFINED_SYMBOLS) - (
@@ -2822,11 +2873,13 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
             text = _if_condition_text(stmt)
             if problem == "empty" and text is not None:
                 diags.error(stmt.line, _arity_message(problem, text, profile), stmt.file)
-            elif problem == "timer_option" and text is not None:
+            elif (
+                problem and (problem == "timer_option" or problem.endswith(" cannot be negative")) and text is not None
+            ):
                 diags.error(stmt.line, _arity_message(problem, text, profile), stmt.file)
             elif problem == "indexed_const" and text is not None:
                 diags.error(stmt.line, _arity_message(problem, text, profile, False), stmt.file)
-            elif problem == "constint" and text is not None:
+            elif problem in ("constint", "network_constint") and text is not None:
                 diags.error(stmt.line, f"Parameter must be a constant integer: {text}.", stmt.file)
             elif problem and text is not None:
                 verb = (
@@ -2890,11 +2943,15 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
                     diags.items.append(Diagnostic("error", stmt.line, structs._WRONG_TYPE, stmt.file, cascade=False))
                     mine.append(diags.items[-1])
             if problem:
-                diags.error(
-                    stmt.line,
-                    _arity_message(problem, stmt.text, profile, stmt.at_eol, whole_statement=True),
-                    stmt.file,
-                    stmt=stmt,
+                diags.items.append(
+                    Diagnostic(
+                        "error",
+                        stmt.line,
+                        _arity_message(problem, stmt.text, profile, stmt.at_eol, whole_statement=True),
+                        stmt.file,
+                        stmt=id(stmt),
+                        trigger=problem == "network_constint",
+                    )
                 )
                 _hold(held, diags, problem)
                 if struct_value:

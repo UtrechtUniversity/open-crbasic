@@ -8196,6 +8196,16 @@ adds the unmatched-parenthesis diagnostic. A non-integer port produces
 The sweep, edge cases and compiler SHA-256s are recorded in
 [`r91_serialopen_ports.json`](../tests/fixtures/r91_serialopen_ports.json).
 
+### HTTPGet timeout and TCPOpen size (round 92)
+
+All four profiles require a constant integer in the fourth `HTTPGet` and third
+`TCPOpen` argument. A decimal float literal such as `1.0` fails, while a named
+`Const R=1.0` succeeds. Runtime variables and nonintegral constants fail. A negative
+signed 32-bit result of `10 * TimeOut` emits `Parameter TimeOut cannot be negative`.
+`TCPOpen` accepts size `-1` and rejects lower values with `Size N cannot be negative`.
+The probes record signed overflow, radix literals and the CR300/CR350 decimal
+conversion in [`r92_network_integer_options.json`](../tests/fixtures/r92_network_integer_options.json).
+
 ## Fresh-seed findings (round 38)
 
 Oracle, 2026-10-25; fixture `tests/fixtures/r38_fresh_seeds.json` (688 observations, 17 strict

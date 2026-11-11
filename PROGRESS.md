@@ -92,6 +92,10 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 92** (verdict parity, fuzz seed 777). Fixed CR350 false accept `44da99e1ccfc`
+and CR300 false accept `709610be701a`. Both reproducers now match exactly.
+[HTTPGet and TCPOpen option evidence](docs/checker.md#httpget-timeout-and-tcpopen-size-round-92).
+
 **Round 91** (verdict parity, fuzz seed 777). Fixed CR350 false accept `8e745390446d`
 and checked the corresponding CR300 behavior. [SerialOpen port evidence](docs/checker.md#serialopen-ports-on-cr300-and-cr350-round-91).
 

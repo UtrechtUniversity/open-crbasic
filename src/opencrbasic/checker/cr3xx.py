@@ -2458,6 +2458,7 @@ _ARITY_PREFIXES = {
     "many": "No Matching, or out of place ) in expression: ",
     "few": "Expression expects , : ",
     "empty": "Invalid, or out of place expression: ",
+    "network_constint": "Parameter must be a constant integer: ",
 }
 
 
@@ -2491,7 +2492,7 @@ def _arity_walk(expr: S.Expr | None, known: set[str], profile, state: _ArityStat
             )
             args, stop = args[:at], True
             state.setdefault("kind", "many")
-        elif problem in ("few", "empty"):
+        elif problem in ("few", "empty", "network_constint"):
             state.setdefault("kind", problem)
         elif problem:
             state["bad"] = True
@@ -2544,7 +2545,13 @@ def order_names_around_arity(program: S.Program, profile, diags: Diagnostics) ->
         if state.get("bad") or kind is None:
             continue
         arity = [(i, d) for i, d in own if d.message.startswith(_ARITY_PREFIXES[kind])]
-        if not arity and isinstance(stmt, S.Assignment) and own and expressions._undefined_names(stmt.target, known):
+        if (
+            not arity
+            and kind != "network_constint"
+            and isinstance(stmt, S.Assignment)
+            and own
+            and expressions._undefined_names(stmt.target, known)
+        ):
             # an unresolved target hides the pass-1 arity check, but the parse still reaches it
             arity = [
                 (

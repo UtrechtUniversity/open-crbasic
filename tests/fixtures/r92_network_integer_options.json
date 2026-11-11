@@ -1,0 +1,2655 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-http-\"x\"",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",\"x\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",\"x\")."
+  },
+  {
+   "id": "cr6-http-1.5",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.5)."
+  },
+  {
+   "id": "cr6-http-1",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-999999999999",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",999999999999)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",999999999999)."
+  },
+  {
+   "id": "cr6-http-Y",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y)."
+  },
+  {
+   "id": "cr6-tcp-string-var",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As String * 16\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)."
+  },
+  {
+   "id": "cr6-tcp-long-var",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)."
+  },
+  {
+   "id": "cr6-tcp-string-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=\"x\"\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)."
+  },
+  {
+   "id": "cr6-tcp-long-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=1\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-literal",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-string-literal",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,\"x\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,\"x\")."
+  },
+  {
+   "id": "cr1000x-http-\"x\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",\"x\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",\"x\")."
+  },
+  {
+   "id": "cr1000x-http-1.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.5)."
+  },
+  {
+   "id": "cr1000x-http-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-999999999999",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",999999999999)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",999999999999)."
+  },
+  {
+   "id": "cr1000x-http-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y)."
+  },
+  {
+   "id": "cr1000x-tcp-string-var",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As String * 16\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)."
+  },
+  {
+   "id": "cr1000x-tcp-long-var",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)."
+  },
+  {
+   "id": "cr1000x-tcp-string-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=\"x\"\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)."
+  },
+  {
+   "id": "cr1000x-tcp-long-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=1\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-literal",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-string-literal",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,\"x\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,\"x\")."
+  },
+  {
+   "id": "cr300-http-\"x\"",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",\"x\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",\"x\")\n."
+  },
+  {
+   "id": "cr300-http-1.5",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.5)\n."
+  },
+  {
+   "id": "cr300-http-1",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-999999999999",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",999999999999)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",999999999999)\n."
+  },
+  {
+   "id": "cr300-http-Y",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y)\n."
+  },
+  {
+   "id": "cr300-tcp-string-var",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As String * 16\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)\n."
+  },
+  {
+   "id": "cr300-tcp-long-var",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)\n."
+  },
+  {
+   "id": "cr300-tcp-string-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=\"x\"\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)\n."
+  },
+  {
+   "id": "cr300-tcp-long-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=1\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-literal",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-string-literal",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,\"x\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,\"x\")\n."
+  },
+  {
+   "id": "cr350-http-\"x\"",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",\"x\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",\"x\")\n."
+  },
+  {
+   "id": "cr350-http-1.5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.5)\n."
+  },
+  {
+   "id": "cr350-http-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-999999999999",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",999999999999)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",999999999999)\n."
+  },
+  {
+   "id": "cr350-http-Y",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y)\n."
+  },
+  {
+   "id": "cr350-tcp-string-var",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As String * 16\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)\n."
+  },
+  {
+   "id": "cr350-tcp-long-var",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)\n."
+  },
+  {
+   "id": "cr350-tcp-string-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=\"x\"\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)\n."
+  },
+  {
+   "id": "cr350-tcp-long-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=1\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-literal",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-string-literal",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,\"x\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,\"x\")\n."
+  },
+  {
+   "id": "cr6-http-float-int",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.0)."
+  },
+  {
+   "id": "cr6-tcp-float-int",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,1.0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,1.0)."
+  },
+  {
+   "id": "cr6-http-float-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=1.5\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)."
+  },
+  {
+   "id": "cr6-tcp-float-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=1.5\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)."
+  },
+  {
+   "id": "cr6-http-whole-float-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=1.0\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-whole-float-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=1.0\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-folded",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1+2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-folded",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,1+2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-division",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",3/2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",3/2)."
+  },
+  {
+   "id": "cr6-tcp-division",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,3/2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,3/2)."
+  },
+  {
+   "id": "cr6-http-int-call",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Int(1.5))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Int(1.5))."
+  },
+  {
+   "id": "cr6-tcp-int-call",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,Int(1.5))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,Int(1.5))."
+  },
+  {
+   "id": "cr6-http-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483648)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483648)."
+  },
+  {
+   "id": "cr6-tcp-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483648)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,2147483648)."
+  },
+  {
+   "id": "cr6-http-wide-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-2147483648)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-wide-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-2147483648)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr6-http-wide-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=2147483648\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)."
+  },
+  {
+   "id": "cr6-tcp-wide-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=2147483648\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)."
+  },
+  {
+   "id": "cr6-http-boolean",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",True)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-tcp-boolean",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,True)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-unknown",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Missing)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Missing)."
+  },
+  {
+   "id": "cr6-tcp-unknown",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,Missing)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=TCPOpen(0,6785,Missing)."
+  },
+  {
+   "id": "cr6-http-variable-expression",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y+1)."
+  },
+  {
+   "id": "cr6-tcp-variable-expression",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,Y+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,Y+1)."
+  },
+  {
+   "id": "cr6-http-port-const",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",ComC1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-port-const",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,ComC1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-string-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=\"x\"\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)."
+  },
+  {
+   "id": "cr1000x-http-float-int",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.0)."
+  },
+  {
+   "id": "cr1000x-tcp-float-int",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,1.0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,1.0)."
+  },
+  {
+   "id": "cr1000x-http-float-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=1.5\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)."
+  },
+  {
+   "id": "cr1000x-tcp-float-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=1.5\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)."
+  },
+  {
+   "id": "cr1000x-http-whole-float-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=1.0\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-whole-float-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=1.0\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1+2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,1+2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-division",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",3/2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",3/2)."
+  },
+  {
+   "id": "cr1000x-tcp-division",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,3/2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,3/2)."
+  },
+  {
+   "id": "cr1000x-http-int-call",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Int(1.5))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Int(1.5))."
+  },
+  {
+   "id": "cr1000x-tcp-int-call",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,Int(1.5))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,Int(1.5))."
+  },
+  {
+   "id": "cr1000x-http-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483648)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483648)."
+  },
+  {
+   "id": "cr1000x-tcp-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483648)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,2147483648)."
+  },
+  {
+   "id": "cr1000x-http-wide-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-2147483648)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-wide-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-2147483648)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr1000x-http-wide-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=2147483648\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)."
+  },
+  {
+   "id": "cr1000x-tcp-wide-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=2147483648\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)."
+  },
+  {
+   "id": "cr1000x-http-boolean",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",True)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-tcp-boolean",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,True)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-unknown",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Missing)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Missing)."
+  },
+  {
+   "id": "cr1000x-tcp-unknown",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,Missing)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=TCPOpen(0,6785,Missing)."
+  },
+  {
+   "id": "cr1000x-http-variable-expression",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y+1)."
+  },
+  {
+   "id": "cr1000x-tcp-variable-expression",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,Y+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,Y+1)."
+  },
+  {
+   "id": "cr1000x-http-port-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",ComC1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-port-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,ComC1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-string-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=\"x\"\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)."
+  },
+  {
+   "id": "cr300-http-float-int",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.0)\n."
+  },
+  {
+   "id": "cr300-tcp-float-int",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,1.0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,1.0)\n."
+  },
+  {
+   "id": "cr300-http-float-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=1.5\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\n."
+  },
+  {
+   "id": "cr300-tcp-float-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=1.5\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)\n."
+  },
+  {
+   "id": "cr300-http-whole-float-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=1.0\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-whole-float-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=1.0\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-folded",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1+2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-folded",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,1+2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-division",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",3/2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",3/2)\n."
+  },
+  {
+   "id": "cr300-tcp-division",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,3/2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,3/2)\n."
+  },
+  {
+   "id": "cr300-http-int-call",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Int(1.5))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Int(1.5))\n."
+  },
+  {
+   "id": "cr300-tcp-int-call",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,Int(1.5))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,Int(1.5))\n."
+  },
+  {
+   "id": "cr300-http-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483648)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483648)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-wide-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-2147483648)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-wide-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-2147483648)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2147483647 cannot be negative"
+  },
+  {
+   "id": "cr300-http-wide-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=2147483648\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-wide-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=2147483648\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-boolean",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",True)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-boolean",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,True)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-unknown",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Missing)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Missing)\n."
+  },
+  {
+   "id": "cr300-tcp-unknown",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,Missing)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,Missing)\n."
+  },
+  {
+   "id": "cr300-http-variable-expression",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y+1)\n."
+  },
+  {
+   "id": "cr300-tcp-variable-expression",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,Y+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,Y+1)\n."
+  },
+  {
+   "id": "cr300-http-port-const",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",ComC1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComC1 is not defined.\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",ComC1)\n."
+  },
+  {
+   "id": "cr300-tcp-port-const",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,ComC1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComC1 is not defined.\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,ComC1)\n."
+  },
+  {
+   "id": "cr300-http-string-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=\"x\"\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\n."
+  },
+  {
+   "id": "cr350-http-float-int",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1.0)\n."
+  },
+  {
+   "id": "cr350-tcp-float-int",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,1.0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,1.0)\n."
+  },
+  {
+   "id": "cr350-http-float-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=1.5\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\n."
+  },
+  {
+   "id": "cr350-tcp-float-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=1.5\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)\n."
+  },
+  {
+   "id": "cr350-http-whole-float-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=1.0\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-whole-float-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=1.0\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-folded",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",1+2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-folded",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,1+2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-division",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",3/2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",3/2)\n."
+  },
+  {
+   "id": "cr350-tcp-division",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,3/2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,3/2)\n."
+  },
+  {
+   "id": "cr350-http-int-call",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Int(1.5))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Int(1.5))\n."
+  },
+  {
+   "id": "cr350-tcp-int-call",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,Int(1.5))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,Int(1.5))\n."
+  },
+  {
+   "id": "cr350-http-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483648)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483648)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-wide-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-2147483648)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-wide-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-2147483648)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2147483647 cannot be negative"
+  },
+  {
+   "id": "cr350-http-wide-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=2147483648\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-wide-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=2147483648\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-boolean",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",True)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-boolean",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,True)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-unknown",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Missing)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Missing)\n."
+  },
+  {
+   "id": "cr350-tcp-unknown",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,Missing)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,Missing)\n."
+  },
+  {
+   "id": "cr350-http-variable-expression",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",Y+1)\n."
+  },
+  {
+   "id": "cr350-tcp-variable-expression",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,Y+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,Y+1)\n."
+  },
+  {
+   "id": "cr350-http-port-const",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",ComC1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComC1 is not defined.\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",ComC1)\n."
+  },
+  {
+   "id": "cr350-tcp-port-const",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,ComC1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: ComC1 is not defined.\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,ComC1)\n."
+  },
+  {
+   "id": "cr350-http-string-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=\"x\"\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\n."
+  },
+  {
+   "id": "cr6-http-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-minus-one",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-tcp-minus-one",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-minus-two",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-tcp-minus-two",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2 cannot be negative"
+  },
+  {
+   "id": "cr6-http-minus-seven",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-7)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-tcp-minus-seven",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-7)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -7 cannot be negative"
+  },
+  {
+   "id": "cr6-http-minus-128",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-128)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-tcp-minus-128",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-128)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -128 cannot be negative"
+  },
+  {
+   "id": "cr6-http-minus-1000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-1000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-tcp-minus-1000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-1000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -1000 cannot be negative"
+  },
+  {
+   "id": "cr6-http-minus-65536",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-65536)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-tcp-minus-65536",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-65536)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -65536 cannot be negative"
+  },
+  {
+   "id": "cr6-http-minus-max",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-2147483647)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-minus-max",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-2147483647)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2147483647 cannot be negative"
+  },
+  {
+   "id": "cr6-http-positive-max",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483647)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-tcp-positive-max",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483647)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-large-positive",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483649)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483649)."
+  },
+  {
+   "id": "cr6-tcp-large-positive",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483649)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,2147483649)."
+  },
+  {
+   "id": "cr6-http-big-positive",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",4294967295)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",4294967295)."
+  },
+  {
+   "id": "cr6-tcp-big-positive",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,4294967295)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,4294967295)."
+  },
+  {
+   "id": "cr6-http-hex-max",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",&HFFFFFFFF)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-tcp-hex-max",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,&HFFFFFFFF)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-hex-min",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",&H80000000)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-hex-min",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,&H80000000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr6-http-const-negative",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=-5\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-tcp-const-negative",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=-5\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -5 cannot be negative"
+  },
+  {
+   "id": "cr6-http-double-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",--2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-double-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,--2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-minus-one",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-tcp-minus-one",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-minus-two",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-tcp-minus-two",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2 cannot be negative"
+  },
+  {
+   "id": "cr1000x-http-minus-seven",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-7)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-tcp-minus-seven",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-7)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -7 cannot be negative"
+  },
+  {
+   "id": "cr1000x-http-minus-128",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-128)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-tcp-minus-128",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-128)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -128 cannot be negative"
+  },
+  {
+   "id": "cr1000x-http-minus-1000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-1000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-tcp-minus-1000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-1000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -1000 cannot be negative"
+  },
+  {
+   "id": "cr1000x-http-minus-65536",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-65536)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-tcp-minus-65536",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-65536)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -65536 cannot be negative"
+  },
+  {
+   "id": "cr1000x-http-minus-max",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-2147483647)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-minus-max",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-2147483647)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2147483647 cannot be negative"
+  },
+  {
+   "id": "cr1000x-http-positive-max",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483647)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-tcp-positive-max",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483647)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-large-positive",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483649)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483649)."
+  },
+  {
+   "id": "cr1000x-tcp-large-positive",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483649)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,2147483649)."
+  },
+  {
+   "id": "cr1000x-http-big-positive",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",4294967295)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",4294967295)."
+  },
+  {
+   "id": "cr1000x-tcp-big-positive",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,4294967295)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,4294967295)."
+  },
+  {
+   "id": "cr1000x-http-hex-max",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",&HFFFFFFFF)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-tcp-hex-max",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,&HFFFFFFFF)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-hex-min",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",&H80000000)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-hex-min",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,&H80000000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr1000x-http-const-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=-5\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-tcp-const-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=-5\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -5 cannot be negative"
+  },
+  {
+   "id": "cr1000x-http-double-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",--2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-double-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,--2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-http-zero",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-zero",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-minus-one",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-minus-one",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-minus-two",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-minus-two",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2 cannot be negative"
+  },
+  {
+   "id": "cr300-http-minus-seven",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-7)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-minus-seven",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-7)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -7 cannot be negative"
+  },
+  {
+   "id": "cr300-http-minus-128",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-128)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-minus-128",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-128)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -128 cannot be negative"
+  },
+  {
+   "id": "cr300-http-minus-1000",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-1000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-minus-1000",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-1000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -1000 cannot be negative"
+  },
+  {
+   "id": "cr300-http-minus-65536",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-65536)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-minus-65536",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-65536)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -65536 cannot be negative"
+  },
+  {
+   "id": "cr300-http-minus-max",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-2147483647)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-minus-max",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-2147483647)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2147483647 cannot be negative"
+  },
+  {
+   "id": "cr300-http-positive-max",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483647)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-positive-max",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483647)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-large-positive",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483649)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-large-positive",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483649)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-big-positive",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",4294967295)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",4294967295)\n."
+  },
+  {
+   "id": "cr300-tcp-big-positive",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,4294967295)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,4294967295)\n."
+  },
+  {
+   "id": "cr300-http-hex-max",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",&HFFFFFFFF)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-hex-max",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,&HFFFFFFFF)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-hex-min",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",&H80000000)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-hex-min",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,&H80000000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr300-http-const-negative",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=-5\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-const-negative",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=-5\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -5 cannot be negative"
+  },
+  {
+   "id": "cr300-http-double-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",--2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-double-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,--2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-zero",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-zero",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,0)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-minus-one",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-minus-one",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-minus-two",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-minus-two",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2 cannot be negative"
+  },
+  {
+   "id": "cr350-http-minus-seven",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-7)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-minus-seven",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-7)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -7 cannot be negative"
+  },
+  {
+   "id": "cr350-http-minus-128",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-128)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-minus-128",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-128)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -128 cannot be negative"
+  },
+  {
+   "id": "cr350-http-minus-1000",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-1000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-minus-1000",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-1000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -1000 cannot be negative"
+  },
+  {
+   "id": "cr350-http-minus-65536",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-65536)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-minus-65536",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-65536)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -65536 cannot be negative"
+  },
+  {
+   "id": "cr350-http-minus-max",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",-2147483647)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-minus-max",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,-2147483647)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2147483647 cannot be negative"
+  },
+  {
+   "id": "cr350-http-positive-max",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483647)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-positive-max",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483647)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-large-positive",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483649)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-large-positive",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483649)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-big-positive",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",4294967295)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",4294967295)\n."
+  },
+  {
+   "id": "cr350-tcp-big-positive",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,4294967295)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:  Y=TCPOpen(0,6785,4294967295)\n."
+  },
+  {
+   "id": "cr350-http-hex-max",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",&HFFFFFFFF)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-hex-max",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,&HFFFFFFFF)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-hex-min",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",&H80000000)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-hex-min",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,&H80000000)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr350-http-const-negative",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=-5\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-const-negative",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=-5\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -5 cannot be negative"
+  },
+  {
+   "id": "cr350-http-double-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",--2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-double-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,--2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-http-thousand-before",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-thousand-before",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-thousand-after",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147484)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-thousand-after",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147484)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-hundred-before",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",21474836)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-hundred-before",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,21474836)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-hundred-after",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",21474837)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-hundred-after",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,21474837)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-ten-before",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",214748364)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-ten-before",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,214748364)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-ten-after",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",214748365)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-tcp-ten-after",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,214748365)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-wide-float-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=4294967295\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)."
+  },
+  {
+   "id": "cr6-tcp-wide-float-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=4294967295\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)."
+  },
+  {
+   "id": "cr6-http-wide-negative-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=-2147483648\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-wide-negative-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=-2147483648\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr1000x-http-thousand-before",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-thousand-before",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-thousand-after",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147484)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-thousand-after",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147484)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-hundred-before",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",21474836)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-hundred-before",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,21474836)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-hundred-after",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",21474837)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-hundred-after",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,21474837)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-ten-before",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",214748364)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-ten-before",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,214748364)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-ten-after",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",214748365)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-tcp-ten-after",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,214748365)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-wide-float-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=4294967295\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)."
+  },
+  {
+   "id": "cr1000x-tcp-wide-float-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=4294967295\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)."
+  },
+  {
+   "id": "cr1000x-http-wide-negative-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=-2147483648\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-wide-negative-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=-2147483648\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr300-http-thousand-before",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-thousand-before",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-thousand-after",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147484)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-thousand-after",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147484)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-hundred-before",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",21474836)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-hundred-before",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,21474836)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-hundred-after",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",21474837)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-hundred-after",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,21474837)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-ten-before",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",214748364)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-ten-before",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,214748364)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-ten-after",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",214748365)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-ten-after",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,214748365)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-wide-float-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=4294967295\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\n."
+  },
+  {
+   "id": "cr300-tcp-wide-float-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=4294967295\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)\n."
+  },
+  {
+   "id": "cr300-http-wide-negative-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=-2147483648\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-wide-negative-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=-2147483648\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -2147483647 cannot be negative"
+  },
+  {
+   "id": "cr350-http-thousand-before",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147483)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-thousand-before",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147483)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-thousand-after",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",2147484)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-thousand-after",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,2147484)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-hundred-before",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",21474836)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-hundred-before",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,21474836)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-hundred-after",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",21474837)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-hundred-after",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,21474837)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-ten-before",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",214748364)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-ten-before",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,214748364)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-ten-after",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",214748365)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-ten-after",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=TCPOpen(0,6785,214748365)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-wide-float-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=4294967295\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\n."
+  },
+  {
+   "id": "cr350-tcp-wide-float-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=4294967295\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R)\n."
+  },
+  {
+   "id": "cr350-http-wide-negative-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=-2147483648\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-wide-negative-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=-2147483648\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -2147483647 cannot be negative"
+  },
+  {
+   "id": "cr6-http-const-hex-min",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=&H80000000\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-const-hex-min",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=&H80000000\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr6-http-const-fold-min",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=-2147483647-1\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-const-fold-min",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=-2147483647-1\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr6-http-const-boolean",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=True\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr6-tcp-const-boolean",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=True\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-const-division",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=4/2\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tcp-const-division",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=4/2\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-http-const-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R(1))."
+  },
+  {
+   "id": "cr6-tcp-const-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=TCPOpen(0,6785,R(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R(1))."
+  },
+  {
+   "id": "cr1000x-http-const-hex-min",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=&H80000000\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-const-hex-min",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=&H80000000\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr1000x-http-const-fold-min",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=-2147483647-1\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-const-fold-min",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=-2147483647-1\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr1000x-http-const-boolean",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=True\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr1000x-tcp-const-boolean",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=True\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-const-division",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=4/2\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-const-division",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=4/2\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-http-const-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R(1))."
+  },
+  {
+   "id": "cr1000x-tcp-const-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=TCPOpen(0,6785,R(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R(1))."
+  },
+  {
+   "id": "cr300-http-const-hex-min",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=&H80000000\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-const-hex-min",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=&H80000000\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr300-http-const-fold-min",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=-2147483647-1\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-const-fold-min",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=-2147483647-1\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr300-http-const-boolean",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=True\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr300-tcp-const-boolean",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=True\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-const-division",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=4/2\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tcp-const-division",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=4/2\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-http-const-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R(1))\n."
+  },
+  {
+   "id": "cr300-tcp-const-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=TCPOpen(0,6785,R(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R(1))\n."
+  },
+  {
+   "id": "cr350-http-const-hex-min",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=&H80000000\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-const-hex-min",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=&H80000000\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr350-http-const-fold-min",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=-2147483647-1\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-const-fold-min",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=-2147483647-1\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Size -2147483648 cannot be negative"
+  },
+  {
+   "id": "cr350-http-const-boolean",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=True\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter TimeOut cannot be negative"
+  },
+  {
+   "id": "cr350-tcp-const-boolean",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=True\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-const-division",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=4/2\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-const-division",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=4/2\nBeginProg\n Y=TCPOpen(0,6785,R)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-http-const-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=HTTPGet(\"http://example.invalid/x\",\"CPU:x\",\"\",R(1))\n."
+  },
+  {
+   "id": "cr350-tcp-const-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=TCPOpen(0,6785,R(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:  Y=TCPOpen(0,6785,R(1))\n."
+  }
+ ]
+}

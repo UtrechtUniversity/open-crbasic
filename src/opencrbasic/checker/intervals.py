@@ -551,6 +551,8 @@ def _decimal(magnitude: int, sign: int, profile, literal: bool):
     CR6/CR1000X: past 2147483647 is a float literal (except the exact literal -2147483648, integer
     INT_MIN), while an out-of-range `Const` value is not modelled (`None`)."""
     if profile.single_pass:
+        if magnitude >= 2**32:
+            return ("wide", 0)
         rounded = struct.unpack("<f", struct.pack("<f", float(magnitude)))[0]
         if rounded > 2**31:
             return ("wide", 0)
