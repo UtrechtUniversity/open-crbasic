@@ -1326,6 +1326,12 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC")
         for v in st.vars
     }
+    predefined_constants = (
+        (profile.symbols.keys() | expressions._EXTRA_PREDEFINED_SYMBOLS)
+        - decl_variables
+        - profile.functions.keys()
+        - expressions._CONTROL_KEYWORDS
+    )
 
     deferred = False  # an earlier statement pass 1 left unresolved (round 39)
     all_known: set[str] | None = None  # (kept apart from `known`, which the loop gates on)
@@ -1607,6 +1613,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 length_scope = None
                 params, later = scopes[id(stmt)]
                 here = known.without(later - params - decl_variables)
+                indexed_constants = (predefined_constants | (seen_consts & program.consts.keys())) - params
                 # an alias is a variable from its `Alias` on, a routine's only up to its end
                 seen = {name for name, spans in alias_spans.items() if any(lo < pos <= hi for lo, hi in spans)}
                 if any(v.type == "STRING" and v.string_size is not None for v in stmt.vars):
@@ -1625,7 +1632,15 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     earlier_errors = any(d.severity == "error" for d in diags.items)
                     dim_at = _check_array_dims(stmt, dims_diags, env, profile)
                     name_at = _check_decl_exprs(
-                        stmt, here, decl_variables | params, profile, names_diags, struct_types, dim_at, length_scope
+                        stmt,
+                        here,
+                        decl_variables | params,
+                        profile,
+                        names_diags,
+                        struct_types,
+                        dim_at,
+                        length_scope,
+                        indexed_constants=indexed_constants,
                     )
                     bad_at = name_at if name_at is not None else dim_at
                     own_items = names_diags.items if name_at is not None else dims_diags.items + names_diags.items
@@ -1665,6 +1680,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                         diags,
                         struct_types,
                         length_scope=length_scope,
+                        indexed_constants=indexed_constants - seen,
                     )
                 _check_init_bounds(stmt, env, diags)
         elif fire_suppress:
@@ -1770,7 +1786,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             # 2026-10-10). A `Const` declared above wins over a same-named parameter, local or
             # variable, even when its declaration failed (round 31, all four loggers).
             diags.error(stmt.line, _pass1_message(profile, stmt, "invalid_assignment"), stmt.file)
-        elif _assigns_const_index(stmt, seen_consts):
+        elif _assigns_const_index(stmt, seen_consts, predefined_constants):
             # `J(1) = 1` over a `Const J` (round 31, all four loggers)
             diags.error(stmt.line, _pass1_message(profile, stmt, "fallback"), stmt.file)
         elif (
@@ -1803,6 +1819,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 profile,
                 diags,
                 check_variables=isinstance(src, S.Index) and src.name.upper() in alias_parameter_names,
+                indexed_constants=(predefined_constants | (seen_consts & program.consts.keys()))
+                - alias_parameter_names,
             ):
                 # Only preceding declarations in this scope participate in source lookup.
                 # A routine cannot alias a global, even when it can use that variable.
@@ -1845,13 +1863,13 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                         _pass1_message(profile, dataclasses.replace(sub, at_eol=False), "invalid_assignment"),
                         sub.file,
                     )
-                elif _assigns_const_index(sub, seen_consts):
+                elif _assigns_const_index(sub, seen_consts, predefined_constants):
                     diags.error(
                         sub.line, _pass1_message(profile, dataclasses.replace(sub, at_eol=False), "fallback"), sub.file
                     )
         elif profile.single_pass and isinstance(stmt, S.If):  # CR300/CR350: only the called keyword
             for sub in (stmt.inline or []) + (stmt.inline_else or []):
-                if _assigns_const_index(sub, seen_consts):
+                if _assigns_const_index(sub, seen_consts, predefined_constants):
                     diags.error(
                         sub.line, _pass1_message(profile, dataclasses.replace(sub, at_eol=False), "fallback"), sub.file
                     )
@@ -4338,10 +4356,13 @@ def _unclosed_call_message(profile, text: str, at_eol: bool, operands: set[str])
     return f"Expression expects , : {text}{sep}."
 
 
-def _assigns_const_index(stmt: S.Stmt, consts: set[str]) -> bool:
+def _assigns_const_index(stmt: S.Stmt, consts: set[str], predefined: set[str]) -> bool:
     """`J(1) = 1` over a `Const J` declared above, on its own line or in a one-line `If` (round 31,
     all four loggers)."""
-    return isinstance(stmt, S.Assignment) and isinstance(stmt.target, S.Index) and stmt.target.name.upper() in consts
+    if not isinstance(stmt, S.Assignment) or not isinstance(stmt.target, S.Index):
+        return False
+    name = stmt.target.name.upper()
+    return name in consts or name in predefined
 
 
 def _pass1_message(profile, stmt: S.Stmt, kind: str, operands: set[str] | None = None) -> str:
@@ -5230,12 +5251,20 @@ def _report_decl_expr(
     diags: Diagnostics,
     allow_variable: bool = False,
     tag: object = None,
+    indexed_constants: set[str] | frozenset[str] = frozenset(),
 ) -> bool:
     """An undefined name (`Invalid symbol in expression: %s.`; CR300/CR350: `%s is not defined.`
     per name, then `Variable illegal in Parameter: %s.`) or a live variable (`Variable illegal in
     Parameter: %s.`) inside a declaration's constant expression (`docs/checker.md` "Declaration
     expressions"). Returns whether anything was reported. `tag` marks the `Variable illegal`
     line for `storage.string_length_oom_line`."""
+    indexed = (
+        bool(indexed_constants)
+        and expressions._find_arity_problem(expr, profile, constants=indexed_constants) == "indexed_const"
+    )
+    if indexed and expressions._find_arity_problem(expr, profile, known, indexed_constants) == "indexed_const":
+        diags.error(stmt.line, f"Incomplete expression: {echo}.", stmt.file)
+        return True
     names = expressions._undefined_names(expr, known)
     if names:
         if profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
@@ -5243,6 +5272,8 @@ def _report_decl_expr(
         else:
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+            if indexed:
+                diags.error(stmt.line, f"Incomplete expression: {echo}.", stmt.file)
             diags.error(stmt.line, f"Variable illegal in Parameter: {echo}.", stmt.file, stmt=tag)
         return True
     if not allow_variable and expressions._variable_refs(expr, variables):
@@ -5353,6 +5384,8 @@ def _check_decl_exprs(
     struct_types: frozenset[str] = frozenset(),
     stop_at: int | None = None,
     length_scope: tuple[set[str], set[str]] | None = None,
+    *,
+    indexed_constants: set[str] | frozenset[str] = frozenset(),
 ) -> int | None:
     """Pass-1 name resolution in `Public`/`Dim`/`Static` array dimensions and initializers, and
     with `length_scope` (the names visible at the declaration, its variables) String lengths.
@@ -5462,7 +5495,16 @@ def _check_decl_exprs(
                     if isinstance(d, S.Juxtaposed):
                         bad_dim |= _report_juxtaposed_dim(d, text.lstrip(), known, variables, profile, stmt, diags)
                     else:
-                        bad_dim |= _report_decl_expr(d, text.lstrip(), known, variables, profile, stmt, diags)
+                        bad_dim |= _report_decl_expr(
+                            d,
+                            text.lstrip(),
+                            known,
+                            variables,
+                            profile,
+                            stmt,
+                            diags,
+                            indexed_constants=indexed_constants,
+                        )
                 if bad_dim and profile.single_pass:
                     # CR300/CR350 stop at the first bad variable; the one two on is named
                     # (oracle, 2026-10-04: `Public a(nv), b(nv), c` -> `Too many parameters:  c.`)
@@ -5499,7 +5541,15 @@ def _check_decl_exprs(
             live = variables | {"STATUS", "SETTINGS"}
             for e, text in zip(v.init, items):
                 bad |= _report_decl_expr(
-                    e, text.lstrip(), known, live, profile, stmt, diags, allow_variable=profile.single_pass
+                    e,
+                    text.lstrip(),
+                    known,
+                    live,
+                    profile,
+                    stmt,
+                    diags,
+                    allow_variable=profile.single_pass,
+                    indexed_constants=indexed_constants,
                 )
             if bad:
                 diags.error(stmt.line, f"Variable initialization of {v.name} has bad syntax.", stmt.file)
@@ -5521,6 +5571,7 @@ def _check_alias_index_names(
     profile,
     diags: Diagnostics,
     check_variables: bool = False,
+    indexed_constants: set[str] | frozenset[str] = frozenset(),
 ) -> bool:
     """`Alias X( Nope ) = Q` -> `Invalid symbol in expression:  Nope .` (raw index text) then
     `Alias is illegally dimensioned.`, all loggers (CR300/CR350 with their own undefined-name
@@ -5546,6 +5597,14 @@ def _check_alias_index_names(
             return True
     bad = False
     for a, text in zip(target.args, items):
+        if (
+            indexed_constants
+            and expressions._find_arity_problem(a, profile, known, indexed_constants) == "indexed_const"
+        ):
+            # The first closing parenthesis ends the Alias index text (round 82).
+            diags.error(stmt.line, f"Incomplete expression: {text.split(')', 1)[0]}.", stmt.file)
+            diags.error(stmt.line, "Alias is illegally dimensioned.", stmt.file)
+            return True
         if a is not None and (
             expressions._undefined_names(a, known) or (check_variables and expressions._variable_refs(a, variables))
         ):

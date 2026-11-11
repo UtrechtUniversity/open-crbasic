@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 82** (verdict parity). Extended the indexed-constant checks to array dimensions,
+initializers, Alias subscripts, and assignment targets. See the [declaration probes](docs/checker.md#indexed-constants-round-79).
+Fresh seed 774 gave 1,197 usable reference verdicts across the four profiles on the round 81 code.
+All agreed on acceptance. Three inputs had no reference verdict.
+
 **Round 81** (verdict parity, fuzz seed 773). Fixed CR350 false accept `dfd1542832c1`
 and the equivalent String-interval cases on the other profiles. See the [Delay probes](docs/instructions.md#delay-three-checks-split-by-option).
 The 960 mutations in seed 773 found two false accepts. A four-profile rerun after the fixes

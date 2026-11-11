@@ -9608,3 +9608,8 @@ assignments, conditions, and instruction or routine arguments. A real array para
 can take precedence over a later same-name constant. CR300 and CR350 do not define
 `X2`, the CR6 constant that triggered the fuzz finding. The dated reference results and
 compiler hashes are in `tests/fixtures/r79_indexed_constants.json`.
+
+Round 82 covers indexed constants in declaration dimensions, scalar and array initializers,
+and `Alias` subscripts. String lengths can accept the same syntax. A predefined constant used as
+an indexed assignment target gets the generic out-of-place expression diagnostic. The dated
+observations are in `tests/fixtures/r82_indexed_declarations.json`.
