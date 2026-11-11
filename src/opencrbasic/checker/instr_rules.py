@@ -3223,6 +3223,27 @@ def cdm_null_module(stmt: S.Instruction, env) -> bool:
     )
 
 
+_CDM_BRIDGE_OPTION_ARGS = {"CDM_BRHALF3W": (10, 8), "CDM_BRFULL6W": (12, 9)}
+
+
+def _check_cdm_bridge_options(stmt, positions, profile, diags, env, names, literals) -> None:
+    def value(pos: int) -> int | None:
+        if pos >= len(stmt.args):
+            return None
+        arg = stmt.args[pos]
+        if isinstance(arg, S.Name) and arg.name.upper() == "INF" and "INF" not in env.consts:
+            return 2**31 - 1
+        return longconv.long_value(arg, env, profile, names, literals)
+
+    settling, excitation = map(value, positions)
+    if settling is not None and settling != 0 and not 100 <= settling <= 100000:
+        diags.error(stmt.line, f"Settling time: {settling}, out of range (100 - 100000, or 0 for default).", stmt.file)
+    if excitation is not None:
+        magnitude = excitation if excitation == longconv.INT_MIN else abs(excitation)
+        if not 20 <= magnitude <= 5000:
+            diags.error(stmt.line, f"Excitation magnitude: {magnitude}, out of range (20 - 5000).", stmt.file)
+
+
 def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env) -> None:
     """CR6/CR1000X CDM instructions with a constant `CDMType` and a `CPIAddress` (1..120);
     docs/instructions.md "CDM address and module type".
@@ -3238,6 +3259,7 @@ def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env
     if profile.name not in ("cr6", "cr1000x"):
         return
     first: dict[int, object] = {}
+    conversion = None
     for stmt in program.statements:
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
         if not isinstance(stmt, S.Instruction) or kw not in _CDM_ADDRESS_INSTRUCTIONS or len(stmt.args) < 2:
@@ -3271,6 +3293,10 @@ def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env
         elif (module := cdm_unsupported_module(stmt, env)) is not None:
             for name in _CDM_NULL_MODULE.get(kw, ()):
                 diags.error(stmt.line, f"{name} instruction not supported by module {module}.", stmt.file)
+        elif kind in _CDM_PORT_MODULES and (positions := _CDM_BRIDGE_OPTION_ARGS.get(kw)) is not None:
+            if conversion is None:
+                conversion = longconv.float_names(program.statements), longconv.literal_names(program.statements)
+            _check_cdm_bridge_options(stmt, positions, profile, diags, env, *conversion)
 
 
 def check_epi_scan_buffers(program: S.Program, profile, diags: Diagnostics, env) -> None:

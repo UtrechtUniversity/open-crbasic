@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 93** (archived verdict parity). Fixed `a0b2b0b059b3` and `778ea45e64b7`
+by checking CDM bridge excitation and settling time. Both cases now match exactly.
+The 25-case archived replay has 19 false accepts and six exact matches.
+[CDM bridge option probes](docs/instructions.md#cdm-bridge-excitation-and-settling-time-round-93).
+
 **Round 92** (verdict parity, fuzz seed 777). Fixed CR350 false accept `44da99e1ccfc`
 and CR300 false accept `709610be701a`. Both reproducers now match exactly.
 [HTTPGet and TCPOpen option evidence](docs/checker.md#httpget-timeout-and-tcpopen-size-round-92).

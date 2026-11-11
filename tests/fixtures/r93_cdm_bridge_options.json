@@ -1,0 +1,1761 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-half-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-1,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -1, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 0, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-half-below-20",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,19,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 19, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-below-20",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,19,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 19, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-at-20",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,20,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-full-at-20",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,20,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 20, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-below-100",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,99,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-full-below-100",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-at-100",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-full-at-100",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-half-at-5000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5000,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-full-at-5000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-half-above-5000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5001,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 5001, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-above-5000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5001,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-half-at-100000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100000,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 100000, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-at-100000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-half-above-100000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100001,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 100001, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-above-100000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100001,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 100001, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-positive-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2147483648,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-positive-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,2147483648,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,999999999999,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,999999999999,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-float",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,19.5,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 19, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-float",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,19.5,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 19, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-text",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,\"bad\",True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-text",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,\"bad\",60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-variable",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr6-full-variable",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr6-half-string-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=\"bad\"\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-string-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=\"bad\"\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-int-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=5001\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Excitation magnitude: 5001, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-int-const",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=5001\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-half-folded",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5000+1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 5001, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-folded",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5000+1,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-half-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-1,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -1, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 0, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-half-below-20",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,19,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 19, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-below-20",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,19,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 19, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-at-20",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,20,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-full-at-20",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,20,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 20, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-below-100",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,99,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-full-below-100",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-at-100",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-full-at-100",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-half-at-5000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5000,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-full-at-5000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-half-above-5000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5001,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 5001, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-above-5000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5001,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-half-at-100000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100000,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 100000, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-at-100000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-half-above-100000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100001,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 100001, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-above-100000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100001,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 100001, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-positive-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2147483648,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-positive-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,2147483648,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,999999999999,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,999999999999,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,19.5,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 19, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,19.5,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 19, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-text",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,\"bad\",True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-text",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,\"bad\",60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-variable",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr1000x-full-variable",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr1000x-half-string-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=\"bad\"\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-string-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=\"bad\"\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-int-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=5001\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Excitation magnitude: 5001, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-int-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=5001\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-half-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5000+1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 5001, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5000+1,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-half-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-1,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-1,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-1,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-zero",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,0,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-zero",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-below-20",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,19,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,19,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-below-20",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,19,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,19,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-at-20",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,20,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,20,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-at-20",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,20,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,20,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-below-100",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,99,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,99,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-below-100",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,99,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-at-100",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-at-100",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-at-5000",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5000,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5000,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-at-5000",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5000,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-above-5000",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5001,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5001,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-above-5000",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5001,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5001,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-at-100000",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100000,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100000,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-at-100000",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100000,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-above-100000",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100001,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100001,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-above-100000",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100001,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100001,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-positive-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2147483648,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2147483648,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-positive-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,2147483648,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,2147483648,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,999999999999,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,999999999999,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,999999999999,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,999999999999,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-float",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,19.5,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,19.5,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-float",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,19.5,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,19.5,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-text",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,\"bad\",True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,\"bad\",True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-text",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,\"bad\",60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,\"bad\",60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-variable",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_BrHalf3W is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-variable",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_BrFull6W is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-string-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=\"bad\"\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_BrHalf3W is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-string-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=\"bad\"\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_BrFull6W is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-int-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=5001\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_BrHalf3W is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-int-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=5001\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_BrFull6W is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n."
+  },
+  {
+   "id": "cr300-half-folded",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5000+1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5000+1,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr300-full-folded",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5000+1,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5000+1,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-1,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-1,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-1,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-zero",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,0,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-zero",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-below-20",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,19,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,19,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-below-20",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,19,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,19,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-at-20",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,20,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,20,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-at-20",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,20,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,20,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-below-100",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,99,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,99,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-below-100",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,99,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-at-100",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-at-100",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-at-5000",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5000,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5000,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-at-5000",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5000,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-above-5000",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5001,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5001,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-above-5000",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5001,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5001,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-at-100000",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100000,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100000,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-at-100000",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100000,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-above-100000",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100001,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,100001,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-above-100000",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100001,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,100001,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-positive-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2147483648,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2147483648,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-positive-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,2147483648,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,2147483648,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,999999999999,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,999999999999,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,999999999999,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,999999999999,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-float",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,19.5,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,19.5,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-float",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,19.5,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,19.5,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-text",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,\"bad\",True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,\"bad\",True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-text",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,\"bad\",60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,\"bad\",60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-variable",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_BrHalf3W is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-variable",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_BrFull6W is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-string-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=\"bad\"\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_BrHalf3W is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-string-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=\"bad\"\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_BrFull6W is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-int-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=5001\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_BrHalf3W is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-int-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=5001\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_BrFull6W is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,R,60,1,0)\n."
+  },
+  {
+   "id": "cr350-half-folded",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5000+1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrHalf3W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,5000+1,True,0,60,1,0)\n."
+  },
+  {
+   "id": "cr350-full-folded",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5000+1,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_BrFull6W is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,5000+1,60,1,0)\n."
+  },
+  {
+   "id": "cr6-half--19.9",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-19.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 19, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half--20",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-20,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-half--5000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-5000,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-half--5001",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-5001,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 5001, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half--2147483648",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-2147483648,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half-&H80000000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,&H80000000,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half-&HFFFFFFFF",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,&HFFFFFFFF,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half-True",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half-NAN",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,NAN,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half-INF",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,INF,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 2147483647, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full--19.9",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-19.9,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -19, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-full--20",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-20,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -20, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-full--5000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-5000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -5000, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-full--5001",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-5001,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -5001, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-full--2147483648",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-2147483648,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-full-&H80000000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,&H80000000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-full-&HFFFFFFFF",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,&HFFFFFFFF,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -1, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-full-True",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,True,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -1, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-full-NAN",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,NAN,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-full-INF",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,INF,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 2147483647, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-excitation-and-settling",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half-variable-excitation-and-bad-settling",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr6-full-excitation-and-settling",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-variable-excitation-and-bad-settling",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,R,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr1000x-half--19.9",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-19.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 19, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half--20",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-20,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-half--5000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-5000,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-half--5001",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-5001,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 5001, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half--2147483648",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,-2147483648,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half-&H80000000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,&H80000000,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half-&HFFFFFFFF",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,&HFFFFFFFF,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half-NAN",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,NAN,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half-INF",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,INF,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 2147483647, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full--19.9",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-19.9,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -19, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-full--20",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-20,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -20, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-full--5000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-5000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -5000, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-full--5001",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-5001,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -5001, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-full--2147483648",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,-2147483648,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-full-&H80000000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,&H80000000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-full-&HFFFFFFFF",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,&HFFFFFFFF,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -1, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-full-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,True,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -1, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-full-NAN",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,NAN,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-full-INF",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,2500,True,True,INF,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 2147483647, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-excitation-and-settling",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half-variable-excitation-and-bad-settling",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,R,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr1000x-full-excitation-and-settling",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-variable-excitation-and-bad-settling",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,R,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: R."
+  },
+  {
+   "id": "cr6-full-excitation-19",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,19,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 19, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-excitation-20",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,20,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-full-excitation-5000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,5000,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-full-excitation-5001",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,5001,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 5001, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-excitation--20",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,-20,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-full-excitation-\"bad\"",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,\"bad\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-excitation-INF",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,INF,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 2147483647, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half-settling-0",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-half-settling-99",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-settling-100",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,100,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-half-settling-100000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,100000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-half-settling-100001",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,100001,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 100001, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-settling-\"bad\"",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,\"bad\",60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-settling-INF",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,INF,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 2147483647, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr6-half-invalid-cpi",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,999,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CPI Address must be 1..120.\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-invalid-cpi",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,999,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CPI Address must be 1..120.\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half-invalid-channel",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,999,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000).\nline 4: Input channel: 999, out of range (1 - 16).\nline 4: Reps cycle input beyond last channel!"
+  },
+  {
+   "id": "cr6-full-invalid-channel",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,999,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000).\nline 4: Input channel: 999, out of range (1 - 8).\nline 4: Reps cycle input beyond last channel!",
+   "not_modelled": "CDM_BrFull6W input channel and repetition diagnostics"
+  },
+  {
+   "id": "cr1000x-full-excitation-19",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,19,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 19, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-excitation-20",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,20,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-full-excitation-5000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,5000,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-full-excitation-5001",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,5001,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 5001, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-excitation--20",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,-20,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-full-excitation-\"bad\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,\"bad\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: -2147483648, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-excitation-INF",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,1,X1,1,INF,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Excitation magnitude: 2147483647, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half-settling-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-half-settling-99",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-settling-100",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,100,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-half-settling-100000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,100000,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-half-settling-100001",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,100001,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 100001, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-settling-\"bad\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,\"bad\",60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -2147483648, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-settling-INF",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,1,X1,1,2500,True,INF,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 2147483647, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-half-invalid-cpi",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,999,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CPI Address must be 1..120.\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-invalid-cpi",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,999,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CPI Address must be 1..120.\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half-invalid-channel",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(CDM_A108,1,Y,1,mV200,999,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000).\nline 4: Input channel: 999, out of range (1 - 16).\nline 4: Reps cycle input beyond last channel!"
+  },
+  {
+   "id": "cr1000x-full-invalid-channel",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(CDM_A108,1,Y,1,mV5000,mV200,999,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000).\nline 4: Input channel: 999, out of range (1 - 8).\nline 4: Reps cycle input beyond last channel!",
+   "not_modelled": "CDM_BrFull6W input channel and repetition diagnostics"
+  },
+  {
+   "id": "cr6-half-0",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(0,1,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-full-0",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(0,1,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-half-220",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(220,1,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-220",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(220,1,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half-221",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(221,1,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-221",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(221,1,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half-222",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(222,1,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-222",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(222,1,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-half-223",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(223,1,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr6-full-223",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(223,1,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(0,1,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-full-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(0,1,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Analog measurement instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-half-220",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(220,1,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-220",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(220,1,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half-221",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(221,1,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-221",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(221,1,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half-222",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(222,1,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-222",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(222,1,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-half-223",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrHalf3W(223,1,Y,1,mV200,1,X1,1,1,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  },
+  {
+   "id": "cr1000x-full-223",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_BrFull6W(223,1,Y,1,mV5000,mV200,1,X1,1,1,True,True,99,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default).\nline 4: Excitation magnitude: 1, out of range (20 - 5000)."
+  }
+ ]
+}

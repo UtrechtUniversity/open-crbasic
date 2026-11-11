@@ -9,13 +9,22 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "const_ranges.json").read_text(encoding="utf-8"))
+FIXTURES = Path(__file__).parent / "fixtures"
+CASES = [
+    case
+    for name in ("const_ranges.json", "r93_cdm_bridge_options.json")
+    for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
+]
 
 
-@pytest.mark.parametrize("case", FIXTURE["cases"], ids=lambda case: case["id"])
+@pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
 def test_const_range_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
     program.write_text(case["source"], encoding="utf-8")
     result = compile_file(program, profiles.get(case["logger"]))
     assert (0 if result.ok else 1) == case["expected_exit"]
-    assert "\n".join(result.result_lines()) == case["expected_stdout"]
+    actual = "\n".join(result.result_lines())
+    if reason := case.get("not_modelled"):
+        assert actual != case["expected_stdout"], f"Remove the expected failure for {case['id']}"
+        pytest.xfail(reason)
+    assert actual == case["expected_stdout"]

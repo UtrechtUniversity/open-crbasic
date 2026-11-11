@@ -1508,6 +1508,20 @@ value` warning of the same line, and is a `const_ranges` entry (new `allow` list
 accepted value `0`). Not probed on CR6/CR1000X (different parameter lists) or for other CR300
 measurement instructions. Reproducer: cr350 `false_accept/fed9e7c1ded9`.
 
+### CDM bridge excitation and settling time (round 93)
+
+On CR6 and CR1000X, `CDM_BrHalf3W` and `CDM_BrFull6W` on module types 220–223
+accept excitation magnitudes from 20 to 5000 and settling times of 0 or 100–100000.
+Both values convert to a signed Long before validation. The excitation check takes
+the magnitude except for `INT_MIN`, which stays negative. Text and out-of-range
+decimal values convert to `INT_MIN`. Bare `INF` converts to `INT_MAX`. CPI address
+errors precede settling and excitation errors, in that order. CR300 and CR350 do
+not expose these two instructions.
+
+The fixtures record the supported-module probes and the remaining
+`CDM_BrFull6W` channel diagnostic gap. Other named CDM module diagnostics remain
+outside this check. [Reference observations](../tests/fixtures/r93_cdm_bridge_options.json).
+
 ### CDM value ranges (CR6/CR1000X; fixtures `cdm_ranges`, `cdm_reps`, `cdm_port_and_type`)
 
 All observed 2026-10-08 on both compilers; implemented as `measure.json` `const_ranges` entries
