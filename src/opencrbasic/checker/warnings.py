@@ -68,6 +68,14 @@ def check(program: S.Program, result, diags: Diagnostics) -> None:
         for name in (arg.name.upper(), _const_table_name(arg.name, program).upper())
         if name in declared
     }
+    called.update(
+        stmt.args[0].value.upper()
+        for stmt in _with_inline_branches(program.statements)
+        if isinstance(stmt, S.Instruction)
+        and stmt.keyword.upper() == "CALLTABLE"
+        and stmt.args
+        and isinstance(stmt.args[0], S.String)
+    )
     for key, name in declared.items():
         if key not in called:
             # oracle-confirmed (docs/tdf-rules.md #13, `fixeduncalled`): fires whenever no

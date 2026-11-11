@@ -1244,14 +1244,24 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
       `GetDataRecord`-destination-table exception (not implemented; a false reject there is
       possible but not found in this project's corpus/fuzz evidence, `docs/instructions.md`).
     """
-    declared_interval_us: dict[str, tuple[float, int]] = {}  # table name -> (interval_us, line)
+    from .instr_data import _const_table_name, _declared_table_name
+
+    def table_name(stmt: S.Instruction) -> str | None:
+        if not stmt.args or not isinstance(stmt.args[0], (S.Name, S.String)):
+            return None
+        name = _declared_table_name(stmt)
+        if name and isinstance(stmt.args[0], S.Name):
+            name = _const_table_name(name, program)
+        return name.upper() if name else None
+
+    declared_interval_us: dict[str, float] = {}
     current_table: str | None = None
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
             continue
         kw = stmt.keyword.upper()
         if kw == "DATATABLE":
-            current_table = stmt.args[0].name.upper() if stmt.args and isinstance(stmt.args[0], S.Name) else None
+            current_table = table_name(stmt)
             continue
         if kw == "ENDTABLE":
             current_table = None
@@ -1274,7 +1284,7 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
                 break
         interval_us = _divisible_interval_us(interval, units, env, truncate_units=True)
         if interval_us is not None:
-            declared_interval_us[current_table] = (interval_us, stmt.line)
+            declared_interval_us[current_table] = interval_us
 
     scan_interval_us: float | None = None
     for stmt in program.statements:
@@ -1296,13 +1306,11 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
             continue
         if kw != "CALLTABLE" or not scan_interval_us or not stmt.args:
             continue
-        name_arg = stmt.args[0]
-        if not isinstance(name_arg, S.Name):
-            continue
-        entry = declared_interval_us.get(name_arg.name.upper())
+        name = table_name(stmt)
+        entry = declared_interval_us.get(name) if name else None
         if entry is None:
             continue
-        message = _divisibility_message(int(entry[0]), int(scan_interval_us))
+        message = _divisibility_message(int(entry), int(scan_interval_us))
         if message:
             diags.error(stmt.line, message, stmt.file)
 

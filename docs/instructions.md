@@ -242,6 +242,10 @@ interval") trivially always divides evenly and needs no special case. Reported a
 probe -- the divisibility error's line is the `CallTable` line, the non-negative error's line
 above is the `DataInterval` line, in the same file).
 
+Round 87 confirmed that quoted names and names supplied by String constants participate in the
+same check. A quoted `CallTable` also counts as a table use for the uncalled-table warning.
+The four-profile observations and hashes are in `tests/fixtures/r87_table_interval_names.json`.
+
 **Deliberately conservative** (`checker/instr_rules.py`'s `check_data_interval` docstring has the
 full reasoning): only tracks the textually innermost `Scan`/`SlowSequence Scan` a `CallTable` sits
 inside, with no depth stack beyond "currently open or not" (`Scan` never nests with itself; only

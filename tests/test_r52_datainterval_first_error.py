@@ -8,7 +8,12 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "r52_datainterval_first_error.json").read_text())
+FIXTURES = Path(__file__).parent / "fixtures"
+CASES = [
+    case
+    for name in ("r52_datainterval_first_error.json", "r87_table_interval_names.json")
+    for case in json.loads((FIXTURES / name).read_text())["cases"]
+]
 
 
 @pytest.mark.parametrize(
@@ -17,7 +22,7 @@ FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "r52_datainterval_fir
         pytest.param(case, marks=pytest.mark.xfail(reason=case["not_modelled"], strict=True))
         if "not_modelled" in case
         else case
-        for case in FIXTURE["cases"]
+        for case in CASES
     ],
     ids=lambda case: case["id"],
 )
