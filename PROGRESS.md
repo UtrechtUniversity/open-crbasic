@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 79** (verdict parity, fuzz seed 772). Fixed the CR6 false accept `aa708bc338ff`,
+an indexed predefined constant in an assignment. See the [four-profile probes](docs/checker.md#indexed-constants-round-79).
+The 640 mutations used three handwritten seeds accepted by all four compilers. One input yielded
+no reference verdict.
+
 **Round 78** (CR300/CR350 verdict parity). Closed the remaining `Sub`-as-value false accepts
 on the two single-pass profiles. See the [value and call probes](docs/checker.md#constants-declared-after-their-use-round-71).
 

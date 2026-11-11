@@ -2403,13 +2403,18 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     return None
 
 
-def _find_arity_problem(expr: S.Expr | None, profile, known: set[str] | None = None) -> str | None:
+def _find_arity_problem(
+    expr: S.Expr | None, profile, known: set[str] | None = None, constants: set[str] | frozenset[str] = frozenset()
+) -> str | None:
     """The first (left-to-right, outer-before-inner) built-in-function call anywhere inside `expr`
     with a bad argument count, `_call_arity_problem`'s own `"few"`/`"many"`/`None`. Same recursion
     shape as `_undefined_names`/`_variable_refs` above (`Unary`/`Binary`/`Index`'s own name and
     args/`Member.base`/`ArrayLiteral` items); a `Member`'s own `.member` args (`Status.Battery(1)`
     -- a *field* call, never a built-in function) are deliberately not checked, same reasoning as
     `_undefined_names` leaving `Member.member` alone.
+
+    When the caller supplies the visible scalar constants, an index on one of those names
+    reports `"indexed_const"` before its argument list is read.
 
     Checks an `Index` node itself (a real parser-recognised call, or an array reference that
     happens to share a built-in function's name -- `_call_arity_problem` only fires when the name is
@@ -2432,6 +2437,8 @@ def _find_arity_problem(expr: S.Expr | None, profile, known: set[str] | None = N
         # `X = Nope + Sin(1,2)`, `Round(Nope, Sin(1,2))`; each `Sub` argument is its own expression)
         return "deferred"
     if isinstance(expr, S.Index):
+        if expr.name.upper() in constants:
+            return "indexed_const"
         direct = _call_arity_problem(expr.name, expr.args, profile)
         if direct and known is not None:
             # only names the parser reaches: a surplus argument is never read (`Right(S,10,Nope)`
@@ -2444,14 +2451,16 @@ def _find_arity_problem(expr: S.Expr | None, profile, known: set[str] | None = N
         if direct:
             return direct
         for a in expr.args:
-            found = _find_arity_problem(a, profile, known)
+            found = _find_arity_problem(a, profile, known, constants)
             if found:
                 return found
         return None
     if isinstance(expr, S.Unary):
-        return _find_arity_problem(expr.operand, profile, known)
+        return _find_arity_problem(expr.operand, profile, known, constants)
     if isinstance(expr, S.Binary):
-        return _find_arity_problem(expr.left, profile, known) or _find_arity_problem(expr.right, profile, known)
+        return _find_arity_problem(expr.left, profile, known, constants) or _find_arity_problem(
+            expr.right, profile, known, constants
+        )
     if isinstance(expr, S.Member):
         if expr.args is not None and len(expr.args) > 2:
             # a table field takes at most (index, records back): `Tb.X(1,1,1)`, `Public.V(1,1,1)`
@@ -2459,10 +2468,10 @@ def _find_arity_problem(expr: S.Expr | None, profile, known: set[str] | None = N
             # the pass-2 compile of the statement, not by pass 1 (message tracer, 2026-10-10), so
             # `check_function_arity` reports it through `held`.
             return "many_member"
-        return _find_arity_problem(expr.base, profile, known)
+        return _find_arity_problem(expr.base, profile, known, constants)
     if isinstance(expr, S.ArrayLiteral):
         for item in expr.items:
-            found = _find_arity_problem(item, profile, known)
+            found = _find_arity_problem(item, profile, known, constants)
             if found:
                 return found
         return None
@@ -2472,7 +2481,7 @@ def _find_arity_problem(expr: S.Expr | None, profile, known: set[str] | None = N
 def _arity_message(kind: str, text: str, profile, at_eol: bool = True, whole_statement: bool = False) -> str:
     if kind == "timer_option":
         return "Legal options are 0..4"
-    if kind in ("constint", "incomplete"):
+    if kind in ("constint", "incomplete", "indexed_const"):
         verb = "Parameter must be a constant integer: " if kind == "constint" else "Incomplete expression: "
         sep = "\n" if profile.name in _ARITY_TRAILING_NEWLINE_LOGGERS and at_eol else ""
         return f"{verb}{text}{sep}."
@@ -2655,18 +2664,29 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
     _TIMEOUT_WIDE[0] = intervals.wide_constants(program, profile)
     _TIMER_CONTEXT[0] = (consteval.Env(profile, dict(program.consts)), frozenset(n.upper() for n in declared_variables))
     arity_known = _known_names(program, profile) if profile.name in _WHOLE_EXPR_ECHO_LOGGERS else None
+    scopes = symbols.statement_scopes(program, profile)
+    predefined = (profile.symbols.keys() | _EXTRA_PREDEFINED_SYMBOLS) - (
+        profile.declarable_predefined_names & declared_variables
+    )
+    predefined -= profile.functions.keys() | _CONTROL_KEYWORDS
+    user_constants = program.consts.keys() - declared_variables - profile.functions.keys()
+    all_constants = predefined | user_constants
 
     def arity(expr):
-        problem = _find_arity_problem(expr, profile, arity_known)
+        problem = _find_arity_problem(expr, profile, arity_known, constants)
         return None if problem == "deferred" else problem
 
     for stmt in program.statements:
+        params, pending = scopes[id(stmt)]
+        hidden_constants = params | pending if profile.single_pass else params
+        constants = all_constants - (hidden_constants - predefined) if hidden_constants else all_constants
         _TIMEOUT_GATE[0], seen_timeint = intervals.timeout_gate(seen_timeint, intervals.gate_text(stmt))
         if isinstance(stmt, S.Instruction):
             kw = stmt.keyword.upper()
             in_table = kw == "DATATABLE" or (in_table and kw != "ENDTABLE")
             # outside a table the "must be used inside a table declaration" check wins
             table_only = kw in instr_data.TABLE_ONLY_INSTRUCTIONS and not in_table
+            params_count = len(profile.instructions.get(kw, {}).get("params", ()))
             for i, arg in enumerate(stmt.args):
                 if arg is None:
                     continue
@@ -2680,11 +2700,14 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
                     msg = _bare_function_message(_arg_text(stmt, i), profile, whole_statement=False)
                     diags.error(stmt.line, msg, stmt.file)
                     break
-                problem = _find_arity_problem(arg, profile)  # (not deferred: `PanelTemp(X,Sin(Nope,1))`)
+                # Alias declares names and parses its own subscripts. An argument beyond
+                # the supported signature also does not reach the value resolver.
+                indexed_constants = constants if kw != "ALIAS" and i < params_count else frozenset()
+                problem = _find_arity_problem(arg, profile, constants=indexed_constants)
                 if problem == "empty":
                     diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile), stmt.file)
                     break
-                if problem in ("many_member", "constint", "timer_option") and table_only:
+                if problem in ("many_member", "constint", "timer_option", "indexed_const") and table_only:
                     break  # the "must be used inside a table declaration" error wins
                 if problem:
                     diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile, False), stmt.file)
@@ -2780,6 +2803,8 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
                 diags.error(stmt.line, _arity_message(problem, text, profile), stmt.file)
             elif problem == "timer_option" and text is not None:
                 diags.error(stmt.line, _arity_message(problem, text, profile), stmt.file)
+            elif problem == "indexed_const" and text is not None:
+                diags.error(stmt.line, _arity_message(problem, text, profile, False), stmt.file)
             elif problem == "constint" and text is not None:
                 diags.error(stmt.line, f"Parameter must be a constant integer: {text}.", stmt.file)
             elif problem and text is not None:
@@ -2801,6 +2826,8 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
                 diags.error(
                     stmt.line, f"Invalid, or out of place expression: {stmt.text[stmt.value_span[0] :]}.", stmt.file
                 )
+            elif problem == "indexed_const":
+                diags.error(stmt.line, _arity_message(problem, text, profile, False), stmt.file)
             elif problem:
                 verb = (
                     "Expression expects , : " if problem == "few" else "No Matching, or out of place ) in expression: "

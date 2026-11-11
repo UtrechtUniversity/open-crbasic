@@ -2584,16 +2584,14 @@
    "logger": "cr6",
    "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Sec(),1)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Sec().",
-   "not_modelled": "first error only: an unrealistic name collision or `Sec()` call"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Sec()."
   },
   {
    "id": "cr1000x-sec_call",
    "logger": "cr1000x",
    "source": "Public X,Y\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(Y,1,X,10,False,3,Sec(),1)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Sec().",
-   "not_modelled": "first error only: an unrealistic name collision or `Sec()` call"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Sec()."
   },
   {
    "id": "cr300-sec_call",

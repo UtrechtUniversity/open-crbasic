@@ -9582,8 +9582,7 @@ interval) after the whole file, so only pass-1 constant positions see the order:
   position is `V is not defined.` on those profiles, while `Call V`, `V` and `V()` as
   statements invoke the routine. The reference results are in `tests/fixtures/r78_sub_values.json`.
   First error only (verdict equal): `Alias X=V` before `Sub V` is
-  `V already declared as a variable.` on the `Sub` line, and
-  `Sec()` as the instance count is `Incomplete expression: Sec().`.
+  `V already declared as a variable.` on the `Sub` line.
 
 Found by the three Codex `gpt-6.1-sol` reviews (`scratch/r71/codex-review*.log`, local only) and the probes that followed them.
 
@@ -9599,3 +9598,13 @@ On CR6 and CR1000X, a six-argument `SerialOpen` with a numeric format and mode `
 with buffer literals `1.5`, `1.0`, `999999999999` and `"abc"`. In the five-argument form
 those literals still give `Parameter must be a constant integer`. The dated reference results
 and compiler hashes are in `tests/fixtures/r77_serialopen_buffer.json`.
+
+## Indexed constants (round 79)
+
+The four reference compilers reject expressions such as `Y = Sec(1)` or
+`Y = K(1)` after `Const K=2` with `Incomplete expression`. This also holds
+for a String constant, empty parentheses on a predefined constant, and nested uses in
+assignments, conditions, and instruction or routine arguments. A real array parameter
+can take precedence over a later same-name constant. CR300 and CR350 do not define
+`X2`, the CR6 constant that triggered the fuzz finding. The dated reference results and
+compiler hashes are in `tests/fixtures/r79_indexed_constants.json`.

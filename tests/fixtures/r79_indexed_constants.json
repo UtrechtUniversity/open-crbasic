@@ -1,0 +1,639 @@
+{
+ "observation_date": "2026-11-11",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-assignment",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y = X2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = X2(1)."
+  },
+  {
+   "id": "cr6-binary",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y = 1+X2(2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = 1+X2(2)."
+  },
+  {
+   "id": "cr6-empty",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y = X2()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = X2()."
+  },
+  {
+   "id": "cr6-sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y = Sec(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = Sec(1)."
+  },
+  {
+   "id": "cr6-true",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y = True(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = True(1)."
+  },
+  {
+   "id": "cr6-nan",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y = NAN(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = NAN(1)."
+  },
+  {
+   "id": "cr6-user_const",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=2\nBeginProg\n Y = K(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  Y = K(1)."
+  },
+  {
+   "id": "cr6-string_const",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=\"abc\"\nBeginProg\n Y = K(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  Y = K(1)."
+  },
+  {
+   "id": "cr6-overridden_const",
+   "logger": "cr6",
+   "source": "Public Y\nConst X2=2\nBeginProg\n Y = X2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X2 is a predefined CONST.\nline 4: Incomplete expression:  Y = X2(1)."
+  },
+  {
+   "id": "cr6-overridden_array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X2(2)\nBeginProg\n Y = X2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X2 is a predefined CONST.\nline 4: Incomplete expression:  Y = X2(1)."
+  },
+  {
+   "id": "cr6-condition",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n If X2(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X2(1) ."
+  },
+  {
+   "id": "cr6-nested",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y = Abs(X2(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = Abs(X2(1))."
+  },
+  {
+   "id": "cr6-instruction",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Delay(0,X2(1),mSec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X2(1)."
+  },
+  {
+   "id": "cr6-sub_arg",
+   "logger": "cr6",
+   "source": "Public Y\nSub P(Z As Long)\nEndSub\nBeginProg\n Call P(X2(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: X2(1)."
+  },
+  {
+   "id": "cr6-control",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y = X2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assignment",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y = X2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = X2(1)."
+  },
+  {
+   "id": "cr1000x-binary",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y = 1+X2(2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = 1+X2(2)."
+  },
+  {
+   "id": "cr1000x-empty",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y = X2()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = X2()."
+  },
+  {
+   "id": "cr1000x-sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y = Sec(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = Sec(1)."
+  },
+  {
+   "id": "cr1000x-true",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y = True(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = True(1)."
+  },
+  {
+   "id": "cr1000x-nan",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y = NAN(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = NAN(1)."
+  },
+  {
+   "id": "cr1000x-user_const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=2\nBeginProg\n Y = K(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  Y = K(1)."
+  },
+  {
+   "id": "cr1000x-string_const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=\"abc\"\nBeginProg\n Y = K(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  Y = K(1)."
+  },
+  {
+   "id": "cr1000x-overridden_const",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst X2=2\nBeginProg\n Y = X2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X2 is a predefined CONST.\nline 4: Incomplete expression:  Y = X2(1)."
+  },
+  {
+   "id": "cr1000x-overridden_array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X2(2)\nBeginProg\n Y = X2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X2 is a predefined CONST.\nline 4: Incomplete expression:  Y = X2(1)."
+  },
+  {
+   "id": "cr1000x-condition",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n If X2(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X2(1) ."
+  },
+  {
+   "id": "cr1000x-nested",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y = Abs(X2(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = Abs(X2(1))."
+  },
+  {
+   "id": "cr1000x-instruction",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Delay(0,X2(1),mSec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X2(1)."
+  },
+  {
+   "id": "cr1000x-sub_arg",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub P(Z As Long)\nEndSub\nBeginProg\n Call P(X2(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: X2(1)."
+  },
+  {
+   "id": "cr1000x-control",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y = X2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assignment",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y = X2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined.\nline 3: Dimensions not declared:  Y = X2(1)\n."
+  },
+  {
+   "id": "cr300-binary",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y = 1+X2(2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined.\nline 3: Dimensions not declared:  Y = 1+X2(2)\n."
+  },
+  {
+   "id": "cr300-empty",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y = X2()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined."
+  },
+  {
+   "id": "cr300-sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y = Sec(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = Sec(1)\n."
+  },
+  {
+   "id": "cr300-true",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y = True(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = True(1)\n."
+  },
+  {
+   "id": "cr300-nan",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y = NAN(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = NAN(1)\n."
+  },
+  {
+   "id": "cr300-user_const",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=2\nBeginProg\n Y = K(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  Y = K(1)\n."
+  },
+  {
+   "id": "cr300-string_const",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=\"abc\"\nBeginProg\n Y = K(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  Y = K(1)\n."
+  },
+  {
+   "id": "cr300-overridden_const",
+   "logger": "cr300",
+   "source": "Public Y\nConst X2=2\nBeginProg\n Y = X2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  Y = X2(1)\n."
+  },
+  {
+   "id": "cr300-overridden_array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X2(2)\nBeginProg\n Y = X2(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-condition",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n If X2(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined.\nline 3: Dimensions not declared: X2(1) ."
+  },
+  {
+   "id": "cr300-nested",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y = Abs(X2(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined.\nline 3: Dimensions not declared:  Y = Abs(X2(1))\n."
+  },
+  {
+   "id": "cr300-instruction",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Delay(0,X2(1),mSec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined.\nline 3: Dimensions not declared: X2(1).\nline 3: Too many parameters:  mSec."
+  },
+  {
+   "id": "cr300-sub_arg",
+   "logger": "cr300",
+   "source": "Public Y\nSub P(Z As Long)\nEndSub\nBeginProg\n Call P(X2(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: X2 is not defined.\nline 5: Dimensions not declared: X2(1)."
+  },
+  {
+   "id": "cr300-control",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y = X2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined."
+  },
+  {
+   "id": "cr350-assignment",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y = X2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined.\nline 3: Dimensions not declared:  Y = X2(1)\n."
+  },
+  {
+   "id": "cr350-binary",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y = 1+X2(2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined.\nline 3: Dimensions not declared:  Y = 1+X2(2)\n."
+  },
+  {
+   "id": "cr350-empty",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y = X2()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined."
+  },
+  {
+   "id": "cr350-sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y = Sec(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = Sec(1)\n."
+  },
+  {
+   "id": "cr350-true",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y = True(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = True(1)\n."
+  },
+  {
+   "id": "cr350-nan",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y = NAN(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = NAN(1)\n."
+  },
+  {
+   "id": "cr350-user_const",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=2\nBeginProg\n Y = K(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  Y = K(1)\n."
+  },
+  {
+   "id": "cr350-string_const",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=\"abc\"\nBeginProg\n Y = K(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  Y = K(1)\n."
+  },
+  {
+   "id": "cr350-overridden_const",
+   "logger": "cr350",
+   "source": "Public Y\nConst X2=2\nBeginProg\n Y = X2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  Y = X2(1)\n."
+  },
+  {
+   "id": "cr350-overridden_array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X2(2)\nBeginProg\n Y = X2(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-condition",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n If X2(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined.\nline 3: Dimensions not declared: X2(1) ."
+  },
+  {
+   "id": "cr350-nested",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y = Abs(X2(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined.\nline 3: Dimensions not declared:  Y = Abs(X2(1))\n."
+  },
+  {
+   "id": "cr350-instruction",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Delay(0,X2(1),mSec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined.\nline 3: Dimensions not declared: X2(1).\nline 3: Too many parameters:  mSec."
+  },
+  {
+   "id": "cr350-sub_arg",
+   "logger": "cr350",
+   "source": "Public Y\nSub P(Z As Long)\nEndSub\nBeginProg\n Call P(X2(1))\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: X2 is not defined.\nline 5: Dimensions not declared: X2(1)."
+  },
+  {
+   "id": "cr350-control",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y = X2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: X2 is not defined."
+  },
+  {
+   "id": "cr6-later",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y = K(1)\nEndProg\nConst K=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y = K(1)."
+  },
+  {
+   "id": "cr6-shadow_param",
+   "logger": "cr6",
+   "source": "Public Y\nSub P(K(2) As Long)\n Y = K(1)\nEndSub\nConst K=2\nPublic A(2) As Long\nBeginProg\n Call P(A)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scalar",
+   "logger": "cr6",
+   "source": "Public Y\nPublic K\nBeginProg\n Y = K(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bool_name",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y = False(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = False(1)."
+  },
+  {
+   "id": "cr6-conflict",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y = EXP(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-keyword",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y = FP2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = FP2(1)."
+  },
+  {
+   "id": "cr6-sample",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable T,1,1\n Sample(1,Sec(1),FP2)\nEndTable\nBeginProg\n CallTable T\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: Sec(1)."
+  },
+  {
+   "id": "cr1000x-later",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y = K(1)\nEndProg\nConst K=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y = K(1)."
+  },
+  {
+   "id": "cr1000x-shadow_param",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub P(K(2) As Long)\n Y = K(1)\nEndSub\nConst K=2\nPublic A(2) As Long\nBeginProg\n Call P(A)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scalar",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic K\nBeginProg\n Y = K(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bool_name",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y = False(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = False(1)."
+  },
+  {
+   "id": "cr1000x-conflict",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y = EXP(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-keyword",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y = FP2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = FP2(1)."
+  },
+  {
+   "id": "cr1000x-sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable T,1,1\n Sample(1,Sec(1),FP2)\nEndTable\nBeginProg\n CallTable T\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: Sec(1)."
+  },
+  {
+   "id": "cr300-later",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y = K(1)\nEndProg\nConst K=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 3: Dimensions not declared:  Y = K(1)\n."
+  },
+  {
+   "id": "cr300-shadow_param",
+   "logger": "cr300",
+   "source": "Public Y\nSub P(K(2) As Long)\n Y = K(1)\nEndSub\nConst K=2\nPublic A(2) As Long\nBeginProg\n Call P(A)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-scalar",
+   "logger": "cr300",
+   "source": "Public Y\nPublic K\nBeginProg\n Y = K(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared:  Y = K(1)\n."
+  },
+  {
+   "id": "cr300-bool_name",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y = False(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = False(1)\n."
+  },
+  {
+   "id": "cr300-conflict",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y = EXP(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-keyword",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y = FP2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = FP2(1)\n."
+  },
+  {
+   "id": "cr300-sample",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable T,1,1\n Sample(1,Sec(1),FP2)\nEndTable\nBeginProg\n CallTable T\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: Sec(1)."
+  },
+  {
+   "id": "cr350-later",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y = K(1)\nEndProg\nConst K=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 3: Dimensions not declared:  Y = K(1)\n."
+  },
+  {
+   "id": "cr350-shadow_param",
+   "logger": "cr350",
+   "source": "Public Y\nSub P(K(2) As Long)\n Y = K(1)\nEndSub\nConst K=2\nPublic A(2) As Long\nBeginProg\n Call P(A)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-scalar",
+   "logger": "cr350",
+   "source": "Public Y\nPublic K\nBeginProg\n Y = K(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared:  Y = K(1)\n."
+  },
+  {
+   "id": "cr350-bool_name",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y = False(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = False(1)\n."
+  },
+  {
+   "id": "cr350-conflict",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y = EXP(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-keyword",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y = FP2(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:  Y = FP2(1)\n."
+  },
+  {
+   "id": "cr350-sample",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable T,1,1\n Sample(1,Sec(1),FP2)\nEndTable\nBeginProg\n CallTable T\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: Sec(1)."
+  }
+ ]
+}
