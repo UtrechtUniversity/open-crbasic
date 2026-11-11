@@ -129,6 +129,8 @@ def _apply_cdm_channel(stmt, rule, env, profile, names, diags) -> None:
     is a two-measurement pair counted by magnitude; `-2147483648` (a string, overflow) is only
     the range line; `Reps` that run past the last channel are `Reps cycle input beyond last
     channel!` unless `Reps` is itself out of range."""
+    if not stmt.args:
+        return
     last = rule["channel_by_module"].get(str(_int_value(stmt.args[0], env)))
     value = _long_arg(stmt, rule["pos"], rule, env, profile, names)
     if last is None or value is None:
@@ -136,7 +138,20 @@ def _apply_cdm_channel(stmt, rule, env, profile, names, diags) -> None:
     int_min = -(2**31)
     magnitude = -value if int_min < value < 0 else value
     role = rule["role"]
-    if role == "ic":
+    if role == "panel_temp":
+        reps = _long_arg(stmt, 4, rule, env, profile, names)
+        if last == 30 and value < 0:
+            diags.error(stmt.line, "Burst measurements unsupported, input channel must be > 0!", stmt.file)
+        if last != 30 and reps is not None and reps < 1:
+            diags.error(stmt.line, f"Reps: {reps}, out of range (1 - 65536)", stmt.file)
+            diags.error(stmt.line, f"MeasPEx: {reps}, must be greater than 0.", stmt.file)
+        if not 1 <= value <= last:
+            message = f"PanelTemp channel: {value}, out of range (1 - 30)." if last == 30 else rule["message"]
+            diags.error(stmt.line, message, stmt.file)
+            value = 1
+        if reps is not None and value - 1 + reps > last:
+            diags.error(stmt.line, "PanelTemp reps beyond last channel!", stmt.file)
+    elif role == "ic":
         if value == int_min or magnitude < 1 or magnitude > last:
             diags.error(
                 stmt.line, rule["message"].format(value=magnitude if value != int_min else value, max=last), stmt.file
@@ -1407,7 +1422,7 @@ _SPA_SOURCE = frozenset({"AVGSPA", "MAXSPA", "MINSPA", "RMSSPA", "STDDEVSPA", "S
 
 
 def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
-    from . import symbols
+    from .instr_rules import cdm_null_module, cdm_unsupported_module
 
     tables = symbols.scope_tables(program, env, scalars=True)
     # the running statistics also bound a routine's scalar parameter (`Sub R(Q)` / `MinRun(Q,2,...)`
@@ -1440,10 +1455,14 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, 
         dims, types, arrays = scope.dims, scope.types, scope.arrays
         if (
             isinstance(stmt, S.Instruction)
-            and stmt.keyword.upper() == "CDM_TCCOMP"
+            and stmt.keyword.upper() in ("CDM_TCCOMP", "CDM_PANELTEMP")
             and len(stmt.args) > 3
             and isinstance(stmt.args[2], (S.Name, S.Index))
         ):
+            if stmt.keyword.upper() == "CDM_PANELTEMP" and (
+                cdm_null_module(stmt, env) or cdm_unsupported_module(stmt, env)
+            ):
+                continue
             # Reps (fourth) of the destination (third); negative Reps overruns too (oracle, CR6/
             # CR1000X, 2026-10-10; docs/instructions.md "CPI measurement time")
             reps = longconv.long_value(stmt.args[3], env, profile, *names)

@@ -1025,7 +1025,11 @@ instructions) established the following `const_ranges` entries, covered by
   A separate, ordered entry emits `Reps cycle input beyond last channel!` for values `16` and
   above, but not for `0`; channel 16 itself therefore has only that second diagnostic.
 - `CDM_TCComp` position 5: `1..20`, with the same `Input channel` spelling and that range.
-- `CDM_PanelTemp` position 5: only `1`, emitting `PanelTemp channel out of range!`.
+- `CDM_PanelTemp` position 5: channels 1–2 on CDM-A108 and VOLT108, 1–4 on CDM-A116,
+  VOLT116, and the 408-series modules, and 1–30 on TEMP120. TEMP120 reports a separate
+  diagnostic for negative channels. The builder substitutes channel 1 when checking repetitions
+  after an out-of-range channel. Round 86 observations and hashes are in
+  `tests/fixtures/r86_paneltemp_channels.json`.
 - `SDMSw8a` position 5: `1..8`, emitting `Invalid Start Channel: %d, must be 1-8.`; a string
   displays as `0` for this instruction.
 - `TDR200` position 7: `100..10112`, emitting `Points %d is illegal: range is 100..10112.`.

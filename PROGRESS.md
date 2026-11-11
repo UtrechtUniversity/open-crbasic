@@ -92,6 +92,12 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 86** (verdict parity, fuzz seed 777). Fixed CR6 false reject `07cae3ba79de` and
+matched module support, channel bounds, and repetition overruns for `CDM_PanelTemp`.
+See the [channel probes](docs/instructions.md#cdm--sdm--tdr-constant-channels-cr6--cr1000x).
+The full local help corpus matched exactly on all 2,022 usable profile/program comparisons.
+Six reference runs returned no verdict.
+
 **Round 85** (verdict parity, fuzz seed 776). Fixed CR1000X false accept `df473bc65461`
 and verified typed `RealTime` and `Move` destination bounds on all four profiles.
 See the [destination probes](docs/checker.md#destination-bounds-2026-10-02).

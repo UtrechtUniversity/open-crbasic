@@ -77,7 +77,7 @@
   {"instr": "CDM_RESISTANCE", "pos": 4, "min": 1, "max": 65536, "message": "Reps: {value}, out of range (1 - 65536)"},
   {"instr": "CDM_THERM107", "pos": 4, "min": 1, "max": 65536, "message": "Reps: {value}, out of range (1 - 65536)"},
   {"instr": "CDM_THERM107", "pos": 4, "min": 1, "max": 2147483647, "message": "MeasPEx: {value}, must be greater than 0."},
-  {"instr": "CDM_PANELTEMP", "pos": 5, "min": 1, "max": 1, "message": "PanelTemp channel out of range!"},
+  {"instr": "CDM_PANELTEMP", "pos": 5, "channel_by_module": {"220": 2, "221": 4, "222": 2, "223": 4, "224": 30, "225": 4, "226": 4, "227": 4, "228": 4, "229": 4, "230": 4, "231": 4}, "role": "panel_temp", "message": "PanelTemp channel out of range!"},
   {"instr": "CDM_PERIODAVG", "pos": 6, "min": 1, "max": 16, "message": "Input channel: {value}, out of range (1 - 16)."},
   {"instr": "CDM_PERIODAVG", "pos": 4, "min": 1, "max": 65536, "message": "Reps: {value}, out of range (1 - 65536)."},
   {"instr": "CDM_PERIODAVG", "pos": 5, "min": 0, "max": 3, "message": "Unrecognized gain code!"},

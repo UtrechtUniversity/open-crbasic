@@ -8,10 +8,15 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "value_ranges.json").read_text())
+FIXTURES = Path(__file__).parent / "fixtures"
+CASES = [
+    case
+    for name in ("value_ranges.json", "r86_paneltemp_channels.json")
+    for case in json.loads((FIXTURES / name).read_text())["cases"]
+]
 
 
-@pytest.mark.parametrize("case", FIXTURE["cases"], ids=lambda case: case["id"])
+@pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
 def test_value_range_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
     program.write_text(case["source"])

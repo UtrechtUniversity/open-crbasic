@@ -2969,15 +2969,16 @@ _CDM_PORT_MODULES = frozenset({220, 221, 222, 223})
 
 
 def cdm_unsupported_module(stmt: S.Instruction, env) -> str | None:
-    """The name of a constant named `CDMType` that does not carry this port instruction."""
+    """The name of a constant named `CDMType` that does not carry the instruction."""
     kw = stmt.keyword.upper()
-    if kw not in _CDM_PORT_INSTRUCTIONS or not stmt.args:
+    if not stmt.args or (kw not in _CDM_PORT_INSTRUCTIONS and kw != "CDM_PANELTEMP"):
         return None
     try:
         kind = _cdm_type_value(consteval.value_of(stmt.args[0], env))
     except consteval.NotConstant:
         return None
-    return None if kind is None or kind in _CDM_PORT_MODULES else _CDM_MODULE_NAMES.get(kind)
+    supported = range(220, 232) if kw == "CDM_PANELTEMP" else _CDM_PORT_MODULES
+    return None if kind is None or kind in supported else _CDM_MODULE_NAMES.get(kind)
 
 
 def _delay_option(stmt: S.Instruction, env):
