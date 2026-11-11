@@ -92,6 +92,9 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 78** (CR300/CR350 verdict parity). Closed the remaining `Sub`-as-value false accepts
+on the two single-pass profiles. See the [value and call probes](docs/checker.md#constants-declared-after-their-use-round-71).
+
 **Round 77** (verdict parity, fuzz seed 771). Fixed the two false rejects found in 700 CR6/CR1000X
 FirnMelt mutations: [oversized `DataInterval` lapses](docs/tdf-rules.md#cr6cr1000x-out-of-memory)
 and [six-argument `SerialOpen` buffers](docs/checker.md#serialopen-buffer-literals-round-77).

@@ -1614,16 +1614,14 @@
    "logger": "cr300",
    "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V+0\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: V is not defined.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: V is not defined."
   },
   {
    "id": "cr350-sub_name_assign",
    "logger": "cr350",
    "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V+0\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: V is not defined.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: V is not defined."
   },
   {
    "id": "cr6-f0",
@@ -2204,16 +2202,14 @@
    "logger": "cr300",
    "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined."
   },
   {
    "id": "cr350-s0",
    "logger": "cr350",
    "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined."
   },
   {
    "id": "cr6-s1",
@@ -2234,16 +2230,14 @@
    "logger": "cr300",
    "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V+0\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined."
   },
   {
    "id": "cr350-s1",
    "logger": "cr350",
    "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = V+0\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined."
   },
   {
    "id": "cr6-s2",
@@ -2264,16 +2258,14 @@
    "logger": "cr300",
    "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1+V\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined."
   },
   {
    "id": "cr350-s2",
    "logger": "cr350",
    "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1+V\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined."
   },
   {
    "id": "cr6-s3",
@@ -2294,16 +2286,14 @@
    "logger": "cr300",
    "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    If V Then X = 1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined."
   },
   {
    "id": "cr350-s3",
    "logger": "cr350",
    "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    If V Then X = 1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined."
   },
   {
    "id": "cr6-s4",
@@ -2408,16 +2398,14 @@
    "logger": "cr300",
    "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,V,mSec)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.\nline 9: Too many parameters:  mSec.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.\nline 9: Too many parameters:  mSec."
   },
   {
    "id": "cr350-s7",
    "logger": "cr350",
    "source": "Public X,Y\nSub V\nEndSub\nFunction G As Long\n  Return 1\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,V,mSec)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.\nline 9: Too many parameters:  mSec.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: V is not defined.\nline 9: Too many parameters:  mSec."
   },
   {
    "id": "cr6-b1_bare_local_type",
@@ -2582,16 +2570,14 @@
    "logger": "cr300",
    "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    TriggerSequence(V,0)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: V is not defined.\nline 6: Variable illegal in Parameter: V.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: V is not defined.\nline 6: Variable illegal in Parameter: V."
   },
   {
    "id": "cr350-trigger_sub",
    "logger": "cr350",
    "source": "Public X,Y\nSub V\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    TriggerSequence(V,0)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: V is not defined.\nline 6: Variable illegal in Parameter: V.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: V is not defined.\nline 6: Variable illegal in Parameter: V."
   },
   {
    "id": "cr6-sec_call",

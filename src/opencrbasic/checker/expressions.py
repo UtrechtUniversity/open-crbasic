@@ -1157,14 +1157,13 @@ def _known_names(program: S.Program, profile) -> KnownNames:
                     failed |= {a.name.upper() for a in st.args[1:] if isinstance(a, S.Index)} - registered
         # a Const keeps its own binding (round 30 review, `Alias X = K(2)` with `Const K`)
         known -= failed - valid - set(program.consts)
-    if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
-        # a `Sub` is no value (`X = V`, `If V Then`, `Delay(1,V,mSec)`; oracle, CR6/CR1000X, round 71)
-        known -= (
-            {st.name.upper() for st in program.statements if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"}
-            - symbols.declared_variable_names(program)
-            - set(program.consts)
-            - set(profile.symbols)
-        )
+    # A Sub is no value (`X = V`, `If V Then`, `Delay(1,V,mSec)`; oracle, all four loggers).
+    known -= (
+        {st.name.upper() for st in program.statements if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"}
+        - symbols.declared_variable_names(program)
+        - set(program.consts)
+        - set(profile.symbols)
+    )
     return KnownNames(
         known,
         tables=_value_less_tables(program, profile),

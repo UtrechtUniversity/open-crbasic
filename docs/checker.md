@@ -9578,6 +9578,9 @@ interval) after the whole file, so only pass-1 constant positions see the order:
   Round 76 confirmed that sharing the name with a parameter leaves that parameter visible
   only within its own routine on all four profiles. Direct calls still resolve the `Sub`.
   The dated reference results and compiler hashes are in `tests/fixtures/r76_sub_parameter_scope.json`.
+  Round 78 confirmed the value rule on CR300/CR350 too. A bare `Sub` name in a value
+  position is `V is not defined.` on those profiles, while `Call V`, `V` and `V()` as
+  statements invoke the routine. The reference results are in `tests/fixtures/r78_sub_values.json`.
   First error only (verdict equal): `Alias X=V` before `Sub V` is
   `V already declared as a variable.` on the `Sub` line, and
   `Sec()` as the instance count is `Incomplete expression: Sec().`.
