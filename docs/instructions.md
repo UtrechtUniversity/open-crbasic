@@ -1616,7 +1616,9 @@ not a multiple of 10000 uSec (50 mSec and 150 mSec compile that check), `Maximum
 `(int32 seconds) > 86400` with Min/Day products wrapping at 32 bits (`Scan(2147483647,Day)` compiles)
 and mSec/uSec floored to seconds (`86400999` mSec compiles), and it precedes the BufferOption/Count
 messages. A value outside Long counts as -2147483648 for the `multiple of 1mSec` check. Cases the
-fixture drops (ours differs): see the fixture-prune count in the commit. CR300/CR350 untouched.
+fixture drops (ours differs): see the fixture-prune count in the commit. Round 89 confirmed
+the same slow-scan limits on CR300/CR350 after their ordinary scan diagnostics. See
+`tests/fixtures/r89_cr3xx_slow_scan.json` for the dated observations and compiler hashes.
 
 ### CPI measurement time and `CPISpeed` (CR6/CR1000X; fixture `cpi_time`)
 

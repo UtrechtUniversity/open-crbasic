@@ -92,6 +92,10 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 89** (verdict parity, fuzz seed 777). Fixed CR350 false accept `6eb9b69ecb54`
+by checking `SlowSequence` scan interval limits on CR300/CR350. See the
+[scan probes](docs/instructions.md#slow-scan-intervals-and-the-1-day-limit-cr6cr1000x-round-9-2026-10-10).
+
 **Round 88** (archived verdict parity). Fixed false accepts `d12785e05faf` and
 `52138d7bd179` by checking the `TriggerSequence` event byte and `CDM_PulsePort` delay.
 See the [range probes](docs/instructions.md#triggersequence-event-and-cdm_pulseport-delay-round-88).

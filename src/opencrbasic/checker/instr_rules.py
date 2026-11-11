@@ -989,15 +989,19 @@ def check_scan_params(program: S.Program, profile, diags: Diagnostics, env: cons
                 ):
                     diags.error(stmt.line, "Maximum Scan interval is 1 Day.", stmt.file)
         if slow and split is not None:
-            raw_us = split[0] * 1_000_000 + split[1]
-            # a Scan after `SlowSequence` (oracle, CR6/CR1000X, round 9, docs/instructions.md
-            # "Slow scan intervals"), after the BufferOption/Count messages
-            if -1_000_000 < raw_us < 100_000:
-                diags.error(stmt.line, "Slow Scan interval must be >= 100mSec.", stmt.file)
-            if raw_us % 10_000:
-                diags.error(stmt.line, "Slow Scan interval must be a multiple of 100mSec.", stmt.file)
-            if split[0] > 86400:
-                diags.error(stmt.line, "Maximum Slow Scan interval is 1 Day.", stmt.file)
+            _check_slow_scan_interval(stmt, split, diags)
+
+
+def _check_slow_scan_interval(stmt: S.Instruction, split: tuple[int, int], diags: Diagnostics) -> None:
+    """SlowSequence checks after the ordinary Scan checks (rounds 9 and 89)."""
+    seconds, microseconds = split
+    raw_us = seconds * 1_000_000 + microseconds
+    if -1_000_000 < raw_us < 100_000:
+        diags.error(stmt.line, "Slow Scan interval must be >= 100mSec.", stmt.file)
+    if raw_us % 10_000:
+        diags.error(stmt.line, "Slow Scan interval must be a multiple of 100mSec.", stmt.file)
+    if seconds > 86400:
+        diags.error(stmt.line, "Maximum Slow Scan interval is 1 Day.", stmt.file)
 
 
 # `Scan`/`DataInterval`'s `Units` argument folds (via `consteval`, `profile.symbols`) to this 0..5
@@ -1126,7 +1130,10 @@ def check_scan_max_interval(program: S.Program, profile, diags: Diagnostics, env
     `Scan(10,mSec)`, `Scan(9500,uSec)`, `Scan(1500,mSec)` pass)."""
     if profile.name in _SCAN_VALUE_CHECK_LOGGERS:
         return  # folded into `check_scan_params` (message order)
+    slow = False
     for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SLOWSEQUENCE":
+            slow = True
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SCAN":
             split = scan_split(stmt, env)
             if split is None:
@@ -1136,6 +1143,8 @@ def check_scan_max_interval(program: S.Program, profile, diags: Diagnostics, env
                 diags.error(stmt.line, "Scans > 10mSec must be a multiple of 10mSec.", stmt.file)
             elif (sec != 0 or us >= 10000) and sec > 86400:
                 diags.error(stmt.line, "Maximum Scan interval is 1 Day.", stmt.file)
+            if slow:
+                _check_slow_scan_interval(stmt, split, diags)
 
 
 def _scan_raw(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | None:
