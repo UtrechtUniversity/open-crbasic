@@ -1767,7 +1767,9 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics, env: co
             continue
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else stmt.name.upper()
         if (
-            kw not in ("SPLITSTR", "IPROUTE", "MATRIX", "CDM_DELAY", "MOVEBYTES") + tuple(_CDM_SETTLING_ARG)
+            kw
+            not in ("SPLITSTR", "IPROUTE", "MATRIX", "CDM_DELAY", "MOVEBYTES", "TRIGGERSEQUENCE")
+            + tuple(_CDM_SETTLING_ARG)
             or kw not in profile.instructions
         ):
             continue
@@ -1786,6 +1788,10 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics, env: co
                 v = 2147483647  # (INF saturates here; NAN and strings give INT_MIN, see below)
             if v is not None and v & 0x7FFF > 4:  # (only the low 15 bits are tested)
                 diags.error(stmt.line, f"Invalid transfer option {v}, must be 0..4.", stmt.file)
+        elif kw == "TRIGGERSEQUENCE":
+            evt = value(0)
+            if evt is not None and not 1 <= evt % 256 <= 4:
+                diags.error(stmt.line, "Illegal EVT, 1..4 are legal", stmt.file)
         elif kw in _CDM_SETTLING_ARG:
             v = value(_CDM_SETTLING_ARG[kw])
             if v is not None and v != 0 and not 100 <= v <= 100000:

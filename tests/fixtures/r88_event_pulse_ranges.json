@@ -1,0 +1,807 @@
+{
+ "observation_date": "2026-11-11",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-0",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr6-1",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-4",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(4,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-5",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(5,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr6-255",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(255,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr6-256",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(256,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr6-257",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(257,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6--1",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(-1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr6--255",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(-255,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-1.5",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(1.5,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-4.9",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(4.9,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-0.9",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(0.9,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr6-&HFF",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(&HFF,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr6-999999999999",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(999999999999,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr6-\"fuzz\"",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(\"fuzz\",0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr6-True",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(True,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr6-Y",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(Y,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr6-NoSuchName",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(NoSuchName,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: NoSuchName."
+  },
+  {
+   "id": "cr1000x-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr1000x-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(4,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(5,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr1000x-255",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(255,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr1000x-256",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(256,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr1000x-257",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(257,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(-1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr1000x--255",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(-255,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-1.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(1.5,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-4.9",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(4.9,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-0.9",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(0.9,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr1000x-&HFF",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(&HFF,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr1000x-999999999999",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(999999999999,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr1000x-\"fuzz\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(\"fuzz\",0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr1000x-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(True,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr1000x-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(Y,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr1000x-NoSuchName",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(NoSuchName,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: NoSuchName."
+  },
+  {
+   "id": "cr300-0",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr300-1",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-4",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(4,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-5",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(5,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr300-255",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(255,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr300-256",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(256,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr300-257",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(257,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300--1",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(-1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr300--255",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(-255,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-1.5",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(1.5,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-4.9",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(4.9,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-0.9",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(0.9,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr300-&HFF",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(&HFF,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr300-999999999999",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(999999999999,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr300-\"fuzz\"",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(\"fuzz\",0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr300-True",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(True,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr300-Y",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(Y,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr300-NoSuchName",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(NoSuchName,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: NoSuchName is not defined.\nline 4: Variable illegal in Parameter: NoSuchName."
+  },
+  {
+   "id": "cr350-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(0,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr350-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(4,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(5,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr350-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(255,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr350-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(256,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr350-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(257,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350--1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(-1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr350--255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(-255,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-1.5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(1.5,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-4.9",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(4.9,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-0.9",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(0.9,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr350-&HFF",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(&HFF,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr350-999999999999",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(999999999999,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr350-\"fuzz\"",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(\"fuzz\",0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr350-True",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(True,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal EVT, 1..4 are legal"
+  },
+  {
+   "id": "cr350-Y",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(Y,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr350-NoSuchName",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n TriggerSequence(NoSuchName,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: NoSuchName is not defined.\nline 4: Variable illegal in Parameter: NoSuchName."
+  },
+  {
+   "id": "cr6-CDM_A108--1",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: -1, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr6-CDM_A108-0",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-CDM_A108-0.5",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,0.5)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-CDM_A108-1",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-CDM_A108-100000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,100000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-CDM_A108-100000.9",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,100000.9)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-CDM_A108-100001",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,100001)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: 100001, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr6-CDM_A108-999999999999",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,999999999999)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: -2147483648, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr6-CDM_A108-\"x\"",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: -2147483648, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr6-CDM_A108-Y",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,Y)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr6-VOLT116--1",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: -1, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr6-VOLT116-0",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-VOLT116-0.5",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,0.5)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-VOLT116-1",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-VOLT116-100000",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,100000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-VOLT116-100000.9",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,100000.9)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-VOLT116-100001",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,100001)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: 100001, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr6-VOLT116-999999999999",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,999999999999)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: -2147483648, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr6-VOLT116-\"x\"",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: -2147483648, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr6-VOLT116-Y",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,Y)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr1000x-CDM_A108--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: -1, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr1000x-CDM_A108-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-CDM_A108-0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,0.5)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-CDM_A108-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-CDM_A108-100000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,100000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-CDM_A108-100000.9",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,100000.9)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-CDM_A108-100001",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,100001)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: 100001, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr1000x-CDM_A108-999999999999",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,999999999999)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: -2147483648, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr1000x-CDM_A108-\"x\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: -2147483648, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr1000x-CDM_A108-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(CDM_A108,1,1,Y)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr1000x-VOLT116--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: -1, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr1000x-VOLT116-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-VOLT116-0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,0.5)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-VOLT116-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-VOLT116-100000",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,100000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-VOLT116-100000.9",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,100000.9)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-VOLT116-100001",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,100001)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: 100001, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr1000x-VOLT116-999999999999",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,999999999999)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: -2147483648, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr1000x-VOLT116-\"x\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,\"x\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay: -2147483648, out of range (0 - 100000)."
+  },
+  {
+   "id": "cr1000x-VOLT116-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n CDM_PulsePort(VOLT116,1,1,Y)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  }
+ ]
+}

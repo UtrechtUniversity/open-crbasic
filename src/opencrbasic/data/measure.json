@@ -51,6 +51,7 @@
   {"instr": "CDM_TCCOMP", "pos": 8, "values": [0, 1, 2], "warn_values": [-1], "warn_message": "Open detection disabled.", "message": "Temperature unit unsupported. Must be 0 (Celsius), 1 (Fahrenheit), or 2 (Kelvin)"},
   {"instr": "CDM_SW5", "pos": 3, "values": [1, 2], "by_module": {"220": [1, 2], "221": [1, 2, 3, 4], "222": [1, 2], "223": [1, 2, 3, 4]}, "message": "Unrecognized port!"},
   {"instr": "CDM_PULSEPORT", "pos": 3, "by_module": {"220": [1, 2], "221": [1, 2, 3, 4], "222": [1, 2], "223": [1, 2, 3, 4]}, "message": "Unrecognized port!"},
+  {"instr": "CDM_PULSEPORT", "pos": 4, "min": 0, "max": 100000, "message": "Delay: {value}, out of range (0 - 100000)."},
   {"instr": "CDM_SW12", "pos": 3, "by_module": {"220": [1], "221": [1, 2], "222": [1], "223": [1, 2]}, "message": "Unrecognized port!"},
   {"instr": "CDM_VOLTDIFF", "pos": 6, "min": 1, "max": 16, "skip_modules": ["220", "221", "222", "223"], "message": "Input channel: {value}, out of range (1 - 16)."},
   {"instr": "CDM_VOLTDIFF", "pos": 6, "channel_by_module": {"220": 8, "221": 16, "222": 8, "223": 16}, "role": "ic", "message": "Input channel: {value}, out of range (1 - {max})."},

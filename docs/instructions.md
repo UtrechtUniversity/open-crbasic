@@ -2361,3 +2361,12 @@ like a `GetRecord` of an unknown table (all four loggers). The count is every el
 A scalar, a Boolean, a Long and an `Alias` of a scalar are 1. CR300/CR350 drop it when a later line
 holds an undefined name (not modelled). Round 65, `r65_getrecord_size.json` (100 observations);
 found by fuzz `ca5b1677129c` (seed 468, a GEUS SnowFox program with its String destination changed).
+
+## TriggerSequence event and CDM_PulsePort delay (round 88)
+
+All four compilers truncate the `TriggerSequence` event argument to a Long and test its low
+byte. Values 1–4 pass, including 257 and −255 after conversion. Other constant values report
+`Illegal EVT, 1..4 are legal`. On CR6/CR1000X, the fourth `CDM_PulsePort` argument accepts
+Long-converted delays 0–100000 inclusive. A String or overflow converts to −2147483648 and
+produces the same range diagnostic as a negative delay. See the dated results and compiler
+hashes in `tests/fixtures/r88_event_pulse_ranges.json`.

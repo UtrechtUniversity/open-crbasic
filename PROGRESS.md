@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 88** (archived verdict parity). Fixed false accepts `d12785e05faf` and
+`52138d7bd179` by checking the `TriggerSequence` event byte and `CDM_PulsePort` delay.
+See the [range probes](docs/instructions.md#triggersequence-event-and-cdm_pulseport-delay-round-88).
+Of the 25 archived false accepts below, 23 still reproduce and these two now match exactly.
+
 **Round 87** (verdict parity, fuzz seed 777). Fixed CR1000X false accept `a0a6de4b78cc`.
 The interval check resolves quoted table names and names supplied by String constants on all
 four profiles. See the [interval probes](docs/instructions.md#datatable-interval-d-usec-not-integrally-divisible-by-scan-interval-d-usec-all-four-loggers).
