@@ -1614,7 +1614,7 @@ def _data_table_fields(program: S.Program, profile) -> dict[str, set[str]]:
 
 
 def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None:
-    """Resolved ConstTable fields and, on CR6/CR1000X, DataTable fields (`_data_table_fields`)."""
+    """Resolve ConstTable and DataTable fields."""
     const_tables = symbols.const_table_fields(program)
     data_tables = {
         stmt.args[0].name.upper()
@@ -1626,9 +1626,8 @@ def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None
     }
     if not const_tables and not data_tables:
         return
-    if not profile.single_pass:
-        data_tables = _TablesWithFields(data_tables)
-        data_tables.fields = _data_table_fields(program, profile)
+    data_tables = _TablesWithFields(data_tables)
+    data_tables.fields = _data_table_fields(program, profile)
     renamed: set[str] = set()  # tables with a FieldNames entry exactly BytesPerRecord
     table = None
     for st in program.statements:
@@ -1649,9 +1648,12 @@ def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None
         ):
             renamed.add(table)
     absent = frozenset(f"{t}.BYTESPERRECORD" for t in data_tables - renamed) if profile.single_pass else frozenset()
+    known = _known_names(program, profile) if profile.single_pass else None
     for stmt in program.statements:
         exprs: list[S.Expr | None] = []
         if isinstance(stmt, S.Assignment):
+            if known is not None and _undefined_names(stmt.target, known):
+                continue
             exprs = [stmt.target, stmt.value]
         elif isinstance(stmt, S.If):
             exprs = [stmt.cond]

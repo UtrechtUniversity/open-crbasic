@@ -28,6 +28,7 @@ CASES = [
         "r112_serialopen_comms_mode.json",
         "r113_datatable_executing_sequences.json",
         "r114_calltable_auto_sizes.json",
+        "r115_datatable_field_resolution.json",
     )
     for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
 ]
@@ -38,9 +39,12 @@ def test_const_range_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
     program.write_text(case["source"], encoding="utf-8")
     result = compile_file(program, profiles.get(case["logger"]))
-    assert (0 if result.ok else 1) == case["expected_exit"]
+    exit_code = 0 if result.ok else 1
     actual = "\n".join(result.result_lines())
     if reason := case.get("not_modelled"):
-        assert actual != case["expected_stdout"], f"Remove the expected failure for {case['id']}"
+        assert (exit_code, actual) != (case["expected_exit"], case["expected_stdout"]), (
+            f"Remove the expected failure for {case['id']}"
+        )
         pytest.xfail(reason)
+    assert exit_code == case["expected_exit"]
     assert actual == case["expected_stdout"]

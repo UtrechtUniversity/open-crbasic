@@ -1,0 +1,1009 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-field-assignment-Y_Avg",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-assignment-Y_Avg(1)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg(1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-assignment-Y_Avg(2)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg(2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-assignment-Y_Avg(1,1)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg(1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-assignment-NoField",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.NoField\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.NoField(1)."
+  },
+  {
+   "id": "cr6-field-assignment-NoField(2)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.NoField(2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr6-field-assignment-NoField(2,1)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.NoField(2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr6-field-assignment-W",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.W\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-assignment-W(2,1)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.W(2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-assignment-Record",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Record\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-assignment-Record(1)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Record(1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-assignment-TimeStamp",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.TimeStamp\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-assignment-TableSize",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.TableSize\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-assignment-BytesPerRecord",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.BytesPerRecord\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-assignment-OutputInterval",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.OutputInterval\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.OutputInterval(1)."
+  },
+  {
+   "id": "cr6-field-assignment-TableName",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.TableName\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.TableName(1)."
+  },
+  {
+   "id": "cr6-field-assignment-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.1(1)."
+  },
+  {
+   "id": "cr6-field-assignment-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.2\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.2(1)."
+  },
+  {
+   "id": "cr6-field-assignment-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.9\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.9(1)."
+  },
+  {
+   "id": "cr6-field-table-Y_Avg",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-table-Y_Avg(1)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg(1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-table-Y_Avg(2)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg(2),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-table-Y_Avg(1,1)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg(1,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-table-NoField",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoField,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.NoField(1)."
+  },
+  {
+   "id": "cr6-field-table-NoField(2)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoField(2),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr6-field-table-NoField(2,1)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoField(2,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr6-field-table-W",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-table-W(2,1)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.W(2,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-field-table-TableSize",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE.",
+   "not_modelled": "Reserved table-property names require FieldNames when used in Sample."
+  },
+  {
+   "id": "cr6-field-table-BytesPerRecord",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .BYTESPERRECORD.",
+   "not_modelled": "Reserved table-property names require FieldNames when used in Sample."
+  },
+  {
+   "id": "cr6-field-table-OutputInterval",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.OutputInterval,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.OutputInterval(1)."
+  },
+  {
+   "id": "cr6-field-table-TableName",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableName,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.TableName(1)."
+  },
+  {
+   "id": "cr6-field-table-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.1,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.1(1)."
+  },
+  {
+   "id": "cr6-field-table-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.2,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.2(1)."
+  },
+  {
+   "id": "cr6-field-table-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.9,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.9(1)."
+  },
+  {
+   "id": "cr1000x-field-assignment-Y_Avg",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-assignment-Y_Avg(1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg(1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-assignment-Y_Avg(2)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg(2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-assignment-Y_Avg(1,1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg(1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-assignment-NoField",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.NoField\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.NoField(1)."
+  },
+  {
+   "id": "cr1000x-field-assignment-NoField(2)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.NoField(2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr1000x-field-assignment-NoField(2,1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.NoField(2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr1000x-field-assignment-W",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.W\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-assignment-W(2,1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.W(2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-assignment-Record",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Record\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-assignment-Record(1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Record(1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-assignment-TimeStamp",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.TimeStamp\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-assignment-TableSize",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.TableSize\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-assignment-BytesPerRecord",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.BytesPerRecord\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-assignment-OutputInterval",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.OutputInterval\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.OutputInterval(1)."
+  },
+  {
+   "id": "cr1000x-field-assignment-TableName",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.TableName\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.TableName(1)."
+  },
+  {
+   "id": "cr1000x-field-assignment-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.1(1)."
+  },
+  {
+   "id": "cr1000x-field-assignment-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.2\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.2(1)."
+  },
+  {
+   "id": "cr1000x-field-assignment-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.9\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.9(1)."
+  },
+  {
+   "id": "cr1000x-field-table-Y_Avg",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-table-Y_Avg(1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg(1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-table-Y_Avg(2)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg(2),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-table-Y_Avg(1,1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg(1,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-table-NoField",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoField,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.NoField(1)."
+  },
+  {
+   "id": "cr1000x-field-table-NoField(2)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoField(2),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr1000x-field-table-NoField(2,1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoField(2,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr1000x-field-table-W",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-table-W(2,1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.W(2,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-field-table-TableSize",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE.",
+   "not_modelled": "Reserved table-property names require FieldNames when used in Sample."
+  },
+  {
+   "id": "cr1000x-field-table-BytesPerRecord",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .BYTESPERRECORD.",
+   "not_modelled": "Reserved table-property names require FieldNames when used in Sample."
+  },
+  {
+   "id": "cr1000x-field-table-OutputInterval",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.OutputInterval,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.OutputInterval(1)."
+  },
+  {
+   "id": "cr1000x-field-table-TableName",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableName,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.TableName(1)."
+  },
+  {
+   "id": "cr1000x-field-table-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.1,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.1(1)."
+  },
+  {
+   "id": "cr1000x-field-table-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.2,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.2(1)."
+  },
+  {
+   "id": "cr1000x-field-table-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.9,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.9(1)."
+  },
+  {
+   "id": "cr300-field-assignment-Y_Avg",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-assignment-Y_Avg(1)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg(1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-assignment-Y_Avg(2)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg(2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-assignment-Y_Avg(1,1)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg(1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-assignment-NoField",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.NoField\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.NoField(1)."
+  },
+  {
+   "id": "cr300-field-assignment-NoField(2)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.NoField(2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr300-field-assignment-NoField(2,1)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.NoField(2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr300-field-assignment-W",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.W\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-assignment-W(2,1)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.W(2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-assignment-Record",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Record\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-assignment-Record(1)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Record(1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-assignment-TimeStamp",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.TimeStamp\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-assignment-TableSize",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.TableSize\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-assignment-BytesPerRecord",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.BytesPerRecord\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr300-field-assignment-OutputInterval",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.OutputInterval\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.OutputInterval(1)."
+  },
+  {
+   "id": "cr300-field-assignment-TableName",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.TableName\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.TableName(1)."
+  },
+  {
+   "id": "cr300-field-assignment-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.1(1)."
+  },
+  {
+   "id": "cr300-field-assignment-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.2\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.2(1)."
+  },
+  {
+   "id": "cr300-field-assignment-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.9\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.9(1)."
+  },
+  {
+   "id": "cr300-field-table-Y_Avg",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-table-Y_Avg(1)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg(1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-table-Y_Avg(2)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg(2),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-table-Y_Avg(1,1)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg(1,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-table-NoField",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoField,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.NoField(1)."
+  },
+  {
+   "id": "cr300-field-table-NoField(2)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoField(2),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr300-field-table-NoField(2,1)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoField(2,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr300-field-table-W",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-table-W(2,1)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.W(2,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-field-table-TableSize",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE.",
+   "not_modelled": "Reserved table-property names require FieldNames when used in Sample."
+  },
+  {
+   "id": "cr300-field-table-BytesPerRecord",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr300-field-table-OutputInterval",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.OutputInterval,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.OutputInterval(1)."
+  },
+  {
+   "id": "cr300-field-table-TableName",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableName,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.TableName(1)."
+  },
+  {
+   "id": "cr300-field-table-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.1,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.1(1)."
+  },
+  {
+   "id": "cr300-field-table-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.2,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.2(1)."
+  },
+  {
+   "id": "cr300-field-table-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.9,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.9(1)."
+  },
+  {
+   "id": "cr350-field-assignment-Y_Avg",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-assignment-Y_Avg(1)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg(1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-assignment-Y_Avg(2)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg(2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-assignment-Y_Avg(1,1)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Y_Avg(1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-assignment-NoField",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.NoField\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.NoField(1)."
+  },
+  {
+   "id": "cr350-field-assignment-NoField(2)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.NoField(2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr350-field-assignment-NoField(2,1)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.NoField(2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr350-field-assignment-W",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.W\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-assignment-W(2,1)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.W(2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-assignment-Record",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Record\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-assignment-Record(1)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.Record(1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-assignment-TimeStamp",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.TimeStamp\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-assignment-TableSize",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.TableSize\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-assignment-BytesPerRecord",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.BytesPerRecord\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr350-field-assignment-OutputInterval",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.OutputInterval\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.OutputInterval(1)."
+  },
+  {
+   "id": "cr350-field-assignment-TableName",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.TableName\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.TableName(1)."
+  },
+  {
+   "id": "cr350-field-assignment-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.1(1)."
+  },
+  {
+   "id": "cr350-field-assignment-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.2\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.2(1)."
+  },
+  {
+   "id": "cr350-field-assignment-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n Y=T.9\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Could not find T.9(1)."
+  },
+  {
+   "id": "cr350-field-table-Y_Avg",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-table-Y_Avg(1)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg(1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-table-Y_Avg(2)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg(2),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-table-Y_Avg(1,1)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y_Avg(1,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-table-NoField",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoField,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.NoField(1)."
+  },
+  {
+   "id": "cr350-field-table-NoField(2)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoField(2),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr350-field-table-NoField(2,1)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoField(2,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.NoField(2)."
+  },
+  {
+   "id": "cr350-field-table-W",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.W,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-table-W(2,1)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.W(2,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-field-table-TableSize",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE.",
+   "not_modelled": "Reserved table-property names require FieldNames when used in Sample."
+  },
+  {
+   "id": "cr350-field-table-BytesPerRecord",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr350-field-table-OutputInterval",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.OutputInterval,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.OutputInterval(1)."
+  },
+  {
+   "id": "cr350-field-table-TableName",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableName,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.TableName(1)."
+  },
+  {
+   "id": "cr350-field-table-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.1,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.1(1)."
+  },
+  {
+   "id": "cr350-field-table-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.2,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.2(1)."
+  },
+  {
+   "id": "cr350-field-table-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.9,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find T.9(1)."
+  }
+ ]
+}

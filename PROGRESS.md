@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 115** (historical verdict parity). CR300/CR350 now reject unknown
+DataTable fields, fixing false accept `568570079fdd`. That case still
+differs by a later warning. Three historical false accepts remain.
+[Four-profile observations](tests/fixtures/r115_datatable_field_resolution.json).
+
 **Round 114** (historical verdict parity). Fixed CR350 false accept
 `c01544a79750` by recognizing automatic table sizes at calls outside a
 scan. Four false accepts remain among the historical reproducers.
