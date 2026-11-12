@@ -268,13 +268,16 @@ def _check_arg(
                     stmt.file,
                 )
         return
-    if not consteval.is_constant(arg, env):
-        return  # a variable here is already rejected by the generic const-expr parameter (type
-        # code 1's own "Variable illegal in Parameter" -- docs/type-codes.md); not our job.
+    non_numeric_int_min = kind.get("string_or_nan_int_min")
     try:
         value = consteval.value_of(arg, env)
     except consteval.NotConstant:
-        return
+        # The compiler recognizes NAN even when it is absent from the profile's symbol table.
+        if not (non_numeric_int_min and isinstance(arg, S.Name) and arg.name.upper() == "NAN"):
+            return  # the constant-expression check owns variable arguments
+        value = longconv.INT_MIN
+    if non_numeric_int_min and (isinstance(value, str) or (isinstance(value, float) and math.isnan(value))):
+        value = longconv.INT_MIN
     if not consteval.is_finite_number(value):
         return
     if kind.get("truncate") and math.isfinite(value):

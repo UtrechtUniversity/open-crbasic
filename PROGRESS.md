@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 110** (historical verdict parity). Fixed CR350 false accept
+`d2576b1675ed` by checking nonnumeric `PulseCount` channel constants.
+Eight false accepts remain from the 3,338-case historical replay.
+[PulseCount evidence](docs/checker.md#pulsecount-nonnumeric-channel-constants-round-110).
+
 **Round 109** (historical verdict parity). Fixed CR350 false accept
 `1d86ada2d10b` by checking the converted `Quadrature` option. Also
 matched the reference's profile-specific port checks.

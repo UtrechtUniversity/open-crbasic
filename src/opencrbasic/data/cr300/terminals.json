@@ -55,6 +55,7 @@
    "message": "Channel {v} exceeds number of valid channels."
   },
   "pulse_chan_span": {
+   "string_or_nan_int_min": true,
    "ranges": [[1, 2], [3, 6], [8, 8], [9, 9]],
    "transform": "none",
    "truncate": true,

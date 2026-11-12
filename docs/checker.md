@@ -3266,6 +3266,14 @@ The previous `LI7700` rule (5 * Reps) held only for commands 1 and 5. Open cases
 include `SolarPosition`, `SerialBrk`, `SysInfo`, and the analog measurement
 helpers. The EC100 invalid-option behavior is covered below.
 
+### PulseCount nonnumeric channel constants (round 110)
+
+On CR1000X, CR300 and CR350, a string constant or `NAN` in the channel
+slot gives the profile's invalid-channel diagnostic. A string can be a
+literal, a named constant or a folded expression. CR300 and CR350
+continue the repetition span check from the fallback channel 1.
+[Four-profile observations](../tests/fixtures/r110_pulsecount_channels.json).
+
 ### Quadrature option and ports (round 109)
 
 All four loggers convert the option to a Long and use its low byte.

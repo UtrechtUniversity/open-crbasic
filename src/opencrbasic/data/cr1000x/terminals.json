@@ -106,6 +106,7 @@
    "secondary_when_invalid": true
   },
   "pulse_chan_cr1000x": {
+   "string_or_nan_int_min": true,
    "span": {"message": "Invalid PulseCount reps."},
    "ranges": [[101, 108], [301, 302]],
    "transform": "none",

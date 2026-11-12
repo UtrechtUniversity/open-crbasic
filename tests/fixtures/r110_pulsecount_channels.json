@@ -1,0 +1,1220 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-pulse-\"x\"-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-\"x\"-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-\"x\"-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-\"1\"-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-\"1\"-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-\"1\"-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-\"\"-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-\"\"-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-\"\"-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-0-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-0-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-0-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-1-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-1-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-1-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-2-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port 2, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-2-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port 2, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-2-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port 2, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse--1-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse--1-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse--1-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-True-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-True-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-True-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port -1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-&H100-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port 256, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-&H100-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port 256, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-pulse-&H100-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid port 256, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr1000x-pulse-\"x\"-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"x\"-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"x\"-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"x\"-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"1\"-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"1\"-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"1\"-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"1\"-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"\"-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"\"-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"\"-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"\"-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-S-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,S,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-S-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,S,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-S-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,S,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-S-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,S,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"x\"+\"1\"-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"x\"+\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"x\"+\"1\"-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"x\"+\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"x\"+\"1\"-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"x\"+\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-\"x\"+\"1\"-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,\"x\"+\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-0-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-0-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-0-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-0-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-1-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-1-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-1-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-1-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-2-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-2-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-2-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-2-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse--1-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse--1-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse--1-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse--1-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-True-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-True-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-True-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-True-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-NAN-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,NAN,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-NAN-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,NAN,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-NAN-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,NAN,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-NAN-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,NAN,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-&H100-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-&H100-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-&H100-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr1000x-pulse-&H100-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr300-pulse-\"x\"-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-\"x\"-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-\"x\"-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-\"x\"-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-\"1\"-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-\"1\"-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-\"1\"-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-\"1\"-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-\"\"-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-\"\"-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-\"\"-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-\"\"-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-S-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,S,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-S-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,S,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-S-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,S,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-S-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,S,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-\"x\"+\"1\"-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"x\"+\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-\"x\"+\"1\"-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"x\"+\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-\"x\"+\"1\"-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"x\"+\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-\"x\"+\"1\"-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,\"x\"+\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-0-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-0-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-0-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-0-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-1-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-pulse-1-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-pulse-1-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-1-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-2-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-pulse-2-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-2-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-2-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse--1-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse--1-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse--1-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse--1-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-True-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-True-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-True-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-True-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-NAN-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,NAN,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-NAN-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,NAN,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-NAN-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,NAN,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-NAN-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,NAN,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-&H100-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-&H100-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr300-pulse-&H100-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr300-pulse-&H100-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-\"x\"-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-\"x\"-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-\"x\"-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-\"x\"-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,\"x\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-\"1\"-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-\"1\"-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-\"1\"-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-\"1\"-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-\"\"-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-\"\"-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-\"\"-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-\"\"-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,\"\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-S-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,S,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-S-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,S,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-S-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,S,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-S-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,S,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-\"x\"+\"1\"-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,\"x\"+\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-\"x\"+\"1\"-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,\"x\"+\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-\"x\"+\"1\"-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,\"x\"+\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-\"x\"+\"1\"-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,\"x\"+\"1\",2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-0-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-0-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-0-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-0-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,0,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-1-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-pulse-1-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-pulse-1-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-1-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-2-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-pulse-2-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-2-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-2-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,2,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse--1-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse--1-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse--1-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse--1-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,-1,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-True-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-True-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-True-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-True-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,True,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-NAN-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,NAN,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-NAN-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,NAN,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-NAN-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,NAN,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-NAN-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,NAN,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-&H100-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,1,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-&H100-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,2,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel."
+  },
+  {
+   "id": "cr350-pulse-&H100-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,4,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  },
+  {
+   "id": "cr350-pulse-&H100-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic P(12)\nConst S = \"x\"\nBeginProg\n Scan(1,Sec,0,0)\n PulseCount(P,8,&H100,2,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid PulseCount channel.\nline 6: Invalid PulseCount reps."
+  }
+ ]
+}
