@@ -92,6 +92,12 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 105** (archived verdict parity). Fixed CR6 false accept `7f9efa8af42c`
+by checking `SDMCD16AC` repetitions and scan context when it uses a
+registered `TimedControl` source. The 25-case archived replay now has four
+false accepts and 21 exact matches.
+[TimedControl evidence](docs/checker.md#timedcontrol-source-used-by-sdmcd16ac-round-105).
+
 **Round 104** (archived verdict parity). Fixed CR6 false accept `577a59ecb08c`
 by checking `AVW200` destination spans and integration modes. The 25-case
 archived replay now has five false accepts and 20 exact matches.

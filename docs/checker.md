@@ -3266,6 +3266,20 @@ The previous `LI7700` rule (5 * Reps) held only for commands 1 and 5. Open cases
 include `SolarPosition`, `SerialBrk`, `SysInfo`, and the analog measurement
 helpers. The EC100 invalid-option behavior is covered below.
 
+### TimedControl source used by SDMCD16AC (round 105)
+
+In CR6 and CR1000X, the `SDMCD16AC` builder (`FUN_0043a080` in CR6)
+compares the source storage address with the source registered by
+`TimedControl`. A Long array name, its first element, and a scalar alias
+for that element can identify the same address. An indexed registration
+can also match an `SDMCD16AC` source at that offset.
+
+For a match in a scan, the repetition count is converted to an unsigned
+byte. Values above 1 emit `When using TimedControl reps must be 1.` before
+any slow-sequence or Sequential-mode diagnostics. The reference accepts
+byte values 0 and 1 in the main pipeline scan.
+[Four-profile observations](../tests/fixtures/r105_timed_sdm.json).
+
 ### AVW200 destination and integration (round 104)
 
 The Float destination in argument 5 needs five elements per ending channel

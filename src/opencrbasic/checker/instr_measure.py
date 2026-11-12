@@ -31,6 +31,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
     slow = False
     statements = list(_with_inline(program.statements))
     tablefile_context = None
+    if "TIMEDCONTROL" in profile.instructions:
+        _check_timed_sdm(program, statements, profile, env, diags)
     for pos, stmt in enumerate(statements):
         if not isinstance(stmt, S.Instruction):
             continue
@@ -73,6 +75,71 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         for rule in measure.get("string_prefixes", ()):
             if kw == rule["instr"] and not (file_reported and "ext" in rule):
                 file_reported = _check_string_prefix(stmt, rule, env, diags) or file_reported
+
+
+def _check_timed_sdm(
+    program: S.Program, statements: list, profile: Profile, env: consteval.Env, diags: Diagnostics
+) -> None:
+    if not any(isinstance(s, S.Instruction) and s.keyword.upper() == "TIMEDCONTROL" for s in statements):
+        return
+    scope = symbols.scope_tables(program, env, scalars=True)
+    names = longconv.float_names(statements), longconv.literal_names(statements)
+    sequential = is_sequential(program, profile, env)
+    aliases: dict[str, tuple[str, int]] = {}
+    registered: set[tuple[str, int]] = set()
+    in_program = in_scan = slow = in_routine = False
+
+    def storage(stmt: S.Instruction, arg: S.Expr | None) -> tuple[str, int] | None:
+        if not isinstance(arg, (S.Name, S.Index)):
+            return None
+        name = arg.name.upper()
+        if isinstance(arg, S.Name) and name in aliases:
+            return aliases[name]
+        tables = scope(stmt)
+        if tables.types.get(name) != "LONG" or name not in tables.dims:
+            return None
+        offset = _flat_offset(arg, tables.dims[name], env)
+        return (name, offset) if offset is not None else None
+
+    for stmt in statements:
+        if isinstance(stmt, S.SubDef):
+            in_routine = True
+        elif S.ends_routine(stmt):
+            in_routine = False
+        if in_routine or not isinstance(stmt, S.Instruction):
+            continue
+        keyword = stmt.keyword.upper()
+        if keyword == "BEGINPROG":
+            in_program = True
+        elif keyword == "ENDPROG":
+            in_program = False
+        elif keyword == "SCAN":
+            in_scan = True
+        elif keyword == "NEXTSCAN":
+            in_scan = False
+        elif keyword == "SLOWSEQUENCE":
+            slow = True
+        elif keyword == "ALIAS" and not in_program and len(stmt.args) == 2 and isinstance(stmt.args[1], S.Name):
+            target = storage(stmt, stmt.args[0])
+            if target is not None:
+                aliases[stmt.args[1].name.upper()] = target
+        elif keyword == "TIMEDCONTROL" and not in_program and len(stmt.args) == 7:
+            target = storage(stmt, stmt.args[5])
+            if target is not None:
+                registered.add(target)
+        elif keyword == "SDMCD16AC" and in_program and in_scan and len(stmt.args) == 3:
+            if storage(stmt, stmt.args[0]) not in registered:
+                continue
+            reps = longconv.long_value(stmt.args[1], env, profile, *names)
+            errors = []
+            if reps is not None and _byte(reps) > 1:
+                errors.append("When using TimedControl reps must be 1.")
+            if slow:
+                errors.append("TimedControl only allowed within main scan.")
+            if sequential:
+                errors.append("TimedControl must use PipeLineMode.")
+            if errors:
+                _insert_in_line_order(diags, stmt, errors)
 
 
 def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
