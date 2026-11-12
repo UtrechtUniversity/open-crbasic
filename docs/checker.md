@@ -3266,6 +3266,16 @@ The previous `LI7700` rule (5 * Reps) held only for commands 1 and 5. Open cases
 include `SolarPosition`, `SerialBrk`, `SysInfo`, and the analog measurement
 helpers. The EC100 invalid-option behavior is covered below.
 
+### Quadrature option and ports (round 109)
+
+All four loggers convert the option to a Long and use its low byte.
+The CR6 builder `FUN_0050e340` rejects byte values above 2, after
+resolving the port. CR6 also rejects even port codes that pass its
+ordinary port range check. CR300 and CR350 report the option before
+the port check and use the low byte of the port argument. CR300
+accepts C1 and SE1. CR350 also accepts SE3.
+[Four-profile observations](../tests/fixtures/r109_quadrature.json).
+
 ### TimedControl source used by SDMCD16AC (round 105)
 
 In CR6 and CR1000X, the `SDMCD16AC` builder (`FUN_0043a080` in CR6)

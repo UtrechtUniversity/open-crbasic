@@ -102,6 +102,7 @@
    "message": "Invalid port {v}, use C1..C8.",
    "allowed": [101, 103, 105, 107],
    "allowed_message": "Quadrature must use C1, C3, C5, or C7",
+   "string_int_min": true,
    "secondary_when_invalid": true
   },
   "pulse_chan_cr1000x": {

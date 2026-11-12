@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 109** (historical verdict parity). Fixed CR350 false accept
+`1d86ada2d10b` by checking the converted `Quadrature` option. Also
+matched the reference's profile-specific port checks.
+[Quadrature evidence](docs/checker.md#quadrature-option-and-ports-round-109).
+
 **Round 108** (archived verdict parity). Fixed false accept `072c74da6af5`
 by validating the first `FieldClassify` expression at `EndTable`. All 25
 archived cases now match their recorded verdicts and diagnostics.

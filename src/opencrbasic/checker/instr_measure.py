@@ -298,7 +298,8 @@ def _long_arg(stmt: S.Instruction, pos: int, rule: dict, env: consteval.Env, pro
         # The profile-aware conversion (`checker/longconv.py`) where it covers the expression;
         # `to_long` for the forms it does not (function calls, `TRUE`).
         converted = longconv.long_value(stmt.args[pos - 1], env, profile, *names)
-        return consteval.to_long(value) if converted is None else converted
+        result = consteval.to_long(value) if converted is None else converted
+        return _byte(result) if rule.get("wrap8") else result
     # A string or NaN is 0; a number outside Long range is 0 on CR6/CR1000X and unobserved
     # (`overflow: null`, skipped) on CR300/CR350; infinity is 65535 (not modelled).
     if isinstance(value, str) or value != value:

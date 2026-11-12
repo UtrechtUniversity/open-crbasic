@@ -36,6 +36,16 @@
    "message": "Invalid port {v}, use C1..C4 or U1..U12.",
    "string_int_min": true
   },
+  "quadrature_port": {
+   "ranges": [[101, 116], [201, 212]],
+   "port_wrap": true,
+   "transform": "none",
+   "skip_nonpositive": false,
+   "message": "Invalid port {v}, use C1..C4 or U1..U12.",
+   "string_int_min": true,
+   "odd_only": true,
+   "odd_message": "Quadrature must use C1,C3, or U1,U3..U11"
+  },
   "sdi_port": {
    "ranges": [[101, 103], [201, 211]],
    "transform": "none",
@@ -165,7 +175,7 @@
    [3, "port_c1c4_u1u12"]
   ],
   "QUADRATURE": [
-   [2, "port_c1c4_u1u12"]
+   [2, "quadrature_port"]
   ],
   "SPIOPEN": [
    [1, "spi_port"]

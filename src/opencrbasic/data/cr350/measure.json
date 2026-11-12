@@ -9,6 +9,8 @@
   {"instr": "RUNPROGRAM", "pos": 1, "prefixes": ["CPU"], "ext": "CR350", "message": "FileManage invalid drive: {drive}."}
  ],
  "const_ranges": [
+  {"instr": "QUADRATURE", "pos": 3, "wrap8": true, "min": 0, "max": 2, "message": "Option must be 0-2."},
+  {"instr": "QUADRATURE", "pos": 2, "wrap8": true, "values": [1, 3, 5], "message": "Invalid port {value}, must be C1, SE1 or SE3"},
   {"inf_max": true, "instr": "THERM107", "pos": 5, "min": 10, "max": 2147483647, "allow": [0], "message": "Settling time {value} too short, min time is 10."},
   {"inf_max": true, "instr": "THERM108", "pos": 5, "min": 10, "max": 2147483647, "allow": [0], "message": "Settling time {value} too short, min time is 10."},
   {"inf_max": true, "instr": "THERM109", "pos": 5, "min": 10, "max": 2147483647, "allow": [0], "message": "Settling time {value} too short, min time is 10."},

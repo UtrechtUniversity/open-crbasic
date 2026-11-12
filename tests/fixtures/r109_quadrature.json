@@ -1,0 +1,2879 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-quad--1-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,-1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-0-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,0,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-quad-1-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-quad-2-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-quad-3-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-255-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,255,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-256-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-quad-257-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,257,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-quad-258-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,258,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-quad-259-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,259,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad--256-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,-256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-quad-2.5-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,2.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-quad-3.5-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,3.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-True-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,True,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-OptionVar-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,OptionVar,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: OptionVar."
+  },
+  {
+   "id": "cr6-quad-\"bad\"-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,\"bad\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-quad-K-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-quad-(1+2)-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,(1+2),1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-&HFF-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,&HFF,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-&H100-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,&H100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-quad--1-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,-1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-0-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,0,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11"
+  },
+  {
+   "id": "cr6-quad-1-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11"
+  },
+  {
+   "id": "cr6-quad-2-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11"
+  },
+  {
+   "id": "cr6-quad-3-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-255-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,255,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-256-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11"
+  },
+  {
+   "id": "cr6-quad-257-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,257,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11"
+  },
+  {
+   "id": "cr6-quad-258-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,258,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11"
+  },
+  {
+   "id": "cr6-quad-259-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,259,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad--256-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,-256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11"
+  },
+  {
+   "id": "cr6-quad-2.5-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,2.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11"
+  },
+  {
+   "id": "cr6-quad-3.5-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,3.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-True-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,True,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-OptionVar-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,OptionVar,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: OptionVar."
+  },
+  {
+   "id": "cr6-quad-\"bad\"-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,\"bad\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11"
+  },
+  {
+   "id": "cr6-quad-K-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11"
+  },
+  {
+   "id": "cr6-quad-(1+2)-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,(1+2),1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-&HFF-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,&HFF,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr6-quad-&H100-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,&H100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1,C3, or U1,U3..U11"
+  },
+  {
+   "id": "cr6-quad--1-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,-1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-0-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,0,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-1-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-2-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-3-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-255-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,255,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-256-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-257-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,257,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-258-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,258,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-259-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,259,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad--256-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,-256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-2.5-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,2.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-3.5-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,3.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-True-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,True,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-OptionVar-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,OptionVar,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-\"bad\"-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,\"bad\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-K-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-(1+2)-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,(1+2),1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-&HFF-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,&HFF,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr6-quad-&H100-C99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,&H100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad--1-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,-1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-0-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,0,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-quad-1-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-quad-2-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-quad-3-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-255-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,255,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-256-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-quad-257-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,257,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-quad-258-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,258,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-quad-259-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,259,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad--256-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,-256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-quad-2.5-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,2.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-quad-3.5-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,3.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-True-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,True,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-OptionVar-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,OptionVar,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: OptionVar."
+  },
+  {
+   "id": "cr1000x-quad-\"bad\"-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,\"bad\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-quad-K-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-quad-(1+2)-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,(1+2),1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-&HFF-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,&HFF,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-&H100-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,&H100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-quad--1-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,-1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-0-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,0,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-quad-1-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-quad-2-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-quad-3-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-255-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,255,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-256-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-quad-257-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,257,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-quad-258-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,258,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-quad-259-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,259,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad--256-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,-256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-quad-2.5-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,2.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-quad-3.5-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,3.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-True-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,True,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-OptionVar-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,OptionVar,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: OptionVar."
+  },
+  {
+   "id": "cr1000x-quad-\"bad\"-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,\"bad\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-quad-K-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-quad-(1+2)-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,(1+2),1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-&HFF-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,&HFF,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-quad-&H100-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,&H100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Quadrature must use C1, C3, C5, or C7"
+  },
+  {
+   "id": "cr1000x-quad--1-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,-1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-0-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,0,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-1-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-2-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-3-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-255-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,255,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-256-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-257-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,257,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-258-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,258,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-259-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,259,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad--256-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,-256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-2.5-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,2.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-3.5-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,3.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-True-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,True,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-OptionVar-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,OptionVar,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-\"bad\"-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,\"bad\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-K-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-(1+2)-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,(1+2),1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-&HFF-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,&HFF,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr1000x-quad-&H100-C99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,&H100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C99."
+  },
+  {
+   "id": "cr300-quad--1-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,-1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr300-quad-0-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,0,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-quad-1-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-quad-2-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-quad-3-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr300-quad-255-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,255,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr300-quad-256-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-quad-257-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,257,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-quad-258-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,258,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-quad-259-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,259,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr300-quad--256-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,-256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-quad-2.5-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,2.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-quad-3.5-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,3.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr300-quad-True-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,True,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr300-quad-OptionVar-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,OptionVar,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: OptionVar."
+  },
+  {
+   "id": "cr300-quad-\"bad\"-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,\"bad\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-quad-K-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-quad-(1+2)-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,(1+2),1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr300-quad-&HFF-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,&HFF,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr300-quad-&H100-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,&H100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-quad--1-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,-1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-0-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,0,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-1-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-2-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-3-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-255-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,255,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-256-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-257-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,257,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-258-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,258,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-259-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,259,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad--256-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,-256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-2.5-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,2.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-3.5-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,3.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-True-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,True,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-OptionVar-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,OptionVar,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: OptionVar."
+  },
+  {
+   "id": "cr300-quad-\"bad\"-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,\"bad\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-K-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-(1+2)-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,(1+2),1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-&HFF-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,&HFF,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad-&H100-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,&H100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-quad--1-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,-1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-0-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,0,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-1-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-2-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-3-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-255-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,255,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-256-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-257-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,257,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-258-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,258,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-259-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,259,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad--256-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,-256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-2.5-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,2.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-3.5-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,3.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-True-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,True,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-OptionVar-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,OptionVar,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-\"bad\"-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,\"bad\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-K-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-(1+2)-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,(1+2),1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-&HFF-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,&HFF,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr300-quad-&H100-C99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,&H100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad--1-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,-1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr350-quad-0-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,0,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-quad-1-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-quad-2-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-quad-3-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr350-quad-255-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,255,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr350-quad-256-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-quad-257-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,257,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-quad-258-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,258,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-quad-259-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,259,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr350-quad--256-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,-256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-quad-2.5-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,2.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-quad-3.5-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,3.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr350-quad-True-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,True,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr350-quad-OptionVar-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,OptionVar,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: OptionVar."
+  },
+  {
+   "id": "cr350-quad-\"bad\"-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,\"bad\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-quad-K-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-quad-(1+2)-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,(1+2),1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr350-quad-&HFF-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,&HFF,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2."
+  },
+  {
+   "id": "cr350-quad-&H100-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C1,&H100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-quad--1-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,-1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-0-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,0,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-1-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-2-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-3-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-255-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,255,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-256-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-257-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,257,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-258-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,258,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-259-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,259,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad--256-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,-256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-2.5-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,2.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-3.5-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,3.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-True-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,True,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-OptionVar-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,OptionVar,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: OptionVar."
+  },
+  {
+   "id": "cr350-quad-\"bad\"-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,\"bad\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-K-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-(1+2)-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,(1+2),1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-&HFF-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,&HFF,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Option must be 0-2.\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad-&H100-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C2,&H100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-quad--1-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,-1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-0-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,0,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-1-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-2-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,2,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-3-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-255-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,255,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-256-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-257-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,257,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-258-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,258,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-259-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,259,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad--256-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,-256,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-2.5-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,2.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-3.5-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,3.5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-True-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,True,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-OptionVar-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,OptionVar,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-\"bad\"-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,\"bad\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-K-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-(1+2)-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,(1+2),1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-&HFF-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,&HFF,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr350-quad-&H100-C99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Quad(2)\nPublic OptionVar\nConst K = 2.9\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Quad,C99,&H100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: C99 is not defined.\nline 7: Variable illegal in Parameter: C99."
+  },
+  {
+   "id": "cr6-port--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,-1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port -1, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,0,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 0, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 1, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 2, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 3, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 4, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,5,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 5, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,6,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 6, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,7,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 7, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,8,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 8, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,9,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 9, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,13,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 13, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-99",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,99,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 99, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-101",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,101,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-108",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,108,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Quadrature must use C1,C3, or U1,U3..U11\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-129",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,129,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 129, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-255",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,255,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 255, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-256",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,256,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 256, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-257",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,257,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 257, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-258",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,258,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 258, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-259",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,259,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 259, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-C1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-C2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Quadrature must use C1,C3, or U1,U3..U11\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-C3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-C4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Quadrature must use C1,C3, or U1,U3..U11\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-SE1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: SE1."
+  },
+  {
+   "id": "cr6-port-SE2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: SE2."
+  },
+  {
+   "id": "cr6-port-SE3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: SE3."
+  },
+  {
+   "id": "cr6-port-SE4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: SE4."
+  },
+  {
+   "id": "cr6-port-U1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-U2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Quadrature must use C1,C3, or U1,U3..U11\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-U3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-U4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Quadrature must use C1,C3, or U1,U3..U11\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-U5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U5,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-U6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U6,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Quadrature must use C1,C3, or U1,U3..U11\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-U7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U7,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-U8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U8,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Quadrature must use C1,C3, or U1,U3..U11\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-U9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U9,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-U10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U10,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Quadrature must use C1,C3, or U1,U3..U11\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-U11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U11,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-U12",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U12,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Quadrature must use C1,C3, or U1,U3..U11\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr6-port-\"x\"",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,\"x\",3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port -2147483648, use C1..C4 or U1..U12.\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,-1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port -1, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,0,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 0, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 1, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 2, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 3, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 4, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,5,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 5, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,6,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 6, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,7,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 7, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,8,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 8, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,9,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 9, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,13,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 13, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-99",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,99,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 99, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-101",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,101,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-108",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,108,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-129",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,129,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 129, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-255",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,255,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 255, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-256",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,256,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 256, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-257",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,257,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 257, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-258",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,258,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 258, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-259",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,259,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 259, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-C1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-C2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-C3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-C4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr1000x-port-SE1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: SE1."
+  },
+  {
+   "id": "cr1000x-port-SE2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: SE2."
+  },
+  {
+   "id": "cr1000x-port-SE3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: SE3."
+  },
+  {
+   "id": "cr1000x-port-SE4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: SE4."
+  },
+  {
+   "id": "cr1000x-port-U1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr1000x-port-U2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U2."
+  },
+  {
+   "id": "cr1000x-port-U3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U3."
+  },
+  {
+   "id": "cr1000x-port-U4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U4."
+  },
+  {
+   "id": "cr1000x-port-U5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U5,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U5."
+  },
+  {
+   "id": "cr1000x-port-U6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U6,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U6."
+  },
+  {
+   "id": "cr1000x-port-U7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U7,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U7."
+  },
+  {
+   "id": "cr1000x-port-U8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U8,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "cr1000x-port-U9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U9,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U9."
+  },
+  {
+   "id": "cr1000x-port-U10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U10,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U10."
+  },
+  {
+   "id": "cr1000x-port-U11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U11,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U11."
+  },
+  {
+   "id": "cr1000x-port-U12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U12,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U12."
+  },
+  {
+   "id": "cr1000x-port-\"x\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,\"x\",3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port -2147483648, use C1..C8.\nline 5: Quadrature must use C1, C3, C5, or C7\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr300-port--1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,-1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 255, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,0,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 0, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr300-port-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr300-port-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 4, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,5,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 5, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,6,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 6, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,7,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 7, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,8,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 8, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,9,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 9, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,13,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 13, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-99",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,99,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 99, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-101",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,101,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 101, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-108",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,108,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 108, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-129",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,129,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 129, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-255",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,255,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 255, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-256",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,256,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 0, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-257",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,257,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr300-port-258",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,258,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-259",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,259,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr300-port-C1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr300-port-C2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 2, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-C3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: C3 is not defined.\nline 5: Variable illegal in Parameter: C3."
+  },
+  {
+   "id": "cr300-port-C4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: C4 is not defined.\nline 5: Variable illegal in Parameter: C4."
+  },
+  {
+   "id": "cr300-port-SE1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr300-port-SE2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 4, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-SE3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 5, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-SE4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 6, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr300-port-U1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "cr300-port-U2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U2 is not defined.\nline 5: Variable illegal in Parameter: U2."
+  },
+  {
+   "id": "cr300-port-U3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U3 is not defined.\nline 5: Variable illegal in Parameter: U3."
+  },
+  {
+   "id": "cr300-port-U4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U4 is not defined.\nline 5: Variable illegal in Parameter: U4."
+  },
+  {
+   "id": "cr300-port-U5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U5,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U5 is not defined.\nline 5: Variable illegal in Parameter: U5."
+  },
+  {
+   "id": "cr300-port-U6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U6,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U6 is not defined.\nline 5: Variable illegal in Parameter: U6."
+  },
+  {
+   "id": "cr300-port-U7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U7,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U7 is not defined.\nline 5: Variable illegal in Parameter: U7."
+  },
+  {
+   "id": "cr300-port-U8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U8,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "cr300-port-U9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U9,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U9 is not defined.\nline 5: Variable illegal in Parameter: U9."
+  },
+  {
+   "id": "cr300-port-U10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U10,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "cr300-port-U11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U11,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "cr300-port-U12",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U12,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "cr300-port-\"x\"",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,\"x\",3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 0, must be C1 (1) or SE1 (3)"
+  },
+  {
+   "id": "cr350-port--1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,-1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 255, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,0,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 0, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr350-port-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr350-port-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 4, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,5,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr350-port-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,6,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 6, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,7,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 7, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,8,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 8, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,9,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 9, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,13,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 13, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-99",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,99,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 99, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-101",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,101,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 101, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-108",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,108,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 108, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-129",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,129,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 129, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-255",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,255,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 255, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-256",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,256,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 0, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-257",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,257,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr350-port-258",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,258,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-259",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,259,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr350-port-C1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr350-port-C2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 2, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-C3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: C3 is not defined.\nline 5: Variable illegal in Parameter: C3."
+  },
+  {
+   "id": "cr350-port-C4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,C4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: C4 is not defined.\nline 5: Variable illegal in Parameter: C4."
+  },
+  {
+   "id": "cr350-port-SE1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr350-port-SE2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 4, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-SE3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2."
+  },
+  {
+   "id": "cr350-port-SE4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,SE4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 6, must be C1, SE1 or SE3"
+  },
+  {
+   "id": "cr350-port-U1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U1,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "cr350-port-U2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U2,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U2 is not defined.\nline 5: Variable illegal in Parameter: U2."
+  },
+  {
+   "id": "cr350-port-U3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U3,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U3 is not defined.\nline 5: Variable illegal in Parameter: U3."
+  },
+  {
+   "id": "cr350-port-U4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U4,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U4 is not defined.\nline 5: Variable illegal in Parameter: U4."
+  },
+  {
+   "id": "cr350-port-U5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U5,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U5 is not defined.\nline 5: Variable illegal in Parameter: U5."
+  },
+  {
+   "id": "cr350-port-U6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U6,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U6 is not defined.\nline 5: Variable illegal in Parameter: U6."
+  },
+  {
+   "id": "cr350-port-U7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U7,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U7 is not defined.\nline 5: Variable illegal in Parameter: U7."
+  },
+  {
+   "id": "cr350-port-U8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U8,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "cr350-port-U9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U9,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U9 is not defined.\nline 5: Variable illegal in Parameter: U9."
+  },
+  {
+   "id": "cr350-port-U10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U10,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "cr350-port-U11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U11,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "cr350-port-U12",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,U12,3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "cr350-port-\"x\"",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Q(2)\nBeginProg\n Scan(1,Sec,0,0)\n Quadrature(Q,\"x\",3,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Option must be 0-2.\nline 5: Invalid port 0, must be C1, SE1 or SE3"
+  }
+ ]
+}

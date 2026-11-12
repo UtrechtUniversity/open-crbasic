@@ -80,8 +80,8 @@ def _evaluate(value: float, kind: dict) -> tuple[bool, bool, int]:
         # 413, 1100 do not).
         v = int(v) if -(2**31) <= v < 2**31 else -(2**31)
         in_range = _in_range(v, kind) or (v >= 201 and v % 200 <= 12)
-        return in_range, True, v
-    in_range = _in_range(v, kind)
+    else:
+        in_range = _in_range(v, kind)
     odd_ok = (not kind.get("odd_only")) or (in_range and int(v) % 2 == 1)
     return in_range, odd_ok, int(v)
 

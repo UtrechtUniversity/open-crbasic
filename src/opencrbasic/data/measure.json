@@ -38,6 +38,7 @@
   {"instr": "RUNPROGRAM", "pos": 1, "prefixes": ["CPU", "CRD", "USR", "USB"], "ext": "CR6", "message": "FileManage invalid drive: {drive}."}
  ],
  "const_ranges": [
+  {"instr": "QUADRATURE", "pos": 3, "wrap8": true, "min": 0, "max": 2, "message": "Option must be 0-2."},
   {"instr": "CPISPEED", "pos": 1, "skip_strings": true, "values": [50, 125, 250, 500, 1000], "message": "Invalid CPI bit rate."},
   {"instr": "SEMAPHOREGET", "pos": 1, "min": 1, "max": 4, "message": "Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"},
   {"instr": "SEMAPHORERELEASE", "pos": 1, "min": 1, "max": 4, "message": "Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"},
