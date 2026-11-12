@@ -8957,6 +8957,18 @@ ordinary table name used as a value (`Public D = T`) is still rejected. A table 
 reference's `Table Sec, is declared but never called.` warning (`not_modelled`). Fixture
 `tests/fixtures/r54_table_named_constant.json`.
 
+## FieldClassify expressions (round 108)
+
+CR6 and CR1000X check the first comma-separated classification expression
+at `EndTable`. The output instruction owns the metadata and the last
+`FieldClassify` attached to that owner supplies the classification string.
+An unowned record is ignored. The string can come from a constant
+expression. A space or tab between numeric tokens can produce
+`Incomplete expression`, preserving the spelling and whitespace of the
+first entry. An invalid hex token can produce `Invalid symbol in expression`
+on the same `EndTable` line.
+[Four-profile observations](../tests/fixtures/r108_fieldclassify_expressions.json).
+
 ## FieldNames owner line (round 54)
 
 Fixture `tests/fixtures/r54_fieldnames_owner.json` (`tests/test_r54_fieldnames_owner.py`): 266

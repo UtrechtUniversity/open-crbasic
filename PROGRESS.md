@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 108** (archived verdict parity). Fixed false accept `072c74da6af5`
+by validating the first `FieldClassify` expression at `EndTable`. All 25
+archived cases now match their recorded verdicts and diagnostics.
+[FieldClassify evidence](docs/checker.md#fieldclassify-expressions-round-108).
+
 **Round 107** (archived verdict parity). Fixed false accept `f2f6e5d8b8e6`
 by matching token recovery when whitespace splits a dotted `SNMPVariable`
 OID. The 25-case archived replay now has one false accept and 24 exact

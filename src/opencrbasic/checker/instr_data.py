@@ -405,11 +405,11 @@ _FIELDNAMES_OWNERS = _FIELD_PRODUCING_INSTRUCTIONS - {"SAMPLEFIELDCAL", "ETSZ", 
 _FIRST_WORD = re.compile(r"\s*([A-Za-z_]\w*)")
 
 
-def fieldnames_owners(program: S.Program) -> dict[int, S.Stmt | None]:
-    """`id(statement)` of every `FieldNames` (parsed or not) -> the output instruction whose
-    builder reads it: the last owner before it with only `FieldNames`/`FieldClassify`/`FieldOrigin`
-    in between, inside a `DataTable`, else None (a `FieldNames` anywhere else is never resolved;
-    a `Sample` outside a table owns nothing, replay `921b96a020e3`)."""
+def fieldnames_owners(program: S.Program, keyword: str = "FIELDNAMES") -> dict[int, S.Stmt | None]:
+    """Map a metadata statement's id to the last output instruction in its table.
+
+    Other metadata can intervene between the owner and the statement it reads.
+    """
     owners: dict[int, S.Stmt | None] = {}
     owner = None
     in_table = False
@@ -422,11 +422,48 @@ def fieldnames_owners(program: S.Program) -> dict[int, S.Stmt | None]:
             continue
         if kw in ("DATATABLE", "ENDTABLE"):
             in_table = kw == "DATATABLE"
-        if kw == "FIELDNAMES":
+        if kw == keyword:
             owners[id(st)] = owner
         elif kw not in _FIELD_METADATA:
             owner = st if kw in _FIELDNAMES_OWNERS and in_table else None
     return owners
+
+
+_CLASSIFY_INCOMPLETE = re.compile(r"\s*(?:&H[0-9A-F]*|[0-9]+(?:\.[0-9]+)?)[ \t]+[0-9]", re.I)
+_CLASSIFY_INVALID_HEX = re.compile(r"\s*&H[0-9A-F]*(?:[G-Z]\w*(?:[ \t]+\d+)?|[ \t]+(?:[A-Z]\w*|&H[0-9A-F]+))\s*$", re.I)
+
+
+def check_fieldclassify(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """The table builder checks the first classification expression at EndTable."""
+    if "FIELDCLASSIFY" not in profile.instructions:
+        return
+    owners = fieldnames_owners(program, "FIELDCLASSIFY")
+    if not owners:
+        return
+    entries: dict[int, S.Instruction] = {}
+    for st in program.statements:
+        if not isinstance(st, S.Instruction):
+            continue
+        if st.keyword.upper() == "ENDTABLE":
+            for entry in entries.values():
+                if len(entry.args) != 1 or entry.args[0] is None:
+                    continue
+                try:
+                    value = consteval.value_of(entry.args[0], env)
+                except consteval.NotConstant:
+                    continue
+                if not isinstance(value, str):
+                    continue
+                first = value.split(",", 1)[0]
+                if not value:
+                    diags.error(st.line, "Invalid, or out of place expression: .", st.file)
+                elif _CLASSIFY_INCOMPLETE.match(first):
+                    diags.error(st.line, f"Incomplete expression: {first}.", st.file)
+                elif _CLASSIFY_INVALID_HEX.match(first):
+                    diags.error(st.line, f"Invalid symbol in expression: {first}.", st.file)
+            entries.clear()
+        elif (owner := owners.get(id(st))) is not None:
+            entries[id(owner)] = st
 
 
 def move_fieldnames_symbol_errors(program: S.Program, items: list[Diagnostic]):

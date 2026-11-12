@@ -1,0 +1,2179 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-0-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H0  10a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H0  10a0101."
+  },
+  {
+   "id": "cr6-1-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H010a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-2-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr6-3-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H 12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H 12."
+  },
+  {
+   "id": "cr6-4-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12  \")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-5-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"  &H12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-6-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1\t2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1\t2."
+  },
+  {
+   "id": "cr6-7-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2,&H3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr6-8-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-9-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1, &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-10-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H1 &H2."
+  },
+  {
+   "id": "cr6-11-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 + 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-12-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12 34\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 12 34."
+  },
+  {
+   "id": "cr6-13-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12G\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H12G."
+  },
+  {
+   "id": "cr6-14-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1G 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H1G 2."
+  },
+  {
+   "id": "cr6-15-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-16-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12+3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-17-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"X\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-18-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,,&H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-19-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr6-20-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(X)\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-0-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H0  10a0101\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H0  10a0101."
+  },
+  {
+   "id": "cr6-1-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H010a0101\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-2-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr6-3-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H 12\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H 12."
+  },
+  {
+   "id": "cr6-4-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12  \")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-5-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"  &H12\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-6-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1\t2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1\t2."
+  },
+  {
+   "id": "cr6-7-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2,&H3\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr6-8-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-9-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1, &H2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-10-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 &H2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H1 &H2."
+  },
+  {
+   "id": "cr6-11-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 + 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-12-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12 34\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 12 34."
+  },
+  {
+   "id": "cr6-13-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12G\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H12G."
+  },
+  {
+   "id": "cr6-14-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1G 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H1G 2."
+  },
+  {
+   "id": "cr6-15-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-16-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12+3\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-17-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"X\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-18-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,,&H2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-19-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr6-20-followed",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(X)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-0-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H0  10a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H0  10a0101."
+  },
+  {
+   "id": "cr6-1-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H010a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-2-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr6-3-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H 12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H 12."
+  },
+  {
+   "id": "cr6-4-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H12  \")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-5-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"  &H12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-6-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1\t2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1\t2."
+  },
+  {
+   "id": "cr6-7-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 2,&H3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr6-8-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-9-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1, &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-10-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H1 &H2."
+  },
+  {
+   "id": "cr6-11-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 + 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-12-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"12 34\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 12 34."
+  },
+  {
+   "id": "cr6-13-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H12G\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H12G."
+  },
+  {
+   "id": "cr6-14-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1G 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H1G 2."
+  },
+  {
+   "id": "cr6-15-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-16-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"12+3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-17-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"X\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-18-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1,,&H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-19-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr6-20-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(X)\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-0-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H0  10a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H0  10a0101."
+  },
+  {
+   "id": "cr1000x-1-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H010a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-2-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr1000x-3-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H 12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H 12."
+  },
+  {
+   "id": "cr1000x-4-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12  \")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-5-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"  &H12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-6-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1\t2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1\t2."
+  },
+  {
+   "id": "cr1000x-7-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2,&H3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr1000x-8-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-9-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1, &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-10-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H1 &H2."
+  },
+  {
+   "id": "cr1000x-11-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 + 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-12-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12 34\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 12 34."
+  },
+  {
+   "id": "cr1000x-13-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12G\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H12G."
+  },
+  {
+   "id": "cr1000x-14-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1G 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H1G 2."
+  },
+  {
+   "id": "cr1000x-15-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-16-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12+3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-17-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"X\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-18-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,,&H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-19-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-20-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(X)\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-0-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H0  10a0101\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H0  10a0101."
+  },
+  {
+   "id": "cr1000x-1-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H010a0101\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-2-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr1000x-3-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H 12\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H 12."
+  },
+  {
+   "id": "cr1000x-4-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12  \")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-5-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"  &H12\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-6-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1\t2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1\t2."
+  },
+  {
+   "id": "cr1000x-7-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2,&H3\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr1000x-8-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-9-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1, &H2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-10-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 &H2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H1 &H2."
+  },
+  {
+   "id": "cr1000x-11-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 + 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-12-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12 34\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 12 34."
+  },
+  {
+   "id": "cr1000x-13-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12G\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H12G."
+  },
+  {
+   "id": "cr1000x-14-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1G 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H1G 2."
+  },
+  {
+   "id": "cr1000x-15-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-16-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12+3\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-17-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"X\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-18-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,,&H2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-19-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-20-followed",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(X)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-0-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H0  10a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H0  10a0101."
+  },
+  {
+   "id": "cr1000x-1-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H010a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-2-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr1000x-3-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H 12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H 12."
+  },
+  {
+   "id": "cr1000x-4-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H12  \")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-5-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"  &H12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-6-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1\t2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1\t2."
+  },
+  {
+   "id": "cr1000x-7-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 2,&H3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr1000x-8-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-9-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1, &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-10-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H1 &H2."
+  },
+  {
+   "id": "cr1000x-11-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 + 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-12-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"12 34\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Incomplete expression: 12 34."
+  },
+  {
+   "id": "cr1000x-13-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H12G\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H12G."
+  },
+  {
+   "id": "cr1000x-14-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1G 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: &H1G 2."
+  },
+  {
+   "id": "cr1000x-15-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-16-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"12+3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-17-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"X\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-18-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1,,&H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-19-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-20-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(X)\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-0-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H0  10a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H0  10a0101\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-1-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H010a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H010a0101\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-2-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-3-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H 12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H 12\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-4-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12  \")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H12  \")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-5-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"  &H12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"  &H12\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-6-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1\t2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1\t2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-7-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2,&H3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2,&H3\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-8-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,&H2 3\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-9-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1, &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1, &H2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-10-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 &H2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-11-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 + 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 + 2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-12-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12 34\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"12 34\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-13-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12G\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H12G\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-14-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1G 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1G 2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-15-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-16-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12+3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"12+3\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-17-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"X\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"X\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-18-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,,&H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,,&H2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-19-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-20-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(X)\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(X)\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-0-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H0  10a0101\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H0  10a0101\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-1-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H010a0101\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H010a0101\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-2-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-3-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H 12\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H 12\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-4-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12  \")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H12  \")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-5-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"  &H12\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"  &H12\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-6-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1\t2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1\t2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-7-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2,&H3\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2,&H3\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-8-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,&H2 3\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-9-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1, &H2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1, &H2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-10-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 &H2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 &H2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-11-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 + 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 + 2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-12-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12 34\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"12 34\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-13-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12G\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H12G\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-14-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1G 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1G 2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-15-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-16-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12+3\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"12+3\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-17-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"X\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"X\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-18-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,,&H2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,,&H2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-19-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-20-followed",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(X)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(X)\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-0-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H0  10a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H0  10a0101\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-1-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H010a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H010a0101\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-2-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-3-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H 12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H 12\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-4-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H12  \")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H12  \")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-5-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"  &H12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"  &H12\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-6-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1\t2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1\t2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-7-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 2,&H3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2,&H3\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-8-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,&H2 3\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-9-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1, &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1, &H2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-10-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 &H2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-11-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 + 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 + 2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-12-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"12 34\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"12 34\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-13-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H12G\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H12G\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-14-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1G 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1G 2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-15-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-16-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"12+3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"12+3\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-17-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"X\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"X\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-18-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1,,&H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,,&H2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-19-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-20-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(X)\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(X)\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-0-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H0  10a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H0  10a0101\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-1-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H010a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H010a0101\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-2-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-3-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H 12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H 12\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-4-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12  \")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H12  \")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-5-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"  &H12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"  &H12\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-6-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1\t2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1\t2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-7-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2,&H3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2,&H3\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-8-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,&H2 3\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-9-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1, &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1, &H2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-10-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 &H2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-11-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 + 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 + 2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-12-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12 34\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"12 34\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-13-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12G\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H12G\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-14-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1G 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1G 2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-15-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-16-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12+3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"12+3\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-17-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"X\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"X\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-18-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,,&H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,,&H2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-19-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-20-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(X)\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(X)\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-0-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H0  10a0101\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H0  10a0101\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-1-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H010a0101\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H010a0101\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-2-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-3-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H 12\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H 12\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-4-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12  \")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H12  \")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-5-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"  &H12\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"  &H12\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-6-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1\t2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1\t2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-7-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 2,&H3\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2,&H3\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-8-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,&H2 3\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-9-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1, &H2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1, &H2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-10-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 &H2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 &H2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-11-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1 + 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 + 2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-12-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12 34\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"12 34\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-13-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H12G\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H12G\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-14-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1G 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1G 2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-15-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-16-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"12+3\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"12+3\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-17-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"X\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"X\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-18-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"&H1,,&H2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,,&H2\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-19-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(\"\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"\")\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-20-followed",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,X,FP2)\n FieldClassify(X)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(X)\n.\nline 6: Too many parameters:  Y.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-0-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H0  10a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H0  10a0101\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-1-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H010a0101\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H010a0101\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-2-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-3-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H 12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H 12\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-4-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H12  \")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H12  \")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-5-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"  &H12\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"  &H12\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-6-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1\t2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1\t2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-7-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 2,&H3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2,&H3\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-8-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,&H2 3\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-9-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1, &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1, &H2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-10-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 &H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 &H2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-11-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1 + 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 + 2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-12-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"12 34\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"12 34\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-13-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H12G\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H12G\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-14-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1G 2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1G 2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-15-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-16-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"12+3\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"12+3\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-17-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"X\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"X\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-18-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"&H1,,&H2\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,,&H2\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-19-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(\"\")\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"\")\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-20-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(3)\nDataTable(T,True,10)\n Sample(3,X,FP2)\n FieldClassify(X)\n \nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(X)\n.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-unowned-first",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n FieldClassify(\"&H1 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-unowned-separated",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n DataInterval(0,1,Sec,10)\n FieldClassify(\"&H1 2\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-two",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 2\")\n Sample(1,Y,FP2)\n FieldNames(\"YY\")\n FieldClassify(\"&H3 4\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: &H1 2.\nline 8: Incomplete expression: &H3 4."
+  },
+  {
+   "id": "cr6-repeat",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 2\")\n FieldClassify(\"&H3 4\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Incomplete expression: &H3 4."
+  },
+  {
+   "id": "cr6-later-rep",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1,&H2 3\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-later-rep-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(2)\nDataTable(T,True,10)\n Sample(2,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-constant",
+   "logger": "cr6",
+   "source": "Public Y\nConst S = \"&H1 2\"\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(S)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr6-folded",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1\" + \" 2\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr6-spaces",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"  &H1 2  ,&H3\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression:   &H1 2  ."
+  },
+  {
+   "id": "cr6-hex-lower",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&h1 a\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: &h1 a."
+  },
+  {
+   "id": "cr6-decimal",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"12.5 34\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 12.5 34."
+  },
+  {
+   "id": "cr6-hex-tail",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 2G\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: &H1 2G."
+  },
+  {
+   "id": "cr6-hex-name",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 Z\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: &H1 Z."
+  },
+  {
+   "id": "cr6-before-table",
+   "logger": "cr6",
+   "source": "Public Y\nFieldClassify(\"&H1 2\")\nBeginProg\n Scan(1,Sec,0,0)\n Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-unowned-first",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n FieldClassify(\"&H1 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-unowned-separated",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n DataInterval(0,1,Sec,10)\n FieldClassify(\"&H1 2\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-two",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 2\")\n Sample(1,Y,FP2)\n FieldNames(\"YY\")\n FieldClassify(\"&H3 4\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: &H1 2.\nline 8: Incomplete expression: &H3 4."
+  },
+  {
+   "id": "cr1000x-repeat",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 2\")\n FieldClassify(\"&H3 4\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Incomplete expression: &H3 4."
+  },
+  {
+   "id": "cr1000x-later-rep",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1,&H2 3\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-later-rep-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(2)\nDataTable(T,True,10)\n Sample(2,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-constant",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst S = \"&H1 2\"\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(S)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr1000x-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1\" + \" 2\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: &H1 2."
+  },
+  {
+   "id": "cr1000x-spaces",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"  &H1 2  ,&H3\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression:   &H1 2  ."
+  },
+  {
+   "id": "cr1000x-hex-lower",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&h1 a\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: &h1 a."
+  },
+  {
+   "id": "cr1000x-decimal",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"12.5 34\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: 12.5 34."
+  },
+  {
+   "id": "cr1000x-hex-tail",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 2G\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: &H1 2G."
+  },
+  {
+   "id": "cr1000x-hex-name",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 Z\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: &H1 Z."
+  },
+  {
+   "id": "cr1000x-before-table",
+   "logger": "cr1000x",
+   "source": "Public Y\nFieldClassify(\"&H1 2\")\nBeginProg\n Scan(1,Sec,0,0)\n Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-unowned-first",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n FieldClassify(\"&H1 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: FieldClassify is not defined.\nline 3: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 4: Too many parameters:  Y.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-unowned-separated",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n DataInterval(0,1,Sec,10)\n FieldClassify(\"&H1 2\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-two",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 2\")\n Sample(1,Y,FP2)\n FieldNames(\"YY\")\n FieldClassify(\"&H3 4\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 5: Too many parameters:  Y.\nline 7: FieldClassify is not defined.\nline 7: Invalid, or out of place expression:  FieldClassify(\"&H3 4\")\n.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-repeat",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 2\")\n FieldClassify(\"&H3 4\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H3 4\")\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-later-rep",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1,&H2 3\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&H1,&H2 3\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-later-rep-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(2)\nDataTable(T,True,10)\n Sample(2,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,&H2 3\")\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-constant",
+   "logger": "cr300",
+   "source": "Public Y\nConst S = \"&H1 2\"\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(S)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(S)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-folded",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1\" + \" 2\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&H1\" + \" 2\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-spaces",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"  &H1 2  ,&H3\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"  &H1 2  ,&H3\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-hex-lower",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&h1 a\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&h1 a\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decimal",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"12.5 34\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"12.5 34\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-hex-tail",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 2G\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&H1 2G\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-hex-name",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 Z\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&H1 Z\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-before-table",
+   "logger": "cr300",
+   "source": "Public Y\nFieldClassify(\"&H1 2\")\nBeginProg\n Scan(1,Sec,0,0)\n Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: FieldClassify is not defined.\nline 2: Invalid, or out of place expression: FieldClassify(\"&H1 2\")\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-unowned-first",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n FieldClassify(\"&H1 2\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: FieldClassify is not defined.\nline 3: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 4: Too many parameters:  Y.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-unowned-separated",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n DataInterval(0,1,Sec,10)\n FieldClassify(\"&H1 2\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-two",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 2\")\n Sample(1,Y,FP2)\n FieldNames(\"YY\")\n FieldClassify(\"&H3 4\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 5: Too many parameters:  Y.\nline 7: FieldClassify is not defined.\nline 7: Invalid, or out of place expression:  FieldClassify(\"&H3 4\")\n.\nline 10: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-repeat",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 2\")\n FieldClassify(\"&H3 4\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&H1 2\")\n.\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H3 4\")\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-later-rep",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1,&H2 3\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&H1,&H2 3\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-later-rep-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(2)\nDataTable(T,True,10)\n Sample(2,X,FP2)\n FieldClassify(\"&H1,&H2 3\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(\"&H1,&H2 3\")\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-constant",
+   "logger": "cr350",
+   "source": "Public Y\nConst S = \"&H1 2\"\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(S)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldClassify is not defined.\nline 5: Invalid, or out of place expression:  FieldClassify(S)\n.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-folded",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1\" + \" 2\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&H1\" + \" 2\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-spaces",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"  &H1 2  ,&H3\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"  &H1 2  ,&H3\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hex-lower",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&h1 a\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&h1 a\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decimal",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"12.5 34\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"12.5 34\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hex-tail",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 2G\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&H1 2G\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hex-name",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldClassify(\"&H1 Z\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FieldClassify is not defined.\nline 4: Invalid, or out of place expression:  FieldClassify(\"&H1 Z\")\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-before-table",
+   "logger": "cr350",
+   "source": "Public Y\nFieldClassify(\"&H1 2\")\nBeginProg\n Scan(1,Sec,0,0)\n Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: FieldClassify is not defined.\nline 2: Invalid, or out of place expression: FieldClassify(\"&H1 2\")\n.\nline 4: Too many parameters:  Sec."
+  }
+ ]
+}
