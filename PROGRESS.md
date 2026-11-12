@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 106** (archived verdict parity). Fixed false accepts `51f39a5f2393`
+and `7b4b2177d56b` by checking `CDM_FFTFilt` capture duration and binning.
+The 25-case archived replay now has two false accepts and 23 exact matches.
+[FFT evidence](docs/instructions.md#cdm_fftfilt-capture-duration-and-binning-round-106).
+
 **Round 105** (archived verdict parity). Fixed CR6 false accept `7f9efa8af42c`
 by checking `SDMCD16AC` repetitions and scan context when it uses a
 registered `TimedControl` source. The 25-case archived replay now has four

@@ -1,0 +1,2963 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-time-409499",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409499,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096."
+  },
+  {
+   "id": "cr6-time-409500",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409500,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096."
+  },
+  {
+   "id": "cr6-time-409599",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409599,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096."
+  },
+  {
+   "id": "cr6-time-409600",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409600,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr6-time-409601",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409601,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr6-ms-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(1,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096."
+  },
+  {
+   "id": "cr6-ms-255",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(255,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096."
+  },
+  {
+   "id": "cr6-ms-409",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096."
+  },
+  {
+   "id": "cr6-ms-410",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(410,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ms-500",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-trunc-341199",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341199,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Scan interval must be at least 341300 usec for FFT length of 4096.\nline 6: Invalid Output Rate."
+  },
+  {
+   "id": "cr6-trunc-341200",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341200,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Scan interval must be at least 341300 usec for FFT length of 4096.\nline 6: Invalid Output Rate."
+  },
+  {
+   "id": "cr6-trunc-341299",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341299,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Scan interval must be at least 341300 usec for FFT length of 4096.\nline 6: Invalid Output Rate."
+  },
+  {
+   "id": "cr6-trunc-341300",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341300,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Invalid Output Rate."
+  },
+  {
+   "id": "cr6-trunc-341399",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341399,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Invalid Output Rate."
+  },
+  {
+   "id": "cr6-trunc-341400",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341400,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Invalid Output Rate."
+  },
+  {
+   "id": "cr6-bin-0-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bin-0-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bin-0-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 1024."
+  },
+  {
+   "id": "cr6-bin-0-12",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 170."
+  },
+  {
+   "id": "cr6-bin-0-13",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 157."
+  },
+  {
+   "id": "cr6-bin-0.5-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bin-0.5-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bin-0.5-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 1024."
+  },
+  {
+   "id": "cr6-bin-0.5-12",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 170."
+  },
+  {
+   "id": "cr6-bin-0.5-13",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 157."
+  },
+  {
+   "id": "cr6-bin-1-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-1-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-1-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-1-12",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-1-13",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-1.5-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-1.5-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-1.5-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-1.5-12",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-1.5-13",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-2-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-2-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-2-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-2-12",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-2-13",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-10-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-10-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-10-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-10-12",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-10-13",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-100-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-100-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-100-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-100-12",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-bin-100-13",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-seq-255",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nPublic Wave(32769)\nBeginProg\n Scan(255,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt not allowed in Sequential Mode."
+  },
+  {
+   "id": "cr6-seq-500",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt not allowed in Sequential Mode."
+  },
+  {
+   "id": "cr1000x-time-409499",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409499,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096."
+  },
+  {
+   "id": "cr1000x-time-409500",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409500,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096."
+  },
+  {
+   "id": "cr1000x-time-409599",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409599,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096."
+  },
+  {
+   "id": "cr1000x-time-409600",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409600,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr1000x-time-409601",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409601,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr1000x-ms-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(1,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096."
+  },
+  {
+   "id": "cr1000x-ms-255",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(255,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096."
+  },
+  {
+   "id": "cr1000x-ms-409",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096."
+  },
+  {
+   "id": "cr1000x-ms-410",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(410,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ms-500",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trunc-341199",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341199,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Scan interval must be at least 341300 usec for FFT length of 4096.\nline 6: Invalid Output Rate."
+  },
+  {
+   "id": "cr1000x-trunc-341200",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341200,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Scan interval must be at least 341300 usec for FFT length of 4096.\nline 6: Invalid Output Rate."
+  },
+  {
+   "id": "cr1000x-trunc-341299",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341299,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Scan interval must be at least 341300 usec for FFT length of 4096.\nline 6: Invalid Output Rate."
+  },
+  {
+   "id": "cr1000x-trunc-341300",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341300,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Invalid Output Rate."
+  },
+  {
+   "id": "cr1000x-trunc-341399",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341399,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Invalid Output Rate."
+  },
+  {
+   "id": "cr1000x-trunc-341400",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341400,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scans must be a multiple of 1mSec.\nline 6: Invalid Output Rate."
+  },
+  {
+   "id": "cr1000x-bin-0-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bin-0-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bin-0-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 1024."
+  },
+  {
+   "id": "cr1000x-bin-0-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 170."
+  },
+  {
+   "id": "cr1000x-bin-0-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 157."
+  },
+  {
+   "id": "cr1000x-bin-0.5-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bin-0.5-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bin-0.5-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 1024."
+  },
+  {
+   "id": "cr1000x-bin-0.5-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 170."
+  },
+  {
+   "id": "cr1000x-bin-0.5-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 157."
+  },
+  {
+   "id": "cr1000x-bin-1-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-1-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-1-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-1-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-1-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-1.5-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-1.5-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-1.5-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-1.5-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-1.5-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-2-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-2-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-2-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-2-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-2-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-10-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-10-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-10-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-10-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-10-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-100-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-100-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-100-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-100-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-bin-100-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-seq-255",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nPublic Wave(32769)\nBeginProg\n Scan(255,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt not allowed in Sequential Mode."
+  },
+  {
+   "id": "cr1000x-seq-500",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt not allowed in Sequential Mode."
+  },
+  {
+   "id": "cr300-time-409499",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409499,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-time-409500",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409500,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-time-409599",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409599,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-time-409600",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409600,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-time-409601",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409601,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-ms-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(1,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-ms-255",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(255,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-ms-409",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-ms-410",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(410,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-ms-500",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-trunc-341199",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341199,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-trunc-341200",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341200,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-trunc-341299",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341299,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-trunc-341300",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341300,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-trunc-341399",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341399,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-trunc-341400",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341400,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-bin-0-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-0-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,1,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-0-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,2,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-0-12",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,12,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-0-13",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,13,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-0.5-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,0,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-0.5-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,1,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-0.5-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,2,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-0.5-12",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,12,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-0.5-13",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,13,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-1-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,0,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-1-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,1,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-1-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,2,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-1-12",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,12,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-1-13",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,13,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-1.5-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,0,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-1.5-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,1,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-1.5-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,2,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-1.5-12",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,12,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-1.5-13",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,13,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-2-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,0,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-2-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,1,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-2-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,2,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-2-12",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,12,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-2-13",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,13,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-10-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,0,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-10-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,1,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-10-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,2,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-10-12",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,12,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-10-13",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,13,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-100-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,0,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-100-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,1,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-100-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,2,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-100-12",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,12,0,2048)\n."
+  },
+  {
+   "id": "cr300-bin-100-13",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,13,0,2048)\n."
+  },
+  {
+   "id": "cr300-seq-255",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nPublic Wave(32769)\nBeginProg\n Scan(255,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-seq-500",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-time-409499",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409499,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-time-409500",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409500,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-time-409599",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409599,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-time-409600",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409600,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-time-409601",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409601,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-ms-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(1,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-ms-255",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(255,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-ms-409",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(409,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-ms-410",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(410,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-ms-500",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-trunc-341199",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341199,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-trunc-341200",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341200,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-trunc-341299",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341299,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-trunc-341300",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341300,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-trunc-341399",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341399,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-trunc-341400",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(341400,uSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,12000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-bin-0-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-0-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,1,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-0-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,2,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-0-12",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,12,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-0-13",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,13,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-0.5-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,0,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-0.5-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,1,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-0.5-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,2,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-0.5-12",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,12,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-0.5-13",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0.5,13,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-1-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,0,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-1-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,1,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-1-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,2,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-1-12",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,12,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-1-13",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,13,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-1.5-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,0,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-1.5-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,1,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-1.5-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,2,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-1.5-12",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,12,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-1.5-13",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1.5,13,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-2-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,0,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-2-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,1,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-2-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,2,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-2-12",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,12,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-2-13",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,2,13,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-10-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,0,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-10-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,1,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-10-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,2,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-10-12",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,12,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-10-13",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,10,13,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-100-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,0,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-100-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,1,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,1,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-100-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,2,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,2,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-100-12",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,12,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,12,0,2048)\n."
+  },
+  {
+   "id": "cr350-bin-100-13",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,13,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,100,13,0,2048)\n."
+  },
+  {
+   "id": "cr350-seq-255",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nPublic Wave(32769)\nBeginProg\n Scan(255,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-seq-500",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr6-edge--1.5-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-edge--1.5-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-edge--1.5-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-edge--0.5-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-edge--0.5-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-edge--0.5-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 16."
+  },
+  {
+   "id": "cr6-edge-0-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-edge-0-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-edge-0-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 16."
+  },
+  {
+   "id": "cr6-edge-0.999-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-edge-0.999-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-edge-0.999-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 16."
+  },
+  {
+   "id": "cr6-edge-1-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-edge-1-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-edge-1-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-edge-1.5-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-edge-1.5-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-edge-1.5-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-edge-32767-0",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-edge-32767-1",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-edge-32767-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr6-opt-0-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr6-opt-0-16",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr6-opt-0-17",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr6-opt-1-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-opt-1-16",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-opt-1-17",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr6-opt-2-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr6-opt-2-16",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr6-opt-2-17",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr6-opt-3-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-opt-3-16",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-opt-3-17",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr6-opt-6-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-opt-6-16",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-opt-6-17",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr6-opt-7-2",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-opt-7-16",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-opt-7-17",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr6-range-32-100",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 320000 usec for FFT length of 32."
+  },
+  {
+   "id": "cr6-range-32-500",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 64000 usec for FFT length of 32."
+  },
+  {
+   "id": "cr6-range-32-1000",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-range-32-10000",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-range-64-100",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 640000 usec for FFT length of 64."
+  },
+  {
+   "id": "cr6-range-64-500",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 128000 usec for FFT length of 64."
+  },
+  {
+   "id": "cr6-range-64-1000",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 64000 usec for FFT length of 64."
+  },
+  {
+   "id": "cr6-range-64-10000",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-range-1024-100",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 10240000 usec for FFT length of 1024."
+  },
+  {
+   "id": "cr6-range-1024-500",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 2048000 usec for FFT length of 1024."
+  },
+  {
+   "id": "cr6-range-1024-1000",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 1024000 usec for FFT length of 1024."
+  },
+  {
+   "id": "cr6-range-1024-10000",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 102400 usec for FFT length of 1024."
+  },
+  {
+   "id": "cr6-buffers-first",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(20,mSec,1,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Insufficient Scan buffers to read EPI data, minimum is 100.\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096.\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-edge--1.5-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-edge--1.5-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-edge--1.5-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-edge--0.5-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge--0.5-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge--0.5-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 16."
+  },
+  {
+   "id": "cr1000x-edge-0-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-0-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-0-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 16."
+  },
+  {
+   "id": "cr1000x-edge-0.999-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-0.999-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-0.999-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is 16."
+  },
+  {
+   "id": "cr1000x-edge-1-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-edge-1-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-edge-1-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-edge-1.5-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-edge-1.5-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-edge-1.5-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-edge-32767-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-edge-32767-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-edge-32767-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr1000x-opt-0-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr1000x-opt-0-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr1000x-opt-0-17",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr1000x-opt-1-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-opt-1-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-opt-1-17",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr1000x-opt-2-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr1000x-opt-2-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr1000x-opt-2-17",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr1000x-opt-3-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-opt-3-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-opt-3-17",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr1000x-opt-6-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-opt-6-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-opt-6-17",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr1000x-opt-7-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-opt-7-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-opt-7-17",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Illegal spectral binning."
+  },
+  {
+   "id": "cr1000x-range-32-100",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 320000 usec for FFT length of 32."
+  },
+  {
+   "id": "cr1000x-range-32-500",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 64000 usec for FFT length of 32."
+  },
+  {
+   "id": "cr1000x-range-32-1000",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-range-32-10000",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-range-64-100",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 640000 usec for FFT length of 64."
+  },
+  {
+   "id": "cr1000x-range-64-500",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 128000 usec for FFT length of 64."
+  },
+  {
+   "id": "cr1000x-range-64-1000",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 64000 usec for FFT length of 64."
+  },
+  {
+   "id": "cr1000x-range-64-10000",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-range-1024-100",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 10240000 usec for FFT length of 1024."
+  },
+  {
+   "id": "cr1000x-range-1024-500",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 2048000 usec for FFT length of 1024."
+  },
+  {
+   "id": "cr1000x-range-1024-1000",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 1024000 usec for FFT length of 1024."
+  },
+  {
+   "id": "cr1000x-range-1024-10000",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Scan interval must be at least 102400 usec for FFT length of 1024."
+  },
+  {
+   "id": "cr1000x-buffers-first",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(20,mSec,1,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Insufficient Scan buffers to read EPI data, minimum is 100.\nline 6: Scan interval must be at least 409600 usec for FFT length of 4096.\nline 6: Illegal spectral binning.\nline 6: Maximum IHigh is -2147483648."
+  },
+  {
+   "id": "cr300-edge--1.5-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,0,0,32)\n."
+  },
+  {
+   "id": "cr300-edge--1.5-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,1,0,32)\n."
+  },
+  {
+   "id": "cr300-edge--1.5-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,2,0,32)\n."
+  },
+  {
+   "id": "cr300-edge--0.5-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,0,0,32)\n."
+  },
+  {
+   "id": "cr300-edge--0.5-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,1,0,32)\n."
+  },
+  {
+   "id": "cr300-edge--0.5-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,2,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-0-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,0,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-0-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,1,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-0-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,2,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-0.999-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,0,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-0.999-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,1,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-0.999-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,2,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-1-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,0,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-1-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,1,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-1-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,2,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-1.5-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,0,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-1.5-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,1,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-1.5-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,2,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-32767-0",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,0,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-32767-1",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,1,0,32)\n."
+  },
+  {
+   "id": "cr300-edge-32767-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,2,0,32)\n."
+  },
+  {
+   "id": "cr300-opt-0-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,2,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-0-16",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,16,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-0-17",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,17,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-1-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,2,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-1-16",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,16,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-1-17",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,17,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-2-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,2,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-2-16",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,16,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-2-17",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,17,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-3-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,2,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-3-16",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,16,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-3-17",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,17,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-6-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,2,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-6-16",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,16,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-6-17",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,17,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-7-2",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,2,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-7-16",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,16,0,0)\n."
+  },
+  {
+   "id": "cr300-opt-7-17",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,17,0,0)\n."
+  },
+  {
+   "id": "cr300-range-32-100",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,32,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-range-32-500",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-range-32-1000",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,32,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-range-32-10000",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,32,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-range-64-100",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,64,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-range-64-500",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-range-64-1000",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,64,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-range-64-10000",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,64,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-range-1024-100",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,1024,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-range-1024-500",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,1024,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-range-1024-1000",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,1024,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-range-1024-10000",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,1024,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr300-buffers-first",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(20,mSec,1,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,0,0,2048)\n."
+  },
+  {
+   "id": "cr350-edge--1.5-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,0,0,32)\n."
+  },
+  {
+   "id": "cr350-edge--1.5-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,1,0,32)\n."
+  },
+  {
+   "id": "cr350-edge--1.5-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-1.5,2,0,32)\n."
+  },
+  {
+   "id": "cr350-edge--0.5-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,0,0,32)\n."
+  },
+  {
+   "id": "cr350-edge--0.5-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,1,0,32)\n."
+  },
+  {
+   "id": "cr350-edge--0.5-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,-0.5,2,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-0-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,0,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-0-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,1,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-0-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,2,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-0.999-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,0,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-0.999-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,1,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-0.999-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0.999,2,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-1-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,0,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-1-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,1,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-1-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1,2,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-1.5-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,0,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-1.5-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,1,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-1.5-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,1.5,2,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-32767-0",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,0,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,0,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-32767-1",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,1,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,1,0,32)\n."
+  },
+  {
+   "id": "cr350-edge-32767-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,2,0,32)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,32767,2,0,32)\n."
+  },
+  {
+   "id": "cr350-opt-0-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,2,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-0-16",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,16,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-0-17",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,0,0,17,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-1-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,2,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-1-16",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,16,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-1-17",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,17,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-2-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,2,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-2-16",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,16,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-2-17",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,2,0,17,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-3-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,2,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-3-16",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,16,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-3-17",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,3,0,17,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-6-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,2,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-6-16",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,16,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-6-17",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,6,0,17,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-7-2",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,2,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-7-16",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,16,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,16,0,0)\n."
+  },
+  {
+   "id": "cr350-opt-7-17",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(500,mSec,100,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,17,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,500,32,0,7,0,17,0,0)\n."
+  },
+  {
+   "id": "cr350-range-32-100",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,32,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-range-32-500",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,32,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-range-32-1000",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,32,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-range-32-10000",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,32,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,32,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-range-64-100",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,64,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-range-64-500",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,64,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-range-64-1000",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,64,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-range-64-10000",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,64,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,64,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-range-1024-100",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,100,1024,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-range-1024-500",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,500,1024,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-range-1024-1000",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,1000,1024,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-range-1024-10000",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(50,mSec,100,0)\n CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,1024,0,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM109 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM109,1,Wave,1,mV5000,2,4,2,1,10000,1024,0,1,0,0,0,0)\n."
+  },
+  {
+   "id": "cr350-buffers-first",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nPublic Wave(32769)\nBeginProg\n Scan(20,mSec,1,0)\n CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,0,0,2048)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_FFTFilt is not defined.\nline 6: SPECTRUM103 is not defined.\nline 6: Invalid, or out of place expression:  CDM_FFTFilt(SPECTRUM103,1,Wave,1,mV5000,2,4,2,1,10000,4096,0,1,1,0,0,2048)\n."
+  }
+ ]
+}

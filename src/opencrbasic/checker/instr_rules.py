@@ -3394,13 +3394,11 @@ def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env
 
 
 def check_epi_scan_buffers(program: S.Program, profile, diags: Diagnostics, env) -> None:
-    """Pipeline mode, CR6/CR1000X: `CDM_BridgeFilt`/`CDM_FFTFilt` in a main `Scan` with a constant
-    interval of 1 mSec or more, per call (also inside conditionals): `Insufficient Scan buffers to
-    read EPI data, minimum is N.` when the constant buffer count is below `min(100, 2 s / interval)`
-    (integer division; intervals of 1 mSec..500 mSec only), and for `CDM_BridgeFilt` only (`CDM_FFTFilt` accepts 2 Sec) `Invalid Output Rate.` when the interval
-    is not one of 1/2/5/10/20/50/100/200/500/1000 mSec, and `Maximum Scan interval for <name> is 1
-    Sec.` past 1 Sec; docs/instructions.md. Not modelled inside `SubScan` (only the buffer message
-    is), nor below 1 mSec."""
+    """CR6/CR1000X EPI filters in a pipeline main Scan of at least 1 ms.
+
+    Check the buffer minimum up to 500 ms, the bridge output interval, and the FFT capture
+    duration and binning. Also reject FFT calls in Sequential mode. See docs/instructions.md.
+    """
     from .. import mode
 
     if profile.name not in ("cr6", "cr1000x"):
@@ -3408,18 +3406,21 @@ def check_epi_scan_buffers(program: S.Program, profile, diags: Diagnostics, env)
     stmts = [st for st in program.statements if isinstance(st, S.Instruction)]
     if not any(st.keyword.upper() in _EPI_FILTERS for st in stmts):
         return
+    names = longconv.float_names(program.statements), longconv.literal_names(program.statements)
     try:
-        if (
-            mode.decide(
-                program.statements,
-                profile,
-                lambda e: consteval.is_constant(e, env),
-                lambda e: consteval.value_of(e, env),
-            )
-            != "Pipeline"
-        ):
-            return
+        execution = mode.decide(
+            program.statements,
+            profile,
+            lambda e: consteval.is_constant(e, env),
+            lambda e: consteval.value_of(e, env),
+        )
     except Exception:
+        return
+    if execution != "Pipeline":
+        if execution == "Sequential":
+            for st in stmts:
+                if st.keyword.upper() == "CDM_FFTFILT":
+                    diags.error(st.line, "CDM_FFTFilt not allowed in Sequential Mode.", st.file)
         return
     slow = False
     us = minimum = None
@@ -3451,10 +3452,52 @@ def check_epi_scan_buffers(program: S.Program, profile, diags: Diagnostics, env)
                     diags.error(st.line, "Invalid Output Rate.", st.file)
                 if us > 1_000_000:
                     diags.error(st.line, "Maximum Scan interval for CDM_BridgeFilt is 1 Sec.", st.file)
+            if not subscan and kw == "CDM_FFTFILT":
+                _check_cdm_fft(st, us, profile, env, names, diags)
 
 
 _EPI_RATES_US = frozenset(ms * 1000 for ms in (1, 2, 5, 10, 20, 50, 100, 200, 500, 1000))
 _EPI_FILTERS = frozenset({"CDM_BRIDGEFILT", "CDM_FFTFILT"})
+_FFT_SAMPLE_PERIODS = frozenset({1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000})
+
+
+def _check_cdm_fft(st: S.Instruction, us: int, profile, env, names, diags: Diagnostics) -> None:
+    if len(st.args) != 17:
+        return
+
+    def arg(pos: int) -> int | None:
+        return longconv.long_value(st.args[pos], env, profile, *names)
+
+    if arg(0) not in (260, 261):
+        return
+    rate, length = arg(9), arg(10)
+    if rate is None or rate <= 0 or length is None or not 32 <= length <= 65536:
+        return
+
+    required_us = 100 * (length * 10000 // rate)
+    if us < required_us:
+        diags.error(st.line, f"Scan interval must be at least {required_us} usec for FFT length of {length}.", st.file)
+
+    ref, bins, low, high = arg(13), arg(14), arg(15), arg(16)
+    if ref is not None and bins is not None and low is not None and high is not None:
+        half_length = length // 2
+        if ref != 0 and not 1 <= bins <= 12:
+            diags.error(st.line, "Illegal spectral binning.", st.file)
+        if high < low:
+            diags.error(st.line, "ILow must be less than IHigh.", st.file)
+        if bins > 1 and (arg(12) in (0, 2) or bins > half_length):
+            diags.error(st.line, "Illegal spectral binning.", st.file)
+        maximum = None
+        if ref == 0 and bins >= 0:
+            maximum = half_length // max(1, bins)
+        elif 0 < abs(ref) <= 32767 and 500 <= rate <= 10000 and 0 <= bins <= 13:
+            # This is the observed conversion of the nonzero-reference calculation on this range.
+            maximum = longconv.INT_MIN
+        if maximum is not None and high > maximum:
+            diags.error(st.line, f"Maximum IHigh is {maximum}.", st.file)
+
+    if 10000 // rate not in _FFT_SAMPLE_PERIODS:
+        diags.error(st.line, "Invalid Output Rate.", st.file)
 
 
 def _const_int(arg, env) -> int | None:

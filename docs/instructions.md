@@ -1343,8 +1343,8 @@ verdict and nothing was changed. The parenthesised `StructureType (Values)` form
 
 Fixtures `tests/fixtures/epi_scan_buffers.json` (`CDM_BridgeFilt`, 30 cases) and
 `epi_scan_buffers_fft.json` (`CDM_FFTFilt`, 8), `tests/test_epi_scan_buffers.py`,
-`instr_rules.check_epi_scan_buffers`. Corpus: `chm/cdmbridgefilt_1`. Pipeline mode only
-(`SequentialMode` gives `CDM_BridgeFilt not allowed in Sequential Mode.`, not modelled).
+`instr_rules.check_epi_scan_buffers`. Corpus: `chm/cdmbridgefilt_1`. The buffer
+and rate checks run in Pipeline mode.
 Per call, on the instruction line, also inside an `If` and a `SubScan`:
 
 - `Insufficient Scan buffers to read EPI data, minimum is N.` when the constant `Scan` buffer
@@ -1355,11 +1355,26 @@ Per call, on the instruction line, also inside an `If` and a `SubScan`:
   500/1000 mSec (the help page's table), then for intervals above 1 Sec `Maximum Scan interval for
   CDM_BridgeFilt is 1 Sec.` `CDM_FFTFilt` accepts 2 Sec.
 
-Not modelled: `CDM_FFTFilt` `Scan interval must be at least N usec for FFT length M.`, the
-rate message for a table interval that the scan does not divide (gated behind the table-divisibility
-error here), the rate/max messages inside `SubScan` (`Cannot mix output rates in a single Spectrum
-Module.`), scan intervals under 1 mSec. `CDM_TCComp` and the other `CDM_*` measurements have no buffer
-rule (0 buffers at 100 mSec accepted).
+`CDM_TCComp` and the other `CDM_*` measurements accept 0 buffers at 100 mSec.
+Open cases include table intervals indivisible by the scan interval, output
+rates inside `SubScan`, and scan intervals under 1 mSec.
+
+### CDM_FFTFilt capture duration and binning (round 106)
+
+CR6/CR1000X reject `CDM_FFTFilt` in Sequential mode. For Spectrum103 and
+Spectrum109 in a Pipeline main scan, the CR6 builder `FUN_00421840` checks
+capture duration after the buffer check. The minimum in microseconds is
+`100 * floor(10000 * FFTLen / FSampleRate)`. The separate output-rate
+check uses the integer sample period in units of 100 µs.
+
+The builder truncates `Fref` toward zero. A nonzero result requires
+`Sbin` in 1–12. A bin count above 1 also requires a spectral option
+other than 0 or 2 and a count at most half the FFT length. With a
+zero reference the upper `IHigh` bound is half the length divided by
+the bin count, using 1 for a count of 0. The fixture records cases
+where the nonzero-reference calculation yields a bound of
+`-2147483648`. Large nonzero reference values can yield other bounds.
+[Four-profile observations](../tests/fixtures/r106_cdm_fft.json).
 
 ## `Scan interval too short` on a zero-interval Sec/Min scan (CR6/CR1000X, 2026-10-03)
 
