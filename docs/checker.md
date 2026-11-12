@@ -3585,6 +3585,12 @@ same `SlowSequence`; CR300/CR350 do not report that span error and report the ta
 instead. The CR300/CR350 check runs before table-body validation so `Sample` does not produce its
 own conditional-placement diagnostic first. Fixture: `tests/fixtures/datatable_placement.json`.
 
+Round 113 confirmed the same restriction inside a `Sub`, `Function`, or
+`ApplyAndRestartSequence` body on all four loggers. The declaration is
+accepted after the matching terminator. Four CR300/CR350 cases with an
+intervening `SlowSequence` still differ in which error is emitted.
+[Four-profile observations](../tests/fixtures/r113_datatable_executing_sequences.json).
+
 ## Expression-level false accepts (2026-10-02)
 
 Fixture: `tests/fixtures/expression_false_accepts.json`, audited against all four real compilers

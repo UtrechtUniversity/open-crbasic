@@ -514,14 +514,14 @@ def first_misplaced_data_table(program: S.Program, profile) -> S.Stmt | None:
     `SlowSequence` header is accepted. CR6/CR1000X's already-reported `DO .. LOOP cannot span
     across sequences.` suppresses the table placement report for a table after that `SlowSequence`.
     """
-    prescan = in_table = False
+    prescan = in_table = in_apply = in_routine = False
     scans = blocks = 0
     slow_block_error = False
     for stmt in program.statements:
         kw = _keyword(stmt)
         args = getattr(stmt, "args", []) or []
         if kw == "DATATABLE":
-            if not in_table and not slow_block_error and (prescan or scans or blocks):
+            if not in_table and (in_apply or in_routine or (not slow_block_error and (prescan or scans or blocks))):
                 return stmt
             in_table = True
         elif kw == "ENDTABLE":
@@ -530,6 +530,14 @@ def first_misplaced_data_table(program: S.Program, profile) -> S.Stmt | None:
             prescan = True
         elif kw == "ENDPROG":
             prescan = False
+        elif kw == "APPLYANDRESTARTSEQUENCE":
+            in_apply = True
+        elif kw == "ENDAPPLYANDRESTARTSEQUENCE":
+            in_apply = False
+        elif isinstance(stmt, S.SubDef):
+            in_routine = True
+        elif S.ends_routine(stmt):
+            in_routine = False
         elif kw == "SLOWSEQUENCE":
             if blocks and profile.name in ("cr6", "cr1000x"):
                 slow_block_error = True

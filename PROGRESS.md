@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 113** (historical verdict parity). Fixed CR300 false accept
+`ae9eb6bb2d37` by checking `DataTable` placement inside executing
+declaration bodies. Five false accepts remain among the historical reproducers.
+[Placement evidence](docs/checker.md#datatable-placement).
+
 **Round 112** (historical verdict parity). Fixed CR350 false accept
 `2c6d7051e308` by validating `SerialOpen` CommsMode by port.
 Six false accepts remain among the historical reproducers.
