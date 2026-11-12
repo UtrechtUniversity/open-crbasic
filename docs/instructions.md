@@ -1071,11 +1071,17 @@ string), tier-C check, fixture `tests/fixtures/tablefile_drives.json`:
 - CR300/CR350 only: with `r` = C remainder of the option by 100, `Invalid file type option.` when
   `|r|` is 24..31 or >= 40 (swept 0..1099 and a negative sample on CR300 `CPU:`; swept 0..299 on
   CR350; the hundreds digit is ignored, e.g. 512 and 1024 behave as 12 and 24).
-- CR350 only: on `USB:` with option >= 0 and `option mod 100 >= 64`, `TOB3 TableFile output only
-  allowed on CRD: drive.` precedes the file-type error (swept 0..299). CPU gets no such message.
-- Not modelled: the CR6/CR1000X option rule and TOB3 message (irregular, probe sweep incomplete),
-  `Invalid filename.` for an empty name, and variables folded into the name (the oracle uses the
-  variable's value, e.g. `"CRD:"+x` reports `CRD:0`).
+- CR350 only: on `USB:`, when the magnitude of the remainder is 64 or above, `TOB3 TableFile
+  output only allowed on CRD: drive.` precedes the file-type error.
+- CR6/CR1000X (round 97): take the option's magnitude as a signed Long, then subtract 100
+  for 100–135 and 356–363. Bit `0x40` selects TOB3 and requires `CRD:`. Otherwise the
+  shifted format code (arithmetic right shift by three) must be 0, 1, 2, 4, 8, 32, 64 or 128.
+  An invalid drive ends these checks. The CR6 builder is `FUN_004cccb0`.
+- All four profiles require the last filename result variable to have String type, including
+  through an alias. Literal arguments do not request a result variable.
+  [Round 97 probes](../tests/fixtures/r97_tablefile_options.json).
+- Open cases include the required result-string capacity, `Invalid filename.` for an empty
+  name, and file names that use the current value of a variable.
 
 `DNP` argument 1 emits `ComPort -2147483648 illegal.` for a string or `NAN` on all four loggers.
 CR6/CR1000X additionally emit it for a finite number outside Long range and literal

@@ -13,6 +13,7 @@ CASES = [
     for name in (
         "filemanage_drives",
         "tablefile_drives",
+        "r97_tablefile_options",
         "settings_index",
         "table_members",
         "sdi12_structure_dest",

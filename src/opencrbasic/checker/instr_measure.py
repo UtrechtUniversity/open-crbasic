@@ -30,6 +30,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
     # a one-line If's statement too (oracle, CR6/CR1000X, round 58, docs/checker.md#one-line-if-statements-in-tier-c-round-58)
     slow = False
     statements = list(_with_inline(program.statements))
+    tablefile_context = None
     for pos, stmt in enumerate(statements):
         if not isinstance(stmt, S.Instruction):
             continue
@@ -63,7 +64,12 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if kw == "SDI12RECORDER" and profile.single_pass:
             _check_sdi12_structure_dest(stmt, program, diags)
         if kw == "TABLEFILE" and "tablefile" in measure:
-            _check_tablefile(stmt, measure["tablefile"], env, diags)
+            if tablefile_context is None:
+                tablefile_context = (
+                    (longconv.float_names(statements), longconv.literal_names(statements)),
+                    var_types._Typer(program, profile=profile),
+                )
+            _check_tablefile(stmt, measure["tablefile"], env, diags, profile, *tablefile_context)
         for rule in measure.get("string_prefixes", ()):
             if kw == rule["instr"] and not (file_reported and "ext" in rule):
                 file_reported = _check_string_prefix(stmt, rule, env, diags) or file_reported
@@ -311,20 +317,43 @@ def _check_sdi12_structure_dest(stmt: S.Instruction, program: S.Program, diags: 
         diags.error(stmt.line, f"Could not find DataTable {_arg_text(stmt, 0)}.", stmt.file)
 
 
-def _check_tablefile(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diagnostics) -> None:
-    """`TableFile` file name drive and file-type option; docs/instructions.md#tablefile-drive."""
+def _check_tablefile(
+    stmt: S.Instruction,
+    cfg: dict,
+    env: consteval.Env,
+    diags: Diagnostics,
+    profile: Profile,
+    names: tuple[frozenset[str], frozenset[str]],
+    typer: var_types._Typer,
+) -> None:
+    """`TableFile` drive, file-type option and result variable (docs/instructions.md)."""
     name = _name_text(stmt.args[0], env) if stmt.args else None
     if not name:
         return
-    if name[:4].upper() not in (f"{d}:" for d in cfg["drives"]):
+    drive = name[:4].upper()
+    if drive not in (f"{d}:" for d in cfg["drives"]):
         diags.error(stmt.line, f"Invalid drive or no drive specified in filename {name}.", stmt.file)
-    option = _int_value(stmt.args[1], env) if len(stmt.args) > 1 else None
-    if option is not None and cfg.get("option_mod100"):
-        low = abs(int(math.fmod(option, 100)))
-        if option >= 0 and low >= 64 and name[:4].upper() in (f"{d}:" for d in cfg.get("tob3_drives", ())):
+        if not profile.single_pass:
+            return
+    option = longconv.long_value(stmt.args[1], env, profile, *names) if len(stmt.args) > 1 else None
+    if option is not None:
+        if cfg.get("option_mod100"):
+            low = abs(option) % 100
+            tob3 = low >= 64 and drive in (f"{d}:" for d in cfg.get("tob3_drives", ()))
+            invalid = 24 <= low <= 31 or low >= 40
+        else:
+            code = abs(option) if option != longconv.INT_MIN else option
+            if 100 <= code <= 135 or 356 <= code <= 363:
+                code -= 100
+            is_tob3 = bool(code & 0x40)
+            tob3 = is_tob3 and drive != "CRD:"
+            invalid = not is_tob3 and code >> 3 not in (0, 1, 2, 4, 8, 32, 64, 128)
+        if tob3:
             diags.error(stmt.line, "TOB3 TableFile output only allowed on CRD: drive.", stmt.file)
-        if 24 <= low <= 31 or low >= 40:
+        if invalid:
             diags.error(stmt.line, "Invalid file type option.", stmt.file)
+    if len(stmt.args) > 7 and (result := typer.variable(stmt.args[7])) is not None and typer.types[result] != "STRING":
+        diags.error(stmt.line, "Invalid parameter type, STRING type required.", stmt.file)
 
 
 def _name_text(arg: S.Expr | None, env: consteval.Env) -> str | None:

@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 97** (archived verdict parity). Fixed CR6 false accepts `ecc509dd06de`
+and `f61f825392f2` by checking `TableFile` format options and the last filename
+result type. The 25-case archived replay now has 16 false accepts and nine exact
+matches. [TableFile evidence](docs/instructions.md#tablefile-drive-and-file-type-option-measurejson-tablefile).
+
 **Round 96** (archived verdict parity). Fixed CR1000X false accept `39a03364be83`
 by checking `FieldCalStrain` selectors. The 25-case archived replay now has
 18 false accepts and seven exact matches.
