@@ -92,6 +92,12 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 116** (historical verdict parity). Fixed CR300 false accepts
+`01d72b3a2d03` and `bd1648cdb628` by resolving variables at their use
+in assignments and `RealTime`. The second case still differs by an
+`EndSelect` diagnostic. One historical false accept remains.
+[Four-profile observations](tests/fixtures/r116_cr3xx_forward_variables.json).
+
 **Round 115** (historical verdict parity). CR300/CR350 now reject unknown
 DataTable fields, fixing false accept `568570079fdd`. That case still
 differs by a later warning. Three historical false accepts remain.

@@ -2001,6 +2001,30 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
     dim_counts = symbols.declared_dim_counts(program, strings=True)
     scopes = symbols.statement_scopes(program, profile)
     read_only = (program.consts.keys() | profile.functions.keys()) - variable_names
+    first_variables = {}
+    if profile.single_pass:
+        for st in program.statements:
+            if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
+                for var in st.vars:
+                    first_variables.setdefault(var.name.upper(), (st.file, st.line))
+
+    def visible_at(stmt: S.Stmt) -> KnownNames:
+        params = scopes[id(stmt)][0]
+        return (
+            known.without(
+                {
+                    name
+                    for name, (file, line) in first_variables.items()
+                    if file == stmt.file
+                    and line > stmt.line
+                    and name not in params
+                    and name not in profile.symbols
+                    and name not in profile.functions
+                }
+            )
+            if first_variables
+            else known
+        )
 
     seen_avw200 = False
     for stmt in program.statements:
@@ -2038,6 +2062,8 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
             if profile.single_pass:  # every position sees only earlier `Const`s (round 71)
                 params, later = scopes[id(stmt)]
                 here, here_variables = known.without(later - params - variable_names), variable_names | params
+                if stmt.keyword.upper() == "REALTIME":
+                    here = visible_at(stmt)
             _report_statement(
                 stmt, positions, here, here_variables, profile, diags, families="general", dim_counts=dim_counts, ds=ds
             )
@@ -2224,6 +2250,16 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
             continue
         if _undefined_names(stmt.target, known):
             continue  # target itself unresolved: `structure.check_pass2`'s job entirely, above.
+        if profile.single_pass:
+            visible = visible_at(stmt)
+            if visible != known:
+                early, dims = _names_and_dims(visible, None, stmt, (), stmt.target, stmt.value)
+                if early and any(name.upper() in known and name.upper() not in visible for name in early):
+                    for name in early:
+                        diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+                    if dims:
+                        diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol), stmt.file)
+                    continue
         if _multi_indexed_struct(stmt.target, struct_vars) or _multi_indexed_struct(stmt.value, struct_vars):
             continue  # already reported by `check_function_arity` (pass 1)
         if profile.single_pass and _function_target_message(stmt, profile, frozenset()):
