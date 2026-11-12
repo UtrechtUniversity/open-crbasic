@@ -111,6 +111,7 @@ from . import (
     storage,
     structs,
     structure,
+    terminals,
     var_types,
     warnings,
 )
@@ -411,6 +412,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # "stop entirely at the first placement error" behaviour.
         pass2_start = len(diags.items)
         _run_pass(instr_rules.check_spi_open_order, _with_inline(program), profile, leading)
+        _run_pass(terminals.check_i2c_open_order, _with_inline(program), profile, ranges, env)
         # Block-closer messages come before a same-line placement error (`EndIf illegally
         # occurs before BeginProg.` follows `END IF without IF...`).
         # CR300/CR350: collected aside in `leading` (printed first on their line, but they do not

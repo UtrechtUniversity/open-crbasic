@@ -1184,6 +1184,21 @@ CR300/CR350 (different messages, and CR350 compiled the reuse), and a reuse acro
 probed but are not implemented. The clash with `SerialOpen`, `PortSet`, `WriteIO` or
 `SDI12Recorder` on the same terminal is [terminal ownership](checker.md#terminal-ownership-round-37). `instr_rules.check_pulsecount_channels`.
 
+### I2C and SPI port conversion and I2C open order (round 99)
+
+On CR6 and CR1000X, I2C and SPI ports convert to a signed Long. Fractions
+truncate toward zero, strings and wide values become `INT_MIN`, and `INF`
+becomes `INT_MAX`. The existing port ranges and secondary diagnostic messages
+apply to the converted value. CR300 and CR350 lack these instructions.
+
+`I2CRead` and `I2CWrite` require an earlier `I2COpen` on the same physical
+port. On CR6, `U1..U12` pair with `C5..C16`, and an out-of-range port reports
+its error and uses the C1 slot for the order check. An in-range even port skips
+the order check. CR1000X skips it for both out-of-range and even ports.
+The CR6 builders `FUN_0050e4e0` and `FUN_0050ec50` use the port returned by
+`FUN_00515ff0` to index the same open-port table.
+[`r99_serial_bus_ports.json`](../tests/fixtures/r99_serial_bus_ports.json).
+
 ### SPIRead/SPIWrite before SPIOpen (CR6/CR1000X)
 `SPIOpen must precede SPIWrite.` / `...SPIRead.` is reported for an `SPIRead`/`SPIWrite` whose port
 no earlier `SPIOpen` (textual order only: `Sub` bodies, branches and an inline `If` count; an

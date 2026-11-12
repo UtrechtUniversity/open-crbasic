@@ -45,6 +45,7 @@ from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
 from ..profiles import Profile
+from . import longconv
 
 
 def _ranges(kind: dict) -> list[tuple[int, int]]:
@@ -86,6 +87,69 @@ def _evaluate(value: float, kind: dict) -> tuple[bool, bool, int]:
 
 
 CR6_BRIDGES = frozenset({"BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL", "BRFULL6W"})
+_I2C = frozenset({"I2COPEN", "I2CREAD", "I2CWRITE"})
+_SERIAL_BUS = _I2C | {"SPIOPEN", "SPIREAD", "SPIWRITE"}
+
+
+def _bus_port(arg, env, profile, names):
+    if isinstance(arg, S.Name) and arg.name.upper() == "INF" and "INF" not in env.consts:
+        return 2**31 - 1
+    value = longconv.long_value(arg, env, profile, *names)
+    if value is not None:
+        return value
+    try:
+        folded = consteval.value_of(arg, env)
+    except consteval.NotConstant:
+        return None
+    return consteval.to_long(folded) if consteval.is_finite_number(folded) else None
+
+
+def _check_bus_port(stmt, kind, value, diags) -> None:
+    if value is None:
+        return
+    in_range, odd_ok, shown = _evaluate(value, kind)
+    if not in_range:
+        diags.error(stmt.line, kind["message"].format(v=shown), stmt.file)
+        if not kind.get("secondary_when_invalid"):
+            return
+    if not odd_ok:
+        diags.error(stmt.line, kind["odd_message"], stmt.file)
+    elif "allowed" in kind and (not in_range or shown not in kind["allowed"]):
+        diags.error(stmt.line, kind["allowed_message"], stmt.file)
+
+
+def check_i2c_open_order(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
+    kinds = profile.terminals.get("channels", {})
+    kind = kinds.get("i2c_port" if profile.name == "cr6" else "i2c_port_cr1000x")
+    if kind is None:
+        return
+    opened: set[int] = set()
+    names = None
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in _I2C or not stmt.args:
+            continue
+        keyword = stmt.keyword.upper()
+        if len(stmt.args) != (2 if keyword == "I2COPEN" else 5):
+            continue
+        if names is None:
+            names = longconv.float_names(program.statements), longconv.literal_names(program.statements)
+        port = _bus_port(stmt.args[0], env, profile, names)
+        if port is None:
+            if keyword == "I2COPEN":
+                return
+            continue
+        in_range, odd_ok, _ = _evaluate(port, kind)
+        if not in_range and profile.name == "cr6":
+            port = 101  # the CR6 converter uses its first slot on invalid input
+        elif not odd_ok:
+            continue
+        if profile.name == "cr6" and port >= 201:
+            port -= 96  # U1..U12 alias C5..C16
+        if keyword == "I2COPEN":
+            opened.add(port)
+        elif port not in opened:
+            name = "I2CRead" if keyword == "I2CREAD" else "I2CWrite"
+            diags.error(stmt.line, f"I2COpen must precede {name}.", stmt.file)
 
 
 def check(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -96,6 +160,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         return
     from .instr_data import _with_inline
 
+    bus_names = None
     for stmt in _with_inline(program.statements):  # a one-line If's statement too (round 58)
         if not isinstance(stmt, S.Instruction):
             continue
@@ -115,6 +180,11 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
             reps = _const_int(stmt, extra[0], env, truncate=True) if extra else None
             width = extra[1] if len(extra) > 1 else 1
             kind = channels[kind_name]
+            if pos == 1 and stmt.keyword.upper() in _SERIAL_BUS and stmt.args:
+                if bus_names is None:
+                    bus_names = longconv.float_names(program.statements), longconv.literal_names(program.statements)
+                _check_bus_port(stmt, kind, _bus_port(stmt.args[0], env, profile, bus_names), diags)
+                continue
             if reps is not None and profile.name == "cr6" and stmt.keyword.upper() in CR6_BRIDGES:
                 reps = min(reps, 1)  # start channel only: `instr_measure._check_bridge_span` owns the span
             if reps is not None and "span" in kind:

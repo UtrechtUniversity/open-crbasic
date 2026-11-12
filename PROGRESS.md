@@ -92,6 +92,14 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 99** (archived verdict parity). Fixed CR1000X false accepts
+`870ca9a9562e` and `e8c854e3493d` by checking I2C and SPI port conversion.
+Also added I2C open-order validation. The 25-case archived replay now has
+13 false accepts and 12 exact matches.
+[I2C and SPI evidence](docs/instructions.md#i2c-and-spi-port-conversion-and-i2c-open-order-round-99).
+The help corpus still matches all 2,022 recorded reference verdicts and outputs
+across four profiles. Six reference runs have no usable verdict.
+
 **Round 98** (archived verdict parity). Fixed CR6 false accept `72f95eac103f`
 by checking the `DNPVariable` Flag type. The 25-case archived replay now has
 15 false accepts and ten exact matches.
