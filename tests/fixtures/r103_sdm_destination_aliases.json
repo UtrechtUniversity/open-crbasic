@@ -1,0 +1,2151 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-10-CS7500-bare-index-two",
+   "logger": "cr6",
+   "source": "Public Values(10)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-10-CS7500-bare-index-zero",
+   "logger": "cr6",
+   "source": "Public Values(10)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-10-CS7500-bare-index-neg",
+   "logger": "cr6",
+   "source": "Public Values(10)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-10-CS7500-bare-index-large",
+   "logger": "cr6",
+   "source": "Public Values(10)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-10-CS7500-bare-index-runtime",
+   "logger": "cr6",
+   "source": "Public Values(10)\nPublic J As Long\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-9-CS7500-sized-index-two",
+   "logger": "cr6",
+   "source": "Public Values(9)\nAlias Values(1)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-11-CS7500-sized-index-three",
+   "logger": "cr6",
+   "source": "Public Values(11)\nAlias Values(1)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-12-CS7500-sized-index-four",
+   "logger": "cr6",
+   "source": "Public Values(12)\nAlias Values(1)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-10-CS7500-bare-index-two",
+   "logger": "cr1000x",
+   "source": "Public Values(10)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-10-CS7500-bare-index-zero",
+   "logger": "cr1000x",
+   "source": "Public Values(10)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-10-CS7500-bare-index-neg",
+   "logger": "cr1000x",
+   "source": "Public Values(10)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-10-CS7500-bare-index-large",
+   "logger": "cr1000x",
+   "source": "Public Values(10)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-10-CS7500-bare-index-runtime",
+   "logger": "cr1000x",
+   "source": "Public Values(10)\nPublic J As Long\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-9-CS7500-sized-index-two",
+   "logger": "cr1000x",
+   "source": "Public Values(9)\nAlias Values(1)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-11-CS7500-sized-index-three",
+   "logger": "cr1000x",
+   "source": "Public Values(11)\nAlias Values(1)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-12-CS7500-sized-index-four",
+   "logger": "cr1000x",
+   "source": "Public Values(12)\nAlias Values(1)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-10-CS7500-bare-index-two",
+   "logger": "cr6",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-10-CS7500-bare-index-zero",
+   "logger": "cr6",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-10-CS7500-bare-index-neg",
+   "logger": "cr6",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-10-CS7500-bare-index-large",
+   "logger": "cr6",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-10-CS7500-bare-index-runtime",
+   "logger": "cr6",
+   "source": "Public Values(10)\nPublic J As Long\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-9-CS7500-sized-index-two",
+   "logger": "cr6",
+   "source": "Public Values(9)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-11-CS7500-sized-index-three",
+   "logger": "cr6",
+   "source": "Public Values(11)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-12-CS7500-sized-index-four",
+   "logger": "cr6",
+   "source": "Public Values(12)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-4-LI7200-bare-index-two",
+   "logger": "cr6",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-4-LI7200-bare-index-zero",
+   "logger": "cr6",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-4-LI7200-bare-index-neg",
+   "logger": "cr6",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-4-LI7200-bare-index-large",
+   "logger": "cr6",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-4-LI7200-bare-index-runtime",
+   "logger": "cr6",
+   "source": "Public Values(4)\nPublic J As Long\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-3-LI7200-sized-index-two",
+   "logger": "cr6",
+   "source": "Public Values(3)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-5-LI7200-sized-index-three",
+   "logger": "cr6",
+   "source": "Public Values(5)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-6-LI7200-sized-index-four",
+   "logger": "cr6",
+   "source": "Public Values(6)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-16-LI7700-bare-index-two",
+   "logger": "cr6",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-16-LI7700-bare-index-zero",
+   "logger": "cr6",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-16-LI7700-bare-index-neg",
+   "logger": "cr6",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-16-LI7700-bare-index-large",
+   "logger": "cr6",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-16-LI7700-bare-index-runtime",
+   "logger": "cr6",
+   "source": "Public Values(16)\nPublic J As Long\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-15-LI7700-sized-index-two",
+   "logger": "cr6",
+   "source": "Public Values(15)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-17-LI7700-sized-index-three",
+   "logger": "cr6",
+   "source": "Public Values(17)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-18-LI7700-sized-index-four",
+   "logger": "cr6",
+   "source": "Public Values(18)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-10-CS7500-bare-index-two",
+   "logger": "cr1000x",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-10-CS7500-bare-index-zero",
+   "logger": "cr1000x",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-10-CS7500-bare-index-neg",
+   "logger": "cr1000x",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-10-CS7500-bare-index-large",
+   "logger": "cr1000x",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-10-CS7500-bare-index-runtime",
+   "logger": "cr1000x",
+   "source": "Public Values(10)\nPublic J As Long\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-9-CS7500-sized-index-two",
+   "logger": "cr1000x",
+   "source": "Public Values(9)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-11-CS7500-sized-index-three",
+   "logger": "cr1000x",
+   "source": "Public Values(11)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-12-CS7500-sized-index-four",
+   "logger": "cr1000x",
+   "source": "Public Values(12)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-4-LI7200-bare-index-two",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-4-LI7200-bare-index-zero",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-4-LI7200-bare-index-neg",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-4-LI7200-bare-index-large",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-4-LI7200-bare-index-runtime",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nPublic J As Long\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-3-LI7200-sized-index-two",
+   "logger": "cr1000x",
+   "source": "Public Values(3)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-5-LI7200-sized-index-three",
+   "logger": "cr1000x",
+   "source": "Public Values(5)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-6-LI7200-sized-index-four",
+   "logger": "cr1000x",
+   "source": "Public Values(6)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-16-LI7700-bare-index-two",
+   "logger": "cr1000x",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-16-LI7700-bare-index-zero",
+   "logger": "cr1000x",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-16-LI7700-bare-index-neg",
+   "logger": "cr1000x",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-16-LI7700-bare-index-large",
+   "logger": "cr1000x",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-16-LI7700-bare-index-runtime",
+   "logger": "cr1000x",
+   "source": "Public Values(16)\nPublic J As Long\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-15-LI7700-sized-index-two",
+   "logger": "cr1000x",
+   "source": "Public Values(15)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-17-LI7700-sized-index-three",
+   "logger": "cr1000x",
+   "source": "Public Values(17)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-18-LI7700-sized-index-four",
+   "logger": "cr1000x",
+   "source": "Public Values(18)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr300-10-CS7500-bare-index-two",
+   "logger": "cr300",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(2),2,1,6)\n."
+  },
+  {
+   "id": "cr300-10-CS7500-bare-index-zero",
+   "logger": "cr300",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(0),2,1,6)\n."
+  },
+  {
+   "id": "cr300-10-CS7500-bare-index-neg",
+   "logger": "cr300",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(-1),2,1,6)\n."
+  },
+  {
+   "id": "cr300-10-CS7500-bare-index-large",
+   "logger": "cr300",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(20),2,1,6)\n."
+  },
+  {
+   "id": "cr300-10-CS7500-bare-index-runtime",
+   "logger": "cr300",
+   "source": "Public Values(10)\nPublic J As Long\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CS7500 is not defined.\nline 6: Invalid, or out of place expression:   CS7500(Start(J),2,1,6)\n."
+  },
+  {
+   "id": "cr300-9-CS7500-sized-index-two",
+   "logger": "cr300",
+   "source": "Public Values(9)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(2),2,1,6)\n."
+  },
+  {
+   "id": "cr300-11-CS7500-sized-index-three",
+   "logger": "cr300",
+   "source": "Public Values(11)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(3),2,1,6)\n."
+  },
+  {
+   "id": "cr300-12-CS7500-sized-index-four",
+   "logger": "cr300",
+   "source": "Public Values(12)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(4),2,1,6)\n."
+  },
+  {
+   "id": "cr300-4-LI7200-bare-index-two",
+   "logger": "cr300",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(2),2,1,6)\n."
+  },
+  {
+   "id": "cr300-4-LI7200-bare-index-zero",
+   "logger": "cr300",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(0),2,1,6)\n."
+  },
+  {
+   "id": "cr300-4-LI7200-bare-index-neg",
+   "logger": "cr300",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(-1),2,1,6)\n."
+  },
+  {
+   "id": "cr300-4-LI7200-bare-index-large",
+   "logger": "cr300",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(20),2,1,6)\n."
+  },
+  {
+   "id": "cr300-4-LI7200-bare-index-runtime",
+   "logger": "cr300",
+   "source": "Public Values(4)\nPublic J As Long\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7200 is not defined.\nline 6: Invalid, or out of place expression:   LI7200(Start(J),2,1,6)\n."
+  },
+  {
+   "id": "cr300-3-LI7200-sized-index-two",
+   "logger": "cr300",
+   "source": "Public Values(3)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(2),2,1,6)\n."
+  },
+  {
+   "id": "cr300-5-LI7200-sized-index-three",
+   "logger": "cr300",
+   "source": "Public Values(5)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(3),2,1,6)\n."
+  },
+  {
+   "id": "cr300-6-LI7200-sized-index-four",
+   "logger": "cr300",
+   "source": "Public Values(6)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(4),2,1,6)\n."
+  },
+  {
+   "id": "cr300-16-LI7700-bare-index-two",
+   "logger": "cr300",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(2),2,1,6)\n."
+  },
+  {
+   "id": "cr300-16-LI7700-bare-index-zero",
+   "logger": "cr300",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(0),2,1,6)\n."
+  },
+  {
+   "id": "cr300-16-LI7700-bare-index-neg",
+   "logger": "cr300",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(-1),2,1,6)\n."
+  },
+  {
+   "id": "cr300-16-LI7700-bare-index-large",
+   "logger": "cr300",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(20),2,1,6)\n."
+  },
+  {
+   "id": "cr300-16-LI7700-bare-index-runtime",
+   "logger": "cr300",
+   "source": "Public Values(16)\nPublic J As Long\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7700 is not defined.\nline 6: Invalid, or out of place expression:   LI7700(Start(J),2,1,6)\n."
+  },
+  {
+   "id": "cr300-15-LI7700-sized-index-two",
+   "logger": "cr300",
+   "source": "Public Values(15)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(2),2,1,6)\n."
+  },
+  {
+   "id": "cr300-17-LI7700-sized-index-three",
+   "logger": "cr300",
+   "source": "Public Values(17)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(3),2,1,6)\n."
+  },
+  {
+   "id": "cr300-18-LI7700-sized-index-four",
+   "logger": "cr300",
+   "source": "Public Values(18)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(4),2,1,6)\n."
+  },
+  {
+   "id": "cr350-10-CS7500-bare-index-two",
+   "logger": "cr350",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(2),2,1,6)\n."
+  },
+  {
+   "id": "cr350-10-CS7500-bare-index-zero",
+   "logger": "cr350",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(0),2,1,6)\n."
+  },
+  {
+   "id": "cr350-10-CS7500-bare-index-neg",
+   "logger": "cr350",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(-1),2,1,6)\n."
+  },
+  {
+   "id": "cr350-10-CS7500-bare-index-large",
+   "logger": "cr350",
+   "source": "Public Values(10)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(20),2,1,6)\n."
+  },
+  {
+   "id": "cr350-10-CS7500-bare-index-runtime",
+   "logger": "cr350",
+   "source": "Public Values(10)\nPublic J As Long\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CS7500 is not defined.\nline 6: Invalid, or out of place expression:   CS7500(Start(J),2,1,6)\n."
+  },
+  {
+   "id": "cr350-9-CS7500-sized-index-two",
+   "logger": "cr350",
+   "source": "Public Values(9)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(2),2,1,6)\n."
+  },
+  {
+   "id": "cr350-11-CS7500-sized-index-three",
+   "logger": "cr350",
+   "source": "Public Values(11)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(3),2,1,6)\n."
+  },
+  {
+   "id": "cr350-12-CS7500-sized-index-four",
+   "logger": "cr350",
+   "source": "Public Values(12)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(4),2,1,6)\n."
+  },
+  {
+   "id": "cr350-4-LI7200-bare-index-two",
+   "logger": "cr350",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(2),2,1,6)\n."
+  },
+  {
+   "id": "cr350-4-LI7200-bare-index-zero",
+   "logger": "cr350",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(0),2,1,6)\n."
+  },
+  {
+   "id": "cr350-4-LI7200-bare-index-neg",
+   "logger": "cr350",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(-1),2,1,6)\n."
+  },
+  {
+   "id": "cr350-4-LI7200-bare-index-large",
+   "logger": "cr350",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(20),2,1,6)\n."
+  },
+  {
+   "id": "cr350-4-LI7200-bare-index-runtime",
+   "logger": "cr350",
+   "source": "Public Values(4)\nPublic J As Long\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7200 is not defined.\nline 6: Invalid, or out of place expression:   LI7200(Start(J),2,1,6)\n."
+  },
+  {
+   "id": "cr350-3-LI7200-sized-index-two",
+   "logger": "cr350",
+   "source": "Public Values(3)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(2),2,1,6)\n."
+  },
+  {
+   "id": "cr350-5-LI7200-sized-index-three",
+   "logger": "cr350",
+   "source": "Public Values(5)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(3),2,1,6)\n."
+  },
+  {
+   "id": "cr350-6-LI7200-sized-index-four",
+   "logger": "cr350",
+   "source": "Public Values(6)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(4),2,1,6)\n."
+  },
+  {
+   "id": "cr350-16-LI7700-bare-index-two",
+   "logger": "cr350",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(2),2,1,6)\n."
+  },
+  {
+   "id": "cr350-16-LI7700-bare-index-zero",
+   "logger": "cr350",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(0),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(0),2,1,6)\n."
+  },
+  {
+   "id": "cr350-16-LI7700-bare-index-neg",
+   "logger": "cr350",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(-1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(-1),2,1,6)\n."
+  },
+  {
+   "id": "cr350-16-LI7700-bare-index-large",
+   "logger": "cr350",
+   "source": "Public Values(16)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(20),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(20),2,1,6)\n."
+  },
+  {
+   "id": "cr350-16-LI7700-bare-index-runtime",
+   "logger": "cr350",
+   "source": "Public Values(16)\nPublic J As Long\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(J),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LI7700 is not defined.\nline 6: Invalid, or out of place expression:   LI7700(Start(J),2,1,6)\n."
+  },
+  {
+   "id": "cr350-15-LI7700-sized-index-two",
+   "logger": "cr350",
+   "source": "Public Values(15)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(2),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(2),2,1,6)\n."
+  },
+  {
+   "id": "cr350-17-LI7700-sized-index-three",
+   "logger": "cr350",
+   "source": "Public Values(17)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(3),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(3),2,1,6)\n."
+  },
+  {
+   "id": "cr350-18-LI7700-sized-index-four",
+   "logger": "cr350",
+   "source": "Public Values(18)\nAlias Values(2)=Start(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(4),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(4),2,1,6)\n."
+  },
+  {
+   "id": "cr6-7-CS7500-6-alias-below",
+   "logger": "cr6",
+   "source": "Public Values(7)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-8-CS7500-6-alias-exact",
+   "logger": "cr6",
+   "source": "Public Values(8)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-8-CS7500-6-alias-offset-below",
+   "logger": "cr6",
+   "source": "Public Values(8)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-9-CS7500-6-alias-offset-exact",
+   "logger": "cr6",
+   "source": "Public Values(9)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-8-CS7500-6-alias-indexed-below",
+   "logger": "cr6",
+   "source": "Public Values(8)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-9-CS7500-6-alias-indexed-exact",
+   "logger": "cr6",
+   "source": "Public Values(9)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-7-CS7500-6-direct-below",
+   "logger": "cr6",
+   "source": "Public Values(7)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-8-CS7500-6-direct-exact",
+   "logger": "cr6",
+   "source": "Public Values(8)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-1-LI7200-6-alias-below",
+   "logger": "cr6",
+   "source": "Public Values(1)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-2-LI7200-6-alias-exact",
+   "logger": "cr6",
+   "source": "Public Values(2)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-2-LI7200-6-alias-offset-below",
+   "logger": "cr6",
+   "source": "Public Values(2)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-3-LI7200-6-alias-offset-exact",
+   "logger": "cr6",
+   "source": "Public Values(3)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-2-LI7200-6-alias-indexed-below",
+   "logger": "cr6",
+   "source": "Public Values(2)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-3-LI7200-6-alias-indexed-exact",
+   "logger": "cr6",
+   "source": "Public Values(3)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-1-LI7200-6-direct-below",
+   "logger": "cr6",
+   "source": "Public Values(1)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-2-LI7200-6-direct-exact",
+   "logger": "cr6",
+   "source": "Public Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-LI7700-6-alias-below",
+   "logger": "cr6",
+   "source": "Public Values(13)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-14-LI7700-6-alias-exact",
+   "logger": "cr6",
+   "source": "Public Values(14)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-14-LI7700-6-alias-offset-below",
+   "logger": "cr6",
+   "source": "Public Values(14)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-15-LI7700-6-alias-offset-exact",
+   "logger": "cr6",
+   "source": "Public Values(15)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-14-LI7700-6-alias-indexed-below",
+   "logger": "cr6",
+   "source": "Public Values(14)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-15-LI7700-6-alias-indexed-exact",
+   "logger": "cr6",
+   "source": "Public Values(15)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-LI7700-6-direct-below",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-14-LI7700-6-direct-exact",
+   "logger": "cr6",
+   "source": "Public Values(14)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-3-CS7500-0-alias-below",
+   "logger": "cr6",
+   "source": "Public Values(3)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-4-CS7500-0-alias-exact",
+   "logger": "cr6",
+   "source": "Public Values(4)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-4-CS7500-0-alias-offset-below",
+   "logger": "cr6",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-5-CS7500-0-alias-offset-exact",
+   "logger": "cr6",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-4-CS7500-0-alias-indexed-below",
+   "logger": "cr6",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-5-CS7500-0-alias-indexed-exact",
+   "logger": "cr6",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-3-CS7500-0-direct-below",
+   "logger": "cr6",
+   "source": "Public Values(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-4-CS7500-0-direct-exact",
+   "logger": "cr6",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-3-LI7200-0-alias-below",
+   "logger": "cr6",
+   "source": "Public Values(3)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-4-LI7200-0-alias-exact",
+   "logger": "cr6",
+   "source": "Public Values(4)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-4-LI7200-0-alias-offset-below",
+   "logger": "cr6",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-5-LI7200-0-alias-offset-exact",
+   "logger": "cr6",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-4-LI7200-0-alias-indexed-below",
+   "logger": "cr6",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-5-LI7200-0-alias-indexed-exact",
+   "logger": "cr6",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-3-LI7200-0-direct-below",
+   "logger": "cr6",
+   "source": "Public Values(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-4-LI7200-0-direct-exact",
+   "logger": "cr6",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-5-LI7700-0-alias-below",
+   "logger": "cr6",
+   "source": "Public Values(5)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-6-LI7700-0-alias-exact",
+   "logger": "cr6",
+   "source": "Public Values(6)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-6-LI7700-0-alias-offset-below",
+   "logger": "cr6",
+   "source": "Public Values(6)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-7-LI7700-0-alias-offset-exact",
+   "logger": "cr6",
+   "source": "Public Values(7)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-6-LI7700-0-alias-indexed-below",
+   "logger": "cr6",
+   "source": "Public Values(6)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr6-7-LI7700-0-alias-indexed-exact",
+   "logger": "cr6",
+   "source": "Public Values(7)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-5-LI7700-0-direct-below",
+   "logger": "cr6",
+   "source": "Public Values(5)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-6-LI7700-0-direct-exact",
+   "logger": "cr6",
+   "source": "Public Values(6)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-7-CS7500-6-alias-below",
+   "logger": "cr1000x",
+   "source": "Public Values(7)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-8-CS7500-6-alias-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(8)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-8-CS7500-6-alias-offset-below",
+   "logger": "cr1000x",
+   "source": "Public Values(8)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-9-CS7500-6-alias-offset-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(9)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-8-CS7500-6-alias-indexed-below",
+   "logger": "cr1000x",
+   "source": "Public Values(8)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-9-CS7500-6-alias-indexed-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(9)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-7-CS7500-6-direct-below",
+   "logger": "cr1000x",
+   "source": "Public Values(7)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-8-CS7500-6-direct-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(8)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-1-LI7200-6-alias-below",
+   "logger": "cr1000x",
+   "source": "Public Values(1)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-2-LI7200-6-alias-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(2)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-2-LI7200-6-alias-offset-below",
+   "logger": "cr1000x",
+   "source": "Public Values(2)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-3-LI7200-6-alias-offset-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(3)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-2-LI7200-6-alias-indexed-below",
+   "logger": "cr1000x",
+   "source": "Public Values(2)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-3-LI7200-6-alias-indexed-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(3)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-1-LI7200-6-direct-below",
+   "logger": "cr1000x",
+   "source": "Public Values(1)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-2-LI7200-6-direct-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-LI7700-6-alias-below",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-14-LI7700-6-alias-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(14)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-14-LI7700-6-alias-offset-below",
+   "logger": "cr1000x",
+   "source": "Public Values(14)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-15-LI7700-6-alias-offset-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(15)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-14-LI7700-6-alias-indexed-below",
+   "logger": "cr1000x",
+   "source": "Public Values(14)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-15-LI7700-6-alias-indexed-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(15)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-LI7700-6-direct-below",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-14-LI7700-6-direct-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(14)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-3-CS7500-0-alias-below",
+   "logger": "cr1000x",
+   "source": "Public Values(3)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-4-CS7500-0-alias-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-4-CS7500-0-alias-offset-below",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-5-CS7500-0-alias-offset-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-4-CS7500-0-alias-indexed-below",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-5-CS7500-0-alias-indexed-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-3-CS7500-0-direct-below",
+   "logger": "cr1000x",
+   "source": "Public Values(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-4-CS7500-0-direct-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-3-LI7200-0-alias-below",
+   "logger": "cr1000x",
+   "source": "Public Values(3)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-4-LI7200-0-alias-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-4-LI7200-0-alias-offset-below",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-5-LI7200-0-alias-offset-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-4-LI7200-0-alias-indexed-below",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-5-LI7200-0-alias-indexed-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-3-LI7200-0-direct-below",
+   "logger": "cr1000x",
+   "source": "Public Values(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-4-LI7200-0-direct-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-5-LI7700-0-alias-below",
+   "logger": "cr1000x",
+   "source": "Public Values(5)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-6-LI7700-0-alias-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(6)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-6-LI7700-0-alias-offset-below",
+   "logger": "cr1000x",
+   "source": "Public Values(6)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-7-LI7700-0-alias-offset-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(7)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-6-LI7700-0-alias-indexed-below",
+   "logger": "cr1000x",
+   "source": "Public Values(6)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Start out of bounds."
+  },
+  {
+   "id": "cr1000x-7-LI7700-0-alias-indexed-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(7)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-5-LI7700-0-direct-below",
+   "logger": "cr1000x",
+   "source": "Public Values(5)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-6-LI7700-0-direct-exact",
+   "logger": "cr1000x",
+   "source": "Public Values(6)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-7-CS7500-6-alias-below",
+   "logger": "cr300",
+   "source": "Public Values(7)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr300-8-CS7500-6-alias-exact",
+   "logger": "cr300",
+   "source": "Public Values(8)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr300-8-CS7500-6-alias-offset-below",
+   "logger": "cr300",
+   "source": "Public Values(8)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr300-9-CS7500-6-alias-offset-exact",
+   "logger": "cr300",
+   "source": "Public Values(9)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr300-8-CS7500-6-alias-indexed-below",
+   "logger": "cr300",
+   "source": "Public Values(8)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(1),2,1,6)\n."
+  },
+  {
+   "id": "cr300-9-CS7500-6-alias-indexed-exact",
+   "logger": "cr300",
+   "source": "Public Values(9)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(1),2,1,6)\n."
+  },
+  {
+   "id": "cr300-7-CS7500-6-direct-below",
+   "logger": "cr300",
+   "source": "Public Values(7)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CS7500 is not defined.\nline 4: Invalid, or out of place expression:   CS7500(Values(),2,1,6)\n."
+  },
+  {
+   "id": "cr300-8-CS7500-6-direct-exact",
+   "logger": "cr300",
+   "source": "Public Values(8)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CS7500 is not defined.\nline 4: Invalid, or out of place expression:   CS7500(Values(),2,1,6)\n."
+  },
+  {
+   "id": "cr300-1-LI7200-6-alias-below",
+   "logger": "cr300",
+   "source": "Public Values(1)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr300-2-LI7200-6-alias-exact",
+   "logger": "cr300",
+   "source": "Public Values(2)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr300-2-LI7200-6-alias-offset-below",
+   "logger": "cr300",
+   "source": "Public Values(2)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr300-3-LI7200-6-alias-offset-exact",
+   "logger": "cr300",
+   "source": "Public Values(3)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr300-2-LI7200-6-alias-indexed-below",
+   "logger": "cr300",
+   "source": "Public Values(2)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(1),2,1,6)\n."
+  },
+  {
+   "id": "cr300-3-LI7200-6-alias-indexed-exact",
+   "logger": "cr300",
+   "source": "Public Values(3)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(1),2,1,6)\n."
+  },
+  {
+   "id": "cr300-1-LI7200-6-direct-below",
+   "logger": "cr300",
+   "source": "Public Values(1)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7200 is not defined.\nline 4: Invalid, or out of place expression:   LI7200(Values(),2,1,6)\n."
+  },
+  {
+   "id": "cr300-2-LI7200-6-direct-exact",
+   "logger": "cr300",
+   "source": "Public Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7200 is not defined.\nline 4: Invalid, or out of place expression:   LI7200(Values(),2,1,6)\n."
+  },
+  {
+   "id": "cr300-13-LI7700-6-alias-below",
+   "logger": "cr300",
+   "source": "Public Values(13)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr300-14-LI7700-6-alias-exact",
+   "logger": "cr300",
+   "source": "Public Values(14)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr300-14-LI7700-6-alias-offset-below",
+   "logger": "cr300",
+   "source": "Public Values(14)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr300-15-LI7700-6-alias-offset-exact",
+   "logger": "cr300",
+   "source": "Public Values(15)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr300-14-LI7700-6-alias-indexed-below",
+   "logger": "cr300",
+   "source": "Public Values(14)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(1),2,1,6)\n."
+  },
+  {
+   "id": "cr300-15-LI7700-6-alias-indexed-exact",
+   "logger": "cr300",
+   "source": "Public Values(15)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(1),2,1,6)\n."
+  },
+  {
+   "id": "cr300-13-LI7700-6-direct-below",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7700 is not defined.\nline 4: Invalid, or out of place expression:   LI7700(Values(),2,1,6)\n."
+  },
+  {
+   "id": "cr300-14-LI7700-6-direct-exact",
+   "logger": "cr300",
+   "source": "Public Values(14)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7700 is not defined.\nline 4: Invalid, or out of place expression:   LI7700(Values(),2,1,6)\n."
+  },
+  {
+   "id": "cr300-3-CS7500-0-alias-below",
+   "logger": "cr300",
+   "source": "Public Values(3)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr300-4-CS7500-0-alias-exact",
+   "logger": "cr300",
+   "source": "Public Values(4)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr300-4-CS7500-0-alias-offset-below",
+   "logger": "cr300",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr300-5-CS7500-0-alias-offset-exact",
+   "logger": "cr300",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr300-4-CS7500-0-alias-indexed-below",
+   "logger": "cr300",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(1),2,1,0)\n."
+  },
+  {
+   "id": "cr300-5-CS7500-0-alias-indexed-exact",
+   "logger": "cr300",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(1),2,1,0)\n."
+  },
+  {
+   "id": "cr300-3-CS7500-0-direct-below",
+   "logger": "cr300",
+   "source": "Public Values(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CS7500 is not defined.\nline 4: Invalid, or out of place expression:   CS7500(Values(),2,1,0)\n."
+  },
+  {
+   "id": "cr300-4-CS7500-0-direct-exact",
+   "logger": "cr300",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CS7500 is not defined.\nline 4: Invalid, or out of place expression:   CS7500(Values(),2,1,0)\n."
+  },
+  {
+   "id": "cr300-3-LI7200-0-alias-below",
+   "logger": "cr300",
+   "source": "Public Values(3)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr300-4-LI7200-0-alias-exact",
+   "logger": "cr300",
+   "source": "Public Values(4)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr300-4-LI7200-0-alias-offset-below",
+   "logger": "cr300",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr300-5-LI7200-0-alias-offset-exact",
+   "logger": "cr300",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr300-4-LI7200-0-alias-indexed-below",
+   "logger": "cr300",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(1),2,1,0)\n."
+  },
+  {
+   "id": "cr300-5-LI7200-0-alias-indexed-exact",
+   "logger": "cr300",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(1),2,1,0)\n."
+  },
+  {
+   "id": "cr300-3-LI7200-0-direct-below",
+   "logger": "cr300",
+   "source": "Public Values(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7200 is not defined.\nline 4: Invalid, or out of place expression:   LI7200(Values(),2,1,0)\n."
+  },
+  {
+   "id": "cr300-4-LI7200-0-direct-exact",
+   "logger": "cr300",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7200 is not defined.\nline 4: Invalid, or out of place expression:   LI7200(Values(),2,1,0)\n."
+  },
+  {
+   "id": "cr300-5-LI7700-0-alias-below",
+   "logger": "cr300",
+   "source": "Public Values(5)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr300-6-LI7700-0-alias-exact",
+   "logger": "cr300",
+   "source": "Public Values(6)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr300-6-LI7700-0-alias-offset-below",
+   "logger": "cr300",
+   "source": "Public Values(6)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr300-7-LI7700-0-alias-offset-exact",
+   "logger": "cr300",
+   "source": "Public Values(7)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr300-6-LI7700-0-alias-indexed-below",
+   "logger": "cr300",
+   "source": "Public Values(6)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(1),2,1,0)\n."
+  },
+  {
+   "id": "cr300-7-LI7700-0-alias-indexed-exact",
+   "logger": "cr300",
+   "source": "Public Values(7)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(1),2,1,0)\n."
+  },
+  {
+   "id": "cr300-5-LI7700-0-direct-below",
+   "logger": "cr300",
+   "source": "Public Values(5)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7700 is not defined.\nline 4: Invalid, or out of place expression:   LI7700(Values(),2,1,0)\n."
+  },
+  {
+   "id": "cr300-6-LI7700-0-direct-exact",
+   "logger": "cr300",
+   "source": "Public Values(6)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7700 is not defined.\nline 4: Invalid, or out of place expression:   LI7700(Values(),2,1,0)\n."
+  },
+  {
+   "id": "cr350-7-CS7500-6-alias-below",
+   "logger": "cr350",
+   "source": "Public Values(7)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr350-8-CS7500-6-alias-exact",
+   "logger": "cr350",
+   "source": "Public Values(8)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr350-8-CS7500-6-alias-offset-below",
+   "logger": "cr350",
+   "source": "Public Values(8)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr350-9-CS7500-6-alias-offset-exact",
+   "logger": "cr350",
+   "source": "Public Values(9)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr350-8-CS7500-6-alias-indexed-below",
+   "logger": "cr350",
+   "source": "Public Values(8)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(1),2,1,6)\n."
+  },
+  {
+   "id": "cr350-9-CS7500-6-alias-indexed-exact",
+   "logger": "cr350",
+   "source": "Public Values(9)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(1),2,1,6)\n."
+  },
+  {
+   "id": "cr350-7-CS7500-6-direct-below",
+   "logger": "cr350",
+   "source": "Public Values(7)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CS7500 is not defined.\nline 4: Invalid, or out of place expression:   CS7500(Values(),2,1,6)\n."
+  },
+  {
+   "id": "cr350-8-CS7500-6-direct-exact",
+   "logger": "cr350",
+   "source": "Public Values(8)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CS7500 is not defined.\nline 4: Invalid, or out of place expression:   CS7500(Values(),2,1,6)\n."
+  },
+  {
+   "id": "cr350-1-LI7200-6-alias-below",
+   "logger": "cr350",
+   "source": "Public Values(1)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr350-2-LI7200-6-alias-exact",
+   "logger": "cr350",
+   "source": "Public Values(2)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr350-2-LI7200-6-alias-offset-below",
+   "logger": "cr350",
+   "source": "Public Values(2)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr350-3-LI7200-6-alias-offset-exact",
+   "logger": "cr350",
+   "source": "Public Values(3)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr350-2-LI7200-6-alias-indexed-below",
+   "logger": "cr350",
+   "source": "Public Values(2)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(1),2,1,6)\n."
+  },
+  {
+   "id": "cr350-3-LI7200-6-alias-indexed-exact",
+   "logger": "cr350",
+   "source": "Public Values(3)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(1),2,1,6)\n."
+  },
+  {
+   "id": "cr350-1-LI7200-6-direct-below",
+   "logger": "cr350",
+   "source": "Public Values(1)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7200 is not defined.\nline 4: Invalid, or out of place expression:   LI7200(Values(),2,1,6)\n."
+  },
+  {
+   "id": "cr350-2-LI7200-6-direct-exact",
+   "logger": "cr350",
+   "source": "Public Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7200 is not defined.\nline 4: Invalid, or out of place expression:   LI7200(Values(),2,1,6)\n."
+  },
+  {
+   "id": "cr350-13-LI7700-6-alias-below",
+   "logger": "cr350",
+   "source": "Public Values(13)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr350-14-LI7700-6-alias-exact",
+   "logger": "cr350",
+   "source": "Public Values(14)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr350-14-LI7700-6-alias-offset-below",
+   "logger": "cr350",
+   "source": "Public Values(14)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr350-15-LI7700-6-alias-offset-exact",
+   "logger": "cr350",
+   "source": "Public Values(15)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,6)\n."
+  },
+  {
+   "id": "cr350-14-LI7700-6-alias-indexed-below",
+   "logger": "cr350",
+   "source": "Public Values(14)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(1),2,1,6)\n."
+  },
+  {
+   "id": "cr350-15-LI7700-6-alias-indexed-exact",
+   "logger": "cr350",
+   "source": "Public Values(15)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(1),2,1,6)\n."
+  },
+  {
+   "id": "cr350-13-LI7700-6-direct-below",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7700 is not defined.\nline 4: Invalid, or out of place expression:   LI7700(Values(),2,1,6)\n."
+  },
+  {
+   "id": "cr350-14-LI7700-6-direct-exact",
+   "logger": "cr350",
+   "source": "Public Values(14)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7700 is not defined.\nline 4: Invalid, or out of place expression:   LI7700(Values(),2,1,6)\n."
+  },
+  {
+   "id": "cr350-3-CS7500-0-alias-below",
+   "logger": "cr350",
+   "source": "Public Values(3)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr350-4-CS7500-0-alias-exact",
+   "logger": "cr350",
+   "source": "Public Values(4)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr350-4-CS7500-0-alias-offset-below",
+   "logger": "cr350",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr350-5-CS7500-0-alias-offset-exact",
+   "logger": "cr350",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr350-4-CS7500-0-alias-indexed-below",
+   "logger": "cr350",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(1),2,1,0)\n."
+  },
+  {
+   "id": "cr350-5-CS7500-0-alias-indexed-exact",
+   "logger": "cr350",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS7500 is not defined.\nline 5: Invalid, or out of place expression:   CS7500(Start(1),2,1,0)\n."
+  },
+  {
+   "id": "cr350-3-CS7500-0-direct-below",
+   "logger": "cr350",
+   "source": "Public Values(3)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CS7500 is not defined.\nline 4: Invalid, or out of place expression:   CS7500(Values(),2,1,0)\n."
+  },
+  {
+   "id": "cr350-4-CS7500-0-direct-exact",
+   "logger": "cr350",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  CS7500(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CS7500 is not defined.\nline 4: Invalid, or out of place expression:   CS7500(Values(),2,1,0)\n."
+  },
+  {
+   "id": "cr350-3-LI7200-0-alias-below",
+   "logger": "cr350",
+   "source": "Public Values(3)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr350-4-LI7200-0-alias-exact",
+   "logger": "cr350",
+   "source": "Public Values(4)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr350-4-LI7200-0-alias-offset-below",
+   "logger": "cr350",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr350-5-LI7200-0-alias-offset-exact",
+   "logger": "cr350",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr350-4-LI7200-0-alias-indexed-below",
+   "logger": "cr350",
+   "source": "Public Values(4)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(1),2,1,0)\n."
+  },
+  {
+   "id": "cr350-5-LI7200-0-alias-indexed-exact",
+   "logger": "cr350",
+   "source": "Public Values(5)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7200 is not defined.\nline 5: Invalid, or out of place expression:   LI7200(Start(1),2,1,0)\n."
+  },
+  {
+   "id": "cr350-3-LI7200-0-direct-below",
+   "logger": "cr350",
+   "source": "Public Values(3)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7200 is not defined.\nline 4: Invalid, or out of place expression:   LI7200(Values(),2,1,0)\n."
+  },
+  {
+   "id": "cr350-4-LI7200-0-direct-exact",
+   "logger": "cr350",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7200(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7200 is not defined.\nline 4: Invalid, or out of place expression:   LI7200(Values(),2,1,0)\n."
+  },
+  {
+   "id": "cr350-5-LI7700-0-alias-below",
+   "logger": "cr350",
+   "source": "Public Values(5)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr350-6-LI7700-0-alias-exact",
+   "logger": "cr350",
+   "source": "Public Values(6)\nAlias Values(1)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr350-6-LI7700-0-alias-offset-below",
+   "logger": "cr350",
+   "source": "Public Values(6)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr350-7-LI7700-0-alias-offset-exact",
+   "logger": "cr350",
+   "source": "Public Values(7)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start,2,1,0)\n."
+  },
+  {
+   "id": "cr350-6-LI7700-0-alias-indexed-below",
+   "logger": "cr350",
+   "source": "Public Values(6)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(1),2,1,0)\n."
+  },
+  {
+   "id": "cr350-7-LI7700-0-alias-indexed-exact",
+   "logger": "cr350",
+   "source": "Public Values(7)\nAlias Values(2)=Start\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Start(1),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: LI7700 is not defined.\nline 5: Invalid, or out of place expression:   LI7700(Start(1),2,1,0)\n."
+  },
+  {
+   "id": "cr350-5-LI7700-0-direct-below",
+   "logger": "cr350",
+   "source": "Public Values(5)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7700 is not defined.\nline 4: Invalid, or out of place expression:   LI7700(Values(),2,1,0)\n."
+  },
+  {
+   "id": "cr350-6-LI7700-0-direct-exact",
+   "logger": "cr350",
+   "source": "Public Values(6)\nBeginProg\n Scan(1,Sec,0,0)\n  LI7700(Values(),2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LI7700 is not defined.\nline 4: Invalid, or out of place expression:   LI7700(Values(),2,1,0)\n."
+  }
+ ]
+}

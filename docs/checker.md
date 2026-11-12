@@ -3266,6 +3266,15 @@ The previous `LI7700` rule (5 * Reps) held only for commands 1 and 5. Open cases
 include `SolarPosition`, `SerialBrk`, `AVW200`, `SysInfo`, and the analog
 measurement helpers. The EC100 invalid-option behavior is covered below.
 
+### SDM measurement destination aliases (round 103)
+
+CR6/CR1000X apply the `CS7500`, `LI7200` and `LI7700` destination counts
+above through an alias. The measurement span starts at the alias's offset
+in the backing array. A subscript is checked against the alias size, and a
+negative subscript uses its magnitude. A bare alias takes index 1. An
+overrun names the backing variable at offset zero and the alias at other
+offsets. [Reference observations](../tests/fixtures/r103_sdm_destination_aliases.json).
+
 ### EC100 output options (round 102)
 
 CR6 and CR1000X reduce the option to its low byte after conversion to Long.

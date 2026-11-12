@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 103** (archived verdict parity). Fixed CR6 false accept `0e23c61229f4`
+by checking destination spans through SDM measurement aliases. The 25-case
+archived replay now has six false accepts and 19 exact matches.
+[SDM destination evidence](docs/checker.md#sdm-measurement-destination-aliases-round-103).
+
 **Round 102** (archived verdict parity). Fixed CR6 false accept `4156d89a014d`
 by checking `EC100` output options and destination spans. The 25-case archived
 replay now has seven false accepts and 18 exact matches.

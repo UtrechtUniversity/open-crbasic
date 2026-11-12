@@ -1147,7 +1147,7 @@ def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
         id(tables(st)): {p.name.upper() for p in st.params} for st in program.statements if isinstance(st, S.SubDef)
     }
 
-    def lookup(stmt, dest):
+    def lookup(stmt, dest, *, allow_bare_index=False):
         if dest.name.upper() in tables(stmt).dims or dest.name.upper() in parameters.get(id(tables(stmt)), set()):
             return None
         key = id(tables(stmt))
@@ -1157,14 +1157,16 @@ def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
                 visible.update(aliases.get(id(st), {}))
             cache[key] = visible
         entry = cache[key].get(dest.name.upper())
-        if entry is not None and isinstance(dest, S.Index) and entry[3] is None:
+        if entry is not None and isinstance(dest, S.Index) and entry[3] is None and not allow_bare_index:
             return None  # a subscripted bare alias is not modelled
         return entry
 
     return lookup
 
 
-def _alias_overrun(stmt: S.Instruction, dest, alias, count: int, profile: Profile, env: consteval.Env) -> bool:
+def _alias_overrun(
+    stmt: S.Instruction, dest, alias, count: int, profile: Profile, env: consteval.Env, *, signed_index=False
+) -> bool:
     """An alias destination's explicit index must lie within its declared size; the outputs
     must then fit the backing storage from the destination element (round 30). CR6/CR1000X
     count from the alias's own start, CR300/CR350 from the backing variable's start."""
@@ -1174,7 +1176,9 @@ def _alias_overrun(stmt: S.Instruction, dest, alias, count: int, profile: Profil
         k = _index_value(dest.args[0], env) if len(dest.args) == 1 else None
         if k is None:
             return False
-        if not 1 <= k <= size:
+        if signed_index:
+            k = abs(k)
+        if not 1 <= k <= (size if size is not None else 1):
             return True
         index = k - 1
     available = total - index - (0 if profile.single_pass else offset)
@@ -1565,7 +1569,14 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, 
             # SDMGeneric checks any non-String destination, including a negative count
             kinds = ("FLOAT", "LONG", "BOOLEAN") if kw == "SDMGENERIC" else ("FLOAT",)
             for i, need in _builder_counts(kw, stmt.args, env):
-                if overruns(target := stmt.args[i], need, need < 0, kinds):
+                target = stmt.args[i]
+                if kw in _SDM_MODE_VALUES and isinstance(target, (S.Name, S.Index)):
+                    alias = alias_storage(stmt, target, allow_bare_index=True)
+                    if alias is not None:
+                        if _alias_overrun(stmt, target, alias, need, profile, env, signed_index=True):
+                            diags.error(stmt.line, f"Variable {alias[2]} out of bounds.", stmt.file)
+                        continue
+                if overruns(target, need, need < 0, kinds):
                     bad.append(target)
         elif kw in _DEST_FIXED or kw in _DEST_PER_REP:
             negative = False
