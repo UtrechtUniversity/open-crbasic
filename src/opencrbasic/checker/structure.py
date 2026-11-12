@@ -266,13 +266,20 @@ def _check_calltable_outside_scan(
     size = table.args[2] if len(table.args) > 2 else None
     auto = isinstance(size, S.Unary) and size.op == "-" or isinstance(size, S.Number) and size.value < 0
     if env is not None and size is not None:
-        # only the sizes the logger auto-allocates: CR300/CR350 `-1`, CR6/CR1000X any negative or
-        # out-of-range one (a CR300/CR350 `-1000` is a fixed 1000 and compiles; docs/tdf-rules.md)
         from .. import tables as T
 
         raw = T._fold(size, env, None)
+        if isinstance(size, S.Number) and size.text.upper().startswith(("&H", "&B", "&O")):
+            from . import longconv
+
+            raw = longconv.long_value(size, env, env.profile)
+            if raw == longconv.INT_MIN:
+                raw = float("nan")  # the integer sentinel is read as an automatic size
         if raw is not None:
-            auto = T.declared_size(raw, env.profile.name in ("cr300", "cr350"), 1) is None
+            cr3xx = env.profile.single_pass
+            auto = T.declared_size(raw, cr3xx, 1) is None or (cr3xx and T.size_class(raw) == ("toxic",))
+        elif isinstance(size, S.Name) and size.name.upper() == "NAN":
+            auto = True
     if zero_scan and has_interval:
         return
     if has_interval and not in_sub:

@@ -1154,6 +1154,16 @@ Before round 15 a negative size other than -1, or one beyond 32 bits, reached `t
 as a negative or oversized `I` (`struct.error` from `crbc -z`), and fractional sizes were rounded
 (101, and 0 for `0.5`) instead of truncated. The CR300/CR350 `-1` auto size is the allocator's own (below: 580038 for one FP2 CR300 table, 2910207 on the CR350).
 
+### CallTable placement and automatic size (round 114)
+
+The placement check treats a size outside the finite float32 range
+from `-2^31` to `2^31`, and the negative infinity case, as automatic
+on CR300/CR350. Positive infinity retains the fixed-size behavior.
+This applies outside a scan, in a subroutine, and in a zero-interval scan.
+On all four loggers `NAN`, a string size, and the hexadecimal integer
+sentinel `&H80000000` also take the automatic path.
+[Four-profile observations](../tests/fixtures/r114_calltable_auto_sizes.json).
+
 ### Auto-sized tables and the full allocator (CR300/CR350, round 16)
 
 `checker/storage.allocate` is a port of the whole 26-pass allocator (`cr300comp` `FUN_005ae6e0`,

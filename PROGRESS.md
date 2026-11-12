@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 114** (historical verdict parity). Fixed CR350 false accept
+`c01544a79750` by recognizing automatic table sizes at calls outside a
+scan. Four false accepts remain among the historical reproducers.
+[Size evidence](docs/tdf-rules.md#calltable-placement-and-automatic-size-round-114).
+
 **Round 113** (historical verdict parity). Fixed CR300 false accept
 `ae9eb6bb2d37` by checking `DataTable` placement inside executing
 declaration bodies. Five false accepts remain among the historical reproducers.
