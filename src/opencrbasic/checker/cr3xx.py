@@ -2797,9 +2797,13 @@ def order_invalid_assignments(program: S.Program, profile, diags: Diagnostics) -
     expression:` line (oracle, 2026-10-10: `Sec = Nope`, `6 = estimated`), which pass 1 emitted first."""
     if profile.name not in ("cr300", "cr350"):
         return
-    for key in {(d.line, d.file) for d in diags.items if d.message.startswith("Invalid assignment in expression:")}:
+    conditions = {id(st) for st in program.statements if isinstance(st, S.If)}
+    markers = [
+        d for d in diags.items if d.stmt not in conditions and d.message.startswith("Invalid assignment in expression:")
+    ]
+    for key in {(d.line, d.file) for d in markers}:
         own = [d for d in diags.items if (d.line, d.file) == key]
-        marks = [d for d in own if d.message.startswith("Invalid assignment in expression:")]
+        marks = [d for d in markers if (d.line, d.file) == key]
         group = [d for d in own if d not in marks] + marks
         first = next(i for i, d in enumerate(diags.items) if (d.line, d.file) == key)
         rest = [d for d in diags.items if (d.line, d.file) != key]

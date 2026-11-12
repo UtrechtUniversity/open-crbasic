@@ -1927,6 +1927,43 @@ def check_const_family_args(program: S.Program, profile, diags: Diagnostics) -> 
             )
 
 
+def _names_before_invalid_compound(expr, known, read_only) -> list[str] | None:
+    """Names read before the first invalid target, or None if no compound target fails."""
+    if isinstance(expr, S.Binary):
+        if (names := _names_before_invalid_compound(expr.left, known, read_only)) is not None:
+            return names
+        if expr.op in S.COMPOUND_ASSIGNMENT_OPS:
+            target = expr.left
+            if not isinstance(target, (S.Name, S.Index, S.Member)) or (
+                isinstance(target, (S.Name, S.Index)) and target.name.upper() in read_only
+            ):
+                return _undefined_names(target, known)
+        if (names := _names_before_invalid_compound(expr.right, known, read_only)) is not None:
+            return _undefined_names(expr.left, known) + names
+    elif isinstance(expr, S.Unary):
+        return _names_before_invalid_compound(expr.operand, known, read_only)
+    elif isinstance(expr, (S.Index, S.Member, S.ArrayLiteral)):
+        children = expr.items if isinstance(expr, S.ArrayLiteral) else expr.args or ()
+        for i, child in enumerate(children):
+            if (names := _names_before_invalid_compound(child, known, read_only)) is not None:
+                return [n for before in children[:i] for n in _undefined_names(before, known)] + names
+    return None
+
+
+def _report_invalid_compound(stmt, expr, text, known, read_only, profile, diags, *, whole_statement=False) -> bool:
+    names = _names_before_invalid_compound(expr, known, read_only)
+    if names is None:
+        return False
+    if names and not profile.single_pass:
+        diags.error(stmt.line, profile.unresolved_symbol_message.format(name=text), stmt.file, stmt=stmt)
+        return True
+    for name in names:
+        diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+    sep = "\n" if whole_statement and profile.fallback_echo_newline and stmt.at_eol else ""
+    diags.error(stmt.line, f"Invalid assignment in expression: {text}{sep}.", stmt.file, stmt=stmt)
+    return True
+
+
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, skip: frozenset = frozenset()) -> None:
     """Undefined-symbol checking at every `Instruction` argument position whose declared type code
     routes through the real expression/named-constant resolver (`_position_kinds`) -- a full
@@ -1955,6 +1992,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
     ds = program_dims(program, profile, known)
     dim_counts = symbols.declared_dim_counts(program, strings=True)
     scopes = symbols.statement_scopes(program, profile)
+    read_only = (program.consts.keys() | profile.functions.keys()) - variable_names
 
     seen_avw200 = False
     for stmt in program.statements:
@@ -2063,6 +2101,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
     # 2026-09-27): `If Nope Then` -> `Invalid symbol in expression: Nope .`, `If Foo(X) > 20 Then
     # X = 1` -> `... Foo(X) > 20 .`; suppressed by a pass-1 error. CR300/CR350 print per-name
     # `%s is not defined.` lines instead (not modelled).
+    suppressed_inline = set()
     for stmt in program.statements:
         if not isinstance(stmt, S.If):
             continue
@@ -2070,6 +2109,12 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
         text = _if_condition_text(stmt)
         if text is None:
             text = _if_condition_text_no_then(stmt)
+        if text is not None and _report_invalid_compound(
+            stmt, stmt.cond, text, known, read_only - scopes[id(stmt)][0], profile, diags
+        ):
+            if not profile.single_pass:
+                suppressed_inline.update(id(body) for body in (stmt.inline or []) + (stmt.inline_else or []))
+            continue
         if (
             text is not None
             and not names
@@ -2119,6 +2164,10 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
             continue
         names = _undefined_names(stmt.cond, known)
         m = re.search(r"(?i)\b(?:While|Until)\b\s*(.*)$", stmt.text or "")
+        if m and _report_invalid_compound(
+            stmt, stmt.cond, m.group(1), known, read_only - scopes[id(stmt)][0], profile, diags
+        ):
+            continue
         if (
             m
             and not names
@@ -2163,7 +2212,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
         ):
             # CR300/CR350: `Fn(1)+X(1,2)` is checked like `Y = Fn(1)+X(1,2)` (oracle, 2026-10-10)
             diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol), stmt.file)
-        if not isinstance(stmt, S.Assignment):
+        if not isinstance(stmt, S.Assignment) or id(stmt) in suppressed_inline:
             continue
         if _undefined_names(stmt.target, known):
             continue  # target itself unresolved: `structure.check_pass2`'s job entirely, above.
@@ -2171,6 +2220,10 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
             continue  # already reported by `check_function_arity` (pass 1)
         if profile.single_pass and _function_target_message(stmt, profile, frozenset()):
             continue  # a function-named target (even a local scalar `exp(1) = 2`): same
+        if _report_invalid_compound(
+            stmt, stmt.value, stmt.text, known, read_only - scopes[id(stmt)][0], profile, diags, whole_statement=True
+        ):
+            continue
         names = _undefined_names(stmt.value, known)
         whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
         target = stmt.target
@@ -2264,6 +2317,16 @@ def check_consts(program: S.Program, profile, diags: Diagnostics) -> None:
         if stmt.type and stmt.type.upper() not in _CONST_TYPES:
             continue  # `unknown Const type` is the only message (oracle, 2026-10-10)
         visible = known - unready.get(id(stmt), frozenset())
+        if stmt.value_span is not None and _report_invalid_compound(
+            stmt,
+            stmt.value,
+            stmt.text[stmt.value_span[0] : stmt.value_span[1]],
+            visible,
+            program.consts.keys() | profile.functions.keys(),
+            profile,
+            diags,
+        ):
+            continue
         names = _undefined_names(stmt.value, visible)
         if not names or _find_arity_problem(stmt.value, profile, visible) not in (None, "deferred"):
             continue  # a wrong-arity call read before the name wins (oracle, all four loggers, round 41)

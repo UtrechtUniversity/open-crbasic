@@ -32,7 +32,6 @@ CHM_PROGRAMS = sorted(CHM_DIR.glob("*.CR6")) if CHM_DIR.is_dir() else []
 
 # oracle-accepted CHM examples this front end knowingly does not fully parse; see docs/frontend.md.
 KNOWN_GAPS = {
-    "samplemaxmin_1.CR6",  # `WS_ms=WS_ms+=1`: a doc typo CR6Comp happens to still accept
     "snmpvariable_1.CR6",  # `1.3.6.1.4.1.43592.55.1.4`: a raw dotted-OID literal argument
 }
 

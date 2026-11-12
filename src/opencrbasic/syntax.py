@@ -27,6 +27,8 @@ class Node:
 
 # ---------------------------------------------------------------- expressions
 
+COMPOUND_ASSIGNMENT_OPS = frozenset({"+=", "-=", "*=", "/=", "\\=", "^=", "&="})
+
 
 @dataclass
 class Expr(Node):

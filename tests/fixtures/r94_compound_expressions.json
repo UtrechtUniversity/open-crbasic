@@ -1,0 +1,1395 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-plain-known",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-plain-unknown",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing+=1."
+  },
+  {
+   "id": "cr6-unknown-next",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing+=1\n Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing+=1."
+  },
+  {
+   "id": "cr6-undefined-right",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=Missing\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:  Y=R+=Missing."
+  },
+  {
+   "id": "cr6-both-undefined",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing+=Other\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing+=Other."
+  },
+  {
+   "id": "cr6-indexed-known",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=R(1)+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-indexed-unknown-base",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing(1)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing(1)+=1."
+  },
+  {
+   "id": "cr6-indexed-unknown-index",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=R(Missing)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:  Y=R(Missing)+=1."
+  },
+  {
+   "id": "cr6-triple",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:  Y=R=Missing+=1."
+  },
+  {
+   "id": "cr6-if-inline",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n If Y Then Y=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Y=Missing+=1."
+  },
+  {
+   "id": "cr6-explicit-equality",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing=1."
+  },
+  {
+   "id": "cr6-parenthesized",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=(Missing)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=(Missing)+=1."
+  },
+  {
+   "id": "cr6-op--=",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing-=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing-=1."
+  },
+  {
+   "id": "cr6-op-*=",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing*=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing*=1."
+  },
+  {
+   "id": "cr6-op-/=",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing/=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing/=1."
+  },
+  {
+   "id": "cr6-op-^=",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing^=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing^=1."
+  },
+  {
+   "id": "cr1000x-plain-known",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-plain-unknown",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing+=1."
+  },
+  {
+   "id": "cr1000x-unknown-next",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing+=1\n Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing+=1."
+  },
+  {
+   "id": "cr1000x-undefined-right",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=Missing\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:  Y=R+=Missing."
+  },
+  {
+   "id": "cr1000x-both-undefined",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing+=Other\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing+=Other."
+  },
+  {
+   "id": "cr1000x-indexed-known",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=R(1)+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-indexed-unknown-base",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing(1)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing(1)+=1."
+  },
+  {
+   "id": "cr1000x-indexed-unknown-index",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=R(Missing)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:  Y=R(Missing)+=1."
+  },
+  {
+   "id": "cr1000x-triple",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:  Y=R=Missing+=1."
+  },
+  {
+   "id": "cr1000x-if-inline",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n If Y Then Y=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Y=Missing+=1."
+  },
+  {
+   "id": "cr1000x-explicit-equality",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing=1."
+  },
+  {
+   "id": "cr1000x-parenthesized",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=(Missing)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=(Missing)+=1."
+  },
+  {
+   "id": "cr1000x-op--=",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing-=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing-=1."
+  },
+  {
+   "id": "cr1000x-op-*=",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing*=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing*=1."
+  },
+  {
+   "id": "cr1000x-op-/=",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing/=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing/=1."
+  },
+  {
+   "id": "cr1000x-op-^=",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing^=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing^=1."
+  },
+  {
+   "id": "cr300-plain-known",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-plain-unknown",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-unknown-next",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing+=1\n Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-undefined-right",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=Missing\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing is not defined."
+  },
+  {
+   "id": "cr300-both-undefined",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing+=Other\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Other is not defined."
+  },
+  {
+   "id": "cr300-indexed-known",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=R(1)+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-indexed-unknown-base",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing(1)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Dimensions not declared:  Y=Missing(1)+=1\n."
+  },
+  {
+   "id": "cr300-indexed-unknown-index",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=R(Missing)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing is not defined."
+  },
+  {
+   "id": "cr300-triple",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing is not defined."
+  },
+  {
+   "id": "cr300-if-inline",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n If Y Then Y=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-explicit-equality",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-parenthesized",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=(Missing)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-op--=",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing-=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-op-*=",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing*=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-op-/=",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing/=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-op-^=",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing^=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-plain-known",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-plain-unknown",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-unknown-next",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing+=1\n Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-undefined-right",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=Missing\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing is not defined."
+  },
+  {
+   "id": "cr350-both-undefined",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing+=Other\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Other is not defined."
+  },
+  {
+   "id": "cr350-indexed-known",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=R(1)+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-indexed-unknown-base",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing(1)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Dimensions not declared:  Y=Missing(1)+=1\n."
+  },
+  {
+   "id": "cr350-indexed-unknown-index",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=R(Missing)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing is not defined."
+  },
+  {
+   "id": "cr350-triple",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing is not defined."
+  },
+  {
+   "id": "cr350-if-inline",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n If Y Then Y=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-explicit-equality",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-parenthesized",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=(Missing)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-op--=",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing-=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-op-*=",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing*=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-op-/=",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing/=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-op-^=",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing^=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr6-if-invalid",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n If 1+=2 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=2 ."
+  },
+  {
+   "id": "cr6-if-name",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n If Missing+=1 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Missing+=1 ."
+  },
+  {
+   "id": "cr6-if-constant",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=1\nBeginProg\n If R+=1 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: R+=1 ."
+  },
+  {
+   "id": "cr6-if-invalid-before-unknown",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n If 1+=Missing Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=Missing ."
+  },
+  {
+   "id": "cr6-if-unknown-before-invalid",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n If Missing+1+=2 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Missing+1+=2 ."
+  },
+  {
+   "id": "cr6-argument-invalid",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=ABS(1+=2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=ABS(1+=2)."
+  },
+  {
+   "id": "cr6-argument-valid",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=ABS(R+=2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-do-invalid",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Do While 1+=2\n Loop\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=2."
+  },
+  {
+   "id": "cr6-const-expression",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=1+=2\nBeginProg\n Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid assignment in expression: 1+=2."
+  },
+  {
+   "id": "cr6-member",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Public.Y+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-function-target",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=ABS(1)+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=ABS(1)+=2."
+  },
+  {
+   "id": "cr6-two-valid-lvalues",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nPublic T As Long\nBeginProg\n Y=R+=T+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-condition-inline-diagnostics",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n If 1+=2 Then Y=Missing\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=2 ."
+  },
+  {
+   "id": "cr1000x-if-invalid",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n If 1+=2 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=2 ."
+  },
+  {
+   "id": "cr1000x-if-name",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n If Missing+=1 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Missing+=1 ."
+  },
+  {
+   "id": "cr1000x-if-constant",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=1\nBeginProg\n If R+=1 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: R+=1 ."
+  },
+  {
+   "id": "cr1000x-if-invalid-before-unknown",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n If 1+=Missing Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=Missing ."
+  },
+  {
+   "id": "cr1000x-if-unknown-before-invalid",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n If Missing+1+=2 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Missing+1+=2 ."
+  },
+  {
+   "id": "cr1000x-argument-invalid",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=ABS(1+=2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=ABS(1+=2)."
+  },
+  {
+   "id": "cr1000x-argument-valid",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=ABS(R+=2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-do-invalid",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Do While 1+=2\n Loop\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=2."
+  },
+  {
+   "id": "cr1000x-const-expression",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=1+=2\nBeginProg\n Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid assignment in expression: 1+=2."
+  },
+  {
+   "id": "cr1000x-member",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Public.Y+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-function-target",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=ABS(1)+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=ABS(1)+=2."
+  },
+  {
+   "id": "cr1000x-two-valid-lvalues",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nPublic T As Long\nBeginProg\n Y=R+=T+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-condition-inline-diagnostics",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n If 1+=2 Then Y=Missing\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=2 ."
+  },
+  {
+   "id": "cr300-if-invalid",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n If 1+=2 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=2 ."
+  },
+  {
+   "id": "cr300-if-name",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n If Missing+=1 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-if-constant",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=1\nBeginProg\n If R+=1 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: R+=1 ."
+  },
+  {
+   "id": "cr300-if-invalid-before-unknown",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n If 1+=Missing Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=Missing ."
+  },
+  {
+   "id": "cr300-if-unknown-before-invalid",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n If Missing+1+=2 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Invalid assignment in expression: Missing+1+=2 ."
+  },
+  {
+   "id": "cr300-argument-invalid",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=ABS(1+=2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=ABS(1+=2)\n."
+  },
+  {
+   "id": "cr300-argument-valid",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=ABS(R+=2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-do-invalid",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Do While 1+=2\n Loop\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=2."
+  },
+  {
+   "id": "cr300-const-expression",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=1+=2\nBeginProg\n Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid assignment in expression: 1+=2."
+  },
+  {
+   "id": "cr300-member",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Public.Y+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-function-target",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=ABS(1)+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=ABS(1)+=2\n."
+  },
+  {
+   "id": "cr300-two-valid-lvalues",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nPublic T As Long\nBeginProg\n Y=R+=T+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-condition-inline-diagnostics",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n If 1+=2 Then Y=Missing\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=2 .\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-if-invalid",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n If 1+=2 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=2 ."
+  },
+  {
+   "id": "cr350-if-name",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n If Missing+=1 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-if-constant",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=1\nBeginProg\n If R+=1 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: R+=1 ."
+  },
+  {
+   "id": "cr350-if-invalid-before-unknown",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n If 1+=Missing Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=Missing ."
+  },
+  {
+   "id": "cr350-if-unknown-before-invalid",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n If Missing+1+=2 Then Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Invalid assignment in expression: Missing+1+=2 ."
+  },
+  {
+   "id": "cr350-argument-invalid",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=ABS(1+=2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=ABS(1+=2)\n."
+  },
+  {
+   "id": "cr350-argument-valid",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=ABS(R+=2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-do-invalid",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Do While 1+=2\n Loop\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=2."
+  },
+  {
+   "id": "cr350-const-expression",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=1+=2\nBeginProg\n Y=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid assignment in expression: 1+=2."
+  },
+  {
+   "id": "cr350-member",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Public.Y+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-function-target",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=ABS(1)+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=ABS(1)+=2\n."
+  },
+  {
+   "id": "cr350-two-valid-lvalues",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nPublic T As Long\nBeginProg\n Y=R+=T+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-condition-inline-diagnostics",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n If 1+=2 Then Y=Missing\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: 1+=2 .\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr6-integer-operand",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=1+=2."
+  },
+  {
+   "id": "cr6-operand-sum",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  Y=R+1+=2."
+  },
+  {
+   "id": "cr6-missing-tail",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  Y=R+=."
+  },
+  {
+   "id": "cr6-multiple-operators",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  Y=R+=1+=2."
+  },
+  {
+   "id": "cr6-outer-compound",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y+=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y+=Missing+=1."
+  },
+  {
+   "id": "cr6-nested-parentheses",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=(Missing+=1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=(Missing+=1)."
+  },
+  {
+   "id": "cr6-missing-left",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Missing=Y+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:  Missing=Y+=1."
+  },
+  {
+   "id": "cr6-triple-undefined",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing=Other+=Tail\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing=Other+=Tail."
+  },
+  {
+   "id": "cr6-and",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing&=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing&=1."
+  },
+  {
+   "id": "cr6-intdiv",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing\\=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing\\=1."
+  },
+  {
+   "id": "cr1000x-integer-operand",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=1+=2."
+  },
+  {
+   "id": "cr1000x-operand-sum",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  Y=R+1+=2."
+  },
+  {
+   "id": "cr1000x-missing-tail",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  Y=R+=."
+  },
+  {
+   "id": "cr1000x-multiple-operators",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  Y=R+=1+=2."
+  },
+  {
+   "id": "cr1000x-outer-compound",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y+=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y+=Missing+=1."
+  },
+  {
+   "id": "cr1000x-nested-parentheses",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=(Missing+=1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=(Missing+=1)."
+  },
+  {
+   "id": "cr1000x-missing-left",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Missing=Y+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:  Missing=Y+=1."
+  },
+  {
+   "id": "cr1000x-triple-undefined",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing=Other+=Tail\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing=Other+=Tail."
+  },
+  {
+   "id": "cr1000x-and",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing&=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing&=1."
+  },
+  {
+   "id": "cr1000x-intdiv",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing\\=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing\\=1."
+  },
+  {
+   "id": "cr300-integer-operand",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=1+=2\n."
+  },
+  {
+   "id": "cr300-operand-sum",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  Y=R+1+=2\n."
+  },
+  {
+   "id": "cr300-missing-tail",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  Y=R+=\n."
+  },
+  {
+   "id": "cr300-multiple-operators",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  Y=R+=1+=2\n."
+  },
+  {
+   "id": "cr300-outer-compound",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y+=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-nested-parentheses",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=(Missing+=1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-missing-left",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Missing=Y+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-triple-undefined",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing=Other+=Tail\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Other is not defined.\nline 3: Tail is not defined."
+  },
+  {
+   "id": "cr300-and",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing&=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-intdiv",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing\\=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-integer-operand",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=1+=2\n."
+  },
+  {
+   "id": "cr350-operand-sum",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  Y=R+1+=2\n."
+  },
+  {
+   "id": "cr350-missing-tail",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  Y=R+=\n."
+  },
+  {
+   "id": "cr350-multiple-operators",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  Y=R+=1+=2\n."
+  },
+  {
+   "id": "cr350-outer-compound",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y+=Missing+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-nested-parentheses",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=(Missing+=1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-missing-left",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Missing=Y+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-triple-undefined",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing=Other+=Tail\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Other is not defined.\nline 3: Tail is not defined."
+  },
+  {
+   "id": "cr350-and",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing&=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-intdiv",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing\\=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr6-invalid-before-unknown",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=1+=Missing\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=1+=Missing."
+  },
+  {
+   "id": "cr6-unknown-before-invalid",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=Missing+1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing+1+=2."
+  },
+  {
+   "id": "cr6-ordinary-before-chain",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Y=1+Missing+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=1+Missing+=2."
+  },
+  {
+   "id": "cr6-constant-lvalue",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=2\nBeginProg\n Y=R+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  Y=R+=1."
+  },
+  {
+   "id": "cr6-undeclared-before-constant",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=2\nBeginProg\n Y=Missing=R+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:  Y=Missing=R+=1."
+  },
+  {
+   "id": "cr6-runtime-array",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=R(Y)+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-declared-scalar-index",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R(1)+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-multiply-rhs",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=2*3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-assignment-in-if",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n If R+=1 Then Y=2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-unclosed-group",
+   "logger": "cr6",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=(R+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:  Y=(R+=1."
+  },
+  {
+   "id": "cr1000x-invalid-before-unknown",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=1+=Missing\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=1+=Missing."
+  },
+  {
+   "id": "cr1000x-unknown-before-invalid",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=Missing+1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=Missing+1+=2."
+  },
+  {
+   "id": "cr1000x-ordinary-before-chain",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Y=1+Missing+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:  Y=1+Missing+=2."
+  },
+  {
+   "id": "cr1000x-constant-lvalue",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=2\nBeginProg\n Y=R+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  Y=R+=1."
+  },
+  {
+   "id": "cr1000x-undeclared-before-constant",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=2\nBeginProg\n Y=Missing=R+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:  Y=Missing=R+=1."
+  },
+  {
+   "id": "cr1000x-runtime-array",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=R(Y)+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-declared-scalar-index",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R(1)+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-multiply-rhs",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=2*3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assignment-in-if",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n If R+=1 Then Y=2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-unclosed-group",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=(R+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:  Y=(R+=1."
+  },
+  {
+   "id": "cr300-invalid-before-unknown",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=1+=Missing\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=1+=Missing\n."
+  },
+  {
+   "id": "cr300-unknown-before-invalid",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=Missing+1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Invalid assignment in expression:  Y=Missing+1+=2\n."
+  },
+  {
+   "id": "cr300-ordinary-before-chain",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Y=1+Missing+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Invalid assignment in expression:  Y=1+Missing+=2\n."
+  },
+  {
+   "id": "cr300-constant-lvalue",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=2\nBeginProg\n Y=R+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  Y=R+=1\n."
+  },
+  {
+   "id": "cr300-undeclared-before-constant",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=2\nBeginProg\n Y=Missing=R+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing is not defined.\nline 4: Invalid assignment in expression:  Y=Missing=R+=1\n."
+  },
+  {
+   "id": "cr300-runtime-array",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=R(Y)+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-declared-scalar-index",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R(1)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared:  Y=R(1)+=1\n."
+  },
+  {
+   "id": "cr300-multiply-rhs",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=2*3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-assignment-in-if",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n If R+=1 Then Y=2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-unclosed-group",
+   "logger": "cr300",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=(R+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:  Y=(R+=1\n."
+  },
+  {
+   "id": "cr350-invalid-before-unknown",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=1+=Missing\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression:  Y=1+=Missing\n."
+  },
+  {
+   "id": "cr350-unknown-before-invalid",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=Missing+1+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Invalid assignment in expression:  Y=Missing+1+=2\n."
+  },
+  {
+   "id": "cr350-ordinary-before-chain",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Y=1+Missing+=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined.\nline 3: Invalid assignment in expression:  Y=1+Missing+=2\n."
+  },
+  {
+   "id": "cr350-constant-lvalue",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=2\nBeginProg\n Y=R+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  Y=R+=1\n."
+  },
+  {
+   "id": "cr350-undeclared-before-constant",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=2\nBeginProg\n Y=Missing=R+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing is not defined.\nline 4: Invalid assignment in expression:  Y=Missing=R+=1\n."
+  },
+  {
+   "id": "cr350-runtime-array",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R(2) As Long\nBeginProg\n Y=R(Y)+=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-declared-scalar-index",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R(1)+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared:  Y=R(1)+=1\n."
+  },
+  {
+   "id": "cr350-multiply-rhs",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=R+=2*3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-assignment-in-if",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n If R+=1 Then Y=2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-unclosed-group",
+   "logger": "cr350",
+   "source": "Public Y\nPublic R As Long\nBeginProg\n Y=(R+=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:  Y=(R+=1\n."
+  }
+ ]
+}

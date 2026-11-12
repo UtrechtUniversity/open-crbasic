@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 94** (verdict parity, fuzz seed 777). Fixed CR350 false accept
+`ac09e63f5544` by parsing compound assignments within expressions and checking
+their targets. Five of the six CR300/CR350 seed 777 false accepts now match exactly.
+[Compound-assignment evidence](docs/checker.md#compound-assignments-in-expressions-round-94).
+
 **Round 93** (archived verdict parity). Fixed `a0b2b0b059b3` and `778ea45e64b7`
 by checking CDM bridge excitation and settling time. Both cases now match exactly.
 The 25-case archived replay has 19 false accepts and six exact matches.

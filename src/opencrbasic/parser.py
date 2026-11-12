@@ -44,7 +44,6 @@ _THEN_SUFFIX_RE = re.compile(r"\bThen\s*$", re.IGNORECASE)
 _LEADING_WORD_RE = re.compile(r"^\s*([A-Za-z_][A-Za-z0-9_]*\$?)")
 
 _RELOPS = {"=", "<>", "<", ">", "<=", ">="}
-_COMPOUND_OPS = {"+=", "-=", "*=", "/=", "\\=", "^=", "&="}
 
 # Distinguishable `Unparsed.reason` markers for a genuinely unclosed parenthesis reached through
 # the *general expression* grammar (an assignment's RHS, a nested call's own arguments -- anything
@@ -181,7 +180,7 @@ def _split_text_segments(text: str) -> list[str]:
 _RAW_NAME_FIRST = frozenset({"DATATABLE", "CONSTTABLE"})
 
 
-_ASSIGN_OPS = frozenset({"=", "+=", "-=", "*=", "/=", "\\=", "^=", "&="})
+_ASSIGN_OPS = S.COMPOUND_ASSIGNMENT_OPS | {"="}
 
 
 def _is_assignment(toks: list[Token]) -> bool:
@@ -1811,7 +1810,7 @@ class _Parser:
             # `S2() =`: a Sub call whose tail is ignored (oracle, 2026-10-04, all four loggers)
             p.i = len(p.toks) - 1
             return S.Call(line, file, name=target.name, args=[], explicit=False, tail_ignored=True)
-        if t.kind == "OP" and (t.text == "=" or t.text in _COMPOUND_OPS):
+        if t.kind == "OP" and t.text in _ASSIGN_OPS:
             op_tok = p.next()
             self._to_ok = True  # `X = 1 To 12`, `X += 1 To 12` (oracle, 2026-10-10)
             try:
@@ -2899,7 +2898,7 @@ class _Parser:
         return self._parse_relational(p, line, file)
 
     def _parse_relational(self, p: _TokStream, line: int, file: str) -> S.Expr:
-        left = self._parse_shift(p, line, file)
+        left = self._parse_compound_operand(p, line, file)
         if self._to_ok and p.is_ident("TO"):
             # `To`: a binary operator between comparison and shift, no comparison on either side
             # of it, once per operand; a string literal operand is a different error (oracle,
@@ -2914,8 +2913,16 @@ class _Parser:
             return S.Binary(line, file, "TO", left, right)
         while p.peek().kind == "OP" and p.peek().text in _RELOPS:
             op = p.next().text
-            right = self._parse_shift(p, line, file)
+            right = self._parse_compound_operand(p, line, file)
             left = S.Binary(line, file, op, left, right)
+        return left
+
+    def _parse_compound_operand(self, p: _TokStream, line: int, file: str) -> S.Expr:
+        left = self._parse_shift(p, line, file)
+        if p.peek().kind == "OP" and p.peek().text in S.COMPOUND_ASSIGNMENT_OPS:
+            op = p.next().text
+            right = self._parse_compound_operand(p, line, file)
+            return S.Binary(line, file, op, left, right)
         return left
 
     def _parse_shift(self, p: _TokStream, line: int, file: str) -> S.Expr:

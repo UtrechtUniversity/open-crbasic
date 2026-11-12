@@ -145,9 +145,8 @@ def test_undefined_bare_call_is_invalid_expression():
     assert "Invalid, or out of place expression: NOTE." in messages_of(result)
 
 
-def test_known_parser_gap_is_not_flagged():
-    # `docs/frontend.md` "Known residual gaps": still oracle-accepted despite not parsing.
-    result = compile_text(wrapped("    WS_ms=WS_ms+=1\n"))
+def test_compound_assignment_to_same_variable_is_valid():
+    result = compile_text(wrapped("    X=X+=1\n"))
     assert result.diagnostics.errors == []
 
 

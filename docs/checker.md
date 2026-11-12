@@ -4479,6 +4479,23 @@ errors. Not modelled: `X(1) + 1 = 2` (real: invalid assignment; ours: generic), 
 (real: `Incomplete expression`), `(X) = 1` (real: accepted), and the help-corpus sentence
 `(Double = Double + Double) Results in Double-Precison` (`DoublePrecArith_1.CR6`).
 
+### Compound assignments in expressions (round 94)
+
+All four profiles accept `Y=R+=1` and `Y=R+=T+=1` with declared variables.
+They resolve both operands and reject a literal, an arithmetic expression, a
+constant or a function call as the inner assignment target. An invalid target
+ends name resolution before its right operand. CR6/CR1000X echo an undefined
+name encountered earlier as an invalid-symbol expression. CR300/CR350 give the
+name first and then the invalid-assignment diagnostic. A declared scalar with
+one index in the inner target is accepted on CR6/CR1000X and produces
+`Dimensions not declared` on CR300/CR350.
+
+In the CR6 binary the expression wrapper `FUN_004b5c50` uses the result of
+`FUN_00493b10` to index the expression error table at `0x65fff8`. Entry
+`0x14` is the invalid-assignment message. The four-profile probes establish
+target validity, diagnostic ordering and the accepted nesting forms.
+[`r94_compound_expressions.json`](../tests/fixtures/r94_compound_expressions.json).
+
 ### Block keywords used as functions (CR6/CR1000X)
 
 Oracle 2026-10-10 (`block_keyword_call.json`; CR300/CR350 give the same text plus their

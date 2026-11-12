@@ -209,12 +209,8 @@ Representative inputs, expected ordered output, date, and exe hashes are in
 
 ## Known residual gaps (oracle-accepted CHM examples not fully parsed)
 
-Two of the 198 oracle-accepted CHM examples still produce `Unparsed` statements (196/198, 99%,
-fully parse; see `tests/test_corpus.py`'s `KNOWN_GAPS`):
+The parser corpus records one remaining gap in `tests/test_corpus.py`:
 
-- `samplemaxmin_1.CR6`: `WS_ms=WS_ms+=1` -- almost certainly a documentation typo (mixing `X = X +
-  1` and `X += 1`) that CR6Comp happens to still accept; not investigated further (see "Version
-  control"/scope discipline -- very low value, likely never appears in real code).
 - `snmpvariable_1.CR6`: `SNMPVariable(MyTemp,1.3.6.1.4.1.43592.55.1.4,Float,RONLY)` -- a raw
   dotted-OID literal (an SNMP object identifier) as one argument, which is not a general
   expression; `SNMPVariable`-specific, not investigated further.
