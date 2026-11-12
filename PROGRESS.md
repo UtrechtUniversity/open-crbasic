@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 95** (verdict parity, fuzz seed 777). Fixed CR300 false accept
+`2ef289452196` by checking optional routine headers and omitted arguments.
+All six recorded CR300/CR350 seed 777 false accepts now match exactly.
+[Optional parameter evidence](docs/checker.md#optional-routine-parameters-round-95).
+
 **Round 94** (verdict parity, fuzz seed 777). Fixed CR350 false accept
 `ac09e63f5544` by parsing compound assignments within expressions and checking
 their targets. Five of the six CR300/CR350 seed 777 false accepts now match exactly.

@@ -1268,12 +1268,18 @@ def _report_unregistered(
         if isinstance(st, S.SubDef) and id(st) in tainted_subs and st.keyword == "FUNCTION"
     }
     affected: set[tuple[int, str]] = set()
+    removed_params: set[str] = set()
     for st in program.statements[taint_at + 1 :]:
-        if id(st) in dropped or id(st) in rewritten or isinstance(st, S.SubDef):
+        if isinstance(st, S.SubDef):
+            removed_params = {p.name.upper() for p in st.params} if id(st) in tainted_subs else set()
+            continue
+        if isinstance(st, S.Instruction) and structure._ends_sub(st, st.keyword.upper()):
+            removed_params.clear()
+        if id(st) in dropped or id(st) in rewritten:
             continue
         names: set[str] = set()
         unused._walk_stmt(st, names)
-        if names & unregistered or (not isinstance(st, S.Call) and names & functions):
+        if names & unregistered or names & removed_params or (not isinstance(st, S.Call) and names & functions):
             affected.add((st.line, st.file))
     if not affected:
         return

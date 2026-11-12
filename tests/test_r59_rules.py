@@ -10,7 +10,14 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-FIXTURES = ("r59_destinations", "r59_measurement", "r59_declarations", "r59_tables_names", "r59_conditions")
+FIXTURES = (
+    "r59_destinations",
+    "r59_measurement",
+    "r59_declarations",
+    "r59_tables_names",
+    "r59_conditions",
+    "r95_optional_params",
+)
 CASES = [
     case
     for name in FIXTURES

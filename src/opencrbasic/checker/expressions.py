@@ -3086,15 +3086,14 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
             fn = functions.get(node.name.upper())
             if fn is None:
                 continue
-            required = sum(1 for p in fn.params if p.default is None)
-            if len(node.args) < required:
+            if fn.missing_required_params(node.args):
                 # one message per missing required argument, nested calls in the arguments add
                 # theirs, a later sibling call adds none (oracle, 2026-10-12)
                 missing[0] = 0
                 for inner in _index_nodes(node):
                     f2 = functions.get(inner.name.upper())
                     if f2 is not None:
-                        missing[0] += max(0, sum(1 for p in f2.params if p.default is None) - len(inner.args))
+                        missing[0] += f2.missing_required_params(inner.args)
                 return "few"
             if len(node.args) > len(fn.params):
                 return "many"
@@ -3161,9 +3160,8 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
                         return
             bare = not stmt.args and not (stmt.text or "").lstrip()[len(stmt.name) :].lstrip().startswith("(")
             if not stmt.explicit and fn is not None and not bare:  # a bare `Fn` (no parentheses) is accepted (oracle)
-                required = sum(1 for p in fn.params if p.default is None)
-                kind = "few" if len(stmt.args) < required else "many" if len(stmt.args) > len(fn.params) else None
-                missing[0] = max(1, required - len(stmt.args))
+                missing[0] = fn.missing_required_params(stmt.args)
+                kind = "few" if missing[0] else "many" if len(stmt.args) > len(fn.params) else None
                 if kind:
                     report(stmt, kind, stmt.text, True)
                 elif (

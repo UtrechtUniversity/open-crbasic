@@ -256,6 +256,9 @@ class SubDef(Stmt):
     # pass-1 messages of a malformed header (`parser._parse_subdef`), in source order
     header_errors: list[str] = field(default_factory=list, compare=False, repr=False)
 
+    def missing_required_params(self, args: list[Expr | None]) -> int:
+        return sum(param.default is None and (i >= len(args) or args[i] is None) for i, param in enumerate(self.params))
+
 
 @dataclass
 class Call(Stmt):

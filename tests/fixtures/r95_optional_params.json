@@ -1,0 +1,1823 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-optional-end-two",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-optional-end-none",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()."
+  },
+  {
+   "id": "cr6-optional-end-hole",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression:  Result=Calc(1,,3)."
+  },
+  {
+   "id": "cr6-required-after-optional-two",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1,2)."
+  },
+  {
+   "id": "cr6-required-after-optional-none",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()."
+  },
+  {
+   "id": "cr6-required-after-optional-hole",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr6-required-default-after-optional-two",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional."
+  },
+  {
+   "id": "cr6-required-default-after-optional-none",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()."
+  },
+  {
+   "id": "cr6-required-default-after-optional-hole",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional."
+  },
+  {
+   "id": "cr6-optional-without-default-two",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr6-optional-without-default-none",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()."
+  },
+  {
+   "id": "cr6-optional-without-default-hole",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1,,3)."
+  },
+  {
+   "id": "cr6-two-optional-two",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-two-optional-none",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()."
+  },
+  {
+   "id": "cr6-two-optional-hole",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-required-before-optional-two",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-required-before-optional-none",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()."
+  },
+  {
+   "id": "cr6-required-before-optional-hole",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1,,3)."
+  },
+  {
+   "id": "cr1000x-optional-end-two",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-optional-end-none",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()."
+  },
+  {
+   "id": "cr1000x-optional-end-hole",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression:  Result=Calc(1,,3)."
+  },
+  {
+   "id": "cr1000x-required-after-optional-two",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1,2)."
+  },
+  {
+   "id": "cr1000x-required-after-optional-none",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()."
+  },
+  {
+   "id": "cr1000x-required-after-optional-hole",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr1000x-required-default-after-optional-two",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional."
+  },
+  {
+   "id": "cr1000x-required-default-after-optional-none",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()."
+  },
+  {
+   "id": "cr1000x-required-default-after-optional-hole",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional."
+  },
+  {
+   "id": "cr1000x-optional-without-default-two",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr1000x-optional-without-default-none",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()."
+  },
+  {
+   "id": "cr1000x-optional-without-default-hole",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1,,3)."
+  },
+  {
+   "id": "cr1000x-two-optional-two",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-two-optional-none",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()."
+  },
+  {
+   "id": "cr1000x-two-optional-hole",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-required-before-optional-two",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-required-before-optional-none",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()."
+  },
+  {
+   "id": "cr1000x-required-before-optional-hole",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1,,3)."
+  },
+  {
+   "id": "cr300-optional-end-two",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-optional-end-none",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()\n."
+  },
+  {
+   "id": "cr300-optional-end-hole",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression:  Result=Calc(1,,3)\n."
+  },
+  {
+   "id": "cr300-required-after-optional-two",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1,2)\n."
+  },
+  {
+   "id": "cr300-required-after-optional-none",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()\n."
+  },
+  {
+   "id": "cr300-required-after-optional-hole",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr300-required-default-after-optional-two",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr300-required-default-after-optional-none",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()\n."
+  },
+  {
+   "id": "cr300-required-default-after-optional-hole",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr300-optional-without-default-two",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr300-optional-without-default-none",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()\n."
+  },
+  {
+   "id": "cr300-optional-without-default-hole",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1,,3)\n."
+  },
+  {
+   "id": "cr300-two-optional-two",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-two-optional-none",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()\n."
+  },
+  {
+   "id": "cr300-two-optional-hole",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-required-before-optional-two",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-required-before-optional-none",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()\n."
+  },
+  {
+   "id": "cr300-required-before-optional-hole",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1,,3)\n."
+  },
+  {
+   "id": "cr350-optional-end-two",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-optional-end-none",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()\n."
+  },
+  {
+   "id": "cr350-optional-end-hole",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression:  Result=Calc(1,,3)\n."
+  },
+  {
+   "id": "cr350-required-after-optional-two",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1,2)\n."
+  },
+  {
+   "id": "cr350-required-after-optional-none",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()\n."
+  },
+  {
+   "id": "cr350-required-after-optional-hole",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr350-required-default-after-optional-two",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr350-required-default-after-optional-none",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()\n."
+  },
+  {
+   "id": "cr350-required-default-after-optional-hole",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr350-optional-without-default-two",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr350-optional-without-default-none",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()\n."
+  },
+  {
+   "id": "cr350-optional-without-default-hole",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1,,3)\n."
+  },
+  {
+   "id": "cr350-two-optional-two",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-two-optional-none",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()\n."
+  },
+  {
+   "id": "cr350-two-optional-hole",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-required-before-optional-two",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-required-before-optional-none",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc()\n."
+  },
+  {
+   "id": "cr350-required-before-optional-hole",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1,,3)\n."
+  },
+  {
+   "id": "cr6-tainted-return",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(Q As Long) As String * 30\n Return(Q + \"X\")\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr6-tainted-return-duplicate",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(X As Long) As String * 30\n Return(X + \"X\")\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr6-tainted-assign-duplicate",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(X As Long) As Long\n Later=X+1\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr6-tainted-instruction-duplicate",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(X As Long) As Long\n Randomize(X)\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr6-untainted-return",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Later() As String * 30\n Return(Missing + \"X\")\nEndFunction\nBeginProg\n Result=Later()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Missing + \"X\"."
+  },
+  {
+   "id": "cr6-untainted-return-out-of-scope",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Other(X As Long)\n Return X\nEndFunction\nFunction Later() As String * 30\n Return(X + \"X\")\nEndFunction\nBeginProg\n Result=Later()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: X + \"X\"."
+  },
+  {
+   "id": "cr6-typed-with-space",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X As Long, Optional Y As Long = 1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-typed-without-space",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X As Long, Optional Y As Long=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported"
+  },
+  {
+   "id": "cr6-sub-call-short",
+   "logger": "cr6",
+   "source": "Public Result\nSub Calc(X, Optional Z=0, Y)\nEndSub\nBeginProg\n Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr1000x-tainted-return",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(Q As Long) As String * 30\n Return(Q + \"X\")\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr1000x-tainted-return-duplicate",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(X As Long) As String * 30\n Return(X + \"X\")\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr1000x-tainted-assign-duplicate",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(X As Long) As Long\n Later=X+1\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr1000x-tainted-instruction-duplicate",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(X As Long) As Long\n Randomize(X)\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr1000x-untainted-return",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Later() As String * 30\n Return(Missing + \"X\")\nEndFunction\nBeginProg\n Result=Later()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Missing + \"X\"."
+  },
+  {
+   "id": "cr1000x-untainted-return-out-of-scope",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Other(X As Long)\n Return X\nEndFunction\nFunction Later() As String * 30\n Return(X + \"X\")\nEndFunction\nBeginProg\n Result=Later()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: X + \"X\"."
+  },
+  {
+   "id": "cr1000x-typed-with-space",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X As Long, Optional Y As Long = 1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-typed-without-space",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X As Long, Optional Y As Long=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported"
+  },
+  {
+   "id": "cr1000x-sub-call-short",
+   "logger": "cr1000x",
+   "source": "Public Result\nSub Calc(X, Optional Z=0, Y)\nEndSub\nBeginProg\n Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr300-tainted-return",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(Q As Long) As String * 30\n Return(Q + \"X\")\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 5: Too many parameters:  As.\nline 6: Q is not defined.\nline 9: No Matching, or out of place ) in expression:  Result=Later(1)\n."
+  },
+  {
+   "id": "cr300-tainted-return-duplicate",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(X As Long) As String * 30\n Return(X + \"X\")\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 5: Too many parameters:  As.\nline 6: X is not defined.\nline 9: No Matching, or out of place ) in expression:  Result=Later(1)\n."
+  },
+  {
+   "id": "cr300-tainted-assign-duplicate",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(X As Long) As Long\n Later=X+1\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 5: Too many parameters:  As.\nline 6: X is not defined.\nline 9: No Matching, or out of place ) in expression:  Result=Later(1)\n."
+  },
+  {
+   "id": "cr300-tainted-instruction-duplicate",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(X As Long) As Long\n Randomize(X)\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 5: Too many parameters:  As.\nline 6: X is not defined.\nline 9: No Matching, or out of place ) in expression:  Result=Later(1)\n."
+  },
+  {
+   "id": "cr300-untainted-return",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Later() As String * 30\n Return(Missing + \"X\")\nEndFunction\nBeginProg\n Result=Later()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr300-untainted-return-out-of-scope",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Other(X As Long)\n Return X\nEndFunction\nFunction Later() As String * 30\n Return(X + \"X\")\nEndFunction\nBeginProg\n Result=Later()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: X is not defined."
+  },
+  {
+   "id": "cr300-typed-with-space",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X As Long, Optional Y As Long = 1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-typed-without-space",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X As Long, Optional Y As Long=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported"
+  },
+  {
+   "id": "cr300-sub-call-short",
+   "logger": "cr300",
+   "source": "Public Result\nSub Calc(X, Optional Z=0, Y)\nEndSub\nBeginProg\n Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr350-tainted-return",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(Q As Long) As String * 30\n Return(Q + \"X\")\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 5: Too many parameters:  As.\nline 6: Q is not defined.\nline 9: No Matching, or out of place ) in expression:  Result=Later(1)\n."
+  },
+  {
+   "id": "cr350-tainted-return-duplicate",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(X As Long) As String * 30\n Return(X + \"X\")\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 5: Too many parameters:  As.\nline 6: X is not defined.\nline 9: No Matching, or out of place ) in expression:  Result=Later(1)\n."
+  },
+  {
+   "id": "cr350-tainted-assign-duplicate",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(X As Long) As Long\n Later=X+1\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 5: Too many parameters:  As.\nline 6: X is not defined.\nline 9: No Matching, or out of place ) in expression:  Result=Later(1)\n."
+  },
+  {
+   "id": "cr350-tainted-instruction-duplicate",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Bad(X, Optional Z=0, Y)\n Return X\nEndFunction\nFunction Later(X As Long) As Long\n Randomize(X)\nEndFunction\nBeginProg\n Result=Later(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 5: Too many parameters:  As.\nline 6: X is not defined.\nline 9: No Matching, or out of place ) in expression:  Result=Later(1)\n."
+  },
+  {
+   "id": "cr350-untainted-return",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Later() As String * 30\n Return(Missing + \"X\")\nEndFunction\nBeginProg\n Result=Later()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing is not defined."
+  },
+  {
+   "id": "cr350-untainted-return-out-of-scope",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Other(X As Long)\n Return X\nEndFunction\nFunction Later() As String * 30\n Return(X + \"X\")\nEndFunction\nBeginProg\n Result=Later()\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: X is not defined."
+  },
+  {
+   "id": "cr350-typed-with-space",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X As Long, Optional Y As Long = 1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-typed-without-space",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X As Long, Optional Y As Long=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported"
+  },
+  {
+   "id": "cr350-sub-call-short",
+   "logger": "cr350",
+   "source": "Public Result\nSub Calc(X, Optional Z=0, Y)\nEndSub\nBeginProg\n Calc(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr6-Function-two-required-after",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(Optional A=0, B, C)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter B requires initialization.\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr6-Sub-two-required-after",
+   "logger": "cr6",
+   "source": "Public Result\nSub Calc(Optional A=0, B, C)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter B requires initialization.\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr6-Function-two-required-mixed",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(Optional A=0, B=1, C)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr6-Sub-two-required-mixed",
+   "logger": "cr6",
+   "source": "Public Result\nSub Calc(Optional A=0, B=1, C)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr6-Function-two-required-default",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(Optional A=0, B=1, C=2)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: All arguments after the first optional parameter must be optional."
+  },
+  {
+   "id": "cr6-Sub-two-required-default",
+   "logger": "cr6",
+   "source": "Public Result\nSub Calc(Optional A=0, B=1, C=2)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: All arguments after the first optional parameter must be optional."
+  },
+  {
+   "id": "cr6-Function-two-missing-defaults",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(Optional A, Optional B)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization.\nline 2: Optional parameter B requires initialization."
+  },
+  {
+   "id": "cr6-Sub-two-missing-defaults",
+   "logger": "cr6",
+   "source": "Public Result\nSub Calc(Optional A, Optional B)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization.\nline 2: Optional parameter B requires initialization."
+  },
+  {
+   "id": "cr6-Function-missing-then-required",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(Optional A, B)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization.\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter B requires initialization."
+  },
+  {
+   "id": "cr6-Sub-missing-then-required",
+   "logger": "cr6",
+   "source": "Public Result\nSub Calc(Optional A, B)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization.\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter B requires initialization."
+  },
+  {
+   "id": "cr6-Function-typed",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(A As Long, Optional B As Long=1, C As Long)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr6-Sub-typed",
+   "logger": "cr6",
+   "source": "Public Result\nSub Calc(A As Long, Optional B As Long=1, C As Long)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr6-Function-required-default-first",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(A=1, Optional B=0)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter A cannot be initialized."
+  },
+  {
+   "id": "cr6-Sub-required-default-first",
+   "logger": "cr6",
+   "source": "Public Result\nSub Calc(A=1, Optional B=0)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter A cannot be initialized."
+  },
+  {
+   "id": "cr6-Function-missing-expression",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(A, Optional B=)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: EndFunction\n.\nline 2: Variable initialization of B has bad syntax.",
+   "not_modelled": "An equals sign without a default consumes the next physical line in the reference compiler"
+  },
+  {
+   "id": "cr6-Sub-missing-expression",
+   "logger": "cr6",
+   "source": "Public Result\nSub Calc(A, Optional B=)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: EndSub\n.\nline 2: Variable initialization of B has bad syntax.",
+   "not_modelled": "An equals sign without a default consumes the next physical line in the reference compiler"
+  },
+  {
+   "id": "cr6-Function-required-after-then-optional",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(A, Optional B=0, C, Optional D=0)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr6-Sub-required-after-then-optional",
+   "logger": "cr6",
+   "source": "Public Result\nSub Calc(A, Optional B=0, C, Optional D=0)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr1000x-Function-two-required-after",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(Optional A=0, B, C)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter B requires initialization.\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr1000x-Sub-two-required-after",
+   "logger": "cr1000x",
+   "source": "Public Result\nSub Calc(Optional A=0, B, C)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter B requires initialization.\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr1000x-Function-two-required-mixed",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(Optional A=0, B=1, C)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr1000x-Sub-two-required-mixed",
+   "logger": "cr1000x",
+   "source": "Public Result\nSub Calc(Optional A=0, B=1, C)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr1000x-Function-two-required-default",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(Optional A=0, B=1, C=2)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: All arguments after the first optional parameter must be optional."
+  },
+  {
+   "id": "cr1000x-Sub-two-required-default",
+   "logger": "cr1000x",
+   "source": "Public Result\nSub Calc(Optional A=0, B=1, C=2)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: All arguments after the first optional parameter must be optional."
+  },
+  {
+   "id": "cr1000x-Function-two-missing-defaults",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(Optional A, Optional B)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization.\nline 2: Optional parameter B requires initialization."
+  },
+  {
+   "id": "cr1000x-Sub-two-missing-defaults",
+   "logger": "cr1000x",
+   "source": "Public Result\nSub Calc(Optional A, Optional B)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization.\nline 2: Optional parameter B requires initialization."
+  },
+  {
+   "id": "cr1000x-Function-missing-then-required",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(Optional A, B)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization.\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter B requires initialization."
+  },
+  {
+   "id": "cr1000x-Sub-missing-then-required",
+   "logger": "cr1000x",
+   "source": "Public Result\nSub Calc(Optional A, B)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization.\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter B requires initialization."
+  },
+  {
+   "id": "cr1000x-Function-typed",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(A As Long, Optional B As Long=1, C As Long)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr1000x-Sub-typed",
+   "logger": "cr1000x",
+   "source": "Public Result\nSub Calc(A As Long, Optional B As Long=1, C As Long)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr1000x-Function-required-default-first",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(A=1, Optional B=0)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter A cannot be initialized."
+  },
+  {
+   "id": "cr1000x-Sub-required-default-first",
+   "logger": "cr1000x",
+   "source": "Public Result\nSub Calc(A=1, Optional B=0)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter A cannot be initialized."
+  },
+  {
+   "id": "cr1000x-Function-missing-expression",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(A, Optional B=)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: EndFunction\n.\nline 2: Variable initialization of B has bad syntax.",
+   "not_modelled": "An equals sign without a default consumes the next physical line in the reference compiler"
+  },
+  {
+   "id": "cr1000x-Sub-missing-expression",
+   "logger": "cr1000x",
+   "source": "Public Result\nSub Calc(A, Optional B=)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: EndSub\n.\nline 2: Variable initialization of B has bad syntax.",
+   "not_modelled": "An equals sign without a default consumes the next physical line in the reference compiler"
+  },
+  {
+   "id": "cr1000x-Function-required-after-then-optional",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(A, Optional B=0, C, Optional D=0)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr1000x-Sub-required-after-then-optional",
+   "logger": "cr1000x",
+   "source": "Public Result\nSub Calc(A, Optional B=0, C, Optional D=0)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr300-Function-two-required-after",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(Optional A=0, B, C)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter B requires initialization."
+  },
+  {
+   "id": "cr300-Sub-two-required-after",
+   "logger": "cr300",
+   "source": "Public Result\nSub Calc(Optional A=0, B, C)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter B requires initialization."
+  },
+  {
+   "id": "cr300-Function-two-required-mixed",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(Optional A=0, B=1, C)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr300-Sub-two-required-mixed",
+   "logger": "cr300",
+   "source": "Public Result\nSub Calc(Optional A=0, B=1, C)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr300-Function-two-required-default",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(Optional A=0, B=1, C=2)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr300-Sub-two-required-default",
+   "logger": "cr300",
+   "source": "Public Result\nSub Calc(Optional A=0, B=1, C=2)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr300-Function-two-missing-defaults",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(Optional A, Optional B)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization."
+  },
+  {
+   "id": "cr300-Sub-two-missing-defaults",
+   "logger": "cr300",
+   "source": "Public Result\nSub Calc(Optional A, Optional B)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization."
+  },
+  {
+   "id": "cr300-Function-missing-then-required",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(Optional A, B)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization."
+  },
+  {
+   "id": "cr300-Sub-missing-then-required",
+   "logger": "cr300",
+   "source": "Public Result\nSub Calc(Optional A, B)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization."
+  },
+  {
+   "id": "cr300-Function-typed",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(A As Long, Optional B As Long=1, C As Long)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported"
+  },
+  {
+   "id": "cr300-Sub-typed",
+   "logger": "cr300",
+   "source": "Public Result\nSub Calc(A As Long, Optional B As Long=1, C As Long)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported"
+  },
+  {
+   "id": "cr300-Function-required-default-first",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(A=1, Optional B=0)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter p cannot be initialized."
+  },
+  {
+   "id": "cr300-Sub-required-default-first",
+   "logger": "cr300",
+   "source": "Public Result\nSub Calc(A=1, Optional B=0)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter p cannot be initialized."
+  },
+  {
+   "id": "cr300-Function-missing-expression",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(A, Optional B=)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndFunction is not defined.\nline 2: Variable illegal in Parameter: EndFunction\n.\nline 2: Variable initialization of B has bad syntax.",
+   "not_modelled": "An equals sign without a default consumes the next physical line in the reference compiler"
+  },
+  {
+   "id": "cr300-Sub-missing-expression",
+   "logger": "cr300",
+   "source": "Public Result\nSub Calc(A, Optional B=)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub is not defined.\nline 2: Variable illegal in Parameter: EndSub\n.\nline 2: Variable initialization of B has bad syntax.",
+   "not_modelled": "An equals sign without a default consumes the next physical line in the reference compiler"
+  },
+  {
+   "id": "cr300-Function-required-after-then-optional",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(A, Optional B=0, C, Optional D=0)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr300-Sub-required-after-then-optional",
+   "logger": "cr300",
+   "source": "Public Result\nSub Calc(A, Optional B=0, C, Optional D=0)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr350-Function-two-required-after",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(Optional A=0, B, C)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter B requires initialization."
+  },
+  {
+   "id": "cr350-Sub-two-required-after",
+   "logger": "cr350",
+   "source": "Public Result\nSub Calc(Optional A=0, B, C)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter B requires initialization."
+  },
+  {
+   "id": "cr350-Function-two-required-mixed",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(Optional A=0, B=1, C)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr350-Sub-two-required-mixed",
+   "logger": "cr350",
+   "source": "Public Result\nSub Calc(Optional A=0, B=1, C)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr350-Function-two-required-default",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(Optional A=0, B=1, C=2)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr350-Sub-two-required-default",
+   "logger": "cr350",
+   "source": "Public Result\nSub Calc(Optional A=0, B=1, C=2)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr350-Function-two-missing-defaults",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(Optional A, Optional B)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization."
+  },
+  {
+   "id": "cr350-Sub-two-missing-defaults",
+   "logger": "cr350",
+   "source": "Public Result\nSub Calc(Optional A, Optional B)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization."
+  },
+  {
+   "id": "cr350-Function-missing-then-required",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(Optional A, B)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization."
+  },
+  {
+   "id": "cr350-Sub-missing-then-required",
+   "logger": "cr350",
+   "source": "Public Result\nSub Calc(Optional A, B)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter A requires initialization."
+  },
+  {
+   "id": "cr350-Function-typed",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(A As Long, Optional B As Long=1, C As Long)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported"
+  },
+  {
+   "id": "cr350-Sub-typed",
+   "logger": "cr350",
+   "source": "Public Result\nSub Calc(A As Long, Optional B As Long=1, C As Long)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported"
+  },
+  {
+   "id": "cr350-Function-required-default-first",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(A=1, Optional B=0)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter p cannot be initialized."
+  },
+  {
+   "id": "cr350-Sub-required-default-first",
+   "logger": "cr350",
+   "source": "Public Result\nSub Calc(A=1, Optional B=0)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Required parameter p cannot be initialized."
+  },
+  {
+   "id": "cr350-Function-missing-expression",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(A, Optional B=)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndFunction is not defined.\nline 2: Variable illegal in Parameter: EndFunction\n.\nline 2: Variable initialization of B has bad syntax.",
+   "not_modelled": "An equals sign without a default consumes the next physical line in the reference compiler"
+  },
+  {
+   "id": "cr350-Sub-missing-expression",
+   "logger": "cr350",
+   "source": "Public Result\nSub Calc(A, Optional B=)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub is not defined.\nline 2: Variable illegal in Parameter: EndSub\n.\nline 2: Variable initialization of B has bad syntax.",
+   "not_modelled": "An equals sign without a default consumes the next physical line in the reference compiler"
+  },
+  {
+   "id": "cr350-Function-required-after-then-optional",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(A, Optional B=0, C, Optional D=0)\nEndFunction\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr350-Sub-required-after-then-optional",
+   "logger": "cr350",
+   "source": "Public Result\nSub Calc(A, Optional B=0, C, Optional D=0)\nEndSub\nBeginProg\n Result=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter C requires initialization."
+  },
+  {
+   "id": "cr6-optional-end-one",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-optional-end-three",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression:  Result=Calc(1,2,3)."
+  },
+  {
+   "id": "cr6-required-after-optional-one",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1)."
+  },
+  {
+   "id": "cr6-required-after-optional-three",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr6-required-default-after-optional-one",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional."
+  },
+  {
+   "id": "cr6-required-default-after-optional-three",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional."
+  },
+  {
+   "id": "cr6-optional-without-default-one",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1)."
+  },
+  {
+   "id": "cr6-optional-without-default-three",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: No Matching, or out of place ) in expression:  Result=Calc(1,2,3)."
+  },
+  {
+   "id": "cr6-two-optional-one",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-two-optional-three",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-required-before-optional-one",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1)."
+  },
+  {
+   "id": "cr6-required-before-optional-three",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-optional-end-one",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-optional-end-three",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression:  Result=Calc(1,2,3)."
+  },
+  {
+   "id": "cr1000x-required-after-optional-one",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1)."
+  },
+  {
+   "id": "cr1000x-required-after-optional-three",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr1000x-required-default-after-optional-one",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional."
+  },
+  {
+   "id": "cr1000x-required-default-after-optional-three",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional."
+  },
+  {
+   "id": "cr1000x-optional-without-default-one",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1)."
+  },
+  {
+   "id": "cr1000x-optional-without-default-three",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: No Matching, or out of place ) in expression:  Result=Calc(1,2,3)."
+  },
+  {
+   "id": "cr1000x-two-optional-one",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-two-optional-three",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-required-before-optional-one",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1)."
+  },
+  {
+   "id": "cr1000x-required-before-optional-three",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-optional-end-one",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-optional-end-three",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression:  Result=Calc(1,2,3)\n."
+  },
+  {
+   "id": "cr300-required-after-optional-one",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1)\n."
+  },
+  {
+   "id": "cr300-required-after-optional-three",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr300-required-default-after-optional-one",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr300-required-default-after-optional-three",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr300-optional-without-default-one",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1)\n."
+  },
+  {
+   "id": "cr300-optional-without-default-three",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: No Matching, or out of place ) in expression:  Result=Calc(1,2,3)\n."
+  },
+  {
+   "id": "cr300-two-optional-one",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-two-optional-three",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-required-before-optional-one",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1)\n."
+  },
+  {
+   "id": "cr300-required-before-optional-three",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-optional-end-one",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-optional-end-three",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression:  Result=Calc(1,2,3)\n."
+  },
+  {
+   "id": "cr350-required-after-optional-one",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1)\n."
+  },
+  {
+   "id": "cr350-required-after-optional-three",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Optional parameter Y requires initialization."
+  },
+  {
+   "id": "cr350-required-default-after-optional-one",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr350-required-default-after-optional-three",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional."
+  },
+  {
+   "id": "cr350-optional-without-default-one",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1)\n."
+  },
+  {
+   "id": "cr350-optional-without-default-three",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Optional parameter Y requires initialization.\nline 6: No Matching, or out of place ) in expression:  Result=Calc(1,2,3)\n."
+  },
+  {
+   "id": "cr350-two-optional-one",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-two-optional-three",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Z=0, Optional Y=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-required-before-optional-one",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Call argument required.\nline 6: Invalid, or out of place expression:  Result=Calc(1)\n."
+  },
+  {
+   "id": "cr350-required-before-optional-three",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Y, Optional Z=0)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1,2,3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-type-adjacent-space-after",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Long= 1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long= not supported"
+  },
+  {
+   "id": "cr6-type-space-before-adjacent-after",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Long =1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-type-adjacent-folded",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Float=1 + 2)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Float=1 not supported"
+  },
+  {
+   "id": "cr6-type-adjacent-name",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Boolean=True)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Boolean=True not supported"
+  },
+  {
+   "id": "cr6-type-adjacent-sized-string",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X, Optional Y As String * 12=\"a\")\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-type-required-adjacent",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(X As Long=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported\nline 2: Required parameter X cannot be initialized."
+  },
+  {
+   "id": "cr6-type-required-adjacent-trailing",
+   "logger": "cr6",
+   "source": "Public Result\nFunction Calc(Optional X=0, Y As Long=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Variable Type Long=1 not supported"
+  },
+  {
+   "id": "cr1000x-type-adjacent-space-after",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Long= 1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long= not supported"
+  },
+  {
+   "id": "cr1000x-type-space-before-adjacent-after",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Long =1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-type-adjacent-folded",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Float=1 + 2)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Float=1 not supported"
+  },
+  {
+   "id": "cr1000x-type-adjacent-name",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Boolean=True)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Boolean=True not supported"
+  },
+  {
+   "id": "cr1000x-type-adjacent-sized-string",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X, Optional Y As String * 12=\"a\")\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-type-required-adjacent",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(X As Long=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported\nline 2: Required parameter X cannot be initialized."
+  },
+  {
+   "id": "cr1000x-type-required-adjacent-trailing",
+   "logger": "cr1000x",
+   "source": "Public Result\nFunction Calc(Optional X=0, Y As Long=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional parameter must be optional.\nline 2: Variable Type Long=1 not supported"
+  },
+  {
+   "id": "cr300-type-adjacent-space-after",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Long= 1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long= not supported"
+  },
+  {
+   "id": "cr300-type-space-before-adjacent-after",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Long =1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-type-adjacent-folded",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Float=1 + 2)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Float=1 not supported"
+  },
+  {
+   "id": "cr300-type-adjacent-name",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Boolean=True)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Boolean=True not supported"
+  },
+  {
+   "id": "cr300-type-adjacent-sized-string",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X, Optional Y As String * 12=\"a\")\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-type-required-adjacent",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(X As Long=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported\nline 2: Required parameter p cannot be initialized."
+  },
+  {
+   "id": "cr300-type-required-adjacent-trailing",
+   "logger": "cr300",
+   "source": "Public Result\nFunction Calc(Optional X=0, Y As Long=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Variable Type Long=1 not supported"
+  },
+  {
+   "id": "cr350-type-adjacent-space-after",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Long= 1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long= not supported"
+  },
+  {
+   "id": "cr350-type-space-before-adjacent-after",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Long =1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-type-adjacent-folded",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Float=1 + 2)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Float=1 not supported"
+  },
+  {
+   "id": "cr350-type-adjacent-name",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y As Boolean=True)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Boolean=True not supported"
+  },
+  {
+   "id": "cr350-type-adjacent-sized-string",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X, Optional Y As String * 12=\"a\")\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-type-required-adjacent",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(X As Long=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Long=1 not supported\nline 2: Required parameter p cannot be initialized."
+  },
+  {
+   "id": "cr350-type-required-adjacent-trailing",
+   "logger": "cr350",
+   "source": "Public Result\nFunction Calc(Optional X=0, Y As Long=1)\n Return X\nEndFunction\nBeginProg\n Result=Calc(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: All arguments after the first optional paramter must be optional.\nline 2: Variable Type Long=1 not supported"
+  }
+ ]
+}

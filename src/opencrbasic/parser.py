@@ -2106,6 +2106,8 @@ class _Parser:
         name_tok = p.expect_ident()
         params: list[S.Param] = []
         errors: list[str] = []
+        after_optional = False
+        optional_error = False
         if p.is_op("("):
             p.next()
             if not p.is_op(")") and not p.at_end():
@@ -2113,7 +2115,24 @@ class _Parser:
                     if bad := self._numeric_name(p):  # (oracle, all four loggers, round 74: `Sub S(1p)`)
                         errors.append(f"Variable name {bad} illegal, starts with a number.")
                     else:
-                        params.append(self._parse_param(p, line, file, errors))
+                        optional = p.is_ident("OPTIONAL")
+                        check_optional = not self.profile.single_pass or not optional_error
+                        missing_marker = check_optional and after_optional and not optional
+                        if missing_marker:
+                            word = "paramter" if self.profile.single_pass else "parameter"
+                            errors.append(f"All arguments after the first optional {word} must be optional.")
+                        before = len(errors)
+                        param = self._parse_param(p, line, file, errors, after_optional=after_optional)
+                        params.append(param)
+                        missing_default = check_optional and (optional or after_optional) and param.default is None
+                        if missing_default:
+                            errors.append(f"Optional parameter {param.name} requires initialization.")
+                        optional_error |= (
+                            missing_marker
+                            or missing_default
+                            or any(error.startswith("Variable Type ") for error in errors[before:])
+                        )
+                        after_optional |= optional
                     if not p.is_op(","):
                         break
                     p.next()
@@ -2145,7 +2164,9 @@ class _Parser:
             line, file, keyword=which, name=name_tok.text, params=params, return_type=return_type, header_errors=errors
         )
 
-    def _parse_param(self, p: _TokStream, line: int, file: str, errors: list[str] | None = None) -> S.Param:
+    def _parse_param(
+        self, p: _TokStream, line: int, file: str, errors: list[str] | None = None, *, after_optional: bool = False
+    ) -> S.Param:
         optional = p.is_ident("OPTIONAL")
         if optional:
             p.next()
@@ -2175,8 +2196,18 @@ class _Parser:
             p.next()
         vtype = None
         strsize = None
+        default = None
         if p.is_ident("AS"):
             p.next()
+            first, second = p.peek(), p.peek(1)
+            if (
+                errors is not None
+                and first.kind == "IDENT"
+                and second.kind == "OP"
+                and second.text == "="
+                and second.col == first.col + len(first.text)
+            ):
+                errors.append(f"Variable Type {_raw_word(p, ' ,)')} not supported")
             type_tok = None if p.at_end() else p.expect_ident()  # `b As` cut off at the line end
             vtype = type_tok.upper if type_tok else None
             if p.is_op("!"):
@@ -2187,6 +2218,8 @@ class _Parser:
                 p.next()
                 size_col = p.peek().col
                 strsize = self._parse_expr(p, line, file)
+                if (optional or after_optional) and isinstance(strsize, S.Binary) and strsize.op == "=":
+                    strsize, default = strsize.left, strsize.right
                 if p.is_op("!") and not self.profile.single_pass and errors is not None:
                     # Sized String parameters read through `!` to the next comma or `)`
                     # (oracle, CR6/CR1000X, r67_string_size_junk, cases 087;
@@ -2195,7 +2228,6 @@ class _Parser:
                         p.next()
                     echo = p.seg_text[size_col : p.peek().col].rstrip()
                     errors.append(f"Incomplete expression: {echo}.")
-        default = None
         if p.is_op("="):
             if name_tok.kind == "STRING" and not optional:
                 # Required quoted parameters cannot be initialized. Keep the existing
@@ -2203,7 +2235,7 @@ class _Parser:
                 raise _ParseError("required quoted parameter cannot be initialized")
             p.next()
             default = self._parse_expr(p, line, file)
-            if errors is not None and not optional and name_tok.kind == "IDENT":
+            if errors is not None and not (optional or after_optional) and name_tok.kind == "IDENT":
                 # CR300/CR350 print the name as `p` (oracle, round 59)
                 name = "p" if self.profile.single_pass else name_tok.text
                 errors.append(f"Required parameter {name} cannot be initialized.")

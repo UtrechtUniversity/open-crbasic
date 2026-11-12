@@ -12,7 +12,7 @@ from typing import TypeGuard
 
 from .. import consteval, lexer, parser
 from .. import syntax as S
-from ..diagnostics import Diagnostics
+from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import DottedName, Profile
 from . import expressions, instr_data, instr_rules, symbols
 
@@ -1415,7 +1415,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 )
                 header_dims_failed |= failed
             for message in stmt.header_errors:
-                diags.error(stmt.line, message, stmt.file)
+                optional_error = _optional_header_error(message)
+                diags.items.append(Diagnostic("error", stmt.line, message, stmt.file, trigger=optional_error))
             in_sub = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and _block_word(args) in ("SUB", "FUNCTION")):
             in_sub = False
@@ -4498,20 +4499,23 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
             diags.error(nxt.line, _leftover_message(profile, nxt), nxt.file)
 
 
+def _optional_header_error(message: str) -> bool:
+    return message.startswith(("All arguments after the first optional", "Optional parameter "))
+
+
 def _check_call_args(stmt: S.Call, sub: S.SubDef, diags: Diagnostics) -> None:
     """`Sub` call argument counts, pass 2, all four loggers (oracle, 2026-09-27): fewer arguments
     than the `Sub` has parameters without a default (including none: `Log1`, `Log1()`) -> `Call
     argument required.`; more than it has parameters -> `Call to Log1 with 2 parameters, requires
     1 arguments.` (`%s` = the `Sub`'s declared name)."""
-    if sub.keyword.upper() != "SUB":
+    if sub.keyword.upper() != "SUB" or any(map(_optional_header_error, sub.header_errors)):
         return
     given = len(stmt.args)
-    required = sum(1 for p in sub.params if p.default is None)
     if given > len(sub.params):
         diags.error(
             stmt.line, f"Call to {sub.name} with {given} parameters, requires {len(sub.params)} arguments.", stmt.file
         )
-    elif given < required:
+    elif any(param.default is None for param in sub.params[given:]):
         # `S() tail` reports it twice (oracle, 2026-10-04)
         for _ in range(2 if stmt.tail_ignored else 1):
             diags.error(stmt.line, "Call argument required.", stmt.file)

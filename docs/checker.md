@@ -9241,6 +9241,23 @@ accept).
 - anything after the return type: `Too many parameters:  %s.` (`As Long * 30`, `As Strng * 30` after
   its `Variable Type Strng not supported`).
 
+### Optional routine parameters (round 95)
+
+In `Sub` and `Function` headers, a parameter after the first `Optional` needs
+its own `Optional` marker. An optional parameter also requires a default.
+The missing-marker diagnostic uses `parameter` on CR6/CR1000X and `paramter`
+on CR300/CR350. CR6/CR1000X report each bad parameter. CR300/CR350 stop reporting
+these header errors after the first bad parameter and apply their subsequent
+routine-declaration cascade. The CR6 declaration parser `FUN_004baf00` emits
+the two header messages at separate points in the parameter loop.
+
+An omitted required function argument is counted at its own position, including
+an empty argument before later arguments. A default attached directly to a
+type name is read as part of the type token, so `As Long=1` rejects and
+`As Long =1` compiles. The eight observations with a bare `=` before the
+closing parenthesis retain their known diagnostic gap.
+[`r95_optional_params.json`](../tests/fixtures/r95_optional_params.json).
+
 ## Dereferencing an undeclared name (round 59)
 
 `!Name` on an undeclared name is `Illegal ! operation`, once per statement, in pass 1 (a dropped
