@@ -12,7 +12,7 @@ from opencrbasic.compiler import compile_file
 FIXTURES = Path(__file__).parent / "fixtures"
 CASES = [
     case
-    for name in ("const_ranges.json", "r93_cdm_bridge_options.json")
+    for name in ("const_ranges.json", "r93_cdm_bridge_options.json", "r102_ec100_options.json")
     for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
 ]
 

@@ -1387,6 +1387,8 @@ _SDM_MODE_VALUES = {
 }
 _TGA_VALUES = ((2, 3, 4), (5, 7, 9), (8, 10, 12), (19, 25, 31), (21, 27, 33))
 _EC100_VALUES = (8, 12, 13, 15, 36)
+# Destination thresholds independently measured on CR6 and CR1000X (round 102).
+_EC100_INVALID_COUNTS = {4: 36, 8: 254, 15: 185, 127: 57, 128: 192, 158: 254, 254: 146, 255: 188}
 _BUILDER_FIXED = {
     "CSAT3B": ((0, 5),),
     "CSAT3BMONITOR": ((0, 4),),
@@ -1431,11 +1433,6 @@ def _builder_counts(kw: str, args: list, env: consteval.Env) -> list[tuple[int, 
         if first is None or second is None or not (1 <= _byte(first) <= 5 and 1 <= _byte(second) <= 3):
             return []
         return [(0, _TGA_VALUES[_byte(first) - 1][_byte(second) - 1])]
-    if kw == "EC100":
-        option = arg(2)
-        if option is None or (option != 2718 and _byte(option) > 3):
-            return []
-        return [(0, _EC100_VALUES[4 if option == 2718 else _byte(option)])]
     return []
 
 
@@ -1482,6 +1479,28 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, 
     for stmt in program.statements:
         scope = tables(stmt)
         dims, types, arrays = scope.dims, scope.types, scope.arrays
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "EC100" and len(stmt.args) >= 3:
+            option_arg = stmt.args[2]
+            option = longconv.long_value(option_arg, env, profile, *names)
+            if isinstance(option_arg, S.Name) and option_arg.name.upper() == "INF" and "INF" not in env.consts:
+                option = 2**31 - 1
+            if option is None and (folded := _int_value(option_arg, env)) is not None:
+                option = consteval.to_long(folded)
+            if option is None:
+                continue
+            code = 4 if option == 2718 else _byte(option)
+            invalid = option != 2718 and code > 3
+            if invalid:
+                diags.error(stmt.line, "Invalid output option; range 0..3.", stmt.file)
+            count = _EC100_INVALID_COUNTS.get(code) if invalid else _EC100_VALUES[code]
+            target = stmt.args[0]
+            if count is not None and isinstance(target, (S.Name, S.Index)):
+                alias = alias_storage(stmt, target)
+                if alias is not None and _alias_overrun(stmt, target, alias, count, profile, env):
+                    diags.error(stmt.line, f"Variable {alias[2]} out of bounds.", stmt.file)
+                elif overruns(target, count, False, ("FLOAT",)):
+                    diags.error(stmt.line, f"Variable {target.name} out of bounds.", stmt.file)
+            continue
         if (
             isinstance(stmt, S.Instruction)
             and stmt.keyword.upper() in ("CDM_TCCOMP", "CDM_PANELTEMP")
@@ -1540,7 +1559,7 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, 
             return
         elif (
             kw in _BUILDER_FIXED
-            or kw in ("SDMGENERIC", "SDMSW8A", "SDMCD16AC", "CSAT3", "PEAKVALLEY", "TGA", "EC100")
+            or kw in ("SDMGENERIC", "SDMSW8A", "SDMCD16AC", "CSAT3", "PEAKVALLEY", "TGA")
             or kw in _SDM_MODE_VALUES
         ):
             # SDMGeneric checks any non-String destination, including a negative count

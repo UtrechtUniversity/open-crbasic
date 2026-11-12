@@ -1,0 +1,3327 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-13-1--1",
+   "logger": "cr6",
+   "source": "Public Values(13)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3.\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-256-1--1",
+   "logger": "cr6",
+   "source": "Public Values(256)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-13-6-0",
+   "logger": "cr6",
+   "source": "Public Values(13)\nAlias Values(6)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-7-0",
+   "logger": "cr6",
+   "source": "Public Values(13)\nAlias Values(7)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable First out of bounds."
+  },
+  {
+   "id": "cr6-13-2-1",
+   "logger": "cr6",
+   "source": "Public Values(13)\nAlias Values(2)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-3-1",
+   "logger": "cr6",
+   "source": "Public Values(13)\nAlias Values(3)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable First out of bounds."
+  },
+  {
+   "id": "cr6-40-5-2718",
+   "logger": "cr6",
+   "source": "Public Values(40)\nAlias Values(5)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,2718)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-40-6-2718",
+   "logger": "cr6",
+   "source": "Public Values(40)\nAlias Values(6)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,2718)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable First out of bounds."
+  },
+  {
+   "id": "cr6-36-1-4",
+   "logger": "cr6",
+   "source": "Public Values(36)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-13-1--1",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3.\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-256-1--1",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-13-6-0",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nAlias Values(6)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-7-0",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nAlias Values(7)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable First out of bounds."
+  },
+  {
+   "id": "cr1000x-13-2-1",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nAlias Values(2)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-3-1",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nAlias Values(3)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable First out of bounds."
+  },
+  {
+   "id": "cr1000x-40-5-2718",
+   "logger": "cr1000x",
+   "source": "Public Values(40)\nAlias Values(5)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,2718)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-40-6-2718",
+   "logger": "cr1000x",
+   "source": "Public Values(40)\nAlias Values(6)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,2718)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable First out of bounds."
+  },
+  {
+   "id": "cr1000x-36-1-4",
+   "logger": "cr1000x",
+   "source": "Public Values(36)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-128-option4",
+   "logger": "cr6",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-64-option4",
+   "logger": "cr6",
+   "source": "Public Values(64)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-32-option4",
+   "logger": "cr6",
+   "source": "Public Values(32)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-48-option4",
+   "logger": "cr6",
+   "source": "Public Values(48)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-40-option4",
+   "logger": "cr6",
+   "source": "Public Values(40)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-36-option4",
+   "logger": "cr6",
+   "source": "Public Values(36)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-34-option4",
+   "logger": "cr6",
+   "source": "Public Values(34)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-35-option4",
+   "logger": "cr6",
+   "source": "Public Values(35)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-128-option5",
+   "logger": "cr6",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-64-option5",
+   "logger": "cr6",
+   "source": "Public Values(64)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-32-option5",
+   "logger": "cr6",
+   "source": "Public Values(32)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-16-option5",
+   "logger": "cr6",
+   "source": "Public Values(16)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-8-option5",
+   "logger": "cr6",
+   "source": "Public Values(8)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-4-option5",
+   "logger": "cr6",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-2-option5",
+   "logger": "cr6",
+   "source": "Public Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-1-option5",
+   "logger": "cr6",
+   "source": "Public Values(1)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-128-option6",
+   "logger": "cr6",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-64-option6",
+   "logger": "cr6",
+   "source": "Public Values(64)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-32-option6",
+   "logger": "cr6",
+   "source": "Public Values(32)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-16-option6",
+   "logger": "cr6",
+   "source": "Public Values(16)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-8-option6",
+   "logger": "cr6",
+   "source": "Public Values(8)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-4-option6",
+   "logger": "cr6",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-2-option6",
+   "logger": "cr6",
+   "source": "Public Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-1-option6",
+   "logger": "cr6",
+   "source": "Public Values(1)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-128-option7",
+   "logger": "cr6",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-64-option7",
+   "logger": "cr6",
+   "source": "Public Values(64)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-32-option7",
+   "logger": "cr6",
+   "source": "Public Values(32)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-16-option7",
+   "logger": "cr6",
+   "source": "Public Values(16)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-8-option7",
+   "logger": "cr6",
+   "source": "Public Values(8)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-4-option7",
+   "logger": "cr6",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-2-option7",
+   "logger": "cr6",
+   "source": "Public Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-1-option7",
+   "logger": "cr6",
+   "source": "Public Values(1)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-128-option8",
+   "logger": "cr6",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-192-option8",
+   "logger": "cr6",
+   "source": "Public Values(192)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-224-option8",
+   "logger": "cr6",
+   "source": "Public Values(224)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-240-option8",
+   "logger": "cr6",
+   "source": "Public Values(240)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-248-option8",
+   "logger": "cr6",
+   "source": "Public Values(248)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-252-option8",
+   "logger": "cr6",
+   "source": "Public Values(252)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-254-option8",
+   "logger": "cr6",
+   "source": "Public Values(254)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-253-option8",
+   "logger": "cr6",
+   "source": "Public Values(253)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-128-option15",
+   "logger": "cr6",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-192-option15",
+   "logger": "cr6",
+   "source": "Public Values(192)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-160-option15",
+   "logger": "cr6",
+   "source": "Public Values(160)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-176-option15",
+   "logger": "cr6",
+   "source": "Public Values(176)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-184-option15",
+   "logger": "cr6",
+   "source": "Public Values(184)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-188-option15",
+   "logger": "cr6",
+   "source": "Public Values(188)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-186-option15",
+   "logger": "cr6",
+   "source": "Public Values(186)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-185-option15",
+   "logger": "cr6",
+   "source": "Public Values(185)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-128-option127",
+   "logger": "cr6",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-64-option127",
+   "logger": "cr6",
+   "source": "Public Values(64)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-32-option127",
+   "logger": "cr6",
+   "source": "Public Values(32)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-48-option127",
+   "logger": "cr6",
+   "source": "Public Values(48)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-56-option127",
+   "logger": "cr6",
+   "source": "Public Values(56)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-60-option127",
+   "logger": "cr6",
+   "source": "Public Values(60)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-58-option127",
+   "logger": "cr6",
+   "source": "Public Values(58)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-57-option127",
+   "logger": "cr6",
+   "source": "Public Values(57)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-128-option128",
+   "logger": "cr6",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-192-option128",
+   "logger": "cr6",
+   "source": "Public Values(192)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-160-option128",
+   "logger": "cr6",
+   "source": "Public Values(160)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-176-option128",
+   "logger": "cr6",
+   "source": "Public Values(176)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-184-option128",
+   "logger": "cr6",
+   "source": "Public Values(184)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-188-option128",
+   "logger": "cr6",
+   "source": "Public Values(188)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-190-option128",
+   "logger": "cr6",
+   "source": "Public Values(190)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-191-option128",
+   "logger": "cr6",
+   "source": "Public Values(191)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-128-option158",
+   "logger": "cr6",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-192-option158",
+   "logger": "cr6",
+   "source": "Public Values(192)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-224-option158",
+   "logger": "cr6",
+   "source": "Public Values(224)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-240-option158",
+   "logger": "cr6",
+   "source": "Public Values(240)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-248-option158",
+   "logger": "cr6",
+   "source": "Public Values(248)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-252-option158",
+   "logger": "cr6",
+   "source": "Public Values(252)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-254-option158",
+   "logger": "cr6",
+   "source": "Public Values(254)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-253-option158",
+   "logger": "cr6",
+   "source": "Public Values(253)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-128-option254",
+   "logger": "cr6",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-192-option254",
+   "logger": "cr6",
+   "source": "Public Values(192)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-160-option254",
+   "logger": "cr6",
+   "source": "Public Values(160)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-144-option254",
+   "logger": "cr6",
+   "source": "Public Values(144)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-152-option254",
+   "logger": "cr6",
+   "source": "Public Values(152)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-148-option254",
+   "logger": "cr6",
+   "source": "Public Values(148)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-146-option254",
+   "logger": "cr6",
+   "source": "Public Values(146)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-145-option254",
+   "logger": "cr6",
+   "source": "Public Values(145)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-128-option255",
+   "logger": "cr6",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-192-option255",
+   "logger": "cr6",
+   "source": "Public Values(192)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-160-option255",
+   "logger": "cr6",
+   "source": "Public Values(160)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-176-option255",
+   "logger": "cr6",
+   "source": "Public Values(176)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-184-option255",
+   "logger": "cr6",
+   "source": "Public Values(184)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-188-option255",
+   "logger": "cr6",
+   "source": "Public Values(188)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-186-option255",
+   "logger": "cr6",
+   "source": "Public Values(186)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-187-option255",
+   "logger": "cr6",
+   "source": "Public Values(187)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-128-option4",
+   "logger": "cr1000x",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-64-option4",
+   "logger": "cr1000x",
+   "source": "Public Values(64)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-32-option4",
+   "logger": "cr1000x",
+   "source": "Public Values(32)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-48-option4",
+   "logger": "cr1000x",
+   "source": "Public Values(48)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-40-option4",
+   "logger": "cr1000x",
+   "source": "Public Values(40)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-36-option4",
+   "logger": "cr1000x",
+   "source": "Public Values(36)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-34-option4",
+   "logger": "cr1000x",
+   "source": "Public Values(34)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-35-option4",
+   "logger": "cr1000x",
+   "source": "Public Values(35)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-128-option5",
+   "logger": "cr1000x",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-64-option5",
+   "logger": "cr1000x",
+   "source": "Public Values(64)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-32-option5",
+   "logger": "cr1000x",
+   "source": "Public Values(32)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-16-option5",
+   "logger": "cr1000x",
+   "source": "Public Values(16)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-8-option5",
+   "logger": "cr1000x",
+   "source": "Public Values(8)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-4-option5",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-2-option5",
+   "logger": "cr1000x",
+   "source": "Public Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-1-option5",
+   "logger": "cr1000x",
+   "source": "Public Values(1)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-128-option6",
+   "logger": "cr1000x",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-64-option6",
+   "logger": "cr1000x",
+   "source": "Public Values(64)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-32-option6",
+   "logger": "cr1000x",
+   "source": "Public Values(32)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-16-option6",
+   "logger": "cr1000x",
+   "source": "Public Values(16)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-8-option6",
+   "logger": "cr1000x",
+   "source": "Public Values(8)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-4-option6",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-2-option6",
+   "logger": "cr1000x",
+   "source": "Public Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-1-option6",
+   "logger": "cr1000x",
+   "source": "Public Values(1)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-128-option7",
+   "logger": "cr1000x",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-64-option7",
+   "logger": "cr1000x",
+   "source": "Public Values(64)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-32-option7",
+   "logger": "cr1000x",
+   "source": "Public Values(32)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-16-option7",
+   "logger": "cr1000x",
+   "source": "Public Values(16)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-8-option7",
+   "logger": "cr1000x",
+   "source": "Public Values(8)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-4-option7",
+   "logger": "cr1000x",
+   "source": "Public Values(4)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-2-option7",
+   "logger": "cr1000x",
+   "source": "Public Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-1-option7",
+   "logger": "cr1000x",
+   "source": "Public Values(1)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-128-option8",
+   "logger": "cr1000x",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-192-option8",
+   "logger": "cr1000x",
+   "source": "Public Values(192)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-224-option8",
+   "logger": "cr1000x",
+   "source": "Public Values(224)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-240-option8",
+   "logger": "cr1000x",
+   "source": "Public Values(240)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-248-option8",
+   "logger": "cr1000x",
+   "source": "Public Values(248)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-252-option8",
+   "logger": "cr1000x",
+   "source": "Public Values(252)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-254-option8",
+   "logger": "cr1000x",
+   "source": "Public Values(254)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-253-option8",
+   "logger": "cr1000x",
+   "source": "Public Values(253)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-128-option15",
+   "logger": "cr1000x",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-192-option15",
+   "logger": "cr1000x",
+   "source": "Public Values(192)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-160-option15",
+   "logger": "cr1000x",
+   "source": "Public Values(160)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-176-option15",
+   "logger": "cr1000x",
+   "source": "Public Values(176)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-184-option15",
+   "logger": "cr1000x",
+   "source": "Public Values(184)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-188-option15",
+   "logger": "cr1000x",
+   "source": "Public Values(188)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-186-option15",
+   "logger": "cr1000x",
+   "source": "Public Values(186)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-185-option15",
+   "logger": "cr1000x",
+   "source": "Public Values(185)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-128-option127",
+   "logger": "cr1000x",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-64-option127",
+   "logger": "cr1000x",
+   "source": "Public Values(64)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-32-option127",
+   "logger": "cr1000x",
+   "source": "Public Values(32)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-48-option127",
+   "logger": "cr1000x",
+   "source": "Public Values(48)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-56-option127",
+   "logger": "cr1000x",
+   "source": "Public Values(56)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-60-option127",
+   "logger": "cr1000x",
+   "source": "Public Values(60)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-58-option127",
+   "logger": "cr1000x",
+   "source": "Public Values(58)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-57-option127",
+   "logger": "cr1000x",
+   "source": "Public Values(57)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-128-option128",
+   "logger": "cr1000x",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-192-option128",
+   "logger": "cr1000x",
+   "source": "Public Values(192)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-160-option128",
+   "logger": "cr1000x",
+   "source": "Public Values(160)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-176-option128",
+   "logger": "cr1000x",
+   "source": "Public Values(176)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-184-option128",
+   "logger": "cr1000x",
+   "source": "Public Values(184)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-188-option128",
+   "logger": "cr1000x",
+   "source": "Public Values(188)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-190-option128",
+   "logger": "cr1000x",
+   "source": "Public Values(190)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-191-option128",
+   "logger": "cr1000x",
+   "source": "Public Values(191)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-128-option158",
+   "logger": "cr1000x",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-192-option158",
+   "logger": "cr1000x",
+   "source": "Public Values(192)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-224-option158",
+   "logger": "cr1000x",
+   "source": "Public Values(224)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-240-option158",
+   "logger": "cr1000x",
+   "source": "Public Values(240)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-248-option158",
+   "logger": "cr1000x",
+   "source": "Public Values(248)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-252-option158",
+   "logger": "cr1000x",
+   "source": "Public Values(252)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-254-option158",
+   "logger": "cr1000x",
+   "source": "Public Values(254)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-253-option158",
+   "logger": "cr1000x",
+   "source": "Public Values(253)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,158)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-128-option254",
+   "logger": "cr1000x",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-192-option254",
+   "logger": "cr1000x",
+   "source": "Public Values(192)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-160-option254",
+   "logger": "cr1000x",
+   "source": "Public Values(160)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-144-option254",
+   "logger": "cr1000x",
+   "source": "Public Values(144)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-152-option254",
+   "logger": "cr1000x",
+   "source": "Public Values(152)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-148-option254",
+   "logger": "cr1000x",
+   "source": "Public Values(148)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-146-option254",
+   "logger": "cr1000x",
+   "source": "Public Values(146)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-145-option254",
+   "logger": "cr1000x",
+   "source": "Public Values(145)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-128-option255",
+   "logger": "cr1000x",
+   "source": "Public Values(128)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-192-option255",
+   "logger": "cr1000x",
+   "source": "Public Values(192)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-160-option255",
+   "logger": "cr1000x",
+   "source": "Public Values(160)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-176-option255",
+   "logger": "cr1000x",
+   "source": "Public Values(176)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-184-option255",
+   "logger": "cr1000x",
+   "source": "Public Values(184)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-188-option255",
+   "logger": "cr1000x",
+   "source": "Public Values(188)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-186-option255",
+   "logger": "cr1000x",
+   "source": "Public Values(186)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-187-option255",
+   "logger": "cr1000x",
+   "source": "Public Values(187)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-0",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-1",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-2",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-3",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-4",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-5",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-13-6",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-13-7",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-13-8",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-9",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-10",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-11",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-12",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-13",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-14",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-15",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-16",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,260)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-17",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-18",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-19",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-20",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2718)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-21",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2974)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-22",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-23",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-24",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,999999999999)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-25",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-26",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-27",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-28",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-256-0",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-1",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-2",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-3",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-4",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-5",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-6",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-7",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-8",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-9",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-10",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-11",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-12",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-13",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-14",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-15",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-16",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,260)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-17",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-18",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-19",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-20",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2718)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-21",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2974)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-22",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-23",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-24",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,999999999999)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-25",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-26",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-27",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-28",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-13-0",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-1",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-2",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-3",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-4",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-5",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-13-6",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-13-7",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-13-8",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-9",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-10",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-11",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-12",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-13",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-14",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-15",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-16",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,260)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-17",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-18",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-19",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-20",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2718)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-21",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2974)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-22",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-23",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-24",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,999999999999)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-25",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-26",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-27",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-28",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-256-0",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-1",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-2",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-3",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-4",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-5",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-6",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-7",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-8",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-9",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-10",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-11",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-12",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-13",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-14",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-15",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-16",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,260)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-17",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-18",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-19",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-20",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2718)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-21",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2974)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-22",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-23",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-24",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,999999999999)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-25",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-26",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-27",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-28",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr300-13-0",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,0)\n."
+  },
+  {
+   "id": "cr300-13-1",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,1)\n."
+  },
+  {
+   "id": "cr300-13-2",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,2)\n."
+  },
+  {
+   "id": "cr300-13-3",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,3)\n."
+  },
+  {
+   "id": "cr300-13-4",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,4)\n."
+  },
+  {
+   "id": "cr300-13-5",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,5)\n."
+  },
+  {
+   "id": "cr300-13-6",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,6)\n."
+  },
+  {
+   "id": "cr300-13-7",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,7)\n."
+  },
+  {
+   "id": "cr300-13-8",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,8)\n."
+  },
+  {
+   "id": "cr300-13-9",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,15)\n."
+  },
+  {
+   "id": "cr300-13-10",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,127)\n."
+  },
+  {
+   "id": "cr300-13-11",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,128)\n."
+  },
+  {
+   "id": "cr300-13-12",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,254)\n."
+  },
+  {
+   "id": "cr300-13-13",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,255)\n."
+  },
+  {
+   "id": "cr300-13-14",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,256)\n."
+  },
+  {
+   "id": "cr300-13-15",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,257)\n."
+  },
+  {
+   "id": "cr300-13-16",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,260)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,260)\n."
+  },
+  {
+   "id": "cr300-13-17",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,-1)\n."
+  },
+  {
+   "id": "cr300-13-18",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,-2)\n."
+  },
+  {
+   "id": "cr300-13-19",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,-256)\n."
+  },
+  {
+   "id": "cr300-13-20",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2718)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,2718)\n."
+  },
+  {
+   "id": "cr300-13-21",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2974)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,2974)\n."
+  },
+  {
+   "id": "cr300-13-22",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,1.5)\n."
+  },
+  {
+   "id": "cr300-13-23",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,4.5)\n."
+  },
+  {
+   "id": "cr300-13-24",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,999999999999)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,999999999999)\n."
+  },
+  {
+   "id": "cr300-13-25",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,\"bad\")\n."
+  },
+  {
+   "id": "cr300-13-26",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,True)\n."
+  },
+  {
+   "id": "cr300-13-27",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,NAN)\n."
+  },
+  {
+   "id": "cr300-13-28",
+   "logger": "cr300",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,INF)\n."
+  },
+  {
+   "id": "cr300-256-0",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,0)\n."
+  },
+  {
+   "id": "cr300-256-1",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,1)\n."
+  },
+  {
+   "id": "cr300-256-2",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,2)\n."
+  },
+  {
+   "id": "cr300-256-3",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,3)\n."
+  },
+  {
+   "id": "cr300-256-4",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,4)\n."
+  },
+  {
+   "id": "cr300-256-5",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,5)\n."
+  },
+  {
+   "id": "cr300-256-6",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,6)\n."
+  },
+  {
+   "id": "cr300-256-7",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,7)\n."
+  },
+  {
+   "id": "cr300-256-8",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,8)\n."
+  },
+  {
+   "id": "cr300-256-9",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,15)\n."
+  },
+  {
+   "id": "cr300-256-10",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,127)\n."
+  },
+  {
+   "id": "cr300-256-11",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,128)\n."
+  },
+  {
+   "id": "cr300-256-12",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,254)\n."
+  },
+  {
+   "id": "cr300-256-13",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,255)\n."
+  },
+  {
+   "id": "cr300-256-14",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,256)\n."
+  },
+  {
+   "id": "cr300-256-15",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,257)\n."
+  },
+  {
+   "id": "cr300-256-16",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,260)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,260)\n."
+  },
+  {
+   "id": "cr300-256-17",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,-1)\n."
+  },
+  {
+   "id": "cr300-256-18",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,-2)\n."
+  },
+  {
+   "id": "cr300-256-19",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,-256)\n."
+  },
+  {
+   "id": "cr300-256-20",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2718)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,2718)\n."
+  },
+  {
+   "id": "cr300-256-21",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2974)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,2974)\n."
+  },
+  {
+   "id": "cr300-256-22",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,1.5)\n."
+  },
+  {
+   "id": "cr300-256-23",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,4.5)\n."
+  },
+  {
+   "id": "cr300-256-24",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,999999999999)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,999999999999)\n."
+  },
+  {
+   "id": "cr300-256-25",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,\"bad\")\n."
+  },
+  {
+   "id": "cr300-256-26",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,True)\n."
+  },
+  {
+   "id": "cr300-256-27",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,NAN)\n."
+  },
+  {
+   "id": "cr300-256-28",
+   "logger": "cr300",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,INF)\n."
+  },
+  {
+   "id": "cr350-13-0",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,0)\n."
+  },
+  {
+   "id": "cr350-13-1",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,1)\n."
+  },
+  {
+   "id": "cr350-13-2",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,2)\n."
+  },
+  {
+   "id": "cr350-13-3",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,3)\n."
+  },
+  {
+   "id": "cr350-13-4",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,4)\n."
+  },
+  {
+   "id": "cr350-13-5",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,5)\n."
+  },
+  {
+   "id": "cr350-13-6",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,6)\n."
+  },
+  {
+   "id": "cr350-13-7",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,7)\n."
+  },
+  {
+   "id": "cr350-13-8",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,8)\n."
+  },
+  {
+   "id": "cr350-13-9",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,15)\n."
+  },
+  {
+   "id": "cr350-13-10",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,127)\n."
+  },
+  {
+   "id": "cr350-13-11",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,128)\n."
+  },
+  {
+   "id": "cr350-13-12",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,254)\n."
+  },
+  {
+   "id": "cr350-13-13",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,255)\n."
+  },
+  {
+   "id": "cr350-13-14",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,256)\n."
+  },
+  {
+   "id": "cr350-13-15",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,257)\n."
+  },
+  {
+   "id": "cr350-13-16",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,260)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,260)\n."
+  },
+  {
+   "id": "cr350-13-17",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,-1)\n."
+  },
+  {
+   "id": "cr350-13-18",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,-2)\n."
+  },
+  {
+   "id": "cr350-13-19",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,-256)\n."
+  },
+  {
+   "id": "cr350-13-20",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2718)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,2718)\n."
+  },
+  {
+   "id": "cr350-13-21",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2974)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,2974)\n."
+  },
+  {
+   "id": "cr350-13-22",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,1.5)\n."
+  },
+  {
+   "id": "cr350-13-23",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,4.5)\n."
+  },
+  {
+   "id": "cr350-13-24",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,999999999999)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,999999999999)\n."
+  },
+  {
+   "id": "cr350-13-25",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,\"bad\")\n."
+  },
+  {
+   "id": "cr350-13-26",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,True)\n."
+  },
+  {
+   "id": "cr350-13-27",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,NAN)\n."
+  },
+  {
+   "id": "cr350-13-28",
+   "logger": "cr350",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,INF)\n."
+  },
+  {
+   "id": "cr350-256-0",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,0)\n."
+  },
+  {
+   "id": "cr350-256-1",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,1)\n."
+  },
+  {
+   "id": "cr350-256-2",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,2)\n."
+  },
+  {
+   "id": "cr350-256-3",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,3)\n."
+  },
+  {
+   "id": "cr350-256-4",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,4)\n."
+  },
+  {
+   "id": "cr350-256-5",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,5)\n."
+  },
+  {
+   "id": "cr350-256-6",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,6)\n."
+  },
+  {
+   "id": "cr350-256-7",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,7)\n."
+  },
+  {
+   "id": "cr350-256-8",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,8)\n."
+  },
+  {
+   "id": "cr350-256-9",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,15)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,15)\n."
+  },
+  {
+   "id": "cr350-256-10",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,127)\n."
+  },
+  {
+   "id": "cr350-256-11",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,128)\n."
+  },
+  {
+   "id": "cr350-256-12",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,254)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,254)\n."
+  },
+  {
+   "id": "cr350-256-13",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,255)\n."
+  },
+  {
+   "id": "cr350-256-14",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,256)\n."
+  },
+  {
+   "id": "cr350-256-15",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,257)\n."
+  },
+  {
+   "id": "cr350-256-16",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,260)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,260)\n."
+  },
+  {
+   "id": "cr350-256-17",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,-1)\n."
+  },
+  {
+   "id": "cr350-256-18",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,-2)\n."
+  },
+  {
+   "id": "cr350-256-19",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,-256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,-256)\n."
+  },
+  {
+   "id": "cr350-256-20",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2718)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,2718)\n."
+  },
+  {
+   "id": "cr350-256-21",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2974)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,2974)\n."
+  },
+  {
+   "id": "cr350-256-22",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,1.5)\n."
+  },
+  {
+   "id": "cr350-256-23",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,4.5)\n."
+  },
+  {
+   "id": "cr350-256-24",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,999999999999)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,999999999999)\n."
+  },
+  {
+   "id": "cr350-256-25",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,\"bad\")\n."
+  },
+  {
+   "id": "cr350-256-26",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,True)\n."
+  },
+  {
+   "id": "cr350-256-27",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,NAN)\n."
+  },
+  {
+   "id": "cr350-256-28",
+   "logger": "cr350",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EC100 is not defined.\nline 4: Invalid, or out of place expression:   EC100(Values(),1,INF)\n."
+  },
+  {
+   "id": "cr6-7-1-0",
+   "logger": "cr6",
+   "source": "Public Values(7)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-7-2-0",
+   "logger": "cr6",
+   "source": "Public Values(7)\nAlias Values(2)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable First out of bounds."
+  },
+  {
+   "id": "cr6-11-1-1",
+   "logger": "cr6",
+   "source": "Public Values(11)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-187-1--1",
+   "logger": "cr6",
+   "source": "Public Values(187)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3.\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-188-2--1",
+   "logger": "cr6",
+   "source": "Public Values(188)\nAlias Values(2)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3.\nline 5: Variable First out of bounds."
+  },
+  {
+   "id": "cr6-36-2-4",
+   "logger": "cr6",
+   "source": "Public Values(36)\nAlias Values(2)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3.\nline 5: Variable First out of bounds."
+  },
+  {
+   "id": "cr6-35-1-4",
+   "logger": "cr6",
+   "source": "Public Values(35)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3.\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-7-1-0",
+   "logger": "cr1000x",
+   "source": "Public Values(7)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-7-2-0",
+   "logger": "cr1000x",
+   "source": "Public Values(7)\nAlias Values(2)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable First out of bounds."
+  },
+  {
+   "id": "cr1000x-11-1-1",
+   "logger": "cr1000x",
+   "source": "Public Values(11)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-187-1--1",
+   "logger": "cr1000x",
+   "source": "Public Values(187)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3.\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-188-2--1",
+   "logger": "cr1000x",
+   "source": "Public Values(188)\nAlias Values(2)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3.\nline 5: Variable First out of bounds."
+  },
+  {
+   "id": "cr1000x-36-2-4",
+   "logger": "cr1000x",
+   "source": "Public Values(36)\nAlias Values(2)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3.\nline 5: Variable First out of bounds."
+  },
+  {
+   "id": "cr1000x-35-1-4",
+   "logger": "cr1000x",
+   "source": "Public Values(35)\nAlias Values(1)=First\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(First,1,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid output option; range 0..3.\nline 5: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-expr0",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,Int(4.5))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-expr1",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,Int(2.1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-expr2",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4/1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-expr3",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1<<2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-expr4",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,&H2 + &H2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-expr5",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,NOT 0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr6-13-expr6",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2 OR 2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13-expr7",
+   "logger": "cr6",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,3 MOD 2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-expr0",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,Int(4.5))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-expr1",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,Int(2.1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-expr2",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4/1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-expr3",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1<<2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-expr4",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,&H2 + &H2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-expr5",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,NOT 0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr6-256-expr6",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2 OR 2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-256-expr7",
+   "logger": "cr6",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,3 MOD 2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-expr0",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,Int(4.5))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-expr1",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,Int(2.1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-expr2",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4/1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-expr3",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1<<2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-expr4",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,&H2 + &H2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-expr5",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,NOT 0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3.\nline 4: Variable Values out of bounds."
+  },
+  {
+   "id": "cr1000x-13-expr6",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2 OR 2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13-expr7",
+   "logger": "cr1000x",
+   "source": "Public Values(13)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,3 MOD 2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-expr0",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,Int(4.5))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-expr1",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,Int(2.1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-expr2",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,4/1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-expr3",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,1<<2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-expr4",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,&H2 + &H2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-expr5",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,NOT 0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid output option; range 0..3."
+  },
+  {
+   "id": "cr1000x-256-expr6",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,2 OR 2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-256-expr7",
+   "logger": "cr1000x",
+   "source": "Public Values(256)\nBeginProg\n Scan(1,Sec,0,0)\n  EC100(Values(),1,3 MOD 2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

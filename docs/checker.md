@@ -3262,9 +3262,23 @@ builder keeps in a byte counts modulo 256 (`SDMSW8A(Z,265,...)` needs 9).
 | `GOESGPS` | 1st: 6; 2nd: 7 | Float |
 | `RectPolar` | 1st: 2; 2nd: 2 | Float |
 
-The previous `LI7700` rule (5 * Reps) held only for commands 1 and 5. Not modelled: options outside
-the tables (`EC100` option 4..255 reads past its table after `Invalid output option; range 0..3.`),
-`SolarPosition`, `SerialBrk`, `AVW200`, `SysInfo`, `CDM_*` and the analog measurement helpers.
+The previous `LI7700` rule (5 * Reps) held only for commands 1 and 5. Open cases
+include `SolarPosition`, `SerialBrk`, `AVW200`, `SysInfo`, and the analog
+measurement helpers. The EC100 invalid-option behavior is covered below.
+
+### EC100 output options (round 102)
+
+CR6 and CR1000X reduce the option to its low byte after conversion to Long.
+Bytes above 3 emit `Invalid output option; range 0..3.`, except for the full
+value 2718, which selects 36 outputs. The reference can still report destination
+bounds after an invalid option. For example, byte 255 requires 188 elements
+on the tested binaries. An alias at the start of the array reports the
+backing variable on overflow. An alias at a later offset reports its own name.
+
+The CR6 builder `FUN_00438460` passes a count to the destination resolver
+even after it emits the option diagnostic. Counts for invalid options are
+based on independent threshold probes. Unmeasured invalid bytes retain the
+option diagnostic. [Reference observations](../tests/fixtures/r102_ec100_options.json).
 
 ### Table output source with `X()`, a multi-dimensional source, or an expression subscript (round 24)
 
