@@ -1,0 +1,1829 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-split-Packet--1",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr6-split-Packet-0",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet-1",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet-3",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet-9",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet-9.9",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,9.9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet-10",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-split-Packet-10.1",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,10.1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-split-Packet-11",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,11)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-split-Packet-127",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-split-Packet-128",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-split-Packet-255",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-split-Packet-256",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-split-Packet-266",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,266)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-split-Packet--246",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,-246)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -246"
+  },
+  {
+   "id": "cr6-split-Packet-True",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr6-split-Packet-N",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,N)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Variable illegal in Parameter: N."
+  },
+  {
+   "id": "cr6-split-Packet-\"bad\"",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -2147483648"
+  },
+  {
+   "id": "cr6-split-Packet-&HFF",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-split-Packet.First--1",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr6-split-Packet.First-0",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First-1",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First-3",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First-9",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First-9.9",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,9.9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First-10",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First-10.1",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,10.1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First-11",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,11)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First-127",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First-128",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First-255",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First-256",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First-266",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,266)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Packet.First--246",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,-246)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -246"
+  },
+  {
+   "id": "cr6-split-Packet.First-True",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr6-split-Packet.First-N",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,N)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Variable illegal in Parameter: N."
+  },
+  {
+   "id": "cr6-split-Packet.First-\"bad\"",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -2147483648"
+  },
+  {
+   "id": "cr6-split-Packet.First-&HFF",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values--1",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr6-split-Values-0",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values-1",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values-3",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values-9",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values-9.9",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,9.9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values-10",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values-10.1",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,10.1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values-11",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,11)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values-127",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values-128",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values-255",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values-256",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values-266",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,266)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-split-Values--246",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,-246)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -246"
+  },
+  {
+   "id": "cr6-split-Values-True",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr6-split-Values-N",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,N)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Variable illegal in Parameter: N."
+  },
+  {
+   "id": "cr6-split-Values-\"bad\"",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -2147483648"
+  },
+  {
+   "id": "cr6-split-Values-&HFF",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr1000x-split-Packet-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet-9.9",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,9.9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-split-Packet-10.1",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,10.1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-split-Packet-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,11)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-split-Packet-127",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-split-Packet-128",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-split-Packet-255",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-split-Packet-256",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-split-Packet-266",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,266)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-split-Packet--246",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,-246)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -246"
+  },
+  {
+   "id": "cr1000x-split-Packet-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr1000x-split-Packet-N",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,N)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Variable illegal in Parameter: N."
+  },
+  {
+   "id": "cr1000x-split-Packet-\"bad\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -2147483648"
+  },
+  {
+   "id": "cr1000x-split-Packet-&HFF",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-split-Packet.First--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr1000x-split-Packet.First-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-9.9",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,9.9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-10.1",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,10.1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,11)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-127",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-128",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-255",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-256",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-266",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,266)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Packet.First--246",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,-246)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -246"
+  },
+  {
+   "id": "cr1000x-split-Packet.First-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr1000x-split-Packet.First-N",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,N)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Variable illegal in Parameter: N."
+  },
+  {
+   "id": "cr1000x-split-Packet.First-\"bad\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -2147483648"
+  },
+  {
+   "id": "cr1000x-split-Packet.First-&HFF",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet.First,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr1000x-split-Values-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values-9.9",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,9.9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values-10.1",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,10.1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,11)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values-127",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values-128",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values-255",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values-256",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values-266",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,266)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-split-Values--246",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,-246)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -246"
+  },
+  {
+   "id": "cr1000x-split-Values-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr1000x-split-Values-N",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,N)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Variable illegal in Parameter: N."
+  },
+  {
+   "id": "cr1000x-split-Values-\"bad\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -2147483648"
+  },
+  {
+   "id": "cr1000x-split-Values-&HFF",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-split-Packet--1",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr300-split-Packet-0",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Packet-1",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Packet-3",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Packet-9",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Packet-9.9",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,9.9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Packet-10",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-split-Packet-10.1",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,10.1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-split-Packet-11",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,11)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-split-Packet-127",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-split-Packet-128",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-split-Packet-255",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-split-Packet-256",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-split-Packet-266",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,266)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-split-Packet--246",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,-246)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -246"
+  },
+  {
+   "id": "cr300-split-Packet-True",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr300-split-Packet-N",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,N)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Variable illegal in Parameter: N."
+  },
+  {
+   "id": "cr300-split-Packet-\"bad\"",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -2147483648"
+  },
+  {
+   "id": "cr300-split-Packet-&HFF",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-split-Values--1",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr300-split-Values-0",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values-1",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values-3",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values-9",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values-9.9",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,9.9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values-10",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values-10.1",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,10.1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values-11",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,11)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values-127",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values-128",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values-255",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values-256",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values-266",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,266)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-split-Values--246",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,-246)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -246"
+  },
+  {
+   "id": "cr300-split-Values-True",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr300-split-Values-N",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,N)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Variable illegal in Parameter: N."
+  },
+  {
+   "id": "cr300-split-Values-\"bad\"",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -2147483648"
+  },
+  {
+   "id": "cr300-split-Values-&HFF",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Packet--1",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr350-split-Packet-0",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Packet-1",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Packet-3",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Packet-9",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Packet-9.9",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,9.9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Packet-10",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-split-Packet-10.1",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,10.1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-split-Packet-11",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,11)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-split-Packet-127",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-split-Packet-128",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-split-Packet-255",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-split-Packet-256",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-split-Packet-266",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,266)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-split-Packet--246",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,-246)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -246"
+  },
+  {
+   "id": "cr350-split-Packet-True",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr350-split-Packet-N",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,N)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Variable illegal in Parameter: N."
+  },
+  {
+   "id": "cr350-split-Packet-\"bad\"",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -2147483648"
+  },
+  {
+   "id": "cr350-split-Packet-&HFF",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-split-Values--1",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr350-split-Values-0",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values-1",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values-3",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values-9",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values-9.9",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,9.9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values-10",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values-10.1",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,10.1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values-11",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,11)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values-127",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,127)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values-128",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,128)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values-255",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values-256",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values-266",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,266)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-split-Values--246",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,-246)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -246"
+  },
+  {
+   "id": "cr350-split-Values-True",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -1"
+  },
+  {
+   "id": "cr350-split-Values-N",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,N)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Variable illegal in Parameter: N."
+  },
+  {
+   "id": "cr350-split-Values-\"bad\"",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,\"bad\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Invalid option -2147483648"
+  },
+  {
+   "id": "cr350-split-Values-&HFF",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\n Second As Float\nEndStructureType\nPublic Packet As Reading\nPublic Values(3)\nPublic Text As String * 20\nPublic N\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Values,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-array-Packets-0",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-array-Packets-9",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-array-Packets-10",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-array-Packets-&HFF",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-array-Packets()-0",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-array-Packets()-9",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-array-Packets()-10",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-array-Packets()-&HFF",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-array-Packets(1)-0",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-array-Packets(1)-9",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-array-Packets(1)-10",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-array-Packets(1)-&HFF",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-array-Packets(2)-0",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-array-Packets(2)-9",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-array-Packets(2)-10",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-array-Packets(2)-&HFF",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr6-single-3",
+   "logger": "cr6",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packet As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",3,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-array-Packets-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-Packets-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-Packets-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-array-Packets-&HFF",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-array-Packets()-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-Packets()-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-Packets()-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-array-Packets()-&HFF",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-array-Packets(1)-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-Packets(1)-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-Packets(1)-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-array-Packets(1)-&HFF",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-array-Packets(2)-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-Packets(2)-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-Packets(2)-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-array-Packets(2)-&HFF",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr1000x-single-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packet As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",3,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-array-Packets-0",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-array-Packets-9",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-array-Packets-10",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-array-Packets-&HFF",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-array-Packets()-0",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression: Packets()."
+  },
+  {
+   "id": "cr300-array-Packets()-9",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression: Packets()."
+  },
+  {
+   "id": "cr300-array-Packets()-10",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression: Packets()."
+  },
+  {
+   "id": "cr300-array-Packets()-&HFF",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression: Packets()."
+  },
+  {
+   "id": "cr300-array-Packets(1)-0",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-array-Packets(1)-9",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-array-Packets(1)-10",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-array-Packets(1)-&HFF",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-array-Packets(2)-0",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-array-Packets(2)-9",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-array-Packets(2)-10",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-array-Packets(2)-&HFF",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr300-single-3",
+   "logger": "cr300",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packet As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",3,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-array-Packets-0",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-array-Packets-9",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-array-Packets-10",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-array-Packets-&HFF",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets,Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-array-Packets()-0",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression: Packets()."
+  },
+  {
+   "id": "cr350-array-Packets()-9",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression: Packets()."
+  },
+  {
+   "id": "cr350-array-Packets()-10",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression: Packets()."
+  },
+  {
+   "id": "cr350-array-Packets()-&HFF",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(),Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression: Packets()."
+  },
+  {
+   "id": "cr350-array-Packets(1)-0",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-array-Packets(1)-9",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-array-Packets(1)-10",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-array-Packets(1)-&HFF",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(1),Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-array-Packets(2)-0",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-array-Packets(2)-9",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,9)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-array-Packets(2)-10",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-array-Packets(2)-&HFF",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packets(3) As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packets(2),Text,\",\",1,&HFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  },
+  {
+   "id": "cr350-single-3",
+   "logger": "cr350",
+   "source": "Public Y\nStructureType(Reading)\n First As Float\nEndStructureType\nPublic Text As String * 20\nPublic Packet As Reading\nBeginProg\n Scan(1,Sec,0,0)\n SplitStr(Packet,Text,\",\",3,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Justify option (option >= 10) is illegal when spliting into a structure"
+  }
+ ]
+}

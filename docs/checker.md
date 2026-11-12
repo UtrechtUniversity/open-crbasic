@@ -2634,6 +2634,10 @@ and date inside), `tests/test_option_args.py`, `instr_rules.check_option_values`
 (`Delay`'s `Illegal option %d` and `FTPClient`'s `Invalid PutGetOption` were already known):
 
 - `SplitStr` `Options` (fifth argument): below 0 -> `Invalid option %d` (the converted value).
+  Round 111 confirmed on all four profiles that a structure destination rejects options 10
+  and above after integer conversion. A structure-array element follows the same rule.
+  CR300 and CR350 reject empty subscripts on structure-array destinations.
+  [Reference observations](../tests/fixtures/r111_splitstr_structure_options.json).
   Every non-negative value to 2147483647 passes.
 - `IPRoute` `Network` (second argument): outside 0..5 (CR300/CR350 0..4) -> `%d is illegal
   network`; then the optional third argument outside 0..1 -> `%d is illegal option`. Both bad

@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 111** (historical verdict parity). Fixed CR300 false accept
+`fb802c166ba6` by validating `SplitStr` options for structure destinations.
+Seven false accepts remain among the historical reproducers.
+[SplitStr evidence](docs/checker.md#option-arguments-2026-10-02).
+
 **Round 110** (historical verdict parity). Fixed CR350 false accept
 `d2576b1675ed` by checking nonnumeric `PulseCount` channel constants.
 Eight false accepts remain from the 3,338-case historical replay.

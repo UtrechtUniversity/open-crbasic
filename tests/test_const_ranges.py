@@ -24,6 +24,7 @@ CASES = [
         "r108_fieldclassify_expressions.json",
         "r109_quadrature.json",
         "r110_pulsecount_channels.json",
+        "r111_splitstr_structure_options.json",
     )
     for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
 ]

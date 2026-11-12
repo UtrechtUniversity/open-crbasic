@@ -1755,7 +1755,8 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics, env: co
     the tier-C checks on CR6/CR1000X, only in an otherwise clean file on CR300/CR350 (like
     `check_avgrun_options`).
 
-    - `SplitStr` `Options` (fifth argument), all four loggers: below 0 -> `Invalid option %d`.
+    - `SplitStr` `Options` (fifth argument), all four loggers: below 0 -> `Invalid option %d`;
+      10 and above are invalid with a structure destination.
     - `IPRoute` `Network` (second argument): outside 0..5 (CR300/CR350: 0..4) -> `%d is illegal
       network`; otherwise the optional third argument outside 0..1 -> `%d is illegal option`
       (the first line hides the second); a variable in any argument silences both. A string option crashes the real compiler: not modelled.
@@ -1769,7 +1770,7 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics, env: co
     - `CDM_TCSE`/`CDM_VoltSe` settling time (CR6/CR1000X): not 0 and outside 100..100000 ->
       `Settling time: %d, out of range (100 - 100000, or 0 for default).` (oracle, 2026-10-12).
     """
-    from . import longconv
+    from . import longconv, var_types
 
     names = longconv.float_names(program.statements)
     literals = longconv.literal_names(program.statements)
@@ -1801,8 +1802,25 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics, env: co
 
         if kw == "SPLITSTR":
             v = value(4)
+            dest = args[0] if args else None
+            empty_index = cr3 and isinstance(stmt, S.Instruction) and isinstance(dest, S.Index) and not dest.args
             if v is not None and v < 0:
                 diags.error(stmt.line, f"Invalid option {v}", stmt.file)
+            elif isinstance(dest, (S.Name, S.Index)) and (empty_index or (v is not None and v >= 10)):
+                scope = symbols.scoped_view(program, stmt)
+                typer = var_types._Typer(program, scope, profile=profile)
+                if typer.types.get(dest.name.upper()) in typer.structure_types:
+                    if empty_index:
+                        assert isinstance(stmt, S.Instruction)
+                        diags.error(
+                            stmt.line, f"Invalid, or out of place expression: {_arg_text(stmt, 0).strip()}.", stmt.file
+                        )
+                    else:
+                        diags.error(
+                            stmt.line,
+                            "Justify option (option >= 10) is illegal when spliting into a structure",
+                            stmt.file,
+                        )
         elif kw == "MOVEBYTES":
             v = value(5)
             if len(args) > 5 and isinstance(args[5], S.Name) and args[5].name.upper() == "INF":
