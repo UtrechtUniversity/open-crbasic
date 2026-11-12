@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 104** (archived verdict parity). Fixed CR6 false accept `577a59ecb08c`
+by checking `AVW200` destination spans and integration modes. The 25-case
+archived replay now has five false accepts and 20 exact matches.
+[AVW200 evidence](docs/checker.md#avw200-destination-and-integration-round-104).
+
 **Round 103** (archived verdict parity). Fixed CR6 false accept `0e23c61229f4`
 by checking destination spans through SDM measurement aliases. The 25-case
 archived replay now has six false accepts and 19 exact matches.

@@ -1452,7 +1452,8 @@ _SPA_SOURCE = frozenset({"AVGSPA", "MAXSPA", "MINSPA", "RMSSPA", "STDDEVSPA", "S
 
 
 def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
-    from .instr_rules import cdm_null_module, cdm_unsupported_module
+    from .expressions import _arg_text
+    from .instr_rules import _next_simple_token, cdm_null_module, cdm_unsupported_module
 
     tables = symbols.scope_tables(program, env, scalars=True)
     # the running statistics also bound a routine's scalar parameter (`Sub R(Q)` / `MinRun(Q,2,...)`
@@ -1481,9 +1482,41 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, 
     names = longconv.float_names(program.statements), longconv.literal_names(program.statements)
     alias_storage = _measurement_aliases(program, tables, env)
     for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction):
+            continue
         scope = tables(stmt)
         dims, types, arrays = scope.dims, scope.types, scope.arrays
-        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "EC100" and len(stmt.args) >= 3:
+        kw = stmt.keyword.upper()
+        if kw == "AVW200" and len(stmt.args) >= 12:
+            target = stmt.args[4]
+            kind = types.get(target.name.upper()) if isinstance(target, (S.Name, S.Index)) else None
+            if profile.single_pass and kind in ("LONG", "BOOLEAN", "STRING"):
+                diags.error(stmt.line, "Illegal destination variable type, expecting Float.", stmt.file)
+                token = _next_simple_token(_arg_text(stmt, 5))
+                if token:
+                    diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
+                continue
+            mode = longconv.long_value(stmt.args[11], env, profile, *names)
+            valid_modes = (1, 2, 20) if profile.single_pass else (50, 60)
+            if mode is not None and mode != 0 and mode not in valid_modes:
+                diags.error(stmt.line, "Illegal Thermister integration; must be _60Hz, _50Hz, or 0", stmt.file)
+            last = _int_value(stmt.args[7], env)
+            count = (6 if mode in valid_modes else 5) * (1 if last is None else last)
+            if isinstance(target, (S.Name, S.Index)):
+                alias = alias_storage(stmt, target)
+                if alias is not None and _alias_overrun(stmt, target, alias, count, profile, env):
+                    diags.error(stmt.line, f"Variable {alias[2]} out of bounds.", stmt.file)
+                elif overruns(target, count, count < 0, ("FLOAT",)):
+                    diags.error(stmt.line, f"Variable {target.name} out of bounds.", stmt.file)
+            if last is not None and not 1 <= last <= 32:
+                diags.error(
+                    stmt.line,
+                    "Bad parameter(s): address 1..4095, chan and muxchan 1..32, "
+                    "reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
+                    stmt.file,
+                )
+            continue
+        if kw == "EC100" and len(stmt.args) >= 3:
             option_arg = stmt.args[2]
             option = longconv.long_value(option_arg, env, profile, *names)
             if isinstance(option_arg, S.Name) and option_arg.name.upper() == "INF" and "INF" not in env.consts:
@@ -1505,15 +1538,8 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, 
                 elif overruns(target, count, False, ("FLOAT",)):
                     diags.error(stmt.line, f"Variable {target.name} out of bounds.", stmt.file)
             continue
-        if (
-            isinstance(stmt, S.Instruction)
-            and stmt.keyword.upper() in ("CDM_TCCOMP", "CDM_PANELTEMP")
-            and len(stmt.args) > 3
-            and isinstance(stmt.args[2], (S.Name, S.Index))
-        ):
-            if stmt.keyword.upper() == "CDM_PANELTEMP" and (
-                cdm_null_module(stmt, env) or cdm_unsupported_module(stmt, env)
-            ):
+        if kw in ("CDM_TCCOMP", "CDM_PANELTEMP") and len(stmt.args) > 3 and isinstance(stmt.args[2], (S.Name, S.Index)):
+            if kw == "CDM_PANELTEMP" and (cdm_null_module(stmt, env) or cdm_unsupported_module(stmt, env)):
                 continue
             # Reps (fourth) of the destination (third); negative Reps overruns too (oracle, CR6/
             # CR1000X, 2026-10-10; docs/instructions.md "CPI measurement time")
@@ -1521,9 +1547,8 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, 
             if reps is not None and overruns(stmt.args[2], reps, reps < 0, ("FLOAT",)):
                 diags.error(stmt.line, f"Variable {stmt.args[2].name} out of bounds.", stmt.file)
             continue
-        if not isinstance(stmt, S.Instruction) or not stmt.args or not isinstance(stmt.args[0], (S.Name, S.Index)):
+        if not stmt.args or not isinstance(stmt.args[0], (S.Name, S.Index)):
             continue
-        kw = stmt.keyword.upper()
         if kw in _RUNNING_STATS:
             scope = with_parameters(stmt)
             dims, types, arrays = scope.dims, scope.types, scope.arrays

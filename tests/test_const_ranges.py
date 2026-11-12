@@ -17,6 +17,7 @@ CASES = [
         "r93_cdm_bridge_options.json",
         "r102_ec100_options.json",
         "r103_sdm_destination_aliases.json",
+        "r104_avw200_outputs.json",
     )
     for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
 ]

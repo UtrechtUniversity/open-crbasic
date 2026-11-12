@@ -1,0 +1,2431 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-numeric-mode20",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,20,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-numeric-mode50",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,50,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-numeric-mode60",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-numeric-mode1",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-numeric-mode-neg",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,-1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-string",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,\"bad\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-inf",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,INF,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-fraction",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,60.5,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-mode-fractional-zero",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0.5,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-channel-32",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(160)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,32,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-channel-33",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(180)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,33,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr6-channel-fraction-below",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2.5,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-channel-fraction-exact",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(10)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2.5,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-start-after-end",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(10)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,3,2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-end-const",
+   "logger": "cr6",
+   "source": "Public Result\nConst N=2\nPublic Dest(9)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-end-runtime",
+   "logger": "cr6",
+   "source": "Public Result\nPublic N As Long\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-end-runtime-exact",
+   "logger": "cr6",
+   "source": "Public Result\nPublic N As Long\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-long-destination",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(4) As Long\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-offset-below",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(2),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-offset-exact",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(2),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-below",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nAlias Dest(2)=First\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,First,1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable First out of bounds."
+  },
+  {
+   "id": "cr6-alias-exact",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(6)\nAlias Dest(2)=First\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,First,1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-paren-dim",
+   "logger": "cr6",
+   "source": "Public Result\nStructureType Record\n A As Float\n B As Float\nEndStructureType\nPublic Dest(3,(1+2)) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-numeric-mode20",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,20,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-numeric-mode50",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,50,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-numeric-mode60",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-numeric-mode1",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-numeric-mode-neg",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,-1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-string",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,\"bad\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-inf",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,INF,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-fraction",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,60.5,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-mode-fractional-zero",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0.5,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-channel-32",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(160)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,32,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-channel-33",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(180)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,33,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr1000x-channel-fraction-below",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2.5,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-channel-fraction-exact",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(10)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2.5,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-start-after-end",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(10)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,3,2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-end-const",
+   "logger": "cr1000x",
+   "source": "Public Result\nConst N=2\nPublic Dest(9)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-end-runtime",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic N As Long\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-end-runtime-exact",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic N As Long\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-long-destination",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(4) As Long\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-offset-below",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(2),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-offset-exact",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(2),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-below",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nAlias Dest(2)=First\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,First,1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable First out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-exact",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(6)\nAlias Dest(2)=First\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,First,1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-paren-dim",
+   "logger": "cr1000x",
+   "source": "Public Result\nStructureType Record\n A As Float\n B As Float\nEndStructureType\nPublic Dest(3,(1+2)) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-numeric-mode20",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,20,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-numeric-mode50",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,50,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-numeric-mode60",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-numeric-mode1",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-numeric-mode-neg",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,-1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-string",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,\"bad\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-inf",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,INF,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-fraction",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,60.5,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-fractional-zero",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0.5,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-channel-32",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(160)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,32,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-channel-33",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(180)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,33,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr300-channel-fraction-below",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2.5,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-channel-fraction-exact",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(10)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2.5,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-start-after-end",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(10)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,3,2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-end-const",
+   "logger": "cr300",
+   "source": "Public Result\nConst N=2\nPublic Dest(9)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-end-runtime",
+   "logger": "cr300",
+   "source": "Public Result\nPublic N As Long\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-end-runtime-exact",
+   "logger": "cr300",
+   "source": "Public Result\nPublic N As Long\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-long-destination",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(4) As Long\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-offset-below",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(2),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-offset-exact",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(2),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-below",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nAlias Dest(2)=First\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,First,1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-exact",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(6)\nAlias Dest(2)=First\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,First,1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-paren-dim",
+   "logger": "cr300",
+   "source": "Public Result\nStructureType Record\n A As Float\n B As Float\nEndStructureType\nPublic Dest(3,(1+2)) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-numeric-mode20",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,20,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-numeric-mode50",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,50,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-numeric-mode60",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-numeric-mode1",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-numeric-mode-neg",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,-1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-string",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,\"bad\",1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-inf",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,INF,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-fraction",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,60.5,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-fractional-zero",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0.5,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-channel-32",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(160)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,32,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-channel-33",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(180)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,33,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr350-channel-fraction-below",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2.5,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-channel-fraction-exact",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(10)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2.5,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-start-after-end",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(10)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,3,2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-end-const",
+   "logger": "cr350",
+   "source": "Public Result\nConst N=2\nPublic Dest(9)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-end-runtime",
+   "logger": "cr350",
+   "source": "Public Result\nPublic N As Long\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-end-runtime-exact",
+   "logger": "cr350",
+   "source": "Public Result\nPublic N As Long\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-long-destination",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(4) As Long\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-offset-below",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(2),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-offset-exact",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(2),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-below",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nAlias Dest(2)=First\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,First,1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-exact",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(6)\nAlias Dest(2)=First\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,First,1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-paren-dim",
+   "logger": "cr350",
+   "source": "Public Result\nStructureType Record\n A As Float\n B As Float\nEndStructureType\nPublic Dest(3,(1+2)) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-mode-0",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-mode-2",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-3",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,3,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-4",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,4,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-5",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,5,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-6",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,6,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-7",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,7,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-8",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,8,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-9",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,9,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-10",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,10,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-11",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,11,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-12",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,12,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-13",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,13,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-14",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,14,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-15",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,15,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-16",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,16,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-17",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,17,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-18",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,18,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-19",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,19,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-21",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,21,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-22",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,22,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-23",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,23,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-24",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,24,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-25",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,25,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-32",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,32,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-49",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,49,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-255",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,255,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-256",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,256,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-276",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,276,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-mode-316",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,316,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-invalid-and-bounds",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,-1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-start-small",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(3)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-end-33-and-small",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,33,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds.\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr6-end-negative-small",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,-2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds.\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr6-end-float-zero",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,0.5,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr6-end-runtime-expr",
+   "logger": "cr6",
+   "source": "Public Result\nPublic N As Long\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N+1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-string-dest",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest As String * 20\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bool-dest",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5) As Boolean\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-long-dest-and-mode",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5) As Long\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,-1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-long-dest-next-line",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5) As Long\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n  Delay(0,1,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-mode-0",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-mode-2",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-3",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,3,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-4",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,4,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-5",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,5,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-6",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,6,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-7",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,7,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-8",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,8,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-9",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,9,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-10",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,10,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-11",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,11,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-12",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,12,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-13",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,13,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-14",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,14,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-15",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,15,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-16",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,16,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-17",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,17,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-18",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,18,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-19",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,19,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-21",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,21,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-22",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,22,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-23",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,23,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-24",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,24,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-25",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,25,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-32",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,32,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-49",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,49,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-255",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,255,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-256",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,256,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-276",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,276,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-mode-316",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,316,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-invalid-and-bounds",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,-1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-start-small",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(3)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-end-33-and-small",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,33,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds.\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr1000x-end-negative-small",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,-2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds.\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr1000x-end-float-zero",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,0.5,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr1000x-end-runtime-expr",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic N As Long\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N+1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-string-dest",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest As String * 20\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bool-dest",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5) As Boolean\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-long-dest-and-mode",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5) As Long\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,-1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-long-dest-next-line",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5) As Long\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n  Delay(0,1,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-mode-0",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-mode-2",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-mode-3",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,3,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-4",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,4,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-5",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,5,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-6",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,6,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-7",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,7,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-8",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,8,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-9",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,9,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-10",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,10,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-11",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,11,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-12",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,12,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-13",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,13,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-14",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,14,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-15",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,15,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-16",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,16,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-17",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,17,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-18",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,18,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-19",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,19,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-21",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,21,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-22",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,22,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-23",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,23,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-24",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,24,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-25",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,25,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-32",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,32,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-49",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,49,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-255",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,255,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-256",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,256,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-276",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,276,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-mode-316",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,316,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr300-invalid-and-bounds",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,-1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-start-small",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(3)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-end-33-and-small",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,33,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds.\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr300-end-negative-small",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,-2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds.\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr300-end-float-zero",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,0.5,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr300-end-runtime-expr",
+   "logger": "cr300",
+   "source": "Public Result\nPublic N As Long\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N+1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-string-dest",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest As String * 20\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-bool-dest",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5) As Boolean\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-long-dest-and-mode",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5) As Long\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,-1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-long-dest-next-line",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5) As Long\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n  Delay(0,1,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1.\nline 6: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-mode-0",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-mode-2",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,2,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-mode-3",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,3,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-4",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,4,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-5",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,5,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-6",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,6,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-7",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,7,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-8",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,8,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-9",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,9,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-10",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,10,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-11",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,11,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-12",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,12,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-13",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,13,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-14",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,14,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-15",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,15,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-16",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,16,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-17",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,17,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-18",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,18,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-19",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,19,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-21",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,21,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-22",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,22,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-23",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,23,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-24",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,24,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-25",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,25,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-32",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,32,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-49",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,49,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-255",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,255,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-256",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,256,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-276",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,276,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-mode-316",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,316,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr350-invalid-and-bounds",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,-1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-start-small",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(3)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-end-33-and-small",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,33,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds.\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr350-end-negative-small",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,-2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds.\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr350-end-float-zero",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,0.5,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr350-end-runtime-expr",
+   "logger": "cr350",
+   "source": "Public Result\nPublic N As Long\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,N+1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-string-dest",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest As String * 20\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-bool-dest",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5) As Boolean\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-long-dest-and-mode",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5) As Long\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,-1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-long-dest-next-line",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5) As Long\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n  Delay(0,1,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  1.\nline 6: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-array-one-below",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-array-integration-below",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-array-integration-exact",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-array-two-below",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(9)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-array-two-exact",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(10)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-array-last-index-below",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(14)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-array-last-index-exact",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(15)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-array-start-later",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,3,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-array-last-integration-below",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(17)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-array-last-integration-exact",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(18)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-array-integration-50",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,_50Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr6-array-integration-invalid",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr6-array-channel-zero",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,0,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr6-array-channel-negative",
+   "logger": "cr6",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,-1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds.\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr6-struct-4-1",
+   "logger": "cr6",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\nEndStructureType\nPublic Dest(1) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-struct-4-2",
+   "logger": "cr6",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\nEndStructureType\nPublic Dest(2) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-struct-4-3",
+   "logger": "cr6",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\nEndStructureType\nPublic Dest(3) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-struct-5-1",
+   "logger": "cr6",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\nEndStructureType\nPublic Dest(1) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-struct-5-2",
+   "logger": "cr6",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\nEndStructureType\nPublic Dest(2) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-struct-5-3",
+   "logger": "cr6",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\nEndStructureType\nPublic Dest(3) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-struct-6-1",
+   "logger": "cr6",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\n Field5 As Float\nEndStructureType\nPublic Dest(1) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-struct-6-2",
+   "logger": "cr6",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\n Field5 As Float\nEndStructureType\nPublic Dest(2) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-struct-6-3",
+   "logger": "cr6",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\n Field5 As Float\nEndStructureType\nPublic Dest(3) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-one-below",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-array-integration-below",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-array-integration-exact",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-two-below",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(9)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-array-two-exact",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(10)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-last-index-below",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(14)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-array-last-index-exact",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(15)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-start-later",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,3,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-array-last-integration-below",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(17)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-array-last-integration-exact",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(18)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-array-integration-50",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,_50Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr1000x-array-integration-invalid",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Thermister integration; must be _60Hz, _50Hz, or 0"
+  },
+  {
+   "id": "cr1000x-array-channel-zero",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,0,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr1000x-array-channel-negative",
+   "logger": "cr1000x",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,-1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds.\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr1000x-struct-4-1",
+   "logger": "cr1000x",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\nEndStructureType\nPublic Dest(1) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-struct-4-2",
+   "logger": "cr1000x",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\nEndStructureType\nPublic Dest(2) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-struct-4-3",
+   "logger": "cr1000x",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\nEndStructureType\nPublic Dest(3) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-struct-5-1",
+   "logger": "cr1000x",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\nEndStructureType\nPublic Dest(1) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-struct-5-2",
+   "logger": "cr1000x",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\nEndStructureType\nPublic Dest(2) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-struct-5-3",
+   "logger": "cr1000x",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\nEndStructureType\nPublic Dest(3) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-struct-6-1",
+   "logger": "cr1000x",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\n Field5 As Float\nEndStructureType\nPublic Dest(1) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-struct-6-2",
+   "logger": "cr1000x",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\n Field5 As Float\nEndStructureType\nPublic Dest(2) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-struct-6-3",
+   "logger": "cr1000x",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\n Field5 As Float\nEndStructureType\nPublic Dest(3) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-array-one-below",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-array-integration-below",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-array-integration-exact",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-array-two-below",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(9)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-array-two-exact",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(10)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-array-last-index-below",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(14)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-array-last-index-exact",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(15)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-array-start-later",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,3,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-array-last-integration-below",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(17)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-array-last-integration-exact",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(18)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-array-integration-50",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,_50Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr300-array-integration-invalid",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-array-channel-zero",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,0,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr300-array-channel-negative",
+   "logger": "cr300",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,-1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds.\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr300-struct-4-1",
+   "logger": "cr300",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\nEndStructureType\nPublic Dest(1) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-struct-4-2",
+   "logger": "cr300",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\nEndStructureType\nPublic Dest(2) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-struct-4-3",
+   "logger": "cr300",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\nEndStructureType\nPublic Dest(3) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-struct-5-1",
+   "logger": "cr300",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\nEndStructureType\nPublic Dest(1) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-struct-5-2",
+   "logger": "cr300",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\nEndStructureType\nPublic Dest(2) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-struct-5-3",
+   "logger": "cr300",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\nEndStructureType\nPublic Dest(3) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-struct-6-1",
+   "logger": "cr300",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\n Field5 As Float\nEndStructureType\nPublic Dest(1) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-struct-6-2",
+   "logger": "cr300",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\n Field5 As Float\nEndStructureType\nPublic Dest(2) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-struct-6-3",
+   "logger": "cr300",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\n Field5 As Float\nEndStructureType\nPublic Dest(3) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-array-one-below",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(4)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-array-integration-below",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-array-integration-exact",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-array-two-below",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(9)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-array-two-exact",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(10)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,2,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-array-last-index-below",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(14)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-array-last-index-exact",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(15)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-array-start-later",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,3,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-array-last-integration-below",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(17)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-array-last-integration-exact",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(18)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,2,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-array-integration-50",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,_50Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds."
+  },
+  {
+   "id": "cr350-array-integration-invalid",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(6)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,1,300,6000,1,1,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-array-channel-zero",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,0,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr350-array-channel-negative",
+   "logger": "cr350",
+   "source": "Public Result\nPublic Dest(5)\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest(),1,1,-1,300,6000,1,0,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dest out of bounds.\nline 5: Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2"
+  },
+  {
+   "id": "cr350-struct-4-1",
+   "logger": "cr350",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\nEndStructureType\nPublic Dest(1) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-struct-4-2",
+   "logger": "cr350",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\nEndStructureType\nPublic Dest(2) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-struct-4-3",
+   "logger": "cr350",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\nEndStructureType\nPublic Dest(3) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-struct-5-1",
+   "logger": "cr350",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\nEndStructureType\nPublic Dest(1) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-struct-5-2",
+   "logger": "cr350",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\nEndStructureType\nPublic Dest(2) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-struct-5-3",
+   "logger": "cr350",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\nEndStructureType\nPublic Dest(3) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-struct-6-1",
+   "logger": "cr350",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\n Field5 As Float\nEndStructureType\nPublic Dest(1) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-struct-6-2",
+   "logger": "cr350",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\n Field5 As Float\nEndStructureType\nPublic Dest(2) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-struct-6-3",
+   "logger": "cr350",
+   "source": "Public Result\nStructureType Record\n Field0 As Float\n Field1 As Float\n Field2 As Float\n Field3 As Float\n Field4 As Float\n Field5 As Float\nEndStructureType\nPublic Dest(3) As Record\nBeginProg\n Scan(90,Sec,0,0)\n  AVW200(Result,ComRS232,200,200,Dest,1,1,3,300,6000,1,_60Hz,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

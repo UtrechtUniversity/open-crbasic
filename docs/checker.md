@@ -3263,8 +3263,23 @@ builder keeps in a byte counts modulo 256 (`SDMSW8A(Z,265,...)` needs 9).
 | `RectPolar` | 1st: 2; 2nd: 2 | Float |
 
 The previous `LI7700` rule (5 * Reps) held only for commands 1 and 5. Open cases
-include `SolarPosition`, `SerialBrk`, `AVW200`, `SysInfo`, and the analog
-measurement helpers. The EC100 invalid-option behavior is covered below.
+include `SolarPosition`, `SerialBrk`, `SysInfo`, and the analog measurement
+helpers. The EC100 invalid-option behavior is covered below.
+
+### AVW200 destination and integration (round 104)
+
+The Float destination in argument 5 needs five elements per ending channel
+with integration disabled and six with integration enabled. The ending
+channel is argument 8 and counts from channel 1 regardless of the starting
+channel. A runtime ending channel uses 1 for the compile-time size check.
+The CR6 builder `FUN_004839d0` passes this product to the destination resolver.
+
+The enabled integration codes are 50 and 60 on CR6/CR1000X and 1, 2, and 20
+on CR300/CR350. Invalid integration emits a diagnostic and uses five
+elements. A constant ending channel outside 1–32 produces the bad-parameter
+diagnostic after any destination bounds error. CR300/CR350 reject Long,
+Boolean and String destinations before checking integration.
+[`r104_avw200_outputs.json`](../tests/fixtures/r104_avw200_outputs.json).
 
 ### SDM measurement destination aliases (round 103)
 
