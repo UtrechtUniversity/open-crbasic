@@ -8302,6 +8302,14 @@ adds the unmatched-parenthesis diagnostic. A non-integer port produces
 The sweep, edge cases and compiler SHA-256s are recorded in
 [`r91_serialopen_ports.json`](../tests/fixtures/r91_serialopen_ports.json).
 
+For six-argument calls with an ordinary integer format, round 112 confirmed that
+CR350 checks the low byte of `CommsMode`. Ports 1–3 allow 0. Ports 4 and 7–10 allow
+0 or 1. Other probed ports accept the tested values. A decimal literal or
+nonintegral named constant in the mode slot does not enter this check. An
+integral named constant and an integer expression do. CR300 accepts the tested
+integer mode values on RS232.
+[Four-profile observations](../tests/fixtures/r112_serialopen_comms_mode.json).
+
 ### HTTPGet timeout and TCPOpen size (round 92)
 
 All four profiles require a constant integer in the fourth `HTTPGet` and third

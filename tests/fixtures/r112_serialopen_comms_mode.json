@@ -1,0 +1,3327 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-serial-0--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option -1 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-0-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 0 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-0-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-serial-0-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-serial-0-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-0-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,4)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 4 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-0-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 5 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-0-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 6 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-0-(1+2)",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,(1+2))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-0-&H03",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,&H03)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-0-3.0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,3.0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: CommsMode Option 0 not supported on COM232.\nline 6: Parameter must be a constant integer:  SerialOpen(ComRS232,115200,0,0,10000,3.0)."
+  },
+  {
+   "id": "cr6-serial-0-3.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,3.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: CommsMode Option 0 not supported on COM232.\nline 6: Parameter must be a constant integer:  SerialOpen(ComRS232,115200,0,0,10000,3.5)."
+  },
+  {
+   "id": "cr6-serial-0-256",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 256 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-0-M",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,M)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: CommsMode Option 0 not supported on COM232.\nline 6: Parameter must be a constant integer:  SerialOpen(ComRS232,115200,0,0,10000,M)."
+  },
+  {
+   "id": "cr6-serial-0-\"3\"",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,\"3\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: CommsMode Option 0 not supported on COM232.\nline 6: Parameter must be a constant integer:  SerialOpen(ComRS232,115200,0,0,10000,\"3\")."
+  },
+  {
+   "id": "cr6-serial-0-K",
+   "logger": "cr6",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,K)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-0--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option -1 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-0-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 0 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-0-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serial-0-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serial-0-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-0-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,4)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 4 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-0-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 5 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-0-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 6 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-0-(1+2)",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,(1+2))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-0-&H03",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,&H03)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-0-3.0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,3.0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: CommsMode Option 0 not supported on COM232.\nline 6: Parameter must be a constant integer:  SerialOpen(ComRS232,115200,0,0,10000,3.0)."
+  },
+  {
+   "id": "cr1000x-serial-0-3.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,3.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: CommsMode Option 0 not supported on COM232.\nline 6: Parameter must be a constant integer:  SerialOpen(ComRS232,115200,0,0,10000,3.5)."
+  },
+  {
+   "id": "cr1000x-serial-0-256",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 256 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-0-M",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,M)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: CommsMode Option 0 not supported on COM232.\nline 6: Parameter must be a constant integer:  SerialOpen(ComRS232,115200,0,0,10000,M)."
+  },
+  {
+   "id": "cr1000x-serial-0-\"3\"",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,\"3\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Warning: CommsMode Option 0 not supported on COM232.\nline 6: Parameter must be a constant integer:  SerialOpen(ComRS232,115200,0,0,10000,\"3\")."
+  },
+  {
+   "id": "cr1000x-serial-0-K",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,K)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr300-serial-0--1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-0-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-0-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-0-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-0-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-0-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,4)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-0-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-0-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-0-(1+2)",
+   "logger": "cr300",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,(1+2))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-0-&H03",
+   "logger": "cr300",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,&H03)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-0-256",
+   "logger": "cr300",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-0-K",
+   "logger": "cr300",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,K)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-0--1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,-1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-0-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-0-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: 1 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-0-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: 2 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-0-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-0-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: 4 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-0-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-0-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: 6 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-0-(1+2)",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,(1+2))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-0-&H03",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,&H03)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-0-3.0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,3.0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-0-3.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,3.5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-0-256",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-0-M",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,M)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-0-\"3\"",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,\"3\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-0-K",
+   "logger": "cr350",
+   "source": "Public Y\nPublic M\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,115200,0,0,10000,K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-1-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(1,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-1-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(1,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 1 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-1-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(1,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 2 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-1-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(1,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-1-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(1,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 4 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-1-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(1,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-1-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(1,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 6 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-1-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(1,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 7 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-1-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(1,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 8 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-1-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(1,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-2-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(2,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-2-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(2,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 1 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-2-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(2,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 2 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-2-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(2,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-2-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(2,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 4 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-2-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(2,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-2-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(2,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 6 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-2-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(2,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 7 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-2-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(2,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 8 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-2-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(2,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-3-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(3,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-3-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(3,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 1 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-3-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(3,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 2 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-3-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(3,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-3-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(3,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 4 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-3-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(3,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-3-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(3,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 6 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-3-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(3,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 7 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-3-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(3,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 8 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-3-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(3,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-4-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(4,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-4-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(4,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-4-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(4,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 2 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-4-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(4,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-4-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(4,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 4 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-4-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(4,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-4-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(4,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 6 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-4-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(4,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 7 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-4-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(4,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 8 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-4-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(4,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-5-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(5,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-5-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(5,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-5-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(5,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-5-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(5,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-5-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(5,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-5-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(5,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-5-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(5,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-5-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(5,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-5-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(5,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-5-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(5,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-6-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(6,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-6-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(6,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-6-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(6,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-6-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(6,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-6-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(6,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-6-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(6,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-6-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(6,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-6-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(6,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-6-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(6,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-6-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(6,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-7-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(7,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-7-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(7,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-7-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(7,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 2 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-7-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(7,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-7-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(7,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 4 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-7-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(7,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-7-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(7,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 6 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-7-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(7,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 7 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-7-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(7,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 8 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-7-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(7,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-8-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(8,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-8-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(8,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-8-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(8,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 2 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-8-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(8,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-8-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(8,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 4 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-8-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(8,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-8-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(8,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 6 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-8-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(8,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 7 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-8-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(8,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 8 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-8-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(8,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-9-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(9,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-9-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(9,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-9-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(9,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 2 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-9-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(9,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-9-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(9,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 4 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-9-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(9,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-9-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(9,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 6 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-9-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(9,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 7 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-9-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(9,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 8 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-9-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(9,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-10-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(10,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-10-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(10,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-10-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(10,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 2 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-10-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(10,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-10-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(10,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 4 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-10-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(10,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-10-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(10,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 6 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-10-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(10,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 7 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-10-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(10,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 8 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-10-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(10,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-11-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-11-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-11-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-11-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-11-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-11-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-11-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-11-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-11-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-11-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-12-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(12,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-12-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(12,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-12-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(12,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-12-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(12,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-12-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(12,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-12-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(12,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-12-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(12,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-12-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(12,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-12-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(12,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-12-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(12,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-13-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(13,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-13-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(13,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-13-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(13,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-13-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(13,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-13-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(13,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-13-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(13,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-13-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(13,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-13-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(13,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-13-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(13,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-13-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(13,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-14-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(14,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-14-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(14,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-14-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(14,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-14-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(14,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-14-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(14,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-14-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(14,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-14-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(14,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-14-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(14,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-14-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(14,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-14-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(14,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-15-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(15,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-15-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(15,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-15-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(15,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-15-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(15,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-15-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(15,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-15-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(15,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-15-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(15,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-15-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(15,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-15-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(15,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-15-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(15,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-16-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(16,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-16-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(16,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-16-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(16,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-16-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(16,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-16-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(16,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-16-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(16,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-16-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(16,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-16-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(16,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-16-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(16,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-16-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(16,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-17-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(17,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-17-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(17,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-17-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(17,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-17-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(17,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-17-4",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(17,9600,0,0,100,4)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-17-5",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(17,9600,0,0,100,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-17-6",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(17,9600,0,0,100,6)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-17-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(17,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-17-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(17,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-17-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(17,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt--1-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,-1,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt--1-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,-1,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt--1--3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,-1,0,100,-3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 253 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt--1-(1+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,-1,0,100,(1+2))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt--1-(1.0+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,-1,0,100,(1.0+2))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt--1-6/2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,-1,0,100,6/2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt--1-6\\2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,-1,0,100,6\\2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt--1-F",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,-1,0,100,F)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt--1-I",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,-1,0,100,I)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt--1-K",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,-1,0,100,K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt--1-True",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,-1,0,100,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt--1-&HFFFFFFFF",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,-1,0,100,&HFFFFFFFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-0-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-0-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-0--3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,-3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 253 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-0-(1+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,(1+2))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-0-(1.0+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,(1.0+2))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-0-6/2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,6/2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-0-6\\2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,6\\2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-0-F",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,F)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-0-I",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,I)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-0-K",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-0-True",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-0-&HFFFFFFFF",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,&HFFFFFFFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-1-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,1,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-1-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,1,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-1--3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,1,0,100,-3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 253 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-1-(1+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,1,0,100,(1+2))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-1-(1.0+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,1,0,100,(1.0+2))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-1-6/2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,1,0,100,6/2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-1-6\\2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,1,0,100,6\\2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-1-F",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,1,0,100,F)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-1-I",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,1,0,100,I)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-1-K",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,1,0,100,K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-1-True",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,1,0,100,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-1-&HFFFFFFFF",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,1,0,100,&HFFFFFFFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-3-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-3-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-3--3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3,0,100,-3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 253 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-3-(1+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3,0,100,(1+2))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-3-(1.0+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3,0,100,(1.0+2))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-3-6/2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3,0,100,6/2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-3-6\\2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3,0,100,6\\2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-3-F",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3,0,100,F)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-3-I",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3,0,100,I)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-3-K",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3,0,100,K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-3-True",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3,0,100,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-3-&HFFFFFFFF",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3,0,100,&HFFFFFFFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-7-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,7,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-7-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,7,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-7--3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,7,0,100,-3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 253 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-7-(1+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,7,0,100,(1+2))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-7-(1.0+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,7,0,100,(1.0+2))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-7-6/2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,7,0,100,6/2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-7-6\\2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,7,0,100,6\\2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-7-F",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,7,0,100,F)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-7-I",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,7,0,100,I)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-7-K",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,7,0,100,K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-7-True",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,7,0,100,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-7-&HFFFFFFFF",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,7,0,100,&HFFFFFFFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-8-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,8,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-8-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,8,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-8--3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,8,0,100,-3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 253 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-8-(1+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,8,0,100,(1+2))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-8-(1.0+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,8,0,100,(1.0+2))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-8-6/2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,8,0,100,6/2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-8-6\\2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,8,0,100,6\\2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-8-F",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,8,0,100,F)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-8-I",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,8,0,100,I)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-8-K",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,8,0,100,K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-8-True",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,8,0,100,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-8-&HFFFFFFFF",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,8,0,100,&HFFFFFFFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-15-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,15,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-15-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,15,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-15--3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,15,0,100,-3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 253 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-15-(1+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,15,0,100,(1+2))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-15-(1.0+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,15,0,100,(1.0+2))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-15-6/2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,15,0,100,6/2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-15-6\\2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,15,0,100,6\\2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-15-F",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,15,0,100,F)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-15-I",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,15,0,100,I)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-15-K",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,15,0,100,K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-15-True",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,15,0,100,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-15-&HFFFFFFFF",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,15,0,100,&HFFFFFFFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-(1+2)-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,(1+2),0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-(1+2)-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,(1+2),0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-(1+2)--3",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,(1+2),0,100,-3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 253 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-(1+2)-(1+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,(1+2),0,100,(1+2))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-(1+2)-(1.0+2)",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,(1+2),0,100,(1.0+2))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-(1+2)-6/2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,(1+2),0,100,6/2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-fmt-(1+2)-6\\2",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,(1+2),0,100,6\\2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-(1+2)-F",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,(1+2),0,100,F)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-(1+2)-I",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,(1+2),0,100,I)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-(1+2)-K",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,(1+2),0,100,K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-(1+2)-True",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,(1+2),0,100,True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-fmt-(1+2)-&HFFFFFFFF",
+   "logger": "cr350",
+   "source": "Public Y\nConst F = 3.0\nConst I As Long = 3.0\nConst K = 3\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,(1+2),0,100,&HFFFFFFFF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr6-serial-ComRS232-0",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 0 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-ComRS232-1",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-serial-ComRS232-2",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-serial-ComRS232-3",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-ComRS232-7",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 7 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-ComRS232-8",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 8 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-ComRS232-255",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 255 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-ComRS232-256",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 256 not supported on COM232."
+  },
+  {
+   "id": "cr6-serial-ComRS232-257",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 257 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-ComRS232-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 0 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-ComRS232-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serial-ComRS232-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serial-ComRS232-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-ComRS232-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 7 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-ComRS232-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 8 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-ComRS232-255",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 255 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-ComRS232-256",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 256 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-serial-ComRS232-257",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 4: Warning: CommsMode Option 257 not supported on COM232."
+  },
+  {
+   "id": "cr300-serial-ComRS232-0",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-ComRS232-1",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-ComRS232-2",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-ComRS232-3",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-ComRS232-7",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-ComRS232-8",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-ComRS232-255",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-ComRS232-256",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serial-ComRS232-257",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-ComRS232-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-ComRS232-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 1 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComRS232-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 2 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComRS232-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComRS232-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 7 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComRS232-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 8 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComRS232-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComRS232-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-ComRS232-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 1 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComC1-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC1,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC1,9600,0,0,100,0)\n."
+  },
+  {
+   "id": "cr350-serial-ComC1-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC1,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC1,9600,0,0,100,1)\n."
+  },
+  {
+   "id": "cr350-serial-ComC1-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC1,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC1,9600,0,0,100,2)\n."
+  },
+  {
+   "id": "cr350-serial-ComC1-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC1,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC1,9600,0,0,100,3)\n."
+  },
+  {
+   "id": "cr350-serial-ComC1-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC1,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC1,9600,0,0,100,7)\n."
+  },
+  {
+   "id": "cr350-serial-ComC1-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC1,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC1,9600,0,0,100,8)\n."
+  },
+  {
+   "id": "cr350-serial-ComC1-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC1,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC1,9600,0,0,100,255)\n."
+  },
+  {
+   "id": "cr350-serial-ComC1-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC1,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC1,9600,0,0,100,256)\n."
+  },
+  {
+   "id": "cr350-serial-ComC1-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC1,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC1 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC1,9600,0,0,100,257)\n."
+  },
+  {
+   "id": "cr350-serial-ComC2-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC2,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC2 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC2,9600,0,0,100,0)\n."
+  },
+  {
+   "id": "cr350-serial-ComC2-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC2,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC2 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC2,9600,0,0,100,1)\n."
+  },
+  {
+   "id": "cr350-serial-ComC2-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC2,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC2 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC2,9600,0,0,100,2)\n."
+  },
+  {
+   "id": "cr350-serial-ComC2-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC2,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC2 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC2,9600,0,0,100,3)\n."
+  },
+  {
+   "id": "cr350-serial-ComC2-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC2,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC2 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC2,9600,0,0,100,7)\n."
+  },
+  {
+   "id": "cr350-serial-ComC2-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC2,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC2 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC2,9600,0,0,100,8)\n."
+  },
+  {
+   "id": "cr350-serial-ComC2-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC2,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC2 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC2,9600,0,0,100,255)\n."
+  },
+  {
+   "id": "cr350-serial-ComC2-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC2,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC2 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC2,9600,0,0,100,256)\n."
+  },
+  {
+   "id": "cr350-serial-ComC2-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC2,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC2 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC2,9600,0,0,100,257)\n."
+  },
+  {
+   "id": "cr350-serial-ComC3-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC3,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC3 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC3,9600,0,0,100,0)\n."
+  },
+  {
+   "id": "cr350-serial-ComC3-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC3,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC3 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC3,9600,0,0,100,1)\n."
+  },
+  {
+   "id": "cr350-serial-ComC3-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC3,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC3 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC3,9600,0,0,100,2)\n."
+  },
+  {
+   "id": "cr350-serial-ComC3-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC3,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC3 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC3,9600,0,0,100,3)\n."
+  },
+  {
+   "id": "cr350-serial-ComC3-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC3,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC3 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC3,9600,0,0,100,7)\n."
+  },
+  {
+   "id": "cr350-serial-ComC3-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC3,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC3 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC3,9600,0,0,100,8)\n."
+  },
+  {
+   "id": "cr350-serial-ComC3-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC3,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC3 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC3,9600,0,0,100,255)\n."
+  },
+  {
+   "id": "cr350-serial-ComC3-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC3,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC3 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC3,9600,0,0,100,256)\n."
+  },
+  {
+   "id": "cr350-serial-ComC3-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC3,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC3 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC3,9600,0,0,100,257)\n."
+  },
+  {
+   "id": "cr350-serial-ComC4-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC4,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC4 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC4,9600,0,0,100,0)\n."
+  },
+  {
+   "id": "cr350-serial-ComC4-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC4,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC4 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC4,9600,0,0,100,1)\n."
+  },
+  {
+   "id": "cr350-serial-ComC4-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC4,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC4 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC4,9600,0,0,100,2)\n."
+  },
+  {
+   "id": "cr350-serial-ComC4-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC4,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC4 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC4,9600,0,0,100,3)\n."
+  },
+  {
+   "id": "cr350-serial-ComC4-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC4,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC4 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC4,9600,0,0,100,7)\n."
+  },
+  {
+   "id": "cr350-serial-ComC4-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC4,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC4 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC4,9600,0,0,100,8)\n."
+  },
+  {
+   "id": "cr350-serial-ComC4-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC4,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC4 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC4,9600,0,0,100,255)\n."
+  },
+  {
+   "id": "cr350-serial-ComC4-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC4,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC4 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC4,9600,0,0,100,256)\n."
+  },
+  {
+   "id": "cr350-serial-ComC4-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComC4,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComC4 is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComC4,9600,0,0,100,257)\n."
+  },
+  {
+   "id": "cr350-serial-ComUSB-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-ComUSB-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 1 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComUSB-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 2 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComUSB-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComUSB-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 7 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComUSB-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 8 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComUSB-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComUSB-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-ComUSB-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 1 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-ComME-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComME,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComME,9600,0,0,100,0)\n."
+  },
+  {
+   "id": "cr350-serial-ComME-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComME,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComME,9600,0,0,100,1)\n."
+  },
+  {
+   "id": "cr350-serial-ComME-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComME,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComME,9600,0,0,100,2)\n."
+  },
+  {
+   "id": "cr350-serial-ComME-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComME,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComME,9600,0,0,100,3)\n."
+  },
+  {
+   "id": "cr350-serial-ComME-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComME,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComME,9600,0,0,100,7)\n."
+  },
+  {
+   "id": "cr350-serial-ComME-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComME,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComME,9600,0,0,100,8)\n."
+  },
+  {
+   "id": "cr350-serial-ComME-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComME,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComME,9600,0,0,100,255)\n."
+  },
+  {
+   "id": "cr350-serial-ComME-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComME,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComME,9600,0,0,100,256)\n."
+  },
+  {
+   "id": "cr350-serial-ComME-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComME,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComME is not defined.\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:  SerialOpen(ComME,9600,0,0,100,257)\n."
+  },
+  {
+   "id": "cr350-serial-1-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(1,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-1-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(1,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 1 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-2-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(2,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-2-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(2,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 1 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-serial-7-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(7,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-7-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(7,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-11-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-11-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-16-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(16,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-16-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(16,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-17-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(17,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-17-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(17,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-32-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-32-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-32-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-32-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-32-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-32-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-32-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-32-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-32-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-47-0",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(47,9600,0,0,100,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-47-1",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(47,9600,0,0,100,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-47-2",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(47,9600,0,0,100,2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-47-3",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(47,9600,0,0,100,3)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-47-7",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(47,9600,0,0,100,7)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-47-8",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(47,9600,0,0,100,8)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-47-255",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(47,9600,0,0,100,255)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-47-256",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(47,9600,0,0,100,256)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serial-47-257",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(47,9600,0,0,100,257)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-named--1",
+   "logger": "cr6",
+   "source": "Public Y\nConst Mode = -1\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: CommsMode Option -1 not supported on COM232."
+  },
+  {
+   "id": "cr6-named-3.0",
+   "logger": "cr6",
+   "source": "Public Y\nConst Mode = 3.0\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr6-named-3E0",
+   "logger": "cr6",
+   "source": "Public Y\nConst Mode = 3E0\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr6-named-6/2",
+   "logger": "cr6",
+   "source": "Public Y\nConst Mode = 6/2\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr6-named-True",
+   "logger": "cr6",
+   "source": "Public Y\nConst Mode = True\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: CommsMode Option -1 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-named--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst Mode = -1\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: CommsMode Option -1 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-named-3.0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst Mode = 3.0\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-named-3E0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst Mode = 3E0\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-named-6/2",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst Mode = 6/2\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: CommsMode Option 3 not supported on COM232."
+  },
+  {
+   "id": "cr1000x-named-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst Mode = True\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: CommsMode Option -1 not supported on COM232."
+  },
+  {
+   "id": "cr300-named--1",
+   "logger": "cr300",
+   "source": "Public Y\nConst Mode = -1\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-named-3.0",
+   "logger": "cr300",
+   "source": "Public Y\nConst Mode = 3.0\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-named-3E0",
+   "logger": "cr300",
+   "source": "Public Y\nConst Mode = 3E0\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-named-6/2",
+   "logger": "cr300",
+   "source": "Public Y\nConst Mode = 6/2\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-named-True",
+   "logger": "cr300",
+   "source": "Public Y\nConst Mode = True\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-named--1",
+   "logger": "cr350",
+   "source": "Public Y\nConst Mode = -1\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: 255 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-named-2.5",
+   "logger": "cr350",
+   "source": "Public Y\nConst Mode = 2.5\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-named-3.5",
+   "logger": "cr350",
+   "source": "Public Y\nConst Mode = 3.5\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-named-1.5",
+   "logger": "cr350",
+   "source": "Public Y\nConst Mode = 1.5\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-named-256.1",
+   "logger": "cr350",
+   "source": "Public Y\nConst Mode = 256.1\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-named-3.0",
+   "logger": "cr350",
+   "source": "Public Y\nConst Mode = 3.0\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-named-3E0",
+   "logger": "cr350",
+   "source": "Public Y\nConst Mode = 3E0\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-named-6/2",
+   "logger": "cr350",
+   "source": "Public Y\nConst Mode = 6/2\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: 3 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "cr350-named-\"3\"",
+   "logger": "cr350",
+   "source": "Public Y\nConst Mode = \"3\"\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-named-1E10",
+   "logger": "cr350",
+   "source": "Public Y\nConst Mode = 1E10\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-named-True",
+   "logger": "cr350",
+   "source": "Public Y\nConst Mode = True\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,100,Mode)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: 255 is an invalid CommsMode parameter."
+  }
+ ]
+}

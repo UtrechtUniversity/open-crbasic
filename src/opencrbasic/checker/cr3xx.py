@@ -14,7 +14,7 @@ from typing import TypedDict
 from .. import bindings, consteval, lexer
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
-from . import expressions, instr_rules, structure, symbols
+from . import expressions, instr_rules, longconv, structure, symbols
 
 # `SerialOpen`'s own `ComPort` argument (position 0, the only position checked here) is the one
 # `Serial*` function on CR300/CR350 whose compile-time validator additionally requires a genuine
@@ -81,6 +81,29 @@ _COMMS_MODES = {
     "COMC3": frozenset({0, 1, 2, 3, 4, 6}),
     "COMC7": frozenset({0, 1, 2, 3, 4, 6}),
 }
+_CR350_MAX_COMMS_MODE = {1: 0, 2: 0, 3: 0, 4: 1, 7: 1, 8: 1, 9: 1, 10: 1}
+
+
+def _check_cr350_comms_mode(stmt: S.Call, port: int, profile, consts: dict, diags: Diagnostics) -> None:
+    maximum = _CR350_MAX_COMMS_MODE.get(port)
+    if maximum is None or len(stmt.args) != 6:
+        return
+    format_arg, mode_arg = stmt.args[2], stmt.args[5]
+    if any(longconv._float_typed(arg, frozenset()) for arg in (format_arg, mode_arg)):
+        return
+    env = consteval.Env(profile, consts)
+    try:
+        raw_values = [consteval.value_of(arg, env) for arg in (format_arg, mode_arg)]
+    except consteval.NotConstant:
+        return
+    if any(isinstance(raw, float) and (not -(2**31) <= raw < 2**31 or raw != int(raw)) for raw in raw_values):
+        return
+    fmt = longconv.long_value(format_arg, env, profile)
+    if fmt is None or not -1 <= fmt <= 15:
+        return
+    value = longconv.long_value(mode_arg, env, profile)
+    if value is not None and (mode := value & 0xFF) > maximum:
+        diags.error(stmt.line, f"{mode} is an invalid CommsMode parameter.", stmt.file)
 
 
 def _commsmode_problem(
@@ -366,6 +389,8 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                     size = None
                 if consteval.is_finite_number(size) and 0 < size < 2**31:
                     diags.items.append(Diagnostic("error", stmt.line, "Out of memory.", stmt.file, trigger=True))
+        if profile.name == "cr350" and consteval.is_finite_number(port):
+            _check_cr350_comms_mode(stmt, int(port), profile, program.consts, diags)
         if names or is_variable or isinstance(arg, S.String):
             # A string or variable ComPort, all four loggers, pass 1 (oracle, 2026-10-01:
             # `SerialOpen("fuzz",...)`). CR300/CR350 echo the line end (`docs/loggers.md`).

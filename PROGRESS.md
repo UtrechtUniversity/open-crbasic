@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 112** (historical verdict parity). Fixed CR350 false accept
+`2c6d7051e308` by validating `SerialOpen` CommsMode by port.
+Six false accepts remain among the historical reproducers.
+[SerialOpen evidence](docs/checker.md#serialopen-ports-on-cr300-and-cr350-round-91).
+
 **Round 111** (historical verdict parity). Fixed CR300 false accept
 `fb802c166ba6` by validating `SplitStr` options for structure destinations.
 Seven false accepts remain among the historical reproducers.
