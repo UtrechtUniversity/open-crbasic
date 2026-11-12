@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 107** (archived verdict parity). Fixed false accept `f2f6e5d8b8e6`
+by matching token recovery when whitespace splits a dotted `SNMPVariable`
+OID. The 25-case archived replay now has one false accept and 24 exact
+matches. [OID evidence](docs/instructions.md#snmpvariable-object-identifiers-all-four-loggers-round-15).
+
 **Round 106** (archived verdict parity). Fixed false accepts `51f39a5f2393`
 and `7b4b2177d56b` by checking `CDM_FFTFilt` capture duration and binning.
 The 25-case archived replay now has two false accepts and 23 exact matches.

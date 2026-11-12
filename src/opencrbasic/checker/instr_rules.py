@@ -715,7 +715,7 @@ def check_essinitialize_too_many(program: S.Program, profile, diags: Diagnostics
 
 
 _SNMP_SPACED_OID = re.compile(
-    r"^\s*SNMPVARIABLE\s*\(\s*[^,]+\s*,\s*(?:\d+\.)+\s+\d+(?:\.\d+)*\s*,\s*([A-Za-z_]\w*)\s*,",
+    r"^\s*SNMPVARIABLE\s*\(\s*[^,]+\s*,\s*(\d[\d.]*\.[\d.]*)[ \t]+[\d.]+(?=[ \t,)])",
     re.I,
 )
 _SNMP_OID_DEST = re.compile(r"^\s*SNMPVARIABLE\s*\(\s*(\d+(?:\.\d+)*)\s*,", re.I)
@@ -853,10 +853,10 @@ def check_modemcallback_baud(program: S.Program, profile, diags: Diagnostics) ->
 
 
 def check_snmpvariable_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
-    """Whitespace within a dotted SNMP OID makes the real parser resume at its type token.
+    """Whitespace splits a dotted SNMP OID into tokens.
 
-    The normal dotted OID is an intentional parser gap that compiles; this is only its observed
-    whitespace-split recovery shape, which emits the ordinary excess-parameter message.
+    The reference reads the first dotted token as the OID and consumes the next fragment
+    in the type slot. The following token is then an excess parameter.
     """
     for stmt in program.statements:
         if not isinstance(stmt, S.Unparsed) or not (
@@ -865,7 +865,11 @@ def check_snmpvariable_too_many(program: S.Program, profile, diags: Diagnostics)
             continue
         match = _SNMP_SPACED_OID.match(stmt.text)
         if match:
-            diags.error(stmt.line, f"Too many parameters:  {match.group(1)}.", stmt.file)
+            components = _snmp_components(match.group(1))
+            if components is not None and tuple(c or 0 for c in components) < _SNMP_FLOOR:
+                diags.error(stmt.line, f"SNMP OID must be greater than {'.'.join(map(str, _SNMP_FLOOR))}", stmt.file)
+            if token := _next_simple_token(stmt.text[match.end() :]):
+                diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
             continue
         match = _SNMP_TAIL.match(stmt.text)
         if match:

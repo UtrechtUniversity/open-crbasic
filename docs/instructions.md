@@ -2192,8 +2192,12 @@ any statement whose OID is a digits-and-dots literal as the known `Unparsed` gap
 - Messages stay on the statement's line before `Miss match of types` for a dotted OID; they hide neither
   other lines nor `Too many parameters:  Sec.`-style CR300/CR350 cascades, which they start; an
   `SNMPVariable` after a cascade is never rewritten to `Too many parameters:  <arg>.`. Not modelled: the
-  `Miss match of types` / `Too many parameters` ordering when both occur. Fuzz reproducers cr1000x
-  `false_accept/e3a11f6b9adc`, cr6 `f2f6e5d8b8e6`.
+  `Miss match of types` / `Too many parameters` ordering when both occur.
+- In round 107, whitespace inside an unquoted dotted OID splits it into tokens on all four
+  loggers. The reference reads the prefix as the OID and the next fragment in the type slot.
+  The remaining first token is reported as `Too many parameters`, after any OID floor error.
+  The CR6 builder `FUN_00479f90` reads the OID with the shared token delimiters.
+  [Four-profile observations](../tests/fixtures/r107_snmp_spaced_oid.json).
 
 ### `FieldCal` argument rules (all four loggers, round 15)
 
