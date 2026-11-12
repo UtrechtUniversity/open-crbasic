@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 100** (archived verdict parity). Fixed CR6 false accept `6ac24bd775f1`
+by checking `CDM_MuxSelect` clock and reset ports and pulse width. The 25-case
+archived replay now has 12 false accepts and 13 exact matches.
+[CDM_MuxSelect evidence](docs/instructions.md#cdm_muxselect-ports-and-clock-pulse-width-round-100).
+
 **Round 99** (archived verdict parity). Fixed CR1000X false accepts
 `870ca9a9562e` and `e8c854e3493d` by checking I2C and SPI port conversion.
 Also added I2C open-order validation. The 25-case archived replay now has

@@ -25,6 +25,7 @@ NAMES = [
     "matrix_illegal",
     "dnp_variable_a",
     "dnp_variable_b",
+    "r100_cdm_mux_options",
 ]
 CASES = [
     c
@@ -33,7 +34,16 @@ CASES = [
 ]
 
 
-@pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
+@pytest.mark.parametrize(
+    "case",
+    [
+        pytest.param(case, marks=pytest.mark.xfail(reason=case["not_modelled"], strict=True))
+        if "not_modelled" in case
+        else case
+        for case in CASES
+    ],
+    ids=lambda case: case["id"],
+)
 def test_fa_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
     program.write_text(case["source"], encoding="utf-8")

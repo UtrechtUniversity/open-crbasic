@@ -1542,6 +1542,20 @@ variant. The probes cover the full range and coercion on all four profiles.
 Other `FieldCalStrain` argument diagnostics are separate from this option
 check. [Reference observations](../tests/fixtures/r96_fieldcal_strain_options.json).
 
+### CDM_MuxSelect ports and clock pulse width (round 100)
+
+On CR6 and CR1000X, both ports must be 1–2 on CDM-A108/VOLT108 and 1–4 on
+CDM-A116/VOLT116. Each bad port produces `Unrecognized port!`. A bad clock
+port defaults to 1 and a bad reset port to 2 before the duplicate-port check.
+The reference checks pulse width after the ports. It rejects values below
+1 or whose signed 32-bit product with 1,000 exceeds 100,000. For example,
+`2147484` passes the width check after the product wraps.
+
+CR6 builder `FUN_00417170` dispatches to `FUN_0040f450` for these four modules.
+The scan-time calculation remains open. A pulse width of 100 in a one-second
+scan can require 1,001 ms, while the same width passes in a two-second scan.
+[`r100_cdm_mux_options.json`](../tests/fixtures/r100_cdm_mux_options.json).
+
 ### CDM bridge excitation and settling time (round 93)
 
 On CR6 and CR1000X, `CDM_BrHalf3W` and `CDM_BrFull6W` on module types 220–223

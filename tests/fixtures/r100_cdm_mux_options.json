@@ -1,0 +1,3811 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-220-reset-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,0,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-reset-three",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,3,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-reset-four",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,4,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-reset-five",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,5,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-reset-string",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,\"bad\",10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-reset-frac",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2.9,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-220-reset-unknown",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,Missing,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr6-220-both-invalid",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,3,0,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-both-equal-four",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,4,4,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-equal-and-bad-width",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,2,2,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-220-bad-and-bad-width",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,0,2,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-220-bad-address-bad-port",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,0,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CPI Address must be 1..120.\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-width-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-220-width-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,-1,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -1, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-220-width-min",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,1,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-220-width-max",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,100,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Insufficient time (1000 ms) for measurements from CPI address 1 (needs at least 1001 ms).",
+   "not_modelled": "CDM_MuxSelect contribution to CPI scan timing"
+  },
+  {
+   "id": "cr6-220-width-over",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,101,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 101, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-220-width-float",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,100.9,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Insufficient time (1000 ms) for measurements from CPI address 1 (needs at least 1001 ms).",
+   "not_modelled": "CDM_MuxSelect contribution to CPI scan timing"
+  },
+  {
+   "id": "cr6-220-width-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,999999999999,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -2147483648, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-220-width-wrap",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,2147484,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-220-width-bool",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,True,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -1, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-220-width-string",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,\"bad\",4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -2147483648, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-221-reset-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,0,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-221-reset-three",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,3,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-221-reset-four",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,4,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-221-reset-five",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,5,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-221-reset-string",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,\"bad\",10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-221-reset-frac",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2.9,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-221-reset-unknown",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,Missing,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr6-221-both-invalid",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,3,0,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-221-both-equal-four",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,4,4,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-221-equal-and-bad-width",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,2,2,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-221-bad-and-bad-width",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,0,2,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-221-bad-address-bad-port",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,0,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CPI Address must be 1..120.\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-221-width-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-221-width-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,-1,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -1, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-221-width-min",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,1,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-221-width-max",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,100,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Insufficient time (1000 ms) for measurements from CPI address 1 (needs at least 1001 ms).",
+   "not_modelled": "CDM_MuxSelect contribution to CPI scan timing"
+  },
+  {
+   "id": "cr6-221-width-over",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,101,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 101, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-221-width-float",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,100.9,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Insufficient time (1000 ms) for measurements from CPI address 1 (needs at least 1001 ms).",
+   "not_modelled": "CDM_MuxSelect contribution to CPI scan timing"
+  },
+  {
+   "id": "cr6-221-width-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,999999999999,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -2147483648, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-221-width-wrap",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,2147484,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-221-width-bool",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,True,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -1, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-221-width-string",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,\"bad\",4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -2147483648, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-220-reset-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,0,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-reset-three",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,3,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-reset-four",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,4,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-reset-five",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,5,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-reset-string",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,\"bad\",10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-reset-frac",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2.9,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-220-reset-unknown",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,Missing,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr1000x-220-both-invalid",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,3,0,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-both-equal-four",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,4,4,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-equal-and-bad-width",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,2,2,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-220-bad-and-bad-width",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,0,2,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-220-bad-address-bad-port",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,0,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CPI Address must be 1..120.\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-width-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-220-width-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,-1,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -1, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-220-width-min",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,1,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-220-width-max",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,100,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Insufficient time (1000 ms) for measurements from CPI address 1 (needs at least 1001 ms).",
+   "not_modelled": "CDM_MuxSelect contribution to CPI scan timing"
+  },
+  {
+   "id": "cr1000x-220-width-over",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,101,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 101, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-220-width-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,100.9,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Insufficient time (1000 ms) for measurements from CPI address 1 (needs at least 1001 ms).",
+   "not_modelled": "CDM_MuxSelect contribution to CPI scan timing"
+  },
+  {
+   "id": "cr1000x-220-width-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,999999999999,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -2147483648, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-220-width-wrap",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,2147484,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-220-width-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,True,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -1, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-220-width-string",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,\"bad\",4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -2147483648, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-221-reset-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,0,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-221-reset-three",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,3,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-221-reset-four",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,4,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-221-reset-five",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,5,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-221-reset-string",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,\"bad\",10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-221-reset-frac",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2.9,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-221-reset-unknown",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,Missing,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr1000x-221-both-invalid",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,3,0,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-221-both-equal-four",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,4,4,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-221-equal-and-bad-width",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,2,2,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-221-bad-and-bad-width",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,0,2,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-221-bad-address-bad-port",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,0,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CPI Address must be 1..120.\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-221-width-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-221-width-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,-1,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -1, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-221-width-min",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,1,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-221-width-max",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,100,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Insufficient time (1000 ms) for measurements from CPI address 1 (needs at least 1001 ms).",
+   "not_modelled": "CDM_MuxSelect contribution to CPI scan timing"
+  },
+  {
+   "id": "cr1000x-221-width-over",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,101,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 101, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-221-width-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,100.9,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Insufficient time (1000 ms) for measurements from CPI address 1 (needs at least 1001 ms).",
+   "not_modelled": "CDM_MuxSelect contribution to CPI scan timing"
+  },
+  {
+   "id": "cr1000x-221-width-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,999999999999,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -2147483648, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-221-width-wrap",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,2147484,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-221-width-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,True,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -1, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-221-width-string",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,\"bad\",4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: -2147483648, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-220-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-one",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-220-two",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-220-three",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-four",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-five",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-float",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-220-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-bool",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-string",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-named",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-220-folded",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-220-runtime",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr6-220-unresolved",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr6-221-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-221-one",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-221-two",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-221-three",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-221-four",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-221-five",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-221-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-221-float",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-221-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-221-bool",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-221-string",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-221-named",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-221-folded",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-221-runtime",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr6-221-unresolved",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr6-222-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-222-one",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-222-two",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-222-three",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-222-four",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-222-five",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-222-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-222-float",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-222-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-222-bool",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-222-string",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-222-named",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-222-folded",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-222-runtime",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr6-222-unresolved",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr6-223-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-223-one",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-223-two",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-223-three",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-223-four",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-223-five",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-223-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-223-float",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-223-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-223-bool",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-223-string",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr6-223-named",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-223-folded",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-223-runtime",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr6-223-unresolved",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr6-224-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-one",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-two",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-three",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-four",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-five",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-float",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-bool",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-string",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-named",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-folded",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr6-224-runtime",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr6-224-unresolved",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr6-200-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-one",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-two",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-three",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-four",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-five",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-float",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-bool",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-string",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-named",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-folded",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr6-200-runtime",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr6-200-unresolved",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr6-0-zero",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-one",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-two",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-three",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-four",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-five",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-negative",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-float",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-wide",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-bool",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-string",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-named",
+   "logger": "cr6",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-folded",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr6-0-runtime",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr6-0-unresolved",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr1000x-220-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-one",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-220-two",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-220-three",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-four",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-five",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-220-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-string",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-named",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-220-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-220-runtime",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr1000x-220-unresolved",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr1000x-221-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-221-one",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-221-two",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-221-three",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-221-four",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-221-five",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-221-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-221-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-221-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-221-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-221-string",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-221-named",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-221-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-221-runtime",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr1000x-221-unresolved",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr1000x-222-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-222-one",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-222-two",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-222-three",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-222-four",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-222-five",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-222-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-222-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-222-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-222-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-222-string",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-222-named",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-222-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-222-runtime",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr1000x-222-unresolved",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr1000x-223-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-223-one",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-223-two",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-223-three",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-223-four",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-223-five",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-223-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-223-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-223-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-223-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-223-string",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!"
+  },
+  {
+   "id": "cr1000x-223-named",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-223-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-223-runtime",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr1000x-223-unresolved",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr1000x-224-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-one",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-two",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-three",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-four",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-five",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-string",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-named",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module TEMP120."
+  },
+  {
+   "id": "cr1000x-224-runtime",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr1000x-224-unresolved",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr1000x-200-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-one",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-two",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-three",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-four",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-five",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-string",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-named",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module CDM-VW300."
+  },
+  {
+   "id": "cr1000x-200-runtime",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr1000x-200-unresolved",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr1000x-0-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-one",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-two",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-three",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-four",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-five",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-negative",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-string",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-named",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSel instruction not supported by module NULL."
+  },
+  {
+   "id": "cr1000x-0-runtime",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr1000x-0-unresolved",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr300-220-zero",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-one",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-two",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-three",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-four",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-five",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-float",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-bool",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-string",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-named",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(220,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-folded",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-runtime",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-220-unresolved",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-zero",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-one",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-two",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-three",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-four",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-five",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-float",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-bool",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-string",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-named",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(221,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-folded",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-runtime",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-221-unresolved",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-zero",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-one",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-two",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-three",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-four",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-five",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-float",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-bool",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-string",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-named",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(222,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-folded",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-runtime",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-222-unresolved",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-zero",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-one",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-two",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-three",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-four",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-five",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-float",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-bool",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-string",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-named",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(223,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-folded",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-runtime",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-223-unresolved",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-zero",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-one",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-two",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-three",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-four",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-five",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-float",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-bool",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-string",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-named",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(224,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-folded",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-runtime",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-224-unresolved",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-zero",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-one",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-two",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-three",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-four",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-five",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-float",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-bool",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-string",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-named",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(200,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-folded",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-runtime",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-200-unresolved",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-zero",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-one",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-two",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-three",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-four",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-five",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-negative",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-float",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-wide",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-bool",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-string",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-named",
+   "logger": "cr300",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(0,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-folded",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-runtime",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr300-0-unresolved",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-zero",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-one",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-two",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-three",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-four",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-five",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-float",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-bool",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-string",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-named",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(220,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-folded",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-runtime",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-220-unresolved",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(220,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(220,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-zero",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-one",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-two",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-three",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-four",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-five",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-float",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-bool",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-string",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-named",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(221,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-folded",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-runtime",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-221-unresolved",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(221,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(221,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-zero",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-one",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-two",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-three",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-four",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-five",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-float",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-bool",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-string",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-named",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(222,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-folded",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-runtime",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-222-unresolved",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(222,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(222,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-zero",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-one",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-two",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-three",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-four",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-five",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-float",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-bool",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-string",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-named",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(223,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-folded",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-runtime",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-223-unresolved",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(223,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(223,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-zero",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-one",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-two",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-three",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-four",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-five",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-float",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-bool",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-string",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-named",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(224,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-folded",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-runtime",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-224-unresolved",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(224,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(224,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-zero",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-one",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-two",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-three",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-four",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-five",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-float",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-bool",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-string",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-named",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(200,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-folded",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-runtime",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-200-unresolved",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(200,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(200,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-zero",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,0,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,0,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-one",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-two",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,2,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,2,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-three",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,3,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,3,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-four",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,4,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,4,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-five",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-negative",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,-1,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,-1,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-float",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,2.5,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,2.5,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-wide",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,999999999999,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,999999999999,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-bool",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,True,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,True,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-string",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,\"bad\",2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,\"bad\",2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-named",
+   "logger": "cr350",
+   "source": "Public Y\nConst R=2\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,R,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: Invalid, or out of place expression:   CDM_MuxSelect(0,1,R,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-folded",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,(1+2),2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,(1+2),2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-runtime",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,Y,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,Y,2,10,4,1)\n."
+  },
+  {
+   "id": "cr350-0-unresolved",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n  CDM_MuxSelect(0,1,Missing,2,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: Missing is not defined.\nline 4: Invalid, or out of place expression:   CDM_MuxSelect(0,1,Missing,2,10,4,1)\n."
+  },
+  {
+   "id": "cr6-220-fallback-clock-duplicates",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,0,1,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-220-fallback-reset-duplicates",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,2,0,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-220-both-invalid",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,0,0,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Unrecognized port!\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-220-width-max-clean",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,100,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-220-width-float-clean",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,100.9,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-220-width-over-clean",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,101,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 101, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-220-width-before-wrap",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,2147483,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 2147483, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-220-width-after-wrap",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,2147484,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-221-fallback-clock-duplicates",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,0,1,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-221-fallback-reset-duplicates",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,2,0,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr6-221-both-invalid",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,0,0,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Unrecognized port!\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-221-width-max-clean",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,100,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-221-width-float-clean",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,100.9,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-221-width-over-clean",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,101,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 101, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-221-width-before-wrap",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,2147483,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 2147483, out of range (1 - 100)."
+  },
+  {
+   "id": "cr6-221-width-after-wrap",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,2147484,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-220-fallback-clock-duplicates",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,0,1,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-220-fallback-reset-duplicates",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,2,0,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-220-both-invalid",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,0,0,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Unrecognized port!\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-220-width-max-clean",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,100,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-220-width-float-clean",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,100.9,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-220-width-over-clean",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,101,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 101, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-220-width-before-wrap",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,2147483,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 2147483, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-220-width-after-wrap",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(220,1,1,2,2147484,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-221-fallback-clock-duplicates",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,0,1,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-221-fallback-reset-duplicates",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,2,0,10,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Clock and Reset ports must be unique!"
+  },
+  {
+   "id": "cr1000x-221-both-invalid",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,0,0,0,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unrecognized port!\nline 4: Unrecognized port!\nline 4: MuxSelect ClockPW: 0, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-221-width-max-clean",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,100,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-221-width-float-clean",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,100.9,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-221-width-over-clean",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,101,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 101, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-221-width-before-wrap",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,2147483,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MuxSelect ClockPW: 2147483, out of range (1 - 100)."
+  },
+  {
+   "id": "cr1000x-221-width-after-wrap",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(2,Sec,0,0)\n  CDM_MuxSelect(221,1,1,2,2147484,4,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

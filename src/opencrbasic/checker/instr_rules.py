@@ -3072,9 +3072,8 @@ _CDM_MODULE_NAMES = {
     260: "SPECTRUM103",
     261: "SPECTRUM109",
 }
-# Instructions only the CDM-A108/A116/VOLT108/VOLT116 (220..223) carry; any other named module gives
-# `<SW|CDM_PulsePort> instruction not supported by module <name>.` and nothing else on the line.
-_CDM_PORT_INSTRUCTIONS = frozenset({"CDM_SW12", "CDM_SW5", "CDM_PULSEPORT"})
+# Port instructions carried by the CDM-A108/A116/VOLT108/VOLT116 (220..223).
+_CDM_PORT_INSTRUCTIONS = frozenset({"CDM_SW12", "CDM_SW5", "CDM_PULSEPORT", "CDM_MUXSELECT"})
 _CDM_PORT_MODULES = frozenset({220, 221, 222, 223})
 
 
@@ -3319,6 +3318,23 @@ def _check_cdm_bridge_options(stmt, positions, profile, diags, env, names, liter
             diags.error(stmt.line, f"Excitation magnitude: {magnitude}, out of range (20 - 5000).", stmt.file)
 
 
+def _check_cdm_mux_options(stmt, module, profile, diags, env, names, literals) -> None:
+    if len(stmt.args) < 5:
+        return
+    clock, reset, width = (longconv.long_value(arg, env, profile, names, literals) for arg in stmt.args[2:5])
+    last_port = 2 if module in (220, 222) else 4
+    if clock is not None and not 1 <= clock <= last_port:
+        diags.error(stmt.line, "Unrecognized port!", stmt.file)
+        clock = 1
+    if reset is not None and not 1 <= reset <= last_port:
+        diags.error(stmt.line, "Unrecognized port!", stmt.file)
+        reset = 2
+    if clock is not None and clock == reset:
+        diags.error(stmt.line, "Clock and Reset ports must be unique!", stmt.file)
+    if width is not None and (width < 1 or longconv._wrap(1000 * width) > 100000):
+        diags.error(stmt.line, f"MuxSelect ClockPW: {width}, out of range (1 - 100).", stmt.file)
+
+
 def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env) -> None:
     """CR6/CR1000X CDM instructions with a constant `CDMType` and a `CPIAddress` (1..120);
     docs/instructions.md "CDM address and module type".
@@ -3368,10 +3384,13 @@ def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env
         elif (module := cdm_unsupported_module(stmt, env)) is not None:
             for name in _CDM_NULL_MODULE.get(kw, ()):
                 diags.error(stmt.line, f"{name} instruction not supported by module {module}.", stmt.file)
-        elif kind in _CDM_PORT_MODULES and (positions := _CDM_BRIDGE_OPTION_ARGS.get(kw)) is not None:
+        elif kind in _CDM_PORT_MODULES and (kw in _CDM_BRIDGE_OPTION_ARGS or kw == "CDM_MUXSELECT"):
             if conversion is None:
                 conversion = longconv.float_names(program.statements), longconv.literal_names(program.statements)
-            _check_cdm_bridge_options(stmt, positions, profile, diags, env, *conversion)
+            if kw == "CDM_MUXSELECT":
+                _check_cdm_mux_options(stmt, kind, profile, diags, env, *conversion)
+            else:
+                _check_cdm_bridge_options(stmt, _CDM_BRIDGE_OPTION_ARGS[kw], profile, diags, env, *conversion)
 
 
 def check_epi_scan_buffers(program: S.Program, profile, diags: Diagnostics, env) -> None:
