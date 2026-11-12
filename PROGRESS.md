@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 98** (archived verdict parity). Fixed CR6 false accept `72f95eac103f`
+by checking the `DNPVariable` Flag type. The 25-case archived replay now has
+15 false accepts and ten exact matches.
+[DNPVariable Flag evidence](docs/instructions.md#dnpvariable-flag-type-round-98).
+
 **Round 97** (archived verdict parity). Fixed CR6 false accepts `ecc509dd06de`
 and `f61f825392f2` by checking `TableFile` format options and the last filename
 result type. The 25-case archived replay now has 16 false accepts and nine exact

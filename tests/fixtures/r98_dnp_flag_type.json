@@ -1,0 +1,3441 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-static-zero",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-zero",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-one",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-one",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-negative",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-negative",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,-1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-wide",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,999999999999,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-wide",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,999999999999,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-int-min",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483648,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-int-min",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,-2147483648,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-float-zero",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-float-zero",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-float-half",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.5,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-float-half",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0.5,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-float-one",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-float-one",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,1.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-bool",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,True,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-bool",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,True,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-string",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,\"bad\",0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-string",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,\"bad\",0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-float-variable",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-float-variable",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,X,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-long-variable",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-long-variable",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-bool-variable",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-bool-variable",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-string-variable",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As String * 20\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-string-variable",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As String * 20\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-long-array",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R(1),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-long-array",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R(1),0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-long-array-whole",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-long-array-whole",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R(),0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-long-const",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-long-const",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-zero-const",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-zero-const",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-int-expression",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-int-expression",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,1+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-float-expression",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-float-expression",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,X+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-unknown",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Missing,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing.\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-unknown",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,Missing,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Missing.\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-zero",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-zero",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-one",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-one",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-negative",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-negative",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,-1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-wide",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,999999999999,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-wide",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,999999999999,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-int-min",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483648,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-int-min",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,-2147483648,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-float-zero",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-float-zero",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-float-half",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.5,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-float-half",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0.5,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-float-one",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-float-one",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,1.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-bool",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,True,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-bool",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,True,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-string",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,\"bad\",0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-string",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,\"bad\",0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-float-variable",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-float-variable",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,X,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-long-variable",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-long-variable",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-bool-variable",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-bool-variable",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-string-variable",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As String * 20\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-string-variable",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As String * 20\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-long-array",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R(1),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-long-array",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R(1),0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-long-array-whole",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-long-array-whole",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R(),0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-long-const",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-long-const",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-zero-const",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-zero-const",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-int-expression",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-int-expression",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,1+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-float-expression",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-float-expression",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,X+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-unknown",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Missing,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing.\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-unknown",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,Missing,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Missing.\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-zero",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-zero",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-one",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-one",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-negative",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-negative",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,-1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-wide",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,999999999999,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-wide",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,999999999999,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-int-min",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483648,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-int-min",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,-2147483648,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-float-zero",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-float-zero",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-float-half",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.5,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-float-half",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0.5,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-float-one",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-float-one",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,1.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-bool",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,True,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-bool",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,True,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-string",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,\"bad\",0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-string",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,\"bad\",0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-float-variable",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-float-variable",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,X,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-long-variable",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-long-variable",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-bool-variable",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-bool-variable",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-string-variable",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As String * 20\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-string-variable",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As String * 20\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-long-array",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R(1),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-long-array",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R(1),0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-long-array-whole",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-long-array-whole",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R(),0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-long-const",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-long-const",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-zero-const",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-zero-const",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-int-expression",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-int-expression",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,1+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-float-expression",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-float-expression",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,X+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-unknown",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Missing,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing is not defined.\nline 4: Too many parameters:  0."
+  },
+  {
+   "id": "cr300-event-unknown",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,Missing,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing is not defined.\nline 5: Too many parameters:  0."
+  },
+  {
+   "id": "cr350-static-zero",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-zero",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-one",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-one",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-negative",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-negative",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,-1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-wide",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,999999999999,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-wide",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,999999999999,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-int-min",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483648,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-int-min",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,-2147483648,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-float-zero",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-float-zero",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-float-half",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.5,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-float-half",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0.5,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-float-one",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-float-one",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,1.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-bool",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,True,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-bool",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,True,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-string",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,\"bad\",0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-string",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,\"bad\",0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-float-variable",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-float-variable",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,X,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-long-variable",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-long-variable",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-bool-variable",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-bool-variable",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-string-variable",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As String * 20\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-string-variable",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As String * 20\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-long-array",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R(1),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-long-array",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R(1),0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-long-array-whole",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-long-array-whole",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R(2) As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R(),0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-long-const",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-long-const",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-zero-const",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-zero-const",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-int-expression",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-int-expression",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,1+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-float-expression",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-float-expression",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,X+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-unknown",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Missing,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing is not defined.\nline 4: Too many parameters:  0."
+  },
+  {
+   "id": "cr350-event-unknown",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,Missing,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing is not defined.\nline 5: Too many parameters:  0."
+  },
+  {
+   "id": "cr6-static-max",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483647,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-max",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2147483647,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-over-max",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483648,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-over-max",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2147483648,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-over-min",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483649,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-over-min",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,-2147483649,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-fold-wrap",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483647+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-fold-wrap",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2147483647+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-const-max",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=2147483647\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-const-max",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=2147483647\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-const-wide",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=2147483648\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-const-wide",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=2147483648\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-const-float",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=1.0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-const-float",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=1.0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-const-frac",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-const-frac",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-const-div",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=4/2\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-const-div",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=4/2\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-float-decl",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R As Float = 1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-float-decl",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R As Float = 1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-long-decl",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R As Long = 1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-long-decl",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R As Long = 1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-division",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,4/2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-division",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,4/2,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-intdiv",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,5\\2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-intdiv",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,5\\2,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-power",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2^2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-power",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2^2,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-hex",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,&HFFFFFFFF,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-hex",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,&HFFFFFFFF,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-binary",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,&B11,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-binary",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,&B11,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-nan",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,NAN,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-nan",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,NAN,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-inf",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,INF,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-inf",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,INF,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-builtin",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Int(1.5),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-builtin",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,Int(1.5),0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-long-plus",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-long-plus",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-long-plus-float",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R+1.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-long-plus-float",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R+1.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-long-alias",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Long\nAlias R=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,RA,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-event-long-alias",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Long\nAlias R=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,RA,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-float-alias",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nAlias X=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,RA,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-event-float-alias",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nAlias X=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,RA,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-max",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483647,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-max",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2147483647,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-over-max",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483648,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-over-max",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2147483648,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-over-min",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483649,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-over-min",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,-2147483649,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-fold-wrap",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483647+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-fold-wrap",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2147483647+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-const-max",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=2147483647\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-const-max",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=2147483647\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-const-wide",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=2147483648\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-const-wide",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=2147483648\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-const-float",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=1.0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-const-float",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=1.0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-const-frac",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-const-frac",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-const-div",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=4/2\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-const-div",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=4/2\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-float-decl",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R As Float = 1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-float-decl",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R As Float = 1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-long-decl",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R As Long = 1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-long-decl",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R As Long = 1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-division",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,4/2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-division",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,4/2,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-intdiv",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,5\\2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-intdiv",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,5\\2,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-power",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2^2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-power",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2^2,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-hex",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,&HFFFFFFFF,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-hex",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,&HFFFFFFFF,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-binary",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,&B11,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-binary",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,&B11,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-nan",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,NAN,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-nan",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,NAN,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-inf",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,INF,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-inf",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,INF,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-builtin",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Int(1.5),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-builtin",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,Int(1.5),0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-long-plus",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-long-plus",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-long-plus-float",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R+1.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-long-plus-float",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R+1.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-long-alias",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Long\nAlias R=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,RA,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-event-long-alias",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Long\nAlias R=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,RA,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-float-alias",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nAlias X=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,RA,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-event-float-alias",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nAlias X=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,RA,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-max",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483647,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-max",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2147483647,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-over-max",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483648,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-over-max",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2147483648,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-over-min",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483649,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-over-min",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,-2147483649,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-fold-wrap",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483647+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-fold-wrap",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2147483647+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-const-max",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=2147483647\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-const-max",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=2147483647\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-const-wide",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=2147483648\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-const-wide",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=2147483648\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-const-float",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=1.0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-const-float",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=1.0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-const-frac",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-const-frac",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-const-div",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=4/2\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-const-div",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=4/2\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-float-decl",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R As Float = 1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-float-decl",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R As Float = 1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-long-decl",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R As Long = 1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-long-decl",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R As Long = 1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-division",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,4/2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-division",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,4/2,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-intdiv",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,5\\2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-intdiv",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,5\\2,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-power",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2^2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-power",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2^2,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-hex",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,&HFFFFFFFF,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-hex",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,&HFFFFFFFF,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-binary",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,&B11,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-binary",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,&B11,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-nan",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,NAN,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-nan",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,NAN,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-inf",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,INF,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-inf",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,INF,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-builtin",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Int(1.5),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-builtin",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,Int(1.5),0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-long-plus",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-long-plus",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-long-plus-float",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R+1.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-long-plus-float",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R+1.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-long-alias",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Long\nAlias R=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,RA,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-event-long-alias",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Long\nAlias R=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,RA,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-float-alias",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nAlias X=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,RA,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-event-float-alias",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nAlias X=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,RA,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-max",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483647,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-max",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2147483647,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-over-max",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483648,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-over-max",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2147483648,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-over-min",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483649,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-over-min",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,-2147483649,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-fold-wrap",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483647+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-fold-wrap",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2147483647+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-const-max",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=2147483647\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-const-max",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=2147483647\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-const-wide",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=2147483648\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-const-wide",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=2147483648\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-const-float",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=1.0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-const-float",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=1.0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-const-frac",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-const-frac",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-const-div",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=4/2\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-const-div",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=4/2\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-float-decl",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R As Float = 1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-float-decl",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R As Float = 1\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-long-decl",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R As Long = 1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-long-decl",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R As Long = 1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-division",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,4/2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-division",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,4/2,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-intdiv",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,5\\2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-intdiv",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,5\\2,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-power",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2^2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-power",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,2^2,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-hex",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,&HFFFFFFFF,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-hex",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,&HFFFFFFFF,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-binary",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,&B11,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-binary",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,&B11,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-nan",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,NAN,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-nan",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,NAN,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-inf",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,INF,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-inf",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,INF,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-builtin",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Int(1.5),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-builtin",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,Int(1.5),0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-long-plus",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-long-plus",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R+1,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-long-plus-float",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R+1.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-long-plus-float",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,R+1.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-long-alias",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Long\nAlias R=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,RA,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-event-long-alias",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Long\nAlias R=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,RA,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-float-alias",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nAlias X=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,RA,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-event-float-alias",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nAlias X=RA\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,RA,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-const-negative-wide",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=-999999999999\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-const-negative-float-wide",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=-9e30\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-const-negative-small-float",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=-1.0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-flag-const-negative-frac",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=-1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-const-int-min",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=-2147483648\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-flag-wide-plus-small",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483648+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-lower-fold",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483648-1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-flag-const-negative-wide",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=-999999999999\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-const-negative-float-wide",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=-9e30\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-const-negative-small-float",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=-1.0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-flag-const-negative-frac",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=-1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-const-int-min",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=-2147483648\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-flag-wide-plus-small",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483648+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-lower-fold",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483648-1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-flag-const-negative-wide",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=-999999999999\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-flag-const-negative-float-wide",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=-9e30\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-flag-const-negative-small-float",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=-1.0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-flag-const-negative-frac",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=-1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-flag-const-int-min",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=-2147483648\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-flag-wide-plus-small",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483648+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-flag-lower-fold",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483648-1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-const-negative-wide",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=-999999999999\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-flag-const-negative-float-wide",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=-9e30\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-flag-const-negative-small-float",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=-1.0\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-const-negative-frac",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=-1.5\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-flag-const-int-min",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=-2147483648\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-wide-plus-small",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,2147483648+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-lower-fold",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483648-1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-static-then-update",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n  DNPUpdate(30)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-static-then-event",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n  DNPVariable(Values(),2,32,1,1,0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-static-flag-and-class",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,1,0.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Static Data Class: must be 0"
+  },
+  {
+   "id": "cr6-event-flag-and-size",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG\nline 5: Event size must be non-zero to hold events"
+  },
+  {
+   "id": "cr6-event-missing-base-and-flag",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,32,1,1,0.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Must assign group 30 before using group 32."
+  },
+  {
+   "id": "cr6-flag-negative-literal-beyond-rounding",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483777,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-bool-expression",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-flag-not",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Not R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-flag-compare",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X>0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-ctype-long",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(X,Long),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-flag-ctype-float",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(R,Float),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-unknown-compound",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Missing+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing+1.\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-function-long",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nFunction F() As Long\n F=1\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,F(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-then-update",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n  DNPUpdate(30)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-static-then-event",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n  DNPVariable(Values(),2,32,1,1,0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-static-flag-and-class",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,1,0.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Static Data Class: must be 0"
+  },
+  {
+   "id": "cr1000x-event-flag-and-size",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG\nline 5: Event size must be non-zero to hold events"
+  },
+  {
+   "id": "cr1000x-event-missing-base-and-flag",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,32,1,1,0.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Must assign group 30 before using group 32."
+  },
+  {
+   "id": "cr1000x-flag-negative-literal-beyond-rounding",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483777,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-bool-expression",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-flag-not",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Not R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-flag-compare",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X>0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-ctype-long",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(X,Long),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-flag-ctype-float",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(R,Float),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-unknown-compound",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Missing+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Missing+1.\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-function-long",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nFunction F() As Long\n F=1\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,F(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-static-then-update",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n  DNPUpdate(30)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-static-then-event",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n  DNPVariable(Values(),2,32,1,1,0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-static-flag-and-class",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,1,0.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Static Data Class: must be 0"
+  },
+  {
+   "id": "cr300-event-flag-and-size",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG\nline 5: Event size must be non-zero to hold events"
+  },
+  {
+   "id": "cr300-event-missing-base-and-flag",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,32,1,1,0.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Must assign group 30 before using group 32."
+  },
+  {
+   "id": "cr300-flag-negative-literal-beyond-rounding",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483777,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-flag-bool-expression",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-flag-not",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Not R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-flag-compare",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X>0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-flag-ctype-long",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(X,Long),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-flag-ctype-float",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(R,Float),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-flag-unknown-compound",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Missing+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing is not defined.\nline 4: Too many parameters:  0."
+  },
+  {
+   "id": "cr300-flag-function-long",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nFunction F() As Long\n F=1\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,F(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-then-update",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n  DNPUpdate(30)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-static-then-event",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n  DNPVariable(Values(),2,32,1,1,0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-static-flag-and-class",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,1,0.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Static Data Class: must be 0"
+  },
+  {
+   "id": "cr350-event-flag-and-size",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0,0,0)\n  DNPVariable(Values(),2,32,1,1,0.0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG\nline 5: Event size must be non-zero to hold events"
+  },
+  {
+   "id": "cr350-event-missing-base-and-flag",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,32,1,1,0.0,0,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Must assign group 30 before using group 32."
+  },
+  {
+   "id": "cr350-flag-negative-literal-beyond-rounding",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,-2147483777,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-flag-bool-expression",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-not",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Boolean\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Not R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-compare",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X>0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-flag-ctype-long",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(X,Long),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-ctype-float",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(R,Float),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-flag-unknown-compound",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,Missing+1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Missing is not defined.\nline 4: Too many parameters:  0."
+  },
+  {
+   "id": "cr350-flag-function-long",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nFunction F() As Long\n F=1\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,F(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-flag-compare-long",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R>0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-flag-compare-int",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1>0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-flag-logic-long",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R AND 1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-flag-logic-float",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X AND 1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-mod",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,5 MOD 2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-flag-shift",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1<<2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-flag-concat",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1&2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-flag-not-float",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,NOT X,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-ctype-bool",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(X,Boolean),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr6-flag-ctype-string",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(X,String),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-default-return",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nFunction F()\n F=1\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,F(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-float-return",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nFunction F() As Float\n F=1\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,F(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr6-flag-pure-negative-wide",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nConst R=-2147483649\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-static-then-update-two",
+   "logger": "cr6",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n  DNPUpdate(30,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-compare-long",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R>0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-flag-compare-int",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1>0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-flag-logic-long",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R AND 1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-flag-logic-float",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X AND 1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-mod",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,5 MOD 2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-flag-shift",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1<<2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-flag-concat",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1&2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-flag-not-float",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,NOT X,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-ctype-bool",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(X,Boolean),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type"
+  },
+  {
+   "id": "cr1000x-flag-ctype-string",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(X,String),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-default-return",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nFunction F()\n F=1\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,F(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-float-return",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nFunction F() As Float\n F=1\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,F(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr1000x-flag-pure-negative-wide",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nConst R=-2147483649\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-static-then-update-two",
+   "logger": "cr1000x",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n  DNPUpdate(30,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-flag-compare-long",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R>0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-flag-compare-int",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1>0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-flag-logic-long",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R AND 1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-flag-logic-float",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X AND 1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-flag-mod",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,5 MOD 2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-flag-shift",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1<<2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-flag-concat",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1&2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-flag-not-float",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,NOT X,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-flag-ctype-bool",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(X,Boolean),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Too many parameters:  0.",
+   "not_modelled": "The CR300/CR350 reference adds a same-line excess-argument diagnostic after Illegal type"
+  },
+  {
+   "id": "cr300-flag-ctype-string",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(X,String),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-flag-default-return",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nFunction F()\n F=1\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,F(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-flag-float-return",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nFunction F() As Float\n F=1\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,F(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr300-flag-pure-negative-wide",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nConst R=-2147483649\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-static-then-update-two",
+   "logger": "cr300",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n  DNPUpdate(30,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-flag-compare-long",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R>0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-compare-int",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1>0,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-logic-long",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nPublic R As Long\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R AND 1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-logic-float",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,X AND 1,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-flag-mod",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,5 MOD 2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-shift",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1<<2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-concat",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,1&2,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-flag-not-float",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,NOT X,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-flag-ctype-bool",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(X,Boolean),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal type\nline 4: Too many parameters:  0.",
+   "not_modelled": "The CR300/CR350 reference adds a same-line excess-argument diagnostic after Illegal type"
+  },
+  {
+   "id": "cr350-flag-ctype-string",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,CType(X,String),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-flag-default-return",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nFunction F()\n F=1\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,F(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-flag-float-return",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nFunction F() As Float\n F=1\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,F(),0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Flag paramter must be of type LONG"
+  },
+  {
+   "id": "cr350-flag-pure-negative-wide",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nConst R=-2147483649\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,R,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-static-then-update-two",
+   "logger": "cr350",
+   "source": "Public X, Values(2)\nBeginProg\n Scan(1,Sec,0,0)\n  DNPVariable(Values(),2,30,1,0,0.0,0,0)\n  DNPUpdate(30,10)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Flag paramter must be of type LONG"
+  }
+ ]
+}

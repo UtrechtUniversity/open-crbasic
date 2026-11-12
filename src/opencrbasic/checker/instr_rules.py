@@ -2800,7 +2800,58 @@ def _dnp_source(stmt: S.Instruction, conv, dims: dict) -> tuple[list[str], int |
     return [], total - offset
 
 
-def _dnp_statement(stmt: S.Instruction, conv, dims, kind: str | None) -> tuple:
+_DNP_FLAG_BINARY_OPS = frozenset(
+    {"+", "-", "*", "\\", "MOD", "&", "<<", ">>", "AND", "OR", "XOR", "IMP", "EQV", "=", "<>", "<", ">", "<=", ">="}
+)
+_DNP_FLAG_TYPE = "Flag paramter must be of type LONG"
+
+
+def _dnp_long_flag(arg, typer, env, profile, routine_names) -> bool | None:
+    from . import intervals
+
+    if arg is None:
+        return None
+    if (literal := intervals.timeout_value(arg, None, profile)) is not None:
+        return literal[0] == "int"
+    if isinstance(arg, S.Name) and arg.name.upper() in env.consts:
+        name = arg.name.upper()
+        value = env.consts[name]
+        if isinstance(value, str):
+            return False
+        if isinstance(value, bool) or (name in typer.consts and typer.consts[name].type == "LONG"):
+            return True
+        if isinstance(value, float) and (not math.isfinite(value) or not value.is_integer()):
+            return False
+        if value < longconv.INT_MIN:
+            return _f32_is_2_31(-value)
+        converted = intervals._decimal(abs(int(value)), -1 if value < 0 else 1, profile, literal=True)
+        return converted is not None and converted[0] == "int"
+    if isinstance(arg, S.Name) and arg.name.upper() in ("INF", "NAN"):
+        return False
+    if isinstance(arg, S.Unary):
+        return _dnp_long_flag(arg.operand, typer, env, profile, routine_names)
+    if isinstance(arg, S.Binary):
+        if arg.op in ("/", "^"):
+            return False
+        if arg.op in _DNP_FLAG_BINARY_OPS:
+            types = [_dnp_long_flag(e, typer, env, profile, routine_names) for e in (arg.left, arg.right)]
+            return False if False in types else None if None in types else True
+    if isinstance(arg, S.Index) and typer.variable(arg) is None:
+        name = arg.name.upper()
+        if name in routine_names:
+            return typer.function_types.get(name, "FLOAT") == "LONG"
+        if name == "INT":
+            return False
+        if name == "CTYPE" and len(arg.args) == 2 and isinstance(arg.args[1], S.Name):
+            kind = arg.args[1].name.upper()
+            return kind == "LONG" if kind in ("LONG", "FLOAT", "STRING") else None
+    kind = typer.of(arg)
+    if kind is None:
+        return None
+    return kind in ("LONG", "BOOLEAN")
+
+
+def _dnp_statement(stmt: S.Instruction, conv, dims, kind: str | None, long_flag: bool | None) -> tuple:
     """`(group, before, after, stops_early, fails_late)`: the group, the message that ends the
     statement before the `Must assign` rule (swath, variation <= 0, illegal group, in that order),
     the messages after it (type, variation range, class, event count) and whether a class on a
@@ -2840,6 +2891,8 @@ def _dnp_statement(stmt: S.Instruction, conv, dims, kind: str | None) -> tuple:
             return group, before, after, False, True
         if not 0 <= klass <= 3:
             after.append("Illegal Class: must be 0..3")
+    if long_flag is False:
+        after.append(_DNP_FLAG_TYPE)
     events = _dnp_long(stmt.args[7], conv)
     if events is not None:
         if is_event and events == 0:
@@ -2864,12 +2917,27 @@ def check_dnp_update(program: S.Program, profile, diags: Diagnostics, env=None) 
     tables = symbols.scope_tables(program, env) if env is not None else None
     conv = (env, profile, longconv.float_names(program.statements), longconv.literal_names(program.statements))
     info: dict[int, tuple] = {}
+    typer = None
+    known = None
+    routine_names = {
+        st.name.upper() for st in program.statements if isinstance(st, S.SubDef) and st.keyword == "FUNCTION"
+    }
     for st in program.statements:
         if isinstance(st, S.Instruction) and st.keyword.upper() == "DNPVARIABLE":
             src = st.args[0] if st.args else None
             kind = types.get(src.name.upper()) if isinstance(src, (S.Name, S.Index)) else None
             dims = tables(st).dims if tables is not None else {}
-            info[id(st)] = _dnp_statement(st, conv, dims, kind)
+            long_flag = None
+            if len(st.args) == 8 and env is not None:
+                if typer is None:
+                    from . import var_types
+
+                    typer = var_types._Typer(program, profile=profile)
+                    known = _known_names(program, profile)
+                flag = st.args[5]
+                if known is not None and not _undefined_names(flag, known):
+                    long_flag = _dnp_long_flag(flag, typer, env, profile, routine_names)
+            info[id(st)] = _dnp_statement(st, conv, dims, kind, long_flag)
     every_group = {i[0] for i in info.values() if not (i[3] or i[4]) and i[0] != 110}
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction):

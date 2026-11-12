@@ -2066,6 +2066,21 @@ and `DestArray(1,-1)` (the last subscript) compile, `DestArray(-1)`, `DestArray(
 `tests/fixtures/r15_routers_neighbors_index.json` (audited 0 differing); fuzz reproducer
 `cr350/false_accept/00c15e34f28e`.
 
+### DNPVariable Flag type (round 98)
+
+On all four profiles, the sixth argument accepts Long and Boolean operands,
+including aliases, and rejects Float and String operands. The diagnostic is
+`Flag paramter must be of type LONG`. A direct `1.0` fails, whereas a named
+`Const R=1.0` passes. Signed decimal bounds follow the logger's expression
+conversion. CR300/CR350 accept the rounded literal `2147483648`, while
+CR6/CR1000X reject it. The flag check follows Class validation and precedes
+event-count validation. A flag type error still registers the group.
+
+The CR6 builder `FUN_004316c0` checks the operand's integer type bit returned
+by `FUN_00507680`. The fixture records boundary and ordering probes and the
+two remaining CR300/CR350 `CType(...,Boolean)` cascade differences.
+[`r98_dnp_flag_type.json`](../tests/fixtures/r98_dnp_flag_type.json).
+
 ### `DNPVariable` argument rules (all four loggers, round 15)
 
 Fixture `r15_dnp_variable_args.json` (audited against the real compilers). Constant arguments convert like `Long` ones
@@ -2088,7 +2103,8 @@ signed value (`65537` is 1, `65536` is 0, `32768` is negative). Checks per state
 7. `Class` (truncated) 1..3 on a static group (1, 10, 12, 20, 21, 30, 31, 40, 41, 110) -> `Static Data
    Class: must be 0`, and the statement then fails (see below); any `Class` outside 0..3 (a string, `TRUE`, 4,
    -1) -> `Illegal Class: must be 0..3`, which does not fail it. Event groups (2, 22, 23, 32, 33) take 0..3.
-8. `NumEvents`: nonzero on a static group -> `N Events allocated for a non-Event object` (N is the converted
+8. [Flag type](#dnpvariable-flag-type-round-98).
+9. `NumEvents`: nonzero on a static group -> `N Events allocated for a non-Event object` (N is the converted
    value: `"a"` and NAN -2147483648, `2147483648` -2147483648 on CR6/CR1000X and 2147483647 on CR300/CR350);
    zero on an event group -> `Event size must be non-zero to hold events` (negative is accepted).
 

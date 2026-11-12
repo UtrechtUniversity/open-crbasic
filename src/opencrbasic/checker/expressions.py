@@ -1447,6 +1447,10 @@ def _report_statement(
         if names:
             if whole_echo:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=_arg_text(stmt, i)), stmt.file)
+                if i == 5 and stmt.keyword.upper() == "DNPVARIABLE":
+                    from .instr_rules import _DNP_FLAG_TYPE
+
+                    diags.error(stmt.line, _DNP_FLAG_TYPE, stmt.file)
                 return True
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
