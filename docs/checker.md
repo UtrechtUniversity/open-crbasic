@@ -2746,6 +2746,21 @@ CR6/CR1000X, following the decompiled menu builder (`FUN_004309c0`, `FUN_00430aa
 
 Replay: 841 of 1469 exact.
 
+### MenuItem and MenuRecompile pick targets (round 101)
+
+CR6/CR1000X reject a `MenuPick` after a `MenuItem` whose value is a literal,
+an expression, or a constant outside a `ConstTable`. If the program has a
+`ConstTable`, the diagnostic requires the constant name first. Otherwise
+it requires the preceding `MenuItem` to name a variable or ConstTable
+constant. A String variable and a string literal have distinct behavior.
+
+`MenuRecompile` rejects String targets and non-variable numeric targets.
+A string literal also leaves its subsequent pick list without a usable
+target. With a Float target the pick list takes numeric literals and named
+constants, and rejects an expression such as `(1+2)`. The CR6 builder
+`FUN_0042fdc0` handles both target forms, and `FUN_00430020` builds the pick list.
+[`r101_menu_pick_targets.json`](../tests/fixtures/r101_menu_pick_targets.json).
+
 ### Boolean picklists (2026-10-02)
 
 Oracle on CR6 and CR1000X (CR300/CR350 have no menus); fixture `tests/fixtures/boolean_picklist.json`

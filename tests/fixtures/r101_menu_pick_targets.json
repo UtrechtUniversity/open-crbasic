@@ -1,0 +1,1675 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-plain-recompile-float-expression",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 1+2 must be declared as a Const."
+  },
+  {
+   "id": "cr6-plain-recompile-float-literals",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(1,2.5,True)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-plain-recompile-string-expression",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",TextValue)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: String type variable not allowed."
+  },
+  {
+   "id": "cr6-plain-recompile-numeric-target",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",1)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-plain-recompile-swapped",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(Y,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: String type variable not allowed.\nline 8: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr6-plain-recompile-literal-target",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",\"Literal\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: String type variable not allowed.\nline 8: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr6-plain-recompile-plain-const",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",K)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-plain-item-parens",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",(Y))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-plain-item-indexed",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",V(1))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-plain-item-alias",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",AliasY)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-table-recompile-float-expression",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: 1+2 must be declared as a Const."
+  },
+  {
+   "id": "cr6-table-recompile-float-literals",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(1,2.5,True)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-table-recompile-string-expression",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",TextValue)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: String type variable not allowed."
+  },
+  {
+   "id": "cr6-table-recompile-numeric-target",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",1)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr6-table-recompile-swapped",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(Y,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: String type variable not allowed.\nline 11: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr6-table-recompile-literal-target",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",\"Literal\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: String type variable not allowed.\nline 11: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr6-table-recompile-plain-const",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",K)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-table-item-parens",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",(Y))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-table-item-indexed",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",V(1))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-table-item-alias",
+   "logger": "cr6",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",AliasY)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-plain-recompile-float-expression",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 1+2 must be declared as a Const."
+  },
+  {
+   "id": "cr1000x-plain-recompile-float-literals",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(1,2.5,True)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-plain-recompile-string-expression",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",TextValue)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: String type variable not allowed."
+  },
+  {
+   "id": "cr1000x-plain-recompile-numeric-target",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",1)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-plain-recompile-swapped",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(Y,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: String type variable not allowed.\nline 8: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr1000x-plain-recompile-literal-target",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",\"Literal\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: String type variable not allowed.\nline 8: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr1000x-plain-recompile-plain-const",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",K)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-plain-item-parens",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",(Y))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-plain-item-indexed",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",V(1))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-plain-item-alias",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",AliasY)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-table-recompile-float-expression",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: 1+2 must be declared as a Const."
+  },
+  {
+   "id": "cr1000x-table-recompile-float-literals",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(1,2.5,True)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-table-recompile-string-expression",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",TextValue)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: String type variable not allowed."
+  },
+  {
+   "id": "cr1000x-table-recompile-numeric-target",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",1)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid Variable or Array: 1."
+  },
+  {
+   "id": "cr1000x-table-recompile-swapped",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(Y,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: String type variable not allowed.\nline 11: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-table-recompile-literal-target",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",\"Literal\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: String type variable not allowed.\nline 11: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-table-recompile-plain-const",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",K)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-table-item-parens",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",(Y))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-table-item-indexed",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",V(1))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-table-item-alias",
+   "logger": "cr1000x",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",AliasY)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-plain-recompile-float-expression",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Y)\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-recompile-float-literals",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(1,2.5,True)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Y)\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(1,2.5,True)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-recompile-string-expression",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",TextValue)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(\"Apply\",TextValue)\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-recompile-numeric-target",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",1)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(\"Apply\",1)\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-recompile-swapped",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(Y,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(Y,\"Apply\")\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-recompile-literal-target",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",\"Literal\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(\"Apply\",\"Literal\")\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-recompile-plain-const",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",K)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(\"Apply\",K)\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-item-parens",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",(Y))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuItem is not defined.\nline 7: Invalid, or out of place expression:  MenuItem(\"Pick\",(Y))\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-item-indexed",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",V(1))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuItem is not defined.\nline 7: Invalid, or out of place expression:  MenuItem(\"Pick\",V(1))\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-item-alias",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",AliasY)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuItem is not defined.\nline 7: Invalid, or out of place expression:  MenuItem(\"Pick\",AliasY)\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-item-member",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",Public.Y)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuItem is not defined.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-recompile-float-expression",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Y)\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-recompile-float-literals",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(1,2.5,True)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Y)\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(1,2.5,True)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-recompile-string-expression",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",TextValue)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(\"Apply\",TextValue)\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-recompile-numeric-target",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",1)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(\"Apply\",1)\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-recompile-swapped",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(Y,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(Y,\"Apply\")\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-recompile-literal-target",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",\"Literal\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(\"Apply\",\"Literal\")\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-recompile-plain-const",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",K)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(\"Apply\",K)\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-item-parens",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",(Y))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuItem is not defined.\nline 10: Invalid, or out of place expression:  MenuItem(\"Pick\",(Y))\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-item-indexed",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",V(1))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuItem is not defined.\nline 10: Invalid, or out of place expression:  MenuItem(\"Pick\",V(1))\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-item-alias",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",AliasY)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuItem is not defined.\nline 10: Invalid, or out of place expression:  MenuItem(\"Pick\",AliasY)\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-item-member",
+   "logger": "cr300",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",Public.Y)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuItem is not defined.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-recompile-float-expression",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Y)\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-recompile-float-literals",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(1,2.5,True)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Y)\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(1,2.5,True)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-recompile-string-expression",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",TextValue)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(\"Apply\",TextValue)\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-recompile-numeric-target",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",1)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(\"Apply\",1)\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-recompile-swapped",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(Y,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(Y,\"Apply\")\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-recompile-literal-target",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",\"Literal\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(\"Apply\",\"Literal\")\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-recompile-plain-const",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",K)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuRecompile is not defined.\nline 7: Invalid, or out of place expression:  MenuRecompile(\"Apply\",K)\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-item-parens",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",(Y))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuItem is not defined.\nline 7: Invalid, or out of place expression:  MenuItem(\"Pick\",(Y))\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-item-indexed",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",V(1))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuItem is not defined.\nline 7: Invalid, or out of place expression:  MenuItem(\"Pick\",V(1))\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-item-alias",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",AliasY)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuItem is not defined.\nline 7: Invalid, or out of place expression:  MenuItem(\"Pick\",AliasY)\n.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-item-member",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",Public.Y)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DisplayMenu is not defined.\nline 6: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 7: MenuItem is not defined.\nline 8: MenuPick is not defined.\nline 8: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 9: EndMenu is not defined.\nline 9: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-recompile-float-expression",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Y)\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-recompile-float-literals",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Y)\n MenuPick(1,2.5,True)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Y)\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(1,2.5,True)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-recompile-string-expression",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",TextValue)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(\"Apply\",TextValue)\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-recompile-numeric-target",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",1)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(\"Apply\",1)\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-recompile-swapped",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(Y,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(Y,\"Apply\")\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-recompile-literal-target",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",\"Literal\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(\"Apply\",\"Literal\")\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-recompile-plain-const",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",K)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuRecompile is not defined.\nline 10: Invalid, or out of place expression:  MenuRecompile(\"Apply\",K)\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-item-parens",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",(Y))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuItem is not defined.\nline 10: Invalid, or out of place expression:  MenuItem(\"Pick\",(Y))\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-item-indexed",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",V(1))\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuItem is not defined.\nline 10: Invalid, or out of place expression:  MenuItem(\"Pick\",V(1))\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-item-alias",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",AliasY)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuItem is not defined.\nline 10: Invalid, or out of place expression:  MenuItem(\"Pick\",AliasY)\n.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-item-member",
+   "logger": "cr350",
+   "source": "Public Y,V(2)\nAlias Y=AliasY\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",Public.Y)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: DisplayMenu is not defined.\nline 9: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 10: MenuItem is not defined.\nline 11: MenuPick is not defined.\nline 11: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 12: EndMenu is not defined.\nline 12: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr6-recompile-no-item-bool",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-recompile-no-item-expression",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr6-recompile-no-item-plain-expression",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,1+2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr6-recompile-no-item-named",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,K)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr6-recompile-no-item-first-expression",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick((1+2),False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr6-recompile-after-item-bool",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-recompile-after-item-expression",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr6-recompile-after-item-plain-expression",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,1+2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr6-recompile-after-item-named",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,K)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr6-recompile-after-item-first-expression",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick((1+2),False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr1000x-recompile-no-item-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-recompile-no-item-expression",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr1000x-recompile-no-item-plain-expression",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,1+2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr1000x-recompile-no-item-named",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,K)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr1000x-recompile-no-item-first-expression",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick((1+2),False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr1000x-recompile-after-item-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-recompile-after-item-expression",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr1000x-recompile-after-item-plain-expression",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,1+2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr1000x-recompile-after-item-named",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,K)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr1000x-recompile-after-item-first-expression",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick((1+2),False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr300-recompile-no-item-bool",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-no-item-expression",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-no-item-plain-expression",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,1+2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(True,1+2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-no-item-named",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,K)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(True,K)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-no-item-first-expression",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick((1+2),False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick((1+2),False)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-after-item-bool",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Pick\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(T,1,2)\n.\nline 11: MenuRecompile is not defined.\nline 11: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 12: MenuPick is not defined.\nline 12: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 13: EndMenu is not defined.\nline 13: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-after-item-expression",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Pick\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(T,1,2)\n.\nline 11: MenuRecompile is not defined.\nline 11: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 12: MenuPick is not defined.\nline 12: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 13: EndMenu is not defined.\nline 13: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-after-item-plain-expression",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,1+2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Pick\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(T,1,2)\n.\nline 11: MenuRecompile is not defined.\nline 11: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 12: MenuPick is not defined.\nline 12: Invalid, or out of place expression:  MenuPick(True,1+2)\n.\nline 13: EndMenu is not defined.\nline 13: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-after-item-named",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,K)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Pick\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(T,1,2)\n.\nline 11: MenuRecompile is not defined.\nline 11: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 12: MenuPick is not defined.\nline 12: Invalid, or out of place expression:  MenuPick(True,K)\n.\nline 13: EndMenu is not defined.\nline 13: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-after-item-first-expression",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick((1+2),False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Pick\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(T,1,2)\n.\nline 11: MenuRecompile is not defined.\nline 11: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 12: MenuPick is not defined.\nline 12: Invalid, or out of place expression:  MenuPick((1+2),False)\n.\nline 13: EndMenu is not defined.\nline 13: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-no-item-bool",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-no-item-expression",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-no-item-plain-expression",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,1+2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(True,1+2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-no-item-named",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,K)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(True,K)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-no-item-first-expression",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick((1+2),False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick((1+2),False)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-after-item-bool",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Pick\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(T,1,2)\n.\nline 11: MenuRecompile is not defined.\nline 11: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 12: MenuPick is not defined.\nline 12: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 13: EndMenu is not defined.\nline 13: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-after-item-expression",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Pick\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(T,1,2)\n.\nline 11: MenuRecompile is not defined.\nline 11: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 12: MenuPick is not defined.\nline 12: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 13: EndMenu is not defined.\nline 13: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-after-item-plain-expression",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,1+2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Pick\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(T,1,2)\n.\nline 11: MenuRecompile is not defined.\nline 11: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 12: MenuPick is not defined.\nline 12: Invalid, or out of place expression:  MenuPick(True,1+2)\n.\nline 13: EndMenu is not defined.\nline 13: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-after-item-named",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,K)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Pick\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(T,1,2)\n.\nline 11: MenuRecompile is not defined.\nline 11: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 12: MenuPick is not defined.\nline 12: Invalid, or out of place expression:  MenuPick(True,K)\n.\nline 13: EndMenu is not defined.\nline 13: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-after-item-first-expression",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Pick\",T)\n MenuPick(T,1,2)\n MenuRecompile(\"Apply\",Flag)\n MenuPick((1+2),False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Pick\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(T,1,2)\n.\nline 11: MenuRecompile is not defined.\nline 11: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 12: MenuPick is not defined.\nline 12: Invalid, or out of place expression:  MenuPick((1+2),False)\n.\nline 13: EndMenu is not defined.\nline 13: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr6-plain-float-variable",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-plain-string-variable",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",TextValue)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-plain-text-literal",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",\"bad\")\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr6-plain-integer",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr6-plain-float",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1.5)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr6-plain-bool",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",True)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr6-plain-expression",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y+1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr6-plain-predefined",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Sec)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr6-plain-unknown",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Missing)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Missing.\nline 6: Cannot use DataTable value as a MenuItem, use DisplayValue.\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr6-plain-plain-const",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",K)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr6-plain-table-const",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",T)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: T.\nline 6: Cannot use DataTable value as a MenuItem, use DisplayValue.\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr6-table-float-variable",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-table-string-variable",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",TextValue)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-table-text-literal",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",\"bad\")\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr6-table-integer",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr6-table-float",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1.5)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr6-table-bool",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",True)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr6-table-expression",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y+1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr6-table-predefined",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Sec)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr6-table-unknown",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Missing)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression: Missing.\nline 9: Cannot use DataTable value as a MenuItem, use DisplayValue.\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr6-table-plain-const",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",K)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr6-table-table-const",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",T)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr6-recompile-valid",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-recompile-expression",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr6-recompile-swapped",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(Flag,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String type variable not allowed.\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr6-recompile-const-target",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",T)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid Variable or Array: T."
+  },
+  {
+   "id": "cr6-recompile-string-target",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",TextValue)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: String type variable not allowed."
+  },
+  {
+   "id": "cr6-menuitem-then-recompile",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",T)\n MenuPick(T,1,2)\n MenuRecompile(Flag,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: String type variable not allowed.\nline 12: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-plain-float-variable",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-plain-string-variable",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",TextValue)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-plain-text-literal",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",\"bad\")\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr1000x-plain-integer",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr1000x-plain-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1.5)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr1000x-plain-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",True)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr1000x-plain-expression",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y+1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr1000x-plain-predefined",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Sec)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr1000x-plain-unknown",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Missing)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Missing.\nline 6: Cannot use DataTable value as a MenuItem, use DisplayValue.\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr1000x-plain-plain-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",K)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr1000x-plain-table-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",T)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: T.\nline 6: Cannot use DataTable value as a MenuItem, use DisplayValue.\nline 7: Value in preceding MenuItem must be a variable or a Const within ConstTable..EndConstTable."
+  },
+  {
+   "id": "cr1000x-table-float-variable",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-table-string-variable",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",TextValue)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-table-text-literal",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",\"bad\")\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-table-integer",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-table-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1.5)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-table-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",True)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-table-expression",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y+1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-table-predefined",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Sec)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-table-unknown",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Missing)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression: Missing.\nline 9: Cannot use DataTable value as a MenuItem, use DisplayValue.\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-table-plain-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",K)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-table-table-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",T)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-recompile-valid",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-recompile-expression",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Boolean picklist must be True or False."
+  },
+  {
+   "id": "cr1000x-recompile-swapped",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(Flag,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String type variable not allowed.\nline 10: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr1000x-recompile-const-target",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",T)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid Variable or Array: T."
+  },
+  {
+   "id": "cr1000x-recompile-string-target",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",TextValue)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: String type variable not allowed."
+  },
+  {
+   "id": "cr1000x-menuitem-then-recompile",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",T)\n MenuPick(T,1,2)\n MenuRecompile(Flag,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: String type variable not allowed.\nline 12: When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
+  },
+  {
+   "id": "cr300-plain-float-variable",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",Y)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-string-variable",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",TextValue)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",TextValue)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-text-literal",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",\"bad\")\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",\"bad\")\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-integer",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",1)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-float",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1.5)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",1.5)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-bool",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",True)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",True)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-expression",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y+1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",Y+1)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-predefined",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Sec)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",Sec)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-unknown",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Missing)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Missing is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",Missing)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-plain-const",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",K)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",K)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-plain-table-const",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",T)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: T is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",T)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-float-variable",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",Y)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-string-variable",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",TextValue)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",TextValue)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-text-literal",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",\"bad\")\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",\"bad\")\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-integer",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",1)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-float",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1.5)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",1.5)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-bool",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",True)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",True)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-expression",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y+1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",Y+1)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-predefined",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Sec)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",Sec)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-unknown",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Missing)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Missing is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",Missing)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-plain-const",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",K)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",K)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-table-table-const",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",T)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-valid",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuRecompile is not defined.\nline 6: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-expression",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuRecompile is not defined.\nline 6: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-swapped",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(Flag,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(Flag,\"Apply\")\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-const-target",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",T)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(\"Apply\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-recompile-string-target",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",TextValue)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuRecompile is not defined.\nline 6: Invalid, or out of place expression:  MenuRecompile(\"Apply\",TextValue)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr300-menuitem-then-recompile",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",T)\n MenuPick(T,1,2)\n MenuRecompile(Flag,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(T,1,2)\n.\nline 11: MenuRecompile is not defined.\nline 11: Invalid, or out of place expression:  MenuRecompile(Flag,\"Apply\")\n.\nline 12: MenuPick is not defined.\nline 12: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 13: EndMenu is not defined.\nline 13: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-float-variable",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",Y)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-string-variable",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",TextValue)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",TextValue)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-text-literal",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",\"bad\")\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",\"bad\")\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-integer",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",1)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-float",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1.5)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",1.5)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-bool",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",True)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",True)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-expression",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y+1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",Y+1)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-predefined",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Sec)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",Sec)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-unknown",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Missing)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Missing is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",Missing)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-plain-const",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",K)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",K)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-plain-table-const",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",T)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuItem is not defined.\nline 6: T is not defined.\nline 6: Invalid, or out of place expression:  MenuItem(\"Entry\",T)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-float-variable",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",Y)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-string-variable",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",TextValue)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",TextValue)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-text-literal",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",\"bad\")\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",\"bad\")\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-integer",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",1)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-float",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",1.5)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",1.5)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-bool",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",True)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",True)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-expression",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Y+1)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",Y+1)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-predefined",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Sec)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",Sec)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-unknown",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",Missing)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Missing is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",Missing)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-plain-const",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",K)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",K)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-table-table-const",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",T)\n MenuPick(1,2)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(1,2)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-valid",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuRecompile is not defined.\nline 6: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-expression",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",Flag)\n MenuPick(True,(1+2))\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuRecompile is not defined.\nline 6: Invalid, or out of place expression:  MenuRecompile(\"Apply\",Flag)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(True,(1+2))\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-swapped",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(Flag,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(Flag,\"Apply\")\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-const-target",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",T)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuRecompile is not defined.\nline 9: Invalid, or out of place expression:  MenuRecompile(\"Apply\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 11: EndMenu is not defined.\nline 11: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-recompile-string-target",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nDisplayMenu(\"Menu\",-3)\n MenuRecompile(\"Apply\",TextValue)\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: DisplayMenu is not defined.\nline 5: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 6: MenuRecompile is not defined.\nline 6: Invalid, or out of place expression:  MenuRecompile(\"Apply\",TextValue)\n.\nline 7: MenuPick is not defined.\nline 7: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 8: EndMenu is not defined.\nline 8: Invalid, or out of place expression: EndMenu\n."
+  },
+  {
+   "id": "cr350-menuitem-then-recompile",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Flag As Boolean\nPublic TextValue As String * 20\nConst K=1\nConstTable\n Const T=1\nEndConstTable\nDisplayMenu(\"Menu\",-3)\n MenuItem(\"Entry\",T)\n MenuPick(T,1,2)\n MenuRecompile(Flag,\"Apply\")\n MenuPick(True,False)\nEndMenu\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DisplayMenu is not defined.\nline 8: Invalid, or out of place expression: DisplayMenu(\"Menu\",-3)\n.\nline 9: MenuItem is not defined.\nline 9: Invalid, or out of place expression:  MenuItem(\"Entry\",T)\n.\nline 10: MenuPick is not defined.\nline 10: Invalid, or out of place expression:  MenuPick(T,1,2)\n.\nline 11: MenuRecompile is not defined.\nline 11: Invalid, or out of place expression:  MenuRecompile(Flag,\"Apply\")\n.\nline 12: MenuPick is not defined.\nline 12: Invalid, or out of place expression:  MenuPick(True,False)\n.\nline 13: EndMenu is not defined.\nline 13: Invalid, or out of place expression: EndMenu\n."
+  }
+ ]
+}

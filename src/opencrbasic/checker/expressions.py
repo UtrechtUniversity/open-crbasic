@@ -1451,6 +1451,8 @@ def _report_statement(
                     from .instr_rules import _DNP_FLAG_TYPE
 
                     diags.error(stmt.line, _DNP_FLAG_TYPE, stmt.file)
+                if i == 1 and stmt.keyword.upper() == "MENUITEM" and isinstance(arg, S.Name):
+                    diags.error(stmt.line, "Cannot use DataTable value as a MenuItem, use DisplayValue.", stmt.file)
                 return True
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)

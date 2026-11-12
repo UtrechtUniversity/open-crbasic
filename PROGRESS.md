@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 101** (archived verdict parity). Fixed `ec6b11bc3176`, `fa923ecef6f4`,
+`022d98dd3efc`, and `9c6367a2c598` by checking menu targets and pick-list
+values. The 25-case archived replay now has eight false accepts and 17 exact
+matches. [Menu evidence](docs/checker.md#menuitem-and-menurecompile-pick-targets-round-101).
+
 **Round 100** (archived verdict parity). Fixed CR6 false accept `6ac24bd775f1`
 by checking `CDM_MuxSelect` clock and reset ports and pulse width. The 25-case
 archived replay now has 12 false accepts and 13 exact matches.

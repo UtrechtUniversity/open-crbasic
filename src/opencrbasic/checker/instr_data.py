@@ -794,7 +794,8 @@ def check_table_and_menu_placement(
         elif in_const_table and isinstance(st, S.ConstDecl):
             table_consts.add(st.name.upper())
     item_const: str | None = None  # the current `MenuItem`'s ConstTable constant, if it is one
-    item_plain = False  # the current `MenuItem` names a `Const` outside the ConstTable
+    item_unpickable = False
+    recompile_invalid = False
     has_const_table = any(
         isinstance(st, S.Instruction) and st.keyword.upper() == "CONSTTABLE" for st in program.statements
     )
@@ -804,6 +805,7 @@ def check_table_and_menu_placement(
     sequences: dict[str, int] = {}  # open DialSequence / ModemHangup blocks
     variables = symbols.declared_variable_names(program)
     types = symbols.declared_variable_types(program)
+    menu_names = None
     if env is None:
         env = consteval.Env(profile, dict(program.consts))
 
@@ -864,19 +866,45 @@ def check_table_and_menu_placement(
         elif kw in _MENU_ITEMS:
             if within(st, kw):
                 levels[-1].append(kw)
-                target = st.args[1] if kw == "MENUITEM" and len(st.args) > 1 else None
-                item_const = (
-                    target.name.upper() if isinstance(target, S.Name) and target.name.upper() in table_consts else None
-                )
-                item_plain = (
-                    isinstance(target, S.Name)
-                    and target.name.upper() not in table_consts
-                    and target.name.upper() in {str(c).upper() for c in program.consts}
-                    and target.name.upper() not in variables
-                )
                 target = st.args[1] if kw in ("MENUITEM", "MENURECOMPILE") and len(st.args) > 1 else None
+                item_const = (
+                    target.name.upper()
+                    if kw == "MENUITEM" and isinstance(target, S.Name) and target.name.upper() in table_consts
+                    else None
+                )
+                constant_name = (
+                    isinstance(target, S.Name)
+                    and target.name.upper() not in variables
+                    and (target.name.upper() in program.consts or target.name.upper() in profile.symbols)
+                )
+                missing_name = False
+                if kw == "MENUITEM" and isinstance(target, S.Name) and not constant_name and not item_const:
+                    from .expressions import _known_names
+
+                    if menu_names is None:
+                        menu_names = _known_names(program, profile)
+                    missing_name = target.name.upper() not in menu_names
+                item_unpickable = (
+                    kw == "MENUITEM"
+                    and not item_const
+                    and (constant_name or missing_name or isinstance(target, (S.Number, S.String, S.Unary, S.Binary)))
+                )
+                recompile_invalid = False
                 item_bool = isinstance(target, (S.Name, S.Index)) and types.get(target.name.upper()) == "BOOLEAN"
                 item_kind = None
+                if kw == "MENURECOMPILE":
+                    kind = types.get(target.name.upper()) if isinstance(target, (S.Name, S.Index)) else None
+                    if isinstance(target, S.String) or kind == "STRING":
+                        diags.error(st.line, "String type variable not allowed.", st.file)
+                        item_unpickable = isinstance(target, S.String)
+                        recompile_invalid = not item_unpickable
+                    elif constant_name or isinstance(target, S.Number):
+                        from .expressions import _arg_text
+
+                        diags.error(st.line, f"Invalid Variable or Array: {_arg_text(st, 1).strip()}.", st.file)
+                        recompile_invalid = True
+                    elif kind == "FLOAT":
+                        item_kind = "float"
                 if kw == "MENUITEM" and isinstance(target, (S.Name, S.Index)):
                     if item_const:
                         value = env.consts.get(item_const)
@@ -906,10 +934,7 @@ def check_table_and_menu_placement(
                 after_item = bool(levels[-1]) and levels[-1][-1] == "MENUITEM"
                 if not levels[-1] or levels[-1][-1] not in ("MENUITEM", "MENURECOMPILE"):
                     diags.error(st.line, "MenuPick must follow a MenuItem instruction.", st.file)
-                elif levels[-1][-1] == "MENUITEM" and item_plain:
-                    # the item names a `Const` outside the ConstTable (oracle, CR6/CR1000X,
-                    # 2026-10-12): with a ConstTable anywhere in the program every pick list is
-                    # the ConstTable message, even `MenuPick(D,1,2)`; without one, its own message
+                elif item_unpickable:
                     diags.error(
                         st.line,
                         "When using a ConstTable constant in MenuPick, the constant name must be the first parameter."
@@ -918,6 +943,8 @@ def check_table_and_menu_placement(
                         "ConstTable..EndConstTable.",
                         st.file,
                     )
+                    continue
+                elif recompile_invalid:
                     continue
                 elif levels[-1][-1] == "MENUITEM" and item_const:
                     first = st.args[0] if st.args else None
@@ -934,7 +961,9 @@ def check_table_and_menu_placement(
                 bad = next((a for a in st.args if isinstance(a, S.Name) and a.name.upper() in variables), None)
                 if item_bool and levels[-1] and levels[-1][-1] in ("MENUITEM", "MENURECOMPILE"):
                     _check_boolean_picklist(st, env, diags)
-                elif after_item and (item_kind is not None or item_const):
+                elif (after_item or levels[-1] and levels[-1][-1] == "MENURECOMPILE") and (
+                    item_kind is not None or item_const
+                ):
                     # a ConstTable item whose first parameter is not a constant checks every
                     # value as a plain `Const` (oracle, 2026-10-10)
                     wrong_first = item_const and not first_is_const
