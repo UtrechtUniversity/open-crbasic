@@ -1508,6 +1508,19 @@ value` warning of the same line, and is a `const_ranges` entry (new `allow` list
 accepted value `0`). Not probed on CR6/CR1000X (different parameter lists) or for other CR300
 measurement instructions. Reproducer: cr350 `false_accept/fed9e7c1ded9`.
 
+### FieldCalStrain option (round 96)
+
+All four profiles accept constant selectors 10–14, 20–24, 30–34 and 40–44
+when the other arguments are valid. The argument converts to a signed Long
+before validation. For example, `44.999` converts to 44 and compiles, while
+`45.0` produces `Invalid function option.`
+
+The CR6 builder `FUN_0044dff0` splits the selector into quotient and remainder
+by 10, normalizes remainder 4 to 0, and rejects quotient 0 for the strain
+variant. The probes cover the full range and coercion on all four profiles.
+Other `FieldCalStrain` argument diagnostics are separate from this option
+check. [Reference observations](../tests/fixtures/r96_fieldcal_strain_options.json).
+
 ### CDM bridge excitation and settling time (round 93)
 
 On CR6 and CR1000X, `CDM_BrHalf3W` and `CDM_BrFull6W` on module types 220–223

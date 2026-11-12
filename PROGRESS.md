@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 96** (archived verdict parity). Fixed CR1000X false accept `39a03364be83`
+by checking `FieldCalStrain` selectors. The 25-case archived replay now has
+18 false accepts and seven exact matches.
+[FieldCalStrain selector evidence](docs/instructions.md#fieldcalstrain-option-round-96).
+
 **Round 95** (verdict parity, fuzz seed 777). Fixed CR300 false accept
 `2ef289452196` by checking optional routine headers and omitted arguments.
 All six recorded CR300/CR350 seed 777 false accepts now match exactly.

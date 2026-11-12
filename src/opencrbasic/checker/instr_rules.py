@@ -3058,7 +3058,10 @@ def check_fieldcal_variable_args(program: S.Program, profile, diags: Diagnostics
 
     size_reported: set[str] = set()
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "FIELDCAL" or not stmt.args:
+        if not isinstance(stmt, S.Instruction) or not stmt.args:
+            continue
+        keyword = stmt.keyword.upper()
+        if keyword not in ("FIELDCAL", "FIELDCALSTRAIN"):
             continue
         args = stmt.args
         before = len(diags.items)
@@ -3066,6 +3069,10 @@ def check_fieldcal_variable_args(program: S.Program, profile, diags: Diagnostics
         if option is None:
             option = args[0].value if isinstance(args[0], S.Number) and not isinstance(args[0].value, float) else None
         if option is None:
+            continue
+        if keyword == "FIELDCALSTRAIN":
+            if not (10 <= option <= 44 and option % 10 <= 4):
+                diags.error(stmt.line, "Invalid function option.", stmt.file)
             continue
         if not 0 <= option <= 4:
             diags.error(stmt.line, "Invalid function option.", stmt.file)

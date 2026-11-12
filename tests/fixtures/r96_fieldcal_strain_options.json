@@ -1,0 +1,2263 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-minus-one",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(-1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-zero",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(0,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-one",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-two",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(2,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-three",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(3,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-four",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(4,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-five",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(5,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-six",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(6,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-seven",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(7,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-eight",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(8,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-nine",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(9,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-ten",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(10,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-high",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(255,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-wrap",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(257,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-wide",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(999999999999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-float",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(1.75,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-negative-float",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(-0.25,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-string",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(\"bad\",Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-bool",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(True,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-variable",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(Y,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr6-const",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=0\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid function option."
+  },
+  {
+   "id": "cr6-folded",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(1+1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-unknown",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(Missing,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr6-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(11,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-12",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(12,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(13,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(14,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(15,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-16",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(16,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-17",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(17,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-18",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(18,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-19",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(19,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-20",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(20,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-21",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(21,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-22",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(22,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-23",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(23,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-24",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(24,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-25",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(25,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-26",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(26,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-27",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(27,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-28",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(28,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-29",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(29,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-30",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(30,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-31",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(31,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-32",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(32,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-33",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(33,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-34",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(34,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-35",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(35,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-36",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(36,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-37",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(37,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-38",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(38,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-39",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(39,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-40",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(40,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-41",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(41,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-42",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(42,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-43",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(43,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-44",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(44,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-45",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(45,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-46",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(46,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-47",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(47,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-48",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(48,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-49",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(49,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-50",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(50,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-51",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(51,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-52",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(52,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-53",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(53,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-minus-one",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(-1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-zero",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(0,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-one",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-two",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(2,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-three",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(3,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-four",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(4,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-five",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(5,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-six",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(6,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-seven",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(7,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-eight",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(8,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-nine",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(9,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-ten",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(10,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-high",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(255,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-wrap",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(257,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-wide",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(999999999999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(1.75,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-negative-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(-0.25,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-string",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(\"bad\",Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-bool",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(True,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-variable",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(Y,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr1000x-const",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=0\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid function option."
+  },
+  {
+   "id": "cr1000x-folded",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(1+1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-unknown",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(Missing,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Missing."
+  },
+  {
+   "id": "cr1000x-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(11,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(12,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(13,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(14,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(15,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(16,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-17",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(17,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-18",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(18,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-19",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(19,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-20",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(20,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-21",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(21,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-22",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(22,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-23",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(23,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-24",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(24,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-25",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(25,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-26",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(26,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-27",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(27,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-28",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(28,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-29",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(29,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-30",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(30,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-31",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(31,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-32",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(32,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-33",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(33,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-34",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(34,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-35",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(35,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-36",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(36,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-37",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(37,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-38",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(38,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-39",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(39,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-40",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(40,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-41",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(41,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-42",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(42,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-43",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(43,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-44",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(44,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-45",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(45,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-46",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(46,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-47",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(47,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-48",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(48,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-49",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(49,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-50",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(50,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-51",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(51,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-52",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(52,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-53",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(53,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-minus-one",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(-1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-zero",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(0,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-one",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-two",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(2,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-three",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(3,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-four",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(4,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-five",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(5,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-six",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(6,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-seven",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(7,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-eight",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(8,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-nine",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(9,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-ten",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(10,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-high",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(255,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-wrap",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(257,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-wide",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(999999999999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-float",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(1.75,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-negative-float",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(-0.25,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-string",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(\"bad\",Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-bool",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(True,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-variable",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(Y,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr300-const",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=0\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid function option."
+  },
+  {
+   "id": "cr300-folded",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(1+1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-unknown",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(Missing,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing is not defined.\nline 5: Variable illegal in Parameter: Missing."
+  },
+  {
+   "id": "cr300-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(11,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-12",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(12,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(13,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(14,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(15,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-16",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(16,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-17",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(17,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-18",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(18,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-19",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(19,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-20",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(20,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-21",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(21,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-22",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(22,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-23",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(23,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-24",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(24,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-25",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(25,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-26",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(26,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-27",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(27,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-28",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(28,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-29",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(29,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-30",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(30,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-31",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(31,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-32",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(32,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-33",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(33,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-34",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(34,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-35",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(35,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-36",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(36,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-37",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(37,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-38",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(38,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-39",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(39,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-40",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(40,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-41",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(41,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-42",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(42,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-43",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(43,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-44",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(44,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-45",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(45,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-46",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(46,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-47",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(47,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-48",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(48,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-49",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(49,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-50",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(50,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-51",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(51,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-52",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(52,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-53",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(53,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-minus-one",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(-1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-zero",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(0,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-one",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-two",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(2,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-three",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(3,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-four",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(4,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-five",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(5,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-six",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(6,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-seven",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(7,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-eight",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(8,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-nine",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(9,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-ten",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(10,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-high",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(255,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-wrap",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(257,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-wide",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(999999999999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-float",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(1.75,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-negative-float",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(-0.25,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-string",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(\"bad\",Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-bool",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(True,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-variable",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(Y,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "cr350-const",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=0\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid function option."
+  },
+  {
+   "id": "cr350-folded",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(1+1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-unknown",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(Missing,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Missing is not defined.\nline 5: Variable illegal in Parameter: Missing."
+  },
+  {
+   "id": "cr350-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(11,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-12",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(12,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(13,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(14,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(15,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-16",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(16,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-17",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(17,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-18",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(18,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-19",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(19,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-20",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(20,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-21",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(21,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-22",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(22,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-23",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(23,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-24",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(24,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-25",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(25,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-26",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(26,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-27",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(27,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-28",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(28,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-29",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(29,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-30",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(30,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-31",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(31,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-32",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(32,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-33",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(33,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-34",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(34,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-35",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(35,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-36",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(36,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-37",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(37,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-38",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(38,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-39",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(39,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-40",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(40,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-41",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(41,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-42",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(42,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-43",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(43,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-44",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(44,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-45",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(45,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-46",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(46,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-47",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(47,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-48",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(48,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-49",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(49,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-50",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(50,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-51",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(51,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-52",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(52,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-53",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(53,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-below-first",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(9.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-above-first",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(10.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-before-gap",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(14.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-in-gap",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(15.0,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-before-last-gap",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(44.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-above-last",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(45.0,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-named-valid",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=24\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-named-float",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=24.9\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-named-text",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=\"bad\"\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid function option."
+  },
+  {
+   "id": "cr6-folded-valid",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(20+1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-hex-valid",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(&H16,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-wrapped-valid",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(2147483647+2147483647+13,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nan",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(NAN,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr6-inf",
+   "logger": "cr6",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(INF,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-below-first",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(9.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-above-first",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(10.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-before-gap",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(14.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-in-gap",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(15.0,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-before-last-gap",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(44.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-above-last",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(45.0,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-named-valid",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=24\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-named-float",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=24.9\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-named-text",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=\"bad\"\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid function option."
+  },
+  {
+   "id": "cr1000x-folded-valid",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(20+1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-hex-valid",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(&H16,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-wrapped-valid",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(2147483647+2147483647+13,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nan",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(NAN,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr1000x-inf",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(INF,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-below-first",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(9.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-above-first",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(10.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-before-gap",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(14.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-in-gap",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(15.0,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-before-last-gap",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(44.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-above-last",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(45.0,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-named-valid",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=24\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-named-float",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=24.9\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-named-text",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=\"bad\"\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid function option."
+  },
+  {
+   "id": "cr300-folded-valid",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(20+1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-hex-valid",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(&H16,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-wrapped-valid",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(2147483647+2147483647+13,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nan",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(NAN,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr300-inf",
+   "logger": "cr300",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(INF,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-below-first",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(9.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-above-first",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(10.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-before-gap",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(14.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-in-gap",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(15.0,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-before-last-gap",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(44.999,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-above-last",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(45.0,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-named-valid",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=24\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-named-float",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=24.9\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-named-text",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nConst R=\"bad\"\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(R,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid function option."
+  },
+  {
+   "id": "cr350-folded-valid",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(20+1,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-hex-valid",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(&H16,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrapped-valid",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(2147483647+2147483647+13,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nan",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(NAN,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  },
+  {
+   "id": "cr350-inf",
+   "logger": "cr350",
+   "source": "Public Y\nPublic Values(2), Baseline(2), Offsets(2), Known(2), Gauge(2), Multiplier(2), CalMode\nBeginProg\n Scan(1,Sec,0,0)\n  FieldCalStrain(INF,Values(),1,Multiplier(),Baseline(),CalMode,Known(),1,1,Gauge(),Offsets())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid function option."
+  }
+ ]
+}
