@@ -1027,6 +1027,11 @@ both loggers (3000000000, -999999999999, 2147483777, -2147483777 fail; 214748364
 and their negatives pass). Alone, or beside fixed/weighted (`-2`) tables, it compiles and its
 TDF size is the minimum `(12288 // R) - (4096 // R + 1)` records (454 for FP2).
 
+Round 117 confirmed the same allocator behavior for a string size, `NAN`,
+and the hexadecimal sentinel `&H80000000` on CR300 and CR350, with and
+without `DataInterval`.
+[Four-profile observations](../tests/fixtures/r117_table_size_sentinels.json).
+
 Sweeps (oracle thresholds vs `checker/storage.py`, CR300 and CR350): one table, two tables,
 uncalled table, negative size, 100 ms scan, five second scan, one hour scan, `DataInterval`
 tables, strings, `Maximum` with time, three tables, and random programs near the boundary

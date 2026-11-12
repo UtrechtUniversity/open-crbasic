@@ -92,6 +92,12 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 117** (historical verdict parity). Fixed CR350 false accept
+`1c26400ee684` by sending invalid table-size constants through the storage
+allocator's overflow path. The 3,338-case historical replay has zero
+false accepts and zero false rejects among cases with usable verdicts.
+[Allocator evidence](docs/tdf-rules.md#storage-limit-cr300cr350-decompiled-and-modelled-in-round-15).
+
 **Round 116** (historical verdict parity). Fixed CR300 false accepts
 `01d72b3a2d03` and `bd1648cdb628` by resolving variables at their use
 in assignments and `RealTime`. The second case still differs by an

@@ -1,0 +1,2025 @@
+{
+ "observation_date": "2026-11-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-storage-\"1\"-none-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"\"-none-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-&H80000000-none-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1E12-none-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--1-none-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--2-none-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1-none-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"x\"--1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"1\"--1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"\"--1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-NAN--1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-&H80000000--1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1E12--1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--1--1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--2--1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1--1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"x\"--2-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"1\"--2-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"\"--2-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-NAN--2-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-&H80000000--2-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1E12--2-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--1--2-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--2--2-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1--2-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"x\"-1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"1\"-1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"\"-1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-NAN-1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-&H80000000-1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1E12-1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--1-1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--2-1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1-1-plain",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"x\"-none-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"1\"-none-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"\"-none-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-NAN-none-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-&H80000000-none-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1E12-none-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--1-none-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--2-none-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1-none-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"x\"--1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"1\"--1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"\"--1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-NAN--1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-&H80000000--1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1E12--1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--1--1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--2--1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1--1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"x\"--2-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"1\"--2-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"\"--2-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-NAN--2-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-&H80000000--2-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1E12--2-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--1--2-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--2--2-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1--2-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"x\"-1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"1\"-1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-\"\"-1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-NAN-1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-&H80000000-1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1E12-1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--1-1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage--2-1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-storage-1-1-interval",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"x\"-none-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"1\"-none-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"\"-none-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-NAN-none-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-&H80000000-none-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1E12-none-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--1-none-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--2-none-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1-none-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"x\"--1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"1\"--1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"\"--1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-NAN--1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-&H80000000--1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1E12--1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--1--1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--2--1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1--1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"x\"--2-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"1\"--2-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"\"--2-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-NAN--2-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-&H80000000--2-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1E12--2-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--1--2-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--2--2-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1--2-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"x\"-1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"1\"-1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"\"-1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-NAN-1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-&H80000000-1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1E12-1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--1-1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--2-1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1-1-plain",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"x\"-none-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"1\"-none-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"\"-none-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-NAN-none-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-&H80000000-none-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1E12-none-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--1-none-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--2-none-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1-none-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"x\"--1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"1\"--1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"\"--1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-NAN--1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-&H80000000--1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1E12--1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--1--1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--2--1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1--1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"x\"--2-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"1\"--2-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"\"--2-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-NAN--2-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-&H80000000--2-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1E12--2-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--1--2-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--2--2-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1--2-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"x\"-1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"1\"-1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-\"\"-1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-NAN-1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-&H80000000-1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1E12-1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--1-1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage--2-1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-storage-1-1-interval",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-storage-\"x\"-none-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"1\"-none-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"\"-none-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-NAN-none-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-&H80000000-none-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1E12-none-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--1-none-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--2-none-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1-none-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"x\"--1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-storage-\"1\"--1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-storage-\"\"--1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-storage-NAN--1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-storage-&H80000000--1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-storage-1E12--1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-storage--1--1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--2--1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1--1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"x\"--2-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"1\"--2-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"\"--2-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-NAN--2-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-&H80000000--2-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1E12--2-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--1--2-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--2--2-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1--2-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"x\"-1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"1\"-1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"\"-1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-NAN-1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-&H80000000-1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1E12-1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--1-1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--2-1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1-1-plain",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"x\"-none-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"1\"-none-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"\"-none-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-NAN-none-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-&H80000000-none-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1E12-none-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--1-none-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--2-none-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1-none-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"x\"--1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-storage-\"1\"--1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-storage-\"\"--1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-storage-NAN--1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-storage-&H80000000--1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-storage-1E12--1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr300-storage--1--1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--2--1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1--1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"x\"--2-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"1\"--2-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"\"--2-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-NAN--2-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-&H80000000--2-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1E12--2-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--1--2-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--2--2-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1--2-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"x\"-1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"1\"-1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-\"\"-1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-NAN-1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-&H80000000-1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1E12-1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--1-1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage--2-1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-storage-1-1-interval",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"x\"-none-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"1\"-none-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"\"-none-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-NAN-none-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-&H80000000-none-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1E12-none-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--1-none-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--2-none-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1-none-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"x\"--1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-storage-\"1\"--1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-storage-\"\"--1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-storage-NAN--1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-storage-&H80000000--1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-storage-1E12--1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-storage--1--1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--2--1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1--1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"x\"--2-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"1\"--2-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"\"--2-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-NAN--2-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-&H80000000--2-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1E12--2-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--1--2-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--2--2-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1--2-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"x\"-1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"1\"-1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"\"-1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"\")\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-NAN-1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,NAN)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-&H80000000-1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1E12-1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1E12)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--1-1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--2-1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-2)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1-1-plain",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"x\"-none-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"1\"-none-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"\"-none-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-NAN-none-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-&H80000000-none-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1E12-none-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--1-none-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--2-none-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1-none-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"x\"--1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-storage-\"1\"--1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-storage-\"\"--1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-storage-NAN--1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-storage-&H80000000--1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-storage-1E12--1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nUnable to allocate enough data table space to manage flash write cycle limits.\nNot enough storage area for DataTables."
+  },
+  {
+   "id": "cr350-storage--1--1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--2--1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1--1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"x\"--2-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"1\"--2-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"\"--2-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-NAN--2-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-&H80000000--2-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1E12--2-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--1--2-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--2--2-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1--2-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,-2)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"x\"-1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"x\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"1\"-1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"1\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-\"\"-1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,\"\")\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-NAN-1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,NAN)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-&H80000000-1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,&H80000000)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1E12-1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1E12)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--1-1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage--2-1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,-2)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-storage-1-1-interval",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(First,True,1)\n DataInterval(0,60,Min,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(Second,True,1)\n DataInterval(0,1440,Min,10)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable First\n CallTable Second\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

@@ -1777,9 +1777,16 @@ def _build_data_table(
         )
 
     size_raw = _fold(dt.size_expr, env, -1)
+    cr3xx = env.profile.single_pass
+    if cr3xx and (
+        isinstance(size_raw, str)
+        or (isinstance(dt.size_expr, S.Name) and dt.size_expr.name.upper() == "NAN")
+        or (isinstance(dt.size_expr, S.Number) and dt.size_expr.text.upper() == "&H80000000")
+    ):
+        size_raw = float("-inf")  # the allocator treats the invalid integer sentinel like a size overflow
 
     bytes_per_record = sum(_field_record_bytes(of) for of in out_fields if not of.name_only)
-    size_val = declared_size(size_raw, env.profile.name in ("cr300", "cr350"), bytes_per_record)
+    size_val = declared_size(size_raw, cr3xx, bytes_per_record)
     size_val = -1 if size_val is None else size_val
 
     if interval_seconds is not None and 2 * bytes_per_record > _DEFAULT_PROBE_BUFFER_BYTES - _DEFAULT_PROBE_OVERHEAD:
