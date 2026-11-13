@@ -520,8 +520,11 @@ def check_fieldnames(program: S.Program, profile: Profile, diags: Diagnostics, e
     canot be NULL`, and a String variable both (its compile-time value is empty). Undefined names are
     left to the symbol checks. The output instruction whose builder reads it (`fieldnames_owners`)
     reports it, so the line is that instruction's; an unowned `FieldNames` is not checked."""
+    from .expressions import _known_names, _undefined_names, _variable_refs
+
     tables = symbols.scope_tables(program, env, scalars=True)
     owners = fieldnames_owners(program)
+    known = None
     for st in program.statements:
         if not isinstance(st, S.Instruction) or st.keyword.upper() != "FIELDNAMES":
             continue
@@ -535,7 +538,12 @@ def check_fieldnames(program: S.Program, profile: Profile, diags: Diagnostics, e
         except consteval.NotConstant:
             kind = tables(st).types.get(arg.name.upper()) if isinstance(arg, (S.Name, S.Index)) else None
             if kind is None:
-                continue
+                if not _variable_refs(arg, set(tables(st).types)):
+                    continue
+                if known is None:
+                    known = _known_names(program, profile)
+                if _undefined_names(arg, known):
+                    continue
             diags.error(line, "FieldNames cannot be a variable.", file)
             value = "" if kind == "STRING" else None
         else:

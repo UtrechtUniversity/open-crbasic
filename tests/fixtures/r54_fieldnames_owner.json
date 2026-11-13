@@ -1308,32 +1308,28 @@
    "logger": "cr6",
    "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(X+1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.",
-   "not_modelled": "a numeric expression containing a variable (X+1) is not recognised as \"FieldNames cannot be a variable.\""
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
   },
   {
    "id": "cr1000x-dollar-name",
    "logger": "cr1000x",
    "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(X+1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.",
-   "not_modelled": "a numeric expression containing a variable (X+1) is not recognised as \"FieldNames cannot be a variable.\""
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
   },
   {
    "id": "cr300-dollar-name",
    "logger": "cr300",
    "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(X+1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.",
-   "not_modelled": "a numeric expression containing a variable (X+1) is not recognised as \"FieldNames cannot be a variable.\""
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
   },
   {
    "id": "cr350-dollar-name",
    "logger": "cr350",
    "source": "Public X, WS, WD, A(3)\nPublic S As String * 32\nConst KS = \"A,B\"\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\n  FieldNames(X+1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable.",
-   "not_modelled": "a numeric expression containing a variable (X+1) is not recognised as \"FieldNames cannot be a variable.\""
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FieldNames cannot be a variable."
   },
   {
    "id": "cr6-covariance",

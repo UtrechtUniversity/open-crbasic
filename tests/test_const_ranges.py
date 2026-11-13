@@ -37,6 +37,7 @@ CASES = [
         "r121_iif_empty_assignment_slots.json",
         "r122_string_size_suffixes.json",
         "r123_include_integer_names.json",
+        "r124_fieldnames_expressions.json",
     )
     for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
 ]

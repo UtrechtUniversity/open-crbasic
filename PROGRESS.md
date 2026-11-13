@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 124** (fixture verdict parity). `FieldNames` expressions that
+reference variables now reject on all four profiles. Four previously
+flagged cases match exactly.
+[Four-profile observations](tests/fixtures/r124_fieldnames_expressions.json).
+
 **Round 123** (fixture verdict parity). Folded integer include names now
 use the signed 32-bit result. The overflow sentinel is rendered as
 `NAN` in the reference diagnostic.
