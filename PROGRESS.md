@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 140** (fixture verdict parity). One-line `If` branches now
+report adjacent operands in malformed `Sub` arguments across all four
+profiles. Four previously flagged false accepts match exactly.
+[Four-profile observations](tests/fixtures/r140_inline_sub_arguments.json).
+
 **Round 139** (fixture verdict parity). A direct reserved table property
 used by `Sample`, `Average`, `Maximum` or `Totalize` requires an attached
 `FieldNames` where the profile exposes the property. Six previously flagged

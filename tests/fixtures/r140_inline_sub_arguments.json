@@ -1,0 +1,1269 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r140-cr6-top-0",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-top-1",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr6-top-2",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r140-cr6-top-4",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-top-5",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr6-top-6",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-top-7",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Call F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-top-8",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Y=F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:  Y=F(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr6-top-9",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression:  NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr6-top-10",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-then-0",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-then-1",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr6-then-2",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r140-cr6-then-4",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-then-5",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr6-then-6",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-then-7",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Call F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-then-9",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression: NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr6-then-10",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-else-0",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-else-1",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr6-else-2",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r140-cr6-else-4",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-else-5",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr6-else-6",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-else-7",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else Call F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-else-9",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression: NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr6-else-10",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-next-0",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-next-1",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr6-next-2",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r140-cr6-next-4",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-next-5",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr6-next-6",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-next-7",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : Call F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-next-8",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : Y=F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:  Y=F(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr6-next-9",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression:  NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr6-next-10",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-if-bad-0",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-if-bad-1",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr6-if-bad-2",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "r140-cr6-if-bad-4",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-if-bad-5",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr6-if-bad-6",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-if-bad-7",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then Call F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr6-if-bad-9",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression: Nope .\nline 11: Invalid, or out of place expression: NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr6-if-bad-10",
+   "logger": "cr6",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-top-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-top-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr1000x-top-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r140-cr1000x-top-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-top-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr1000x-top-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-top-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Call F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-top-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Y=F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:  Y=F(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr1000x-top-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression:  NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr1000x-top-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-then-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-then-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr1000x-then-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r140-cr1000x-then-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-then-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr1000x-then-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-then-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Call F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-then-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression: NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr1000x-then-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-else-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-else-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr1000x-else-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r140-cr1000x-else-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-else-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr1000x-else-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-else-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else Call F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-else-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression: NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr1000x-else-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-next-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-next-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr1000x-next-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r140-cr1000x-next-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-next-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr1000x-next-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-next-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : Call F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-next-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : Y=F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:  Y=F(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr1000x-next-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression:  NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr1000x-next-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-if-bad-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-if-bad-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr1000x-if-bad-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "r140-cr1000x-if-bad-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-if-bad-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr1000x-if-bad-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-if-bad-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then Call F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr1000x-if-bad-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid symbol in expression: Nope .\nline 11: Invalid, or out of place expression: NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr1000x-if-bad-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-top-0",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-top-1",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr300-top-2",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r140-cr300-top-4",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-top-5",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr300-top-6",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-top-8",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Y=F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:  Y=F(\"a\" \"b\")\n."
+  },
+  {
+   "id": "r140-cr300-top-9",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: NoSuch is not defined.\nline 11: Invalid, or out of place expression:  NoSuch(\"a\" \"b\")\n."
+  },
+  {
+   "id": "r140-cr300-top-10",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-then-0",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-then-1",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr300-then-2",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r140-cr300-then-4",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-then-5",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr300-then-6",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-then-9",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: NoSuch is not defined.\nline 11: Invalid, or out of place expression: NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr300-then-10",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-else-0",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-else-1",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr300-else-2",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r140-cr300-else-4",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-else-5",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr300-else-6",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-else-9",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: NoSuch is not defined.\nline 11: Invalid, or out of place expression: NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr300-else-10",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-next-0",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-next-1",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr300-next-2",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r140-cr300-next-4",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-next-5",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr300-next-6",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-next-8",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : Y=F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:  Y=F(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr300-next-9",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: NoSuch is not defined.\nline 11: Invalid, or out of place expression:  NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr300-next-10",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-if-bad-0",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-if-bad-1",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr300-if-bad-2",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined."
+  },
+  {
+   "id": "r140-cr300-if-bad-4",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-if-bad-5",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr300-if-bad-6",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr300-if-bad-9",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: NoSuch is not defined.\nline 11: Invalid, or out of place expression: NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr300-if-bad-10",
+   "logger": "cr300",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-top-0",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-top-1",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr350-top-2",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r140-cr350-top-4",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-top-5",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr350-top-6",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-top-8",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Y=F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:  Y=F(\"a\" \"b\")\n."
+  },
+  {
+   "id": "r140-cr350-top-9",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: NoSuch is not defined.\nline 11: Invalid, or out of place expression:  NoSuch(\"a\" \"b\")\n."
+  },
+  {
+   "id": "r140-cr350-top-10",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-then-0",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-then-1",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr350-then-2",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r140-cr350-then-4",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-then-5",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr350-then-6",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-then-9",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: NoSuch is not defined.\nline 11: Invalid, or out of place expression: NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr350-then-10",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-else-0",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-else-1",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr350-else-2",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r140-cr350-else-4",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-else-5",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr350-else-6",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-else-9",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: NoSuch is not defined.\nline 11: Invalid, or out of place expression: NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr350-else-10",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 Else S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-next-0",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-next-1",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr350-next-2",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r140-cr350-next-4",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-next-5",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr350-next-6",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-next-8",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : Y=F(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: No Matching, or out of place ) in expression:  Y=F(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr350-next-9",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: NoSuch is not defined.\nline 11: Invalid, or out of place expression:  NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr350-next-10",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=1 : S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-if-bad-0",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-if-bad-1",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr350-if-bad-2",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(\"a\"+\"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined."
+  },
+  {
+   "id": "r140-cr350-if-bad-4",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then T(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-if-bad-5",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then T(\"a\" \"b\",Y Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: Incomplete expression: \"a\" \"b\".\nline 11: Incomplete expression: Y Y."
+  },
+  {
+   "id": "r140-cr350-if-bad-6",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then Call S(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "r140-cr350-if-bad-9",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then NoSuch(\"a\" \"b\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: NoSuch is not defined.\nline 11: Invalid, or out of place expression: NoSuch(\"a\" \"b\")."
+  },
+  {
+   "id": "r140-cr350-if-bad-10",
+   "logger": "cr350",
+   "source": "Public Y\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n If Nope Then S(\"a\" \"b\",Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Nope is not defined.\nline 11: Incomplete expression: \"a\" \"b\"."
+  }
+ ]
+}

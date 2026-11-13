@@ -1896,7 +1896,10 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     )
         elif profile.single_pass and isinstance(stmt, S.If):  # CR300/CR350: only the called keyword
             for sub in (stmt.inline or []) + (stmt.inline_else or []):
-                if _assigns_const_index(sub, seen_consts, predefined_constants):
+                if isinstance(sub, S.Unparsed) and (messages := _routine_arg_findings(sub, program, profile)):
+                    for message in messages:
+                        diags.error(sub.line, message, sub.file)
+                elif _assigns_const_index(sub, seen_consts, predefined_constants):
                     diags.error(
                         sub.line, _pass1_message(profile, dataclasses.replace(sub, at_eol=False), "fallback"), sub.file
                     )
@@ -4204,6 +4207,10 @@ def _check_if_pass1(stmt, operands: set[str], profile, diags: Diagnostics, progr
         if profile.known_first_word_pass1 and _block_keyword_call(sub):
             diags.error(sub.line, f"Incomplete expression: {sub.text}.", sub.file)
         if isinstance(sub, S.Unparsed) and _is_generic_unparsed(sub):
+            if program is not None and (messages := _routine_arg_findings(sub, program, profile)):
+                for message in messages:
+                    diags.error(sub.line, message, sub.file)
+                continue
             if program is not None and _logical_assign_accepted(sub, program, profile):
                 continue  # `If c Then X AND Y = 1` compiles like the statement on its own line
             verdict = _pass1_scan(sub.text, operands, profile)

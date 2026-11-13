@@ -680,32 +680,28 @@
       "logger": "cr6",
       "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\nIf X Then S(\"a\" \"b\")\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: \"a\" \"b\".",
-      "not_modelled": "Inline malformed Sub argument echo is not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: \"a\" \"b\"."
     },
     {
       "id": "inline-cr1000x",
       "logger": "cr1000x",
       "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\nIf X Then S(\"a\" \"b\")\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: \"a\" \"b\".",
-      "not_modelled": "Inline malformed Sub argument echo is not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: \"a\" \"b\"."
     },
     {
       "id": "inline-cr300",
       "logger": "cr300",
       "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\nIf X Then S(\"a\" \"b\")\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: \"a\" \"b\".",
-      "not_modelled": "Inline malformed Sub argument echo is not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: \"a\" \"b\"."
     },
     {
       "id": "inline-cr350",
       "logger": "cr350",
       "source": "Public X\nSub S(A As String * 40)\nEndSub\nSub T(A As String * 40,B)\nEndSub\nFunction F(A)\nF=A\nEndFunction\nBeginProg\nIf X Then S(\"a\" \"b\")\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: \"a\" \"b\".",
-      "not_modelled": "Inline malformed Sub argument echo is not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: \"a\" \"b\"."
     },
     {
       "id": "undeclared-cr6",

@@ -9503,8 +9503,10 @@ the decompiled implementation is not copied into the checker.
 The checker reuses its expression scanner for parenthesized calls to declared Subs, with no
 trailing statement text and with names that resolve. It reports adjacent operands at pass 1;
 CR300/CR350 then suppress the whole-call fallback that would otherwise follow. Unknown-name
-ordering, nested function syntax, inline calls, and unfinished continuations are separate paths
-and remain excluded unless covered by existing behavior. Four-profile boundary observations
+ordering, nested function syntax and unfinished continuations are separate paths.
+Round 140 applies the same adjacent-operand check to declared Sub calls inside
+one-line `If` branches.
+[Four-profile observations](../tests/fixtures/r140_inline_sub_arguments.json). Four-profile boundary observations
 and controls are retained in `tests/fixtures/r61_sub_arguments.json`; remaining differences
 are strict expected failures. Scratch evidence and exact commands are in `scratch/r61/` (local).
 
