@@ -92,6 +92,12 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 137** (fixture verdict parity). CR300 and CR350 recover an
+unclosed group around a valid one-line `If` body and accept trailing
+tokens after a closed group. Four previously flagged false rejects
+match exactly.
+[Four-profile observations](tests/fixtures/r137_inline_group_recovery.json).
+
 **Round 136** (fixture verdict parity). Checked `PulseCount` port
 compatibility on CR300, CR350 and CR1000X. Forty-three previously flagged
 cases match exactly.

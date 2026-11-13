@@ -302,16 +302,14 @@
    "logger": "cr300",
    "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0\n  NextScan\nEndProg\n",
    "expected_exit": 0,
-   "expected_stdout": "t.CR6 -- Compiled OK.",
-   "not_modelled": "round 33: CR300/CR350 accept an unclosed `(w = 0` body"
+   "expected_stdout": "t.CR6 -- Compiled OK."
   },
   {
    "id": "cr350-paren10",
    "logger": "cr350",
    "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0\n  NextScan\nEndProg\n",
    "expected_exit": 0,
-   "expected_stdout": "t.CR6 -- Compiled OK.",
-   "not_modelled": "round 33: CR300/CR350 accept an unclosed `(w = 0` body"
+   "expected_stdout": "t.CR6 -- Compiled OK."
   },
   {
    "id": "cr6-paren11",
@@ -390,16 +388,14 @@
    "logger": "cr300",
    "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0)(w=1)\n  NextScan\nEndProg\n",
    "expected_exit": 0,
-   "expected_stdout": "t.CR6 -- Compiled OK.",
-   "not_modelled": "round 33: CR300/CR350 accept `(w = 0)(w=1)`"
+   "expected_stdout": "t.CR6 -- Compiled OK."
   },
   {
    "id": "cr350-paren13",
    "logger": "cr350",
    "source": "Public w, s As String, L As Long\nDim i\nBeginProg\n  Scan(1,Sec,0,0)\n    If w > 1 Then (w = 0)(w=1)\n  NextScan\nEndProg\n",
    "expected_exit": 0,
-   "expected_stdout": "t.CR6 -- Compiled OK.",
-   "not_modelled": "round 33: CR300/CR350 accept `(w = 0)(w=1)`"
+   "expected_stdout": "t.CR6 -- Compiled OK."
   },
   {
    "id": "cr6-paren14",

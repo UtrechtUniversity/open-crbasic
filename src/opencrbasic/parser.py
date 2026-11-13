@@ -1258,31 +1258,38 @@ class _Parser:
         body; `(w)` and `(w + 1)` stay errors (oracle, 2026-10-24, `docs/checker.md` "Parenthesized
         statements")."""
         real = [t for t in seg if t.kind != "EOF"]
+        recover = self.profile.single_pass and self._inline_body
         if not (
             len(real) > 2
             and real[0].kind == "OP"
             and real[0].text == "("
-            and real[-1].kind == "OP"
-            and real[-1].text == ")"
+            and (recover or (real[-1].kind == "OP" and real[-1].text == ")"))
         ):
             return None
         depth = 0
+        close = len(real)
         for k, t in enumerate(real):
             if t.kind == "OP" and t.text in "()":
                 depth += 1 if t.text == "(" else -1
-                if depth == 0 and k != len(real) - 1:
-                    return None  # `(a)(b)`: the first group closes before the end
+                if depth == 0:
+                    close = k
+                    break
+        if not recover and close != len(real) - 1:
+            return None
+        inner_text = ""
+        if seg_text:
+            start = seg_text.index("(")
+            end = start + real[close].col - real[0].col if close < len(real) else len(seg_text)
+            inner_text = seg_text[start + 1 : end].strip()
+        else:
+            inner_text = " ".join(t.text for t in real[1:close])
         kept = len(self.diags.items)
-        inner = self._parse_segment(real[1:-1] + [t for t in seg if t.kind == "EOF"], line, file, seg_text)
+        inner = self._parse_segment(real[1:close] + [t for t in seg if t.kind == "EOF"], line, file, seg_text)
         if isinstance(inner, (S.Assignment, S.Instruction)):
             if self.profile.single_pass:
                 # CR300/CR350 echo the inside of the group (`Invalid assignment in expression:
                 # Double = Z.`, `paren_assignment.json`)
-                inner.text = (
-                    " ".join(t.text for t in real[1:-1])
-                    if not seg_text
-                    else seg_text[seg_text.index("(") + 1 : seg_text.rindex(")")].strip()
-                )
+                inner.text = inner_text
                 inner.grouped = True  # ... with no line break before the `.`
             return inner
         del self.diags.items[kept:]  # the whole group is reparsed as written

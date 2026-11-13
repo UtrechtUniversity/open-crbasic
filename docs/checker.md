@@ -8036,7 +8036,10 @@ false reject from this.
 
 Not modelled: CR6/CR1000X report an unclosed `(w = 0` as `No Matching, or out of place ) in
 expression: (w = 0.` and `(w = 0)(w=1)` as `Incomplete expression: (w = 0)(w=1).`; CR300/CR350
-accept both. Whether the logger executes the parenthesized assignment is not observed on hardware.
+accept both. Round 137 recovers these one-line bodies on CR300/CR350 by
+parsing the first parenthesized statement. In the adjacent-group probes,
+the compiler does not diagnose undefined names in later groups.
+[Four-profile observations](../tests/fixtures/r137_inline_group_recovery.json).
 
 ## Aliases named Status, Public or Settings (round 33)
 
