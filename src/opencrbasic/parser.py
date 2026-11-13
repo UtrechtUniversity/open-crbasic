@@ -979,9 +979,24 @@ class _Parser:
         elif isinstance(value, (int, float)):
             if isinstance(arg, S.Number) and arg.text.upper().startswith(("&H", "&B")) and 2**31 <= value < 2**32:
                 value -= 2**32
-            if not -(2**31) <= value < 2**31 and not consteval.is_float(arg, self.env):
-                return False  # overflow conversions are not modelled here
-            spec = format(value, ".7g")
+            if not consteval.is_float(arg, self.env):
+                if isinstance(arg, S.Binary):
+                    from .checker import longconv
+
+                    converted = longconv.long_value(arg, self.env, self.profile)
+                    if converted is not None:
+                        value = converted
+                if not -(2**31) <= value < 2**31:
+                    return False  # out-of-range literal echoes depend on the reference buffer
+                spec = (
+                    "NAN"
+                    if value == -(2**31) and (not self.profile.single_pass or isinstance(arg, S.Binary))
+                    else str(int(value))
+                    if not self.profile.single_pass
+                    else format(value, ".7g")
+                )
+            else:
+                spec = format(value, ".7g")
         else:
             return False
         bad = source.bad_include_extension(

@@ -1,0 +1,359 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-include-section-2147483647",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",2147483647)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 2147483647 must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-section--2147483648",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",-2147483648)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-section-(2147483647+1)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(2147483647+1))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-section-(K+1)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(K+1))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-section-(2147483647+2)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(2147483647+2))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file -2147483647 must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-section-(0-2147483647-2)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(0-2147483647-2))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 2147483647 must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-section-(100000*100000)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(100000*100000))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 1410065408 must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-section-&H80000000",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",&H80000000)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-section-&HFFFFFFFF",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",&HFFFFFFFF)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file -1 must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-section-(2147483647+1.0)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(2147483647+1.0))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 2.147484e+09 must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-plain-2147483647",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nInclude(2147483647)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 2147483647 must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-plain--2147483648",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nInclude(-2147483648)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-plain-(2147483647+1)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nInclude((2147483647+1))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-plain-(K+1)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nInclude((K+1))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-plain-(2147483647+2)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nInclude((2147483647+2))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file -2147483647 must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-plain-(0-2147483647-2)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nInclude((0-2147483647-2))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 2147483647 must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-plain-(100000*100000)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nInclude((100000*100000))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 1410065408 must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-plain-&H80000000",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nInclude(&H80000000)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-plain-&HFFFFFFFF",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nInclude(&HFFFFFFFF)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file -1 must have valid program file extension."
+  },
+  {
+   "id": "cr6-include-plain-(2147483647+1.0)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K = 2147483647\nInclude((2147483647+1.0))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 2.147484e+09 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-section-2147483647",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",2147483647)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 2147483647 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-section--2147483648",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",-2147483648)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-section-(2147483647+1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(2147483647+1))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-section-(K+1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(K+1))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-section-(2147483647+2)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(2147483647+2))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file -2147483647 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-section-(0-2147483647-2)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(0-2147483647-2))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 2147483647 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-section-(100000*100000)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(100000*100000))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 1410065408 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-section-&H80000000",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",&H80000000)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-section-&HFFFFFFFF",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",&HFFFFFFFF)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file -1 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-section-(2147483647+1.0)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(2147483647+1.0))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 2.147484e+09 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-plain-2147483647",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nInclude(2147483647)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 2147483647 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-plain--2147483648",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nInclude(-2147483648)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-plain-(2147483647+1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nInclude((2147483647+1))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-plain-(K+1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nInclude((K+1))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-plain-(2147483647+2)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nInclude((2147483647+2))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file -2147483647 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-plain-(0-2147483647-2)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nInclude((0-2147483647-2))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 2147483647 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-plain-(100000*100000)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nInclude((100000*100000))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 1410065408 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-plain-&H80000000",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nInclude(&H80000000)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file NAN must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-plain-&HFFFFFFFF",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nInclude(&HFFFFFFFF)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file -1 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include-plain-(2147483647+1.0)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K = 2147483647\nInclude((2147483647+1.0))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file 2.147484e+09 must have valid program file extension."
+  },
+  {
+   "id": "cr300-include-section-&HFFFFFFFF",
+   "logger": "cr300",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",&HFFFFFFFF)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 3: Warning: Cannot open include file  -1."
+  },
+  {
+   "id": "cr300-include-section-(2147483647+1.0)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(2147483647+1.0))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 3: Warning: Cannot open include file  2.147484e+09."
+  },
+  {
+   "id": "cr300-include-plain-&HFFFFFFFF",
+   "logger": "cr300",
+   "source": "Public Y\nConst K = 2147483647\nInclude(&HFFFFFFFF)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 3: Warning: Cannot open include file  -1."
+  },
+  {
+   "id": "cr300-include-plain-(2147483647+1.0)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K = 2147483647\nInclude((2147483647+1.0))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 3: Warning: Cannot open include file  2.147484e+09."
+  },
+  {
+   "id": "cr350-include-section-&HFFFFFFFF",
+   "logger": "cr350",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",&HFFFFFFFF)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 3: Warning: Cannot open include file  -1."
+  },
+  {
+   "id": "cr350-include-section-(2147483647+1.0)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K = 2147483647\nIncludeSection(\"Defs\",(2147483647+1.0))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 3: Warning: Cannot open include file  2.147484e+09."
+  },
+  {
+   "id": "cr350-include-plain-&HFFFFFFFF",
+   "logger": "cr350",
+   "source": "Public Y\nConst K = 2147483647\nInclude(&HFFFFFFFF)\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 3: Warning: Cannot open include file  -1."
+  },
+  {
+   "id": "cr350-include-plain-(2147483647+1.0)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K = 2147483647\nInclude((2147483647+1.0))\nBeginProg\n Y=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 3: Warning: Cannot open include file  2.147484e+09."
+  }
+ ]
+}

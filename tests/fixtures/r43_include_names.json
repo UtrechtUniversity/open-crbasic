@@ -1371,8 +1371,7 @@
         "x.crb": "Public Included\n"
       },
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file NAN must have valid program file extension.",
-      "not_modelled": "Integer overflow in include filename expression folds to NAN on the reference."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file NAN must have valid program file extension."
     },
     {
       "id": "extra-cr1000x-section-6",
@@ -1382,8 +1381,7 @@
         "x.crb": "Public Included\n"
       },
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file NAN must have valid program file extension.",
-      "not_modelled": "Integer overflow in include filename expression folds to NAN on the reference."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Include file NAN must have valid program file extension."
     },
     {
       "id": "extra-cr300-section-6",
@@ -1393,8 +1391,7 @@
         "x.crb": "Public Included\n"
       },
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  NAN.",
-      "not_modelled": "Integer overflow in include filename expression folds to NAN on the reference."
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  NAN."
     },
     {
       "id": "extra-cr350-section-6",
@@ -1404,8 +1401,7 @@
         "x.crb": "Public Included\n"
       },
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  NAN.",
-      "not_modelled": "Integer overflow in include filename expression folds to NAN on the reference."
+      "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Cannot open include file  NAN."
     },
     {
       "id": "extra-cr6-section-7",

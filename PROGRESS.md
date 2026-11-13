@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 123** (fixture verdict parity). Folded integer include names now
+use the signed 32-bit result. The overflow sentinel is rendered as
+`NAN` in the reference diagnostic.
+[Four-profile observations](tests/fixtures/r123_include_integer_names.json).
+
 **Round 122** (fixture verdict parity). CR300 and CR350 now reject the
 probed trailing tokens after a declared String size. Fourteen previously
 flagged cases match exactly.
