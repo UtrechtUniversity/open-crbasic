@@ -7908,9 +7908,12 @@ Remaining gaps (the 54 expected failures):
   PeriodAvg negative Reps (11).
 - Thermistor negative Reps and burst-channel spans (9). Two further CR6 Therm107 cases show the
   bridge-validator overlap and channel lines, which the thermistors do not run.
-- Pulse port and channel-0 messages (5): CR300 `SE1 is not a valid pulse count port.`, CR1000X
-  `Selected PulseCount config option is not compatible with channel type.`, CR300/CR350 VoltDiff
-  channel 0 `Invalid channel number.`.
+- Round 136 matched the PulseCount port messages. CR300 and CR350 truncate
+  PConfig and use its low byte. Config 1 rejects C, SE and P_SW terminals.
+  Config 2 rejects SE ports on CR300 and the low-level AC port on CR350.
+  CR1000X rejects config 2 on P1/P2 and config 5 on the probed C terminals.
+  [Four-profile observations](../tests/fixtures/r136_pulse_config.json).
+- CR300/CR350 VoltDiff channel 0 `Invalid channel number.`.
 - CR1000X BrHalf excitation past `Vx4` (1).
 - A CR1000X BrHalf `mV2500` range-code line, printed twice by the real compiler. It is also absent
   at round 30, so it belongs to another family (1).

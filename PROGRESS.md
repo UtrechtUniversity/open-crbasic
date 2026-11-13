@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 136** (fixture verdict parity). Checked `PulseCount` port
+compatibility on CR300, CR350 and CR1000X. Forty-three previously flagged
+cases match exactly.
+[Four-profile observations](tests/fixtures/r136_pulse_config.json).
+
 **Round 135** (fixture verdict parity). CR300 and CR350 now check
 bridge excitation spans for the five bridge instructions. Thirty-one
 previously flagged cases match exactly.

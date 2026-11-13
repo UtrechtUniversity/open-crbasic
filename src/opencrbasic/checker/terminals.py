@@ -189,10 +189,14 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
                 continue
             if reps is not None and profile.name == "cr6" and stmt.keyword.upper() in CR6_BRIDGES:
                 reps = min(reps, 1)  # start channel only: `instr_measure._check_bridge_span` owns the span
+            pulse = stmt.keyword.upper() == "PULSECOUNT" and profile.name in ("cr1000x", "cr300", "cr350")
+            ports = _pulse_config(stmt, profile, kind, env, diags, reps) if pulse else ()
             if reps is not None and "span" in kind:
                 _check_arg(stmt, pos, kind, env, diags, reps=reps, width=width)
             else:  # CR300/CR350: the last channel used is tested and shown
                 _check_arg(stmt, pos, kind, env, diags, max(reps, 1) * width - 1 if reps is not None else 0)
+            for message in ports:
+                diags.error(stmt.line, message, stmt.file)
 
 
 def _const_int(stmt: S.Instruction, pos: int, env: consteval.Env, truncate: bool = False) -> int | None:
@@ -231,6 +235,44 @@ def _check_bridge_excitation(
         excitation += first - 1
     if first <= excitation <= last and excitation + (reps - 1) // measurements > last:
         diags.error(stmt.line, "ExChan exceeds number of excitation channels.", stmt.file)
+
+
+def _pulse_config(
+    stmt: S.Instruction, profile: Profile, kind: dict, env: consteval.Env, diags: Diagnostics, reps: int | None
+) -> tuple[str, ...]:
+    channel = _const_int(stmt, 3, env, truncate=True)
+    config = _const_int(stmt, 4, env, truncate=True)
+    if channel is None or config is None or reps is None or reps < 1 or not _in_range(channel, kind):
+        return ()
+    if profile.name == "cr1000x":
+        if (channel in (301, 302) and config == 2) or (101 <= channel <= 108 and config == 5):
+            diags.error(stmt.line, "Selected PulseCount config option is not compatible with channel type.", stmt.file)
+        return ()
+    config &= 0xFF
+    switch_port = 8 if profile.name == "cr300" else 7
+    if config > 2 or (profile.name == "cr350" and channel == 8 and config == 2):
+        diags.error(stmt.line, "Invalid PulseCount PConfig option.", stmt.file)
+        return ()
+    if any(
+        d.line == stmt.line
+        and d.file == stmt.file
+        and d.message.startswith("Variable ")
+        and d.message.endswith(" out of bounds.")
+        for d in diags.errors
+    ):
+        return ()
+    if config == 1 and channel == switch_port:
+        return ("P_SW is not a valid low level AC input port.",)
+    if config == 1 and channel <= 6:
+        suffix = "low level AC input port."
+    elif config == 2 and profile.name == "cr300" and 3 <= channel <= 6:
+        suffix = "pulse count port."
+    else:
+        return ()
+    end = 2 if channel <= 2 else 6
+    count = reps if channel + reps - 1 <= end else 1
+    ports = (f"C{port}" if port <= 2 else f"SE{port - 2}" for port in range(channel, channel + count))
+    return tuple(f"{port} is not a valid {suffix}" for port in ports)
 
 
 def _check_acpower(stmt: S.Instruction, kind: dict, env: consteval.Env, diags: Diagnostics) -> bool:

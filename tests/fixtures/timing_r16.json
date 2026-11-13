@@ -1,6 +1,42 @@
 {
  "cases": [
     {
+      "id": "r136-cr300-C1-1-1",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n PulseCount(X,1,C1,1,0,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: Pulsecount = 100"
+    },
+    {
+      "id": "r136-cr300-C1-3-1",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n PulseCount(X,1,C1,3,0,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: Pulsecount = 100"
+    },
+    {
+      "id": "r136-cr300-C1-1-3",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n PulseCount(X,3,C1,1,0,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: Pulsecount = 100"
+    },
+    {
+      "id": "r136-cr350-C1-1-1",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n PulseCount(X,1,C1,1,0,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: Pulsecount = 100"
+    },
+    {
+      "id": "r136-cr350-C1-3-1",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n PulseCount(X,1,C1,3,0,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: Pulsecount = 100"
+    },
+    {
+      "id": "r136-cr350-C1-1-3",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n PulseCount(X,3,C1,1,0,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: Pulsecount = 100"
+    },
+    {
       "id": "r135-cr300-half-0",
       "logger": "cr300",
       "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,2500,True,0,60,1,0)\n NextScan\nEndProg\n",

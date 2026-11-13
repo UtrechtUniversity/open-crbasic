@@ -4656,160 +4656,140 @@
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,1,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C1-r2",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,2,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C1 is not a valid low level AC input port.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C1 is not a valid low level AC input port.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C1-r3",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,3,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C1-r4",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,4,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C1-r5",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,5,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C1-r8",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,8,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C1-r9",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,9,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C1-r12",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,12,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C1-r13",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,13,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C1-r17",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,17,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C2-r1",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,1,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C2-r2",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,2,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C2-r3",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,3,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C2-r4",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,4,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C2-r5",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,5,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C2-r8",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,8,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C2-r9",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,9,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C2-r12",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,12,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C2-r13",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,13,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr300-pc-C2-r17",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,17,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-P1-r1",
@@ -4956,160 +4936,140 @@
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,1,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C1-r2",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,2,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C1 is not a valid low level AC input port.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C1 is not a valid low level AC input port.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C1-r3",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,3,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C1-r4",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,4,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C1-r5",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,5,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C1-r8",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,8,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C1-r9",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,9,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C1-r12",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,12,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C1-r13",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,13,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C1-r17",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,17,C1,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C1 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C2-r1",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,1,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C2-r2",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,2,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C2-r3",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,3,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C2-r4",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,4,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C2-r5",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,5,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C2-r8",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,8,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C2-r9",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,9,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C2-r12",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,12,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C2-r13",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,13,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr350-pc-C2-r17",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(ZZ,17,C2,1,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port.",
-      "not_modelled": "CR300/CR350 PulseCount low-level AC port diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid PulseCount reps.\nline 4: C2 is not a valid low level AC input port."
     },
     {
       "id": "cr6-cs--1",

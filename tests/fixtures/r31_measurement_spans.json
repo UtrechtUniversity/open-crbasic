@@ -4913,8 +4913,7 @@
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(X,1,3,2,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SE1 is not a valid pulse count port.",
-      "not_modelled": "Pulse port and channel-0 messages not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: SE1 is not a valid pulse count port."
     },
     {
       "id": "cr300-PulseCount-c2_1",
@@ -5168,16 +5167,14 @@
       "logger": "cr1000x",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(X,2,P1,2,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Selected PulseCount config option is not compatible with channel type.",
-      "not_modelled": "Pulse port and channel-0 messages not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Selected PulseCount config option is not compatible with channel type."
     },
     {
       "id": "cr1000x-PulseCount-c2_P2",
       "logger": "cr1000x",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nPulseCount(X,2,P2,2,0,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Selected PulseCount config option is not compatible with channel type.\nline 4: Invalid PulseCount reps.",
-      "not_modelled": "Pulse port and channel-0 messages not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Selected PulseCount config option is not compatible with channel type.\nline 4: Invalid PulseCount reps."
     },
     {
       "id": "cr6-CurrentSE-c1_U12",
