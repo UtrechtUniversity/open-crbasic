@@ -8684,13 +8684,12 @@ The latter checks an initial digit and otherwise copies the name up to whitespac
 it does not remove quotation marks. This supports retaining the raw token spelling in
 `parser._parse_param`, without changing ordinary identifier parsing or expression strings.
 
-The bounded rule excludes whitespace and parentheses inside a quoted token: the reference
-interprets them through its raw declaration/dimension parser. Its diagnostic for initializing a
-required quoted parameter is also unmodelled, so the existing rejection is retained rather than
-accepting that header. Other strict gaps preserved in the matrix are numeric/signed parameter
-names, empty parameter slots, whitespace-split declarations, and unterminated quoted parameters.
-The 40 expected failures are these ten four-profile boundaries; none is silently treated as
-matching. No logger runtime behavior was tested.
+The raw declaration parser still has gaps for whitespace and parentheses in a
+complete quoted token, required-parameter initialization and numeric names.
+Round 118 confirmed that all four compilers skip empty parameter slots and
+drop an unterminated first quoted parameter while retaining the routine header.
+An ordinary identifier used in the body still needs a declaration.
+[Four-profile observations](../tests/fixtures/r118_routine_parameter_recovery.json).
 
 
 ## Timer number and nonfinite integral arguments (round 46)

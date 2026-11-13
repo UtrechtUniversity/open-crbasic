@@ -442,32 +442,28 @@
       "logger": "cr6",
       "source": "Public X\nSub S(, Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Empty parameter slots are skipped by the reference."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-missing-first",
       "logger": "cr1000x",
       "source": "Public X\nSub S(, Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "Empty parameter slots are skipped by the reference."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr300-missing-first",
       "logger": "cr300",
       "source": "Public X\nSub S(, Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Empty parameter slots are skipped by the reference."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-missing-first",
       "logger": "cr350",
       "source": "Public X\nSub S(, Q)\nX = Q\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "Empty parameter slots are skipped by the reference."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr6-split",
@@ -758,32 +754,28 @@
       "logger": "cr6",
       "source": "Public X\nSub S(\"Q)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "An unterminated quoted parameter is dropped by the reference."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr1000x-truncated-quote",
       "logger": "cr1000x",
       "source": "Public X\nSub S(\"Q)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-      "not_modelled": "An unterminated quoted parameter is dropped by the reference."
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr300-truncated-quote",
       "logger": "cr300",
       "source": "Public X\nSub S(\"Q)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "An unterminated quoted parameter is dropped by the reference."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr350-truncated-quote",
       "logger": "cr350",
       "source": "Public X\nSub S(\"Q)\nX = 1\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 0,
-      "expected_stdout": "t.CR6 -- Compiled OK.",
-      "not_modelled": "An unterminated quoted parameter is dropped by the reference."
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr6-unused-0",

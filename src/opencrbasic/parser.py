@@ -1057,6 +1057,10 @@ class _Parser:
         try:
             tokens = lexer.tokenize(seg_text_raw, line)
         except lexer.LexError as e:
+            if e.message == "unterminated string" and re.fullmatch(
+                r"\s*(?:Sub|Function)\s+[A-Za-z_]\w*\s*\(\s*", seg_text_raw[: e.col], re.I
+            ):
+                return self._parse_text_segment(seg_text_raw[: e.col], line, file)
             if re.match(r"\s*ESSInitialize\b", seg_text_raw, re.I):
                 # Its argument is read raw: `ESSInitialize(public")` and `ESSInitialize("public)`
                 # compile on all four loggers (oracle, 2026-09-28; a fuzz-found false reject).
@@ -2112,6 +2116,11 @@ class _Parser:
             p.next()
             if not p.is_op(")") and not p.at_end():
                 while True:
+                    if p.is_op(","):
+                        p.next()
+                        if p.at_end() or p.is_op(")"):
+                            break
+                        continue
                     if bad := self._numeric_name(p):  # (oracle, all four loggers, round 74: `Sub S(1p)`)
                         errors.append(f"Variable name {bad} illegal, starts with a number.")
                     else:
@@ -2136,7 +2145,7 @@ class _Parser:
                     if not p.is_op(","):
                         break
                     p.next()
-                    if p.at_end():
+                    if p.at_end() or p.is_op(")"):
                         break  # a header cut off at a comma is accepted (oracle, 2026-10-12)
             p.expect_close(")")
         return_type = None

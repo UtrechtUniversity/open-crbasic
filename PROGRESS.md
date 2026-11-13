@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 118** (fixture verdict parity). Fixed eight false rejects across
+all four profiles by recovering empty slots and an unterminated first
+quoted parameter in routine headers.
+[Routine header evidence](docs/checker.md#quoted-routine-parameter-names-round-45).
+
 **Round 117** (historical verdict parity). Fixed CR350 false accept
 `1c26400ee684` by sending invalid table-size constants through the storage
 allocator's overflow path. The 3,338-case historical replay has zero
