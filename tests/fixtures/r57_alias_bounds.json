@@ -766,16 +766,14 @@
    "logger": "cr300",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(7,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable S, index 13, reps 7, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable S, index 13, reps 7, out of bounds."
   },
   {
    "id": "cr350-tbl-Sample(7,G,String)",
    "logger": "cr350",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(7,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable S, index 13, reps 7, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable S, index 13, reps 7, out of bounds."
   },
   {
    "id": "cr6-tbl-Sample(&HFF,G,String)",
@@ -796,16 +794,14 @@
    "logger": "cr300",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(&HFF,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable G out of bounds.\nline 7: Variable G, index 1, reps 255, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable G out of bounds.\nline 7: Variable G, index 1, reps 255, out of bounds."
   },
   {
    "id": "cr350-tbl-Sample(&HFF,G,String)",
    "logger": "cr350",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(&HFF,G,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable G out of bounds.\nline 7: Variable G, index 1, reps 255, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable G out of bounds.\nline 7: Variable G, index 1, reps 255, out of bounds."
   },
   {
    "id": "cr6-tbl-Sample(2,A4,FP2)",
@@ -854,16 +850,14 @@
    "logger": "cr300",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(3,A4,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds."
   },
   {
    "id": "cr350-tbl-Sample(3,A4,FP2)",
    "logger": "cr350",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(3,A4,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds."
   },
   {
    "id": "cr6-tbl-Sample(4,L2,Long)",
@@ -912,16 +906,14 @@
    "logger": "cr300",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(5,L2,Long)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L, index 2, reps 5, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L, index 2, reps 5, out of bounds."
   },
   {
    "id": "cr350-tbl-Sample(5,L2,Long)",
    "logger": "cr350",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(5,L2,Long)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L, index 2, reps 5, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L, index 2, reps 5, out of bounds."
   },
   {
    "id": "cr6-tbl-Average(3,A4,FP2,False)",
@@ -942,16 +934,14 @@
    "logger": "cr300",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Average(3,A4,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds."
   },
   {
    "id": "cr350-tbl-Average(3,A4,FP2,False)",
    "logger": "cr350",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Average(3,A4,FP2,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds."
   },
   {
    "id": "cr6-tbl-Maximum(3,A4,FP2,False,False)",
@@ -972,16 +962,14 @@
    "logger": "cr300",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Maximum(3,A4,FP2,False,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds."
   },
   {
    "id": "cr350-tbl-Maximum(3,A4,FP2,False,False)",
    "logger": "cr350",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Maximum(3,A4,FP2,False,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A, index 4, reps 3, out of bounds."
   },
   {
    "id": "cr6-tbl-Sample(5,AW,FP2)",
@@ -1030,16 +1018,14 @@
    "logger": "cr300",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,AW,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds."
   },
   {
    "id": "cr350-tbl-Sample(6,AW,FP2)",
    "logger": "cr350",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,AW,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds."
   },
   {
    "id": "cr6-tbl-Sample(2,G(1),String)",
@@ -1118,16 +1104,14 @@
    "logger": "cr300",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(7,g,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable S, index 13, reps 7, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable S, index 13, reps 7, out of bounds."
   },
   {
    "id": "cr350-tbl-Sample(7,g,String)",
    "logger": "cr350",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(7,g,String)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable S, index 13, reps 7, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable S, index 13, reps 7, out of bounds."
   },
   {
    "id": "cr6-tbl-Sample(6,aw,FP2)",
@@ -1148,16 +1132,14 @@
    "logger": "cr300",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,aw,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds."
   },
   {
    "id": "cr350-tbl-Sample(6,aw,FP2)",
    "logger": "cr350",
    "source": "Public A(5), S(18) As String * 15, L(5) As Long\nAlias A(4) = A4\nAlias S(13) = G\nAlias L(2) = L2\nAlias A = AW\nDataTable (T,True,-1)\n  Sample(6,aw,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable AW, index 1, reps 6, out of bounds."
   }
  ]
 }

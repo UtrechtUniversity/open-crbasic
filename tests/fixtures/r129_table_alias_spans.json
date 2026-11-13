@@ -1,0 +1,3369 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-alias-Float--1-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float--2-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float--3-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float--3-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float--5-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float--5-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float--6-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float--6-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float--&HFF-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float--&HFF-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(1)-1-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(1)-1-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(1)-2-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(1)-2-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(1)-3-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(1)-3-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(1)-5-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(1)-5-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(1)-6-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(1)-6-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(1)-&HFF-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(1)-&HFF-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(2)-1-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(2)-1-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(2)-2-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(2)-2-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(2)-3-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(2)-3-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(2)-5-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(2)-5-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(2)-6-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(2)-6-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(2)-&HFF-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(2)-&HFF-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(4)-1-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(4)-1-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(4)-2-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(4)-2-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Float-(4)-3-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(4)-3-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(4)-5-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(4)-5-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(4)-6-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(4)-6-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(4)-&HFF-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Float-(4)-&HFF-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long--1-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long--1-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long--2-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long--2-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long--3-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long--3-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long--5-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long--5-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long--6-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long--6-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long--&HFF-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long--&HFF-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(1)-1-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(1)-1-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(1)-2-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(1)-2-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(1)-3-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(1)-3-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(1)-5-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(1)-5-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(1)-6-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(1)-6-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(1)-&HFF-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(1)-&HFF-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(2)-1-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(2)-1-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(2)-2-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(2)-2-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(2)-3-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(2)-3-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(2)-5-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(2)-5-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(2)-6-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(2)-6-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(2)-&HFF-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(2)-&HFF-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(4)-1-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(4)-1-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(4)-2-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(4)-2-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-Long-(4)-3-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(4)-3-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(4)-5-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(4)-5-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(4)-6-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(4)-6-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(4)-&HFF-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-Long-(4)-&HFF-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-String--1-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String--2-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String--3-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String--5-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String--6-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-String--&HFF-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-String-(1)-1-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String-(1)-2-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String-(1)-3-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String-(1)-5-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String-(1)-6-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-String-(1)-&HFF-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-String-(2)-1-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String-(2)-2-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String-(2)-3-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String-(2)-5-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr6-alias-String-(2)-6-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-String-(2)-&HFF-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr6-alias-String-(4)-1-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String-(4)-2-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias-String-(4)-3-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr6-alias-String-(4)-5-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr6-alias-String-(4)-6-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr6-alias-String-(4)-&HFF-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float--1-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float--1-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float--2-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float--2-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float--3-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float--3-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float--5-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float--5-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float--6-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float--6-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float--&HFF-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float--&HFF-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(1)-1-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(1)-1-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(1)-2-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(1)-2-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(1)-3-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(1)-3-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(1)-5-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(1)-5-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(1)-6-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(1)-6-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(1)-&HFF-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(1)-&HFF-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(2)-1-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(2)-1-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(2)-2-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(2)-2-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(2)-3-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(2)-3-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(2)-5-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(2)-5-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(2)-6-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(2)-6-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(2)-&HFF-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(2)-&HFF-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(4)-1-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(4)-1-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(4)-2-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(4)-2-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Float-(4)-3-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(4)-3-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(4)-5-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(4)-5-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(4)-6-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(4)-6-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(4)-&HFF-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Float-(4)-&HFF-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long--1-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long--1-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long--2-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long--2-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long--3-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long--3-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long--5-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long--5-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long--6-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long--6-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long--&HFF-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long--&HFF-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(1)-1-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(1)-1-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(1)-2-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(1)-2-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(1)-3-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(1)-3-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(1)-5-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(1)-5-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(1)-6-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(1)-6-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(1)-&HFF-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(1)-&HFF-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(2)-1-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(2)-1-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(2)-2-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(2)-2-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(2)-3-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(2)-3-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(2)-5-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(2)-5-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(2)-6-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(2)-6-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(2)-&HFF-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(2)-&HFF-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(4)-1-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(4)-1-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(4)-2-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(4)-2-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-Long-(4)-3-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(4)-3-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(4)-5-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(4)-5-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(4)-6-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(4)-6-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(4)-&HFF-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-Long-(4)-&HFF-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-String--1-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String--2-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String--3-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String--5-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String--6-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-String--&HFF-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-String-(1)-1-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String-(1)-2-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String-(1)-3-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String-(1)-5-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String-(1)-6-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-String-(1)-&HFF-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-String-(2)-1-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String-(2)-2-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String-(2)-3-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String-(2)-5-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-String-(2)-6-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-String-(2)-&HFF-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-String-(4)-1-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String-(4)-2-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias-String-(4)-3-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 3, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-String-(4)-5-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 5, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-String-(4)-6-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr1000x-alias-String-(4)-&HFF-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float--1-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float--1-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float--2-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float--2-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float--3-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float--3-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float--5-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float--5-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float--6-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float--6-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float--&HFF-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float--&HFF-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(1)-1-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(1)-1-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(1)-2-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(1)-2-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(1)-3-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(1)-3-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(1)-5-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(1)-5-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(1)-6-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(1)-6-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(1)-&HFF-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(1)-&HFF-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(2)-1-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(2)-1-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(2)-2-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(2)-2-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(2)-3-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(2)-3-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(2)-5-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 2, reps 5, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(2)-5-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 2, reps 5, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(2)-6-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(2)-6-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(2)-&HFF-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(2)-&HFF-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(4)-1-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(4)-1-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(4)-2-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(4)-2-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Float-(4)-3-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 3, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(4)-3-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 3, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(4)-5-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 5, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(4)-5-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 5, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(4)-6-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(4)-6-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(4)-&HFF-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Float-(4)-&HFF-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long--1-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long--1-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long--2-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long--2-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long--3-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long--3-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long--5-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long--5-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long--6-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long--6-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long--&HFF-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long--&HFF-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(1)-1-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(1)-1-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(1)-2-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(1)-2-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(1)-3-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(1)-3-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(1)-5-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(1)-5-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(1)-6-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(1)-6-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(1)-&HFF-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(1)-&HFF-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(2)-1-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(2)-1-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(2)-2-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(2)-2-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(2)-3-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(2)-3-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(2)-5-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 2, reps 5, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(2)-5-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 2, reps 5, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(2)-6-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(2)-6-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(2)-&HFF-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(2)-&HFF-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(4)-1-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(4)-1-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(4)-2-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(4)-2-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-Long-(4)-3-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 3, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(4)-3-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 3, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(4)-5-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 5, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(4)-5-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 5, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(4)-6-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(4)-6-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(4)-&HFF-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-Long-(4)-&HFF-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-String--1-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String--2-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String--3-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String--5-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String--6-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-String--&HFF-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-String-(1)-1-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String-(1)-2-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String-(1)-3-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String-(1)-5-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String-(1)-6-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-String-(1)-&HFF-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-String-(2)-1-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String-(2)-2-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String-(2)-3-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String-(2)-5-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 2, reps 5, out of bounds."
+  },
+  {
+   "id": "cr300-alias-String-(2)-6-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-String-(2)-&HFF-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-alias-String-(4)-1-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String-(4)-2-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias-String-(4)-3-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 3, out of bounds."
+  },
+  {
+   "id": "cr300-alias-String-(4)-5-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 5, out of bounds."
+  },
+  {
+   "id": "cr300-alias-String-(4)-6-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr300-alias-String-(4)-&HFF-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float--1-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float--1-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float--2-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float--2-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float--3-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float--3-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float--5-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float--5-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float--6-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float--6-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float--&HFF-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float--&HFF-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(1)-1-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(1)-1-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(1)-2-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(1)-2-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(1)-3-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(1)-3-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(1)-5-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(1)-5-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(1)-6-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(1)-6-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(1)-&HFF-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(1)-&HFF-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(1)=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(2)-1-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(2)-1-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(2)-2-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(2)-2-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(2)-3-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(2)-3-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(2)-5-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 2, reps 5, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(2)-5-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 2, reps 5, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(2)-6-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(2)-6-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(2)-&HFF-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(2)-&HFF-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(2)=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(4)-1-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(1,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(4)-1-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(1,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(4)-2-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(2,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(4)-2-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(2,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Float-(4)-3-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(3,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 3, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(4)-3-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(3,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 3, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(4)-5-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(5,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 5, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(4)-5-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(5,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 5, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(4)-6-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(6,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(4)-6-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(6,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(4)-&HFF-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(&HFF,A,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Float-(4)-&HFF-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Float\nAlias X(4)=A\nDataTable(T,True,10)\n Average(&HFF,A,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long--1-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long--1-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long--2-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long--2-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long--3-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long--3-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long--5-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long--5-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long--6-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long--6-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long--&HFF-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long--&HFF-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(1)-1-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(1)-1-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(1)-2-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(1)-2-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(1)-3-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(1)-3-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(1)-5-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(1)-5-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(1)-6-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(1)-6-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(1)-&HFF-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(1)-&HFF-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(1)=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(2)-1-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(2)-1-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(2)-2-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(2)-2-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(2)-3-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(2)-3-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(2)-5-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 2, reps 5, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(2)-5-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 2, reps 5, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(2)-6-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(2)-6-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(2)-&HFF-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(2)-&HFF-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(2)=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(4)-1-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(1,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(4)-1-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(1,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(4)-2-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(2,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(4)-2-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(2,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-Long-(4)-3-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(3,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 3, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(4)-3-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(3,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 3, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(4)-5-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(5,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 5, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(4)-5-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(5,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 5, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(4)-6-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(6,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(4)-6-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(6,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(4)-&HFF-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(&HFF,A,Long)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-Long-(4)-&HFF-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As Long\nAlias X(4)=A\nDataTable(T,True,10)\n Average(&HFF,A,Long,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-String--1-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String--2-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String--3-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String--5-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String--6-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-String--&HFF-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-String-(1)-1-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String-(1)-2-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String-(1)-3-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String-(1)-5-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String-(1)-6-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-String-(1)-&HFF-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(1)=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-String-(2)-1-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String-(2)-2-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String-(2)-3-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String-(2)-5-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 2, reps 5, out of bounds."
+  },
+  {
+   "id": "cr350-alias-String-(2)-6-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-String-(2)-&HFF-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(2)=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-alias-String-(4)-1-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(1,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String-(4)-2-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(2,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias-String-(4)-3-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(3,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 3, out of bounds."
+  },
+  {
+   "id": "cr350-alias-String-(4)-5-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(5,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable X, index 4, reps 5, out of bounds."
+  },
+  {
+   "id": "cr350-alias-String-(4)-6-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(6,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 6, out of bounds."
+  },
+  {
+   "id": "cr350-alias-String-(4)-&HFF-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(5) As String * 15\nAlias X(4)=A\nDataTable(T,True,10)\n Sample(&HFF,A,String)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Variable A, index 1, reps 255, out of bounds."
+  }
+ ]
+}

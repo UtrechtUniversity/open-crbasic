@@ -92,6 +92,12 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 129** (fixture verdict parity). CR300 and CR350 now check
+table-output repetition spans through Float, Long and String aliases.
+Forty-two previously flagged observations match exactly, including
+packed-output cases.
+[Four-profile observations](tests/fixtures/r129_table_alias_spans.json).
+
 **Round 128** (fixture verdict parity). CR6 and CR1000X now check wide
 integer `Sample` data-type codes and report the confirmed fieldless cases.
 Thirty-four previously flagged cases match exactly.
