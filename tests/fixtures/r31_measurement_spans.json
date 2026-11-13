@@ -1293,16 +1293,14 @@
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf(X,3,mV2500,4,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels."
     },
     {
       "id": "cr300-BrHalf-c_over3",
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf(X,3,mV2500,5,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr350-BrHalf-d_fit",
@@ -1365,16 +1363,14 @@
       "logger": "cr350",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf(X,3,mV2500,2,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels."
     },
     {
       "id": "cr350-BrHalf-c_over3",
       "logger": "cr350",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf(X,3,mV2500,3,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 5 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 5 exceeds number of valid channels."
     },
     {
       "id": "cr6-BrHalf3W-d_fit",
@@ -1577,16 +1573,14 @@
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf3W(X,3,mV2500,4,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 9 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 9 exceeds number of valid channels."
     },
     {
       "id": "cr300-BrHalf3W-c_over3",
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf3W(X,3,mV2500,5,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 10 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 10 exceeds number of valid channels."
     },
     {
       "id": "cr350-BrHalf3W-d_fit",
@@ -1649,16 +1643,14 @@
       "logger": "cr350",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf3W(X,3,mV2500,2,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr350-BrHalf3W-c_over3",
       "logger": "cr350",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf3W(X,3,mV2500,3,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 8 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 8 exceeds number of valid channels."
     },
     {
       "id": "cr6-BrHalf4W-d_fit",
@@ -1861,16 +1853,14 @@
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,3,mV2500,mV2500,1,Vx1,1,2500,True,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr300-BrHalf4W-c_over3",
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,3,mV2500,mV2500,2,Vx1,1,2500,True,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr350-BrHalf4W-d_fit",
@@ -1933,8 +1923,7 @@
       "logger": "cr350",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(X,3,mV2500,mV2500,1,Vx1,1,2500,True,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr6-BrFull-d_fit",
@@ -2137,16 +2126,14 @@
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrFull(X,3,mV2500,1,Vx1,1,2500,True,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels."
     },
     {
       "id": "cr300-BrFull-c_over3",
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrFull(X,3,mV2500,2,Vx1,1,2500,True,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 4 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 4 exceeds number of valid channels."
     },
     {
       "id": "cr350-BrFull-d_fit",
@@ -2209,8 +2196,7 @@
       "logger": "cr350",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrFull(X,3,mV2500,1,Vx1,1,2500,True,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 3 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 3 exceeds number of valid channels."
     },
     {
       "id": "cr6-BrFull6W-d_fit",
@@ -2413,16 +2399,14 @@
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,3,mV2500,mV2500,1,Vx1,1,2500,True,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr300-BrFull6W-c_over3",
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,3,mV2500,mV2500,2,Vx1,1,2500,True,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 7 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 7 exceeds number of valid channels."
     },
     {
       "id": "cr350-BrFull6W-d_fit",
@@ -2485,8 +2469,7 @@
       "logger": "cr350",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(X,3,mV2500,mV2500,1,Vx1,1,2500,True,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr6-Therm107-d_fit",
@@ -4223,16 +4206,14 @@
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf(X,3,mV2500,6,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 8 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 8 exceeds number of valid channels."
     },
     {
       "id": "cr350-BrHalf-c_over_by2",
       "logger": "cr350",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrHalf(X,3,mV2500,4,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr6-Therm107-c_over_by2",
@@ -4344,16 +4325,14 @@
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrFull(X,3,mV2500,3,Vx1,1,2500,True,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 5 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 5 exceeds number of valid channels."
     },
     {
       "id": "cr350-BrFull-c_over_by2",
       "logger": "cr350",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nBrFull(X,3,mV2500,2,Vx1,1,2500,True,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 4 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 4 exceeds number of valid channels."
     },
     {
       "id": "cr6-BrHalf3W-c_r1",
@@ -6137,16 +6116,14 @@
       "logger": "cr300",
       "source": "Public X(4),PT\nAlias X(2)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf3W(Y(2),3,mV2500,1,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ExChan exceeds number of excitation channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ExChan exceeds number of excitation channels."
     },
     {
       "id": "cr300-BrHalf3W-a_start_ok",
       "logger": "cr300",
       "source": "Public X(3),PT\nAlias X(2)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf3W(Y(1),3,mV2500,1,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ExChan exceeds number of excitation channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ExChan exceeds number of excitation channels."
     },
     {
       "id": "cr300-Therm107-a_cap",
@@ -6223,16 +6200,14 @@
       "logger": "cr350",
       "source": "Public X(4),PT\nAlias X(2)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf3W(Y(2),3,mV2500,1,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ExChan exceeds number of excitation channels.\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ExChan exceeds number of excitation channels.\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-BrHalf3W-a_start_ok",
       "logger": "cr350",
       "source": "Public X(3),PT\nAlias X(2)=Y(2)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf3W(Y(1),3,mV2500,1,Vx1,1,2500,True,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ExChan exceeds number of excitation channels.\nline 5: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 excitation channel span (ExChan) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ExChan exceeds number of excitation channels.\nline 5: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-Therm107-a_cap",

@@ -173,6 +173,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
             and _check_acpower(stmt, channels[positions[0][1]], env, diags)
         ):
             continue
+        if profile.single_pass and stmt.keyword.upper() in CR6_BRIDGES:
+            _check_bridge_excitation(stmt, profile, env, diags, positions[0][0])
         for pos, kind_name, *extra in positions:
             # optional third and fourth items: the Reps position and the channels per repetition;
             # the channel span is then checked (rounds 30-31, docs/checker.md#measurement-
@@ -204,6 +206,31 @@ def _const_int(stmt: S.Instruction, pos: int, env: consteval.Env, truncate: bool
     if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value):
         return None
     return int(value) if truncate or value == int(value) else None
+
+
+def _check_bridge_excitation(
+    stmt: S.Instruction, profile: Profile, env: consteval.Env, diags: Diagnostics, channel_pos: int
+) -> None:
+    """CR300/CR350 bridges advance the excitation channel once per group of measurements."""
+    channel = _const_int(stmt, channel_pos, env, truncate=True)
+    reps = _const_int(stmt, 2, env, truncate=True)
+    excitation = _const_int(stmt, channel_pos + 1, env, truncate=True)
+    measurements = _const_int(stmt, channel_pos + 2, env, truncate=True)
+    if (
+        channel is None
+        or channel < 1
+        or reps is None
+        or excitation is None
+        or measurements is None
+        or reps < 1
+        or measurements < 1
+    ):
+        return
+    first, last = (int(profile.symbols[name]["value"]) for name in ("VX1", "VX2"))
+    if profile.name == "cr350" and excitation in (1, 2):
+        excitation += first - 1
+    if first <= excitation <= last and excitation + (reps - 1) // measurements > last:
+        diags.error(stmt.line, "ExChan exceeds number of excitation channels.", stmt.file)
 
 
 def _check_acpower(stmt: S.Instruction, kind: dict, env: consteval.Env, diags: Diagnostics) -> bool:

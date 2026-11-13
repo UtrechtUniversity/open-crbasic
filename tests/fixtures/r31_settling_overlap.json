@@ -1130,24 +1130,21 @@
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(ZZ,3,mV2500,mV2500,1,Vx1,1,2500,False,False,0,500,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 bridge excitation and channel-count diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr300-ov-6w",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(ZZ,3,mV2500,mV2500,1,Vx1,1,2500,False,False,0,500,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 bridge excitation and channel-count diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr300-ov-half",
       "logger": "cr300",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf(ZZ,3,mV2500,1,Vx1,1,2500,False,0,500,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: ExChan exceeds number of excitation channels.",
-      "not_modelled": "CR300/CR350 bridge excitation and channel-count diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: ExChan exceeds number of excitation channels."
     },
     {
       "id": "cr300-ov-full",
@@ -1161,24 +1158,21 @@
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf4W(ZZ,3,mV2500,mV2500,1,Vx1,1,2500,False,False,0,500,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 bridge excitation and channel-count diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-ov-6w",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nBrFull6W(ZZ,3,mV2500,mV2500,1,Vx1,1,2500,False,False,0,500,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels.",
-      "not_modelled": "CR300/CR350 bridge excitation and channel-count diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: ExChan exceeds number of excitation channels.\nline 4: Channel 6 exceeds number of valid channels."
     },
     {
       "id": "cr350-ov-half",
       "logger": "cr350",
       "source": "Public ZZ(40)\nBeginProg\nScan(10,Sec,0,0)\nBrHalf(ZZ,3,mV2500,1,Vx1,1,2500,False,0,500,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: ExChan exceeds number of excitation channels.",
-      "not_modelled": "CR300/CR350 bridge excitation and channel-count diagnostics not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: ExChan exceeds number of excitation channels."
     },
     {
       "id": "cr350-ov-full",

@@ -1,5 +1,41 @@
 {
  "cases": [
+    {
+      "id": "r135-cr300-half-0",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,2500,True,0,60,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: BrHalf = 103400"
+    },
+    {
+      "id": "r135-cr300-half-2",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,3,mV2500,1,Vx1,1,2500,True,0,60,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: BrHalf = 103400\nline 5: BrHalf = 103400\nline 5: BrHalf = 103400"
+    },
+    {
+      "id": "r135-cr300-half-6",
+      "logger": "cr300",
+      "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,3,mV2500,1,Vx2,1,2500,True,0,60,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: BrHalf = 103400\nline 5: BrHalf = 103400\nline 5: BrHalf = 103400"
+    },
+    {
+      "id": "r135-cr350-half-0",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,2500,True,0,60,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: BrHalf = 103400"
+    },
+    {
+      "id": "r135-cr350-half-2",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,3,mV2500,1,Vx1,1,2500,True,0,60,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: BrHalf = 103400\nline 5: BrHalf = 103400\nline 5: BrHalf = 103400"
+    },
+    {
+      "id": "r135-cr350-half-6",
+      "logger": "cr350",
+      "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,3,mV2500,1,Vx2,1,2500,True,0,60,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: BrHalf = 103400\nline 5: BrHalf = 103400\nline 5: BrHalf = 103400"
+    },
   {
    "id": "cr300_unknown_instr_hides",
    "logger": "cr300",

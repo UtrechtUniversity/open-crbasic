@@ -7899,7 +7899,11 @@ and `reps_large`).
 
 Remaining gaps (the 54 expected failures):
 
-- CR300/CR350 `ExChan exceeds number of excitation channels.` (25).
+- CR300/CR350 bridge excitation spans were matched in round 135. Starting
+  from VX1 or VX2, each group of `MeasPEx` repetitions uses one excitation
+  channel. Exceeding VX2 is reported before the measurement channel span
+  and retains `-t` output.
+  [Four-profile observations](../tests/fixtures/r135_bridge_excitation.json).
 - CR300 PeriodAvg `Invalid channel: %d.` / `Reps exceeds valid channels.`, and the CR6/CR1000X
   PeriodAvg negative Reps (11).
 - Thermistor negative Reps and burst-channel spans (9). Two further CR6 Therm107 cases show the

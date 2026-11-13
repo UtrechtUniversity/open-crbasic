@@ -198,6 +198,7 @@ _SINGLE_PASS_KEEPS = re.compile(
     r"FileManage invalid drive|Invalid file type option|Illegal Semaphore|"
     r"Invalid drive or no drive specified|IF or SELECT without EndIf|Could not find \S+\.BytesPerRecord|"
     r"Illegal dimension|exceeds number of valid channels|Settling time -?\d+ too (short|long)|Variable \S+ out of bounds|is not a (Status or )?Settings Field Name|Could not find DataTable (?!variables)|"
+    r"^ExChan exceeds number of excitation channels\.$|"
     r"^Invalid channel: -?\d+\.$|^Reps exceeds valid channels\.$"
 )
 
