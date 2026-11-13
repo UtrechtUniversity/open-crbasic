@@ -3767,32 +3767,28 @@
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nPeriodAvg(X,2,5,0,10,50,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel: 5.\nline 4: Reps exceeds valid channels.",
-      "not_modelled": "PeriodAvg channel/Reps checks (CR300) and negative Reps not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel: 5.\nline 4: Reps exceeds valid channels."
     },
     {
       "id": "cr300-PeriodAvg-c_over",
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nPeriodAvg(X,2,6,0,10,50,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel: 6.\nline 4: Reps exceeds valid channels.",
-      "not_modelled": "PeriodAvg channel/Reps checks (CR300) and negative Reps not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel: 6.\nline 4: Reps exceeds valid channels."
     },
     {
       "id": "cr300-PeriodAvg-c_fit3",
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nPeriodAvg(X,3,4,0,10,50,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps exceeds valid channels.",
-      "not_modelled": "PeriodAvg channel/Reps checks (CR300) and negative Reps not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps exceeds valid channels."
     },
     {
       "id": "cr300-PeriodAvg-c_over3",
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nPeriodAvg(X,3,5,0,10,50,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel: 5.\nline 4: Reps exceeds valid channels.",
-      "not_modelled": "PeriodAvg channel/Reps checks (CR300) and negative Reps not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel: 5.\nline 4: Reps exceeds valid channels."
     },
     {
       "id": "cr350-PeriodAvg-d_fit",
@@ -4861,24 +4857,21 @@
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nPeriodAvg(X,1,5,0,10,50,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel: 5.\nline 4: Reps exceeds valid channels.",
-      "not_modelled": "PeriodAvg channel/Reps checks (CR300) and negative Reps not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel: 5.\nline 4: Reps exceeds valid channels."
     },
     {
       "id": "cr300-PeriodAvg-c1_6",
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nPeriodAvg(X,1,6,0,10,50,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel: 6.\nline 4: Reps exceeds valid channels.",
-      "not_modelled": "PeriodAvg channel/Reps checks (CR300) and negative Reps not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel: 6.\nline 4: Reps exceeds valid channels."
     },
     {
       "id": "cr300-PeriodAvg-c1_7",
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nPeriodAvg(X,1,7,0,10,50,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel: 7.\nline 4: Reps exceeds valid channels.",
-      "not_modelled": "PeriodAvg channel/Reps checks (CR300) and negative Reps not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel: 7.\nline 4: Reps exceeds valid channels."
     },
     {
       "id": "cr300-TCSe-c1_5",

@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 130** (fixture verdict parity). Checked the `PeriodAvg` starting
+channel and repetition span on CR300 and CR350. Seven previously flagged
+cases match exactly.
+[Four-profile observations](tests/fixtures/r130_periodavg_channels.json).
+
 **Round 129** (fixture verdict parity). CR300 and CR350 now check
 table-output repetition spans through Float, Long and String aliases.
 Forty-two previously flagged observations match exactly, including

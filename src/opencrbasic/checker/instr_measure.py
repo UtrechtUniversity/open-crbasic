@@ -53,6 +53,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
                 _task_memory_full(stmt, diags)
         if kw == "CS616" and "cs616_min_reps_pos" in measure:
             _check_cs616_reps(stmt, measure, env, diags)
+        if kw == "PERIODAVG" and profile.single_pass:
+            _check_periodavg_channels(stmt, profile, env, diags)
         if kw in ("EXCITEV", "EXCITEI") and "excite_max_mv" in measure:
             _check_excite_magnitude(stmt, measure, env, diags)
         if kw == "GPS" and "gps" in measure:
@@ -140,6 +142,27 @@ def _check_timed_sdm(
                 errors.append("TimedControl must use PipeLineMode.")
             if errors:
                 _insert_in_line_order(diags, stmt, errors)
+
+
+def _check_periodavg_channels(stmt: S.Instruction, profile: Profile, env: consteval.Env, diags: Diagnostics) -> None:
+    if len(stmt.args) != 8:
+        return
+    channel = longconv.long_value(stmt.args[2], env, profile)
+    reps = _int_value(stmt.args[1], env)
+    maximum = 4 if profile.name == "cr300" else 6
+    if channel is None or channel < -1 and channel != longconv.INT_MIN or channel > 9:
+        return
+    if not 1 <= channel <= maximum:
+        diags.error(stmt.line, f"Invalid channel: {channel}.", stmt.file)
+    if reps is not None and reps > 0 and channel > 0 and channel + reps - 1 > maximum:
+        diags.error(stmt.line, "Reps exceeds valid channels.", stmt.file)
+    invalid_ports = (
+        {-1: "(null)", 8: "RS232", 9: "?"}
+        if profile.name == "cr300"
+        else {-1: "(null)", 7: "SW12_1", 8: "SW12_2", 9: "RS232"}
+    )
+    if port := invalid_ports.get(channel):
+        diags.error(stmt.line, f"{port} is not a valid control port.", stmt.file)
 
 
 def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
