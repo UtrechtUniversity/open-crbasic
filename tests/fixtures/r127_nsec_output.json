@@ -1,0 +1,3383 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-nsec-Float--V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr6-nsec-Float--V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float--V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Float-(6)-V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr6-nsec-Float-(6)-V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(6)-V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Float-(6)-V(1)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr6-nsec-Float-(6)-V(1)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(6)-V(1)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Float-(6)-V(2)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr6-nsec-Float-(6)-V(2)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(6)-V(2)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Float-(7)-V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(7)-V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(7)-V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Float-(7)-V(1)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(7)-V(1)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(7)-V(1)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Float-(7)-V(2)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(7)-V(2)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(7)-V(2)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Float-(8)-V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(8)-V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(8)-V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Float-(8)-V(1)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(8)-V(1)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(8)-V(1)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Float-(8)-V(2)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(8)-V(2)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Float-(8)-V(2)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Long--V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long--V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long--V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Long-(6)-V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(6)-V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(6)-V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Long-(6)-V(1)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(6)-V(1)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(6)-V(1)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Long-(6)-V(2)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(6)-V(2)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(6)-V(2)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Long-(7)-V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(7)-V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(7)-V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Long-(7)-V(1)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(7)-V(1)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(7)-V(1)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Long-(7)-V(2)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(7)-V(2)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(7)-V(2)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Long-(8)-V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(8)-V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(8)-V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Long-(8)-V(1)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(8)-V(1)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(8)-V(1)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Long-(8)-V(2)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(8)-V(2)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Long-(8)-V(2)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Double--V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Double--V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Double--V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Double-(6)-V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Double-(6)-V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Double-(6)-V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Double-(6)-V(1)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Double-(6)-V(1)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Double-(6)-V(1)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Double-(6)-V(2)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Double-(6)-V(2)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Double-(6)-V(2)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Double-(7)-V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Double-(7)-V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Double-(7)-V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Double-(7)-V(1)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Double-(7)-V(1)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Double-(7)-V(1)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Double-(7)-V(2)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Double-(7)-V(2)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Double-(7)-V(2)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Double-(8)-V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Double-(8)-V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Double-(8)-V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Double-(8)-V(1)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Double-(8)-V(1)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Double-(8)-V(1)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Double-(8)-V(2)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Double-(8)-V(2)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Double-(8)-V(2)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Boolean--V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Boolean--V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Boolean--V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(6)-V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Boolean-(6)-V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(6)-V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(6)-V(1)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Boolean-(6)-V(1)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(6)-V(1)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(6)-V(2)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Boolean-(6)-V(2)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(6)-V(2)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(7)-V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Boolean-(7)-V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(7)-V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(7)-V(1)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Boolean-(7)-V(1)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(7)-V(1)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(7)-V(2)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Boolean-(7)-V(2)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(7)-V(2)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(8)-V-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Boolean-(8)-V-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(8)-V-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(8)-V(1)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Boolean-(8)-V(1)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(8)-V(1)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(8)-V(2)-Sample",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr6-nsec-Boolean-(8)-V(2)-Average",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-nsec-Boolean-(8)-V(2)-WindVector",
+   "logger": "cr6",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Float--V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr1000x-nsec-Float--V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float--V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(6)-V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr1000x-nsec-Float-(6)-V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(6)-V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(6)-V(1)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr1000x-nsec-Float-(6)-V(1)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(6)-V(1)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(6)-V(2)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr1000x-nsec-Float-(6)-V(2)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(6)-V(2)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(7)-V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(7)-V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(7)-V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(7)-V(1)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(7)-V(1)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(7)-V(1)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(7)-V(2)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(7)-V(2)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(7)-V(2)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(8)-V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(8)-V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(8)-V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(8)-V(1)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(8)-V(1)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(8)-V(1)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(8)-V(2)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(8)-V(2)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Float-(8)-V(2)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Long--V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long--V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long--V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(6)-V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(6)-V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(6)-V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(6)-V(1)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(6)-V(1)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(6)-V(1)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(6)-V(2)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(6)-V(2)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(6)-V(2)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(7)-V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(7)-V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(7)-V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(7)-V(1)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(7)-V(1)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(7)-V(1)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(7)-V(2)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(7)-V(2)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(7)-V(2)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(8)-V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(8)-V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(8)-V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(8)-V(1)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(8)-V(1)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(8)-V(1)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(8)-V(2)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(8)-V(2)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Long-(8)-V(2)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Double--V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Double--V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Double--V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(6)-V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Double-(6)-V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(6)-V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(6)-V(1)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Double-(6)-V(1)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(6)-V(1)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(6)-V(2)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Double-(6)-V(2)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(6)-V(2)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(7)-V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Double-(7)-V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(7)-V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(7)-V(1)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Double-(7)-V(1)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(7)-V(1)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(7)-V(2)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Double-(7)-V(2)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(7)-V(2)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(8)-V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Double-(8)-V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(8)-V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(8)-V(1)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Double-(8)-V(1)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(8)-V(1)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(8)-V(2)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Double-(8)-V(2)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Double-(8)-V(2)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean--V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Boolean--V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean--V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(6)-V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(6)-V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(6)-V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(6)-V(1)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(6)-V(1)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(6)-V(1)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(6)-V(2)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(6)-V(2)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(6)-V(2)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(7)-V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(7)-V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(7)-V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(7)-V(1)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(7)-V(1)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(7)-V(1)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(7)-V(2)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(7)-V(2)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(7)-V(2)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(8)-V-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(8)-V-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(8)-V-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(8)-V(1)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(8)-V(1)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(8)-V(1)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(8)-V(2)-Sample",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(8)-V(2)-Average",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-nsec-Boolean-(8)-V(2)-WindVector",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Float--V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr300-nsec-Float--V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float--V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Float-(6)-V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr300-nsec-Float-(6)-V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(6)-V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Float-(6)-V(1)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr300-nsec-Float-(6)-V(1)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(6)-V(1)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Float-(6)-V(2)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr300-nsec-Float-(6)-V(2)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(6)-V(2)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Float-(7)-V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(7)-V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(7)-V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Float-(7)-V(1)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(7)-V(1)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(7)-V(1)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Float-(7)-V(2)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(7)-V(2)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(7)-V(2)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Float-(8)-V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(8)-V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(8)-V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Float-(8)-V(1)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(8)-V(1)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(8)-V(1)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Float-(8)-V(2)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(8)-V(2)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Float-(8)-V(2)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Long--V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long--V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long--V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Long-(6)-V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(6)-V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(6)-V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Long-(6)-V(1)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(6)-V(1)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(6)-V(1)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Long-(6)-V(2)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(6)-V(2)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(6)-V(2)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Long-(7)-V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(7)-V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(7)-V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Long-(7)-V(1)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(7)-V(1)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(7)-V(1)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Long-(7)-V(2)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(7)-V(2)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(7)-V(2)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Long-(8)-V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(8)-V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(8)-V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Long-(8)-V(1)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(8)-V(1)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(8)-V(1)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Long-(8)-V(2)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(8)-V(2)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Long-(8)-V(2)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Double--V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Double--V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Double--V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Double-(6)-V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Double-(6)-V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Double-(6)-V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Double-(6)-V(1)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Double-(6)-V(1)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Double-(6)-V(1)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Double-(6)-V(2)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Double-(6)-V(2)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Double-(6)-V(2)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Double-(7)-V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Double-(7)-V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Double-(7)-V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Double-(7)-V(1)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Double-(7)-V(1)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Double-(7)-V(1)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Double-(7)-V(2)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Double-(7)-V(2)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Double-(7)-V(2)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Double-(8)-V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Double-(8)-V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Double-(8)-V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Double-(8)-V(1)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Double-(8)-V(1)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Double-(8)-V(1)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Double-(8)-V(2)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Double-(8)-V(2)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Double-(8)-V(2)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Boolean--V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Boolean--V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Boolean--V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(6)-V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Boolean-(6)-V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(6)-V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(6)-V(1)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Boolean-(6)-V(1)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(6)-V(1)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(6)-V(2)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Boolean-(6)-V(2)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(6)-V(2)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(7)-V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Boolean-(7)-V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(7)-V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(7)-V(1)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Boolean-(7)-V(1)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(7)-V(1)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(7)-V(2)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Boolean-(7)-V(2)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(7)-V(2)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(8)-V-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Boolean-(8)-V-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(8)-V-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(8)-V(1)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Boolean-(8)-V(1)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(8)-V(1)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(8)-V(2)-Sample",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr300-nsec-Boolean-(8)-V(2)-Average",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-nsec-Boolean-(8)-V(2)-WindVector",
+   "logger": "cr300",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Float--V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr350-nsec-Float--V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float--V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Float-(6)-V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr350-nsec-Float-(6)-V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(6)-V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Float-(6)-V(1)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr350-nsec-Float-(6)-V(1)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(6)-V(1)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Float-(6)-V(2)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Float to NSEC expects source array size >= 7"
+  },
+  {
+   "id": "cr350-nsec-Float-(6)-V(2)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(6)-V(2)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Float-(7)-V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(7)-V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(7)-V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Float-(7)-V(1)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(7)-V(1)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(7)-V(1)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Float-(7)-V(2)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(7)-V(2)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(7)-V(2)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Float-(8)-V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(8)-V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(8)-V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Float-(8)-V(1)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(8)-V(1)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(8)-V(1)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Float-(8)-V(2)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(8)-V(2)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Float-(8)-V(2)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Float\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Long--V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long--V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long--V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Long-(6)-V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(6)-V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(6)-V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Long-(6)-V(1)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(6)-V(1)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(6)-V(1)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Long-(6)-V(2)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(6)-V(2)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(6)-V(2)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Long-(7)-V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(7)-V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(7)-V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Long-(7)-V(1)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(7)-V(1)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(7)-V(1)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Long-(7)-V(2)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(7)-V(2)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(7)-V(2)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Long-(8)-V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(8)-V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(8)-V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Long-(8)-V(1)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(8)-V(1)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(8)-V(1)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Long-(8)-V(2)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(8)-V(2)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Long-(8)-V(2)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Long\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Double--V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Double--V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Double--V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Double-(6)-V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Double-(6)-V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Double-(6)-V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Double-(6)-V(1)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Double-(6)-V(1)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Double-(6)-V(1)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Double-(6)-V(2)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Double-(6)-V(2)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Double-(6)-V(2)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Double-(7)-V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Double-(7)-V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Double-(7)-V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Double-(7)-V(1)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Double-(7)-V(1)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Double-(7)-V(1)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Double-(7)-V(2)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Double-(7)-V(2)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Double-(7)-V(2)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Double-(8)-V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Double-(8)-V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Double-(8)-V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Double-(8)-V(1)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Double-(8)-V(1)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Double-(8)-V(1)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Double-(8)-V(2)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Double-(8)-V(2)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Double-(8)-V(2)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Double\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Boolean--V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Boolean--V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Boolean--V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(6)-V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Boolean-(6)-V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(6)-V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(6)-V(1)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Boolean-(6)-V(1)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(6)-V(1)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(6)-V(2)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Boolean-(6)-V(2)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(6)-V(2)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(6) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(7)-V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Boolean-(7)-V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(7)-V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(7)-V(1)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Boolean-(7)-V(1)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(7)-V(1)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(7)-V(2)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Boolean-(7)-V(2)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(7)-V(2)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(7) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(8)-V-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V,NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Boolean-(8)-V-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V,NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(8)-V-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V,Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(8)-V(1)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(1),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Boolean-(8)-V(1)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(1),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(8)-V(1)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(1),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(8)-V(2)-Sample",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Sample(1,V(2),NSEC)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+  },
+  {
+   "id": "cr350-nsec-Boolean-(8)-V(2)-Average",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n Average(1,V(2),NSEC,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-nsec-Boolean-(8)-V(2)-WindVector",
+   "logger": "cr350",
+   "source": "Public Y\nPublic V(8) As Boolean\nPublic Dir\nDataTable(T,True,4)\n WindVector(1,V(2),Dir,NSEC,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NSEC type is legal only with Sample()."
+  }
+ ]
+}

@@ -1829,6 +1829,8 @@ def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnosti
     bad = _ILLEGAL_DATA_TYPES.get(profile.name)
     if not bad:
         return
+    tables = symbols.scope_tables(program, env, scalars=True)
+    nsec = 23 if profile.single_pass else 14
     in_table = False  # outside a table, `must be used inside a table declaration` wins
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
@@ -1839,6 +1841,16 @@ def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnosti
         if pos is None or not in_table or pos >= len(stmt.args) or stmt.args[pos] is None:
             continue
         value = _constant_data_type(stmt, pos, env)
+        if value == nsec and kw == "WINDVECTOR":
+            diags.error(stmt.line, "NSEC type is legal only with Sample().", stmt.file)
+        if value == nsec and kw == "SAMPLE" and isinstance(arg := stmt.args[1], (S.Name, S.Index)):
+            scope = tables(stmt)
+            name = arg.name.upper()
+            kind = scope.types.get(name)
+            if kind == "FLOAT" and name in scope.dims and math.prod(scope.dims[name]) < 7:
+                diags.error(stmt.line, "Float to NSEC expects source array size >= 7", stmt.file)
+            elif kind in ("DOUBLE", "BOOLEAN"):
+                diags.error(stmt.line, "Source type must be either LONG or FLOAT or NSEC for data type NSEC", stmt.file)
         if value is not None and value in bad:
             name = profile.instructions[stmt.keyword.upper()]["name"]
             diags.error(stmt.line, f"Illegal data type parameter {int(value)} in {name} instruction.", stmt.file)

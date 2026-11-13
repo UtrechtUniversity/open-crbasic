@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 127** (fixture verdict parity). Checked `Sample` sources for
+`NSEC` output and rejected `NSEC` in `WindVector`. Six previously
+flagged cases now match exactly.
+[Four-profile observations](tests/fixtures/r127_nsec_output.json).
+
 **Round 126** (fixture verdict parity). Accounted for `CDM_MuxSelect`
 in the CPI scan-time check. Eight previously flagged CR6/CR1000X cases
 match exactly.

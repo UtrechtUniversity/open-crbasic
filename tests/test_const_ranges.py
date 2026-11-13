@@ -40,6 +40,7 @@ CASES = [
         "r124_fieldnames_expressions.json",
         "r125_const_use_order.json",
         "r126_mux_cpi_timing.json",
+        "r127_nsec_output.json",
     )
     for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
 ]

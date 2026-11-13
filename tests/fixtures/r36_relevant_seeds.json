@@ -8871,8 +8871,7 @@
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  WindVector(1,WS,WD,14,False,180,0,0)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: NSEC type is legal only with Sample().",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: NSEC type is legal only with Sample()."
   },
   {
    "id": "cr6-wv-15",
@@ -9131,8 +9130,7 @@
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  WindVector(1,WS,WD,14,False,180,0,0)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: NSEC type is legal only with Sample().",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: NSEC type is legal only with Sample()."
   },
   {
    "id": "cr1000x-wv-15",
@@ -9391,8 +9389,7 @@
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,14)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Float to NSEC expects source array size >= 7",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Float to NSEC expects source array size >= 7"
   },
   {
    "id": "cr6-dt1-15",
@@ -11270,8 +11267,7 @@
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,14)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Float to NSEC expects source array size >= 7",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Float to NSEC expects source array size >= 7"
   },
   {
    "id": "cr1000x-dt1-15",
@@ -13149,8 +13145,7 @@
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,14)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Float to NSEC expects source array size >= 7",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Float to NSEC expects source array size >= 7"
   },
   {
    "id": "cr6-dt2-15",
@@ -15027,8 +15022,7 @@
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,14)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Float to NSEC expects source array size >= 7",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Float to NSEC expects source array size >= 7"
   },
   {
    "id": "cr1000x-dt2-15",
