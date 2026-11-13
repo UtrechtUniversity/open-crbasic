@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 126** (fixture verdict parity). Accounted for `CDM_MuxSelect`
+in the CPI scan-time check. Eight previously flagged CR6/CR1000X cases
+match exactly.
+[MuxSelect evidence](docs/instructions.md#cdm_muxselect-ports-and-clock-pulse-width-round-100).
+
 **Round 125** (fixture verdict parity). CR300 and CR350 now resolve
 constants in assignments and `If` conditions at their point of use.
 Four previously flagged cases match exactly.

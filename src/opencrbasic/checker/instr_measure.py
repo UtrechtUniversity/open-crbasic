@@ -899,6 +899,7 @@ def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics, env
     it sits (loops, `If` branches, `Select` cases in SequentialMode). A `SubScan(Interval,Units,n)`
     body counts n times at `Interval` spacing (zero: its own length); an interval shorter than the
     body gives `SubScan interval too short for measurements from CPI address %d by %d uSec.` first.
+    CDM_MuxSelect contributes the time for its constant clock and reset settings.
     Programs with any other CDM instruction, an unreadable instruction or a SubScan form not
     probed are skipped whole."""
     if profile.name not in ("cr6", "cr1000x") or not program.statements:
@@ -911,6 +912,7 @@ def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics, env
     sub: tuple[int, int] | None = None  # open SubScan: (count, interval in 100 us units)
     sub_start: dict[int, int] = {}
     sequential = is_sequential(program, profile, env)
+    mux_names = longconv.float_names(program.statements), longconv.literal_names(program.statements)
     depth = 0  # open If/For/Do/Select blocks
     items: list[tuple[S.Stmt, bool]] = []
     for stmt in program.statements:
@@ -942,7 +944,7 @@ def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics, env
             kw = "NEXTSCAN"
         elif kw == "NEXT" and re.match(r"(?i)\s*Next\s+SubScan\b", text):
             kw = "NEXTSUBSCAN"
-        if kw.startswith("CDM_") and kw != "CDM_TCCOMP" or kw == "CPIADDMODULE2":
+        if kw.startswith("CDM_") and kw not in ("CDM_TCCOMP", "CDM_MUXSELECT") or kw == "CPIADDMODULE2":
             return
         if isinstance(stmt, S.Instruction) and (kw == "SCAN"):
             raw = _scan_raw(stmt, env)
@@ -984,6 +986,27 @@ def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics, env
                         scan["short"].append((addr, (length - step) * 100))
                     scan["times"][addr] = units + (step or length) * (count - 1)
             sub = None
+        elif isinstance(stmt, S.Instruction) and kw == "CDM_MUXSELECT":
+            if len(stmt.args) != 7 or conditional or sub is not None:
+                return
+            module, addr, width, count, reset = (
+                longconv.long_value(stmt.args[i], env, profile, *mux_names) for i in (0, 1, 4, 5, 6)
+            )
+            if (
+                module not in (220, 221, 222, 223)
+                or addr is None
+                or not 1 <= addr <= 120
+                or width is None
+                or not 1 <= width <= 100
+                or reset is None
+            ):
+                return
+            clocks = 32 if count is None else _byte(count)
+            micros = width * 1000 * (2 * clocks + 1 + bool(reset))
+            ticks = micros // 100 + 1
+            if addr not in order:
+                order.append(addr)
+            scan["times"][addr] = scan["times"].get(addr, 0) + ticks
         elif isinstance(stmt, S.Instruction) and (kw == "CDM_TCCOMP"):
             module, addr, reps = (_int_value(stmt.args[i], env) if i < len(stmt.args) else None for i in (0, 1, 3))
             if module != 224 or addr is None or not 1 <= addr <= 120 or reps is None or reps < 1:

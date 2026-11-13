@@ -1567,8 +1567,12 @@ The reference checks pulse width after the ports. It rejects values below
 `2147484` passes the width check after the product wraps.
 
 CR6 builder `FUN_00417170` dispatches to `FUN_0040f450` for these four modules.
-The scan-time calculation remains open. A pulse width of 100 in a one-second
-scan can require 1,001 ms, while the same width passes in a two-second scan.
+Round 126 adds the scan-time contribution for widths 1–100. Each call
+charges `width × (2 × clocks + 1 + reset)` milliseconds plus one 100 µs
+tick. The builder uses the low byte of a constant clock count or 32
+for a runtime count, and treats a nonzero reset flag as 1. Calls at the
+same address accumulate before the total rounds up to milliseconds.
+[Timing observations](../tests/fixtures/r126_mux_cpi_timing.json).
 [`r100_cdm_mux_options.json`](../tests/fixtures/r100_cdm_mux_options.json).
 
 ### CDM bridge excitation and settling time (round 93)
