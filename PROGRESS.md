@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 131** (fixture verdict parity). CR300 and CR350 report a Float
+destination error for constants and function results in the first code-8
+argument. Sixteen previously flagged cases match exactly.
+[Four-profile observations](tests/fixtures/r131_float_destinations.json).
+
 **Round 130** (fixture verdict parity). Checked the `PeriodAvg` starting
 channel and repetition span on CR300 and CR350. Seven previously flagged
 cases match exactly.

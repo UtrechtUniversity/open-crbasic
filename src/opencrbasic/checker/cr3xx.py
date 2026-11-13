@@ -945,11 +945,17 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
     types: dict[str, str] | None = None
     scoped: dict[int, dict[str, str]] = {}
     known = ds = None
+    constant_names = profile.symbols.keys() | expressions._EXTRA_PREDEFINED_SYMBOLS
+    function_names = set(profile.functions)
     params: dict[str, str] = {}  # the enclosing routine's parameters hide a global (round 31)
     per_line = collections.Counter((st.line, st.file) for st in program.statements)
     for stmt in program.statements:
         if isinstance(stmt, S.SubDef):
             params = {p.name.upper(): (p.type or "FLOAT").upper() for p in stmt.params}
+            if stmt.keyword.upper() == "FUNCTION":
+                function_names.add(stmt.name.upper())
+        elif isinstance(stmt, S.ConstDecl):
+            constant_names.add(stmt.name.upper())
         elif S.ends_routine(stmt):
             params = {}
         if (
@@ -1005,14 +1011,17 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             ds = expressions.program_dims(program, profile, known)
         assert known is not None and ds is not None
         arg = stmt.args[0]
+        assert arg is not None
         if isinstance(arg, S.Name) and arg.name.upper() in profile.functions:
             continue  # a bare function name is `Expression expects (` instead (expressions.py)
         key = (stmt.line, stmt.file)
         undefined = [n for n in _expr_names(arg) if n.upper() not in known]
+        variables = {**types, **scoped.get(id(stmt), {}), **params}
+        call = isinstance(arg, S.Index) and arg.name.upper() not in variables and arg.name.upper() in function_names
         expression = False
         dims = False
         if undefined:
-            if isinstance(arg, (S.Binary, S.Unary)):
+            if isinstance(arg, (S.Binary, S.Unary)) or call:
                 # an arithmetic expression is no destination: after its names, `Dimensions not
                 # declared` or the destination-type error (oracle, CR300, 2026-10-03)
                 expression = True
@@ -1020,11 +1029,21 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             elif not isinstance(arg, (S.Name, S.Index)):
                 continue
             keep = [profile.unresolved_symbol_message.format(name=n) for n in undefined]
-        elif _is_bad_destination(arg, {**types, **scoped.get(id(stmt), {}), **params}):
+        elif (
+            call
+            or _is_bad_destination(arg, variables)
+            or isinstance(arg, S.Name)
+            and arg.name.upper() not in variables
+            and arg.name.upper() in constant_names
+        ):
             keep = []
         else:
             continue
         own = [d for d in diags.items if (d.line, d.file) == key and d.severity == "error"]
+        if call and any(
+            d.message.startswith(("Incomplete expression:", "Invalid, or out of place expression:")) for d in own
+        ):
+            continue
         if not keep and any(d.message.startswith("Dimensions not declared") for d in own):
             continue  # (`Battery(L(2))` for a Long scalar: over-indexing is reported first)
         if keep and [d.message for d in own[: len(keep)]] != keep:

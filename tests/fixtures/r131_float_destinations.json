@@ -1,0 +1,1143 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-dest-battery-ComRS232",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(ComRS232)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr6-dest-battery-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: Sec."
+  },
+  {
+   "id": "cr6-dest-battery-K",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-dest-battery-TypeT",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(TypeT)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: TypeT."
+  },
+  {
+   "id": "cr6-dest-battery-True",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: True."
+  },
+  {
+   "id": "cr6-dest-battery-False",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(False)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: False."
+  },
+  {
+   "id": "cr6-dest-battery-Abs(V)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(V))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-battery-V",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(V)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-battery-L",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(L)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-battery-B",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(B)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-battery-A(1)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-battery-A(K)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-battery-V(1)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(V(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-battery-Nope",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-dest-battery-Abs(Nope)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(Nope))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Abs(Nope)."
+  },
+  {
+   "id": "cr6-dest-battery-(K+1)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery((K+1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: (K+1)."
+  },
+  {
+   "id": "cr6-dest-panel-ComRS232",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(ComRS232,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr6-dest-panel-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Sec,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: Sec."
+  },
+  {
+   "id": "cr6-dest-panel-K",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(K,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-dest-panel-TypeT",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(TypeT,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: TypeT."
+  },
+  {
+   "id": "cr6-dest-panel-True",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(True,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: True."
+  },
+  {
+   "id": "cr6-dest-panel-False",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(False,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: False."
+  },
+  {
+   "id": "cr6-dest-panel-Abs(V)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(V),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-panel-V",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(V,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-panel-L",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(L,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-panel-B",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(B,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-panel-A(1)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(1),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-panel-A(K)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(K),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-panel-V(1)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(V(1),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dest-panel-Nope",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Nope,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-dest-panel-Abs(Nope)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(Nope),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Abs(Nope)."
+  },
+  {
+   "id": "cr6-dest-panel-(K+1)",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp((K+1),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: (K+1)."
+  },
+  {
+   "id": "cr1000x-dest-battery-ComRS232",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(ComRS232)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr1000x-dest-battery-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: Sec."
+  },
+  {
+   "id": "cr1000x-dest-battery-K",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-dest-battery-TypeT",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(TypeT)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: TypeT."
+  },
+  {
+   "id": "cr1000x-dest-battery-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: True."
+  },
+  {
+   "id": "cr1000x-dest-battery-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(False)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: False."
+  },
+  {
+   "id": "cr1000x-dest-battery-Abs(V)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(V))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-battery-V",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(V)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-battery-L",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(L)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-battery-B",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(B)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-battery-A(1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-battery-A(K)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-battery-V(1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(V(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-battery-Nope",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-dest-battery-Abs(Nope)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(Nope))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Abs(Nope)."
+  },
+  {
+   "id": "cr1000x-dest-battery-(K+1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery((K+1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: (K+1)."
+  },
+  {
+   "id": "cr1000x-dest-panel-ComRS232",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(ComRS232,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr1000x-dest-panel-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Sec,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: Sec."
+  },
+  {
+   "id": "cr1000x-dest-panel-K",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(K,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-dest-panel-TypeT",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(TypeT,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: TypeT."
+  },
+  {
+   "id": "cr1000x-dest-panel-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(True,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: True."
+  },
+  {
+   "id": "cr1000x-dest-panel-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(False,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: False."
+  },
+  {
+   "id": "cr1000x-dest-panel-Abs(V)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(V),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-panel-V",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(V,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-panel-L",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(L,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-panel-B",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(B,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-panel-A(1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(1),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-panel-A(K)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(K),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-panel-V(1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(V(1),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dest-panel-Nope",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Nope,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-dest-panel-Abs(Nope)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(Nope),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Abs(Nope)."
+  },
+  {
+   "id": "cr1000x-dest-panel-(K+1)",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp((K+1),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: (K+1)."
+  },
+  {
+   "id": "cr300-dest-battery-ComRS232",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(ComRS232)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-battery-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-battery-K",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-battery-TypeT",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(TypeT)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-battery-True",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-battery-False",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(False)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-battery-NAN",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-battery-Abs(V)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(V))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-battery-Abs(K)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-battery-V",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(V)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-dest-battery-L",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(L)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-battery-B",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(B)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-battery-A(1)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-dest-battery-A(K)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-dest-battery-V(1)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(V(1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Dimensions not declared: V(1)."
+  },
+  {
+   "id": "cr300-dest-battery-Nope",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "cr300-dest-battery-Abs(Nope)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(Nope))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-battery-(K+1)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery((K+1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dest-panel-ComRS232",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(ComRS232,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Sec,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-K",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(K,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-TypeT",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(TypeT,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-True",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(True,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-False",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(False,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-NAN",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(NAN,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-Abs(V)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(V),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-Abs(K)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(K),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-V",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(V,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-dest-panel-L",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(L,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-B",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(B,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-A(1)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(1),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-dest-panel-A(K)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(K),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-dest-panel-V(1)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(V(1),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Dimensions not declared: V(1).\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-Nope",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Nope,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-Abs(Nope)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(Nope),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dest-panel-(K+1)",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp((K+1),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-battery-ComRS232",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(ComRS232)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-battery-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-battery-K",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-battery-TypeT",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(TypeT)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-battery-True",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(True)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-battery-False",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(False)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-battery-NAN",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-battery-Abs(V)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(V))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-battery-Abs(K)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-battery-V",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(V)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dest-battery-L",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(L)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-battery-B",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(B)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-battery-A(1)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dest-battery-A(K)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-dest-battery-V(1)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(V(1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Dimensions not declared: V(1)."
+  },
+  {
+   "id": "cr350-dest-battery-Nope",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "cr350-dest-battery-Abs(Nope)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(Nope))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-battery-(K+1)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery((K+1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dest-panel-ComRS232",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(ComRS232,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Sec,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-K",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(K,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-TypeT",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(TypeT,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-True",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(True,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-False",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(False,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-NAN",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(NAN,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-Abs(V)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(V),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-Abs(K)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(K),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-V",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(V,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-dest-panel-L",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(L,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-B",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(B,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-A(1)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(1),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-dest-panel-A(K)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(K),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-dest-panel-V(1)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(V(1),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Dimensions not declared: V(1).\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-Nope",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Nope,15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-Abs(Nope)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(Nope),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dest-panel-(K+1)",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nPublic V, L As Long, B As Boolean\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp((K+1),15000)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-abs-dims",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(Y(1)))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-user-fn",
+   "logger": "cr6",
+   "source": "Public Y\nFunction F(X As Float) As Float\n Return X\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Battery(F(Y))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-constant-string-expr",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(\"x\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-abs-dims",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(Y(1)))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-user-fn",
+   "logger": "cr1000x",
+   "source": "Public Y\nFunction F(X As Float) As Float\n Return X\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Battery(F(Y))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-constant-string-expr",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(\"x\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-consttable",
+   "logger": "cr300",
+   "source": "Public Y\nConstTable\nConst K=3\nEndConstTable\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-inf",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-abs-empty",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Abs()."
+  },
+  {
+   "id": "cr300-abs-extra",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(Y,Y))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Abs(Y,Y)."
+  },
+  {
+   "id": "cr300-abs-dims",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(Y(1)))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: Abs(Y(1))."
+  },
+  {
+   "id": "cr300-user-fn",
+   "logger": "cr300",
+   "source": "Public Y\nFunction F(X As Float) As Float\n Return X\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Battery(F(Y))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-string-const",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=\"x\"\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-constant-forward",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nConst K=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: K is not defined."
+  },
+  {
+   "id": "cr300-constant-string-expr",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(\"x\"))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-consttable",
+   "logger": "cr350",
+   "source": "Public Y\nConstTable\nConst K=3\nEndConstTable\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-inf",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-abs-empty",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs())\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Abs()."
+  },
+  {
+   "id": "cr350-abs-extra",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(Y,Y))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Abs(Y,Y)."
+  },
+  {
+   "id": "cr350-abs-dims",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(Y(1)))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: Abs(Y(1))."
+  },
+  {
+   "id": "cr350-user-fn",
+   "logger": "cr350",
+   "source": "Public Y\nFunction F(X As Float) As Float\n Return X\nEndFunction\nBeginProg\n Scan(1,Sec,0,0)\n Battery(F(Y))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-string-const",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=\"x\"\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-constant-forward",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nConst K=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: K is not defined."
+  },
+  {
+   "id": "cr350-constant-string-expr",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(\"x\"))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  }
+ ]
+}

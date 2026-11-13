@@ -44,6 +44,7 @@ CASES = [
         "r128_wide_sample_dtype.json",
         "r129_table_alias_spans.json",
         "r130_periodavg_channels.json",
+        "r131_float_destinations.json",
     )
     for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
 ]

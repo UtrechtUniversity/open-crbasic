@@ -9317,6 +9317,13 @@ later constant destination is not printed (`CDM_PanelTemp(CDM_A108,PTemp,1,1,150
 `drop_unreached_destinations`. `SerialIn` reads a predefined constant as a bad String destination too
 (`SerialIn(ComRS232,500,-1,100)`, then the shortfall, without the ComPort line).
 
+On CR300 and CR350, a constant or function result in the first code-8 argument
+gives `Illegal destination variable type, expecting Float.` followed by the
+first remaining argument as `Too many parameters`. A malformed function call or
+an invalid subscript keeps its expression diagnostic. An undefined name inside
+a valid call is reported before the destination type (round 131,
+[four-profile probes](../tests/fixtures/r131_float_destinations.json)).
+
 ## Bridge Range codes (round 59)
 
 `BrHalf`, `BrHalf3W` and `BrFull` check their one `Range` twice, `BrHalf4W` and `BrFull6W` each of
