@@ -9676,8 +9676,11 @@ two defects and several open first errors; all were probed on all four profiles
   (both were false accepts; the trailing tokens were dropped like those after a complete `As`
   clause). `As String!` compiles. In Sub/Function parameters, a size followed by `!` is also a
   pass-1 `Incomplete expression: <size text to the next comma or )>.` on CR6/CR1000X
-  (`string-size-junk-087-cr6` / `-cr1000x`). Other parameter junk and CR300/CR350 keep their
-  existing behavior.
+  (`string-size-junk-087-cr6` / `-cr1000x`). Round 122 covers the CR300/CR350
+  variable declaration forms. A trailing `!` gives the incomplete-expression
+  message. A decimal integer followed by a bare word reports the word as
+  undefined and adds the incomplete-expression and illegal-parameter messages.
+  [Four-profile observations](../tests/fixtures/r122_string_size_suffixes.json).
 - **Numbers beyond the float range** (round 69, Codex sign-off review): `consteval.value_of` treats a
   value that is not a finite float (an integer literal of 309 digits, `1e309`, a fold to infinity)
   as not a constant, so no numeric rule can raise on it. The reference gives no usable verdict for

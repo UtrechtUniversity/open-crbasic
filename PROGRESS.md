@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 122** (fixture verdict parity). CR300 and CR350 now reject the
+probed trailing tokens after a declared String size. Fourteen previously
+flagged cases match exactly.
+[Four-profile observations](tests/fixtures/r122_string_size_suffixes.json).
+
 **Round 121** (fixture verdict parity). Explicit empty `IIF` arguments
 in assignments now reject on all four profiles. Twelve previously
 flagged cases match exactly.

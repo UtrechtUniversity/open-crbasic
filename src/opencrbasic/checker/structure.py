@@ -1553,11 +1553,22 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     if not (profile.single_pass and any(d.message == "Size of string missing." for d in diags.items)):
                         diags.error(stmt.line, message, stmt.file)
                     break
-                if (junk := getattr(v, "size_junk", None)) is not None and not profile.single_pass:
+                if (junk := getattr(v, "size_junk", None)) is not None:
                     # `As String * 16!` (a sized String pointer) or `As String * 16 X`: the size is
                     # read to the next comma (oracle, CR6/CR1000X, round 67,
                     # docs/checker.md#round-67-review-fixes)
-                    echo = stmt.text[junk[0] :].split(",", 1)[0].rstrip()
+                    segment = stmt.text[junk[0] :].split(",", 1)[0]
+                    echo, assignment, _ = segment.partition("=")
+                    if profile.single_pass and junk[1] == "word":
+                        words = re.findall(r"[A-Za-z_]\w*", echo)
+                        if len(words) != 1 or not re.match(r"\s*\d+\s+[A-Za-z_]\w*\s*$", echo):
+                            continue
+                        diags.error(stmt.line, profile.unresolved_symbol_message.format(name=words[0]), stmt.file)
+                        diags.error(stmt.line, f"Incomplete expression: {echo.rstrip()}.", stmt.file)
+                        diags.error(stmt.line, f"Variable illegal in Parameter: {echo.rstrip()}.", stmt.file)
+                        break
+                    if not assignment:
+                        echo = echo.rstrip()
                     diags.error(
                         stmt.line,
                         f"Incomplete expression: {echo}."
