@@ -1,0 +1,2165 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r141-cr6-half-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,150.0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-12",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,149,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,150,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,Y,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,\"x\",True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,150.0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-12",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,149,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,150,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,Y,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half3-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,\"x\",True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,150.0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-12",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,149,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,150,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,Y,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,\"x\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,150.0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-12",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,Y,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-half4-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,\"x\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,150.0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-12",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,Y,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr6-full6-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,\"x\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r141-cr1000x-half-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,150.0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,149,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,150,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,Y,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr1000x-half3-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half3-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half3-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half3-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half3-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half3-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half3-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half3-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half3-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,150.0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half3-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,149,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half3-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,150,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half3-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,Y,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr1000x-full-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,150.0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,149,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,150,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,Y,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr1000x-half4-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,150.0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-half4-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,Y,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr1000x-half4-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,\"x\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,150.0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr1000x-full6-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,Y,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr1000x-full6-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,\"x\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r141-cr300-half-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,150.0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half-12",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,149,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr300-half-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,150,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr300-half-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,Y,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr300-half-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,\"x\",True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half3-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half3-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half3-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half3-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half3-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half3-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half3-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half3-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half3-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half3-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half3-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half3-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,150.0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half3-12",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,149,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr300-half3-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,150,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr300-half3-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,Y,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr300-half3-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,\"x\",True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-full-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-full-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-full-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-full-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,150.0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-full-12",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,149,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr300-full-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,150,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr300-full-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,Y,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr300-full-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,\"x\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half4-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half4-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half4-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half4-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half4-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half4-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half4-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half4-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half4-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half4-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half4-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-half4-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,150.0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-half4-12",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr300-half4-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr300-half4-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,Y,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr300-half4-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,\"x\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full6-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-full6-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-full6-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full6-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full6-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full6-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full6-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full6-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-full6-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-full6-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full6-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr300-full6-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,150.0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr300-full6-12",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr300-full6-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr300-full6-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,Y,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr300-full6-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,\"x\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,-149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,150.0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half-12",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,149,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr350-half-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,150,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr350-half-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,Y,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr350-half-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf(X,1,mV2500,1,Vx1,1,\"x\",True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half3-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half3-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half3-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half3-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half3-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half3-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,1,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half3-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,149,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half3-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,150,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half3-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,151,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half3-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half3-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,-149.9,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half3-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,150.0,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half3-12",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,149,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr350-half3-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,150,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr350-half3-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,Y,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr350-half3-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf3W(X,1,mV2500,1,Vx1,1,\"x\",True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-full-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-full-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-full-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-full-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,-149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,150.0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-full-12",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,149,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr350-full-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,150,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr350-full-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,Y,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr350-full-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull(X,1,mV2500,1,Vx1,1,\"x\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half4-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half4-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half4-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half4-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half4-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half4-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half4-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half4-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half4-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half4-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half4-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,-149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-half4-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,150.0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-half4-12",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr350-half4-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr350-half4-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,Y,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr350-half4-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrHalf4W(X,1,mV2500,mV2500,1,Vx1,1,\"x\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full6-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-full6-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-full6-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full6-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full6-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full6-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,1,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full6-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full6-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-full6-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,151,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-full6-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full6-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,-149.9,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  },
+  {
+   "id": "r141-cr350-full6-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,150.0,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r141-cr350-full6-12",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,149,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr350-full6-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,150,True,True,0,15000,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "r141-cr350-full6-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,Y,True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r141-cr350-full6-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(4)\nBeginProg\n Scan(10,Sec,0,0)\n BrFull6W(X,1,mV2500,mV2500,1,Vx1,1,\"x\",True,True,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Minimum Excitation is 150mV."
+  }
+ ]
+}

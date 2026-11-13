@@ -269,6 +269,18 @@ def _apply_const_rule(stmt, rule, env, profile, names, diags) -> None:
     raw = _raw_arg(stmt, rule["pos"], env)
     if raw is None or (rule.get("skip_strings") and isinstance(raw, str)):
         return
+    if "minimum_magnitude" in rule:
+        if isinstance(raw, str) or abs(raw) < rule["minimum_magnitude"]:
+            before_warning = next(
+                (
+                    i
+                    for i, d in enumerate(diags.items)
+                    if (d.file, d.line) == (stmt.file, stmt.line) and d.message.startswith("Invalid fnotch value")
+                ),
+                len(diags.items),
+            )
+            diags.items.insert(before_warning, Diagnostic("error", stmt.line, rule["message"], stmt.file))
+        return
     if "invalid_raw" in rule:
         if _matches_invalid_raw(raw, rule["invalid_raw"]):
             diags.error(stmt.line, rule["message"].format(value=consteval.to_long(raw)), stmt.file)

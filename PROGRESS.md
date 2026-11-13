@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 141** (fixture verdict parity). CR300 and CR350 reject bridge
+excitation below 150 mV in magnitude. Two previously flagged cases now
+match, including the order of the fnotch warning.
+[Four-profile observations](tests/fixtures/r141_bridge_min_excitation.json).
+
 **Round 140** (fixture verdict parity). One-line `If` branches now
 report adjacent operands in malformed `Sub` arguments across all four
 profiles. Four previously flagged false accepts match exactly.

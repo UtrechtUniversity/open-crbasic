@@ -9358,6 +9358,11 @@ numeric constants in code-27/29 destinations and report the next argument as
 excess when present. String concatenations and calls such as `Abs(K)` pass
 the check (round 133, [four-profile probes](../tests/fixtures/r133_array_destinations.json)).
 
+For the five bridge instructions on CR300 and CR350, an excitation voltage
+strictly between -150 and 150 mV or a string reports
+`Minimum Excitation is 150mV.` before any fnotch warning on the line.
+[Round 141 observations](../tests/fixtures/r141_bridge_min_excitation.json).
+
 ## Bridge Range codes (round 59)
 
 `BrHalf`, `BrHalf3W` and `BrFull` check their one `Range` twice, `BrHalf4W` and `BrFull6W` each of
