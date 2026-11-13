@@ -1,0 +1,836 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-dtype--65536-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-65536)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -65536 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype--32768-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-32768)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -32768 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype--257-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-257)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype--256-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-256)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -256 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype--255-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-255)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -255 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype--129-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-129)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -129 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype--128-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-128)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype--2-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dtype--1-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dtype-128-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,128)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dtype-254-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,254)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype-255-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,255)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype-256-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,256)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 256 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype-257-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,257)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 257 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype-258-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,258)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 258 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype-259-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,259)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 259 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype-260-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,260)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 260 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-261-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,261)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 261 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-263-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,263)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 263 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-264-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,264)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 264 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-511-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,511)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dtype-512-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,512)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 512 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype-513-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,513)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 513 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype-32767-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,32767)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype-32768-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,32768)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 32768 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype-65534-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65534)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-dtype-65535-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65535)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype-65536-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65536)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 65536 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-65537-False",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65537)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 65537 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-dtype--65536-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-65536)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -65536 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype--32768-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-32768)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -32768 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype--257-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-257)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr6-dtype--256-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-256)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -256 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype--255-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-255)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -255 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype--129-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-129)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -129 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype--128-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-128)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr6-dtype--2-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr6-dtype--1-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr6-dtype-128-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,128)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr6-dtype-254-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,254)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr6-dtype-255-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,255)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr6-dtype-256-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,256)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 256 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-257-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,257)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 257 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-258-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,258)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 258 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-259-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,259)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 259 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-260-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,260)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 260 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-261-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,261)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 261 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-263-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,263)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 263 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-264-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,264)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 264 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-511-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,511)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr6-dtype-512-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,512)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 512 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-513-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,513)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 513 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-32767-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,32767)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr6-dtype-32768-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,32768)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 32768 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-65534-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65534)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr6-dtype-65535-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65535)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr6-dtype-65536-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65536)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 65536 in Sample instruction."
+  },
+  {
+   "id": "cr6-dtype-65537-True",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65537)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 65537 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype--65536-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-65536)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -65536 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype--32768-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-32768)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -32768 in Sample instruction.",
+   "not_modelled": "Neighboring wide-code field construction or duplicate-field behavior."
+  },
+  {
+   "id": "cr1000x-dtype--257-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-257)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype--256-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-256)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -256 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype--255-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-255)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -255 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype--129-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-129)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -129 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype--128-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-128)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype--2-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dtype--1-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dtype-128-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,128)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dtype-254-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,254)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype-255-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,255)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype-256-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,256)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 256 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype-257-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,257)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 257 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype-258-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,258)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 258 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype-259-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,259)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 259 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype-260-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,260)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 260 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-261-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,261)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 261 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-263-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,263)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 263 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-264-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,264)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 264 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-511-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,511)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dtype-512-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,512)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 512 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype-513-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,513)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 513 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype-32767-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,32767)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype-32768-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,32768)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 32768 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype-65534-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65534)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-dtype-65535-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65535)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype-65536-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65536)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 65536 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-65537-False",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65537)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 65537 in Sample instruction.\nline 4: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-dtype--65536-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-65536)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -65536 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype--32768-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-32768)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -32768 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype--257-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-257)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr1000x-dtype--256-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-256)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -256 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype--255-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-255)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -255 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype--129-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-129)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter -129 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype--128-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-128)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr1000x-dtype--2-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-2)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr1000x-dtype--1-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,-1)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr1000x-dtype-128-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,128)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr1000x-dtype-254-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,254)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr1000x-dtype-255-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,255)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr1000x-dtype-256-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,256)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 256 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-257-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,257)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 257 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-258-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,258)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 258 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-259-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,259)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 259 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-260-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,260)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 260 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-261-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,261)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 261 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-263-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,263)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 263 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-264-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,264)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 264 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-511-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,511)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr1000x-dtype-512-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,512)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 512 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-513-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,513)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 513 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-32767-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,32767)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr1000x-dtype-32768-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,32768)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 32768 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-65534-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65534)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr1000x-dtype-65535-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65535)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Y in DataTable T."
+  },
+  {
+   "id": "cr1000x-dtype-65536-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65536)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 65536 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-dtype-65537-True",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,4)\n Sample(1,Y,65537)\n Sample(1,Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 65537 in Sample instruction."
+  }
+ ]
+}

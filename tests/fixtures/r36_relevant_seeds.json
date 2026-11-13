@@ -11083,40 +11083,35 @@
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,256)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 256 in Sample instruction.\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 256 in Sample instruction.\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr6-dt1-257",
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,257)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 257 in Sample instruction.\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 257 in Sample instruction.\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr6-dt1-258",
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,258)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 258 in Sample instruction.\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 258 in Sample instruction.\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr6-dt1-259",
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,259)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 259 in Sample instruction.\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 259 in Sample instruction.\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr6-dt1-260",
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,260)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 260 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 260 in Sample instruction."
   },
   {
    "id": "cr6-dt1-511",
@@ -11130,24 +11125,21 @@
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,512)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 512 in Sample instruction.\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 512 in Sample instruction.\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr6-dt1-65535",
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,65535)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr6-dt1-65536",
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,65536)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 65536 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 65536 in Sample instruction."
   },
   {
    "id": "cr6-dt1--1",
@@ -11161,8 +11153,7 @@
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,-256)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter -256 in Sample instruction.\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter -256 in Sample instruction.\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr1000x-dt1-0",
@@ -12961,40 +12952,35 @@
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,256)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 256 in Sample instruction.\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 256 in Sample instruction.\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr1000x-dt1-257",
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,257)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 257 in Sample instruction.\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 257 in Sample instruction.\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr1000x-dt1-258",
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,258)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 258 in Sample instruction.\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 258 in Sample instruction.\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr1000x-dt1-259",
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,259)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 259 in Sample instruction.\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 259 in Sample instruction.\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr1000x-dt1-260",
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,260)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 260 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 260 in Sample instruction."
   },
   {
    "id": "cr1000x-dt1-511",
@@ -13008,24 +12994,21 @@
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,512)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 512 in Sample instruction.\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 512 in Sample instruction.\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr1000x-dt1-65535",
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,65535)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr1000x-dt1-65536",
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,65536)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 65536 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 65536 in Sample instruction."
   },
   {
    "id": "cr1000x-dt1--1",
@@ -13039,8 +13022,7 @@
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,-256)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter -256 in Sample instruction.\nline 5: Table T1 declared with no output fields.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter -256 in Sample instruction.\nline 5: Table T1 declared with no output fields."
   },
   {
    "id": "cr6-dt2-0",
@@ -14839,40 +14821,35 @@
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,256)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 256 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 256 in Sample instruction."
   },
   {
    "id": "cr6-dt2-257",
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,257)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 257 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 257 in Sample instruction."
   },
   {
    "id": "cr6-dt2-258",
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,258)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 258 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 258 in Sample instruction."
   },
   {
    "id": "cr6-dt2-259",
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,259)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 259 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 259 in Sample instruction."
   },
   {
    "id": "cr6-dt2-260",
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,260)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 260 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 260 in Sample instruction."
   },
   {
    "id": "cr6-dt2-511",
@@ -14886,8 +14863,7 @@
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,512)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 512 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 512 in Sample instruction."
   },
   {
    "id": "cr6-dt2-65535",
@@ -14901,8 +14877,7 @@
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,65536)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 65536 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 65536 in Sample instruction."
   },
   {
    "id": "cr6-dt2--1",
@@ -14916,8 +14891,7 @@
    "logger": "cr6",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,-256)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter -256 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter -256 in Sample instruction."
   },
   {
    "id": "cr1000x-dt2-0",
@@ -16716,40 +16690,35 @@
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,256)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 256 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 256 in Sample instruction."
   },
   {
    "id": "cr1000x-dt2-257",
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,257)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 257 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 257 in Sample instruction."
   },
   {
    "id": "cr1000x-dt2-258",
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,258)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 258 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 258 in Sample instruction."
   },
   {
    "id": "cr1000x-dt2-259",
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,259)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 259 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 259 in Sample instruction."
   },
   {
    "id": "cr1000x-dt2-260",
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,260)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 260 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 260 in Sample instruction."
   },
   {
    "id": "cr1000x-dt2-511",
@@ -16763,8 +16732,7 @@
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,512)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 512 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 512 in Sample instruction."
   },
   {
    "id": "cr1000x-dt2-65535",
@@ -16778,8 +16746,7 @@
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,65536)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 65536 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter 65536 in Sample instruction."
   },
   {
    "id": "cr1000x-dt2--1",
@@ -16793,8 +16760,7 @@
    "logger": "cr1000x",
    "source": "Public WS, WD\nDataTable(T1,True,-1)\n  DataInterval(0,15,Min,10)\n  Sample(1,WS,-256)\n  Sample(1,WD,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter -256 in Sample instruction.",
-   "not_modelled": "round 36: verdict differs"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal data type parameter -256 in Sample instruction."
   },
   {
    "id": "cr1000x-ex-0",

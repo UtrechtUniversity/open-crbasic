@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 128** (fixture verdict parity). CR6 and CR1000X now check wide
+integer `Sample` data-type codes and report the confirmed fieldless cases.
+Thirty-four previously flagged cases match exactly.
+[Reference observations](tests/fixtures/r128_wide_sample_dtype.json).
+
 **Round 127** (fixture verdict parity). Checked `Sample` sources for
 `NSEC` output and rejected `NSEC` in `WindVector`. Six previously
 flagged cases now match exactly.

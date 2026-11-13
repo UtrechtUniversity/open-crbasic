@@ -1788,6 +1788,9 @@ _FIELDLESS_DATA_TYPES = frozenset({0, 16, *range(29, 44), *range(48, 57), *range
 _SILENT_FIELDLESS = frozenset(
     {*range(156, 160), *range(180, 184), *range(204, 212), *range(220, 224), *range(236, 240), *range(252, 256)}
 )
+_CR6_WIDE_SAMPLE_FIELDLESS = frozenset(
+    {-65536, -32768, -257, -256, -255, -129, -128, 256, 257, 258, 259, 512, 513, 32767, 32768, 65535, 65537}
+)
 _ILLEGAL_DATA_TYPES = {
     "cr6": _CR6_ILLEGAL,
     "cr1000x": _CR6_ILLEGAL,
@@ -1818,6 +1821,12 @@ def _fieldless(stmt: S.Instruction, profile: Profile, env: consteval.Env) -> boo
     pos = _DATA_TYPE_ARG.get(stmt.keyword.upper())
     if profile.name not in ("cr6", "cr1000x") or pos is None or pos >= len(stmt.args) or stmt.args[pos] is None:
         return False
+    if stmt.keyword.upper() == "SAMPLE":
+        from . import longconv
+
+        code = longconv.long_value(stmt.args[pos], env, profile)
+        if code in _CR6_WIDE_SAMPLE_FIELDLESS:
+            return True
     return _constant_data_type(stmt, pos, env) in _FIELDLESS_DATA_TYPES | _SILENT_FIELDLESS
 
 
@@ -1841,6 +1850,12 @@ def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnosti
         if pos is None or not in_table or pos >= len(stmt.args) or stmt.args[pos] is None:
             continue
         value = _constant_data_type(stmt, pos, env)
+        if value is None and kw == "SAMPLE" and not profile.single_pass:
+            from . import longconv
+
+            wide = longconv.long_value(stmt.args[pos], env, profile)
+            if wide is not None and wide not in (-1, -2) and wide & 0x80 == 0:
+                value = wide
         if value == nsec and kw == "WINDVECTOR":
             diags.error(stmt.line, "NSEC type is legal only with Sample().", stmt.file)
         if value == nsec and kw == "SAMPLE" and isinstance(arg := stmt.args[1], (S.Name, S.Index)):
@@ -1851,7 +1866,7 @@ def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnosti
                 diags.error(stmt.line, "Float to NSEC expects source array size >= 7", stmt.file)
             elif kind in ("DOUBLE", "BOOLEAN"):
                 diags.error(stmt.line, "Source type must be either LONG or FLOAT or NSEC for data type NSEC", stmt.file)
-        if value is not None and value in bad:
+        if value is not None and (value in bad or (not profile.single_pass and not 0 <= value <= 255)):
             name = profile.instructions[stmt.keyword.upper()]["name"]
             diags.error(stmt.line, f"Illegal data type parameter {int(value)} in {name} instruction.", stmt.file)
 
