@@ -34,6 +34,7 @@ CASES = [
         "r118_routine_parameter_recovery.json",
         "r119_windvector_options.json",
         "r120_cr3xx_packed_table_reps.json",
+        "r121_iif_empty_assignment_slots.json",
     )
     for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
 ]

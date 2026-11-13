@@ -9525,6 +9525,13 @@ outside this change. The 168-case `r63_iif_missing_arm.json` fixture preserves t
 accepted full-arity controls. Original CR6 `d6479ed3f595` now matches exactly; full observations
 and the targeted replay are under `scratch/r63/` (local only).
 
+Round 121 covers explicit empty slots in assignment expressions. The
+reference reports the invalid-expression diagnostic using the assignment
+text. A String second arm and an empty final arm add `type mismatch`
+first when the condition is present. Cases with unresolved operands
+continue through the existing name checks.
+[Four-profile observations](../tests/fixtures/r121_iif_empty_assignment_slots.json).
+
 ## Leading plus before an assignment (round 64)
 
 A statement made of one or more leading `+` signs and an assignment compiles on all four

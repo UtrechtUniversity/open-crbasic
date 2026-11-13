@@ -1477,12 +1477,14 @@ def check_iif_types(program: S.Program, profile, diags: Diagnostics) -> None:
     numeric, including an omitted final arm (rounds 36/63). Evidence:
     docs/checker.md#iif-arm-types-round-36 and #iif-omitted-final-arm-round-63.
     One report per line, only on a line with no earlier error."""
+    from . import structure
     from .expressions import _index_nodes, _stmt_exprs
     from .var_types import _Typer
 
     if "IIF" not in profile.functions:
         return
     typer = _Typer(program)
+    known = _known_names(program, profile)
     str_consts = _string_consts(program)
     busy = {(d.line, d.file) for d in diags.items if d.severity == "error"}
     for stmt in program.statements:
@@ -1492,6 +1494,18 @@ def check_iif_types(program: S.Program, profile, diags: Diagnostics) -> None:
             if ix.name.upper() != "IIF" or len(ix.args) not in (2, 3) or typer.variable(ix) is not None:
                 continue
             arms = [_string_typed(a, typer, str_consts, profile) for a in ix.args[1:]]
+            if (
+                isinstance(stmt, S.Assignment)
+                and len(ix.args) == 3
+                and any(arg is None for arg in ix.args)
+                and not _undefined_names(stmt.target, known)
+                and not _undefined_names(stmt.value, known)
+            ):
+                if ix.args[0] is not None and arms[0] is True and ix.args[2] is None:
+                    diags.error(stmt.line, "type mismatch", stmt.file)
+                diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol), stmt.file)
+                busy.add((stmt.line, stmt.file))
+                break
             if len(ix.args) == 2:
                 arms.append(False)  # the omitted final arm retains its numeric type (round 63)
             if None not in arms and arms[0] != arms[1]:

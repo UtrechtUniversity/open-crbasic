@@ -922,96 +922,84 @@
       "logger": "cr6",
       "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,,3)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,,3).",
-      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,,3)."
     },
     {
       "id": "empty_second-cr1000x",
       "logger": "cr1000x",
       "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,,3)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,,3).",
-      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,,3)."
     },
     {
       "id": "empty_second-cr300",
       "logger": "cr300",
       "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,,3)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,,3)\n.",
-      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,,3)\n."
     },
     {
       "id": "empty_second-cr350",
       "logger": "cr350",
       "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,,3)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,,3)\n.",
-      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,,3)\n."
     },
     {
       "id": "empty_third_string-cr6",
       "logger": "cr6",
       "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Invalid, or out of place expression: X=IIF(1,\"a\",).",
-      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Invalid, or out of place expression: X=IIF(1,\"a\",)."
     },
     {
       "id": "empty_third_string-cr1000x",
       "logger": "cr1000x",
       "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Invalid, or out of place expression: X=IIF(1,\"a\",).",
-      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Invalid, or out of place expression: X=IIF(1,\"a\",)."
     },
     {
       "id": "empty_third_string-cr300",
       "logger": "cr300",
       "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Invalid, or out of place expression: X=IIF(1,\"a\",)\n.",
-      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Invalid, or out of place expression: X=IIF(1,\"a\",)\n."
     },
     {
       "id": "empty_third_string-cr350",
       "logger": "cr350",
       "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,\"a\",)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Invalid, or out of place expression: X=IIF(1,\"a\",)\n.",
-      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: type mismatch\nline 8: Invalid, or out of place expression: X=IIF(1,\"a\",)\n."
     },
     {
       "id": "empty_third_number-cr6",
       "logger": "cr6",
       "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2,)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,2,).",
-      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,2,)."
     },
     {
       "id": "empty_third_number-cr1000x",
       "logger": "cr1000x",
       "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2,)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,2,).",
-      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,2,)."
     },
     {
       "id": "empty_third_number-cr300",
       "logger": "cr300",
       "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2,)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,2,)\n.",
-      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,2,)\n."
     },
     {
       "id": "empty_third_number-cr350",
       "logger": "cr350",
       "source": "Public X, S As String * 40\nConst K=\"k\"\nSub Q(A As String * 40)\nEndSub\nFunction F(A As String * 40)\nEndFunction\nBeginProg\nX=IIF(1,2,)\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,2,)\n.",
-      "not_modelled": "Explicit empty IIF slots are not modelled by the two-argument rule."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: X=IIF(1,2,)\n."
     },
     {
       "id": "four-cr6",

@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 121** (fixture verdict parity). Explicit empty `IIF` arguments
+in assignments now reject on all four profiles. Twelve previously
+flagged cases match exactly.
+[Four-profile observations](tests/fixtures/r121_iif_empty_assignment_slots.json).
+
 **Round 120** (fixture verdict parity). Checked odd packed-output
 repetition counts on CR300 and CR350. Forty-two previously flagged
 observations now match exactly.
