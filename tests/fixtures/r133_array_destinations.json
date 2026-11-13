@@ -1,0 +1,1535 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-move-dest-0",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(ComRS232,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr6-move-dest-1",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(K,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-move-dest-2",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(KS,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-dest-3",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move((KS+\"!\"),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-dest-4",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move((\"x\"+\"!\"),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-dest-6",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(K+1,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr6-move-dest-7",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(INF,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr6-move-dest-8",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(NAN+1,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr6-move-dest-9",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Abs(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-dest-10",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(B(1),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-dest-11",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Y,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-dest-12",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Nope,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-move-dest-13",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(\"x\",1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-0",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(ComRS232)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr6-realtime-1",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-realtime-2",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-3",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime((KS+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-4",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime((\"x\"+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-6",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr6-realtime-7",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr6-realtime-8",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr6-realtime-9",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-10",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(B(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-11",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable Y out of bounds."
+  },
+  {
+   "id": "cr6-realtime-12",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-realtime-13",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-erase-0",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(ComRS232)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr6-erase-1",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-erase-2",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-erase-3",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase((KS+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-erase-4",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase((\"x\"+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-erase-6",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr6-erase-7",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr6-erase-8",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr6-erase-9",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-erase-10",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(B(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-erase-11",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-erase-12",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-erase-13",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-dest-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(ComRS232,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr1000x-move-dest-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(K,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-move-dest-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(KS,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-dest-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move((KS+\"!\"),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-dest-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move((\"x\"+\"!\"),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-dest-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(K+1,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr1000x-move-dest-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(INF,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr1000x-move-dest-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(NAN+1,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr1000x-move-dest-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Abs(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-dest-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(B(1),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-dest-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Y,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-dest-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Nope,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-move-dest-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(\"x\",1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(ComRS232)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr1000x-realtime-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-realtime-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime((KS+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime((\"x\"+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr1000x-realtime-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr1000x-realtime-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr1000x-realtime-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(B(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable Y out of bounds."
+  },
+  {
+   "id": "cr1000x-realtime-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-realtime-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-erase-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(ComRS232)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr1000x-erase-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-erase-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-erase-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase((KS+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-erase-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase((\"x\"+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-erase-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr1000x-erase-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr1000x-erase-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr1000x-erase-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-erase-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(B(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-erase-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-erase-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-erase-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-move-dest-0",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(ComRS232,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: ComRS232.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-move-dest-1",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(K,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-move-dest-2",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(KS,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-move-dest-3",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move((KS+\"!\"),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-move-dest-4",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move((\"x\"+\"!\"),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-move-dest-6",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(K+1,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K+1.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-move-dest-7",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(INF,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: INF.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-move-dest-8",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(NAN+1,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: NAN+1.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-move-dest-9",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Abs(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-move-dest-10",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(B(1),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-move-dest-11",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Y,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-move-dest-12",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Nope,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-move-dest-13",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(\"x\",1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-realtime-0",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(ComRS232)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr300-realtime-1",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr300-realtime-2",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-realtime-3",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime((KS+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-realtime-4",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime((\"x\"+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-realtime-6",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr300-realtime-7",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr300-realtime-8",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr300-realtime-9",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-realtime-10",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(B(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-realtime-11",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable Y out of bounds."
+  },
+  {
+   "id": "cr300-realtime-12",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined."
+  },
+  {
+   "id": "cr300-realtime-13",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-erase-0",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(ComRS232)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr300-erase-1",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr300-erase-2",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-erase-3",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase((KS+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-erase-4",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase((\"x\"+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-erase-6",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr300-erase-7",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr300-erase-8",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr300-erase-9",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-erase-10",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(B(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-erase-11",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-erase-12",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined."
+  },
+  {
+   "id": "cr300-erase-13",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move-dest-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(ComRS232,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: ComRS232.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-move-dest-1",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(K,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-move-dest-2",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(KS,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move-dest-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move((KS+\"!\"),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move-dest-4",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move((\"x\"+\"!\"),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move-dest-6",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(K+1,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K+1.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-move-dest-7",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(INF,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: INF.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-move-dest-8",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(NAN+1,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: NAN+1.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-move-dest-9",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Abs(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move-dest-10",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(B(1),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move-dest-11",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Y,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move-dest-12",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Nope,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-move-dest-13",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Move(\"x\",1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-realtime-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(ComRS232)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr350-realtime-1",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr350-realtime-2",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-realtime-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime((KS+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-realtime-4",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime((\"x\"+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-realtime-6",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr350-realtime-7",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr350-realtime-8",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr350-realtime-9",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-realtime-10",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(B(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-realtime-11",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable Y out of bounds."
+  },
+  {
+   "id": "cr350-realtime-12",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined."
+  },
+  {
+   "id": "cr350-realtime-13",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-erase-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(ComRS232)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: ComRS232."
+  },
+  {
+   "id": "cr350-erase-1",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr350-erase-2",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-erase-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase((KS+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-erase-4",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase((\"x\"+\"!\"))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-erase-6",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr350-erase-7",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr350-erase-8",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr350-erase-9",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-erase-10",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(B(1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-erase-11",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-erase-12",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined."
+  },
+  {
+   "id": "cr350-erase-13",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nPublic B(9)\nBeginProg\n Scan(1,Sec,0,0)\n Erase(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-move-forward-name",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Move(ComRS232,1,Y,1)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr6-move-string-compare",
+   "logger": "cr6",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n Move(KS=\"abc\",1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\"."
+  },
+  {
+   "id": "cr6-move-number",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n Move(K,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-erase-forward-name",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Erase(ComRS232)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr6-erase-string-compare",
+   "logger": "cr6",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n Erase(KS=\"abc\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\"."
+  },
+  {
+   "id": "cr6-erase-number",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-io-forward-name",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(ComRS232,1)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr6-io-string-compare",
+   "logger": "cr6",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(KS=\"abc\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\"."
+  },
+  {
+   "id": "cr6-io-number",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-realtime-forward-name",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(ComRS232)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr6-realtime-string-compare",
+   "logger": "cr6",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KS=\"abc\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\"."
+  },
+  {
+   "id": "cr6-realtime-number",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-move-forward-name",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Move(ComRS232,1,Y,1)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-move-string-compare",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n Move(KS=\"abc\",1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\"."
+  },
+  {
+   "id": "cr1000x-move-number",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n Move(K,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-erase-forward-name",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Erase(ComRS232)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-erase-string-compare",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n Erase(KS=\"abc\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\"."
+  },
+  {
+   "id": "cr1000x-erase-number",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-io-forward-name",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(ComRS232,1)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-io-string-compare",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(KS=\"abc\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\"."
+  },
+  {
+   "id": "cr1000x-io-number",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-realtime-forward-name",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(ComRS232)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-realtime-string-compare",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KS=\"abc\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\"."
+  },
+  {
+   "id": "cr1000x-realtime-number",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr300-move-const-table",
+   "logger": "cr300",
+   "source": "Public Y\nConstTable\nConst K=3\nEndConstTable\nBeginProg\n Scan(1,Sec,0,0)\n Move(K,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K.\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-move-forward-name",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Move(ComRS232,1,Y,1)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 4: Too many parameters:  1.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr300-move-string-compare",
+   "logger": "cr300",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n Move(KS=\"abc\",1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\".\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-move-number",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n Move(K,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-erase-const-table",
+   "logger": "cr300",
+   "source": "Public Y\nConstTable\nConst K=3\nEndConstTable\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr300-erase-forward",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K)\n NextScan\nConst K=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: K is not defined."
+  },
+  {
+   "id": "cr300-erase-forward-name",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Erase(ComRS232)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr300-erase-string-compare",
+   "logger": "cr300",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n Erase(KS=\"abc\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\"."
+  },
+  {
+   "id": "cr300-erase-number",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr300-io-const-table",
+   "logger": "cr300",
+   "source": "Public Y\nConstTable\nConst K=3\nEndConstTable\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K.\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-io-forward-name",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(ComRS232,1)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 4: Too many parameters:  1.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr300-io-string-compare",
+   "logger": "cr300",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(KS=\"abc\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\".\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-io-number",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-realtime-const-table",
+   "logger": "cr300",
+   "source": "Public Y\nConstTable\nConst K=3\nEndConstTable\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr300-realtime-forward",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nConst K=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: K is not defined."
+  },
+  {
+   "id": "cr300-realtime-forward-name",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(ComRS232)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr300-realtime-string-compare",
+   "logger": "cr300",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KS=\"abc\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\"."
+  },
+  {
+   "id": "cr300-realtime-number",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr350-move-const-table",
+   "logger": "cr350",
+   "source": "Public Y\nConstTable\nConst K=3\nEndConstTable\nBeginProg\n Scan(1,Sec,0,0)\n Move(K,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K.\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-move-forward-name",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Move(ComRS232,1,Y,1)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 4: Too many parameters:  1.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr350-move-string-compare",
+   "logger": "cr350",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n Move(KS=\"abc\",1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\".\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-move-number",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n Move(K,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-erase-const-table",
+   "logger": "cr350",
+   "source": "Public Y\nConstTable\nConst K=3\nEndConstTable\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr350-erase-forward",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K)\n NextScan\nConst K=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: K is not defined."
+  },
+  {
+   "id": "cr350-erase-forward-name",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Erase(ComRS232)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr350-erase-string-compare",
+   "logger": "cr350",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n Erase(KS=\"abc\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\"."
+  },
+  {
+   "id": "cr350-erase-number",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n Erase(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr350-io-const-table",
+   "logger": "cr350",
+   "source": "Public Y\nConstTable\nConst K=3\nEndConstTable\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K.\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-io-forward-name",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(ComRS232,1)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 4: Too many parameters:  1.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr350-io-string-compare",
+   "logger": "cr350",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(KS=\"abc\",1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\".\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-io-number",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n ReadIO(K,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-realtime-const-table",
+   "logger": "cr350",
+   "source": "Public Y\nConstTable\nConst K=3\nEndConstTable\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr350-realtime-forward",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nConst K=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: K is not defined."
+  },
+  {
+   "id": "cr350-realtime-forward-name",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(ComRS232)\n NextScan\nConst ComRS232=3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: ComRS232.\nline 6: ComRS232 is a predefined CONST."
+  },
+  {
+   "id": "cr350-realtime-string-compare",
+   "logger": "cr350",
+   "source": "Public Y\nConst KS=\"abc\"\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KS=\"abc\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: KS=\"abc\"."
+  },
+  {
+   "id": "cr350-realtime-number",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable or Array: K."
+  }
+ ]
+}

@@ -9329,6 +9329,11 @@ an invalid subscript keeps its expression diagnostic. An undefined name inside
 a valid call is reported before the destination type (round 131,
 [four-profile probes](../tests/fixtures/r131_float_destinations.json)).
 
+On CR300 and CR350, `Move`, `Erase`, `ReadIO` and `RealTime` reject
+numeric constants in code-27/29 destinations and report the next argument as
+excess when present. String concatenations and calls such as `Abs(K)` pass
+the check (round 133, [four-profile probes](../tests/fixtures/r133_array_destinations.json)).
+
 ## Bridge Range codes (round 59)
 
 `BrHalf`, `BrHalf3W` and `BrFull` check their one `Range` twice, `BrHalf4W` and `BrFull6W` each of

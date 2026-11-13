@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 133** (destination parity). CR300 and CR350 reject numeric
+constants in `Move`, `Erase`, `ReadIO` and `RealTime` destinations and
+accept string concatenations there.
+[Four-profile observations](tests/fixtures/r133_array_destinations.json).
+
 **Round 132** (destination expression parity). CR6 and CR1000X now reject
 `NAN` and `INF` in code-8/27/29 destination positions and accept string
 constants and function results in the probed forms.

@@ -940,6 +940,8 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
     String variable, a literal, an expression) gives `Illegal destination variable type,
     expecting Float.` (oracle, CR300, 2026-10-01: `PanelTemp(L,60)`, `PanelTemp(Nope,60)`,
     `VoltSe(L,1,mV1000,...)`, `Battery(L)`)."""
+    from .instr_data import _destination_env, constant_destination
+
     if profile.name not in ("cr300", "cr350"):
         return
     types: dict[str, str] | None = None
@@ -947,6 +949,8 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
     known = ds = None
     constant_names = profile.symbols.keys() | expressions._EXTRA_PREDEFINED_SYMBOLS
     function_names = set(profile.functions)
+    destination_env = _destination_env(consteval.Env(profile))
+    destination_variables = symbols.declared_variable_names(program)
     params: dict[str, str] = {}  # the enclosing routine's parameters hide a global (round 31)
     per_line = collections.Counter((st.line, st.file) for st in program.statements)
     for stmt in program.statements:
@@ -955,7 +959,10 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             if stmt.keyword.upper() == "FUNCTION":
                 function_names.add(stmt.name.upper())
         elif isinstance(stmt, S.ConstDecl):
-            constant_names.add(stmt.name.upper())
+            name = stmt.name.upper()
+            constant_names.add(name)
+            if name in program.consts:
+                destination_env.consts[name] = program.consts[name]
         elif S.ends_routine(stmt):
             params = {}
         if (
@@ -966,12 +973,18 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
         ):
             continue
         info = profile.instructions.get(stmt.keyword.upper())
-        literal = (
+        named_destination = stmt.keyword.upper() in {"MOVE", "ERASE", "READIO", "REALTIME"}
+        invalid_destination = (
             next(
                 (
                     i
                     for i, (code, a) in enumerate(zip(info["params"], stmt.args))
-                    if code in (27, 29) and a is not None and not isinstance(a, S.String) and not _expr_names(a)
+                    if code in (27, 29)
+                    and (
+                        constant_destination(a, destination_env, params.keys() | destination_variables)
+                        if named_destination
+                        else a is not None and not isinstance(a, S.String) and not _expr_names(a)
+                    )
                 ),
                 None,
             )
@@ -979,13 +992,12 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             else None
         )
         if (
-            literal is not None
+            invalid_destination is not None
             and per_line[(stmt.line, stmt.file)] == 1
             and not any((d.line, d.file) == (stmt.line, stmt.file) for d in diags.errors)
         ):
-            # `RealTime(5)`, `Erase(5)`, `Matrix(5,(1+2),0,R)` -> `Invalid Variable or Array:
-            # 5.`, then the argument list ends (oracle, CR300, 2026-10-01: `Move(5,1,X,1)` ->
-            # `Too many parameters:  1.`)
+            # The argument list ends after a rejected destination. The next token is
+            # reported as excess (oracle, CR300/CR350, rounds 31 and 133).
             at = next(
                 (i for i, d in enumerate(diags.items) if d.file == stmt.file and d.line > stmt.line), len(diags.items)
             )
@@ -993,14 +1005,14 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
                 Diagnostic(
                     "error",
                     stmt.line,
-                    f"Invalid Variable or Array: {expressions._arg_text(stmt, literal).strip()}.",
+                    f"Invalid Variable or Array: {expressions._arg_text(stmt, invalid_destination).strip()}.",
                     stmt.file,
                 )
             ]
-            if len(stmt.args) > literal + 1 and stmt.args[literal + 1] is not None:
-                text = instr_rules._next_simple_token(
-                    expressions._arg_text(stmt, literal + 1)
-                ) or expressions._arg_text(stmt, literal + 1)
+            following = invalid_destination + 1
+            if len(stmt.args) > following and stmt.args[following] is not None:
+                raw = expressions._arg_text(stmt, following)
+                text = instr_rules._next_simple_token(raw) or raw
                 new.append(Diagnostic("error", stmt.line, f"Too many parameters:  {text}.", stmt.file))
             diags.items[at:at] = new
             continue
