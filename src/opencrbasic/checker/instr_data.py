@@ -1502,6 +1502,22 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
         if wind and destinations and _short_array(st.args[2], wind_reps or 0, dims, env):
             # the direction first, one line (oracle, round 56, docs/checker.md#round-56-fuzz-rules)
             diags.error(st.line, f"Variable {getattr(st.args[2], 'name', '')} out of bounds.", st.file)
+        source_type = None
+        if profile.single_pass and in_table:
+            if message := _odd_pair_reps(st, env):
+                diags.error(st.line, message, st.file)
+            source = st.args[1] if len(st.args) > 1 else None
+            if isinstance(source, (S.Name, S.Index)):
+                source_type = tables(st).types.get(source.name.upper())
+            if (
+                kw == "SAMPLE"
+                and len(st.args) >= 3
+                and _constant_data_type(st, 2, env) == 1
+                and source_type not in (None, "UINT1")
+                and (reps := _reps_value(st.args[0], env)) is not None
+                and not _short_array(source, reps, dims, env)
+            ):
+                diags.error(st.line, "Sample type UINT1 can only sample a variable of type UINT1.", st.file)
         if (kw in _TABLE_OUTPUT or wind) and len(st.args) >= 2 and sources_ok and (in_table or not destinations):
             # (CR6/CR1000X: outside a table only `must be used inside a table declaration`, round 39)
             reps = _reps_value(st.args[0], env)
@@ -1576,7 +1592,9 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
                     ),
                     source.name,
                 )
-                if not isinstance(source, S.Index) or all(isinstance(a, S.Number) for a in source.args):
+                if source_type != "UINT1" and (
+                    not isinstance(source, S.Index) or all(isinstance(a, S.Number) for a in source.args)
+                ):
                     diags.error(st.line, f"Variable {name} out of bounds.", st.file)
                 if empty:
                     diags.error(st.line, "Invalid, or out of place expression: ().", st.file)

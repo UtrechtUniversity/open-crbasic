@@ -9431,8 +9431,13 @@ than requiring a Python `int`. The old rule falsely accepted decimal odd counts 
 was large enough. Even counts and values truncating below 1 retain their existing behavior.
 Four-profile observations of numeric conversion, Float-backed aliases and all five supported
 packed-output instruction families are preserved in `tests/fixtures/r60_packed_table_reps.json`;
-CR300/CR350 packed-output and alias-source gaps and the WindVector alias-bound gap remain strict
-expected failures. The implementation change is scoped to CR6/CR1000X.
+Round 120 applies the even-Reps requirement on CR300 and CR350 and checks
+the source type for `Sample` with UINT1 output. When the source runs out of
+elements, the compiler reports the overrun in place of the source-type error.
+A UINT1 source on CR300/CR350 prints the detailed overrun line alone.
+Remaining alias-source and diagnostic-order cases retain their strict
+expected failures.
+[Four-profile observations](../tests/fixtures/r120_cr3xx_packed_table_reps.json).
 
 Additional probes are in `scratch/r60-m2-20261030/` (local only). UINT1-backed aliases also expose
 pre-existing alias-layout/warning differences, and direct UINT1-array overruns can have an extra

@@ -1,0 +1,2843 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-packed-Sample-Float-1-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr6-packed-Sample-Float-1-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Sample-Float-2-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr6-packed-Sample-Float-2-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Sample-Float-3-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr6-packed-Sample-Float-3-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Sample-Float-7.9-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr6-packed-Sample-Float-7.9-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Sample-Float-13-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr6-packed-Sample-Float-13-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr6-packed-Sample-UINT1-1-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Sample-UINT1-1-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Sample-UINT1-2-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Sample-UINT1-2-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Sample-UINT1-3-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Sample-UINT1-3-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Sample-UINT1-7.9-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Sample-UINT1-7.9-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Sample-UINT1-13-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr6-packed-Sample-UINT1-13-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr6-packed-Average-Float-1-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Average-Float-1-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Average-Float-2-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Average-Float-2-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Average-Float-3-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Average-Float-3-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Average-Float-7.9-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Average-Float-7.9-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Average-Float-13-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr6-packed-Average-Float-13-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr6-packed-Average-UINT1-1-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Average-UINT1-1-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Average-UINT1-2-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Average-UINT1-2-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Average-UINT1-3-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Average-UINT1-3-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Average-UINT1-7.9-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Average-UINT1-7.9-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Average-UINT1-13-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr6-packed-Average-UINT1-13-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr6-packed-Minimum-Float-1-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Minimum-Float-1-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Minimum-Float-2-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Minimum-Float-2-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Minimum-Float-3-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Minimum-Float-3-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Minimum-Float-7.9-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Minimum-Float-7.9-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Minimum-Float-13-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr6-packed-Minimum-Float-13-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr6-packed-Minimum-UINT1-1-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Minimum-UINT1-1-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Minimum-UINT1-2-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Minimum-UINT1-2-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Minimum-UINT1-3-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Minimum-UINT1-3-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Minimum-UINT1-7.9-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Minimum-UINT1-7.9-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Minimum-UINT1-13-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr6-packed-Minimum-UINT1-13-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr6-packed-Maximum-Float-1-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Maximum-Float-1-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Maximum-Float-2-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Maximum-Float-2-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Maximum-Float-3-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Maximum-Float-3-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Maximum-Float-7.9-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Maximum-Float-7.9-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Maximum-Float-13-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr6-packed-Maximum-Float-13-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr6-packed-Maximum-UINT1-1-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Maximum-UINT1-1-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Maximum-UINT1-2-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Maximum-UINT1-2-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-Maximum-UINT1-3-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Maximum-UINT1-3-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Maximum-UINT1-7.9-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Maximum-UINT1-7.9-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-Maximum-UINT1-13-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr6-packed-Maximum-UINT1-13-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr6-packed-WindVector-Float-1-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-WindVector-Float-1-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-WindVector-Float-2-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-WindVector-Float-2-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-WindVector-Float-3-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-WindVector-Float-3-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-WindVector-Float-7.9-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-WindVector-Float-7.9-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-WindVector-Float-13-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr6-packed-WindVector-Float-13-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr6-packed-WindVector-UINT1-1-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-WindVector-UINT1-1-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-WindVector-UINT1-2-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-WindVector-UINT1-2-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-packed-WindVector-UINT1-3-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-WindVector-UINT1-3-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-WindVector-UINT1-7.9-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-WindVector-UINT1-7.9-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr6-packed-WindVector-UINT1-13-UINT1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr6-packed-WindVector-UINT1-13-BOOL8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr1000x-packed-Sample-Float-1-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr1000x-packed-Sample-Float-1-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Sample-Float-2-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr1000x-packed-Sample-Float-2-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Sample-Float-3-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr1000x-packed-Sample-Float-3-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Sample-Float-7.9-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr1000x-packed-Sample-Float-7.9-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Sample-Float-13-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr1000x-packed-Sample-Float-13-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr1000x-packed-Sample-UINT1-1-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Sample-UINT1-1-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Sample-UINT1-2-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Sample-UINT1-2-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Sample-UINT1-3-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Sample-UINT1-3-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Sample-UINT1-7.9-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Sample-UINT1-7.9-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Sample-UINT1-13-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr1000x-packed-Sample-UINT1-13-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr1000x-packed-Average-Float-1-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Average-Float-1-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Average-Float-2-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Average-Float-2-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Average-Float-3-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Average-Float-3-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Average-Float-7.9-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Average-Float-7.9-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Average-Float-13-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr1000x-packed-Average-Float-13-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr1000x-packed-Average-UINT1-1-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Average-UINT1-1-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Average-UINT1-2-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Average-UINT1-2-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Average-UINT1-3-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Average-UINT1-3-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Average-UINT1-7.9-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Average-UINT1-7.9-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Average-UINT1-13-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr1000x-packed-Average-UINT1-13-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr1000x-packed-Minimum-Float-1-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Minimum-Float-1-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Minimum-Float-2-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Minimum-Float-2-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Minimum-Float-3-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Minimum-Float-3-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Minimum-Float-7.9-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Minimum-Float-7.9-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Minimum-Float-13-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr1000x-packed-Minimum-Float-13-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr1000x-packed-Minimum-UINT1-1-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Minimum-UINT1-1-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Minimum-UINT1-2-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Minimum-UINT1-2-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Minimum-UINT1-3-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Minimum-UINT1-3-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Minimum-UINT1-7.9-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Minimum-UINT1-7.9-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Minimum-UINT1-13-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr1000x-packed-Minimum-UINT1-13-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr1000x-packed-Maximum-Float-1-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Maximum-Float-1-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Maximum-Float-2-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Maximum-Float-2-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Maximum-Float-3-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Maximum-Float-3-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Maximum-Float-7.9-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Maximum-Float-7.9-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Maximum-Float-13-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr1000x-packed-Maximum-Float-13-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr1000x-packed-Maximum-UINT1-1-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Maximum-UINT1-1-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Maximum-UINT1-2-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Maximum-UINT1-2-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-Maximum-UINT1-3-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Maximum-UINT1-3-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Maximum-UINT1-7.9-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Maximum-UINT1-7.9-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-Maximum-UINT1-13-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr1000x-packed-Maximum-UINT1-13-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr1000x-packed-WindVector-Float-1-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-WindVector-Float-1-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-WindVector-Float-2-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-WindVector-Float-2-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-WindVector-Float-3-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-WindVector-Float-3-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-WindVector-Float-7.9-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-WindVector-Float-7.9-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-WindVector-Float-13-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr1000x-packed-WindVector-Float-13-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr1000x-packed-WindVector-UINT1-1-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-WindVector-UINT1-1-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-WindVector-UINT1-2-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-WindVector-UINT1-2-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-packed-WindVector-UINT1-3-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-WindVector-UINT1-3-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-WindVector-UINT1-7.9-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-WindVector-UINT1-7.9-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr1000x-packed-WindVector-UINT1-13-UINT1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr1000x-packed-WindVector-UINT1-13-BOOL8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds.",
+   "not_modelled": "Packed-output source diagnostic sequence on two-pass profiles."
+  },
+  {
+   "id": "cr300-packed-Sample-Float-1-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr300-packed-Sample-Float-1-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Sample-Float-2-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr300-packed-Sample-Float-2-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Sample-Float-3-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr300-packed-Sample-Float-3-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Sample-Float-7.9-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr300-packed-Sample-Float-7.9-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Sample-Float-13-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Sample-Float-13-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Sample-UINT1-1-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Sample-UINT1-1-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Sample-UINT1-2-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Sample-UINT1-2-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Sample-UINT1-3-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Sample-UINT1-3-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Sample-UINT1-7.9-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Sample-UINT1-7.9-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Sample-UINT1-13-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Sample-UINT1-13-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Average-Float-1-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Average-Float-1-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Average-Float-2-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Average-Float-2-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Average-Float-3-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Average-Float-3-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Average-Float-7.9-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Average-Float-7.9-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Average-Float-13-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Average-Float-13-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Average-UINT1-1-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Average-UINT1-1-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Average-UINT1-2-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Average-UINT1-2-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Average-UINT1-3-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Average-UINT1-3-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Average-UINT1-7.9-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Average-UINT1-7.9-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Average-UINT1-13-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Average-UINT1-13-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Minimum-Float-1-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Minimum-Float-1-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Minimum-Float-2-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Minimum-Float-2-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Minimum-Float-3-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Minimum-Float-3-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Minimum-Float-7.9-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Minimum-Float-7.9-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Minimum-Float-13-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Minimum-Float-13-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Minimum-UINT1-1-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Minimum-UINT1-1-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Minimum-UINT1-2-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Minimum-UINT1-2-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Minimum-UINT1-3-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Minimum-UINT1-3-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Minimum-UINT1-7.9-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Minimum-UINT1-7.9-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Minimum-UINT1-13-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Minimum-UINT1-13-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Maximum-Float-1-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Maximum-Float-1-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Maximum-Float-2-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Maximum-Float-2-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Maximum-Float-3-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Maximum-Float-3-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Maximum-Float-7.9-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Maximum-Float-7.9-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Maximum-Float-13-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Maximum-Float-13-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Maximum-UINT1-1-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Maximum-UINT1-1-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Maximum-UINT1-2-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Maximum-UINT1-2-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-Maximum-UINT1-3-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Maximum-UINT1-3-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Maximum-UINT1-7.9-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Maximum-UINT1-7.9-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-Maximum-UINT1-13-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-Maximum-UINT1-13-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-WindVector-Float-1-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-WindVector-Float-1-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-WindVector-Float-2-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-WindVector-Float-2-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-WindVector-Float-3-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-WindVector-Float-3-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-WindVector-Float-7.9-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-WindVector-Float-7.9-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-WindVector-Float-13-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-WindVector-Float-13-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-WindVector-UINT1-1-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-WindVector-UINT1-1-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-WindVector-UINT1-2-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-WindVector-UINT1-2-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-packed-WindVector-UINT1-3-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-WindVector-UINT1-3-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-WindVector-UINT1-7.9-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-WindVector-UINT1-7.9-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr300-packed-WindVector-UINT1-13-UINT1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr300-packed-WindVector-UINT1-13-BOOL8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Sample-Float-1-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr350-packed-Sample-Float-1-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Sample-Float-2-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr350-packed-Sample-Float-2-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Sample-Float-3-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr350-packed-Sample-Float-3-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Sample-Float-7.9-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Sample type UINT1 can only sample a variable of type UINT1."
+  },
+  {
+   "id": "cr350-packed-Sample-Float-7.9-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Sample-Float-13-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Sample-Float-13-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Sample-UINT1-1-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Sample-UINT1-1-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(1,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Sample-UINT1-2-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Sample-UINT1-2-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(2,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Sample-UINT1-3-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Sample-UINT1-3-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(3,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Sample-UINT1-7.9-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Sample-UINT1-7.9-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(7.9,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Sample-UINT1-13-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,UINT1)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Sample-UINT1-13-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Sample(13,X,BOOL8)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Average-Float-1-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Average-Float-1-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Average-Float-2-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Average-Float-2-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Average-Float-3-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Average-Float-3-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Average-Float-7.9-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Average-Float-7.9-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Average-Float-13-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Average-Float-13-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Average-UINT1-1-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Average-UINT1-1-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(1,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Average-UINT1-2-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Average-UINT1-2-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(2,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Average-UINT1-3-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Average-UINT1-3-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(3,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Average-UINT1-7.9-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Average-UINT1-7.9-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(7.9,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Average-UINT1-13-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,UINT1,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Average-UINT1-13-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Average(13,X,BOOL8,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Minimum-Float-1-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Minimum-Float-1-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Minimum-Float-2-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Minimum-Float-2-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Minimum-Float-3-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Minimum-Float-3-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Minimum-Float-7.9-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Minimum-Float-7.9-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Minimum-Float-13-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Minimum-Float-13-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Minimum-UINT1-1-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Minimum-UINT1-1-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Minimum-UINT1-2-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Minimum-UINT1-2-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Minimum-UINT1-3-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Minimum-UINT1-3-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Minimum-UINT1-7.9-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Minimum-UINT1-7.9-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Minimum-UINT1-13-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Minimum-UINT1-13-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Minimum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Maximum-Float-1-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Maximum-Float-1-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Maximum-Float-2-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Maximum-Float-2-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Maximum-Float-3-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Maximum-Float-3-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Maximum-Float-7.9-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Maximum-Float-7.9-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Maximum-Float-13-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Maximum-Float-13-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Maximum-UINT1-1-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Maximum-UINT1-1-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(1,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Maximum-UINT1-2-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Maximum-UINT1-2-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(2,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-Maximum-UINT1-3-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Maximum-UINT1-3-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(3,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Maximum-UINT1-7.9-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Maximum-UINT1-7.9-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(7.9,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-Maximum-UINT1-13-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,UINT1,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-Maximum-UINT1-13-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n Maximum(13,X,BOOL8,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-WindVector-Float-1-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-WindVector-Float-1-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-WindVector-Float-2-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-WindVector-Float-2-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-WindVector-Float-3-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-WindVector-Float-3-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-WindVector-Float-7.9-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-WindVector-Float-7.9-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-WindVector-Float-13-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-WindVector-Float-13-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As Float\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X out of bounds.\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-WindVector-UINT1-1-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-WindVector-UINT1-1-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(1,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 1 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-WindVector-UINT1-2-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-WindVector-UINT1-2-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(2,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-packed-WindVector-UINT1-3-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-WindVector-UINT1-3-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(3,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 3 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-WindVector-UINT1-7.9-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-WindVector-UINT1-7.9-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(7.9,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Reps 7 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2"
+  },
+  {
+   "id": "cr350-packed-WindVector-UINT1-13-UINT1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,UINT1,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  },
+  {
+   "id": "cr350-packed-WindVector-UINT1-13-BOOL8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic X(12) As UINT1\nPublic Dir(12)\nDataTable(T,True,2)\n WindVector(13,X,Dir,BOOL8,False,0,0,0)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable Dir out of bounds.\nline 5: Reps 13 illegal; with BOOL8 and UINT1 data types, reps must be evenly divisible by 2\nline 5: Variable X, index 1, reps 13, out of bounds."
+  }
+ ]
+}

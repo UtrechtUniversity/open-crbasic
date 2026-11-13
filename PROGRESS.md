@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 120** (fixture verdict parity). Checked odd packed-output
+repetition counts on CR300 and CR350. Forty-two previously flagged
+observations now match exactly.
+[Packed-output evidence](docs/checker.md#packed-table-output-reps-before-alias-bounds-round-60).
+
 **Round 119** (fixture verdict parity). Applied the `WindVector` output
 option and subinterval checks to CR300/CR350 and checked both source spans.
 Thirty-eight previously flagged observations now match exactly.
