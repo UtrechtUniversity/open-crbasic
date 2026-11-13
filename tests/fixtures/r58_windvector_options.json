@@ -206,16 +206,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,1,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,1,0,1)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,1,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,1,0,2)",
@@ -264,16 +262,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,1,0,3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,1,0,3)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,1,0,3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,1,0,4)",
@@ -350,16 +346,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,\"fuzz\",0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,\"fuzz\",0,1)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,\"fuzz\",0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,\"fuzz\",0,2)",
@@ -408,16 +402,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,\"fuzz\",0,3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,\"fuzz\",0,3)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,\"fuzz\",0,3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,\"fuzz\",0,4)",
@@ -494,16 +486,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,-1,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,-1,0,1)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,-1,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,-1,0,2)",
@@ -552,16 +542,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,-1,0,3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,-1,0,3)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,-1,0,3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,-1,0,4)",
@@ -778,16 +766,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,\"\",0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,\"\",0,1)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,\"\",0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,\"\",0,2)",
@@ -836,16 +822,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,\"\",0,3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,\"\",0,3)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,\"\",0,3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,\"\",0,4)",
@@ -894,16 +878,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(0,WS,WD,FP2,False,0,0,0)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
   },
   {
    "id": "cr350-wind-WindVector(0,WS,WD,FP2,False,0,0,0)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(0,WS,WD,FP2,False,0,0,0)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
   },
   {
    "id": "cr6-wind-WindVector(0,WS,WD,FP2,False,0,0,1)",
@@ -924,16 +906,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(0,WS,WD,FP2,False,0,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
   },
   {
    "id": "cr350-wind-WindVector(0,WS,WD,FP2,False,0,0,1)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(0,WS,WD,FP2,False,0,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal Reps 0"
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,1,0,5)",
@@ -954,16 +934,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,1,0,5)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,1,0,5)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,1,0,5)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,1,0,-1)",
@@ -984,16 +962,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,1,0,-1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,1,0,-1)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,1,0,-1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,F,0,1)",
@@ -1042,16 +1018,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,0,0,5)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,0,0,5)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,0,0,5)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,0,0,255)",
@@ -1072,16 +1046,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,0,0,255)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,0,0,255)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,0,0,255)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Out of memory."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,0,0,256)",
@@ -1214,16 +1186,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(0,WS,WD,FP2,False,1,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.\nline 4: Illegal Reps 0",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.\nline 4: Illegal Reps 0"
   },
   {
    "id": "cr350-wind-WindVector(0,WS,WD,FP2,False,1,0,1)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(0,WS,WD,FP2,False,1,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.\nline 4: Illegal Reps 0",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.\nline 4: Illegal Reps 0"
   },
   {
    "id": "cr6-wind-WindVector(0,WS,WD,FP2,False,0,0,5)",
@@ -1244,16 +1214,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(0,WS,WD,FP2,False,0,0,5)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Illegal Reps 0",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Illegal Reps 0"
   },
   {
    "id": "cr350-wind-WindVector(0,WS,WD,FP2,False,0,0,5)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(0,WS,WD,FP2,False,0,0,5)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Illegal Reps 0",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Output Option in WindVector.\nline 4: Illegal Reps 0"
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,1,0,1)\\n  Sample(0,WS,FP2)",
@@ -1274,16 +1242,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,1,0,1)\n  Sample(0,WS,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.\nline 5: Illegal Reps 0",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.\nline 5: Illegal Reps 0"
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,1,0,1)\\n  Sample(0,WS,FP2)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,1,0,1)\n  Sample(0,WS,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.\nline 5: Illegal Reps 0",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.\nline 5: Illegal Reps 0"
   },
   {
    "id": "cr6-wind-Sample(0,WS,FP2)\\n  WindVector(1,WS,WD,FP2,False,1,0,1)",
@@ -1332,16 +1298,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,1,0,1)\n  WindVector(1,WS,WD,FP2,False,1,0,3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.\nline 5: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.\nline 5: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,1,0,1)\\n  WindVector(1,WS,WD,FP2,False,1,0,3)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,1,0,1)\n  WindVector(1,WS,WD,FP2,False,1,0,3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.\nline 5: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.\nline 5: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr6-wind-WindVector(1,WS,WD,FP2,False,2,0,1)",
@@ -1362,16 +1326,14 @@
    "logger": "cr300",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,2,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr350-wind-WindVector(1,WS,WD,FP2,False,2,0,1)",
    "logger": "cr350",
    "source": "Public WS, WD, F\nDataTable (T,True,-1)\n  DataInterval(0,10,Min,10)\n  WindVector(1,WS,WD,FP2,False,2,0,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
   },
   {
    "id": "cr6-wind_u-WindVector(1,WS,WD,FP2,False,1,0,1)",

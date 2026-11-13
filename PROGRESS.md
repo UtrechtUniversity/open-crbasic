@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 119** (fixture verdict parity). Applied the `WindVector` output
+option and subinterval checks to CR300/CR350 and checked both source spans.
+Thirty-eight previously flagged observations now match exactly.
+[Four-profile observations](tests/fixtures/r119_windvector_options.json).
+
 **Round 118** (fixture verdict parity). Fixed eight false rejects across
 all four profiles by recovering empty slots and an unterminated first
 quoted parameter in routine headers.

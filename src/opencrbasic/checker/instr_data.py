@@ -1350,7 +1350,7 @@ def _alias_sources(program: S.Program, tables, env) -> dict[str, tuple[str, str,
 WIND_SUBINTERVAL = "WindVector: non-zero SubInterval only valid for output modes 0, 2, and 4."
 
 
-def _wind_options(st: S.Instruction, reps: int | None, env, diags: Diagnostics) -> bool:
+def _wind_options(st: S.Instruction, reps: int | None, env, diags: Diagnostics, *, short_speed: bool = False) -> bool:
     """Report the SubInterval and output-option errors; whether the walk ends here."""
 
     def long_arg(i: int) -> int | None:
@@ -1366,6 +1366,8 @@ def _wind_options(st: S.Instruction, reps: int | None, env, diags: Diagnostics) 
     if mode is not None and mode > 4:
         diags.error(st.line, "Invalid Output Option in WindVector.", st.file)
         if reps is not None and reps >= 1:
+            if short_speed:
+                diags.error(st.line, f"Variable {getattr(st.args[1], 'name', '')} out of bounds.", st.file)
             diags.error(st.line, "Out of memory.", st.file)
             return True
     if reps == 0:
@@ -1465,8 +1467,14 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             if reps is not None and _INT32_MIN < reps < 0:
                 diags.error(st.line, "Out of memory.", st.file)
                 return True
-            if destinations and in_table and len(st.args) >= 8 and _wind_options(st, reps, env, diags):
-                return True
+            if in_table and len(st.args) >= 8:
+                if profile.single_pass and reps is not None and reps > 0 and _short_array(st.args[2], reps, dims, env):
+                    diags.error(st.line, f"Variable {getattr(st.args[2], 'name', '')} out of bounds.", st.file)
+                short_speed = (
+                    profile.single_pass and reps is not None and reps > 0 and _short_array(st.args[1], reps, dims, env)
+                )
+                if _wind_options(st, reps, env, diags, short_speed=short_speed):
+                    return True
         if kw == "DEBUG" and not inline:
             from .instr_rules import debug_history_oom
 
@@ -1486,13 +1494,12 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             wind_reps = 2**31
         wind = (
             kw == "WINDVECTOR"
-            and destinations
             and in_table
             and len(st.args) >= 3
             and isinstance(st.args[1], (S.Name, S.Index))
             and (wind_reps or 0) >= 1
         )
-        if wind and _short_array(st.args[2], wind_reps or 0, dims, env):
+        if wind and destinations and _short_array(st.args[2], wind_reps or 0, dims, env):
             # the direction first, one line (oracle, round 56, docs/checker.md#round-56-fuzz-rules)
             diags.error(st.line, f"Variable {getattr(st.args[2], 'name', '')} out of bounds.", st.file)
         if (kw in _TABLE_OUTPUT or wind) and len(st.args) >= 2 and sources_ok and (in_table or not destinations):

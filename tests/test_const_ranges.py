@@ -32,6 +32,7 @@ CASES = [
         "r116_cr3xx_forward_variables.json",
         "r117_table_size_sentinels.json",
         "r118_routine_parameter_recovery.json",
+        "r119_windvector_options.json",
     )
     for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
 ]
