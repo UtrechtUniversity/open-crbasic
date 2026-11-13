@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 132** (destination expression parity). CR6 and CR1000X now reject
+`NAN` and `INF` in code-8/27/29 destination positions and accept string
+constants and function results in the probed forms.
+[Four-profile observations](tests/fixtures/r132_destination_expressions.json).
+
 **Round 131** (fixture verdict parity). CR300 and CR350 report a Float
 destination error for constants and function results in the first code-8
 argument. Sixteen previously flagged cases match exactly.

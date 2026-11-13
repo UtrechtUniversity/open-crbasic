@@ -1,0 +1,1605 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-battery-0",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN."
+  },
+  {
+   "id": "cr6-battery-1",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr6-battery-2",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(-INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: -INF."
+  },
+  {
+   "id": "cr6-battery-3",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr6-battery-4",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-battery-5",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-battery-6",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(KS+\"!\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-battery-7",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr6-battery-8",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-battery-9",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Int(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-battery-10",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery((Abs(K)+1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-battery-11",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(-Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-battery-12",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Sqr(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-battery-13",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(K)+Y)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-battery-14",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-battery-15",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(Int(K)))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-battery-16",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-battery-18",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-battery-19",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(KAND)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: KAND."
+  },
+  {
+   "id": "cr6-panel-0",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(NAN,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN."
+  },
+  {
+   "id": "cr6-panel-1",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(INF,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr6-panel-2",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(-INF,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: -INF."
+  },
+  {
+   "id": "cr6-panel-3",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(NAN+1,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr6-panel-4",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(K,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-panel-5",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(KS,60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-panel-6",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(KS+\"!\",60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-panel-7",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(K+1,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr6-panel-8",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-panel-9",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Int(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-panel-10",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp((Abs(K)+1),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-panel-11",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(-Abs(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-panel-12",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Sqr(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-panel-13",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(K)+Y,60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-panel-14",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-panel-15",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(Int(K)),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-panel-16",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Y,60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-panel-18",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(\"x\",60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-panel-19",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(KAND,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: KAND."
+  },
+  {
+   "id": "cr6-move-0",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(NAN,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN."
+  },
+  {
+   "id": "cr6-move-1",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(INF,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr6-move-2",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(-INF,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: -INF."
+  },
+  {
+   "id": "cr6-move-3",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(NAN+1,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr6-move-4",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(K,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-move-5",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(KS,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-6",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(KS+\"!\",1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-7",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(K+1,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr6-move-8",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Abs(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-9",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Int(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-10",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move((Abs(K)+1),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-11",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(-Abs(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-12",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Sqr(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-13",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Abs(K)+Y,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-14",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(A(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-15",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(A(Int(K)),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-16",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Y,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-18",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(\"x\",1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-19",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(KAND,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: KAND."
+  },
+  {
+   "id": "cr6-realtime-0",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN."
+  },
+  {
+   "id": "cr6-realtime-1",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr6-realtime-2",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(-INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: -INF."
+  },
+  {
+   "id": "cr6-realtime-3",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr6-realtime-4",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr6-realtime-5",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-6",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KS+\"!\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-7",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr6-realtime-8",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-9",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Int(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-10",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime((Abs(K)+1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-11",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(-Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-12",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Sqr(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-13",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Abs(K)+Y)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-15",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(A(Int(K)))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-16",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable Y out of bounds."
+  },
+  {
+   "id": "cr6-realtime-18",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-19",
+   "logger": "cr6",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KAND)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: KAND."
+  },
+  {
+   "id": "cr1000x-battery-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN."
+  },
+  {
+   "id": "cr1000x-battery-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr1000x-battery-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(-INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: -INF."
+  },
+  {
+   "id": "cr1000x-battery-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr1000x-battery-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-battery-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-battery-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(KS+\"!\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-battery-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr1000x-battery-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-battery-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Int(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-battery-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery((Abs(K)+1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-battery-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(-Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-battery-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Sqr(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-battery-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(K)+Y)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-battery-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-battery-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(Int(K)))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-battery-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-battery-18",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-battery-19",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(KAND)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: KAND."
+  },
+  {
+   "id": "cr1000x-panel-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(NAN,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN."
+  },
+  {
+   "id": "cr1000x-panel-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(INF,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr1000x-panel-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(-INF,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: -INF."
+  },
+  {
+   "id": "cr1000x-panel-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(NAN+1,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr1000x-panel-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(K,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-panel-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(KS,60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-panel-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(KS+\"!\",60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-panel-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(K+1,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr1000x-panel-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-panel-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Int(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-panel-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp((Abs(K)+1),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-panel-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(-Abs(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-panel-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Sqr(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-panel-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(K)+Y,60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-panel-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-panel-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(Int(K)),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-panel-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Y,60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-panel-18",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(\"x\",60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-panel-19",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(KAND,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: KAND."
+  },
+  {
+   "id": "cr1000x-move-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(NAN,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN."
+  },
+  {
+   "id": "cr1000x-move-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(INF,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr1000x-move-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(-INF,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: -INF."
+  },
+  {
+   "id": "cr1000x-move-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(NAN+1,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr1000x-move-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(K,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-move-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(KS,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(KS+\"!\",1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(K+1,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr1000x-move-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Abs(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Int(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move((Abs(K)+1),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(-Abs(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Sqr(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Abs(K)+Y,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(A(K),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(A(Int(K)),1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(Y,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-18",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(\"x\",1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-19",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Move(KAND,1,Y,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: KAND."
+  },
+  {
+   "id": "cr1000x-realtime-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN."
+  },
+  {
+   "id": "cr1000x-realtime-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: INF."
+  },
+  {
+   "id": "cr1000x-realtime-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(-INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: -INF."
+  },
+  {
+   "id": "cr1000x-realtime-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: NAN+1."
+  },
+  {
+   "id": "cr1000x-realtime-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K."
+  },
+  {
+   "id": "cr1000x-realtime-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KS+\"!\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: K+1."
+  },
+  {
+   "id": "cr1000x-realtime-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Int(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime((Abs(K)+1))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(-Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Sqr(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Abs(K)+Y)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(A(Int(K)))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable Y out of bounds."
+  },
+  {
+   "id": "cr1000x-realtime-18",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-19",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n RealTime(KAND)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: KAND."
+  },
+  {
+   "id": "cr300-battery-0",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-1",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-2",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(-INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-3",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-4",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-5",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-6",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(KS+\"!\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-7",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-8",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-9",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Int(K))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-10",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery((Abs(K)+1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-11",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(-Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-12",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Sqr(K))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-13",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(K)+Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-14",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-battery-15",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(Int(K)))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-battery-16",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-battery-18",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-battery-19",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(KAND)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: KAND is not defined."
+  },
+  {
+   "id": "cr300-panel-0",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(NAN,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-1",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(INF,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-2",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(-INF,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-3",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(NAN+1,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-4",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(K,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-5",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(KS,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-6",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(KS+\"!\",60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-7",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(K+1,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-8",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-9",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Int(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-10",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp((Abs(K)+1),60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-11",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(-Abs(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-12",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Sqr(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-13",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(K)+Y,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-14",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-panel-15",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(Int(K)),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-panel-16",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Y,60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-panel-18",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(\"x\",60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr300-panel-19",
+   "logger": "cr300",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(KAND,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: KAND is not defined.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-battery-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(NAN)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-1",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-2",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(-INF)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(NAN+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-4",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-5",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(KS)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-6",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(KS+\"!\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-7",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(K+1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-8",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-9",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Int(K))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-10",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery((Abs(K)+1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-11",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(-Abs(K))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-12",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Sqr(K))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-13",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Abs(K)+Y)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-14",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(K))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-battery-15",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(A(Int(K)))\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-battery-16",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(Y)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-battery-18",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-battery-19",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n Battery(KAND)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: KAND is not defined."
+  },
+  {
+   "id": "cr350-panel-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(NAN,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-1",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(INF,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-2",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(-INF,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(NAN+1,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-4",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(K,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-5",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(KS,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-6",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(KS+\"!\",60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-7",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(K+1,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-8",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-9",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Int(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-10",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp((Abs(K)+1),60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-11",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(-Abs(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-12",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Sqr(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-13",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Abs(K)+Y,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-14",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(K),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-panel-15",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(A(Int(K)),60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-panel-16",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(Y,60)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-panel-18",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(\"x\",60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float.\nline 7: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-panel-19",
+   "logger": "cr350",
+   "source": "Public Y\nConst K=3\nConst KS=\"x\"\nPublic A(4)\nBeginProg\n Scan(1,Sec,0,0)\n PanelTemp(KAND,60)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: KAND is not defined.\nline 7: Too many parameters:  60."
+  }
+ ]
+}

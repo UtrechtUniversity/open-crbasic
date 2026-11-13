@@ -9317,6 +9317,11 @@ later constant destination is not printed (`CDM_PanelTemp(CDM_A108,PTemp,1,1,150
 `drop_unreached_destinations`. `SerialIn` reads a predefined constant as a bad String destination too
 (`SerialIn(ComRS232,500,-1,100)`, then the shortfall, without the ComPort line).
 
+On CR6 and CR1000X, numeric constants include `NAN` and `INF`, including in
+arithmetic. String constants and concatenations pass this destination check.
+Function calls also pass it, even with constant arguments such as `Abs(K)`
+(round 132, [four-profile probes](../tests/fixtures/r132_destination_expressions.json)).
+
 On CR300 and CR350, a constant or function result in the first code-8 argument
 gives `Illegal destination variable type, expecting Float.` followed by the
 first remaining argument as `Too many parameters`. A malformed function call or

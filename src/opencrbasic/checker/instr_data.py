@@ -1187,26 +1187,32 @@ _OWN_VARIABLE_CHECK = ("ADDPRECISE", "MOVEPRECISE")  # `instr_rules.check_precis
 _INT32_MIN = -2147483648
 
 
-def _has_names(expr) -> bool:
-    """Whether `expr` references any name (variable, constant, function or symbol)."""
-    if isinstance(expr, (S.Name, S.Index, S.Member)):
+def _destination_expression(expr: S.Expr | None) -> bool:
+    if isinstance(expr, (S.Number, S.String, S.Name)):
         return True
     if isinstance(expr, S.Unary):
-        return _has_names(expr.operand)
+        return _destination_expression(expr.operand)
     if isinstance(expr, S.Binary):
-        return _has_names(expr.left) or _has_names(expr.right)
+        return _destination_expression(expr.left) and _destination_expression(expr.right)
     return False
 
 
 def constant_destination(expr, env, variables) -> bool:
-    """Whether a destination argument is a compile-time constant, which CR6/CR1000X reject with
-    `Invalid Variable or Array`: a literal, a `Const` or predefined name, or an expression of
-    them (`Battery(K+1)`, `PanelTemp(ComRS232,15000)`; oracle, round 59)."""
-    from .expressions import _variable_refs
-
-    if expr is None or isinstance(expr, S.String):
+    """CR6/CR1000X reject numeric constants here. Calls produce runtime operands even
+    when all arguments can be folded, and string results pass this check (round 132)."""
+    if expr is None or not _destination_expression(expr):
         return False
-    return not _has_names(expr) or (consteval.is_constant(expr, env) and not _variable_refs(expr, variables))
+    names = {name.upper() for name in symbols._walk_names(expr)}
+    if names & variables:
+        return False
+    try:
+        return not isinstance(consteval.value_of(expr, env), str)
+    except consteval.NotConstant, ValueError, OverflowError:
+        return not names and not isinstance(expr, S.String)
+
+
+def _destination_env(env: consteval.Env) -> consteval.Env:
+    return dataclasses.replace(env, consts={"NAN": math.nan, "INF": math.inf, **env.consts})
 
 
 def _reps_value(expr, env) -> int | None:
@@ -1397,6 +1403,7 @@ def check_constant_destinations(program: S.Program, profile: Profile, diags: Dia
 
     if profile.name not in ("cr6", "cr1000x"):
         return
+    env = _destination_env(env)
     variables = symbols.declared_variable_names(program)
     in_const_table = False  # its constants are settable at run time (`MenuRecompile("x",C)`)
     for st in program.statements:
@@ -1422,6 +1429,7 @@ def drop_unreached_destinations(program: S.Program, profile: Profile, diags: Dia
 
     if profile.name not in ("cr6", "cr1000x"):
         return
+    env = _destination_env(env)
     variables = symbols.declared_variable_names(program)
     drop = []
     for st in _with_inline(program.statements):
