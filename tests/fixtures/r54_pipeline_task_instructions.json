@@ -6268,16 +6268,14 @@
    "logger": "cr6",
    "source": "Public Volt1, x, R, Tref, Tblk1, ExmA, Lvl_ft, HBr3W, RTD_C, WindDir, DiffCurrent, H2Operiod, AirTC, PTemp, CDM_BattV, Meas(5), TCTemp(5), TC(120), AC_Pwr(4), Ux(13), Cal1(10), Tm(10)\nPublic Str As String * 100\nPipeLineMode\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
    "expected_exit": 0,
-   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-   "not_modelled": "setup instruction (CDM_ExciteV/CDM_MuxSelect) before BeginProg is accepted in explicit PipeLine Mode; the before-BeginProg check is not aware of it"
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
   },
   {
    "id": "cr1000x-cdm_excitev-explicit-topbefore",
    "logger": "cr1000x",
    "source": "Public Volt1, x, R, Tref, Tblk1, ExmA, Lvl_ft, HBr3W, RTD_C, WindDir, DiffCurrent, H2Operiod, AirTC, PTemp, CDM_BattV, Meas(5), TCTemp(5), TC(120), AC_Pwr(4), Ux(13), Cal1(10), Tm(10)\nPublic Str As String * 100\nPipeLineMode\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
    "expected_exit": 0,
-   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-   "not_modelled": "setup instruction (CDM_ExciteV/CDM_MuxSelect) before BeginProg is accepted in explicit PipeLine Mode; the before-BeginProg check is not aware of it"
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
   },
   {
    "id": "cr6-cdm_excitev-auto-topbefore",
@@ -7000,16 +6998,14 @@
    "logger": "cr6",
    "source": "Public Volt1, x, R, Tref, Tblk1, ExmA, Lvl_ft, HBr3W, RTD_C, WindDir, DiffCurrent, H2Operiod, AirTC, PTemp, CDM_BattV, Meas(5), TCTemp(5), TC(120), AC_Pwr(4), Ux(13), Cal1(10), Tm(10)\nPublic Str As String * 100\nPipeLineMode\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
    "expected_exit": 0,
-   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-   "not_modelled": "setup instruction (CDM_ExciteV/CDM_MuxSelect) before BeginProg is accepted in explicit PipeLine Mode; the before-BeginProg check is not aware of it"
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
   },
   {
    "id": "cr1000x-cdm_muxselect-explicit-topbefore",
    "logger": "cr1000x",
    "source": "Public Volt1, x, R, Tref, Tblk1, ExmA, Lvl_ft, HBr3W, RTD_C, WindDir, DiffCurrent, H2Operiod, AirTC, PTemp, CDM_BattV, Meas(5), TCTemp(5), TC(120), AC_Pwr(4), Ux(13), Cal1(10), Tm(10)\nPublic Str As String * 100\nPipeLineMode\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n  Scan(3,Sec,1,0)\n  NextScan\nEndProg\n",
    "expected_exit": 0,
-   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
-   "not_modelled": "setup instruction (CDM_ExciteV/CDM_MuxSelect) before BeginProg is accepted in explicit PipeLine Mode; the before-BeginProg check is not aware of it"
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
   },
   {
    "id": "cr6-cdm_muxselect-auto-topbefore",

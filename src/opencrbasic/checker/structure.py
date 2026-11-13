@@ -2300,6 +2300,7 @@ def check_pass2(
         {n.upper() for n in symbols.declared_names(program)} if profile.name in ("cr300", "cr350") else set()
     )
     pass2_scans: list[bool] = []
+    pipeline_setup = False
     misplaced = first_misplaced_sub(program) if not profile.single_pass else None
     misplaced_table = first_misplaced_data_table(program, profile) if not profile.single_pass else None
     nested = nested_table(program, profile) if not profile.single_pass else None
@@ -2309,6 +2310,8 @@ def check_pass2(
     for stmt in program.statements:
         link_ctx.links.cutoff = (stmt.file, stmt.line)  # the stop, if this statement returns
         seen_beginprog = seen_beginprog or _keyword(stmt) == "BEGINPROG"
+        if _keyword(stmt) in ("PIPELINEMODE", "SEQUENTIALMODE"):
+            pipeline_setup = _keyword(stmt) == "PIPELINEMODE"
         # CR300/CR350 report these placement errors late (`check_scan_placement_late`).
         before_bp = not seen_beginprog and not profile.single_pass
         if misplaced and stmt is misplaced[0]:
@@ -2462,6 +2465,7 @@ def check_pass2(
                 and not in_decl_block
                 and before_bp
                 and (kw != "CALLTABLE" or _calltable_known(stmt, tables))
+                and not (pipeline_setup and kw in ("CDM_EXCITEV", "CDM_MUXSELECT"))
             ):
                 record = profile.instructions.get(stmt.keyword.upper())
                 display = record["name"] if record else stmt.keyword

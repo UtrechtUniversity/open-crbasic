@@ -3539,8 +3539,10 @@ row each). Only data files changed, except the `setup` flag and the slow-scan wa
 - Same-line and remaining gaps, all `not_modelled` strict xfails in the fixture: before `BeginProg` in
   explicit `PipeLineMode` the reference prints only the PipeLine Mode error (no `illegally occurs
   before BeginProg.` line) for the `hides_unreached` instructions (15 cases; `SetDac` and
-  `PanelTemp` print both) and accepts `CDM_ExciteV`/`CDM_MuxSelect` outright (4 cases); the
-  `before_beginprog.json` lists gained `SETDAC`, `EXCITEI`, `RESISTANCE`, `VIBRATINGWIRE` and
+  `PanelTemp` print both). Round 138 matches the CR6/CR1000X acceptance of
+  `CDM_ExciteV` and `CDM_MuxSelect` after a preceding `PipeLineMode`.
+  [Four-profile observations](../tests/fixtures/r138_pipeline_setup.json).
+  The `before_beginprog.json` lists gained `SETDAC`, `EXCITEI`, `RESISTANCE`, `VIBRATINGWIRE` and
   `CDM_THERM107` for the automatic-mode `illegally occurs before BeginProg.`; reachability after an
   endless scan inside a slow sequence is not analysed (12 cases, existing limitation); CR1000X
   `PulseCount` in a slow sequence prints `Pulsecount not allowed in Slow Sequence` (1 case).

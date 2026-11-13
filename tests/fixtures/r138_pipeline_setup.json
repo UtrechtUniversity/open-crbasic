@@ -1,0 +1,1185 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r138-cr6-v-top-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r138-cr6-v-top",
+   "logger": "cr6",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr6-v-mode-after-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nSequentialMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr6-v-routine-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r138-cr6-v-routine-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr6-v-routine",
+   "logger": "cr6",
+   "source": "Public Y\nSub Setup()\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr6-v-begin-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r138-cr6-v-begin-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr6-v-begin",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr6-v-after-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_ExciteV not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "r138-cr6-v-after-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr6-v-after",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr6-mux-top-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r138-cr6-mux-top-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_MuxSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr6-mux-top",
+   "logger": "cr6",
+   "source": "Public Y\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_MuxSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr6-mux-mode-after-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_MuxSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr6-mux-mode-after-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nSequentialMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_MuxSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr6-mux-routine-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nSub Setup()\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r138-cr6-mux-routine-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nSub Setup()\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr6-mux-routine",
+   "logger": "cr6",
+   "source": "Public Y\nSub Setup()\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr6-mux-begin-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r138-cr6-mux-begin-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nBeginProg\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr6-mux-begin",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr6-mux-after-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_MuxSelect not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "r138-cr6-mux-after-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr6-mux-after",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr6-bad-top-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-top-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-top",
+   "logger": "cr6",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-mode-after-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-mode-after-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nSequentialMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-routine-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-routine-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-routine",
+   "logger": "cr6",
+   "source": "Public Y\nSub Setup()\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-begin-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-begin-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-begin",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-after-PipeLineMode",
+   "logger": "cr6",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-after-SequentialMode",
+   "logger": "cr6",
+   "source": "Public Y\nSequentialMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr6-bad-after",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-v-top-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r138-cr1000x-v-top-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr1000x-v-top",
+   "logger": "cr1000x",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr1000x-v-mode-after-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr1000x-v-mode-after-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nSequentialMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr1000x-v-routine-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r138-cr1000x-v-routine-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr1000x-v-routine",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub Setup()\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr1000x-v-begin-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r138-cr1000x-v-begin-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr1000x-v-begin",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr1000x-v-after-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_ExciteV not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "r138-cr1000x-v-after-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr1000x-v-after",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr1000x-mux-top-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r138-cr1000x-mux-top-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_MuxSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr1000x-mux-top",
+   "logger": "cr1000x",
+   "source": "Public Y\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_MuxSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr1000x-mux-mode-after-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_MuxSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr1000x-mux-mode-after-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nSequentialMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_MuxSelect illegally occurs before BeginProg."
+  },
+  {
+   "id": "r138-cr1000x-mux-routine-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nSub Setup()\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r138-cr1000x-mux-routine-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nSub Setup()\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr1000x-mux-routine",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub Setup()\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr1000x-mux-begin-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r138-cr1000x-mux-begin-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nBeginProg\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr1000x-mux-begin",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr1000x-mux-after-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_MuxSelect not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "r138-cr1000x-mux-after-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr1000x-mux-after",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r138-cr1000x-bad-top-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-top-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-top",
+   "logger": "cr1000x",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-mode-after-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-mode-after-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nSequentialMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-routine-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-routine-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-routine",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub Setup()\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-begin-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-begin-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-begin",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-after-PipeLineMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-after-SequentialMode",
+   "logger": "cr1000x",
+   "source": "Public Y\nSequentialMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr1000x-bad-after",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "r138-cr300-v-top-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: X1 is not defined.\nline 3: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-v-top-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: X1 is not defined.\nline 3: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-v-top",
+   "logger": "cr300",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV is not defined.\nline 2: CDM_A108 is not defined.\nline 2: X1 is not defined.\nline 2: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-v-mode-after-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV is not defined.\nline 2: CDM_A108 is not defined.\nline 2: X1 is not defined.\nline 2: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-v-mode-after-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nSequentialMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV is not defined.\nline 2: CDM_A108 is not defined.\nline 2: X1 is not defined.\nline 2: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-v-routine-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: X1 is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-v-routine-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: X1 is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-v-routine",
+   "logger": "cr300",
+   "source": "Public Y\nSub Setup()\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: X1 is not defined.\nline 3: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-v-begin-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: X1 is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-v-begin-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: X1 is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-v-begin",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: X1 is not defined.\nline 3: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-v-after-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_ExciteV is not defined.\nline 6: CDM_A108 is not defined.\nline 6: X1 is not defined.\nline 6: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n."
+  },
+  {
+   "id": "r138-cr300-v-after-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_ExciteV is not defined.\nline 6: CDM_A108 is not defined.\nline 6: X1 is not defined.\nline 6: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n."
+  },
+  {
+   "id": "r138-cr300-v-after",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_ExciteV is not defined.\nline 5: CDM_A108 is not defined.\nline 5: X1 is not defined.\nline 5: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n."
+  },
+  {
+   "id": "r138-cr300-mux-top-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_MuxSelect is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Invalid, or out of place expression: CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-mux-top-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_MuxSelect is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Invalid, or out of place expression: CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-mux-top",
+   "logger": "cr300",
+   "source": "Public Y\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_MuxSelect is not defined.\nline 2: CDM_A108 is not defined.\nline 2: Invalid, or out of place expression: CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-mux-mode-after-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_MuxSelect is not defined.\nline 2: CDM_A108 is not defined.\nline 2: Invalid, or out of place expression: CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-mux-mode-after-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nSequentialMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_MuxSelect is not defined.\nline 2: CDM_A108 is not defined.\nline 2: Invalid, or out of place expression: CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-mux-routine-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nSub Setup()\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-mux-routine-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nSub Setup()\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-mux-routine",
+   "logger": "cr300",
+   "source": "Public Y\nSub Setup()\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_MuxSelect is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-mux-begin-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-mux-begin-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nBeginProg\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-mux-begin",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_MuxSelect is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-mux-after-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_MuxSelect is not defined.\nline 6: CDM_A108 is not defined.\nline 6: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "r138-cr300-mux-after-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_MuxSelect is not defined.\nline 6: CDM_A108 is not defined.\nline 6: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "r138-cr300-mux-after",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "r138-cr300-bad-top-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Nope is not defined.\nline 3: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-bad-top-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Nope is not defined.\nline 3: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-bad-top",
+   "logger": "cr300",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV is not defined.\nline 2: CDM_A108 is not defined.\nline 2: Nope is not defined.\nline 2: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-bad-mode-after-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV is not defined.\nline 2: CDM_A108 is not defined.\nline 2: Nope is not defined.\nline 2: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-bad-mode-after-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nSequentialMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV is not defined.\nline 2: CDM_A108 is not defined.\nline 2: Nope is not defined.\nline 2: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-bad-routine-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-bad-routine-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-bad-routine",
+   "logger": "cr300",
+   "source": "Public Y\nSub Setup()\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Nope is not defined.\nline 3: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-bad-begin-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-bad-begin-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-bad-begin",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Nope is not defined.\nline 3: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr300-bad-after-PipeLineMode",
+   "logger": "cr300",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_ExciteV is not defined.\nline 6: CDM_A108 is not defined.\nline 6: Nope is not defined.\nline 6: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n."
+  },
+  {
+   "id": "r138-cr300-bad-after-SequentialMode",
+   "logger": "cr300",
+   "source": "Public Y\nSequentialMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_ExciteV is not defined.\nline 6: CDM_A108 is not defined.\nline 6: Nope is not defined.\nline 6: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n."
+  },
+  {
+   "id": "r138-cr300-bad-after",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_ExciteV is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Nope is not defined.\nline 5: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n."
+  },
+  {
+   "id": "r138-cr350-v-top-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: X1 is not defined.\nline 3: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-v-top-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: X1 is not defined.\nline 3: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-v-top",
+   "logger": "cr350",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV is not defined.\nline 2: CDM_A108 is not defined.\nline 2: X1 is not defined.\nline 2: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-v-mode-after-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV is not defined.\nline 2: CDM_A108 is not defined.\nline 2: X1 is not defined.\nline 2: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-v-mode-after-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,X1,2500,200)\nSequentialMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV is not defined.\nline 2: CDM_A108 is not defined.\nline 2: X1 is not defined.\nline 2: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-v-routine-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: X1 is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-v-routine-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: X1 is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-v-routine",
+   "logger": "cr350",
+   "source": "Public Y\nSub Setup()\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: X1 is not defined.\nline 3: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-v-begin-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: X1 is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-v-begin-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: X1 is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-v-begin",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: X1 is not defined.\nline 3: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-v-after-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_ExciteV is not defined.\nline 6: CDM_A108 is not defined.\nline 6: X1 is not defined.\nline 6: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n."
+  },
+  {
+   "id": "r138-cr350-v-after-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_ExciteV is not defined.\nline 6: CDM_A108 is not defined.\nline 6: X1 is not defined.\nline 6: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n."
+  },
+  {
+   "id": "r138-cr350-v-after",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,X1,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_ExciteV is not defined.\nline 5: CDM_A108 is not defined.\nline 5: X1 is not defined.\nline 5: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,X1,2500,200)\n."
+  },
+  {
+   "id": "r138-cr350-mux-top-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_MuxSelect is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Invalid, or out of place expression: CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-mux-top-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_MuxSelect is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Invalid, or out of place expression: CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-mux-top",
+   "logger": "cr350",
+   "source": "Public Y\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_MuxSelect is not defined.\nline 2: CDM_A108 is not defined.\nline 2: Invalid, or out of place expression: CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-mux-mode-after-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_MuxSelect is not defined.\nline 2: CDM_A108 is not defined.\nline 2: Invalid, or out of place expression: CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-mux-mode-after-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nCDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nSequentialMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_MuxSelect is not defined.\nline 2: CDM_A108 is not defined.\nline 2: Invalid, or out of place expression: CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-mux-routine-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nSub Setup()\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-mux-routine-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nSub Setup()\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-mux-routine",
+   "logger": "cr350",
+   "source": "Public Y\nSub Setup()\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_MuxSelect is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-mux-begin-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-mux-begin-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nBeginProg\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_MuxSelect is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-mux-begin",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_MuxSelect is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-mux-after-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_MuxSelect is not defined.\nline 6: CDM_A108 is not defined.\nline 6: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "r138-cr350-mux-after-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_MuxSelect is not defined.\nline 6: CDM_A108 is not defined.\nline 6: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "r138-cr350-mux-after",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_MuxSelect is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Invalid, or out of place expression:  CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)\n."
+  },
+  {
+   "id": "r138-cr350-bad-top-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Nope is not defined.\nline 3: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-bad-top-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Nope is not defined.\nline 3: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-bad-top",
+   "logger": "cr350",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV is not defined.\nline 2: CDM_A108 is not defined.\nline 2: Nope is not defined.\nline 2: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-bad-mode-after-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV is not defined.\nline 2: CDM_A108 is not defined.\nline 2: Nope is not defined.\nline 2: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-bad-mode-after-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nCDM_ExciteV(CDM_A108,1,Nope,2500,200)\nSequentialMode\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CDM_ExciteV is not defined.\nline 2: CDM_A108 is not defined.\nline 2: Nope is not defined.\nline 2: Invalid, or out of place expression: CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-bad-routine-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-bad-routine-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nSub Setup()\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-bad-routine",
+   "logger": "cr350",
+   "source": "Public Y\nSub Setup()\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndSub\nBeginProg\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Nope is not defined.\nline 3: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-bad-begin-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-bad-begin-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nBeginProg\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_ExciteV is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-bad-begin",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n Scan(3,Sec,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CDM_ExciteV is not defined.\nline 3: CDM_A108 is not defined.\nline 3: Nope is not defined.\nline 3: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "r138-cr350-bad-after-PipeLineMode",
+   "logger": "cr350",
+   "source": "Public Y\nPipeLineMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_ExciteV is not defined.\nline 6: CDM_A108 is not defined.\nline 6: Nope is not defined.\nline 6: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n."
+  },
+  {
+   "id": "r138-cr350-bad-after-SequentialMode",
+   "logger": "cr350",
+   "source": "Public Y\nSequentialMode\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: CDM_ExciteV is not defined.\nline 6: CDM_A108 is not defined.\nline 6: Nope is not defined.\nline 6: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n."
+  },
+  {
+   "id": "r138-cr350-bad-after",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(3,Sec,1,1)\n NextScan\n CDM_ExciteV(CDM_A108,1,Nope,2500,200)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CDM_ExciteV is not defined.\nline 5: CDM_A108 is not defined.\nline 5: Nope is not defined.\nline 5: Invalid, or out of place expression:  CDM_ExciteV(CDM_A108,1,Nope,2500,200)\n."
+  }
+ ]
+}
