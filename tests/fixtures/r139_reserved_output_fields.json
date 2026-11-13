@@ -1,0 +1,1829 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r139-probe-cr6-sample-TableSize-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr6-sample-TableSize-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr6-sample-BytesPerRecord-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .BYTESPERRECORD."
+  },
+  {
+   "id": "r139-probe-cr6-sample-BytesPerRecord-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr6-sample-RecordNo-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.RecordNo,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr6-sample-RecordNo-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.RecordNo,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr6-sample-EventCount-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.EventCount,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr6-sample-EventCount-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.EventCount,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr6-sample-Y-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr6-sample-Y-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr6-sample-NoSuch-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoSuch,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr6-sample-NoSuch-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoSuch,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr6-avg-TableSize-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr6-avg-BytesPerRecord-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.BytesPerRecord,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .BYTESPERRECORD."
+  },
+  {
+   "id": "r139-probe-cr6-avg-RecordNo-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.RecordNo,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr6-avg-RecordNo-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.RecordNo,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr6-avg-EventCount-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.EventCount,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr6-avg-EventCount-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.EventCount,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr6-avg-Y-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.Y,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr6-avg-Y-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.Y,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr6-avg-NoSuch-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.NoSuch,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr6-avg-NoSuch-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.NoSuch,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr6-max-TableSize-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.TableSize,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr6-max-BytesPerRecord-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.BytesPerRecord,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .BYTESPERRECORD."
+  },
+  {
+   "id": "r139-probe-cr6-max-RecordNo-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.RecordNo,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr6-max-RecordNo-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.RecordNo,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr6-max-EventCount-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.EventCount,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr6-max-EventCount-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.EventCount,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr6-max-Y-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.Y,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr6-max-Y-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.Y,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr6-max-NoSuch-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.NoSuch,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr6-max-NoSuch-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.NoSuch,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr6-total-TableSize-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.TableSize,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr6-total-BytesPerRecord-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.BytesPerRecord,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .BYTESPERRECORD."
+  },
+  {
+   "id": "r139-probe-cr6-total-RecordNo-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.RecordNo,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr6-total-RecordNo-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.RecordNo,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr6-total-EventCount-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.EventCount,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr6-total-EventCount-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.EventCount,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr6-total-Y-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.Y,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr6-total-Y-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.Y,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr6-total-NoSuch-0",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.NoSuch,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr6-total-NoSuch-1",
+   "logger": "cr6",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.NoSuch,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-sample-TableSize-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr1000x-sample-TableSize-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr1000x-sample-BytesPerRecord-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .BYTESPERRECORD."
+  },
+  {
+   "id": "r139-probe-cr1000x-sample-BytesPerRecord-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr1000x-sample-RecordNo-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.RecordNo,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-sample-RecordNo-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.RecordNo,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-sample-EventCount-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.EventCount,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr1000x-sample-EventCount-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.EventCount,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr1000x-sample-Y-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr1000x-sample-Y-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr1000x-sample-NoSuch-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoSuch,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-sample-NoSuch-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoSuch,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-avg-TableSize-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr1000x-avg-BytesPerRecord-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.BytesPerRecord,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .BYTESPERRECORD."
+  },
+  {
+   "id": "r139-probe-cr1000x-avg-RecordNo-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.RecordNo,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-avg-RecordNo-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.RecordNo,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-avg-EventCount-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.EventCount,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr1000x-avg-EventCount-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.EventCount,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr1000x-avg-Y-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.Y,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr1000x-avg-Y-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.Y,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr1000x-avg-NoSuch-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.NoSuch,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-avg-NoSuch-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.NoSuch,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-max-TableSize-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.TableSize,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr1000x-max-BytesPerRecord-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.BytesPerRecord,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .BYTESPERRECORD."
+  },
+  {
+   "id": "r139-probe-cr1000x-max-RecordNo-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.RecordNo,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-max-RecordNo-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.RecordNo,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-max-EventCount-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.EventCount,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr1000x-max-EventCount-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.EventCount,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr1000x-max-Y-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.Y,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr1000x-max-Y-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.Y,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr1000x-max-NoSuch-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.NoSuch,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-max-NoSuch-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.NoSuch,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-total-TableSize-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.TableSize,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr1000x-total-BytesPerRecord-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.BytesPerRecord,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .BYTESPERRECORD."
+  },
+  {
+   "id": "r139-probe-cr1000x-total-RecordNo-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.RecordNo,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-total-RecordNo-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.RecordNo,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-total-EventCount-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.EventCount,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr1000x-total-EventCount-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.EventCount,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr1000x-total-Y-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.Y,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr1000x-total-Y-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.Y,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-probe-cr1000x-total-NoSuch-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.NoSuch,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr1000x-total-NoSuch-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.NoSuch,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr300-sample-TableSize-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr300-sample-TableSize-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr300-sample-BytesPerRecord-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr300-sample-BytesPerRecord-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr300-sample-RecordNo-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.RecordNo,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr300-sample-RecordNo-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.RecordNo,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr300-sample-EventCount-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.EventCount,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr300-sample-EventCount-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.EventCount,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr300-sample-Y-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr300-sample-Y-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr300-sample-NoSuch-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoSuch,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr300-sample-NoSuch-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoSuch,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr300-avg-TableSize-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr300-avg-BytesPerRecord-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.BytesPerRecord,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr300-avg-BytesPerRecord-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.BytesPerRecord,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr300-avg-RecordNo-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.RecordNo,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr300-avg-RecordNo-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.RecordNo,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr300-avg-EventCount-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.EventCount,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr300-avg-EventCount-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.EventCount,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr300-avg-Y-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.Y,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr300-avg-Y-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.Y,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr300-avg-NoSuch-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.NoSuch,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr300-avg-NoSuch-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.NoSuch,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr300-max-TableSize-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.TableSize,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr300-max-BytesPerRecord-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.BytesPerRecord,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr300-max-BytesPerRecord-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.BytesPerRecord,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr300-max-RecordNo-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.RecordNo,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr300-max-RecordNo-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.RecordNo,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr300-max-EventCount-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.EventCount,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr300-max-EventCount-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.EventCount,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr300-max-Y-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.Y,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr300-max-Y-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.Y,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr300-max-NoSuch-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.NoSuch,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr300-max-NoSuch-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.NoSuch,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr300-total-TableSize-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.TableSize,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr300-total-BytesPerRecord-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.BytesPerRecord,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr300-total-BytesPerRecord-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.BytesPerRecord,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr300-total-RecordNo-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.RecordNo,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr300-total-RecordNo-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.RecordNo,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr300-total-EventCount-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.EventCount,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr300-total-EventCount-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.EventCount,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr300-total-Y-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.Y,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr300-total-Y-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.Y,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr300-total-NoSuch-0",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.NoSuch,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr300-total-NoSuch-1",
+   "logger": "cr300",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.NoSuch,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr350-sample-TableSize-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr350-sample-TableSize-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr350-sample-BytesPerRecord-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr350-sample-BytesPerRecord-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr350-sample-RecordNo-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.RecordNo,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr350-sample-RecordNo-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.RecordNo,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr350-sample-EventCount-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.EventCount,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr350-sample-EventCount-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.EventCount,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr350-sample-Y-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr350-sample-Y-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.Y,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr350-sample-NoSuch-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoSuch,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr350-sample-NoSuch-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.NoSuch,FP2)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr350-avg-TableSize-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr350-avg-BytesPerRecord-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.BytesPerRecord,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr350-avg-BytesPerRecord-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.BytesPerRecord,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr350-avg-RecordNo-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.RecordNo,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr350-avg-RecordNo-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.RecordNo,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr350-avg-EventCount-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.EventCount,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr350-avg-EventCount-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.EventCount,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr350-avg-Y-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.Y,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr350-avg-Y-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.Y,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr350-avg-NoSuch-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.NoSuch,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr350-avg-NoSuch-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.NoSuch,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr350-max-TableSize-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.TableSize,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr350-max-BytesPerRecord-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.BytesPerRecord,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr350-max-BytesPerRecord-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.BytesPerRecord,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr350-max-RecordNo-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.RecordNo,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr350-max-RecordNo-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.RecordNo,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr350-max-EventCount-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.EventCount,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr350-max-EventCount-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.EventCount,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr350-max-Y-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.Y,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr350-max-Y-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.Y,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr350-max-NoSuch-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.NoSuch,FP2,False,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr350-max-NoSuch-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Maximum(1,T.NoSuch,FP2,False,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr350-total-TableSize-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.TableSize,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-probe-cr350-total-BytesPerRecord-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.BytesPerRecord,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr350-total-BytesPerRecord-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.BytesPerRecord,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "r139-probe-cr350-total-RecordNo-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.RecordNo,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr350-total-RecordNo-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.RecordNo,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.RecordNo(1)."
+  },
+  {
+   "id": "r139-probe-cr350-total-EventCount-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.EventCount,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr350-total-EventCount-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.EventCount,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: DataTable T must have DataEvent() to request EventCount."
+  },
+  {
+   "id": "r139-probe-cr350-total-Y-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.Y,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr350-total-Y-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.Y,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-probe-cr350-total-NoSuch-0",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.NoSuch,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-probe-cr350-total-NoSuch-1",
+   "logger": "cr350",
+   "source": "Public Y\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Totalize(1,T.NoSuch,FP2,False)\n FieldNames(\"Renamed\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find T.NoSuch(1)."
+  },
+  {
+   "id": "r139-boundary-cr6-sample-0",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize(1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr6-sample-1",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize(1,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr6-sample-2",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize+1,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-boundary-cr6-sample-3",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,(T.TableSize),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr6-sample-4",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,Abs(T.TableSize),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-boundary-cr6-sample-5",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,NoSuch.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find NoSuch."
+  },
+  {
+   "id": "r139-boundary-cr6-sample-7",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.tAbLeSiZe,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr6-sample-8",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(\"\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: FieldNames canot be NULL"
+  },
+  {
+   "id": "r139-boundary-cr6-sample-10",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(FN)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-boundary-cr6-sample-12",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n Sample(1,Y,FP2)\n FieldNames(\"A\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr6-sample-15",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(\"A\")\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr6-avg-0",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize(1),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr6-avg-1",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize(1,1),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr6-avg-2",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize+1,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-boundary-cr6-avg-3",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,(T.TableSize),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr6-avg-4",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,Abs(T.TableSize),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-boundary-cr6-avg-5",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,NoSuch.TableSize,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find NoSuch."
+  },
+  {
+   "id": "r139-boundary-cr6-avg-7",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.tAbLeSiZe,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr6-avg-12",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize,FP2,False)\n Sample(1,Y,FP2)\n FieldNames(\"A\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr6-avg-15",
+   "logger": "cr6",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize,FP2,False)\n FieldNames(\"A\")\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr1000x-sample-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize(1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr1000x-sample-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize(1,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr1000x-sample-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize+1,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-boundary-cr1000x-sample-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,(T.TableSize),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr1000x-sample-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,Abs(T.TableSize),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-boundary-cr1000x-sample-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,NoSuch.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find NoSuch."
+  },
+  {
+   "id": "r139-boundary-cr1000x-sample-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.tAbLeSiZe,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr1000x-sample-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(\"\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: FieldNames canot be NULL"
+  },
+  {
+   "id": "r139-boundary-cr1000x-sample-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(FN)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-boundary-cr1000x-sample-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n Sample(1,Y,FP2)\n FieldNames(\"A\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr1000x-sample-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(\"A\")\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr1000x-avg-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize(1),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr1000x-avg-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize(1,1),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr1000x-avg-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize+1,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-boundary-cr1000x-avg-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,(T.TableSize),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr1000x-avg-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,Abs(T.TableSize),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r139-boundary-cr1000x-avg-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,NoSuch.TableSize,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find NoSuch."
+  },
+  {
+   "id": "r139-boundary-cr1000x-avg-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.tAbLeSiZe,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr1000x-avg-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize,FP2,False)\n Sample(1,Y,FP2)\n FieldNames(\"A\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr1000x-avg-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize,FP2,False)\n FieldNames(\"A\")\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr300-sample-0",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize(1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr300-sample-1",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize(1,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr300-sample-2",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize+1,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr300-sample-3",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,(T.TableSize),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr300-sample-4",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,Abs(T.TableSize),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr300-sample-5",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,NoSuch.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable NoSuch."
+  },
+  {
+   "id": "r139-boundary-cr300-sample-7",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.tAbLeSiZe,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr300-sample-8",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(\"\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: FieldNames canot be NULL"
+  },
+  {
+   "id": "r139-boundary-cr300-sample-10",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(FN)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr300-sample-12",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n Sample(1,Y,FP2)\n FieldNames(\"A\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr300-sample-13",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldNames(\"BytesPerRecord\")\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr300-sample-15",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(\"A\")\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr300-avg-0",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize(1),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr300-avg-1",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize(1,1),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr300-avg-2",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize+1,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr300-avg-3",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,(T.TableSize),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr300-avg-4",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,Abs(T.TableSize),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr300-avg-5",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,NoSuch.TableSize,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable NoSuch."
+  },
+  {
+   "id": "r139-boundary-cr300-avg-7",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.tAbLeSiZe,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr300-avg-12",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize,FP2,False)\n Sample(1,Y,FP2)\n FieldNames(\"A\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr300-avg-13",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldNames(\"BytesPerRecord\")\nEndTable\nDataTable(U,True,10)\n Average(1,T.BytesPerRecord,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr300-avg-15",
+   "logger": "cr300",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize,FP2,False)\n FieldNames(\"A\")\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr350-sample-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize(1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr350-sample-1",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize(1,1),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr350-sample-2",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize+1,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr350-sample-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,(T.TableSize),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr350-sample-4",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,Abs(T.TableSize),FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr350-sample-5",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,NoSuch.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable NoSuch."
+  },
+  {
+   "id": "r139-boundary-cr350-sample-7",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.tAbLeSiZe,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr350-sample-8",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(\"\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: FieldNames canot be NULL"
+  },
+  {
+   "id": "r139-boundary-cr350-sample-10",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(FN)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr350-sample-12",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n Sample(1,Y,FP2)\n FieldNames(\"A\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr350-sample-13",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldNames(\"BytesPerRecord\")\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr350-sample-15",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\n FieldNames(\"A\")\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr350-avg-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize(1),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr350-avg-1",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize(1,1),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr350-avg-2",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize+1,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr350-avg-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,(T.TableSize),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr350-avg-4",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,Abs(T.TableSize),FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr350-avg-5",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,NoSuch.TableSize,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable NoSuch."
+  },
+  {
+   "id": "r139-boundary-cr350-avg-7",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.tAbLeSiZe,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr350-avg-12",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize,FP2,False)\n Sample(1,Y,FP2)\n FieldNames(\"A\")\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
+  },
+  {
+   "id": "r139-boundary-cr350-avg-13",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\n FieldNames(\"BytesPerRecord\")\nEndTable\nDataTable(U,True,10)\n Average(1,T.BytesPerRecord,FP2,False)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r139-boundary-cr350-avg-15",
+   "logger": "cr350",
+   "source": "Public Y\nConst FN=\"A\"\nPublic X(3)\nDataTable(T,True,10)\n Sample(1,Y,FP2)\nEndTable\nDataTable(U,True,10)\n Average(1,T.TableSize,FP2,False)\n FieldNames(\"A\")\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Must use FieldNames with reserved field .TABLESIZE."
+  }
+ ]
+}

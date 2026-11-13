@@ -92,6 +92,12 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 139** (fixture verdict parity). A direct reserved table property
+used by `Sample`, `Average`, `Maximum` or `Totalize` requires an attached
+`FieldNames` where the profile exposes the property. Six previously flagged
+false accepts match exactly.
+[Four-profile observations](tests/fixtures/r139_reserved_output_fields.json).
+
 **Round 138** (fixture verdict parity). CR6 and CR1000X accept
 `CDM_ExciteV` and `CDM_MuxSelect` before `BeginProg` after an explicit
 `PipeLineMode` directive. Four previously flagged false rejects match.

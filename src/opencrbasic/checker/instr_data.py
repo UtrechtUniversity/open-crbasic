@@ -524,9 +524,30 @@ def check_fieldnames(program: S.Program, profile: Profile, diags: Diagnostics, e
 
     tables = symbols.scope_tables(program, env, scalars=True)
     owners = fieldnames_owners(program)
+    named = {id(owner) for owner in owners.values() if owner is not None}
+    table_names = {
+        name.upper()
+        for st in program.statements
+        if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE" and (name := _declared_table_name(st))
+    }
+    reserved = {"TABLESIZE"} if profile.single_pass else {"TABLESIZE", "BYTESPERRECORD"}
     known = None
+    in_table = False
     for st in program.statements:
-        if not isinstance(st, S.Instruction) or st.keyword.upper() != "FIELDNAMES":
+        if not isinstance(st, S.Instruction):
+            continue
+        kw = st.keyword.upper()
+        in_table = kw == "DATATABLE" or (in_table and kw != "ENDTABLE")
+        if in_table and kw in {"SAMPLE", "AVERAGE", "MAXIMUM", "TOTALIZE"} and len(st.args) > 1 and id(st) not in named:
+            source = st.args[1]
+            if (
+                isinstance(source, S.Member)
+                and isinstance(source.base, S.Name)
+                and source.base.name.upper() in (table_names | {"STATUS"})
+                and source.member.upper() in reserved
+            ):
+                diags.error(st.line, f"Must use FieldNames with reserved field .{source.member.upper()}.", st.file)
+        if kw != "FIELDNAMES":
             continue
         owner = owners.get(id(st))
         if len(st.args) != 1 or st.args[0] is None or owner is None:

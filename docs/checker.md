@@ -3367,6 +3367,12 @@ line is that of the output instruction that owns the `FieldNames` (see "FieldNam
 54)" below). CR6/CR1000X report it alongside pass-2 expression errors; CR300/CR350 only in an
 otherwise clean file. An undefined name as the argument is modelled in round 54.
 
+When `Sample`, `Average`, `Maximum` or `Totalize` would derive its output
+name from a direct `TableSize` property, the builder requires a `FieldNames`
+owned by that instruction. CR6 and CR1000X apply the same rule to
+`BytesPerRecord`. Arithmetic using the property compiled in the probes.
+[Round 139 observations](../tests/fixtures/r139_reserved_output_fields.json).
+
 ## Block structure (2026-10-02)
 
 Fixtures: `tests/fixtures/block_structure.json` (`tests/test_block_structure.py`), real-compiler

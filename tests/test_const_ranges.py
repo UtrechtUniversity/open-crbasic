@@ -52,6 +52,7 @@ CASES = [
         "r136_pulse_config.json",
         "r137_inline_group_recovery.json",
         "r138_pipeline_setup.json",
+        "r139_reserved_output_fields.json",
     )
     for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
 ]

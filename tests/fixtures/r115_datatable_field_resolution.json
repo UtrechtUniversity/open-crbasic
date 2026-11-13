@@ -220,16 +220,14 @@
    "logger": "cr6",
    "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE.",
-   "not_modelled": "Reserved table-property names require FieldNames when used in Sample."
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
   },
   {
    "id": "cr6-field-table-BytesPerRecord",
    "logger": "cr6",
    "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .BYTESPERRECORD.",
-   "not_modelled": "Reserved table-property names require FieldNames when used in Sample."
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .BYTESPERRECORD."
   },
   {
    "id": "cr6-field-table-OutputInterval",
@@ -467,16 +465,14 @@
    "logger": "cr1000x",
    "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE.",
-   "not_modelled": "Reserved table-property names require FieldNames when used in Sample."
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
   },
   {
    "id": "cr1000x-field-table-BytesPerRecord",
    "logger": "cr1000x",
    "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.BytesPerRecord,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .BYTESPERRECORD.",
-   "not_modelled": "Reserved table-property names require FieldNames when used in Sample."
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .BYTESPERRECORD."
   },
   {
    "id": "cr1000x-field-table-OutputInterval",
@@ -714,8 +710,7 @@
    "logger": "cr300",
    "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE.",
-   "not_modelled": "Reserved table-property names require FieldNames when used in Sample."
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
   },
   {
    "id": "cr300-field-table-BytesPerRecord",
@@ -960,8 +955,7 @@
    "logger": "cr350",
    "source": "Public Y\nPublic W(3)\nDataTable(T,True,10)\n Average(1,Y,FP2,False)\n Sample(3,W,FP2)\nEndTable\nDataTable(U,True,10)\n Sample(1,T.TableSize,FP2)\nEndTable\nBeginProg\n Scan(1,Sec,0,0)\n CallTable T\n CallTable U\n NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE.",
-   "not_modelled": "Reserved table-property names require FieldNames when used in Sample."
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Must use FieldNames with reserved field .TABLESIZE."
   },
   {
    "id": "cr350-field-table-BytesPerRecord",
