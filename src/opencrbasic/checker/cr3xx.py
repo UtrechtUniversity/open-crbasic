@@ -84,7 +84,9 @@ _COMMS_MODES = {
 _CR350_MAX_COMMS_MODE = {1: 0, 2: 0, 3: 0, 4: 1, 7: 1, 8: 1, 9: 1, 10: 1}
 
 
-def _check_cr350_comms_mode(stmt: S.Call, port: int, profile, consts: dict, diags: Diagnostics) -> None:
+def _check_cr350_comms_mode(
+    stmt: S.Call, port: int, profile, consts: dict, diags: Diagnostics, invalid_format: bool
+) -> None:
     maximum = _CR350_MAX_COMMS_MODE.get(port)
     if maximum is None or len(stmt.args) != 6:
         return
@@ -99,7 +101,7 @@ def _check_cr350_comms_mode(stmt: S.Call, port: int, profile, consts: dict, diag
     if any(isinstance(raw, float) and (not -(2**31) <= raw < 2**31 or raw != int(raw)) for raw in raw_values):
         return
     fmt = longconv.long_value(format_arg, env, profile)
-    if fmt is None or not -1 <= fmt <= 15:
+    if not invalid_format and (fmt is None or not -1 <= fmt <= 15):
         return
     value = longconv.long_value(mode_arg, env, profile)
     if value is not None and (mode := value & 0xFF) > maximum:
@@ -155,6 +157,17 @@ def _format_needs_com1_4(stmt: S.Call, profile, consts: dict | None) -> bool:
     if not isinstance(port, int) or not isinstance(fmt, int) or isinstance(port, bool) or isinstance(fmt, bool):
         return False
     return 1 <= port <= 8 and 16 <= fmt < 2**31
+
+
+def _invalid_cr3xx_serial_format(arg: S.Expr, env: consteval.Env) -> bool:
+    """The integer format field on CR300/CR350 rejects options starting at 16 (round 134)."""
+    if not isinstance(arg, S.Name) and consteval.is_float(arg, env):
+        return False
+    try:
+        value = consteval.value_of(arg, env)
+    except consteval.NotConstant, ValueError, OverflowError:
+        return False
+    return consteval.is_finite_number(value) and 16 <= value <= 2**31 and value == int(value)
 
 
 def _non_numeric(expr, profile, consts: dict | None, variable_names) -> bool:
@@ -295,6 +308,17 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                     continue
         _check_baud(stmt, profile, diags, program.consts, port11=cr3 and port == 11)
         constant_port = not (names or is_variable or isinstance(arg, S.String))
+        format_arg = stmt.args[2] if len(stmt.args) > 2 else None
+        invalid_format = (
+            cr3
+            and constant_port
+            and consteval.is_finite_number(port)
+            and format_arg is not None
+            and not expressions._variable_refs(format_arg, variable_names)
+            and _invalid_cr3xx_serial_format(format_arg, consteval.Env(profile, dict(program.consts)))
+        )
+        if invalid_format:
+            diags.error(stmt.line, "Invalid format option.", stmt.file)
         # CR6/CR1000X: a String or variable `SerialOpenFormat` makes the 5th argument the CommsMode, with
         # no TXDelay range and at most 5 arguments (oracle, 2026-10-28, round 57,
         # docs/checker.md#serialopen-format-and-commsmode-round-57)
@@ -390,7 +414,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                 if consteval.is_finite_number(size) and 0 < size < 2**31:
                     diags.items.append(Diagnostic("error", stmt.line, "Out of memory.", stmt.file, trigger=True))
         if profile.name == "cr350" and consteval.is_finite_number(port):
-            _check_cr350_comms_mode(stmt, int(port), profile, program.consts, diags)
+            _check_cr350_comms_mode(stmt, int(port), profile, program.consts, diags, invalid_format)
         if names or is_variable or isinstance(arg, S.String):
             # A string or variable ComPort, all four loggers, pass 1 (oracle, 2026-10-01:
             # `SerialOpen("fuzz",...)`). CR300/CR350 echo the line end (`docs/loggers.md`).

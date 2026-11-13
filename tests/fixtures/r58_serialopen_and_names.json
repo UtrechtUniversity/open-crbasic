@@ -38,16 +38,14 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9601,16,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 9601 is illegal baud rate.\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 9601 is illegal baud rate.\nline 4: Invalid format option."
   },
   {
    "id": "cr350-ser-SerialOpen(ComRS232,9601,16,0,100)",
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9601,16,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 9601 is illegal baud rate.\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 9601 is illegal baud rate.\nline 4: Invalid format option."
   },
   {
    "id": "cr6-ser-SerialOpen(ComRS232,9600,16,-1,100)",
@@ -100,16 +98,14 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,100,5)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr350-ser-SerialOpen(ComRS232,9600,16,0,100,5)",
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,100,5)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.\nline 4: 5 is an invalid CommsMode parameter.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.\nline 4: 5 is an invalid CommsMode parameter."
   },
   {
    "id": "cr6-ser-SerialOpen(ComRS232,9600,16,0,Volt1)",
@@ -130,16 +126,14 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,Volt1)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,16,0,Volt1)\n.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,16,0,Volt1)\n."
   },
   {
    "id": "cr350-ser-SerialOpen(ComRS232,9600,16,0,Volt1)",
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,Volt1)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,16,0,Volt1)\n.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,16,0,Volt1)\n."
   },
   {
    "id": "cr6-ser-SerialOpen(ComRS232,9600,16.7,0,100)",
@@ -359,16 +353,14 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,16,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr350-ser-SerialOpen(8,9600,16,0,100)",
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,16,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr6-ser-IPNetPower(5,1,Undecl+1)",
@@ -1191,16 +1183,14 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr350-ser-SerialOpen(ComRS232,9600,16,0,100)",
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr6-ser-SerialOpen(ComRS232,9600,256,0,100)",
@@ -1221,16 +1211,14 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,256,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr350-ser-SerialOpen(ComRS232,9600,256,0,100)",
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,256,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr6-ser-SerialOpen(ComRS232,9600,-1,0,100)",
@@ -1839,16 +1827,14 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,16,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr350-ser-SerialOpen(ComUSB,9600,16,0,100)",
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,16,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr6-ser-SerialOpen(ComUSB,9600,256,0,100)",
@@ -1869,16 +1855,14 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,256,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr350-ser-SerialOpen(ComUSB,9600,256,0,100)",
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComUSB,9600,256,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr6-ser-SerialOpen(ComUSB,9600,-1,0,100)",
@@ -1955,16 +1939,14 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,16,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr350-ser-SerialOpen(32,9600,16,0,100)",
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,16,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr6-ser-SerialOpen(32,9600,256,0,100)",
@@ -1985,16 +1967,14 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,256,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr350-ser-SerialOpen(32,9600,256,0,100)",
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(32,9600,256,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr6-ser-SerialOpen(32,9600,-1,0,100)",
@@ -2071,16 +2051,14 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,256,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr350-ser-SerialOpen(8,9600,256,0,100)",
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(8,9600,256,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid format option."
   },
   {
    "id": "cr6-ser-SerialOpen(8,9600,-1,0,100)",

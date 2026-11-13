@@ -9254,6 +9254,12 @@ after the baud-rate line; ComC, ComU and ComUSB ports, floats, `True`, negative 
 beyond the Long range pass. Not modelled: after it, an out-of-range TXDelay is `Parameter must be a
 constant integer:` instead of the delay message. `cr3xx._format_needs_com1_4`.
 
+On CR300 and CR350, integer formats from 16 through the probed upper
+boundary of 2147483648 report `Invalid format option.` after a baud-rate
+error. A CR350 six-argument call can also report an invalid CommsMode
+after the format error (round 134,
+[four-profile probes](../tests/fixtures/r134_serialopen_format.json)).
+
 ## SerialOpen recovery (round 58)
 
 Decompiled (`FUN_00494aa0`, Codex, `scratch/r58/codex-names.log`) and confirmed on CR6/CR1000X: after

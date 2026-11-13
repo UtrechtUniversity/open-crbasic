@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 134** (fixture verdict parity). CR300 and CR350 now report
+invalid integer `SerialOpen` format options. Twenty-two previously
+flagged cases match exactly.
+[Four-profile observations](tests/fixtures/r134_serialopen_format.json).
+
 **Round 133** (destination parity). CR300 and CR350 reject numeric
 constants in `Move`, `Erase`, `ReadIO` and `RealTime` destinations and
 accept string concatenations there.
