@@ -2009,21 +2009,18 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
                     first_variables.setdefault(var.name.upper(), (st.file, st.line))
 
     def visible_at(stmt: S.Stmt) -> KnownNames:
-        params = scopes[id(stmt)][0]
-        return (
-            known.without(
-                {
-                    name
-                    for name, (file, line) in first_variables.items()
-                    if file == stmt.file
-                    and line > stmt.line
-                    and name not in params
-                    and name not in profile.symbols
-                    and name not in profile.functions
-                }
-            )
-            if first_variables
-            else known
+        params, later = scopes[id(stmt)]
+        return known.without(
+            (later - params - variable_names)
+            | {
+                name
+                for name, (file, line) in first_variables.items()
+                if file == stmt.file
+                and line > stmt.line
+                and name not in params
+                and name not in profile.symbols
+                and name not in profile.functions
+            }
         )
 
     seen_avw200 = False
@@ -2139,12 +2136,13 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
     for stmt in program.statements:
         if not isinstance(stmt, S.If):
             continue
-        names = _undefined_names(stmt.cond, known)
+        here = visible_at(stmt) if profile.single_pass else known
+        names = _undefined_names(stmt.cond, here)
         text = _if_condition_text(stmt)
         if text is None:
             text = _if_condition_text_no_then(stmt)
         if text is not None and _report_invalid_compound(
-            stmt, stmt.cond, text, known, read_only - scopes[id(stmt)][0], profile, diags
+            stmt, stmt.cond, text, here, read_only - scopes[id(stmt)][0], profile, diags
         ):
             if not profile.single_pass:
                 suppressed_inline.update(id(body) for body in (stmt.inline or []) + (stmt.inline_else or []))
@@ -2160,7 +2158,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env, s
             continue
         if not names or text is None:
             continue
-        names, dims = _names_and_dims(known, ds, stmt, (), stmt.cond)
+        names, dims = _names_and_dims(here, ds, stmt, (), stmt.cond)
         before = len(diags.items)
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)

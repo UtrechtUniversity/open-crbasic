@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 125** (fixture verdict parity). CR300 and CR350 now resolve
+constants in assignments and `If` conditions at their point of use.
+Four previously flagged cases match exactly.
+[Four-profile observations](tests/fixtures/r125_const_use_order.json).
+
 **Round 124** (fixture verdict parity). `FieldNames` expressions that
 reference variables now reject on all four profiles. Four previously
 flagged cases match exactly.

@@ -346,16 +346,14 @@
    "logger": "cr300",
    "source": "Public X\nSub Q\n  X = K\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 7: Too many parameters:  Sec.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 7: Too many parameters:  Sec."
   },
   {
    "id": "cr350-const_late_assign",
    "logger": "cr350",
    "source": "Public X\nSub Q\n  X = K\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 7: Too many parameters:  Sec.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 7: Too many parameters:  Sec."
   },
   {
    "id": "cr6-const_late_dim",
@@ -546,16 +544,14 @@
    "logger": "cr300",
    "source": "Public X\nSub Q\n  If X > K Then X = 0\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 7: Too many parameters:  Sec.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 7: Too many parameters:  Sec."
   },
   {
    "id": "cr350-sub_late_if",
    "logger": "cr350",
    "source": "Public X\nSub Q\n  If X > K Then X = 0\nEndSub\nConst K=3\nBeginProg\n  Scan(1,Sec,0,0)\n    Q\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 7: Too many parameters:  Sec.",
-   "not_modelled": "CR300/CR350 best effort: this ordering or AvgRun/Sub-name form is not modelled"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: K is not defined.\nline 7: Too many parameters:  Sec."
   },
   {
    "id": "cr6-top_init",
