@@ -1,6 +1,6 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-11-14 after development round 150; v1.0 released internally (M0-M7 done)** (round-51
+Current compiler state and handoff, updated **2026-11-14 for release 1.2.0, after development round 150; v1.0 released internally (M0-M7 done)** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
@@ -29,8 +29,8 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 8 -m 'not server'` (round 150, 2026-11-14) | 80,832 passed, 49 skipped, 911 strict xfail, 1 failed: `tests/lsp/test_lsp_bench.py::test_smoke_report` starts a server, which could not create a semaphore on this host (see Work method) |
-| `pytest -q -m server` | not run in round 150: the host had no free multiprocessing semaphores; last result 163 passed (round 66) |
+| `pytest -q -n 8 -m 'not server'` (release 1.2.0, 2026-11-14) | 80,850 passed, 32 skipped, 911 strict xfail |
+| `pytest -q -m server` (release 1.2.0, 2026-11-14, after a restart of the machine) | 162 passed, 12 skipped; `multiprocessing.Lock()` still succeeds afterwards |
 | Fixture audit of rounds 76-149 (`tools/fixture_audit.py`, 75 fixtures, cached reference results; round 150) and of `r150_*.json` (`--no-cache`) | 18,550 cases and 164 cases, 0 differing, 0 without verdict |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
 | Round-59 fixture audit (`r59_*` and the four edited fixtures) | 0 differing, 0 without verdict |
@@ -116,7 +116,8 @@ in [legal and provenance notes](docs/legal.md).
   only observations were help-seeded reproducers from partially tested to unknown
   (52 tested, 234 partially tested, 124 unknown). [Inventory](docs/inventory.md).
 - The language-server test client terminates the server before killing it, so tests stop
-  leaking multiprocessing semaphores (not verified on this host, which had none left).
+  leaking multiprocessing semaphores. After a restart the server tier ran once in full and
+  semaphores were still available; the count of leaked semaphores itself was not measured.
 [Evidence](docs/checker.md#round-150-review-fixes).
 
 **Round 149** (fixture verdict parity). CR300 and CR350 diagnose
