@@ -7914,8 +7914,10 @@ Remaining gaps (the 54 expected failures):
   [Four-profile observations](../tests/fixtures/r135_bridge_excitation.json).
 - CR300 PeriodAvg `Invalid channel: %d.` / `Reps exceeds valid channels.`, and the CR6/CR1000X
   PeriodAvg negative Reps (11).
-- Thermistor negative Reps and burst-channel spans (9). Two further CR6 Therm107 cases show the
-  bridge-validator overlap and channel lines, which the thermistors do not run.
+- Round 145 matched thermistor burst-channel spans on CR6 and CR1000X and
+  measurement/excitation overlap on CR6. Negative Reps remain a separate
+  case.
+  [Four-profile observations](../tests/fixtures/r145_thermistor_spans.json).
 - Round 136 matched the PulseCount port messages. CR300 and CR350 truncate
   PConfig and use its low byte. Config 1 rejects C, SE and P_SW terminals.
   Config 2 rejects SE ports on CR300 and the low-level AC port on CR350.

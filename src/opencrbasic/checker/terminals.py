@@ -189,6 +189,12 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
                 continue
             if reps is not None and profile.name == "cr6" and stmt.keyword.upper() in CR6_BRIDGES:
                 reps = min(reps, 1)  # start channel only: `instr_measure._check_bridge_span` owns the span
+            if (
+                reps is not None
+                and profile.name in ("cr6", "cr1000x")
+                and stmt.keyword.upper() in {"THERM107", "THERM108", "THERM109"}
+            ):
+                _check_thermistor_span(stmt, profile, env, diags, reps)
             pulse = stmt.keyword.upper() == "PULSECOUNT" and profile.name in ("cr1000x", "cr300", "cr350")
             ports = _pulse_config(stmt, profile, kind, env, diags, reps) if pulse else ()
             if reps is not None and "span" in kind:
@@ -210,6 +216,23 @@ def _const_int(stmt: S.Instruction, pos: int, env: consteval.Env, truncate: bool
     if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value):
         return None
     return int(value) if truncate or value == int(value) else None
+
+
+def _check_thermistor_span(
+    stmt: S.Instruction, profile: Profile, env: consteval.Env, diags: Diagnostics, reps: int
+) -> None:
+    channel = _const_int(stmt, 3, env, truncate=True)
+    if channel is None or reps <= 1:
+        return
+    if profile.name == "cr6":
+        start = abs(channel)
+        excitation = _const_int(stmt, 4, env, truncate=True)
+        if excitation is not None and 201 <= start < excitation <= min(212, start + reps - 1):
+            diags.error(stmt.line, "Measurement channels and excitation channels overlap.", stmt.file)
+        if -212 <= channel <= -201 and start + reps - 1 > 212:
+            diags.error(stmt.line, "Channel 13 exceeds number of valid channels.", stmt.file)
+    elif -16 <= channel <= -1 and abs(channel) + reps - 1 > 16:
+        diags.error(stmt.line, "Channel 17 exceeds number of valid channels.", stmt.file)
 
 
 def _check_bridge_excitation(

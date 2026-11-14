@@ -1,0 +1,2795 @@
+{
+ "observation_date": "2026-11-14",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r145-probe-cr6-therm-107-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,1,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,1,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,9,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,8,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,7,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,9,U1,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-12",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,1,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,U2,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-16",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-107-17",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,1,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,1,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,9,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,8,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,7,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,9,U1,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-12",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,1,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,U2,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-16",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-108-17",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,1,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,1,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,9,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,8,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,7,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,9,U1,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-12",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,1,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,U2,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-16",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr6-therm-109-17",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,1,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,1,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,9,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,8,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,7,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,9,U1,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,1,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,U2,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U2."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-107-17",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,1,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,1,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,9,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,8,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,7,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,9,U1,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,1,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,U2,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U2."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-108-17",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,1,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,1,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,9,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,8,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,7,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,9,U1,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,1,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,U2,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U2."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-16",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr1000x-therm-109-17",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,1,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,1,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,9,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,8,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,7,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,9,U1,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-12",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,1,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,U2,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U2 is not defined.\nline 5: Variable illegal in Parameter: U2."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-16",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-107-17",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,1,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,1,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,9,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,8,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,7,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,9,U1,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-12",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,1,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,U2,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U2 is not defined.\nline 5: Variable illegal in Parameter: U2."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-16",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-108-17",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,1,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,1,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,9,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,8,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,7,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,9,U1,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-12",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,1,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,U2,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U2 is not defined.\nline 5: Variable illegal in Parameter: U2."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-16",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr300-therm-109-17",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,1,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,1,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,9,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,8,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,7,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,9,U1,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-12",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,1,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,U2,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U2 is not defined.\nline 5: Variable illegal in Parameter: U2."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-16",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-107-17",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,1,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,1,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,9,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,8,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,7,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,9,U1,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-12",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,1,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,U2,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U2 is not defined.\nline 5: Variable illegal in Parameter: U2."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-16",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-108-17",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,1,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-212,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,1,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,9,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,8,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,7,U1,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,9,U1,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-12",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,1,U1,U2,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,U2,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U2 is not defined.\nline 5: Variable illegal in Parameter: U2."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-16",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-probe-cr350-therm-109-17",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,1,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,U1,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,U12,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,U11,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap.\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,4,U10,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap.\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap.\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U11,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U10,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-15,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-212,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-212,U13,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U13."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-16,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3.5,-210,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-107-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3.5,-14,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,U1,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,U12,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,U11,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap.\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,4,U10,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap.\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap.\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U11,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U10,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-15,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-212,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-212,U13,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U13."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-16,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3.5,-210,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-108-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3.5,-14,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,U1,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,U12,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,U11,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap.\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,4,U10,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap.\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement channels and excitation channels overlap.\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U11,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U10,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-7",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-15,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-10",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-212,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 13 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-11",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-212,U13,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U13."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-13",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-16,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-14",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3.5,-210,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-boundary-cr6-therm-109-15",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3.5,-14,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Vx1."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,U1,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,U12,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U12."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,U11,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U11."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,4,U10,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U10."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U12."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U11,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U11."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U10,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U10."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-15,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-212,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U12."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-212,U13,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U13."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-16,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3.5,-210,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-107-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3.5,-14,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,U1,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,U12,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U12."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,U11,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U11."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,4,U10,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U10."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U12."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U11,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U11."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U10,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U10."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-15,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-212,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U12."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-212,U13,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U13."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-16,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3.5,-210,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-108-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3.5,-14,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,U1,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,U12,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U12."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,U11,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U11."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,4,U10,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U10."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U12."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U11,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U11."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U10,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U10."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-15,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-212,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U12."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-212,U13,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U13."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-16,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 17 exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3.5,-210,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: U8."
+  },
+  {
+   "id": "r145-boundary-cr1000x-therm-109-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3.5,-14,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,U1,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,U12,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,U11,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,4,U10,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U11,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U10,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-15,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Vx4 is not defined.\nline 5: Variable illegal in Parameter: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-212,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-212,U13,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U13 is not defined.\nline 5: Variable illegal in Parameter: U13."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-16,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Vx4 is not defined.\nline 5: Variable illegal in Parameter: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3.5,-210,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-107-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3.5,-14,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,U1,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,U12,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,U11,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,4,U10,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U11,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U10,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-15,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Vx4 is not defined.\nline 5: Variable illegal in Parameter: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-212,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-212,U13,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U13 is not defined.\nline 5: Variable illegal in Parameter: U13."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-16,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Vx4 is not defined.\nline 5: Variable illegal in Parameter: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3.5,-210,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-108-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3.5,-14,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,U1,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,U12,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,U11,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,4,U10,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U11,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U10,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-7",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-15,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Vx4 is not defined.\nline 5: Variable illegal in Parameter: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-10",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-212,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-11",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-212,U13,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U13 is not defined.\nline 5: Variable illegal in Parameter: U13."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-13",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-16,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Vx4 is not defined.\nline 5: Variable illegal in Parameter: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-14",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3.5,-210,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-boundary-cr300-therm-109-15",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3.5,-14,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,U1,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,U12,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,U11,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,4,U10,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U11,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-211,U10,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,2,16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-15,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Vx4 is not defined.\nline 5: Variable illegal in Parameter: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-212,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-212,U13,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U13 is not defined.\nline 5: Variable illegal in Parameter: U13."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3,-16,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Vx4 is not defined.\nline 5: Variable illegal in Parameter: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3.5,-210,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-107-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm107(A,3.5,-14,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,U1,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,U12,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,U11,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,4,U10,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U11,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-211,U10,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,2,16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-15,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Vx4 is not defined.\nline 5: Variable illegal in Parameter: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-212,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-212,U13,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U13 is not defined.\nline 5: Variable illegal in Parameter: U13."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3,-16,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Vx4 is not defined.\nline 5: Variable illegal in Parameter: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3.5,-210,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-108-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm108(A,3.5,-14,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,U1,U1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U1 is not defined.\nline 5: Variable illegal in Parameter: U1."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,U12,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,U11,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,4,U10,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U11,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U11 is not defined.\nline 5: Variable illegal in Parameter: U11."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-211,U10,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U10 is not defined.\nline 5: Variable illegal in Parameter: U10."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-7",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,15,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,2,16,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel exceeds number of valid channels."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-15,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Vx4 is not defined.\nline 5: Variable illegal in Parameter: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-10",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-212,U12,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U12 is not defined.\nline 5: Variable illegal in Parameter: U12."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-11",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-212,U13,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U13 is not defined.\nline 5: Variable illegal in Parameter: U13."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-13",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3,-16,Vx4,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Vx4 is not defined.\nline 5: Variable illegal in Parameter: Vx4."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-14",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3.5,-210,U8,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: U8 is not defined.\nline 5: Variable illegal in Parameter: U8."
+  },
+  {
+   "id": "r145-boundary-cr350-therm-109-15",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(24)\nBeginProg\n Scan(10,Sec,0,0)\n Therm109(A,3.5,-14,Vx1,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

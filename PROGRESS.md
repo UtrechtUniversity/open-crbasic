@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 145** (fixture verdict parity). CR6 and CR1000X check burst
+channel spans for `Therm107`, `Therm108` and `Therm109`. CR6 also checks
+excitation overlap. Three previously flagged cases match exactly.
+[Four-profile observations](tests/fixtures/r145_thermistor_spans.json).
+
 **Round 144** (fixture verdict parity). CR300 and CR350 reject channel
 values that truncate to zero in `VoltDiff`, `VoltSe` and `TCDiff`.
 Two previously flagged cases match exactly.

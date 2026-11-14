@@ -5877,8 +5877,7 @@
       "logger": "cr6",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nTherm107(X,2,-U12,U8,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 13 exceeds number of valid channels.",
-      "not_modelled": "Thermistor negative Reps / burst channel span not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 13 exceeds number of valid channels."
     },
     {
       "id": "cr1000x-Therm107-start_bad",
@@ -5892,8 +5891,7 @@
       "logger": "cr1000x",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nTherm107(X,2,-16,Vx1,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 17 exceeds number of valid channels.",
-      "not_modelled": "Thermistor negative Reps / burst channel span not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Channel 17 exceeds number of valid channels."
     },
     {
       "id": "cr6-VoltDiff-burst",
@@ -6033,8 +6031,7 @@
       "logger": "cr6",
       "source": "Public X(3),PT\nBeginProg\nScan(10,Sec,0,0)\nTherm107(X(3),9,U1,U8,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap.",
-      "not_modelled": "CR6 Therm107 measurement/excitation overlap (the bridge span validator) is not applied to thermistors."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement channels and excitation channels overlap."
     },
     {
       "id": "cr1000x-Therm107-a_index_r1",
