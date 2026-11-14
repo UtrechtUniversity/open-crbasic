@@ -351,6 +351,19 @@ def _check_arg(
         return
     if kind.get("truncate") and math.isfinite(value):
         value = int(value)  # (CR1000X CurrentSE `402.5` is RG2, PulseCount `108.5` C8, round 31)
+    if (
+        env.profile.single_pass
+        and pos == 4
+        and stmt.keyword.upper() in {"VOLTDIFF", "VOLTSE", "TCDIFF"}
+        and -1 < value < 1
+    ):
+        diags.items[:] = [
+            d
+            for d in diags.items
+            if (d.file, d.line) != (stmt.file, stmt.line) or d.message != "Invalid reps 0, must be > 0."
+        ]
+        diags.error(stmt.line, "Invalid channel number.", stmt.file)
+        return
     if kind.get("skip_nonpositive") and value <= 0:
         # CR300/CR350 (docs/loggers.md): a channel <= 0 is accepted far outside any range this
         # checker would derive with confidence (oracle: DiffChan -4 compiles with a 1..3 range,

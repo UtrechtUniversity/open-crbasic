@@ -1,6 +1,42 @@
 {
  "cases": [
     {
+      "id": "r144-cr300-diff-1-0",
+      "logger": "cr300",
+      "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: VoltDiff = 51700"
+    },
+    {
+      "id": "r144-cr300-se-1-0",
+      "logger": "cr300",
+      "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: VoltSe = 51700"
+    },
+    {
+      "id": "r144-cr300-tc-1-0",
+      "logger": "cr300",
+      "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: TCDiff = 51700"
+    },
+    {
+      "id": "r144-cr350-diff-1-0",
+      "logger": "cr350",
+      "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: VoltDiff = 51700"
+    },
+    {
+      "id": "r144-cr350-se-1-0",
+      "logger": "cr350",
+      "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: VoltSe = 51700"
+    },
+    {
+      "id": "r144-cr350-tc-1-0",
+      "logger": "cr350",
+      "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+      "expected_times": "line 4: Scan: 0\nline 5: TCDiff = 51700"
+    },
+    {
       "id": "r136-cr300-C1-1-1",
       "logger": "cr300",
       "source": "Public Y\nPublic X(20)\nBeginProg\n Scan(10,Sec,0,0)\n PulseCount(X,1,C1,1,0,1,0)\n NextScan\nEndProg\n",

@@ -7921,7 +7921,10 @@ Remaining gaps (the 54 expected failures):
   Config 2 rejects SE ports on CR300 and the low-level AC port on CR350.
   CR1000X rejects config 2 on P1/P2 and config 5 on the probed C terminals.
   [Four-profile observations](../tests/fixtures/r136_pulse_config.json).
-- CR300/CR350 VoltDiff channel 0 `Invalid channel number.`.
+- Round 144 matched `Invalid channel number.` for `VoltDiff`, `VoltSe` and
+  `TCDiff` on CR300/CR350 when the channel truncates to zero. This check
+  takes precedence over the zero-Reps diagnostic.
+  [Four-profile observations](../tests/fixtures/r144_zero_measurement_channel.json).
 - CR1000X BrHalf excitation past `Vx4` (1).
 - A CR1000X BrHalf `mV2500` range-code line, printed twice by the real compiler. It is also absent
   at round 30, so it belongs to another family (1).

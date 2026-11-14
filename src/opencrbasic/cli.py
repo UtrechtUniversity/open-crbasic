@@ -201,6 +201,7 @@ _SINGLE_PASS_KEEPS = re.compile(
     r"^ExChan exceeds number of excitation channels\.$|"
     r"^Invalid PulseCount (PConfig option|reps)\.$|"
     r"^(C[12]|SE[1-4]|P_SW) is not a valid (low level AC input|pulse count) port\.$|"
+    r"^Invalid channel number\.$|"
     r"^Invalid channel: -?\d+\.$|^Reps exceeds valid channels\.$"
 )
 

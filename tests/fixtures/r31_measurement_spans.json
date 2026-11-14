@@ -4962,8 +4962,7 @@
       "logger": "cr300",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nVoltDiff(X,1,mV2500,0,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel number.",
-      "not_modelled": "Pulse port and channel-0 messages not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel number."
     },
     {
       "id": "cr350-Therm107-c1_3",
@@ -5138,8 +5137,7 @@
       "logger": "cr350",
       "source": "Public X(10),PT\nBeginProg\nScan(10,Sec,0,0)\nVoltDiff(X,1,mV2500,0,False,0,60,1,0)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel number.",
-      "not_modelled": "Pulse port and channel-0 messages not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel number."
     },
     {
       "id": "cr1000x-PulseCount-c1_C7",

@@ -1,0 +1,2039 @@
+{
+ "observation_date": "2026-11-14",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r144-cr6-diff-1-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-1-0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-1--0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-1--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-1-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-1--2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-1-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-1-Y",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr6-diff-1-NAN",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,NAN,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-2-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-2-0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-2--0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-2--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-2-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-2--2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-2-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-2-Y",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr6-diff-2-NAN",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,NAN,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-0-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-0-0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-0--0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-0--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-0-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-0--2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-0-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-diff-0-Y",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr6-diff-0-NAN",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,NAN,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-1-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-1-0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-1--0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-1--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-1-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-1--2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-1-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-1-Y",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr6-se-1-NAN",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,NAN,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-2-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-2-0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-2--0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-2--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-2-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-2--2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-2-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-2-Y",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr6-se-2-NAN",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,NAN,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-0-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-0-0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-0--0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-0--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-0-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-0--2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-0-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-se-0-Y",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr6-se-0-NAN",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,NAN,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-1-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-1-0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-1--0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,-0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-1--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,-1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-1-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-1--2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,-2,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-1-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,8,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-1-Y",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,Y,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr6-tc-1-NAN",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,NAN,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-2-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-2-0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-2--0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,-0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-2--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,-1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-2-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-2--2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,-2,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-2-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,8,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-2-Y",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,Y,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr6-tc-2-NAN",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,NAN,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-0-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-0-0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-0--0.5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,-0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-0--1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,-1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-0-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-0--2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,-2,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-0-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,8,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr6-tc-0-Y",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,Y,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr6-tc-0-NAN",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,NAN,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-1-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-1-0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-1--0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-1--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-1-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-1--2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-1-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-1-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr1000x-diff-1-NAN",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,NAN,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-2-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-2-0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-2--0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-2--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-2-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-2--2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-2-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-2-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr1000x-diff-2-NAN",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,NAN,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-0-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-0-0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-0--0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-0--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-0-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-0--2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-0-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-diff-0-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr1000x-diff-0-NAN",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,NAN,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-1-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-1-0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-1--0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-1--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-1-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-1--2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-1-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-1-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr1000x-se-1-NAN",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,NAN,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-2-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-2-0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-2--0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-2--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-2-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-2--2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-2-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-2-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr1000x-se-2-NAN",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,NAN,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-0-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-0-0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-0--0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-0--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-0-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-0--2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-0-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-se-0-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr1000x-se-0-NAN",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,NAN,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-1-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-1-0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-1--0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,-0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-1--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,-1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-1-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-1--2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,-2,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-1-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,8,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-1-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,Y,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr1000x-tc-1-NAN",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,NAN,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-2-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-2-0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-2--0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,-0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-2--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,-1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-2-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-2--2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,-2,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-2-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,8,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-2-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,Y,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr1000x-tc-2-NAN",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,NAN,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-0-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-0-0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-0--0.5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,-0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-0--1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,-1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-0-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-0--2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,-2,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-0-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,8,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr1000x-tc-0-Y",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,Y,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr1000x-tc-0-NAN",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,NAN,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "r144-cr300-diff-1-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-diff-1-0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-diff-1--0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-diff-1--1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-diff-1-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-diff-1--2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-diff-1-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 8 exceeds number of valid channels."
+  },
+  {
+   "id": "r144-cr300-diff-1-Y",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr300-diff-2-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-diff-2-0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-diff-2--0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-diff-2--1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-diff-2-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-diff-2--2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-diff-2-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 9 exceeds number of valid channels."
+  },
+  {
+   "id": "r144-cr300-diff-2-Y",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr300-diff-0-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-diff-0-0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-diff-0--0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-diff-0-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid reps 0, must be > 0."
+  },
+  {
+   "id": "r144-cr300-diff-0-Y",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr300-se-1-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-se-1-0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-se-1--0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-se-1--1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-se-1-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-se-1--2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-se-1-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 8 exceeds number of valid channels."
+  },
+  {
+   "id": "r144-cr300-se-1-Y",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr300-se-2-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-se-2-0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-se-2--0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-se-2--1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-se-2-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-se-2--2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-se-2-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 9 exceeds number of valid channels."
+  },
+  {
+   "id": "r144-cr300-se-2-Y",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr300-se-0-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-se-0-0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-se-0--0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-se-0-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid reps 0, must be > 0."
+  },
+  {
+   "id": "r144-cr300-se-0-Y",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr300-tc-1-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-tc-1-0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-tc-1--0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,-0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-tc-1--1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,-1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-tc-1-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-tc-1--2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,-2,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-tc-1-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,8,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 8 exceeds number of valid channels."
+  },
+  {
+   "id": "r144-cr300-tc-1-Y",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,Y,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr300-tc-2-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-tc-2-0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-tc-2--0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,-0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-tc-2--1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,-1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-tc-2-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-tc-2--2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,-2,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr300-tc-2-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,8,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 9 exceeds number of valid channels."
+  },
+  {
+   "id": "r144-cr300-tc-2-Y",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,Y,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr300-tc-0-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-tc-0-0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-tc-0--0.5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,-0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr300-tc-0-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid reps 0, must be > 0."
+  },
+  {
+   "id": "r144-cr300-tc-0-Y",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,Y,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr350-diff-1-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-diff-1-0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-diff-1--0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-diff-1--1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-diff-1-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-diff-1--2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-diff-1-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 8 exceeds number of valid channels."
+  },
+  {
+   "id": "r144-cr350-diff-1-Y",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,1,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr350-diff-2-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-diff-2-0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-diff-2--0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-diff-2--1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-diff-2-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-diff-2--2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-diff-2-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 9 exceeds number of valid channels."
+  },
+  {
+   "id": "r144-cr350-diff-2-Y",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,2,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr350-diff-0-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-diff-0-0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-diff-0--0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-diff-0-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid reps 0, must be > 0."
+  },
+  {
+   "id": "r144-cr350-diff-0-Y",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltDiff(A,0,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr350-se-1-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-se-1-0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-se-1--0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-se-1--1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-se-1-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-se-1--2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-se-1-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 8 exceeds number of valid channels."
+  },
+  {
+   "id": "r144-cr350-se-1-Y",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,1,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr350-se-2-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-se-2-0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-se-2--0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-se-2--1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,-1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-se-2-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-se-2--2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,-2,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-se-2-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,8,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 9 exceeds number of valid channels."
+  },
+  {
+   "id": "r144-cr350-se-2-Y",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,2,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr350-se-0-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,0,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-se-0-0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-se-0--0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,-0.5,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-se-0-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,1,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid reps 0, must be > 0."
+  },
+  {
+   "id": "r144-cr350-se-0-Y",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n VoltSe(A,0,mV2500,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr350-tc-1-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-tc-1-0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-tc-1--0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,-0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-tc-1--1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,-1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-tc-1-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-tc-1--2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,-2,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-tc-1-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,8,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 8 exceeds number of valid channels."
+  },
+  {
+   "id": "r144-cr350-tc-1-Y",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,1,mV2500,Y,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr350-tc-2-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-tc-2-0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-tc-2--0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,-0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-tc-2--1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,-1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-tc-2-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-tc-2--2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,-2,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r144-cr350-tc-2-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,8,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Channel 9 exceeds number of valid channels."
+  },
+  {
+   "id": "r144-cr350-tc-2-Y",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,2,mV2500,Y,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  },
+  {
+   "id": "r144-cr350-tc-0-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,0,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-tc-0-0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-tc-0--0.5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,-0.5,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid channel number."
+  },
+  {
+   "id": "r144-cr350-tc-0-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,1,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid reps 0, must be > 0."
+  },
+  {
+   "id": "r144-cr350-tc-0-Y",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(8)\nBeginProg\n Scan(1,Sec,0,0)\n TCDiff(A,0,mV2500,Y,TypeT,Y,False,0,60,1,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Y."
+  }
+ ]
+}

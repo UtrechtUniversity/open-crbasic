@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 144** (fixture verdict parity). CR300 and CR350 reject channel
+values that truncate to zero in `VoltDiff`, `VoltSe` and `TCDiff`.
+Two previously flagged cases match exactly.
+[Four-profile observations](tests/fixtures/r144_zero_measurement_channel.json).
+
 **Round 143** (fixture verdict parity). CR300 and CR350 now reject unknown
 `Settings` fields in assignments and conditions. Four previously flagged
 false accepts match exactly.
