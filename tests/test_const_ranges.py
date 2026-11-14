@@ -61,6 +61,7 @@ CASES = [
         "r145_thermistor_spans.json",
         "r146_delay_limit.json",
         "r147_paneltemp_fnotch_variables.json",
+        "r148_sendvariables_destination.json",
     )
     for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
 ]

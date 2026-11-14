@@ -1031,7 +1031,8 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
         ):
             continue
         info = profile.instructions.get(stmt.keyword.upper())
-        named_destination = stmt.keyword.upper() in {"MOVE", "ERASE", "READIO", "REALTIME"}
+        send_variables = stmt.keyword.upper() == "SENDVARIABLES"
+        named_destination = send_variables or stmt.keyword.upper() in {"MOVE", "ERASE", "READIO", "REALTIME"}
         invalid_destination = (
             next(
                 (
@@ -1052,7 +1053,7 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
         if (
             invalid_destination is not None
             and per_line[(stmt.line, stmt.file)] == 1
-            and not any((d.line, d.file) == (stmt.line, stmt.file) for d in diags.errors)
+            and (send_variables or not any((d.line, d.file) == (stmt.line, stmt.file) for d in diags.errors))
         ):
             # The argument list ends after a rejected destination. The next token is
             # reported as excess (oracle, CR300/CR350, rounds 31 and 133).
@@ -1072,6 +1073,14 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
                 raw = expressions._arg_text(stmt, following)
                 text = instr_rules._next_simple_token(raw) or raw
                 new.append(Diagnostic("error", stmt.line, f"Too many parameters:  {text}.", stmt.file))
+            if send_variables:
+                # The destination aborts before SendVariables reads its remaining arguments.
+                at -= sum(
+                    (d.line, d.file) == (stmt.line, stmt.file) and d.severity == "error" for d in diags.items[:at]
+                )
+                diags.items[:] = [
+                    d for d in diags.items if (d.line, d.file) != (stmt.line, stmt.file) or d.severity != "error"
+                ]
             diags.items[at:at] = new
             continue
         if not info or not info["params"] or info["params"][0] != _FLOAT_DEST:

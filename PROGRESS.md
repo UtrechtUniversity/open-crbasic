@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 148** (fixture verdict parity). CR300 and CR350 reject a numeric
+constant destination in `SendVariables` before reading the rest of its arguments.
+Four previously flagged cases match exactly.
+[Four-profile observations](tests/fixtures/r148_sendvariables_destination.json).
+
 **Round 147** (fixture verdict parity). CR300 and CR350 reject variables
 in the `PanelTemp` fnotch argument. Four previously flagged cases now match.
 [Four-profile observations](tests/fixtures/r147_paneltemp_fnotch_variables.json).

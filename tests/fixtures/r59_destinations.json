@@ -1050,16 +1050,14 @@
    "logger": "cr300",
    "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  0.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  0."
   },
   {
    "id": "cr350-destinations-147",
    "logger": "cr350",
    "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  0.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  0."
   },
   {
    "id": "cr6-destinations-148",
@@ -1824,16 +1822,14 @@
    "logger": "cr300",
    "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(ComRS232,ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  ComRS232.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  ComRS232."
   },
   {
    "id": "cr350-destinations-255",
    "logger": "cr350",
    "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    SendVariables(ComRS232,ComRS232,0,4094,0000,0,\"Public\",\"Callback\",X,1)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  ComRS232.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: ComRS232.\nline 7: Too many parameters:  ComRS232."
   },
   {
    "id": "cr6-destinations-256",
