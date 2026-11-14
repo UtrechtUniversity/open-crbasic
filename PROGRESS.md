@@ -92,6 +92,10 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 147** (fixture verdict parity). CR300 and CR350 reject variables
+in the `PanelTemp` fnotch argument. Four previously flagged cases now match.
+[Four-profile observations](tests/fixtures/r147_paneltemp_fnotch_variables.json).
+
 **Round 146** (fixture verdict parity). CR300 and CR350 check the
 24-hour `Delay` limit for option 0 and for the probed large millisecond
 intervals. Four previously flagged cases match exactly.

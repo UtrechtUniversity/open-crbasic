@@ -1435,6 +1435,7 @@ def _report_statement(
         is_const_family = (
             positions[i] in _CONST_ONLY_VARIABLE_REJECT_KINDS
             or (bool(names) and not whole_echo and positions[i] == "datatype_kw")
+            or (profile.single_pass and stmt.keyword.upper() == "PANELTEMP" and i == 1)
             or (
                 # CR6/CR1000X `fN1` slot: a variable there is `Variable illegal in Parameter`
                 # (oracle, 2026-10-02, `docs/instructions.md` "fN1 / fnotch").

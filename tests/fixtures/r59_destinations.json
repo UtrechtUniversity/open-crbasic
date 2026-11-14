@@ -402,16 +402,14 @@
    "logger": "cr300",
    "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(X,X)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: X.\nline 5: Illegal destination variable type, expecting Float.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: X.\nline 5: Illegal destination variable type, expecting Float."
   },
   {
    "id": "cr350-destinations-055",
    "logger": "cr350",
    "source": "Public X\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(X,X)\r\n    Battery(5)\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: X.\nline 5: Illegal destination variable type, expecting Float.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: X.\nline 5: Illegal destination variable type, expecting Float."
   },
   {
    "id": "cr6-destinations-056",
@@ -1314,16 +1312,14 @@
    "logger": "cr300",
    "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(X,X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
   },
   {
    "id": "cr350-destinations-183",
    "logger": "cr350",
    "source": "Public X, Y, WD, L As Long, S As String * 20, R\r\nDataTable(Table1,True,-1)\r\n  Sample(1,X,FP2)\r\nEndTable\r\nBeginProg\r\n  Scan(1,Sec,0,0)\r\n    PanelTemp(X,X)\r\n    CallTable Table1\r\n  NextScan\r\nEndProg\r\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
   },
   {
    "id": "cr6-destinations-184",
