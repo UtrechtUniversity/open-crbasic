@@ -1,0 +1,1969 @@
+{
+ "observation_date": "2026-11-14",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r146-cr6-delay-0-86399-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 499 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-86399-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 86 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-86399-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-0-86400-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 500 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-86400-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 86 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-86400-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-0-86401-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86401,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 501 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-86401-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86401,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 86 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-86401-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86401,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-0-86399999-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399999,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr6-delay-0-86399999-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399999,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 500 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-86399999-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399999,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 86 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-86400000-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400000,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr6-delay-0-86400000-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400000,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 500 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-86400000-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400000,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 86 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-86400001-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400001,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr6-delay-0-86400001-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400001,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 500 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-86400001-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400001,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 86 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-2147483647-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483647,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr6-delay-0-2147483647-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483647,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr6-delay-0-2147483647-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483647,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr6-delay-0-2147483648-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483648,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-0-2147483648-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483648,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-0-2147483648-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483648,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-0-2147484235-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484235,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr6-delay-0-2147484235-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484235,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 917 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-2147484235-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484235,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-0-2147484236-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484236,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 603 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-2147484236-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484236,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1048 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-2147484236-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484236,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-2147484237-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484237,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 754 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-2147484237-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484237,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1310 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0-2147484237-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484237,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 Sec."
+  },
+  {
+   "id": "r146-cr6-delay-0--1-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,-1,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr6-delay-0--1-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,-1,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr6-delay-0--1-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,-1,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr6-delay-1-86399-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-86399-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-86399-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-86400-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr6-delay-1-86400-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-86400-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-86401-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86401,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr6-delay-1-86401-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86401,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-86401-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86401,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-86399999-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399999,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr6-delay-1-86399999-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399999,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-86399999-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399999,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-86400000-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400000,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr6-delay-1-86400000-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400000,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr6-delay-1-86400000-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400000,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-86400001-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400001,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr6-delay-1-86400001-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400001,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr6-delay-1-86400001-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400001,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-2147483647-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483647,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr6-delay-1-2147483647-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483647,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr6-delay-1-2147483647-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483647,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-2147483648-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483648,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-2147483648-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483648,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-2147483648-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483648,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-2147484235-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484235,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-2147484235-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484235,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-2147484236-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484236,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-2147484236-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484236,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-2147484237-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484237,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1-2147484237-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484237,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1--1-Sec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,-1,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1--1-mSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,-1,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr6-delay-1--1-uSec",
+   "logger": "cr6",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,-1,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86399-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 499 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86399-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 86 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86399-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86400-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 500 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86400-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 86 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86400-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86401-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86401,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 501 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86401-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86401,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 86 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86401-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86401,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86399999-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399999,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86399999-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399999,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 500 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86399999-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399999,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 86 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86400000-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400000,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86400000-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400000,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 500 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86400000-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400000,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 86 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86400001-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400001,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86400001-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400001,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 500 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-86400001-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400001,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 86 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147483647-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483647,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147483647-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483647,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147483647-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483647,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147483648-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483648,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147483648-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483648,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147483648-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483648,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147484235-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484235,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147484235-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484235,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 917 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147484235-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484235,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147484236-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484236,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 603 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147484236-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484236,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1048 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147484236-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484236,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147484237-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484237,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 754 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147484237-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484237,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1310 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0-2147484237-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484237,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 Sec."
+  },
+  {
+   "id": "r146-cr1000x-delay-0--1-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,-1,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr1000x-delay-0--1-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,-1,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr1000x-delay-0--1-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,-1,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Measurement Delay Exceeds 60 min.\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory\nline 4: Program too big for task memory"
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86399-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86399-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86399-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86400-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86400-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86400-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86401-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86401,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86401-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86401,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86401-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86401,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86399999-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399999,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86399999-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399999,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86399999-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399999,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86400000-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400000,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86400000-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400000,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86400000-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400000,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86400001-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400001,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86400001-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400001,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr1000x-delay-1-86400001-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400001,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-2147483647-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483647,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr1000x-delay-1-2147483647-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483647,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr1000x-delay-1-2147483647-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483647,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-2147483648-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483648,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-2147483648-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483648,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-2147483648-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483648,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-2147484235-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484235,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-2147484235-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484235,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-2147484236-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484236,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-2147484236-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484236,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-2147484237-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484237,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1-2147484237-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484237,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1--1-Sec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,-1,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1--1-mSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,-1,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr1000x-delay-1--1-uSec",
+   "logger": "cr1000x",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,-1,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r146-cr300-delay-0-86399-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-86399-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-86399-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-86400-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-86400-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-86400-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-86401-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86401,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-86401-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86401,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-86401-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86401,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-86399999-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399999,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-86399999-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399999,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-86399999-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399999,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-86400000-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400000,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-86400000-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400000,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-86400000-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400000,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-86400001-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400001,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-86400001-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400001,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-86400001-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400001,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-2147483647-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483647,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-2147483647-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483647,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-2147483647-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483647,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-2147483648-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483648,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-2147483648-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483648,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-2147484235-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484235,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-2147484235-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484235,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-2147484235-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484235,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-2147484236-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484236,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-2147484236-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484236,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-2147484236-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484236,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-2147484237-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484237,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0-2147484237-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484237,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-0-2147484237-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484237,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0--1-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,-1,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0--1-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,-1,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-0--1-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,-1,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-86399-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-86399-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-86399-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-86400-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-86400-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-86400-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-86401-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86401,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-86401-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86401,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-86401-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86401,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-86399999-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399999,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-86399999-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399999,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-86399999-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399999,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-86400000-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400000,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-86400000-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400000,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-86400000-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400000,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-86400001-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400001,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-86400001-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400001,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-86400001-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400001,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-2147483647-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483647,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-2147483647-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483647,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-2147483647-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483647,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-2147483648-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483648,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-2147483648-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483648,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-2147484235-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484235,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-2147484235-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484235,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-2147484235-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484235,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-2147484236-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484236,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-2147484236-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484236,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-2147484236-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484236,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-2147484237-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484237,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1-2147484237-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484237,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr300-delay-1-2147484237-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484237,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1--1-Sec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,-1,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1--1-mSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,-1,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr300-delay-1--1-uSec",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,-1,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-86399-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-86399-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-86399-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-86400-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-86400-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-86400-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-86401-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86401,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-86401-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86401,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-86401-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86401,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-86399999-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399999,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-86399999-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399999,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-86399999-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86399999,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-86400000-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400000,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-86400000-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400000,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-86400000-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400000,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-86400001-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400001,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-86400001-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400001,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-86400001-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,86400001,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-2147483647-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483647,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-2147483647-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483647,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-2147483647-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483647,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-2147483648-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483648,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-2147483648-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147483648,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-2147484235-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484235,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-2147484235-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484235,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-2147484235-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484235,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-2147484236-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484236,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-2147484236-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484236,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-2147484236-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484236,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-2147484237-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484237,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0-2147484237-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484237,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-0-2147484237-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,2147484237,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0--1-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,-1,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0--1-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,-1,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-0--1-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(0,-1,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-86399-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-86399-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-86399-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-86400-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-86400-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-86400-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-86401-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86401,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-86401-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86401,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-86401-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86401,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-86399999-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399999,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-86399999-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399999,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-86399999-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86399999,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-86400000-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400000,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-86400000-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400000,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-86400000-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400000,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-86400001-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400001,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-86400001-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400001,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-86400001-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,86400001,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-2147483647-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483647,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-2147483647-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483647,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-2147483647-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483647,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-2147483648-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483648,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-2147483648-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147483648,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-2147484235-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484235,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-2147484235-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484235,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-2147484235-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484235,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-2147484236-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484236,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-2147484236-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484236,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-2147484236-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484236,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-2147484237-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484237,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1-2147484237-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484237,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
+  },
+  {
+   "id": "r146-cr350-delay-1-2147484237-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,2147484237,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1--1-Sec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,-1,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1--1-mSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,-1,mSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r146-cr350-delay-1--1-uSec",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,-1,uSec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

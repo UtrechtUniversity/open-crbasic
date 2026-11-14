@@ -805,7 +805,7 @@ def _check_delay(
             diags.error(stmt.line, "Measurement Delay Exceeds 60 min.", stmt.file)
         if cfg.get("task_memory") and scan_time.task_memory_overflow(us):
             _task_memory_full(stmt, diags)
-    elif option == 1 and cfg.get("option1_limit"):
+    elif (option == 1 or option == 0 and env.profile.single_pass) and cfg.get("option1_limit"):
         us = _delay_interval_us(interval_arg, units_arg, env)
         if us is not None and us >= cfg["option1_limit"]:
             diags.error(stmt.line, "Max Delay is 24 Hours", stmt.file)
@@ -827,7 +827,8 @@ def _delay_interval_us(interval_arg, units_arg, env: consteval.Env) -> float | N
     unit = _const_value(units_arg, env)
     if not consteval.is_finite_number(value) or not consteval.is_finite_number(unit) or value < 0:
         return None
-    if value >= 2**31:  # outside the Long range: no limit applies (oracle, CR6/CR1000X, round 16)
+    if value >= 2**31 and not (env.profile.single_pass and int(unit) == 1):
+        # CR300/CR350 still check the probed millisecond delays above the Long range.
         return None
     us_per_unit = _DELAY_US_PER_UNIT.get(int(unit))
     return value * us_per_unit if us_per_unit is not None else None

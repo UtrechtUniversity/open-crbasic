@@ -990,16 +990,14 @@
    "logger": "cr300",
    "source": "Public Volt1\nBeginProg\n  Scan (1,Sec,3,0)\n    Delay (0,2147484236,mSec)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
   },
   {
    "id": "cr350-scan-Delay (0,2147484236,mSec)",
    "logger": "cr350",
    "source": "Public Volt1\nBeginProg\n  Scan (1,Sec,3,0)\n    Delay (0,2147484236,mSec)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
   },
   {
    "id": "cr6-scan-Delay (0,Volt1,uSec)",
@@ -1216,16 +1214,14 @@
    "logger": "cr300",
    "source": "Public Volt1\nBeginProg\n  Scan (1,Sec,3,0)\n    Delay (0,2147484235,mSec)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
   },
   {
    "id": "cr350-scan-Delay (0,2147484235,mSec)",
    "logger": "cr350",
    "source": "Public Volt1\nBeginProg\n  Scan (1,Sec,3,0)\n    Delay (0,2147484235,mSec)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max Delay is 24 Hours"
   },
   {
    "id": "cr6-scan-Delay (0,-100,Min)",

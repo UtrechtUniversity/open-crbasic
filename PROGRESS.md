@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 146** (fixture verdict parity). CR300 and CR350 check the
+24-hour `Delay` limit for option 0 and for the probed large millisecond
+intervals. Four previously flagged cases match exactly.
+[Four-profile observations](tests/fixtures/r146_delay_limit.json).
+
 **Round 145** (fixture verdict parity). CR6 and CR1000X check burst
 channel spans for `Therm107`, `Therm108` and `Therm109`. CR6 also checks
 excitation overlap. Three previously flagged cases match exactly.
