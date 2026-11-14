@@ -1,0 +1,1612 @@
+{
+ "observation_date": "2026-11-14",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r143-probe-cr6-read-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr6-read-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope(2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr6-read-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope(1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr6-read-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope(A(1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr6-read-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.PakBusAddress\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr6-read-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.StationName\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr6-write-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1).\nline 5: Invalid assignment in expression:  Settings.Nope=1."
+  },
+  {
+   "id": "r143-probe-cr6-write-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope(2)=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2).\nline 5: Invalid assignment in expression:  Settings.Nope(2)=1."
+  },
+  {
+   "id": "r143-probe-cr6-write-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope(1,2)=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1).\nline 5: Invalid assignment in expression:  Settings.Nope(1,2)=1."
+  },
+  {
+   "id": "r143-probe-cr6-write-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope(A(1))=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope.\nline 5: Invalid assignment in expression:  Settings.Nope(A(1))=1."
+  },
+  {
+   "id": "r143-probe-cr6-write-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.PakBusAddress=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr6-write-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.StationName=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr6-if-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr6-if-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope(2) Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr6-if-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope(1,2) Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr6-if-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope(A(1)) Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr6-if-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.PakBusAddress Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr6-if-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.StationName Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr6-inline-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr6-inline-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope(2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr6-inline-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope(1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr6-inline-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope(A(1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr6-inline-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.PakBusAddress\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr6-inline-5",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.StationName\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr6-delay-0",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Nope,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr6-delay-1",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Nope(2),Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr6-delay-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Nope(1,2),Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr6-delay-3",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Nope(A(1)),Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr6-delay-4",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.PakBusAddress,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr1000x-read-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr1000x-read-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope(2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr1000x-read-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope(1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr1000x-read-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope(A(1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr1000x-read-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.PakBusAddress\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr1000x-read-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.StationName\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr1000x-write-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1).\nline 5: Invalid assignment in expression:  Settings.Nope=1."
+  },
+  {
+   "id": "r143-probe-cr1000x-write-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope(2)=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2).\nline 5: Invalid assignment in expression:  Settings.Nope(2)=1."
+  },
+  {
+   "id": "r143-probe-cr1000x-write-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope(1,2)=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1).\nline 5: Invalid assignment in expression:  Settings.Nope(1,2)=1."
+  },
+  {
+   "id": "r143-probe-cr1000x-write-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope(A(1))=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope.\nline 5: Invalid assignment in expression:  Settings.Nope(A(1))=1."
+  },
+  {
+   "id": "r143-probe-cr1000x-write-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.PakBusAddress=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr1000x-write-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.StationName=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr1000x-if-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr1000x-if-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope(2) Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr1000x-if-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope(1,2) Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr1000x-if-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope(A(1)) Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr1000x-if-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.PakBusAddress Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr1000x-if-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.StationName Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr1000x-inline-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr1000x-inline-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope(2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr1000x-inline-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope(1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr1000x-inline-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope(A(1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr1000x-inline-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.PakBusAddress\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr1000x-inline-5",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.StationName\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr1000x-delay-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Nope,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr1000x-delay-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Nope(2),Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr1000x-delay-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Nope(1,2),Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr1000x-delay-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Nope(A(1)),Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr1000x-delay-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.PakBusAddress,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r143-probe-cr300-read-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr300-read-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope(2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr300-read-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope(1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr300-read-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope(A(1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr300-read-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.PakBusAddress\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-read-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.StationName\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-read-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.TableSize\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-write-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1).\nline 5: Invalid assignment in expression:  Settings.Nope=1\n."
+  },
+  {
+   "id": "r143-probe-cr300-write-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope(2)=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2).\nline 5: Invalid assignment in expression:  Settings.Nope(2)=1\n."
+  },
+  {
+   "id": "r143-probe-cr300-write-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope(1,2)=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1).\nline 5: Invalid assignment in expression:  Settings.Nope(1,2)=1\n."
+  },
+  {
+   "id": "r143-probe-cr300-write-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope(A(1))=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope.\nline 5: Invalid assignment in expression:  Settings.Nope(A(1))=1\n."
+  },
+  {
+   "id": "r143-probe-cr300-write-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.PakBusAddress=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-write-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.StationName=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-write-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.TableSize=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-if-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr300-if-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope(2) Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr300-if-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope(1,2) Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr300-if-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope(A(1)) Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr300-if-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.PakBusAddress Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-if-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.StationName Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-if-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.TableSize Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-inline-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr300-inline-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope(2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr300-inline-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope(1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr300-inline-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope(A(1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr300-inline-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.PakBusAddress\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-inline-5",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.StationName\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-inline-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.TableSize\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-delay-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.PakBusAddress,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr300-delay-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.TableSize,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-read-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr350-read-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope(2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr350-read-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope(1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr350-read-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Nope(A(1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr350-read-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.PakBusAddress\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-read-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.StationName\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-read-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.TableSize\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-write-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1).\nline 5: Invalid assignment in expression:  Settings.Nope=1\n."
+  },
+  {
+   "id": "r143-probe-cr350-write-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope(2)=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2).\nline 5: Invalid assignment in expression:  Settings.Nope(2)=1\n."
+  },
+  {
+   "id": "r143-probe-cr350-write-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope(1,2)=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1).\nline 5: Invalid assignment in expression:  Settings.Nope(1,2)=1\n."
+  },
+  {
+   "id": "r143-probe-cr350-write-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Nope(A(1))=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope.\nline 5: Invalid assignment in expression:  Settings.Nope(A(1))=1\n."
+  },
+  {
+   "id": "r143-probe-cr350-write-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.PakBusAddress=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-write-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.StationName=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-write-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.TableSize=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-if-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr350-if-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope(2) Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr350-if-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope(1,2) Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr350-if-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Nope(A(1)) Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr350-if-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.PakBusAddress Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-if-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.StationName Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-if-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.TableSize Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-inline-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr350-inline-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope(2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(2)."
+  },
+  {
+   "id": "r143-probe-cr350-inline-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope(1,2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope(1)."
+  },
+  {
+   "id": "r143-probe-cr350-inline-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Nope(A(1))\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Nope."
+  },
+  {
+   "id": "r143-probe-cr350-inline-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.PakBusAddress\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-inline-5",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.StationName\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-inline-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.TableSize\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-probe-cr350-delay-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.TableSize,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr6-read-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.RecNum\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr6-read-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Battery\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr6-read-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Port\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr6-read-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.ComPort\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr6-write-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.RecNum=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1).\nline 5: Invalid assignment in expression:  Settings.RecNum=1."
+  },
+  {
+   "id": "r143-properties-cr6-write-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Battery=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1).\nline 5: Invalid assignment in expression:  Settings.Battery=1."
+  },
+  {
+   "id": "r143-properties-cr6-write-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Port=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1).\nline 5: Invalid assignment in expression:  Settings.Port=1."
+  },
+  {
+   "id": "r143-properties-cr6-write-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.ComPort=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1).\nline 5: Invalid assignment in expression:  Settings.ComPort=1."
+  },
+  {
+   "id": "r143-properties-cr6-if-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.RecNum Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr6-if-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Battery Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr6-if-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Port Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr6-if-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.ComPort Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr6-inline-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.RecNum\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr6-inline-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Battery\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr6-inline-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Port\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr6-inline-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.ComPort\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr6-delay-2",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.RecNum,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr6-delay-6",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Battery,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr6-delay-8",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Port,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr6-delay-9",
+   "logger": "cr6",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.ComPort,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-read-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.RecNum\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-read-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Battery\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-read-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Port\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-read-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.ComPort\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-write-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.RecNum=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1).\nline 5: Invalid assignment in expression:  Settings.RecNum=1."
+  },
+  {
+   "id": "r143-properties-cr1000x-write-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Battery=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1).\nline 5: Invalid assignment in expression:  Settings.Battery=1."
+  },
+  {
+   "id": "r143-properties-cr1000x-write-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Port=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1).\nline 5: Invalid assignment in expression:  Settings.Port=1."
+  },
+  {
+   "id": "r143-properties-cr1000x-write-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.ComPort=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1).\nline 5: Invalid assignment in expression:  Settings.ComPort=1."
+  },
+  {
+   "id": "r143-properties-cr1000x-if-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.RecNum Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-if-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Battery Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-if-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Port Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-if-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.ComPort Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-inline-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.RecNum\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-inline-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Battery\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-inline-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Port\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-inline-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.ComPort\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-delay-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.RecNum,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-delay-6",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Battery,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-delay-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Port,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr1000x-delay-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.ComPort,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr300-read-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.BytesPerRecord\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.BytesPerRecord(1)."
+  },
+  {
+   "id": "r143-properties-cr300-read-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Record\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-read-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.RecNum\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr300-read-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Timestamp\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-read-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Output\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-read-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Battery\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr300-read-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Port\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr300-read-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.ComPort\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr300-write-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.BytesPerRecord=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.BytesPerRecord(1).\nline 5: Invalid assignment in expression:  Settings.BytesPerRecord=1\n."
+  },
+  {
+   "id": "r143-properties-cr300-write-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Record=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-write-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.RecNum=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1).\nline 5: Invalid assignment in expression:  Settings.RecNum=1\n."
+  },
+  {
+   "id": "r143-properties-cr300-write-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Timestamp=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-write-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Output=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-write-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Battery=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1).\nline 5: Invalid assignment in expression:  Settings.Battery=1\n."
+  },
+  {
+   "id": "r143-properties-cr300-write-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Port=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1).\nline 5: Invalid assignment in expression:  Settings.Port=1\n."
+  },
+  {
+   "id": "r143-properties-cr300-write-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.ComPort=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1).\nline 5: Invalid assignment in expression:  Settings.ComPort=1\n."
+  },
+  {
+   "id": "r143-properties-cr300-if-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.BytesPerRecord Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.BytesPerRecord(1)."
+  },
+  {
+   "id": "r143-properties-cr300-if-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Record Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-if-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.RecNum Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr300-if-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Timestamp Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-if-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Output Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-if-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Battery Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr300-if-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Port Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr300-if-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.ComPort Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr300-inline-0",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.BytesPerRecord\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.BytesPerRecord(1)."
+  },
+  {
+   "id": "r143-properties-cr300-inline-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Record\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-inline-2",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.RecNum\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr300-inline-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Timestamp\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-inline-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Output\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-inline-6",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Battery\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr300-inline-8",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Port\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr300-inline-9",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.ComPort\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr300-delay-1",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Record,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-delay-3",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Timestamp,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr300-delay-4",
+   "logger": "cr300",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Output,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-read-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.BytesPerRecord\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.BytesPerRecord(1)."
+  },
+  {
+   "id": "r143-properties-cr350-read-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Record\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-read-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.RecNum\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr350-read-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Timestamp\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-read-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Output\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-read-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Battery\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr350-read-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.Port\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr350-read-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.ComPort\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr350-write-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.BytesPerRecord=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.BytesPerRecord(1).\nline 5: Invalid assignment in expression:  Settings.BytesPerRecord=1\n."
+  },
+  {
+   "id": "r143-properties-cr350-write-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Record=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-write-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.RecNum=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1).\nline 5: Invalid assignment in expression:  Settings.RecNum=1\n."
+  },
+  {
+   "id": "r143-properties-cr350-write-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Timestamp=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-write-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Output=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-write-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Battery=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1).\nline 5: Invalid assignment in expression:  Settings.Battery=1\n."
+  },
+  {
+   "id": "r143-properties-cr350-write-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.Port=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1).\nline 5: Invalid assignment in expression:  Settings.Port=1\n."
+  },
+  {
+   "id": "r143-properties-cr350-write-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Settings.ComPort=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1).\nline 5: Invalid assignment in expression:  Settings.ComPort=1\n."
+  },
+  {
+   "id": "r143-properties-cr350-if-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.BytesPerRecord Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.BytesPerRecord(1)."
+  },
+  {
+   "id": "r143-properties-cr350-if-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Record Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-if-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.RecNum Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr350-if-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Timestamp Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-if-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Output Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-if-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Battery Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr350-if-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.Port Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr350-if-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.ComPort Then Y=1\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr350-inline-0",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.BytesPerRecord\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.BytesPerRecord(1)."
+  },
+  {
+   "id": "r143-properties-cr350-inline-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Record\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-inline-2",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.RecNum\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.RecNum(1)."
+  },
+  {
+   "id": "r143-properties-cr350-inline-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Timestamp\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-inline-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Output\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-inline-6",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Battery\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Battery(1)."
+  },
+  {
+   "id": "r143-properties-cr350-inline-8",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.Port\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.Port(1)."
+  },
+  {
+   "id": "r143-properties-cr350-inline-9",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n If Y Then Y=Settings.ComPort\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Could not find Settings.ComPort(1)."
+  },
+  {
+   "id": "r143-properties-cr350-delay-1",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Record,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-delay-3",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Timestamp,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r143-properties-cr350-delay-4",
+   "logger": "cr350",
+   "source": "Public Y\nPublic A(3)\nBeginProg\n Scan(1,Sec,0,0)\n Delay(1,Settings.Output,Sec)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

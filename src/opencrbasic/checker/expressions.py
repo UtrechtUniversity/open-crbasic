@@ -1868,7 +1868,25 @@ def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None
                     lines.append(
                         f"Could not find DataTable {base}." if profile.single_pass else f"Could not find {base}."
                     )
-            elif upper == "SETTINGS" and not profile.single_pass and _unknown_setting(m, profile):
+            elif (
+                upper == "SETTINGS"
+                and _unknown_setting(m, profile)
+                and (
+                    not profile.single_pass
+                    or isinstance(stmt, (S.Assignment, S.If))
+                    and m.member.upper()
+                    not in {
+                        "RECORD",
+                        "TIMESTAMP",
+                        "OUTPUT",
+                        "TABLESIZE",
+                        "TABLEBYTES",
+                        "TABLEFULL",
+                        "EVENTCOUNT",
+                        "EVENTEND",
+                    }
+                )
+            ):
                 # `X = Settings.Nope`, `Settings.Nope = 1` (oracle, all four, 2026-10-24, round 34)
                 lines.append(f"Could not find Settings.{m.member}{_member_index_text(m.args)}.")
             elif upper == "STATUS" and not profile.single_pass and _unknown_status_member(m, profile):

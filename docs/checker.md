@@ -8113,6 +8113,10 @@ the 2026-10-24 probe false accepts (`scratch/r32/lint/`).
   the same fixture). An assignment adds `Invalid assignment in expression: <statement>.`
 - An assignment to an unknown `Status.` field gives the same two lines as for `Settings`.
 
+CR300 and CR350 report the same missing-field diagnostic in assignments and
+conditions. A missing assignment target adds the invalid-assignment line.
+[Round 143 observations](../tests/fixtures/r143_settings_members.json).
+
 ## Code after EndSequence, SubMenu bodies (round 34)
 
 Oracle, CR6/CR1000X, 2026-10-24; fixture `tests/fixtures/r34_false_accepts.json`.

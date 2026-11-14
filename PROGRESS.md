@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 143** (fixture verdict parity). CR300 and CR350 now reject unknown
+`Settings` fields in assignments and conditions. Four previously flagged
+false accepts match exactly.
+[Four-profile observations](tests/fixtures/r143_settings_members.json).
+
 **Round 142** (fixture verdict parity). CR300 validates integer
 `SerialOpen` modes, and CR300 and CR350 recover shifted arguments when
 the format is a non-integer expression. Ten previously flagged cases match.
