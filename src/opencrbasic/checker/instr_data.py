@@ -23,7 +23,7 @@ import re
 
 from .. import consteval
 from .. import syntax as S
-from ..diagnostics import Diagnostic, Diagnostics
+from ..diagnostics import TABLE_NAME_KINDS, Diagnostic, Diagnostics
 from ..profiles import Profile
 from . import context, symbols
 
@@ -383,9 +383,7 @@ def check_unclosed_calltable(program: S.Program, diags: Diagnostics, profile: Pr
             (
                 i
                 for i, d in enumerate(diags.items)
-                if d.line == stmt.line
-                and d.file == stmt.file
-                and d.message.endswith("illegally occurs before BeginProg.")
+                if d.line == stmt.line and d.file == stmt.file and d.kind == "before_beginprog"
             ),
             len(diags.items),
         )
@@ -466,14 +464,13 @@ def check_fieldclassify(program: S.Program, profile: Profile, diags: Diagnostics
             entries[id(owner)] = st
 
 
-def move_fieldnames_symbol_errors(program: S.Program, items: list[Diagnostic]):
+def move_fieldnames_symbol_errors(program: S.Program, diags: Diagnostics) -> None:
     """CR6/CR1000X: the pass-2 `Invalid symbol in expression` findings of a `FieldNames` argument
     belong to its owner (line, and before the owner's own argument errors), followed by the two
-    semantic errors; an unowned `FieldNames` is never resolved, so they vanish. Edits `items` in
-    place; returns ({id(old): replacement or None}, added) for the caller's bookkeeping."""
+    semantic errors; an unowned `FieldNames` is never resolved, so they vanish. Edits `diags.items`
+    in place."""
     owners = fieldnames_owners(program)
-    replaced: dict[int, Diagnostic | None] = {}
-    added: list[Diagnostic] = []
+    items = diags.items
     next_at: dict[int, int] = {}
     for st in program.statements:
         if id(st) not in owners:
@@ -481,37 +478,37 @@ def move_fieldnames_symbol_errors(program: S.Program, items: list[Diagnostic]):
         mine = [
             d
             for d in items
-            if (d.file, d.line) == (st.file, st.line) and d.message.startswith("Invalid symbol in expression")
+            if d.phase.startswith("tier_b") and (d.file, d.line) == (st.file, st.line) and d.kind == "invalid_symbol"
         ]
         if not mine:
             continue
         items[:] = [d for d in items if not any(d is m for m in mine)]
         owner = owners[id(st)]
         if owner is None:
-            replaced.update((id(d), None) for d in mine)
             continue
         moved = [dataclasses.replace(d, line=owner.line, file=owner.file) for d in mine]
-        replaced.update((id(d), n) for d, n in zip(mine, moved))
         pair = [
-            Diagnostic("error", owner.line, message, owner.file, show_file=False)
-            for message in ("FieldNames cannot be a variable.", "FieldNames canot be NULL")
+            Diagnostic("error", owner.line, message, owner.file, show_file=False, kind=kind, phase="tier_b_generic")
+            for message, kind in (
+                ("FieldNames cannot be a variable.", "fieldnames_var"),
+                ("FieldNames canot be NULL", "fieldnames_null"),
+            )
         ]
-        added += pair
         at = next_at.get(
             id(owner),
             next(
                 (
                     i
                     for i, d in enumerate(items)
-                    if (d.file, d.line) == (owner.file, owner.line)
-                    and d.message.startswith("Invalid symbol in expression")
+                    if d.phase.startswith("tier_b")
+                    and (d.file, d.line) == (owner.file, owner.line)
+                    and d.kind == "invalid_symbol"
                 ),
                 len(items),
             ),
         )
         items[at:at] = moved + pair
         next_at[id(owner)] = at + len(moved) + len(pair)
-    return replaced, added
 
 
 def check_fieldnames(program: S.Program, profile: Profile, diags: Diagnostics, env) -> None:
@@ -879,7 +876,12 @@ def check_table_and_menu_placement(
     def within(st: S.Instruction, kw: str) -> bool:
         if menus and open_list:
             return True
-        diags.error(st.line, f"{profile.instructions[kw]['name']} must be used within DisplayMenu..EndMenu.", st.file)
+        diags.error(
+            st.line,
+            f"{profile.instructions[kw]['name']} must be used within DisplayMenu..EndMenu.",
+            st.file,
+            kind="placement_menu_recompile" if kw == "MENURECOMPILE" else "placement_menu",
+        )
         return False
 
     for st in program.statements:
@@ -1397,13 +1399,13 @@ def _wind_options(st: S.Instruction, reps: int | None, env, diags: Diagnostics, 
     sub, option = long_arg(5), long_arg(7)
     mode = option & 0xFF if option is not None else None
     if mode in (1, 3) and sub not in (None, 0):
-        diags.error(st.line, WIND_SUBINTERVAL, st.file)
+        diags.error(st.line, WIND_SUBINTERVAL, st.file, kind="wind_subinterval", phase="soft")
     if mode is not None and mode > 4:
         diags.error(st.line, "Invalid Output Option in WindVector.", st.file)
         if reps is not None and reps >= 1:
             if short_speed:
                 diags.error(st.line, f"Variable {getattr(st.args[1], 'name', '')} out of bounds.", st.file)
-            diags.error(st.line, "Out of memory.", st.file)
+            diags.error(st.line, "Out of memory.", st.file, kind="out_of_memory")
             return True
     if reps == 0:
         diags.error(st.line, "Illegal Reps 0", st.file)
@@ -1501,7 +1503,7 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
         if kw == "WINDVECTOR" and st.args and not inline:
             reps = _reps_value(st.args[0], env)
             if reps is not None and _INT32_MIN < reps < 0:
-                diags.error(st.line, "Out of memory.", st.file)
+                diags.error(st.line, "Out of memory.", st.file, kind="out_of_memory")
                 return True
             if in_table and len(st.args) >= 8:
                 if profile.single_pass and reps is not None and reps > 0 and _short_array(st.args[2], reps, dims, env):
@@ -1515,7 +1517,7 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             from .instr_rules import debug_history_oom
 
             if debug_history_oom(st, env, profile, program):
-                diags.error(st.line, "Out of memory.", st.file)
+                diags.error(st.line, "Out of memory.", st.file, kind="out_of_memory")
                 return True
         if inline:
             continue
@@ -1579,7 +1581,7 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
                         )
                         <= 0
                     ):
-                        diags.error(st.line, "Out of memory.", st.file)
+                        diags.error(st.line, "Out of memory.", st.file, kind="out_of_memory")
                         return True
             if reps is not None and reps > 1 and not isinstance(source, (S.Name, S.Index)):
                 diags.error(st.line, "Reps must be 1 when the source is an expression.", st.file)
@@ -1740,22 +1742,21 @@ def _illegal_table_name(st: S.Instruction) -> list[Diagnostic]:
         return []
     if len(name) > _TABLE_NAME_LIMIT:
         text = f"DataTable name {name} is {len(name) - _TABLE_NAME_LIMIT} chars too long."
+        kind = "table_name_too_long"
     elif name[:1] in "0123456789.":
-        text = (
-            f"DataTable name {name} is illegal." if "." in name else f"Table name {name} illegal, starts with a number."
-        )
+        dot = "." in name
+        text = f"DataTable name {name} is illegal." if dot else f"Table name {name} illegal, starts with a number."
+        kind = "table_name_illegal" if dot else "table_name_number"
     else:
         return []
-    return [Diagnostic("error", st.line, text, st.file, cascade=False)]
+    return [Diagnostic("error", st.line, text, st.file, cascade=False, kind=kind)]
 
 
 def is_table_name_diag(d: Diagnostic) -> bool:
     """CR6/CR1000X: a table-name error does not keep the tier-C checks (instruction channel/range
     validation, `Sample must be used inside a table declaration.`, `Table T declared with no
     output fields.`) from running (oracle, cr6, 2026-10-12)."""
-    return d.message.startswith(("Table name ", "DataTable name ")) and d.message.endswith(
-        ("starts with a number.", "is illegal.", "chars too long.")
-    )
+    return d.kind in TABLE_NAME_KINDS
 
 
 def finalize_illegal_table_names(program: S.Program, profile: Profile, diags: Diagnostics) -> None:

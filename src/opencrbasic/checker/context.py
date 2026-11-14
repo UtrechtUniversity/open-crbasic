@@ -18,7 +18,7 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 from typing import TYPE_CHECKING, cast
 
-from .. import consteval
+from .. import consteval, diagnostics
 from .. import syntax as S
 from ..source import _split_top_commas
 from . import symbols
@@ -205,9 +205,7 @@ class Context:
         self._env = env
         self._variants: dict[int, Context] = {}
         self._routine_bases: dict[int, _ScopeBase] = _routine_bases if _routine_bases is not None else {}
-        self._scope_cache: dict[tuple[int, bool, bool], ScopeTables] = (
-            _scope_cache if _scope_cache is not None else {}
-        )
+        self._scope_cache: dict[tuple[int, bool, bool], ScopeTables] = _scope_cache if _scope_cache is not None else {}
         self._scoped_views: dict[tuple[int, bool], S.Program] = {}
 
     @functools.cached_property
@@ -529,9 +527,7 @@ class Context:
     def _build_scope(self, routine: S.SubDef | None) -> _ScopeBase:
         """Build the un-parameterized base tables once per routine scope (`id(routine)`)."""
         layout = self._routine_layout
-        stmts = (
-            layout.global_stmts if routine is None else layout.global_stmts + layout.routine_stmts[id(routine)]
-        )
+        stmts = layout.global_stmts if routine is None else layout.global_stmts + layout.routine_stmts[id(routine)]
         dims = _declared_all_dims(stmts, self.env)
         array_types: dict[str, str] = {}
         scalar_types: dict[str, str] = {}
@@ -577,7 +573,9 @@ class Context:
                     shape = tuple(consteval.value_of(d, self.env) for d in prm.dim_exprs) or (1,)
                 except consteval.NotConstant:
                     continue
-                if all(isinstance(d, (int, float)) and not isinstance(d, bool) and 1 <= d < float("inf") for d in shape):
+                if all(
+                    isinstance(d, (int, float)) and not isinstance(d, bool) and 1 <= d < float("inf") for d in shape
+                ):
                     dims[n], types[n] = tuple(int(d) for d in shape), (prm.type or "FLOAT").upper()
             table = ScopeTables(dims, types, base.arrays)
         self._scope_cache[key] = table
@@ -649,9 +647,11 @@ _CURRENT: ContextVar[Context | None] = ContextVar("opencrbasic_checker_context",
 def activate(ctx: Context) -> Generator[Context]:
     """Bind `ctx` as the active checker context for `of(...)` lookups."""
     token = _CURRENT.set(ctx)
+    pos_token = diagnostics._ACTIVE_POSITIONS.set(ctx.positions)
     try:
         yield ctx
     finally:
+        diagnostics._ACTIVE_POSITIONS.reset(pos_token)
         _CURRENT.reset(token)
 
 

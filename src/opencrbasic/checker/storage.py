@@ -414,7 +414,7 @@ def check_pass1(program: S.Program, profile, diags, env) -> None:
     if line is None and variables_oom(program, profile, env):
         line = program.last_line
     if line is not None:
-        diags.error(line, MSG_OOM)
+        diags.error(line, MSG_OOM, kind="out_of_memory")
 
 
 def public_table_oom(program: S.Program, env) -> bool:
@@ -432,7 +432,7 @@ def check(program: S.Program, profile, result, diags) -> None:
         from .. import consteval
 
         if public_table_oom(program, consteval.Env(profile, dict(program.consts))):
-            diags.error(0, MSG_OOM)
+            diags.error(0, MSG_OOM, kind="out_of_memory")
         else:
             msgs = [
                 cr6_table_oom(t._storage, t._storage.get("_n_raw"), t.name)
@@ -440,7 +440,7 @@ def check(program: S.Program, profile, result, diags) -> None:
                 if hasattr(t, "_storage")
             ]
             if MSG_OOM in msgs:  # one message; a plain `Out of memory.` wins over a table's zero request
-                diags.error(0, MSG_OOM)
+                diags.error(0, MSG_OOM, kind="out_of_memory")
             elif any(msgs):
                 diags.error(0, next(m for m in msgs if m))
         return

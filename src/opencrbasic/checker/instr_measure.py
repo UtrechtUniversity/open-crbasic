@@ -276,7 +276,7 @@ def _apply_const_rule(stmt, rule, env, profile, names, diags) -> None:
                 (
                     i
                     for i, d in enumerate(diags.items)
-                    if (d.file, d.line) == (stmt.file, stmt.line) and d.message.startswith("Invalid fnotch value")
+                    if (d.file, d.line) == (stmt.file, stmt.line) and d.kind == "fnotch"
                 ),
                 len(diags.items),
             )
@@ -1714,7 +1714,7 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, 
         ):
             # a negative signed-byte Reps fails the builder's allocation before the destination
             # is resolved; the compile ends there (round 31, docs/checker.md "Bridge channel spans")
-            diags.error(stmt.line, "Out of memory.", stmt.file)
+            diags.error(stmt.line, "Out of memory.", stmt.file, kind="out_of_memory")
             return
         elif (
             kw in _BUILDER_FIXED

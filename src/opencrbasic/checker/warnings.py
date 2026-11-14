@@ -322,7 +322,9 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
 
         if kw == "SCAN" and isinstance(stmt, S.Instruction):
             if dead:
-                diags.warning(stmt.line, f"{_display_name(stmt, profile)} never reached at run time.", stmt.file)
+                diags.warning(
+                    stmt.line, f"{_display_name(stmt, profile)} never reached at run time.", stmt.file, kind="unreached"
+                )
                 return
             j, has_exit = _scan_span(statements, i)
             count_is_zero = _scan_count_is_zero(stmt, env)
@@ -338,7 +340,7 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
                 if closer.hoisted_last and not (
                     j < n and (statements[j].line, statements[j].file) == (closer.line, closer.file)
                 ):
-                    diags.warning(closer.line, "EndIf never reached at run time.", closer.file)
+                    diags.warning(closer.line, "EndIf never reached at run time.", closer.file, kind="unreached")
                 return
             open_depth = _open_conditional(statements, i, j)
             i = j
@@ -386,7 +388,7 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
                         if stmt.name.upper() in context.of(program, profile).declared_variable_names:
                             return
                         name = "Expr"
-                diags.warning(stmt.line, f"{name} never reached at run time.", stmt.file)
+                diags.warning(stmt.line, f"{name} never reached at run time.", stmt.file, kind="unreached")
                 return
         i += 1
 
@@ -578,7 +580,7 @@ def _check_fnotch(program: S.Program, profile: Profile, diags: Diagnostics, env:
         except consteval.NotConstant:
             continue
         if value not in valid:
-            diags.warning(stmt.line, message, stmt.file)
+            diags.warning(stmt.line, message, stmt.file, kind="fnotch")
 
 
 _TRUNCATE_CALLS = {"IFTIME": 3, "TIMEINTOINTERVAL": 3}

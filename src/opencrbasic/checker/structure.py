@@ -823,7 +823,7 @@ def _scan_placement_walk(program: S.Program, profile, diags: Diagnostics) -> tup
             return stmt.file, stmt.line
         elif kw == "SCAN":
             if scans:
-                diags.error(stmt.line, NESTED_SCAN, stmt.file)
+                diags.error(stmt.line, NESTED_SCAN, stmt.file, kind="nested_scan")
             scans.append(_scan_counts_for_table_placement(stmt, env))
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
             if not scans:
@@ -1078,7 +1078,8 @@ def check_stray_controls(program: S.Program, profile, diags: Diagnostics) -> tup
     for stmt in statements:
         if id(stmt) in found:
             message, stops = found[id(stmt)]
-            diags.error(stmt.line, message, stmt.file)
+            kind = "placement_scan" if message.endswith("must be used within a Scan...NextScan.") else ""
+            diags.error(stmt.line, message, stmt.file, kind=kind)
             if stops:
                 return stmt.file, stmt.line
     return None
@@ -1307,7 +1308,6 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     select_depth = 0
     in_table = False
     nested_table_line: int | None = None
-    program.statements[-1].line if program.statements else 1
     # See `_check_declaration`'s docstring: the physical line right after a nameless `Public`/
     # `Dim` is never itself reported, even though it plainly failed to parse as anything valid.
     suppress_line: int | None = None
@@ -2393,7 +2393,7 @@ def check_pass2(
             return stmt.line
         if kw == "SCAN":
             if pass2_scans and not profile.single_pass:
-                diags.error(stmt.line, NESTED_SCAN, stmt.file)
+                diags.error(stmt.line, NESTED_SCAN, stmt.file, kind="nested_scan", phase="early_scan")
             pass2_scans.append(_scan_counts_for_table_placement(stmt, env))
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
             if pass2_scans:

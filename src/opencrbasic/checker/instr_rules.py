@@ -1293,7 +1293,12 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
             except consteval.NotConstant:
                 continue
             if _is_negative_or_invalid(value):
-                diags.error(stmt.line, "DataInterval TintoInt and Interval parameters must be non-negative", stmt.file)
+                diags.error(
+                    stmt.line,
+                    "DataInterval TintoInt and Interval parameters must be non-negative",
+                    stmt.file,
+                    kind="datainterval_non_negative",
+                )
                 break
         interval_us = _divisible_interval_us(interval, units, env, truncate_units=True)
         if interval_us is not None:
@@ -2691,7 +2696,12 @@ def check_terminal_conflicts(program: S.Program, profile, diags: Diagnostics, en
             continue
         for t, role in claims:
             if owner.setdefault(t, role) != role:
-                diags.error(st.line, f"{label}: channel {name(t)} already in use or unavailable.", st.file)
+                diags.error(
+                    st.line,
+                    f"{label}: channel {name(t)} already in use or unavailable.",
+                    st.file,
+                    kind="sdi12_conflict" if label.startswith("SDI12") else "",
+                )
             if role == "sdi12" and sdi_kind.setdefault(t, kw) != kw:
                 diags.error(st.line, "SDI Recorder and Sensor cannot use the same port.", st.file)
 
@@ -3727,24 +3737,22 @@ def _check_port_index(
 
 
 def check_settings_fields(
-    program: S.Program, profile, diags: Diagnostics, found: Diagnostics, env: consteval.Env
+    program: S.Program, profile, diags: Diagnostics, found: Diagnostics | None = None, env: consteval.Env | None = None
 ) -> None:
     """`%s is not a Settings Field Name.` / `%s is not a Status or Settings Field Name.` /
     `Cannot find %s` for a constant first argument of `SetSetting`/`SetStatus`;
-    docs/instructions.md#setsetting-and-setstatus-field-names. Findings go to `found` (the
-    caller's aside list); `diags` is only read, for the `CallTable` stop line."""
+    docs/instructions.md#setsetting-and-setstatus-field-names. Findings go to `found` (or `diags`
+    when omitted); `diags` is read for the `CallTable` stop line."""
+    target = diags if found is None else found
+    if env is None:
+        env = consteval.Env(profile, dict(program.consts))
     fields = profile.settings_fields
     trim = fields["trim_trailing_blanks"]
     settings = {n.upper() for n in fields["settings"]}
     both = settings | {n.upper() for n in fields["status"]}
     stop: tuple[str, int] | None = None
     for d in diags.items:
-        if (
-            d.severity == "error"
-            and d.message.startswith("Could not find DataTable ")
-            and d.line
-            and (stop is None or d.line < stop[1])
-        ):
+        if d.severity == "error" and d.kind == "could_not_find_table" and d.line and (stop is None or d.line < stop[1]):
             stop = (d.file, d.line)
     const_tables = context.of(program).const_table_fields
     for stmt in program.statements:
@@ -3763,17 +3771,17 @@ def check_settings_fields(
             # a number, variable or other non-string-constant name
             # (docs/checker.md#settings-name-must-be-constant-round-36)
             if stmt.args[0] is not None:
-                found.error(stmt.line, "Status Field name must be constant.", stmt.file)
+                target.error(stmt.line, "Status Field name must be constant.", stmt.file)
             continue
         if "." in name:
             table, field = name.split(".", 1)
             fields_for_table = const_tables.get(table.strip().upper())
             if fields_for_table is None:
-                found.error(stmt.line, f"Cannot find {table}", stmt.file)
+                target.error(stmt.line, f"Cannot find {table}", stmt.file)
             elif field.split("(", 1)[0].strip().upper() not in fields_for_table and not (
                 field.split("(", 1)[0].strip().upper() == "APPLYANDRESTART" and fields_for_table
             ):
-                found.error(stmt.line, f"Cannot find {field.split('(', 1)[0].strip()}", stmt.file)
+                target.error(stmt.line, f"Cannot find {field.split('(', 1)[0].strip()}", stmt.file)
             continue
         if "(" in name:
             # `Name(index)`: only the field name before the first `(` is looked up here; the
@@ -3785,7 +3793,7 @@ def check_settings_fields(
             index = None
         key = (name.rstrip(" \t") if trim else name).upper()
         if key in (both if kw == "SETSTATUS" else settings):
-            _check_port_index(stmt, key, index, fields.get("index_size"), env, profile, found)
+            _check_port_index(stmt, key, index, fields.get("index_size"), env, profile, target)
             continue
         shown = name if name else fields["empty_name"]
-        found.error(stmt.line, f"{shown} is not a {label} Field Name.", stmt.file)
+        target.error(stmt.line, f"{shown} is not a {label} Field Name.", stmt.file)

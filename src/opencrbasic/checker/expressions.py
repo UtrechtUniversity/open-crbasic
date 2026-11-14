@@ -2,6 +2,7 @@
 evidence: `docs/checker.md`.
 """
 
+import dataclasses
 import json
 import math
 import re
@@ -1709,10 +1710,10 @@ def check_status_member_reads_late(program: S.Program, profile, diags: Diagnosti
                 diags.error(stmt.line, f"Could not find {base}.{m.member}{_member_index_text(m.args)}.", stmt.file)
 
 
-def check_undefined_dotted_bases(program: S.Program, profile, diags: Diagnostics, start: int) -> None:
+def check_undefined_dotted_bases(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR6/CR1000X: a dotted reference whose base is not declared (`Tset1.X`, `Setings.PakBusAddress`,
     a misspelt structure variable `W.A`) is `Could not find Tset1.`, before the statement's other
-    pass-2 lines (`diags.items[start:]`). The statement's `Invalid symbol` stays only for another
+    pass-2 lines (`phase.startswith("tier_b")`). The statement's `Invalid symbol` stays only for another
     undefined name; an assignment target adds `Invalid assignment in expression: <line>.` (oracle,
     round 59, docs/checker.md#undeclared-dotted-bases-round-59)."""
     if profile.single_pass:
@@ -1729,23 +1730,21 @@ def check_undefined_dotted_bases(program: S.Program, profile, diags: Diagnostics
             n for e in exprs for n in _undefined_names_walk(e, known) if n.upper() not in {b.upper() for b in bases}
         ]
         key = (stmt.line, stmt.file)
-        generic = ("Invalid symbol in expression", "Invalid, or out of place expression")
-        here = [d for d in diags.items[start:] if (d.line, d.file) == key]
-        if any(d.severity == "error" and not d.message.startswith(generic) for d in here):
+        generic = ("invalid_symbol", "invalid_expression")
+        here = [d for d in diags.items if d.phase.startswith("tier_b") and (d.line, d.file) == key]
+        if any(d.severity == "error" and d.kind not in generic for d in here):
             continue  # a placement error ends the statement first (`DisplayValue must be used within ...`)
         if not others:
-            diags.items[start:] = [
-                d for d in diags.items[start:] if not ((d.line, d.file) == key and d.message.startswith(generic))
+            diags.items[:] = [
+                d
+                for d in diags.items
+                if not (d.phase.startswith("tier_b") and (d.line, d.file) == key and d.kind in generic)
             ]
-        new = [Diagnostic("error", stmt.line, f"Could not find {bases[0]}.", stmt.file)]
+        new = [Diagnostic("error", stmt.line, f"Could not find {bases[0]}.", stmt.file, kind="could_not_find")]
         if isinstance(stmt, S.Assignment) and _dotted_members(stmt.target):
             new.append(Diagnostic("error", stmt.line, f"Invalid assignment in expression: {stmt.text}.", stmt.file))
         at = next(
-            (
-                i
-                for i, d in enumerate(diags.items)
-                if i >= start and (d.line, d.file) == key and any(d is h for h in here)
-            ),
+            (i for i, d in enumerate(diags.items) if d.phase.startswith("tier_b") and any(d is h for h in here)),
             len(diags.items),
         )
         diags.items[at:at] = new
@@ -2751,8 +2750,10 @@ def _multi_indexed_struct(expr: S.Expr | None, struct_vars: frozenset[str]) -> b
 
 
 def _hold(held: list | None, diags: Diagnostics, problem: str) -> None:
-    if held is not None and problem == "many_member":
-        held.append(diags.items[-1])
+    if problem == "many_member" and diags.items:
+        diags.items[-1] = dataclasses.replace(diags.items[-1], phase="held")
+        if held is not None:
+            held.append(diags.items[-1])
 
 
 def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: list | None = None) -> None:
