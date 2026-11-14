@@ -8121,6 +8121,8 @@ the 2026-10-24 probe false accepts (`scratch/r32/lint/`).
 CR300 and CR350 report the same missing-field diagnostic in assignments and
 conditions. A missing assignment target adds the invalid-assignment line.
 [Round 143 observations](../tests/fixtures/r143_settings_members.json).
+Some table properties resolve on `Settings` there:
+[round-150 review fixes](#round-150-review-fixes).
 
 ## Code after EndSequence, SubMenu bodies (round 34)
 
@@ -9872,3 +9874,30 @@ and one-line `If` assignments. CR6 and CR1000X retain the unknown-field diagnost
 right side is unresolved, followed by `Invalid symbol in expression`. Writes to known fields
 compile in the probe programs. The four-profile observations and hashes are in
 `tests/fixtures/r84_status_write_targets.json`.
+
+## Round-150 review fixes
+
+Oracle, all four loggers, 2026-11-14.
+
+- **Argument checks in `Const` initializers.** The `Timer`, `HTTPGet` and `TCPOpen` argument
+  checks run on a `Const` initializer against the program's own constants. A constant-integer
+  failure ends the expression: CR6 and CR1000X print only `Parameter must be a constant
+  integer: <value>.`, CR300 and CR350 first resolve the names (`Nope is not defined.`). A range
+  message (`Legal options are 0..4`, `Size -5 cannot be negative`, `Parameter TimeOut cannot be
+  negative`) does not end it: the undefined-name report follows, and CR300/CR350 drop the
+  declaration. The checker sets the constants of the program before its first pass, so the
+  result no longer depends on the program compiled before it in the same process. Not modelled:
+  the same checks in variable initializers and array dimensions, and the CR300/CR350 order for
+  a negative `HTTPGet` timeout.
+  [Observations](../tests/fixtures/r150_const_initializer_arguments.json).
+- **Non-finite `SerialOpen` arguments.** A `BufferSize` or `CommsMode` that folds to an infinity
+  (`1e300*1e300`, `INF`) is `Parameter must be a constant integer: <statement>.`. One that divides
+  by zero (`1/0`, `0/0`) is `Divide by zero in expression: <statement>.` on CR6 and CR1000X and
+  the constant-integer message on CR300 and CR350. For the mode, CR6 and CR1000X first print the
+  mode-0 warning of the port; CR350 accepts every probed mode.
+  [Observations](../tests/fixtures/r150_serialopen_non_finite.json).
+- **Table properties on `Settings`, CR300 and CR350.** `Record`, `TimeStamp`, `Output`,
+  `TableSize`, `TableFull` and `EventEnd` resolve on `Settings` and are no missing field there.
+  `TableBytes`, `BytesPerRecord` and `RecNum` are missing like any other name.
+  `Settings.EventCount` faults both reference compilers (no verdict) and stays accepted.
+  [Observations](../tests/fixtures/r150_settings_table_properties.json).

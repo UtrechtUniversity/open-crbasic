@@ -266,6 +266,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             del diags.items[program.hash_cut :]  # parser findings of later lines
     program = structure.open_program_at_slowsequence(program, profile)
     env = consteval.Env(profile, dict(program.consts))
+    expressions.set_arity_context(program, profile)
 
     _run_pass(structure.check_pass1, program, profile, diags, env)
     # Also pass 1 (unconditional -- oracle-confirmed, `docs/loggers.md`): a `Const`'s own value

@@ -542,6 +542,17 @@ _CONST_INTEGER_TYPE_ARGS_ALWAYS = {"TIMER": frozenset({2})}
 _TIMER_CONTEXT: list = [None]
 
 
+def set_arity_context(program: S.Program, profile, declared: frozenset[str] | None = None) -> None:
+    """Point the Timer and network argument checks at `program`. The checker sets it before its
+    first pass, so a `Const` initializer is checked against this program's constants (oracle,
+    all four loggers, 2026-11-14, `tests/fixtures/r150_const_initializer_arguments.json`)."""
+    _TIMER_CONTEXT[0] = (
+        consteval.Env(profile, dict(program.consts)),
+        frozenset(n.upper() for n in (symbols.declared_variable_names(program) if declared is None else declared)),
+        {st.name.upper(): st.value for st in program.statements if isinstance(st, S.ConstDecl)},
+    )
+
+
 def _timer_arg(arg, env, declared: frozenset[str]):
     """`("int", value)`, `"float"` (the constant-integer error) or `None` (not judged here).
     An integer past the signed 32-bit range is float on CR6/CR1000X; CR300/CR350 take it as out of
@@ -1790,6 +1801,15 @@ def check_undefined_dotted_bases(program: S.Program, profile, diags: Diagnostics
         diags.items[at:at] = new
 
 
+# CR300/CR350 resolve these table properties on `Settings` like on a DataTable, so they are no
+# unknown setting there (oracle, 2026-11-13 and 2026-11-14, `tests/fixtures/r143_settings_members.json`
+# and `r150_settings_table_properties.json`). `TableBytes`, `BytesPerRecord` and `RecNum` are rejected
+# like any other name. `EventCount` faults the reference compiler: no verdict, kept accepted.
+_CR3XX_SETTINGS_TABLE_PROPERTIES = frozenset(
+    {"RECORD", "TIMESTAMP", "OUTPUT", "TABLESIZE", "TABLEFULL", "EVENTCOUNT", "EVENTEND"}
+)
+
+
 def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None:
     """A member of a declared name that no variable, data table or `Status` has (oracle, all four
     loggers, 2026-10-12, `docs/checker.md` "Digit-led members", "Letter-led members"):
@@ -1875,17 +1895,7 @@ def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None
                 and (
                     not profile.single_pass
                     or isinstance(stmt, (S.Assignment, S.If))
-                    and m.member.upper()
-                    not in {
-                        "RECORD",
-                        "TIMESTAMP",
-                        "OUTPUT",
-                        "TABLESIZE",
-                        "TABLEBYTES",
-                        "TABLEFULL",
-                        "EVENTCOUNT",
-                        "EVENTEND",
-                    }
+                    and m.member.upper() not in _CR3XX_SETTINGS_TABLE_PROPERTIES
                 )
             ):
                 # `X = Settings.Nope`, `Settings.Nope = 1` (oracle, all four, 2026-10-24, round 34)
@@ -2370,7 +2380,6 @@ def check_consts(program: S.Program, profile, diags: Diagnostics) -> None:
     shape/gating without corpus signal risks a false reject for no measured benefit.
     """
     known = _known_names(program, profile)
-    whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
     unready = _not_yet_declared(program, profile)
     for stmt in program.statements:
         if not isinstance(stmt, S.ConstDecl):
@@ -2389,17 +2398,24 @@ def check_consts(program: S.Program, profile, diags: Diagnostics) -> None:
         ):
             continue
         names = _undefined_names(stmt.value, visible)
-        if not names or _find_arity_problem(stmt.value, profile, visible) not in (None, "deferred"):
+        problem = _find_arity_problem(stmt.value, profile, visible) if names else None
+        # CR300/CR350 resolve the names before a constant-integer argument ends the expression
+        names_first = profile.single_pass and problem in ("constint", "network_constint")
+        if not names or (problem not in (None, "deferred") and not names_first):
             continue  # a wrong-arity call read before the name wins (oracle, all four loggers, round 41)
-        if whole_echo:
-            if stmt.value_span is not None:
-                text = stmt.text[stmt.value_span[0] : stmt.value_span[1]]
-            else:  # defensive: only reached if a `Const` was built without a span
-                text = stmt.value.name if isinstance(stmt.value, S.Name) else names[0]
-            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=text), stmt.file)
-        else:
-            for name in names:
-                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+        _report_const_names(stmt, names, profile, diags)
+
+
+def _report_const_names(stmt: S.ConstDecl, names: list[str], profile, diags: Diagnostics) -> None:
+    if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+        if stmt.value_span is not None:
+            text = stmt.text[stmt.value_span[0] : stmt.value_span[1]]
+        else:  # defensive: only reached if a `Const` was built without a span
+            text = stmt.value.name if isinstance(stmt.value, S.Name) else names[0]
+        diags.error(stmt.line, profile.unresolved_symbol_message.format(name=text), stmt.file)
+    else:
+        for name in names:
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
 
 
 # `Data`/`DataLong` share one `compile_fn` in `data/instructions.json` (`0x406a32`) and were
@@ -2840,6 +2856,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
         # resolve its bare uses as the function (oracle, 2026-10-08)
         declared_variables = declared_variables - frozenset(profile.functions)
     known: set[str] | None = None
+    const_unready: dict[int, frozenset[str]] | None = None
     from . import intervals, structs, structure  # lazy: all import this module
 
     struct_types = structs._structure_members(program)
@@ -2854,11 +2871,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
     in_table = False
     seen_timeint = False
     _TIMEOUT_WIDE[0] = intervals.wide_constants(program, profile)
-    _TIMER_CONTEXT[0] = (
-        consteval.Env(profile, dict(program.consts)),
-        frozenset(n.upper() for n in declared_variables),
-        {st.name.upper(): st.value for st in program.statements if isinstance(st, S.ConstDecl)},
-    )
+    set_arity_context(program, profile, declared_variables)
     arity_known = _known_names(program, profile) if profile.name in _WHOLE_EXPR_ECHO_LOGGERS else None
     scopes = symbols.statement_scopes(program, profile)
     predefined = (profile.symbols.keys() | _EXTRA_PREDEFINED_SYMBOLS) - (
@@ -3024,13 +3037,21 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
                 diags.error(
                     stmt.line, f"Invalid, or out of place expression: {stmt.text[stmt.value_span[0] :]}.", stmt.file
                 )
-            elif problem == "indexed_const":
-                diags.error(stmt.line, _arity_message(problem, text, profile, False), stmt.file)
             elif problem:
-                verb = (
-                    "Expression expects , : " if problem == "few" else "No Matching, or out of place ) in expression: "
-                )
-                diags.error(stmt.line, f"{verb}{text}.", stmt.file)
+                # A range message does not end the expression: its names are resolved after it,
+                # and CR300/CR350 drop the declaration (oracle, all four loggers, 2026-11-14,
+                # `tests/fixtures/r150_const_initializer_arguments.json`).
+                in_range = problem == "timer_option" or problem.endswith(" cannot be negative")
+                message = _arity_message(problem, text, profile, False)
+                diags.items.append(Diagnostic("error", stmt.line, message, stmt.file, trigger=in_range))
+                if in_range:
+                    if known is None:
+                        known = _known_names(program, profile)
+                    if const_unready is None:
+                        const_unready = _not_yet_declared(program, profile)
+                    visible = known - const_unready.get(id(stmt), frozenset())
+                    if names := _undefined_names(stmt.value, visible):
+                        _report_const_names(stmt, names, profile, diags)
         elif isinstance(stmt, S.Assignment):
             if known is None:
                 known = _known_names(program, profile)

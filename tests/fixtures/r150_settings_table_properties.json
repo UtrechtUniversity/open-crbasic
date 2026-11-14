@@ -1,0 +1,267 @@
+{
+ "observation_date": "2026-11-14",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r150-settings-tablebytes-read-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.TableBytes\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.TableBytes(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-tablebytes-read-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.TableBytes\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.TableBytes(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-tablebytes-write-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Settings.TableBytes=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.TableBytes(1).\nline 4: Invalid assignment in expression:  Settings.TableBytes=1\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-tablebytes-write-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Settings.TableBytes=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.TableBytes(1).\nline 4: Invalid assignment in expression:  Settings.TableBytes=1\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-tablebytes-if-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.TableBytes Then Y=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.TableBytes(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-tablebytes-if-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.TableBytes Then Y=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.TableBytes(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-tablefull-read-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.TableFull\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-settings-tablefull-read-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.TableFull\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-settings-tablefull-write-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Settings.TableFull=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-settings-tablefull-write-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Settings.TableFull=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-settings-tablefull-if-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.TableFull Then Y=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-settings-tablefull-if-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.TableFull Then Y=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-settings-eventend-read-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.EventEnd\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-settings-eventend-read-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.EventEnd\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-settings-eventend-write-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Settings.EventEnd=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-settings-eventend-write-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Settings.EventEnd=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-settings-eventend-if-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.EventEnd Then Y=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-settings-eventend-if-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.EventEnd Then Y=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-settings-tablename-read-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.TableName\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.TableName(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-tablename-read-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.TableName\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.TableName(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-tablename-write-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Settings.TableName=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.TableName(1).\nline 4: Invalid assignment in expression:  Settings.TableName=1\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-tablename-write-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Settings.TableName=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.TableName(1).\nline 4: Invalid assignment in expression:  Settings.TableName=1\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-tablename-if-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.TableName Then Y=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.TableName(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-tablename-if-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.TableName Then Y=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.TableName(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-skippedrecord-read-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.SkippedRecord\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.SkippedRecord(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-skippedrecord-read-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.SkippedRecord\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.SkippedRecord(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-skippedrecord-write-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Settings.SkippedRecord=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.SkippedRecord(1).\nline 4: Invalid assignment in expression:  Settings.SkippedRecord=1\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-skippedrecord-write-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Settings.SkippedRecord=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.SkippedRecord(1).\nline 4: Invalid assignment in expression:  Settings.SkippedRecord=1\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-skippedrecord-if-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.SkippedRecord Then Y=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.SkippedRecord(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-skippedrecord-if-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.SkippedRecord Then Y=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.SkippedRecord(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-datafilldays-read-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.DataFillDays\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.DataFillDays(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-datafilldays-read-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Y=Settings.DataFillDays\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.DataFillDays(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-datafilldays-write-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Settings.DataFillDays=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.DataFillDays(1).\nline 4: Invalid assignment in expression:  Settings.DataFillDays=1\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-datafilldays-write-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n Settings.DataFillDays=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.DataFillDays(1).\nline 4: Invalid assignment in expression:  Settings.DataFillDays=1\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-datafilldays-if-cr300",
+   "logger": "cr300",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.DataFillDays Then Y=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.DataFillDays(1).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-settings-datafilldays-if-cr350",
+   "logger": "cr350",
+   "source": "Public Y\nBeginProg\n Scan(1,Sec,0,0)\n If Settings.DataFillDays Then Y=1\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Settings.DataFillDays(1).",
+   "expected_exit": 1
+  }
+ ]
+}

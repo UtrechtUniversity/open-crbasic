@@ -2247,7 +2247,7 @@ def check_serialinrecord(program: S.Program, profile, diags: Diagnostics, env: c
             v = consteval.value_of(arg, env) if arg is not None else None
         except consteval.NotConstant, consteval.DivideByZero:
             return None
-        return int(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else None
+        return int(v) if consteval.is_finite_number(v) and not isinstance(v, bool) else None
 
     buffers: dict[int, int | None] = {}
     unknown_port = False
@@ -2368,7 +2368,7 @@ _EMAIL_FUNCTIONS = ("EMAILRECV", "EMAILSEND")
 def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR6/CR1000X `EmailRecv`/`EmailSend` (same behaviour, oracle 2026-10-04): argument 9 must
     exist and every argument from 9 on must be a String variable/element, else `A string variable destination is required` ahead of any arity message
-    (docs/instructions.md#emailrecv-destination). Only literals, constants and non-String
+    (docs/instructions.md#emailrecv-destination-cr6cr1000x). Only literals, constants and non-String
     variables count as bad; expressions are left unchecked."""
     if "EMAILRECV" not in profile.functions:
         return
@@ -3527,7 +3527,8 @@ def _check_cdm_fft(st: S.Instruction, us: int, profile, env, names, diags: Diagn
         if ref == 0 and bins >= 0:
             maximum = half_length // max(1, bins)
         elif 0 < abs(ref) <= 32767 and 500 <= rate <= 10000 and 0 <= bins <= 13:
-            # This is the observed conversion of the nonzero-reference calculation on this range.
+            # The observed conversion of the nonzero-reference calculation on the probed range;
+            # outside it the bound differs and is not modelled (docs/instructions.md, `Fref`).
             maximum = longconv.INT_MIN
         if maximum is not None and high > maximum:
             diags.error(st.line, f"Maximum IHigh is {maximum}.", st.file)

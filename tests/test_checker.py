@@ -648,3 +648,18 @@ def test_bare_unresolved_statement_never_gets_the_file_prefix(tmp_path):
     )
     assert messages_of(result) == ["Invalid, or out of place expression: NotBogusButUndefined."]
     assert "<Lib.crb>" not in result.result_lines()[2]
+
+
+# ------------------------------------------------------------------ independence of compiles
+
+
+def test_a_compile_does_not_read_the_previous_programs_constants():
+    # the argument checks of a `Const` initializer use this program's constants
+    # (`tests/fixtures/r150_const_initializer_arguments.json`)
+    program = (
+        'Const K = 5\nConst T = 2\nConst C = TCPOpen("a",80,K) + Nope\nConst D = Timer(1,Sec,T) + Nope\n'
+        "Public X\nBeginProg\n  X = C + D\nEndProg\n"
+    )
+    first = messages(program)
+    messages('Const K = "s"\nConst T = 9\nPublic X\nBeginProg\n  X = 1\nEndProg\n')
+    assert messages(program) == first

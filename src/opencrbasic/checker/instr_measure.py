@@ -733,7 +733,7 @@ _DELAY_US_PER_UNIT = {0: 1, 1: 1_000, 2: 1_000_000, 3: 60_000_000, 4: 3_600_000_
 def _delay_option_byte(value: int) -> int:
     """`Option` is taken as an unsigned byte (256 acts as 0, 257 as 1, -254 as 2). A constant
     outside the Long range is a float32: its low byte is 0, or 255 above the float32 maximum
-    (oracle, all four loggers; docs/instructions.md#delay). Not modelled: CR300/CR350 report
+    (oracle, all four loggers; docs/instructions.md#delay-three-checks-split-by-option). Not modelled: CR300/CR350 report
     255 for exactly 2147483648."""
     if value > 3.4028235e38:
         return 255
@@ -1485,7 +1485,7 @@ def _check_bridge_burst(program: S.Program, profile: Profile, diags: Diagnostics
             diags.error(stmt.line, "When channel < 0, measurements per excitation must equal reps.", stmt.file)
 
 
-# Destination size rules (oracle, 2026-10-02; docs/checker.md#destination-bounds): elements the
+# Destination size rules (oracle, 2026-10-02; docs/checker.md#destination-bounds-2026-10-02): elements the
 # destination must hold from its start -> `Variable %s out of bounds.`. `(per_rep,)` scales the
 # Reps argument (index 1); `REALTIME` needs a fixed nine (Therm107-109: `check_reps`, round 31).
 # Only CalFile also rejects negative Reps.
@@ -1518,7 +1518,9 @@ _SDM_MODE_VALUES = {
 }
 _TGA_VALUES = ((2, 3, 4), (5, 7, 9), (8, 10, 12), (19, 25, 31), (21, 27, 33))
 _EC100_VALUES = (8, 12, 13, 15, 36)
-# Destination thresholds independently measured on CR6 and CR1000X (round 102).
+# Destination thresholds independently measured on CR6 and CR1000X (round 102). An invalid option
+# reads past the four-entry count table, so only the measured bytes are listed; any other keeps
+# the option diagnostic without a destination check (docs/checker.md, "EC100 output options").
 _EC100_INVALID_COUNTS = {4: 36, 8: 254, 15: 185, 127: 57, 128: 192, 158: 254, 254: 146, 255: 188}
 _BUILDER_FIXED = {
     "CSAT3B": ((0, 5),),

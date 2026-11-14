@@ -1,0 +1,527 @@
+{
+ "observation_date": "2026-11-14",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r150-serialopen-buffer-inf-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,1e300*1e300).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-inf-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,1e300*1e300).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-inf-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,1e300*1e300)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-inf-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,1e300*1e300)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-inf-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,1e300*1e300).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-inf-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,1e300*1e300).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-inf-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,1e300*1e300)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-inf-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-serialopen-buffer-neginf-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,-1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,-1e300*1e300).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-neginf-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,-1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,-1e300*1e300).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-neginf-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,-1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,-1e300*1e300)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-neginf-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,-1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,-1e300*1e300)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-neginf-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,-1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,-1e300*1e300).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-neginf-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,-1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,-1e300*1e300).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-neginf-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,-1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,-1e300*1e300)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-neginf-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,-1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-serialopen-buffer-nan-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Divide by zero in expression:   SerialOpen(2,9600,0,0,0/0).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-nan-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Divide by zero in expression:   SerialOpen(2,9600,0,0,0/0).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-nan-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,0/0)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-nan-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,0/0)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-nan-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Divide by zero in expression:   SerialOpen(2,9600,0,0,100,0/0).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-nan-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Divide by zero in expression:   SerialOpen(2,9600,0,0,100,0/0).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-nan-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,0/0)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-nan-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-serialopen-buffer-divzero-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,1/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Divide by zero in expression:   SerialOpen(2,9600,0,0,1/0).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-divzero-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,1/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Divide by zero in expression:   SerialOpen(2,9600,0,0,1/0).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-divzero-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,1/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,1/0)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-divzero-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,1/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,1/0)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-divzero-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,1/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Divide by zero in expression:   SerialOpen(2,9600,0,0,100,1/0).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-divzero-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,1/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Divide by zero in expression:   SerialOpen(2,9600,0,0,100,1/0).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-divzero-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,1/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,1/0)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-divzero-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,1/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-serialopen-buffer-overflow-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,1e39)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,1e39).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-overflow-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,1e39)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,1e39).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-overflow-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,1e39)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,1e39)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-overflow-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,1e39)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,1e39)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-overflow-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,1e39)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,1e39).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-overflow-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,1e39)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,1e39).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-overflow-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,1e39)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,1e39)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-overflow-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,1e39)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-serialopen-buffer-infname-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,INF)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,INF).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-infname-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,INF)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,INF).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-infname-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,INF)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,INF)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-infname-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,INF)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,INF)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-infname-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,INF)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,INF).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-infname-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,INF)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,INF).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-infname-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,INF)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,INF)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-infname-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,INF)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-serialopen-buffer-nanname-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,NAN)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,NAN).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-nanname-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,NAN)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,NAN).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-nanname-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,NAN)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,NAN)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-buffer-nanname-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,NAN)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,NAN)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-nanname-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,NAN)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,NAN).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-nanname-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,NAN)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on COMME.\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,NAN).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-nanname-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,NAN)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(2,9600,0,0,100,NAN)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-mode-nanname-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(2,9600,0,0,100,NAN)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-serialopen-port4-mode-inf-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(4,9600,0,0,100,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on ComSDC7.\nline 4: Parameter must be a constant integer:   SerialOpen(4,9600,0,0,100,1e300*1e300).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port4-mode-inf-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(4,9600,0,0,100,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on ComSDC7.\nline 4: Parameter must be a constant integer:   SerialOpen(4,9600,0,0,100,1e300*1e300).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port4-mode-inf-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(4,9600,0,0,100,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(4,9600,0,0,100,1e300*1e300)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port4-mode-inf-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(4,9600,0,0,100,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-serialopen-port11-buffer-inf-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(11,9600,0,0,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(11,9600,0,0,1e300*1e300).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port11-buffer-inf-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(11,9600,0,0,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(11,9600,0,0,1e300*1e300).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port11-buffer-inf-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(11,9600,0,0,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(11,9600,0,0,1e300*1e300)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port11-buffer-inf-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(11,9600,0,0,1e300*1e300)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(11,9600,0,0,1e300*1e300)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port4-mode-nan-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(4,9600,0,0,100,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on ComSDC7.\nline 4: Divide by zero in expression:   SerialOpen(4,9600,0,0,100,0/0).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port4-mode-nan-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(4,9600,0,0,100,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: CommsMode Option 0 not supported on ComSDC7.\nline 4: Divide by zero in expression:   SerialOpen(4,9600,0,0,100,0/0).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port4-mode-nan-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(4,9600,0,0,100,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(4,9600,0,0,100,0/0)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port4-mode-nan-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(4,9600,0,0,100,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compiled OK.",
+   "expected_exit": 0
+  },
+  {
+   "id": "r150-serialopen-port11-buffer-nan-cr6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(11,9600,0,0,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Divide by zero in expression:   SerialOpen(11,9600,0,0,0/0).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port11-buffer-nan-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(11,9600,0,0,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Divide by zero in expression:   SerialOpen(11,9600,0,0,0/0).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port11-buffer-nan-cr300",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(11,9600,0,0,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(11,9600,0,0,0/0)\n.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-serialopen-port11-buffer-nan-cr350",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n Scan(1,Sec,0,0)\n  SerialOpen(11,9600,0,0,0/0)\n NextScan\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   SerialOpen(11,9600,0,0,0/0)\n.",
+   "expected_exit": 1
+  }
+ ]
+}

@@ -1,0 +1,425 @@
+{
+ "observation_date": "2026-11-14",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r150-tcpopen-int-name-cr6",
+   "logger": "cr6",
+   "source": "Const K = 5\nConst C = TCPOpen(\"a\",80,K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: TCPOpen(\"a\",80,K) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-int-name-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const K = 5\nConst C = TCPOpen(\"a\",80,K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: TCPOpen(\"a\",80,K) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-int-name-cr300",
+   "logger": "cr300",
+   "source": "Const K = 5\nConst C = TCPOpen(\"a\",80,K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-int-name-cr350",
+   "logger": "cr350",
+   "source": "Const K = 5\nConst C = TCPOpen(\"a\",80,K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-httpget-int-name-cr6",
+   "logger": "cr6",
+   "source": "Const K = 5\nConst C = HTTPGet(\"u\",\"s\",\"\",K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: HTTPGet(\"u\",\"s\",\"\",K) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-httpget-int-name-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const K = 5\nConst C = HTTPGet(\"u\",\"s\",\"\",K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: HTTPGet(\"u\",\"s\",\"\",K) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-httpget-int-name-cr300",
+   "logger": "cr300",
+   "source": "Const K = 5\nConst C = HTTPGet(\"u\",\"s\",\"\",K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-httpget-int-name-cr350",
+   "logger": "cr350",
+   "source": "Const K = 5\nConst C = HTTPGet(\"u\",\"s\",\"\",K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-int-name-cr6",
+   "logger": "cr6",
+   "source": "Const T = 2\nConst C = Timer(1,Sec,T) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Timer(1,Sec,T) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-int-name-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const T = 2\nConst C = Timer(1,Sec,T) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Timer(1,Sec,T) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-int-name-cr300",
+   "logger": "cr300",
+   "source": "Const T = 2\nConst C = Timer(1,Sec,T) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-int-name-cr350",
+   "logger": "cr350",
+   "source": "Const T = 2\nConst C = Timer(1,Sec,T) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-string-name-cr6",
+   "logger": "cr6",
+   "source": "Const K = \"s\"\nConst C = TCPOpen(\"a\",80,K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: TCPOpen(\"a\",80,K) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-string-name-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const K = \"s\"\nConst C = TCPOpen(\"a\",80,K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: TCPOpen(\"a\",80,K) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-string-name-cr300",
+   "logger": "cr300",
+   "source": "Const K = \"s\"\nConst C = TCPOpen(\"a\",80,K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 2: Parameter must be a constant integer: TCPOpen(\"a\",80,K) + Nope.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-string-name-cr350",
+   "logger": "cr350",
+   "source": "Const K = \"s\"\nConst C = TCPOpen(\"a\",80,K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 2: Parameter must be a constant integer: TCPOpen(\"a\",80,K) + Nope.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-float-name-cr6",
+   "logger": "cr6",
+   "source": "Const T = 1.5\nConst C = Timer(1,Sec,T) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: Timer(1,Sec,T) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-float-name-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const T = 1.5\nConst C = Timer(1,Sec,T) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: Timer(1,Sec,T) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-float-name-cr300",
+   "logger": "cr300",
+   "source": "Const T = 1.5\nConst C = Timer(1,Sec,T) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 2: Parameter must be a constant integer: Timer(1,Sec,T) + Nope.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-float-name-cr350",
+   "logger": "cr350",
+   "source": "Const T = 1.5\nConst C = Timer(1,Sec,T) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 2: Parameter must be a constant integer: Timer(1,Sec,T) + Nope.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-range-name-cr6",
+   "logger": "cr6",
+   "source": "Const T = 9\nConst C = Timer(1,Sec,T) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Legal options are 0..4\nline 2: Invalid symbol in expression: Timer(1,Sec,T) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-range-name-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const T = 9\nConst C = Timer(1,Sec,T) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Legal options are 0..4\nline 2: Invalid symbol in expression: Timer(1,Sec,T) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-range-name-cr300",
+   "logger": "cr300",
+   "source": "Const T = 9\nConst C = Timer(1,Sec,T) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Legal options are 0..4\nline 2: Nope is not defined.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-range-name-cr350",
+   "logger": "cr350",
+   "source": "Const T = 9\nConst C = Timer(1,Sec,T) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Legal options are 0..4\nline 2: Nope is not defined.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-httpget-float-name-cr6",
+   "logger": "cr6",
+   "source": "Const K = 1.5\nConst C = HTTPGet(\"u\",\"s\",\"\",K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: HTTPGet(\"u\",\"s\",\"\",K) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-httpget-float-name-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const K = 1.5\nConst C = HTTPGet(\"u\",\"s\",\"\",K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: HTTPGet(\"u\",\"s\",\"\",K) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-httpget-float-name-cr300",
+   "logger": "cr300",
+   "source": "Const K = 1.5\nConst C = HTTPGet(\"u\",\"s\",\"\",K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 2: Parameter must be a constant integer: HTTPGet(\"u\",\"s\",\"\",K) + Nope.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-httpget-float-name-cr350",
+   "logger": "cr350",
+   "source": "Const K = 1.5\nConst C = HTTPGet(\"u\",\"s\",\"\",K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 2: Parameter must be a constant integer: HTTPGet(\"u\",\"s\",\"\",K) + Nope.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-string-cr6",
+   "logger": "cr6",
+   "source": "Const K = \"s\"\nConst C = TCPOpen(\"a\",80,K)\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: TCPOpen(\"a\",80,K).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-string-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const K = \"s\"\nConst C = TCPOpen(\"a\",80,K)\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: TCPOpen(\"a\",80,K).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-string-cr300",
+   "logger": "cr300",
+   "source": "Const K = \"s\"\nConst C = TCPOpen(\"a\",80,K)\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: TCPOpen(\"a\",80,K).\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-string-cr350",
+   "logger": "cr350",
+   "source": "Const K = \"s\"\nConst C = TCPOpen(\"a\",80,K)\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: TCPOpen(\"a\",80,K).\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-range-cr6",
+   "logger": "cr6",
+   "source": "Const T = 9\nConst C = Timer(1,Sec,T)\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Legal options are 0..4",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-range-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const T = 9\nConst C = Timer(1,Sec,T)\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Legal options are 0..4",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-range-cr300",
+   "logger": "cr300",
+   "source": "Const T = 9\nConst C = Timer(1,Sec,T)\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Legal options are 0..4\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-range-cr350",
+   "logger": "cr350",
+   "source": "Const T = 9\nConst C = Timer(1,Sec,T)\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Legal options are 0..4\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-float-cr6",
+   "logger": "cr6",
+   "source": "Const T = 1.5\nConst C = Timer(1,Sec,T)\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: Timer(1,Sec,T).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-float-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const T = 1.5\nConst C = Timer(1,Sec,T)\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: Timer(1,Sec,T).",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-float-cr300",
+   "logger": "cr300",
+   "source": "Const T = 1.5\nConst C = Timer(1,Sec,T)\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: Timer(1,Sec,T).\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-timer-float-cr350",
+   "logger": "cr350",
+   "source": "Const T = 1.5\nConst C = Timer(1,Sec,T)\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: Timer(1,Sec,T).\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-negative-name-cr6",
+   "logger": "cr6",
+   "source": "Const K = -5\nConst C = TCPOpen(\"a\",80,K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size -5 cannot be negative\nline 2: Invalid symbol in expression: TCPOpen(\"a\",80,K) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-negative-name-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const K = -5\nConst C = TCPOpen(\"a\",80,K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size -5 cannot be negative\nline 2: Invalid symbol in expression: TCPOpen(\"a\",80,K) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-negative-name-cr300",
+   "logger": "cr300",
+   "source": "Const K = -5\nConst C = TCPOpen(\"a\",80,K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size -5 cannot be negative\nline 2: Nope is not defined.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-tcpopen-negative-name-cr350",
+   "logger": "cr350",
+   "source": "Const K = -5\nConst C = TCPOpen(\"a\",80,K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size -5 cannot be negative\nline 2: Nope is not defined.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-httpget-negative-name-cr6",
+   "logger": "cr6",
+   "source": "Const K = -5\nConst C = HTTPGet(\"u\",\"s\",\"\",K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter TimeOut cannot be negative\nline 2: Invalid symbol in expression: HTTPGet(\"u\",\"s\",\"\",K) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-httpget-negative-name-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const K = -5\nConst C = HTTPGet(\"u\",\"s\",\"\",K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter TimeOut cannot be negative\nline 2: Invalid symbol in expression: HTTPGet(\"u\",\"s\",\"\",K) + Nope.",
+   "expected_exit": 1
+  },
+  {
+   "id": "r150-httpget-negative-name-cr300",
+   "logger": "cr300",
+   "source": "Const K = -5\nConst C = HTTPGet(\"u\",\"s\",\"\",K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter TimeOut cannot be negative\nline 2: Nope is not defined.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1,
+   "not_modelled": "Variable initializers and dimensions, and the CR300/CR350 order of a negative HTTPGet timeout, are not modelled."
+  },
+  {
+   "id": "r150-httpget-negative-name-cr350",
+   "logger": "cr350",
+   "source": "Const K = -5\nConst C = HTTPGet(\"u\",\"s\",\"\",K) + Nope\nPublic X\nBeginProg\n X = C\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter TimeOut cannot be negative\nline 2: Nope is not defined.\nline 5: X is not defined.\nline 5: C is not defined.",
+   "expected_exit": 1,
+   "not_modelled": "Variable initializers and dimensions, and the CR300/CR350 order of a negative HTTPGet timeout, are not modelled."
+  },
+  {
+   "id": "r150-variable-timer-range-name-cr6",
+   "logger": "cr6",
+   "source": "Const T = 9\nPublic X = Timer(1,Sec,T) + Nope\nBeginProg\n X = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Legal options are 0..4\nline 2: Invalid symbol in expression: Timer(1,Sec,T) + Nope.\nline 2: Variable initialization of X has bad syntax.",
+   "expected_exit": 1,
+   "not_modelled": "Variable initializers and dimensions, and the CR300/CR350 order of a negative HTTPGet timeout, are not modelled."
+  },
+  {
+   "id": "r150-variable-timer-range-name-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const T = 9\nPublic X = Timer(1,Sec,T) + Nope\nBeginProg\n X = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Legal options are 0..4\nline 2: Invalid symbol in expression: Timer(1,Sec,T) + Nope.\nline 2: Variable initialization of X has bad syntax.",
+   "expected_exit": 1,
+   "not_modelled": "Variable initializers and dimensions, and the CR300/CR350 order of a negative HTTPGet timeout, are not modelled."
+  },
+  {
+   "id": "r150-variable-timer-range-name-cr300",
+   "logger": "cr300",
+   "source": "Const T = 9\nPublic X = Timer(1,Sec,T) + Nope\nBeginProg\n X = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Legal options are 0..4\nline 2: Nope is not defined.\nline 2: Variable illegal in Parameter: Timer(1,Sec,T) + Nope.\nline 2: Variable initialization of X has bad syntax.",
+   "expected_exit": 1,
+   "not_modelled": "Variable initializers and dimensions, and the CR300/CR350 order of a negative HTTPGet timeout, are not modelled."
+  },
+  {
+   "id": "r150-variable-timer-range-name-cr350",
+   "logger": "cr350",
+   "source": "Const T = 9\nPublic X = Timer(1,Sec,T) + Nope\nBeginProg\n X = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Legal options are 0..4\nline 2: Nope is not defined.\nline 2: Variable illegal in Parameter: Timer(1,Sec,T) + Nope.\nline 2: Variable initialization of X has bad syntax.",
+   "expected_exit": 1,
+   "not_modelled": "Variable initializers and dimensions, and the CR300/CR350 order of a negative HTTPGet timeout, are not modelled."
+  },
+  {
+   "id": "r150-dimension-tcpopen-string-cr6",
+   "logger": "cr6",
+   "source": "Const K = \"s\"\nPublic X(TCPOpen(\"a\",80,K))\nBeginProg\n X(1) = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: TCPOpen(\"a\",80,K).",
+   "expected_exit": 1,
+   "not_modelled": "Variable initializers and dimensions, and the CR300/CR350 order of a negative HTTPGet timeout, are not modelled."
+  },
+  {
+   "id": "r150-dimension-tcpopen-string-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const K = \"s\"\nPublic X(TCPOpen(\"a\",80,K))\nBeginProg\n X(1) = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: TCPOpen(\"a\",80,K).",
+   "expected_exit": 1,
+   "not_modelled": "Variable initializers and dimensions, and the CR300/CR350 order of a negative HTTPGet timeout, are not modelled."
+  },
+  {
+   "id": "r150-dimension-tcpopen-string-cr300",
+   "logger": "cr300",
+   "source": "Const K = \"s\"\nPublic X(TCPOpen(\"a\",80,K))\nBeginProg\n X(1) = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: TCPOpen(\"a\",80,K).",
+   "expected_exit": 1,
+   "not_modelled": "Variable initializers and dimensions, and the CR300/CR350 order of a negative HTTPGet timeout, are not modelled."
+  },
+  {
+   "id": "r150-dimension-tcpopen-string-cr350",
+   "logger": "cr350",
+   "source": "Const K = \"s\"\nPublic X(TCPOpen(\"a\",80,K))\nBeginProg\n X(1) = 1\nEndProg\n",
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer: TCPOpen(\"a\",80,K).",
+   "expected_exit": 1,
+   "not_modelled": "Variable initializers and dimensions, and the CR300/CR350 order of a negative HTTPGet timeout, are not modelled."
+  }
+ ]
+}

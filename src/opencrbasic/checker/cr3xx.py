@@ -7,6 +7,7 @@ evidence: `docs/loggers.md`.
 
 import collections
 import dataclasses
+import math
 import re
 from collections.abc import Set as AbstractSet
 from typing import TypedDict
@@ -123,7 +124,7 @@ def _commsmode_problem(
             mode = consteval.value_of(stmt.args[index], env)
     except consteval.NotConstant, consteval.DivideByZero, TypeError, ValueError:
         return None
-    if isinstance(mode, bool) or not isinstance(mode, (int, float)) or mode != int(mode):
+    if isinstance(mode, bool) or not consteval.is_finite_number(mode) or mode != int(mode):
         return None
     for key, modes in _COMMS_MODES.items():
         record = profile.symbols.get(key)
@@ -159,6 +160,23 @@ def _format_needs_com1_4(stmt: S.Call, profile, consts: dict | None) -> bool:
     if not isinstance(port, int) or not isinstance(fmt, int) or isinstance(port, bool) or isinstance(fmt, bool):
         return False
     return 1 <= port <= 8 and 16 <= fmt < 2**31
+
+
+def _non_finite(arg: S.Expr | None, profile, consts: dict | None) -> str | None:
+    """`"divide"` for a division by zero, `"float"` for an infinite or NaN constant: neither is
+    a constant integer (oracle, all four loggers, 2026-11-14,
+    `tests/fixtures/r150_serialopen_non_finite.json`)."""
+    if arg is None:
+        return None
+    if isinstance(arg, S.Name) and arg.name.upper() == "INF" and "INF" not in (consts or {}):
+        return "float"
+    try:
+        value = consteval.value_of(arg, consteval.Env(profile, dict(consts or {})))
+    except consteval.DivideByZero:
+        return "divide"
+    except consteval.NotConstant, TypeError, ValueError, OverflowError, ZeroDivisionError:
+        return None
+    return "float" if isinstance(value, float) and not math.isfinite(value) else None
 
 
 def _invalid_cr3xx_serial_format(arg: S.Expr, env: consteval.Env) -> bool:
@@ -349,7 +367,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
             and _non_numeric(stmt.args[2], profile, program.consts, variable_names)
         )
         # a bare undeclared TXDelay is lost in the same comma recovery (decompiled `FUN_00494aa0`,
-        # oracle round 58, docs/checker.md#serialopen-recovery-round-58)
+        # oracle round 58, docs/checker.md#serialopen-recovery-rounds-58-and-142)
         shifted = shifted or (not cr3 and constant_port and bare_unknown_delay(stmt, known))
         if (
             not cr3
@@ -385,16 +403,12 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                     stmt.line, f"{int(value)} usec delay before transmit is illegal, must be 0..14000000", stmt.file
                 )
         # a 6th argument that is no constant integer counts as mode 0, then is rejected (same probes)
-        bad_mode = (
-            not cr3
-            and constant_port
-            and not shifted
-            and len(stmt.args) > 5
-            and stmt.args[5] is not None
-            and (
-                expressions._not_constant_integer(stmt.args[5])
-                or bool(expressions._variable_refs(stmt.args[5], variable_names))
-            )
+        check_mode = not cr3 and constant_port and not shifted and len(stmt.args) > 5 and stmt.args[5] is not None
+        mode_kind = _non_finite(stmt.args[5], profile, program.consts) if check_mode else None
+        bad_mode = check_mode and (
+            expressions._not_constant_integer(stmt.args[5])
+            or bool(expressions._variable_refs(stmt.args[5], variable_names))
+            or mode_kind is not None
         )
         if (
             not cr3
@@ -410,7 +424,8 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
             else:
                 diags.warning(stmt.line, problem[1], stmt.file)
         if bad_mode:
-            diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}.", stmt.file)
+            verb = "Divide by zero in expression" if mode_kind == "divide" else "Parameter must be a constant integer"
+            diags.error(stmt.line, f"{verb}: {stmt.text}.", stmt.file)
             continue
         if shifted and len(stmt.args) > 5:
             diags.error(stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}.", stmt.file)
@@ -422,6 +437,15 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         ):
             # a variable `BufferSize` (oracle, CR6/CR1000X, 2026-10-24, round 34)
             diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.", stmt.file)
+            continue
+        if constant_port and len(stmt.args) > 4 and (kind := _non_finite(stmt.args[4], profile, program.consts)):
+            # an infinite `BufferSize`, or one that divides by zero (CR300/CR350: one message for both)
+            verb = (
+                "Divide by zero in expression"
+                if kind == "divide" and not cr3
+                else "Parameter must be a constant integer"
+            )
+            diags.error(stmt.line, f"{verb}: {stmt.text}{sep}.", stmt.file)
             continue
         if profile.name == "cr300" and port == 11 and len(stmt.args) > 4:
             buffer = stmt.args[4]

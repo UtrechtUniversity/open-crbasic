@@ -1826,6 +1826,9 @@ _FIELDLESS_DATA_TYPES = frozenset({0, 16, *range(29, 44), *range(48, 57), *range
 _SILENT_FIELDLESS = frozenset(
     {*range(156, 160), *range(180, 184), *range(204, 212), *range(220, 224), *range(236, 240), *range(252, 256)}
 )
+# `Sample` data type codes outside 0..255 that leave a CR6/CR1000X table without that field, as
+# observed (`tests/fixtures/r128_wide_sample_dtype.json`). No byte or mask rule fits them (256 and
+# 512 are in the set, 65536 is not), so other wide codes are not modelled.
 _CR6_WIDE_SAMPLE_FIELDLESS = frozenset(
     {-65536, -32768, -257, -256, -255, -129, -128, 256, 257, 258, 259, 512, 513, 32767, 32768, 65535, 65537}
 )
