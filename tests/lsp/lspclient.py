@@ -237,13 +237,29 @@ class LspClient:
                 ["taskkill", "/T", "/F", "/PID", str(self.proc.pid)], capture_output=True
             )  # include spawned pool workers
         else:
+            # SIGTERM first. multiprocessing's resource tracker ignores it and unlinks the pool's
+            # named semaphores once the server and its workers are gone; SIGKILL alone kills the
+            # tracker too and leaks them until macOS has none left.
+            self._signal_group(signal.SIGTERM)
             try:
-                os.killpg(self.proc.pid, signal.SIGKILL)  # the server's own session
-            except ProcessLookupError, PermissionError:
+                self.proc.wait(5)  # reaped: only the tracker and the workers keep the group alive
+            except subprocess.TimeoutExpired:
                 pass
+            deadline = time.monotonic() + 5
+            while self._signal_group(0) and time.monotonic() < deadline:
+                time.sleep(0.01)
+            self._signal_group(signal.SIGKILL)
         if self.proc.poll() is None:
             self.proc.kill()
         self.proc.wait()
+
+    def _signal_group(self, sig: int) -> bool:
+        """Signal the server's own session; whether it still has a process."""
+        try:
+            os.killpg(self.proc.pid, sig)
+        except ProcessLookupError, PermissionError:
+            return False
+        return True
 
     # ---- observation ----
 

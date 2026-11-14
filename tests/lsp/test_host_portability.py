@@ -3,7 +3,7 @@
 from pathlib import Path, PureWindowsPath
 from types import SimpleNamespace
 from typing import cast
-from unittest.mock import Mock
+from unittest.mock import Mock, call
 
 import lsp_install_check
 import pytest
@@ -21,20 +21,23 @@ def test_client_kill_includes_pool_workers(monkeypatch, platform):
     proc.poll.return_value = None
     client = object.__new__(lspclient.LspClient)
     client.proc = proc
-    run, killpg = Mock(), Mock()
+    run = Mock()
+    killpg = Mock(side_effect=lambda pid, sig: (_ for _ in ()).throw(ProcessLookupError) if sig == 0 else None)
     monkeypatch.setattr(lspclient.sys, "platform", platform)
     monkeypatch.setattr(lspclient.subprocess, "run", run)
     monkeypatch.setattr(lspclient.os, "killpg", killpg, raising=False)
     monkeypatch.setattr(lspclient.signal, "SIGKILL", 9, raising=False)
+    monkeypatch.setattr(lspclient.signal, "SIGTERM", 15, raising=False)
     client.kill()
     if platform == "win32":
         run.assert_called_once_with(["taskkill", "/T", "/F", "/PID", "1234"], capture_output=True)
         killpg.assert_not_called()
     else:
-        killpg.assert_called_once_with(1234, 9)
+        # terminate, wait for the group to empty (so the resource tracker can clean up), then kill
+        assert killpg.call_args_list == [call(1234, 15), call(1234, 0), call(1234, 9)]
         run.assert_not_called()
     proc.kill.assert_called_once_with()
-    proc.wait.assert_called_once_with()
+    proc.wait.assert_called_with()
 
 
 @pytest.mark.parametrize(
