@@ -11,5 +11,5 @@
   "their_exit": 1,
   "ours": "9d2dd45508e6.CR6 -- Compiled in SequentialMode.\nWarning: Table StationStatus, is declared but never called.\nWarning: Table Shunt_Data, is declared but never called.\nWarning: Table Acclima_Data, is declared but never called.\nWarning: Table TString_Data, is declared but never called.\nWarning: Table SnowVue_Data, is declared but never called.\nWarning: Table SnowVue_Diagnostics, is declared but never called.\nWarning: Table PT1000_Data, is declared but never called.",
   "theirs": "9d2dd45508e6.CR6 -- Compile Failed!\n\nline 310: Expression expects , : \t\t\t\tDebugLine = DebugLine \t\t\t\t\t+ \" writeRes=\" + FormatLong(IridiumWriteResult,\"%d\") \t\t\t\t\t+ \" moStatus=\" + FormatLong(IridiumMOStatus,\"%d\") \t\t\t\t\t+ \" moMSN=\" + FormatLong(IridiumMOMSN,\"%d\") \t\t\t\t\t+ \" elapsed=\" + FormatFloat(IridiumSendElapsedSecs,\"%.1f\") + \" s\" \t\t\t\t\t+ \" at \" + FormatLong(Timer(TmrSeq3,TimerReadOnly),\"%d\") + \" ms\".",
-  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+  "siblings_sha256": "aa317c575a86214fc017b090bb83808aa98d05c59071aa9f902747a1b28622fe"
 }

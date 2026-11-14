@@ -11,5 +11,5 @@
   "their_exit": 1,
   "ours": "da0a1061eb3a.CR6 -- Compile Failed!\n\nline 397: Invalid, or out of place expression: \t\t\t\t+ \" day=\" + FormatLong(DayIndex,\"%d\") + \" prof=\" + FormatLong(PowerProfile,\"%d\") + \" everyDays=\" + FormatLong(SbdPeriodDays(),\"%d\")).",
   "theirs": "da0a1061eb3a.CR6 -- Compile Failed!\n\nline 394: No Matching, or out of place ) in expression: LogDebug(\"SEQ3 start  unit=\" + FormatLong(UnitOfDay,\"%d\") \t\t\t\t.\nline 397: Invalid, or out of place expression: \t\t\t\t+ \" day=\" + FormatLong(DayIndex,\"%d\") \t\t\t\t+ \" prof=\" + FormatLong(PowerProfile,\"%d\") \t\t\t\t+ \" everyDays=\" + FormatLong(SbdPeriodDays(),\"%d\")).",
-  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+  "siblings_sha256": "aa317c575a86214fc017b090bb83808aa98d05c59071aa9f902747a1b28622fe"
 }

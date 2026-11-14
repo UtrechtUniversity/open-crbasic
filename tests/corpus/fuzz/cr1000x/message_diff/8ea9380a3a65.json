@@ -12,5 +12,5 @@
   "their_exit": 1,
   "ours": "8ea9380a3a65.CR6 -- Compile Failed!\n\nline 301: Sub UpdatePowerClock not defined.",
   "theirs": "8ea9380a3a65.CR6 -- Compile Failed!\n\nline 231: Invalid symbol in expression: GPS_Lat.\nline 232: Invalid symbol in expression: GPS_Lon.\nline 233: Invalid symbol in expression: GPS_Fixes.\nline 234: Invalid symbol in expression: GPS_Satellites.\nline 235: Invalid symbol in expression: GPS_FixSecs.\nline 236: Invalid symbol in expression: GPS_ClockErrorSecs.\nUpdatePowerClock is not declared as a Subroutine.",
-  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+  "siblings_sha256": "aa317c575a86214fc017b090bb83808aa98d05c59071aa9f902747a1b28622fe"
 }

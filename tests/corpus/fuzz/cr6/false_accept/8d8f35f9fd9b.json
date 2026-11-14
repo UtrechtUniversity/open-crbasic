@@ -11,5 +11,5 @@
   "their_exit": 1,
   "ours": "8d8f35f9fd9b.CR6 -- Compiled in SequentialMode.\nWarning: Table Acclima_Data, is declared but never called.\nWarning: Table TString_Data, is declared but never called.\nWarning: Table SnowVue_Data, is declared but never called.\nWarning: Table SnowVue_Diagnostics, is declared but never called.\nWarning: Table FinApp_Data, is declared but never called.",
   "theirs": "8d8f35f9fd9b.CR6 -- Compile Failed!\n\nline 231: Invalid symbol in expression: GPS_Lat.\nline 232: Invalid symbol in expression: GPS_Lon.\nline 233: Invalid symbol in expression: GPS_Fixes.\nline 234: Invalid symbol in expression: GPS_Satellites.\nline 235: Invalid symbol in expression: GPS_FixSecs.\nline 236: Invalid symbol in expression: GPS_ClockErrorSecs.\nline 255: NEXT without FOR.",
-  "siblings_sha256": "707700bc6e379c1251762259ff283e0f0d09702a7666392a1f27d22cdc8607a7"
+  "siblings_sha256": "aa317c575a86214fc017b090bb83808aa98d05c59071aa9f902747a1b28622fe"
 }
