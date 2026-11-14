@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 142** (fixture verdict parity). CR300 validates integer
+`SerialOpen` modes, and CR300 and CR350 recover shifted arguments when
+the format is a non-integer expression. Ten previously flagged cases match.
+[Four-profile observations](tests/fixtures/r142_serialopen_recovery.json).
+
 **Round 141** (fixture verdict parity). CR300 and CR350 reject bridge
 excitation below 150 mV in magnitude. Two previously flagged cases now
 match, including the order of the fnotch warning.

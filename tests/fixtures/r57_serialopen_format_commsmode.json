@@ -213,8 +213,7 @@
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,\"x\",0,5)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 5 is an invalid CommsMode parameter.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 5 is an invalid CommsMode parameter."
   },
   {
    "id": "cr6-ser-SerialOpen(ComC1,9600,\"x\",10000,0)",
@@ -599,8 +598,7 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,150,\"fuzz\")\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,0,0,150,\"fuzz\")\n.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,0,0,150,\"fuzz\")\n."
   },
   {
    "id": "cr350-ser-SerialOpen(ComRS232,9600,0,0,150,\"fuzz\")",
@@ -628,8 +626,7 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,150,1.5)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,0,0,150,1.5)\n.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,0,0,150,1.5)\n."
   },
   {
    "id": "cr350-ser-SerialOpen(ComRS232,9600,0,0,150,1.5)",
@@ -657,8 +654,7 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,150,2.5)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,0,0,150,2.5)\n.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,0,0,150,2.5)\n."
   },
   {
    "id": "cr350-ser-SerialOpen(ComRS232,9600,0,0,150,2.5)",
@@ -686,8 +682,7 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,150,Volt1)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,0,0,150,Volt1)\n.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,0,0,150,Volt1)\n."
   },
   {
    "id": "cr350-ser-SerialOpen(ComRS232,9600,0,0,150,Volt1)",
@@ -715,8 +710,7 @@
    "logger": "cr300",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,150,\"2\")\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,0,0,150,\"2\")\n.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:     SerialOpen(ComRS232,9600,0,0,150,\"2\")\n."
   },
   {
    "id": "cr350-ser-SerialOpen(ComRS232,9600,0,0,150,\"2\")",
@@ -1095,8 +1089,7 @@
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,\"x\",0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 100 is an invalid CommsMode parameter.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 100 is an invalid CommsMode parameter."
   },
   {
    "id": "cr6-ser-SerialOpen(ComC1,9600,\"x\",-1,100)",

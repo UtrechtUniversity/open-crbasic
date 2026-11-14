@@ -161,8 +161,7 @@
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,16.7,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 100 is an invalid CommsMode parameter.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 100 is an invalid CommsMode parameter."
   },
   {
    "id": "cr6-ser-SerialOpen(ComRS232,9600,15.9,0,100)",
@@ -190,8 +189,7 @@
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,15.9,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 100 is an invalid CommsMode parameter.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 100 is an invalid CommsMode parameter."
   },
   {
    "id": "cr6-ser-SerialOpen(ComSDC11,9600,16,0,100)",
@@ -275,8 +273,7 @@
    "logger": "cr350",
    "source": "Public Volt1, S As String * 10\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,999999999999,0,100)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 100 is an invalid CommsMode parameter.",
-   "not_modelled": "CR300/CR350 best effort"
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 100 is an invalid CommsMode parameter."
   },
   {
    "id": "cr6-ser-SerialOpen(ComRS232,9600,True,0,100)",

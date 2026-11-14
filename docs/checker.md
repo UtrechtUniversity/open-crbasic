@@ -9278,7 +9278,14 @@ error. A CR350 six-argument call can also report an invalid CommsMode
 after the format error (round 134,
 [four-profile probes](../tests/fixtures/r134_serialopen_format.json)).
 
-## SerialOpen recovery (round 58)
+## SerialOpen recovery (rounds 58 and 142)
+
+CR300 and CR350 read the fifth argument as CommsMode when the format is a
+string, variable or float expression in the probed forms. CR300 reports
+excess arguments after that position. CR350 checks the recovered mode on its
+mode-limited ports. With an integer format, CR300 requires the sixth
+argument to be a constant integer.
+[Four-profile observations](../tests/fixtures/r142_serialopen_recovery.json).
 
 Decompiled (`FUN_00494aa0`, Codex, `scratch/r58/codex-names.log`) and confirmed on CR6/CR1000X: after
 BufferSize, a comma where `)` was expected clears any earlier argument error and reads the next

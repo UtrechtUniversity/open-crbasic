@@ -85,23 +85,25 @@ _CR350_MAX_COMMS_MODE = {1: 0, 2: 0, 3: 0, 4: 1, 7: 1, 8: 1, 9: 1, 10: 1}
 
 
 def _check_cr350_comms_mode(
-    stmt: S.Call, port: int, profile, consts: dict, diags: Diagnostics, invalid_format: bool
+    stmt: S.Call, port: int, profile, consts: dict, diags: Diagnostics, invalid_format: bool, shifted: bool
 ) -> None:
     maximum = _CR350_MAX_COMMS_MODE.get(port)
-    if maximum is None or len(stmt.args) != 6:
+    if maximum is None or (len(stmt.args) < 5 if shifted else len(stmt.args) != 6):
         return
-    format_arg, mode_arg = stmt.args[2], stmt.args[5]
-    if any(longconv._float_typed(arg, frozenset()) for arg in (format_arg, mode_arg)):
+    mode_arg = stmt.args[4 if shifted else 5]
+    if longconv._float_typed(mode_arg, frozenset()):
         return
     env = consteval.Env(profile, consts)
     try:
-        raw_values = [consteval.value_of(arg, env) for arg in (format_arg, mode_arg)]
+        raw = consteval.value_of(mode_arg, env)
     except consteval.NotConstant:
         return
-    if any(isinstance(raw, float) and (not -(2**31) <= raw < 2**31 or raw != int(raw)) for raw in raw_values):
+    if not consteval.is_finite_number(raw) or (
+        isinstance(raw, float) and (not -(2**31) <= raw < 2**31 or raw != int(raw))
+    ):
         return
-    fmt = longconv.long_value(format_arg, env, profile)
-    if not invalid_format and (fmt is None or not -1 <= fmt <= 15):
+    fmt = longconv.long_value(stmt.args[2], env, profile) if not shifted else None
+    if not shifted and not invalid_format and (fmt is None or not -1 <= fmt <= 15):
         return
     value = longconv.long_value(mode_arg, env, profile)
     if value is not None and (mode := value & 0xFF) > maximum:
@@ -319,6 +321,23 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         )
         if invalid_format:
             diags.error(stmt.line, "Invalid format option.", stmt.file)
+        cr3_shifted = (
+            cr3
+            and constant_port
+            and format_arg is not None
+            and not invalid_format
+            and (
+                _non_numeric(format_arg, profile, program.consts, variable_names)
+                or not isinstance(format_arg, S.Name)
+                and longconv._float_typed(format_arg, frozenset())
+            )
+        )
+        if cr3_shifted:
+            if profile.name == "cr350" and consteval.is_finite_number(port):
+                _check_cr350_comms_mode(stmt, int(port), profile, program.consts, diags, False, True)
+            elif len(stmt.args) > 5:
+                diags.error(stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}{sep}.", stmt.file)
+            continue
         # CR6/CR1000X: a String or variable `SerialOpenFormat` makes the 5th argument the CommsMode, with
         # no TXDelay range and at most 5 arguments (oracle, 2026-10-28, round 57,
         # docs/checker.md#serialopen-format-and-commsmode-round-57)
@@ -414,7 +433,22 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                 if consteval.is_finite_number(size) and 0 < size < 2**31:
                     diags.items.append(Diagnostic("error", stmt.line, "Out of memory.", stmt.file, trigger=True))
         if profile.name == "cr350" and consteval.is_finite_number(port):
-            _check_cr350_comms_mode(stmt, int(port), profile, program.consts, diags, invalid_format)
+            _check_cr350_comms_mode(stmt, int(port), profile, program.consts, diags, invalid_format, False)
+        if profile.name == "cr300" and constant_port and len(stmt.args) == 6 and stmt.args[5] is not None:
+            mode_arg = stmt.args[5]
+            env = consteval.Env(profile, dict(program.consts))
+            try:
+                mode = consteval.value_of(mode_arg, env)
+            except consteval.NotConstant:
+                mode = None
+            if (
+                not consteval.is_finite_number(mode)
+                or mode != int(mode)
+                or not isinstance(mode_arg, S.Name)
+                and consteval.is_float(mode_arg, env)
+                or expressions._variable_refs(mode_arg, variable_names)
+            ):
+                diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.", stmt.file)
         if names or is_variable or isinstance(arg, S.String):
             # A string or variable ComPort, all four loggers, pass 1 (oracle, 2026-10-01:
             # `SerialOpen("fuzz",...)`). CR300/CR350 echo the line end (`docs/loggers.md`).

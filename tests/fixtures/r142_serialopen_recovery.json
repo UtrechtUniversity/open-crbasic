@@ -1,0 +1,1255 @@
+{
+ "observation_date": "2026-11-13",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r142-cr6-ComRS232-0",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on COM232.\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,\"x\")."
+  },
+  {
+   "id": "r142-cr6-ComRS232-1",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,\"2\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on COM232.\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,\"2\")."
+  },
+  {
+   "id": "r142-cr6-ComRS232-2",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on COM232.\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,1.5)."
+  },
+  {
+   "id": "r142-cr6-ComRS232-3",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,1.0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on COM232.\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,1.0)."
+  },
+  {
+   "id": "r142-cr6-ComRS232-4",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,V)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on COM232.\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,V)."
+  },
+  {
+   "id": "r142-cr6-ComRS232-8",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,16.0,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: CommsMode Option 5 not supported on COM232."
+  },
+  {
+   "id": "r142-cr6-ComRS232-9",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,\"x\",0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: CommsMode Option 5 not supported on COM232."
+  },
+  {
+   "id": "r142-cr6-ComRS232-10",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,V,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: CommsMode Option 5 not supported on COM232."
+  },
+  {
+   "id": "r142-cr6-ComRS232-13",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,\"x\",0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 5 not supported on COM232.\nline 7: No Matching, or out of place ) in expression:  SerialOpen(ComRS232,9600,\"x\",0,5,1)."
+  },
+  {
+   "id": "r142-cr6-ComRS232-14",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,V,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 5 not supported on COM232.\nline 7: No Matching, or out of place ) in expression:  SerialOpen(ComRS232,9600,V,0,5,1)."
+  },
+  {
+   "id": "r142-cr6-ComRS232-15",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,16.0,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 5 not supported on COM232.\nline 7: No Matching, or out of place ) in expression:  SerialOpen(ComRS232,9600,16.0,0,5,1)."
+  },
+  {
+   "id": "r142-cr6-ComUSB-11",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r142-cr6-32-11",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r142-cr6-11-0",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on ComU1.\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,\"x\")."
+  },
+  {
+   "id": "r142-cr6-11-1",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,\"2\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on ComU1.\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,\"2\")."
+  },
+  {
+   "id": "r142-cr6-11-2",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on ComU1.\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,1.5)."
+  },
+  {
+   "id": "r142-cr6-11-3",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,1.0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on ComU1.\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,1.0)."
+  },
+  {
+   "id": "r142-cr6-11-4",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,V)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on ComU1.\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,V)."
+  },
+  {
+   "id": "r142-cr6-11-8",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,16.0,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: CommsMode Option 5 not supported on ComU1."
+  },
+  {
+   "id": "r142-cr6-11-9",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,\"x\",0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: CommsMode Option 5 not supported on ComU1."
+  },
+  {
+   "id": "r142-cr6-11-10",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,V,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: CommsMode Option 5 not supported on ComU1."
+  },
+  {
+   "id": "r142-cr6-11-11",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r142-cr6-11-13",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,\"x\",0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 5 not supported on ComU1.\nline 7: No Matching, or out of place ) in expression:  SerialOpen(11,9600,\"x\",0,5,1)."
+  },
+  {
+   "id": "r142-cr6-11-14",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,V,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 5 not supported on ComU1.\nline 7: No Matching, or out of place ) in expression:  SerialOpen(11,9600,V,0,5,1)."
+  },
+  {
+   "id": "r142-cr6-11-15",
+   "logger": "cr6",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,16.0,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 5 not supported on ComU1.\nline 7: No Matching, or out of place ) in expression:  SerialOpen(11,9600,16.0,0,5,1)."
+  },
+  {
+   "id": "r142-cr1000x-ComRS232-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on COM232.\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,\"x\")."
+  },
+  {
+   "id": "r142-cr1000x-ComRS232-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,\"2\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on COM232.\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,\"2\")."
+  },
+  {
+   "id": "r142-cr1000x-ComRS232-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on COM232.\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,1.5)."
+  },
+  {
+   "id": "r142-cr1000x-ComRS232-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,1.0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on COM232.\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,1.0)."
+  },
+  {
+   "id": "r142-cr1000x-ComRS232-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,V)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 0 not supported on COM232.\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,V)."
+  },
+  {
+   "id": "r142-cr1000x-ComRS232-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,16.0,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: CommsMode Option 5 not supported on COM232."
+  },
+  {
+   "id": "r142-cr1000x-ComRS232-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,\"x\",0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: CommsMode Option 5 not supported on COM232."
+  },
+  {
+   "id": "r142-cr1000x-ComRS232-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,V,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: CommsMode Option 5 not supported on COM232."
+  },
+  {
+   "id": "r142-cr1000x-ComRS232-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,\"x\",0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 5 not supported on COM232.\nline 7: No Matching, or out of place ) in expression:  SerialOpen(ComRS232,9600,\"x\",0,5,1)."
+  },
+  {
+   "id": "r142-cr1000x-ComRS232-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,V,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 5 not supported on COM232.\nline 7: No Matching, or out of place ) in expression:  SerialOpen(ComRS232,9600,V,0,5,1)."
+  },
+  {
+   "id": "r142-cr1000x-ComRS232-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,16.0,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Warning: CommsMode Option 5 not supported on COM232.\nline 7: No Matching, or out of place ) in expression:  SerialOpen(ComRS232,9600,16.0,0,5,1)."
+  },
+  {
+   "id": "r142-cr1000x-ComUSB-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r142-cr1000x-32-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r142-cr1000x-11-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,\"x\")."
+  },
+  {
+   "id": "r142-cr1000x-11-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,\"2\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,\"2\")."
+  },
+  {
+   "id": "r142-cr1000x-11-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,1.5)."
+  },
+  {
+   "id": "r142-cr1000x-11-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,1.0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,1.0)."
+  },
+  {
+   "id": "r142-cr1000x-11-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,V)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,V)."
+  },
+  {
+   "id": "r142-cr1000x-11-7",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:  SerialOpen(11,9600,0,0,150,Nope)."
+  },
+  {
+   "id": "r142-cr1000x-11-8",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,16.0,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r142-cr1000x-11-9",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,\"x\",0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r142-cr1000x-11-10",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,V,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r142-cr1000x-11-11",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r142-cr1000x-11-12",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,3/2,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r142-cr1000x-11-13",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,\"x\",0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(11,9600,\"x\",0,5,1)."
+  },
+  {
+   "id": "r142-cr1000x-11-14",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,V,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(11,9600,V,0,5,1)."
+  },
+  {
+   "id": "r142-cr1000x-11-15",
+   "logger": "cr1000x",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,16.0,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(11,9600,16.0,0,5,1)."
+  },
+  {
+   "id": "r142-cr300-ComRS232-0",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,\"x\")\n."
+  },
+  {
+   "id": "r142-cr300-ComRS232-1",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,\"2\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,\"2\")\n."
+  },
+  {
+   "id": "r142-cr300-ComRS232-2",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,1.5)\n."
+  },
+  {
+   "id": "r142-cr300-ComRS232-3",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,1.0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,1.0)\n."
+  },
+  {
+   "id": "r142-cr300-ComRS232-4",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,V)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,V)\n."
+  },
+  {
+   "id": "r142-cr300-ComRS232-5",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,M)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,M)\n."
+  },
+  {
+   "id": "r142-cr300-ComRS232-6",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,3/2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComRS232,9600,0,0,150,3/2)\n."
+  },
+  {
+   "id": "r142-cr300-ComRS232-8",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,16.0,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-ComRS232-9",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,\"x\",0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-ComRS232-10",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,V,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-ComRS232-11",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid format option."
+  },
+  {
+   "id": "r142-cr300-ComRS232-12",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3/2,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-ComRS232-13",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,\"x\",0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(ComRS232,9600,\"x\",0,5,1)\n."
+  },
+  {
+   "id": "r142-cr300-ComRS232-14",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,V,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(ComRS232,9600,V,0,5,1)\n."
+  },
+  {
+   "id": "r142-cr300-ComRS232-15",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,16.0,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(ComRS232,9600,16.0,0,5,1)\n."
+  },
+  {
+   "id": "r142-cr300-ComUSB-0",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComUSB,9600,0,0,150,\"x\")\n."
+  },
+  {
+   "id": "r142-cr300-ComUSB-1",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,\"2\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComUSB,9600,0,0,150,\"2\")\n."
+  },
+  {
+   "id": "r142-cr300-ComUSB-2",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComUSB,9600,0,0,150,1.5)\n."
+  },
+  {
+   "id": "r142-cr300-ComUSB-3",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,1.0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComUSB,9600,0,0,150,1.0)\n."
+  },
+  {
+   "id": "r142-cr300-ComUSB-4",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,V)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComUSB,9600,0,0,150,V)\n."
+  },
+  {
+   "id": "r142-cr300-ComUSB-5",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,M)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComUSB,9600,0,0,150,M)\n."
+  },
+  {
+   "id": "r142-cr300-ComUSB-6",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,3/2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(ComUSB,9600,0,0,150,3/2)\n."
+  },
+  {
+   "id": "r142-cr300-ComUSB-8",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,16.0,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-ComUSB-9",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,\"x\",0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-ComUSB-10",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,V,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-ComUSB-11",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid format option."
+  },
+  {
+   "id": "r142-cr300-ComUSB-12",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,3/2,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-ComUSB-13",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,\"x\",0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(ComUSB,9600,\"x\",0,5,1)\n."
+  },
+  {
+   "id": "r142-cr300-ComUSB-14",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,V,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(ComUSB,9600,V,0,5,1)\n."
+  },
+  {
+   "id": "r142-cr300-ComUSB-15",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,16.0,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(ComUSB,9600,16.0,0,5,1)\n."
+  },
+  {
+   "id": "r142-cr300-32-0",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(32,9600,0,0,150,\"x\")\n."
+  },
+  {
+   "id": "r142-cr300-32-1",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,\"2\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(32,9600,0,0,150,\"2\")\n."
+  },
+  {
+   "id": "r142-cr300-32-2",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(32,9600,0,0,150,1.5)\n."
+  },
+  {
+   "id": "r142-cr300-32-3",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,1.0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(32,9600,0,0,150,1.0)\n."
+  },
+  {
+   "id": "r142-cr300-32-4",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,V)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(32,9600,0,0,150,V)\n."
+  },
+  {
+   "id": "r142-cr300-32-5",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,M)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(32,9600,0,0,150,M)\n."
+  },
+  {
+   "id": "r142-cr300-32-6",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,3/2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Parameter must be a constant integer:  SerialOpen(32,9600,0,0,150,3/2)\n."
+  },
+  {
+   "id": "r142-cr300-32-8",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,16.0,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-32-9",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,\"x\",0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-32-10",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,V,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-32-11",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid format option."
+  },
+  {
+   "id": "r142-cr300-32-12",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,3/2,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-32-13",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,\"x\",0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(32,9600,\"x\",0,5,1)\n."
+  },
+  {
+   "id": "r142-cr300-32-14",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,V,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(32,9600,V,0,5,1)\n."
+  },
+  {
+   "id": "r142-cr300-32-15",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,16.0,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(32,9600,16.0,0,5,1)\n."
+  },
+  {
+   "id": "r142-cr300-11-0",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory.\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,\"x\")\n."
+  },
+  {
+   "id": "r142-cr300-11-1",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,\"2\")\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory.\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,\"2\")\n."
+  },
+  {
+   "id": "r142-cr300-11-2",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory.\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,1.5)\n."
+  },
+  {
+   "id": "r142-cr300-11-3",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,1.0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory.\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,1.0)\n."
+  },
+  {
+   "id": "r142-cr300-11-4",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,V)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory.\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,V)\n."
+  },
+  {
+   "id": "r142-cr300-11-5",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,M)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory.\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,M)\n."
+  },
+  {
+   "id": "r142-cr300-11-6",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,3/2)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Out of memory.\nline 7: Parameter must be a constant integer:  SerialOpen(11,9600,0,0,150,3/2)\n."
+  },
+  {
+   "id": "r142-cr300-11-8",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,16.0,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-11-9",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,\"x\",0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-11-10",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,V,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-11-11",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid format option.\nline 7: Out of memory."
+  },
+  {
+   "id": "r142-cr300-11-12",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,3/2,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr300-11-13",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,\"x\",0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(11,9600,\"x\",0,5,1)\n."
+  },
+  {
+   "id": "r142-cr300-11-14",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,V,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(11,9600,V,0,5,1)\n."
+  },
+  {
+   "id": "r142-cr300-11-15",
+   "logger": "cr300",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,16.0,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression:  SerialOpen(11,9600,16.0,0,5,1)\n."
+  },
+  {
+   "id": "r142-cr350-ComRS232-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComRS232-1",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,\"2\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComRS232-2",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComRS232-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,1.0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComRS232-4",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,V)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComRS232-5",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,M)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComRS232-6",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,3/2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComRS232-7",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,0,0,150,Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "r142-cr350-ComRS232-8",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,16.0,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComRS232-9",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,\"x\",0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComRS232-10",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,V,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComRS232-11",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid format option."
+  },
+  {
+   "id": "r142-cr350-ComRS232-12",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,3/2,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComRS232-13",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,\"x\",0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComRS232-14",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,V,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComRS232-15",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComRS232,9600,16.0,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComUSB-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComUSB-1",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,\"2\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComUSB-2",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComUSB-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,1.0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComUSB-4",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,V)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComUSB-5",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,M)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComUSB-6",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,3/2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-ComUSB-7",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,0,0,150,Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "r142-cr350-ComUSB-8",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,16.0,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComUSB-9",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,\"x\",0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComUSB-10",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,V,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComUSB-11",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid format option."
+  },
+  {
+   "id": "r142-cr350-ComUSB-12",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,3/2,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComUSB-13",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,\"x\",0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComUSB-14",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,V,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-ComUSB-15",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(ComUSB,9600,16.0,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: 5 is an invalid CommsMode parameter."
+  },
+  {
+   "id": "r142-cr350-32-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-1",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,\"2\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-2",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,1.0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-4",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,V)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-5",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,M)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-6",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,3/2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-7",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,0,0,150,Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "r142-cr350-32-8",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,16.0,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-9",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,\"x\",0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-10",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,V,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-11",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid format option."
+  },
+  {
+   "id": "r142-cr350-32-12",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,3/2,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-13",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,\"x\",0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-14",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,V,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-32-15",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(32,9600,16.0,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-0",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,\"x\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-1",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,\"2\")\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-2",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,1.5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-3",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,1.0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-4",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,V)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-5",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,M)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-6",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,3/2)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-7",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,0,0,150,Nope)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "r142-cr350-11-8",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,16.0,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-9",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,\"x\",0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-10",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,V,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-11",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,F,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid format option."
+  },
+  {
+   "id": "r142-cr350-11-12",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,3/2,0,5)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-13",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,\"x\",0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-14",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,V,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r142-cr350-11-15",
+   "logger": "cr350",
+   "source": "Public Y\nConst M=1.5\nConst F=16.0\nPublic V\nBeginProg\n Scan(1,Sec,0,0)\n SerialOpen(11,9600,16.0,0,5,1)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}
