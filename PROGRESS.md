@@ -1,6 +1,6 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-10-31 after development round 75; v1.0 released internally (M0-M7 done)** (round-51
+Current compiler state and handoff, updated **2026-11-14 after development round 150; v1.0 released internally (M0-M7 done)** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
@@ -9,7 +9,7 @@ relevant false accepts, round 57; fresh seeds 453-460, M2 measurement and first-
 candidates, round 60; missing commas in Sub arguments, round 61; user Function expression syntax, round 62; IIF omitted final-arm types, round 63; fresh seeds 465/466,
 two false accepts, a false reject and four first-error families, round 64; String-typed operands,
 FTPClient PutGetOption and GetRecord destination size, round 65; includes after an IncludeSection
-error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70; Constants used before their declaration and AvgRun instance counts, round 71; M4 evidence inventory and coverage notices, round 72; M6 checks in the language server, round 73; M5 artifact matrix, round 74; M7 internal release 1.0.0, round 75). Use Git to check
+error, round 66; Codex final-review fixes, round 67; M3 checks OCB002-OCB006; Codex follow-up blockers, round 68; numbers beyond the float range and M1/M2 sign-off, round 69; M3 exit check and `OCB007`, round 70; Constants used before their declaration and AvgRun instance counts, round 71; M4 evidence inventory and coverage notices, round 72; M6 checks in the language server, round 73; M5 artifact matrix, round 74; M7 internal release 1.0.0, round 75; fixture and historical verdict parity, rounds 76-149; review fixes, round 150). Use Git to check
 publication
 state and inspect `git status` before editing.
 
@@ -29,8 +29,9 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 8 -m 'not server'` | 62,822 passed, 311 skipped, 1,218 strict xfail (round 66) |
-| `pytest -q -m server` | 163 passed (round 66) |
+| `pytest -q -n 8 -m 'not server'` (round 150, 2026-11-14) | 80,832 passed, 49 skipped, 911 strict xfail, 1 failed: `tests/lsp/test_lsp_bench.py::test_smoke_report` starts a server, which could not create a semaphore on this host (see Work method) |
+| `pytest -q -m server` | not run in round 150: the host had no free multiprocessing semaphores; last result 163 passed (round 66) |
+| Fixture audit of rounds 76-149 (`tools/fixture_audit.py`, 75 fixtures, cached reference results; round 150) and of `r150_*.json` (`--no-cache`) | 18,550 cases and 164 cases, 0 differing, 0 without verdict |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
 | Round-59 fixture audit (`r59_*` and the four edited fixtures) | 0 differing, 0 without verdict |
 | Round-60 fixture audit (`r60_packed_table_reps.json`) | 176 cases, 0 differing, 0 without verdict |
@@ -39,7 +40,7 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 | Round-63 fixture audits (`r63_iif_missing_arm.json`, `r36_relevant_seeds.json`) | 168 + 2,414 cases, 0 differing, 0 without verdict; new fixture: 142 passed, 26 strict xfail |
 | Round-65 fixture audit (`r65_*.json`, `var_types.json`) | 648 + 469 cases, 0 differing, 0 without verdict; new fixtures: 644 passed, 4 strict xfail (CR300/CR350 only) |
 | Round-64 fixture audit (`r64_*.json`, `r62_function_syntax.json`) | 548 + 312 cases, 0 differing, 0 without verdict; new fixtures: 422 passed, 126 strict xfail (CR6/CR1000X: 8, all listed) |
-| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 66) | 3,338 inputs: 2,631 exact (round 63: 2,628; round 58: 2,596); CR6/CR1000X: 13 first-error misses (19), 25 false accepts, none in the relevant area; regression gate passes; `tests/replay_baseline.json` not refreshed. |
+| Saved fuzz replay, `fuzz_replay.py --recorded --baseline tests/replay_baseline.json --gate no-regressions` (the CI command; round 150) | 221 open-corpus reproducers (CR6/CR1000X): 168 exact, 28 with later diagnostics differing, 9 in another order, 8 with a different message at the first location, 4 first-error misses, 3 warning differences, no false accept or false reject, 1 reference fault (`75f68395c4e8`, no verdict); regression gate passes; `tests/replay_baseline.json` not refreshed. The 120 recordings that depend on `tests/corpus/station/` were re-recorded after its rename (no reference result changed). The 3,338-input historical replay, which includes the help-seeded reproducers kept outside the open corpus, was last run in round 117: no false accept or false reject. |
 | GEUS corpus, `difftest.py --group geus --logger cr1000x` (round 66) | 66/66 exact (round 32: 64 exact, two false rejects); no GEUS `.CR6` programs |
 | Fresh fuzz, seeds 469/470 (round 65, `--relevant`, 1,000 each, run on the round-65 code) | No false accept, false reject, mode difference, crash, hang or implementation exception (one warning-only row). First-error differences are fuzz arguments, token splits, two-edit inputs or outside the set, except `6b414530e683` (a swapped `IncludeSection`), fixed in round 66 ([review](docs/first-error-review.md#round-65-fresh-inputs)). Raw output in `scratch/r65/` |
 | Fresh fuzz, seeds 465/466 and 467/468 (round 64, `--relevant`, 1,000 each, CR6 odd / CR1000X even) | 465/466: 1 false accept (fixed), 31 message differences ([review](docs/first-error-review.md#round-64-fresh-inputs-and-round-60-classification)). 467/468, run after the round-64 fixes: 2 false accepts (`FTPClient` PutGetOption, `GetRecord` destination size), fixed in round 65; no mode difference (three warning-only rows). Raw output in `scratch/r64/` |
@@ -91,6 +92,32 @@ Rounds 23–31 did not rerun full corpus TDF/table-list comparisons. CDM binary 
 in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
+
+**Round 150** (review of rounds 76-149; rebased onto 1.1.1). Reference observations of
+2026-11-14 on all four profiles unless noted.
+- The `Timer`, `HTTPGet` and `TCPOpen` argument checks read the constants of the program
+  compiled before in the same process whenever they ran ahead of `check_function_arity`, so a
+  long-lived process (the language server, a test run) could change a verdict. The checker now
+  sets them per compile, and a `Const` initializer reports these arguments as the reference
+  does: 56 cases, 46 exact, 10 flagged (variable initializers, dimensions, one CR300/CR350 order).
+  [Observations](tests/fixtures/r150_const_initializer_arguments.json).
+- A `SerialOpen` buffer size or mode that folds to an infinity or divides by zero raised an
+  implementation exception on CR6 and CR1000X. All 72 probed cases now match.
+  [Observations](tests/fixtures/r150_serialopen_non_finite.json).
+- CR300 and CR350 reject `Settings.TableBytes`; round 143 exempted it without an observation
+  (false accept). `Settings.EventCount` faults both reference compilers and stays accepted.
+  [Observations](tests/fixtures/r150_settings_table_properties.json), 36 cases, CR300/CR350.
+- The empirical lookups for EC100 option counts, wide `Sample` data types and the `CDM_FFTFilt`
+  nonzero reference now state their limits in the code; they were not widened (the reference
+  reads past its tables there).
+- The CR6 inventory and the shipped coverage notices are regenerated: 37 messages implemented
+  since round 74 are no longer noticed (479 messages on 169 instructions, was 516 on 180). The
+  inventory now links only observations in the open corpus, which moves 21 instructions whose
+  only observations were help-seeded reproducers from partially tested to unknown
+  (52 tested, 234 partially tested, 124 unknown). [Inventory](docs/inventory.md).
+- The language-server test client terminates the server before killing it, so tests stop
+  leaking multiprocessing semaphores (not verified on this host, which had none left).
+[Evidence](docs/checker.md#round-150-review-fixes).
 
 **Round 149** (fixture verdict parity). CR300 and CR350 diagnose
 indexed scalar routine parameters in measurement destination arguments.
@@ -1004,14 +1031,11 @@ Follow the [v1.0 milestones](PLAN.md#v10-milestones); M0 comes first.
    same-name `Const`) is fixed in round 71. The language server does not run checks yet: that is M6
    (call `checks.analyze` with its settings, put the configuration in the cache key); done in round 73.
 4. **M1: done (round 69).** Round 76 closed the routine-parameter exception recorded in the
-   1.0 release record. The 25 historical replay
-   false accepts outside the relevant set stay listed by identity (round 34: `072c74da6af5`,
-   `51f39a5f2393`, `7b4b2177d56b`, `870ca9a9562e`, `e8c854e3493d`, `a0b2b0b059b3`, `ec6b11bc3176`,
-   `022d98dd3efc`, `4156d89a014d`, `6ac24bd775f1`, `72f95eac103f`, `77636b10567c`, `7f9efa8af42c`,
-   `c060e9f1402f`, `d12785e05faf`, `f2f6e5d8b8e6`; round 35: `0e23c61229f4`, `39a03364be83`,
-   `52138d7bd179`, `577a59ecb08c`, `778ea45e64b7`, `9c6367a2c598`, `ecc509dd06de`, `f61f825392f2`,
-   `fa923ecef6f4`) and get coverage notices with M4. CR300/CR350 remain best effort. After any
-   `crbasic/` change run `fuzz_replay.py --rerecord-stale` first.
+   1.0 release record. The 25 historical replay false accepts that rounds 34 and 35 listed by
+   identity were fixed in rounds 88 to 108, and round 117 left the 3,338-case historical replay
+   without a false accept or false reject; none is listed any more
+   ([inventory](docs/inventory.md#the-historical-false-accepts)). CR300/CR350 remain best effort.
+   After any change under `tests/corpus/station/` run `fuzz_replay.py --rerecord-stale` first.
 5. **M2: done (round 69).** Every first-error difference of the fresh batches since round 60 has a
    recorded decision in the [first-error review](docs/first-error-review.md); the realistic ones are
    fixed. Later-diagnostic differences are accepted under the 2026-10-24 decision.
@@ -1102,5 +1126,8 @@ never prune reproducers just to improve agreement. Retry transient runner failur
 
 Keep heavy validation runs bounded and avoid overlapping them. Do not kill validation process
 trees: prior forced termination exhausted macOS multiprocessing semaphores. Before another
-long round, `python -c "import multiprocessing as m; m.Lock()"` checks that pools can start.
+long round, `python -c "import multiprocessing as m; m.Lock()"` checks that pools can start;
+once it fails, only a restart of the machine frees them. The language-server test client
+terminates its server before killing it (round 150), so the pool's resource tracker can unlink
+them; a `SIGKILL` of the whole process group, the previous teardown, leaked them on every test.
 Update this file after each milestone; move superseded snapshots and run history to the archive.
