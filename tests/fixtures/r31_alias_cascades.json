@@ -1779,8 +1779,7 @@
       "logger": "cr300",
       "source": "Public X(6)\nSub S(Q)\nVoltSe(Q(1),2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  2.\nline 6: Too many parameters:  Sec.",
-      "not_modelled": "CR300/CR350: a subscripted scalar parameter is not modelled as Dimensions not declared."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  2.\nline 6: Too many parameters:  Sec."
     },
     {
       "id": "cr300-d07",
@@ -1830,8 +1829,7 @@
       "logger": "cr300",
       "source": "Public X(6)\nSub S(Q)\nVoltSe(Q(1),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  1.\nline 6: Too many parameters:  Sec.",
-      "not_modelled": "CR300/CR350: a subscripted scalar parameter is not modelled as Dimensions not declared."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  1.\nline 6: Too many parameters:  Sec."
     },
     {
       "id": "cr300-e04",
@@ -1895,8 +1893,7 @@
       "logger": "cr350",
       "source": "Public X(6)\nSub S(Q)\nVoltSe(Q(1),2,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  2.\nline 6: Too many parameters:  Sec.",
-      "not_modelled": "CR300/CR350: a subscripted scalar parameter is not modelled as Dimensions not declared."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  2.\nline 6: Too many parameters:  Sec."
     },
     {
       "id": "cr350-d07",
@@ -1946,8 +1943,7 @@
       "logger": "cr350",
       "source": "Public X(6)\nSub S(Q)\nVoltSe(Q(1),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nScan(10,Sec,0,0)\nCall S(X)\nNextScan\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  1.\nline 6: Too many parameters:  Sec.",
-      "not_modelled": "CR300/CR350: a subscripted scalar parameter is not modelled as Dimensions not declared."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  1.\nline 6: Too many parameters:  Sec."
     },
     {
       "id": "cr350-e04",

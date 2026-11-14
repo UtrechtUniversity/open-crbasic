@@ -1,0 +1,751 @@
+{
+ "observation_date": "2026-11-14",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "r149-cr6-param-0-0",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-0-1",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-0-2",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q)\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr6-param-0-3",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q)\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr6-param-0-4",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-1-0",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q())\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-1-1",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q())\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-1-2",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q())\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr6-param-1-3",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q())\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr6-param-1-4",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q())\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-2-0",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q(2))\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-2-1",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q(2))\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-2-2",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q(2))\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr6-param-2-3",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q(2))\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr6-param-2-4",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q(2))\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-3-0",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q As Long)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-3-1",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q As Long)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-3-2",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q As Long)\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr6-param-3-3",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q As Long)\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr6-param-3-4",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q As Long)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-5-0",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-5-1",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-5-2",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr6-param-5-3",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr6-param-5-4",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-6-0",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q As Float)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-6-1",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q As Float)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr6-param-6-2",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q As Float)\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr6-param-6-3",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q As Float)\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr6-param-6-4",
+   "logger": "cr6",
+   "source": "Public Y\nSub SS(Q As Float)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-0-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-0-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-0-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q)\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr1000x-param-0-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q)\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr1000x-param-0-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-1-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q())\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-1-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q())\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-1-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q())\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr1000x-param-1-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q())\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr1000x-param-1-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q())\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-2-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q(2))\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-2-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q(2))\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-2-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q(2))\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr1000x-param-2-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q(2))\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr1000x-param-2-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q(2))\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-3-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q As Long)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-3-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q As Long)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-3-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q As Long)\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr1000x-param-3-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q As Long)\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr1000x-param-3-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q As Long)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-5-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-5-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-5-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr1000x-param-5-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr1000x-param-5-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-6-0",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q As Float)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-6-1",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q As Float)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr1000x-param-6-2",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q As Float)\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr1000x-param-6-3",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q As Float)\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "r149-cr1000x-param-6-4",
+   "logger": "cr1000x",
+   "source": "Public Y\nSub SS(Q As Float)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "r149-cr300-param-0-0",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr300-param-0-1",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  60.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr300-param-0-4",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr300-param-1-0",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q())\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr300-param-1-1",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q())\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  60.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr300-param-1-4",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q())\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr300-param-2-0",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q(2))\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr300-param-2-1",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q(2))\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr300-param-2-2",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q(2))\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr300-param-2-3",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q(2))\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr300-param-2-4",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q(2))\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr300-param-3-0",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q As Long)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr300-param-3-1",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q As Long)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  60.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr300-param-3-4",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q As Long)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal destination variable type, expecting Float.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr300-param-5-0",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal destination variable type, expecting Float.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr300-param-5-1",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal destination variable type, expecting Float.\nline 3: Too many parameters:  60.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr300-param-5-2",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr300-param-5-3",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr300-param-5-4",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal destination variable type, expecting Float.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr300-param-6-0",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q As Float)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr300-param-6-1",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q As Float)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  60.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr300-param-6-4",
+   "logger": "cr300",
+   "source": "Public Y\nSub SS(Q As Float)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr350-param-0-0",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr350-param-0-1",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  60.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr350-param-0-4",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr350-param-1-0",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q())\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr350-param-1-1",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q())\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  60.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr350-param-1-4",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q())\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr350-param-2-0",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q(2))\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr350-param-2-1",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q(2))\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr350-param-2-2",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q(2))\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr350-param-2-3",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q(2))\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr350-param-2-4",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q(2))\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr350-param-3-0",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q As Long)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr350-param-3-1",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q As Long)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  60.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr350-param-3-4",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q As Long)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal destination variable type, expecting Float.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr350-param-5-0",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal destination variable type, expecting Float.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr350-param-5-1",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal destination variable type, expecting Float.\nline 3: Too many parameters:  60.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr350-param-5-2",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Q(1)=1\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr350-param-5-3",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Y=Q(1)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "r149-cr350-param-5-4",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q(2) As Long)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal destination variable type, expecting Float.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr350-param-6-0",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q As Float)\n Battery(Q(1))\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr350-param-6-1",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q As Float)\n PanelTemp(Q(1),60)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Dimensions not declared: Q(1).\nline 3: Too many parameters:  60.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "r149-cr350-param-6-4",
+   "logger": "cr350",
+   "source": "Public Y\nSub SS(Q As Float)\n Battery(Q)\nEndSub\nBeginProg\n Scan(1,Sec,0,0)\n NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

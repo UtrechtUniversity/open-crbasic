@@ -1010,10 +1010,16 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
     destination_env = _destination_env(consteval.Env(profile))
     destination_variables = symbols.declared_variable_names(program)
     params: dict[str, str] = {}  # the enclosing routine's parameters hide a global (round 31)
+    scalar_params: set[str] = set()
     per_line = collections.Counter((st.line, st.file) for st in program.statements)
     for stmt in program.statements:
         if isinstance(stmt, S.SubDef):
             params = {p.name.upper(): (p.type or "FLOAT").upper() for p in stmt.params}
+            scalar_params = {
+                p.name.upper()
+                for p in stmt.params
+                if not p.dim_exprs and (p.dims == 0 or p.type is None) and (p.type or "").upper() != "STRING"
+            }
             if stmt.keyword.upper() == "FUNCTION":
                 function_names.add(stmt.name.upper())
         elif isinstance(stmt, S.ConstDecl):
@@ -1023,6 +1029,7 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
                 destination_env.consts[name] = program.consts[name]
         elif S.ends_routine(stmt):
             params = {}
+            scalar_params = set()
         if (
             not isinstance(stmt, S.Instruction)
             or not stmt.args
@@ -1094,6 +1101,22 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
         if isinstance(arg, S.Name) and arg.name.upper() in profile.functions:
             continue  # a bare function name is `Expression expects (` instead (expressions.py)
         key = (stmt.line, stmt.file)
+        if isinstance(arg, S.Index) and arg.name.upper() in scalar_params and any(a is not None for a in arg.args):
+            raw = expressions._arg_text(stmt, 0).strip()
+            diags.items[:] = [
+                d
+                for d in diags.items
+                if (d.line, d.file) != key
+                or not d.message.startswith(("Dimensions not declared:", "Too many parameters:"))
+            ]
+            diags.items.append(
+                Diagnostic("error", stmt.line, f"Dimensions not declared: {raw}.", stmt.file, trigger=True)
+            )
+            if len(stmt.args) > 1 and stmt.args[1] is not None:
+                raw = expressions._arg_text(stmt, 1)
+                token = instr_rules._next_simple_token(raw) or raw
+                diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
+            continue
         undefined = [n for n in _expr_names(arg) if n.upper() not in known]
         variables = {**types, **scoped.get(id(stmt), {}), **params}
         call = isinstance(arg, S.Index) and arg.name.upper() not in variables and arg.name.upper() in function_names

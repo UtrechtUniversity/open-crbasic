@@ -900,8 +900,7 @@
       "logger": "cr300",
       "source": "Sub SS(Q())\nVoltSe(Q(2),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(2).\nline 2: Too many parameters:  1.",
-      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(2).\nline 2: Too many parameters:  1."
     },
     {
       "id": "cr300-f9e",
@@ -1204,8 +1203,7 @@
       "logger": "cr350",
       "source": "Sub SS(Q())\nVoltSe(Q(2),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(2).\nline 2: Too many parameters:  1.",
-      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(2).\nline 2: Too many parameters:  1."
     },
     {
       "id": "cr350-f9e",
@@ -2443,24 +2441,21 @@
       "logger": "cr300",
       "source": "Sub SS(Q)\nVoltSe(Q(2),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(2).\nline 2: Too many parameters:  1.",
-      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(2).\nline 2: Too many parameters:  1."
     },
     {
       "id": "cr300-f9g",
       "logger": "cr300",
       "source": "Sub SS(Q())\nVoltSe(Q(1),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(1).\nline 2: Too many parameters:  1.",
-      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(1).\nline 2: Too many parameters:  1."
     },
     {
       "id": "cr300-f9h",
       "logger": "cr300",
       "source": "Sub SS(Q)\nVoltSe(Q(1),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(1).\nline 2: Too many parameters:  1.",
-      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(1).\nline 2: Too many parameters:  1."
     },
     {
       "id": "cr300-f9i",
@@ -2972,24 +2967,21 @@
       "logger": "cr350",
       "source": "Sub SS(Q)\nVoltSe(Q(2),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(2).\nline 2: Too many parameters:  1.",
-      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(2).\nline 2: Too many parameters:  1."
     },
     {
       "id": "cr350-f9g",
       "logger": "cr350",
       "source": "Sub SS(Q())\nVoltSe(Q(1),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(1).\nline 2: Too many parameters:  1.",
-      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(1).\nline 2: Too many parameters:  1."
     },
     {
       "id": "cr350-f9h",
       "logger": "cr350",
       "source": "Sub SS(Q)\nVoltSe(Q(1),1,mV2500,1,False,0,60,1,0)\nEndSub\nBeginProg\nEndProg\n",
       "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(1).\nline 2: Too many parameters:  1.",
-      "not_modelled": "CR300/CR350 index on a dimensionless routine parameter (`Dimensions not declared`, `Q(2)=1`) not modelled."
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Dimensions not declared: Q(1).\nline 2: Too many parameters:  1."
     },
     {
       "id": "cr350-f9i",

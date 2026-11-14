@@ -62,6 +62,7 @@ CASES = [
         "r146_delay_limit.json",
         "r147_paneltemp_fnotch_variables.json",
         "r148_sendvariables_destination.json",
+        "r149_routine_destinations.json",
     )
     for case in json.loads((FIXTURES / name).read_text(encoding="utf-8"))["cases"]
 ]

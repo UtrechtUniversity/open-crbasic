@@ -92,6 +92,11 @@ in [legal and provenance notes](docs/legal.md).
 
 ## Latest changes and evidence
 
+**Round 149** (fixture verdict parity). CR300 and CR350 diagnose
+indexed scalar routine parameters in measurement destination arguments.
+Twelve previously flagged cases match exactly.
+[Four-profile observations](tests/fixtures/r149_routine_destinations.json).
+
 **Round 148** (fixture verdict parity). CR300 and CR350 reject a numeric
 constant destination in `SendVariables` before reading the rest of its arguments.
 Four previously flagged cases match exactly.
