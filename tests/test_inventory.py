@@ -2,7 +2,6 @@
 
 import hashlib
 import json
-import re
 from pathlib import Path
 
 import pytest
@@ -67,38 +66,6 @@ def test_notices_name_the_missing_rules_once_per_instruction(tmp_path):
 def test_no_notices_outside_cr6(tmp_path):
     result = _compile(tmp_path, "    VoltSE(X,1,mV5000,1,1,0,15000,1,0)", logger="cr1000x")
     assert checks.notices(result.program_ast, result.profile) == []
-
-
-# CR6 replay false accepts listed by identity since rounds 34/35 (PROGRESS "Next steps", M1): the
-# reference's first error is one of the rules a notice names. The other listed ones fail on a
-# message opencrbasic emits for other triggers, one the inventory does not reach, or are CR1000X
-# reproducers (`docs/inventory.md` "Coverage of the listed false accepts").
-NOTICED = [
-    "7b4b2177d56b",
-    "4156d89a014d",
-    "72f95eac103f",
-    "77636b10567c",
-    "7f9efa8af42c",
-    "c060e9f1402f",
-    "d12785e05faf",
-    "52138d7bd179",
-    "f61f825392f2",
-]
-SPEC = re.compile(r"%[-+ #0]*\d*(?:\.\d+)?(?:l|h)?[dsfgxXuc]")
-
-
-@pytest.mark.parametrize("identity", NOTICED)
-def test_listed_false_accepts_get_a_notice_naming_their_rule(identity):
-    record_path = next((ROOT / "tests" / "corpus" / "fuzz" / "cr6").rglob(f"{identity}.json"), None)
-    if record_path is None:
-        pytest.skip("reproducer seeded from a CRBasic help example; not in the open corpus")
-    record = json.loads(record_path.read_text())
-    result = compile_file(record_path.with_suffix(".CR6"), profiles.get("cr6"))
-    first = next(line.split(": ", 1)[1] for line in record["theirs"].splitlines() if line.startswith("line "))
-    rules = [r for n in checks.notices(result.program_ast, result.profile) for r in n["rules"]]
-    assert result.ok and any(
-        re.fullmatch(".*?".join(map(re.escape, SPEC.split(r))), first.strip(), re.S) for r in rules
-    ), (first, rules)
 
 
 @pytest.mark.parametrize(

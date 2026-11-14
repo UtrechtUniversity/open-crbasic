@@ -56,8 +56,6 @@
   ],
   "AVW200": [
    "All instances of AVW200 to the same interface must scan at the same interval",
-   "Bad parameter(s): address 1..4095, chan and muxchan 1..32, reps 1..32-muxchan-1,beg and end freq  100..65535, Vx 1..2",
-   "Illegal Thermister integration; must be _60Hz, _50Hz, or 0",
    "Scan interval for AVW200 must be integral number of seconds",
    "Threshold minimum is .01 mv"
   ],
@@ -114,7 +112,6 @@
   ],
   "CDM_BRIDGEFILT": [
    "%s must be used in Scan/NextScan.",
-   "%s not allowed in Sequential Mode.",
    "%s not allowed in slow sequence.",
    "Cannot mix output rates in a single Spectrum Module.",
    "Invalid Excitation option, must be 0...3.",
@@ -135,14 +132,12 @@
   "CDM_EXCITEI": [
    "Delay time: %d, out of range (0 - %d).",
    "Excitation channel: %d, out of range (1 - %d).",
-   "Excitation magnitude: %d exceeds %d.",
    "Unrecognized excitation instruction.",
    "Variable indexing error."
   ],
   "CDM_EXCITEV": [
    "Delay time: %d, out of range (0 - %d).",
    "Excitation channel: %d, out of range (1 - %d).",
-   "Excitation magnitude: %d exceeds %d.",
    "Unrecognized excitation instruction.",
    "Variable indexing error."
   ],
@@ -153,29 +148,19 @@
    "This program will erase factory stored Calibration values from the module at CPI address %d"
   ],
   "CDM_FFTFILT": [
-   "%s not allowed in Sequential Mode.",
    "%s not allowed in slow sequence.",
    "All CDM_FFTFilts must use the same sample rate.",
    "CDM_FFTFilt not allowed in SubScan.",
-   "ILow must be less than IHigh.",
-   "Illegal spectral binning.",
    "Invalid Excitation option, must be 0...4.",
    "Invalid FFT length %d.",
    "Invalid SpectOption %d.",
-   "Maximum IHigh is %d.",
    "Minimum ILow is %d.",
    "Minimum Scan Interval for Spectrum Data is 1mSec, use SubScan for faster output rates.",
-   "Scan interval must be at least %d usec for FFT length of %d.",
    "Unrecognized Filter Option!",
    "Unrecognized input range!"
   ],
   "CDM_MUXSELECT": [
-   "Clock and Reset ports must be unique!",
-   "MuxSelect ClockPW: %d, out of range (1 - %d).",
    "Variable indexing error."
-  ],
-  "CDM_PULSEPORT": [
-   "Delay: %d, out of range (0 - %d)."
   ],
   "CDM_SW12": [
    "Variable indexing error."
@@ -191,7 +176,6 @@
   ],
   "CDM_VOLTFILT": [
    "%s must be used in Scan/NextScan.",
-   "%s not allowed in Sequential Mode.",
    "%s not allowed in slow sequence.",
    "Cannot mix output rates in a single Spectrum Module.",
    "Invalid Excitation option, must be 0...3.",
@@ -207,7 +191,6 @@
   "CDM_VW300DYNAMIC": [
    "%s must run in Main Scan..NextScan.",
    "%s must run within a If..Endif statement.",
-   "%s not allowed in Sequential Mode.",
    "Insufficient Scan buffers to read CPI data, minimum is %d.",
    "No CDM_VW300Config for CPI address %d.",
    "No Configure instruction for CPI Address: %d.",
@@ -221,7 +204,6 @@
   "CDM_VW300STATIC": [
    "%s must run in Main Scan..NextScan.",
    "%s must run within a If..Endif statement.",
-   "%s not allowed in Sequential Mode.",
    "Insufficient Scan buffers to read CPI data, minimum is %d.",
    "No CDM_VW300Config for CPI address %d.",
    "No Configure instruction for CPI Address: %d.",
@@ -301,15 +283,9 @@
    "Missing EndDialSequence().",
    "PakBus address range is 1..4095."
   ],
-  "DISPLAYLINE": [
-   "Cannot use DataTable value as a MenuItem, use DisplayValue."
-  ],
   "DISPLAYMENU": [
    "DisplayMenu title %s is %d chars too long.",
    "Only one DisplayMenu allowed."
-  ],
-  "DISPLAYVALUE": [
-   "Cannot use DataTable value as a MenuItem, use DisplayValue."
   ],
   "DNPMASTER": [
    "Illegal destination parameter."
@@ -319,12 +295,8 @@
   ],
   "DNPVARIABLE": [
    "DNP Variable must be Public or Dim",
-   "Flag paramter must be of type LONG",
    "Group %d upper boundary is out of range.",
    "group 32, variation 6 not supported."
-  ],
-  "EC100": [
-   "Invalid output option; range 0..3."
   ],
   "EC100CONFIGURE": [
    "Invalid command for SequentialMode and Slow Sequences."
@@ -416,12 +388,6 @@
    "Data type of %s must be float or double",
    "Illegal multiple GPS instructions."
   ],
-  "I2CREAD": [
-   "I2COpen must precede %s."
-  ],
-  "I2CWRITE": [
-   "I2COpen must precede %s."
-  ],
   "INSATDATA": [
    "%d values in DataTable illegal; must be 24.",
    "Data must be stored as type LONG."
@@ -446,15 +412,9 @@
   "MAXSPA": [
    "CovSpa must use Float type source."
   ],
-  "MENUITEM": [
-   "Cannot use DataTable value as a MenuItem, use DisplayValue."
-  ],
   "MENUPICK": [
    "Constant string too long, increase variable size by %d.",
    "MenuPick parameter list too long by %d chars."
-  ],
-  "MENURECOMPILE": [
-   "Cannot use DataTable value as a MenuItem, use DisplayValue."
   ],
   "MINSPA": [
    "CovSpa must use Float type source."
@@ -584,9 +544,7 @@
    "Units must be uSec, mSec, or Sec."
   ],
   "QUADRATURE": [
-   "%s cannot be used within a SubScan.",
-   "%s must use C1,C3, or U1,U3..U11",
-   "Option must be 0-2."
+   "%s cannot be used within a SubScan."
   ],
   "RAINFLOWSAMPLE": [
    "RainFlowSample(%s) cannot find the source CDMVW300RainFlow()",
@@ -655,15 +613,9 @@
    "Too many values for CANBus datatype 64+, max is 255."
   ],
   "SDMCD16AC": [
-   "TimedControl must use PipeLineMode.",
-   "TimedControl only allowed within main scan.",
-   "When using TimedControl reps must be 1.",
    "When using TimedControl source type must be LONG."
   ],
   "SDMCD16MASK": [
-   "TimedControl must use PipeLineMode.",
-   "TimedControl only allowed within main scan.",
-   "When using TimedControl reps must be 1.",
    "When using TimedControl source type must be LONG."
   ],
   "SDMGENERIC": [
@@ -676,9 +628,6 @@
    "INT8 destination not dimensioned large enough.",
    "INT8 multiplier and offset must be constants.",
    "INT8 sample parameter %d must be in the range -32767..32768."
-  ],
-  "SDMSW8A": [
-   "Invalid function option in SDMSW8A."
   ],
   "SENDDATA": [
    "%s not allowed with hidden table."
@@ -705,9 +654,6 @@
   "SORTSPA": [
    "Dimension must be a constant 1,2 or 3",
    "Illegal N parameter"
-  ],
-  "SPLITSTR": [
-   "Justify option (option >= 10) is illegal when spliting into a structure"
   ],
   "STATICROUTE": [
    "Illegal com port %d, range 1..9"
@@ -739,7 +685,6 @@
   ],
   "TABLEFILE": [
    "Invalid filename.",
-   "Invalid parameter type, STRING type required.",
    "Maximum CardOut() is %d.",
    "String variable declared too small for file name by %d characters.",
    "TOB3 TableFile output not allowed with CardOut.",
@@ -820,8 +765,7 @@
   "TIMEDCONTROL": [
    "%s must be declared as type Long.",
    "%s within BeginProg..EndProg, without a matching declaration before BeginProg.",
-   "Default value data type differs from source array.",
-   "Invalid %s mode, must be 1..%d."
+   "Default value data type differs from source array."
   ],
   "TIMERINPUT": [
    "%s cannot be used within a SubScan.",
@@ -831,9 +775,6 @@
    "TimerInput not allowed in slow sequence",
    "TimerInput with no functions enabled.",
    "Too many function digits specified, maximum is %d."
-  ],
-  "TRIGGERSEQUENCE": [
-   "Illegal EVT, 1..4 are legal"
   ],
   "VIBRATINGWIRE": [
    "%s already declared as a function.",

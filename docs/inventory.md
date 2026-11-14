@@ -81,14 +81,10 @@ them as `notices: [{file, line, instruction, rules}]` (report schema 2); default
 stderr and the exit status are unchanged. The language server publishes them as hints with
 `opencrbasic.coverageNotices` (default off: nearly every program has one, M6).
 
-## Coverage of the listed false accepts
+## The historical false accepts
 
-Of the 25 replay false accepts outside the relevant set (PROGRESS, "Next steps", M1), 17 are CR6
-reproducers. For 9 of them the reference's first error is a rule their notice names
-(`tests/test_inventory.py`): `7b4b2177d56b`, `4156d89a014d`, `72f95eac103f`, `77636b10567c`,
-`7f9efa8af42c`, `c060e9f1402f`, `d12785e05faf`, `52138d7bd179`, `f61f825392f2`. The other eight get
-no notice for their rule and stay listed by identity: the message is implemented for another
-trigger (`6ac24bd775f1` `Unrecognized port!`, `ecc509dd06de` `Invalid file type option.`,
-`022d98dd3efc` `%s must be declared as a Const.`, `9c6367a2c598`, `0e23c61229f4`, `577a59ecb08c`),
-comes from a shared helper (`f2f6e5d8b8e6`, `Too many parameters`), or has no format string in the
-inventory (`778ea45e64b7`, `Settling time: ... out of range`).
+Rounds 34 and 35 listed 25 replay false accepts outside the relevant set by identity, 17 of them
+CR6 reproducers; for nine of those a coverage notice named the rule the reference applied. Rounds
+88 to 108 modelled those rules ([PROGRESS](../PROGRESS.md#latest-changes-and-evidence)), so the
+checker now rejects all 25 and no notice stands in for a listed case. The reproducers were seeded
+from CRBasic help examples and are not in the open corpus.
