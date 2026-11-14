@@ -1015,9 +1015,9 @@ class _Parser:
         """A file name that is not a constant: undeclared names (declared later counts) and
         variables or calls are rejected, then the name is NULL. Oracle, all four loggers, 2026-10-27:
         docs/checker.md#include-names-that-are-not-constants-round-53."""
-        from .checker import expressions, symbols
+        from .checker import context, expressions
 
-        declared = {n.upper() for n in symbols.declared_names(self.program)}
+        declared = {n.upper() for n in context.of(self.program).declared_names}
         names: list[tuple[str, bool]] = []  # (name, is a call)
 
         def walk(e) -> None:

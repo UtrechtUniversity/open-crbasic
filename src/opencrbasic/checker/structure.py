@@ -14,7 +14,7 @@ from .. import consteval, lexer, parser
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import DottedName, Profile
-from . import expressions, instr_data, instr_rules, symbols
+from . import context, expressions, instr_data, instr_rules, symbols
 
 # Array-dimension limits on a `Public`/`Dim` declaration (oracle-confirmed, `docs/checker.md`
 # "Array dimension limits"): at most 3 dimensions, and each one's constant value must be in
@@ -113,11 +113,12 @@ def _assignment_head(text: str, program, profile) -> bool:
         return False
     inner = text[text.find("(") + 1 : head.end()] if "(" in text[: head.end()] else ""
     if "(" in inner:
-        known = expressions._known_names(program, profile)
+        ctx = context.of(program, profile)
+        known = ctx.known_names
         if any(n.upper() not in known for n in re.findall(r"[A-Za-z_]\w*", inner)):
             return False
         if profile.fallback_echo_newline:
-            counts = symbols.declared_dim_counts(program)
+            counts = ctx.dim_counts()
             if any(counts.get(n.upper()) == 0 for n in re.findall(r"([A-Za-z_]\w*)\s*\(", inner)):
                 return False
     return True
@@ -791,7 +792,7 @@ def _scan_placement_walk(program: S.Program, profile, diags: Diagnostics) -> tup
     in_table = in_body = in_decl = seen_beginprog = False
     scans: list[bool] = []
     tables: dict = {}
-    subs = symbols.declared_subs(program)
+    subs = context.of(program).declared_subs
     stray = stray_controls(program)
     stray.update({k: (m, True) for k, m in scan_only_outside(program).items()})
     stray.update(subscan_controls(program, profile))
@@ -1089,7 +1090,7 @@ def _has_error_on(stmt: S.Stmt, diags: Diagnostics) -> bool:
     return any(d.severity == "error" and d.line == stmt.line and d.file == stmt.file for d in diags.items)
 
 
-def _before_beginprog_name(stmt: S.Stmt, kw: str, profile, subs: set[str]) -> str | None:
+def _before_beginprog_name(stmt: S.Stmt, kw: str, profile, subs: frozenset[str] | set[str]) -> str | None:
     """The name in `%s illegally occurs before BeginProg.` for a statement outside any block before
     `BeginProg`, or `None` when it may appear there."""
     control = _control_keyword(stmt)
@@ -1352,7 +1353,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     all_known: set[str] | None = None  # (kept apart from `known`, which the loop gates on)
     seen_consts: set[str] = set()
     first_declared: dict[str, int] = {}
-    scopes = symbols.statement_scopes(program, profile)
+    scopes = context.of(program, profile).statement_scopes
     alias_spans: dict[str, list[list[int]]] = {}  # alias -> [from, to] statement positions seeing it
     routine_spans: list[list[int]] = []
     for pos, stmt in enumerate(program.statements):
@@ -1410,7 +1411,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             if not in_sub and declared_kinds.get(stmt.name.upper()) == "CONST":
                 _report_numeric_sub_name(stmt, program.consts.get(stmt.name.upper()), diags)
             if known is None:
-                known = expressions._known_names(program, profile)
+                known = context.of(program, profile).known_names
                 operands = pass1_operands(program, profile)
             if profile.single_pass and header_dims_failed:
                 # after a failed header CR300/CR350 neither check nor register later headers
@@ -1500,7 +1501,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             struct_members.update(v.name.upper() for v in stmt.vars)
             _check_member_types(stmt, structs_seen, profile, diags)
             if known is None:
-                known = expressions._known_names(program, profile)
+                known = context.of(program, profile).known_names
                 operands = pass1_operands(program, profile)
             # a member's dimensions and initializer resolve like a declaration's (oracle, all
             # four loggers, 2026-10-10: `FuzzVar = Nope` inside `StructureType`)
@@ -1635,7 +1636,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 suppress_line = _check_declaration(stmt, diags)
             else:
                 if known is None:
-                    known = expressions._known_names(program, profile)
+                    known = context.of(program, profile).known_names
                     operands = pass1_operands(program, profile)
                 length_scope = None
                 params, later = scopes[id(stmt)]
@@ -1732,10 +1733,10 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 diags.error(stmt.line, message, stmt.file)
             if profile.known_first_word_pass1 and _is_generic_unparsed(stmt):
                 if known is None:
-                    known = expressions._known_names(program, profile)
+                    known = context.of(program, profile).known_names
                     operands = pass1_operands(program, profile)
                 findings = _instruction_arg_findings(
-                    stmt.text, operands, profile, symbols.declared_variable_names(program)
+                    stmt.text, operands, profile, context.of(program, profile).declared_variable_names
                 )
                 for stage, kind, arg_text in findings:
                     if stage == 1:
@@ -1753,8 +1754,11 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 earlier = pass1_operands(dataclasses.replace(program, statements=program.statements[:pos]), profile)
                 scan_stmt = _inline_condition_stmt(stmt, profile)
                 verdict = None if findings else _pass1_scan(scan_stmt.text, earlier, profile)
-                later = symbols.declared_variable_names(program) - symbols.declared_variable_names(
-                    dataclasses.replace(program, statements=program.statements[:pos])
+                later = (
+                    context.of(program, profile).declared_variable_names
+                    - context.of(
+                        dataclasses.replace(program, statements=program.statements[:pos]), profile
+                    ).declared_variable_names
                 )
                 if (
                     verdict is None
@@ -1774,7 +1778,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             and isinstance(stmt.target, S.Member)
             and isinstance(stmt.target.base, S.Name)
             and stmt.target.base.name.upper() == "PUBLIC"
-            and stmt.target.member.upper() not in symbols.declared_variable_names(program)
+            and stmt.target.member.upper() not in context.of(program).declared_variable_names
         ):
             # `Public.Nope = 1`: not a variable (oracle, all four loggers, 2026-10-12)
             diags.error(stmt.line, f"Could not find Public.{stmt.target.member}(1).", stmt.file)
@@ -1801,7 +1805,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             and (
                 stmt.target.name.upper() in seen_consts
                 or (
-                    stmt.target.name.upper() not in symbols.declared_variable_names(program)
+                    stmt.target.name.upper() not in context.of(program).declared_variable_names
                     and (
                         stmt.target.name.upper() in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
                         or _assigns_user_const(stmt, program)
@@ -1824,13 +1828,13 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             and stmt.name.upper() not in profile.functions
         ):
             if known is None:
-                known = expressions._known_names(program, profile)
+                known = context.of(program, profile).known_names
                 operands = pass1_operands(program, profile)
-            if stmt.name.upper() in operands and stmt.name.upper() not in symbols.declared_subs(program):
+            if stmt.name.upper() in operands and stmt.name.upper() not in context.of(program, profile).declared_subs:
                 diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file)
         elif kw == "ALIAS" and isinstance(stmt, S.Instruction):
             if known is None:
-                known = expressions._known_names(program, profile)
+                known = context.of(program, profile).known_names
                 operands = pass1_operands(program, profile)
             src = stmt.args[0] if stmt.args else None
             if isinstance(src, (S.Name, S.Index)) and src.name.upper() in seen_alias_names:
@@ -1857,8 +1861,9 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     program,
                     statements=alias_declarations + ([alias_parameters] if alias_parameters is not None else []),
                 )
-                sizes = symbols.declared_dim0_sizes(view, env)
-                dims = symbols.declared_all_dims(view, env)
+                view_ctx = context.of(view, profile, env)
+                sizes = view_ctx.declared_dim0_sizes
+                dims = view_ctx.declared_all_dims
                 _check_alias_dims(
                     stmt,
                     diags,
@@ -1876,7 +1881,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             diags.error(hashed.line, _junk_init_findings(hashed, profile)[0], hashed.file)
         if profile.known_first_word_pass1 and isinstance(stmt, (S.If, S.ElseIf)):
             if known is None:
-                known = expressions._known_names(program, profile)
+                known = context.of(program, profile).known_names
                 operands = pass1_operands(program, profile)
             _check_if_pass1(stmt, operands, profile, diags, program)
             for sub in ((stmt.inline or []) + (stmt.inline_else or [])) if isinstance(stmt, S.If) else []:
@@ -1913,7 +1918,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                         sub.target.name.upper() in seen_consts
                         or (
                             sub.target.name.upper() in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
-                            and sub.target.name.upper() not in symbols.declared_variable_names(program)
+                            and sub.target.name.upper() not in context.of(program, profile).declared_variable_names
                         )
                     )
                 ):
@@ -1933,7 +1938,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             # which then reports a later orphan `EndSelect` itself (oracle, round 39:
             # docs/checker.md#unresolved-statements-and-orphan-endselect-round-39)
             if all_known is None:
-                all_known = expressions._known_names(program, profile)
+                all_known = context.of(program, profile).known_names
             parts = [stmt.target, stmt.value] if isinstance(stmt, S.Assignment) else list(stmt.args)
             deferred = any(expressions._undefined_names(e, all_known) for e in parts if e is not None) or (
                 isinstance(stmt, S.Call) and not stmt.explicit and stmt.name.upper() not in all_known
@@ -2066,7 +2071,11 @@ def open_program_at_slowsequence(program: S.Program, profile: Profile) -> S.Prog
         return program
     if any(_keyword(s) == "BEGINPROG" for s in program.statements):
         return program
-    declared = {x.upper() for x in symbols.declared_names(program)} if profile.name in ("cr300", "cr350") else set()
+    declared = (
+        {x.upper() for x in context.of(program, profile).declared_names}
+        if profile.name in ("cr300", "cr350")
+        else set()
+    )
     if profile.name in ("cr300", "cr350") and not _slowsequence_resolves(st, declared, profile.functions):
         return program
     begin = S.Instruction(line=st.line, file=st.file, text="BeginProg", keyword="BEGINPROG")
@@ -2200,7 +2209,7 @@ def nested_table(program: S.Program, profile) -> S.Stmt | None:
             open_table = []
         elif kw == "DATATABLE" and nested is None:
             nested = stmt
-            known = expressions._known_names(program, profile)
+            known = context.of(program, profile).known_names
             unresolved |= any(_names_unresolved(known, st) for st in open_table)
         elif kw == "ENDTABLE":
             in_table = False
@@ -2261,7 +2270,8 @@ def check_pass2(
     """
     if env is None:
         env = consteval.Env(profile, dict(program.consts))
-    subs = symbols.declared_subs(program)
+    ctx = context.of(program, profile, env)
+    subs = ctx.declared_subs
     pass1_count = len(diags.items)
     sub_params = {st.name.upper(): st for st in program.statements if isinstance(st, S.SubDef)}
     link_ctx = _LinkContext(
@@ -2269,8 +2279,8 @@ def check_pass2(
         bool(subs),
         links if links is not None else CallLinks(),
     )
-    known = expressions._known_names(program, profile)
-    dims_ds = expressions.program_dims(program, profile, known)
+    known = ctx.known_names
+    dims_ds = ctx.dims_state
     # Before the first `BeginProg` in expansion order (an included file has its own line numbers).
     seen_beginprog = False
 
@@ -2299,17 +2309,16 @@ def check_pass2(
     # too (one diagnostic per excess `BeginProg`, not just the first).
     in_beginprog = False
     program_marker_seen = False  # a BeginProg, EndProg or SlowSequence statement has been seen
-    declared_here = (
-        {n.upper() for n in symbols.declared_names(program)} if profile.name in ("cr300", "cr350") else set()
-    )
+    declared_here = {n.upper() for n in ctx.declared_names} if profile.name in ("cr300", "cr350") else set()
     pass2_scans: list[bool] = []
     pipeline_setup = False
     misplaced = first_misplaced_sub(program) if not profile.single_pass else None
     misplaced_table = first_misplaced_data_table(program, profile) if not profile.single_pass else None
     nested = nested_table(program, profile) if not profile.single_pass else None
     # `IF or SELECT statement illegally has SCAN without NEXT SCAN.`: `check_block_closers`.
-    for position, source_stmt in enumerate(program.statements):
-        link_ctx.links.positions.setdefault((source_stmt.file, source_stmt.line), position)
+    if not link_ctx.links.positions:
+        for position, source_stmt in enumerate(program.statements):
+            link_ctx.links.positions.setdefault((source_stmt.file, source_stmt.line), position)
     for stmt in program.statements:
         link_ctx.links.cutoff = (stmt.file, stmt.line)  # the stop, if this statement returns
         seen_beginprog = seen_beginprog or _keyword(stmt) == "BEGINPROG"
@@ -2566,7 +2575,7 @@ def check_pass2(
                     if (
                         profile.fallback_echo_newline
                         and target
-                        and target.group(1).upper() not in expressions._known_names(program, profile)
+                        and target.group(1).upper() not in context.of(program, profile).known_names
                     ):
                         # CR300/CR350: `Y = (1` -> `Y is not defined.` first (oracle, 2026-10-01)
                         diags.error(
@@ -2601,7 +2610,10 @@ def check_pass2(
             else:
                 findings = (
                     _instruction_arg_findings(
-                        stmt.text, pass1_operands(program, profile), profile, symbols.declared_variable_names(program)
+                        stmt.text,
+                        pass1_operands(program, profile),
+                        profile,
+                        context.of(program, profile).declared_variable_names,
                     )
                     if profile.known_first_word_pass1
                     else []
@@ -2660,7 +2672,8 @@ def check_pass2(
                     if (
                         lead
                         and profile.known_first_word_pass1
-                        and lead.group(1).upper() not in (symbols.system_table_names(program) | _table_names(program))
+                        and lead.group(1).upper()
+                        not in (context.of(program, profile).system_table_names | _table_names(program))
                     ):
                         # `times.`, `X.Y.Z`: the name before the dot is no table (oracle, 2026-10-10)
                         diags.error(stmt.line, f"Could not find {lead.group(1)}.", stmt.file)
@@ -2918,7 +2931,7 @@ def pass1_operands(program: S.Program, profile) -> set[str]:
     parameters, `Const`s, `Alias` names, `For` variables and predefined symbols. Not `Sub`,
     `DataTable` or system-table names, which pass 1 leaves for pass 2 (`MySub bar`, `Tab bar`,
     `Status bar` are silent after a pass-1 error, `docs/checker.md` "Pass-1 fallback")."""
-    names = symbols.declared_variable_names(program) | set(program.consts)
+    names = set(context.of(program, profile).declared_variable_names) | set(program.consts)
     names |= {k.upper() for k in program.consts}
     for stmt in program.statements:
         if isinstance(stmt, S.ConstDecl):
@@ -3257,7 +3270,7 @@ def _assigns_user_const(stmt: S.Assignment, program: S.Program) -> bool:
     name = stmt.target.name.upper()
     if not any(isinstance(st, S.ConstDecl) and st.name.upper() == name for st in program.statements):
         return False
-    sub = _enclosing_sub(stmt, program)
+    sub = context.of(program).enclosing_sub(stmt)
     return sub is None or name not in {p.name.upper() for p in sub.params}
 
 
@@ -3412,19 +3425,6 @@ def _logical_led_string(text: str) -> bool:
     return re.match(r"\s*[A-Za-z_]\w*\s+AND\b", text, re.I) is not None and '"' in text
 
 
-def _enclosing_sub(stmt: S.Stmt, program: S.Program) -> S.SubDef | None:
-    """The `Sub`/`Function` whose body holds `stmt`, if any."""
-    current = None
-    for st in program.statements:
-        if st is stmt:
-            return current
-        if isinstance(st, S.SubDef):
-            current = st
-        elif isinstance(st, S.Instruction) and _ends_sub(st, st.keyword.upper()):
-            current = None
-    return None
-
-
 def _logical_assign_state(stmt: S.Unparsed, program: S.Program, profile) -> tuple[str, list[str], bool]:
     """(`"ok"`, `"undefined"` or `"rejected"`, the undefined names in source order, whether an
     undefined name is the base of an indexed target) for a `parser.LOGICAL_ASSIGN` statement:
@@ -3435,12 +3435,17 @@ def _logical_assign_state(stmt: S.Unparsed, program: S.Program, profile) -> tupl
     "Logical-prefixed assignment targets")."""
     if stmt.reason != parser.LOGICAL_ASSIGN:
         return "rejected", [], False
-    sub = _enclosing_sub(stmt, program)
+    ctx = context.of(program, profile)
+    sub = ctx.enclosing_sub(stmt)
     local = {p.name.upper() for p in sub.params} if sub is not None else set()
-    known = expressions._known_names(program, profile)
-    known.update(local)
+    base_known = ctx.known_names
+    known = (
+        expressions.KnownNames(base_known | local, base_known.tables, base_known.dotted_tables, base_known.out_of_scope)
+        if local
+        else base_known
+    )
     undefined = expressions._undefined_names(stmt.expr, known)
-    variables = symbols.declared_variable_names(program) | local
+    variables = set(ctx.declared_variable_names) | local
     if sub is not None and sub.keyword.upper() == "FUNCTION":
         variables.add(sub.name.upper())
     dims = {v.name.upper(): len(v.dims) for st in program.statements if isinstance(st, S.Declaration) for v in st.vars}
@@ -4352,7 +4357,7 @@ def _block_keyword_call(stmt: S.Stmt) -> bool:
     return any(i.name.upper() in _CALLED_BLOCK_KEYWORDS for e in exprs for i in expressions._index_nodes(e))
 
 
-def _unclosed_call_message(profile, text: str, at_eol: bool, operands: set[str]) -> str | None:
+def _unclosed_call_message(profile, text: str, at_eol: bool, operands: frozenset[str] | set[str]) -> str | None:
     """CR6/CR1000X: a statement left open inside a built-in function call, by that call's own
     argument count N (oracle, 2026-10-10, `unclosed_call_count.json`): `Round(X` (fewer than N,
     no trailing comma) is `Expression expects , : <stmt>.`; a trailing comma with at most N
@@ -4519,7 +4524,7 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
         ):
             continue  # already reported by `check_pass1`
         if known is None:
-            known = expressions._known_names(program, profile)
+            known = context.of(program, profile).known_names
         if not _leftover_first_name_known(nxt.text, known):
             continue
         if any(d.line == nxt.line and d.file == nxt.file for d in diags.errors):
@@ -4791,7 +4796,7 @@ def finalize_call_links(links: CallLinks, profile, diags: Diagnostics, pass1_err
 
 def _check_call_pass2(
     stmt: S.Call,
-    subs: set[str],
+    subs: frozenset[str] | set[str],
     profile,
     diags: Diagnostics,
     before_bp: bool,
@@ -6195,7 +6200,7 @@ def _const_undefined_names(text: str, program, profile) -> list[str]:
         toks = lexer.tokenize(text, 0)
     except lexer.LexError:
         return []
-    known = expressions._known_names(program, profile)
+    known = context.of(program, profile).known_names
     out = []
     for i, t in enumerate(toks):
         if t.kind != "IDENT" or t.upper in known:

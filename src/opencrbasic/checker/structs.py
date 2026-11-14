@@ -9,7 +9,7 @@ structure members, functions) is left silent, the safe side of AGENTS.md.
 
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
-from . import expressions, structure
+from . import context, expressions, structure
 
 _SCALAR_TYPES = frozenset({"FLOAT", "LONG", "BOOLEAN", "STRING", "DOUBLE"})
 _WRONG_TYPE = "Structured Variable assignment illegal, wrong type"
@@ -139,7 +139,7 @@ def check_members(program: S.Program, profile, diags: Diagnostics, flat: S.Progr
             for p in st.params:
                 if p.type and p.type.upper() in structs and p.name.upper() not in declared:
                     kinds.setdefault(p.name.upper(), f"STRUCT:{p.type.upper()}")
-    known = expressions._known_names(program, profile)
+    known = context.of(program, profile).known_names
     for st in flat.statements:
         if (
             not isinstance(st, S.Assignment)

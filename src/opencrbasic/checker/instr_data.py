@@ -25,7 +25,7 @@ from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
-from . import symbols
+from . import context, symbols
 
 # Instructions the real compiler's shared "must be inside a DataTable" validator checks --
 # `%s must be used inside a table declaration.` -- keyed by instruction-table keyword (upper case),
@@ -361,7 +361,7 @@ def _getrecord_short(stmt: S.Instruction, table: str, program: S.Program, profil
     if record is None:
         return None
     count = sum((math.prod(f.subdims[:-1]) if f.subdims else 1) if f.type == 11 else f.dimension for f in record.fields)
-    dims = symbols.declared_all_dims(program, consteval.Env(profile, dict(program.consts))).get(var)
+    dims = context.of(program, profile, consteval.Env(profile, dict(program.consts))).declared_all_dims.get(var)
     if dims is None:
         return None
     return count if math.prod(dims) < count else None
@@ -520,9 +520,9 @@ def check_fieldnames(program: S.Program, profile: Profile, diags: Diagnostics, e
     canot be NULL`, and a String variable both (its compile-time value is empty). Undefined names are
     left to the symbol checks. The output instruction whose builder reads it (`fieldnames_owners`)
     reports it, so the line is that instruction's; an unowned `FieldNames` is not checked."""
-    from .expressions import _known_names, _undefined_names, _variable_refs
+    from .expressions import _undefined_names, _variable_refs
 
-    tables = symbols.scope_tables(program, env, scalars=True)
+    tables = context.of(program, profile, env).scope_tables(scalars=True)
     owners = fieldnames_owners(program)
     named = {id(owner) for owner in owners.values() if owner is not None}
     table_names = {
@@ -562,7 +562,7 @@ def check_fieldnames(program: S.Program, profile: Profile, diags: Diagnostics, e
                 if not _variable_refs(arg, set(tables(st).types)):
                     continue
                 if known is None:
-                    known = _known_names(program, profile)
+                    known = context.of(program, profile, env).known_names
                 if _undefined_names(arg, known):
                     continue
             diags.error(line, "FieldNames cannot be a variable.", file)
@@ -869,8 +869,9 @@ def check_table_and_menu_placement(
     item_kind: str | None = None  # "int" / "float" / "string": what its `MenuPick` values must be
     first_is_const = False
     sequences: dict[str, int] = {}  # open DialSequence / ModemHangup blocks
-    variables = symbols.declared_variable_names(program)
-    types = symbols.declared_variable_types(program)
+    ctx = context.of(program)
+    variables = ctx.declared_variable_names
+    types = ctx.variable_types()
     menu_names = None
     if env is None:
         env = consteval.Env(profile, dict(program.consts))
@@ -945,10 +946,7 @@ def check_table_and_menu_placement(
                 )
                 missing_name = False
                 if kw == "MENUITEM" and isinstance(target, S.Name) and not constant_name and not item_const:
-                    from .expressions import _known_names
-
-                    if menu_names is None:
-                        menu_names = _known_names(program, profile)
+                    menu_names = context.of(program, profile).known_names
                     missing_name = target.name.upper() not in menu_names
                 item_unpickable = (
                     kw == "MENUITEM"
@@ -1157,11 +1155,9 @@ def _pick_value_bad(token: str, kind: str, env, program, profile, variables) -> 
         try:
             value = consteval._lookup(inner, env)
         except consteval.NotConstant:
-            from .expressions import _known_names
-
             if (
                 inner.upper() in variables
-                or inner.upper() not in _known_names(program, profile)
+                or inner.upper() not in context.of(program, profile).known_names
                 or (kind == "int" and inner.upper() == "NAN")
             ):
                 return inner
@@ -1425,7 +1421,7 @@ def check_constant_destinations(program: S.Program, profile: Profile, diags: Dia
     if profile.name not in ("cr6", "cr1000x"):
         return
     env = _destination_env(env)
-    variables = symbols.declared_variable_names(program)
+    variables = set(context.of(program).declared_variable_names)
     in_const_table = False  # its constants are settable at run time (`MenuRecompile("x",C)`)
     for st in program.statements:
         if isinstance(st, S.Instruction) and st.keyword.upper() in ("CONSTTABLE", "ENDCONSTTABLE"):
@@ -1451,7 +1447,7 @@ def drop_unreached_destinations(program: S.Program, profile: Profile, diags: Dia
     if profile.name not in ("cr6", "cr1000x"):
         return
     env = _destination_env(env)
-    variables = symbols.declared_variable_names(program)
+    variables = set(context.of(program).declared_variable_names)
     drop = []
     for st in _with_inline(program.statements):
         record = profile.instructions.get(st.keyword.upper()) if isinstance(st, S.Instruction) else None
@@ -1476,12 +1472,11 @@ def drop_unreached_destinations(program: S.Program, profile: Profile, diags: Dia
 
 
 def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env, destinations: bool) -> bool:
-    from . import expressions
-
+    ctx = context.of(program, profile, env)
     reported = False
-    tables = symbols.scope_tables(program, env)
+    tables = ctx.scope_tables()
     aliases = _alias_sources(program, tables, env)
-    known = expressions._known_names(program, profile)
+    known = ctx.known_names
     source_vars = None
     in_table = False
     sources_ok = True  # CR6/CR1000X: an undefined table source ends the table checks (round 38)
@@ -1879,7 +1874,7 @@ def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnosti
     bad = _ILLEGAL_DATA_TYPES.get(profile.name)
     if not bad:
         return
-    tables = symbols.scope_tables(program, env, scalars=True)
+    tables = context.of(program, env=env).scope_tables(scalars=True)
     nsec = 23 if profile.single_pass else 14
     in_table = False  # outside a table, `must be used inside a table declaration` wins
     for stmt in program.statements:

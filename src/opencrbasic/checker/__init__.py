@@ -100,6 +100,7 @@ from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
 from . import (
+    context,
     cr3xx,
     ess,
     expressions,
@@ -167,26 +168,6 @@ def _placement_rejected(program: S.Program, profile, diags: Diagnostics) -> froz
         ):
             found.add(id(stmt))
     return frozenset(found)
-
-
-def _with_inline(program: S.Program) -> S.Program:
-    """A copy of `program` whose statement list also holds each one-line `If`'s statements, right
-    after the `If`."""
-    statements: list[S.Stmt] = []
-    flat_at: list[int] = []  # raw statement index -> index in the flattened list
-    for stmt in program.statements:
-        flat_at.append(len(statements))
-        statements.append(stmt)
-        if isinstance(stmt, S.If):
-            statements.extend((stmt.inline or []) + (stmt.inline_else or []))
-    flat_at.append(len(statements))
-    # (`include_error_at` indexes the raw list: re-index it, or each earlier one-line `If` body
-    # would shift the CR300/CR350 cascade start too early)
-    return dataclasses.replace(
-        program,
-        statements=statements,
-        include_error_at=[flat_at[min(i, len(flat_at) - 1)] for i in program.include_error_at],
-    )
 
 
 def _run_pass_capture(fn, *args):
@@ -266,7 +247,15 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             del diags.items[program.hash_cut :]  # parser findings of later lines
     program = structure.open_program_at_slowsequence(program, profile)
     env = consteval.Env(profile, dict(program.consts))
-    expressions.set_arity_context(program, profile)
+    ctx = context.Context(program, profile, env)
+    with context.activate(ctx):
+        _check_with_context(program, profile, diags, result, env, ctx)
+
+
+def _check_with_context(
+    program: S.Program, profile: Profile, diags: Diagnostics, result, env: consteval.Env, ctx: context.Context
+) -> None:
+    expressions.set_arity_context(program, profile, ctx.declared_variable_names)
 
     _run_pass(structure.check_pass1, program, profile, diags, env)
     # Also pass 1 (unconditional -- oracle-confirmed, `docs/loggers.md`): a `Const`'s own value
@@ -276,7 +265,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(expressions.check_consts, program, profile, diags)
     _run_pass(instr_data.check_constant_destinations, program, profile, diags, env)
     # CR6/CR1000X: constant-family instruction arguments resolve in pass 1 too.
-    _run_pass(expressions.check_const_family_args, _with_inline(program), profile, diags)
+    _run_pass(expressions.check_const_family_args, ctx.flat, profile, diags)
     # CR6/CR1000X: `Range` code and `fN1` value checks, same pass (`docs/instructions.md`).
     _run_pass(instr_measure.check_pass1_values, program, profile, diags, env)
     # `TimeIntoInterval`/`IfTime` constant arguments, a parser check (`checker/intervals.py`).
@@ -293,19 +282,19 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # (oracle-confirmed, `docs/loggers.md`).
     _run_pass(cr3xx.check, program, profile, diags)
     _run_pass(cr3xx.check_dropped_tail, program, profile, diags)
-    _run_pass(instr_rules.check, _with_inline(program), profile, diags)  # (a one-line `If` body too)
+    _run_pass(instr_rules.check, ctx.flat, profile, diags)  # (a one-line `If` body too)
     _run_pass(instr_rules.check_return_placement, program, profile, diags)
     # The leftover line a required-parameter shortfall's own wrapped argument list spills onto
     # (`checker/structure.py`'s `check_missing_param_followup` docstring for the oracle evidence):
     # also ungated, since it fires precisely because the call just above already found something.
     _run_pass(structure.check_missing_param_followup, program, profile, diags)
-    _run_pass(instr_rules.check_too_many, _with_inline(program), profile, diags)
+    _run_pass(instr_rules.check_too_many, ctx.flat, profile, diags)
     _run_pass(instr_rules.check_essinitialize_too_many, program, profile, diags)
     _run_pass(instr_rules.check_snmpvariable_too_many, program, profile, diags)
     _run_pass(instr_rules.check_snmp_oid, program, profile, diags, env)
     _run_pass(instr_rules.check_modemcallback_baud, program, profile, diags)
     _run_pass(instr_rules.check_serialin_destination, program, profile, diags)
-    _run_pass(instr_rules.check_serialin_comport, _with_inline(program), profile, diags, env)
+    _run_pass(instr_rules.check_serialin_comport, ctx.flat, profile, diags, env)
     _run_pass(instr_rules.check_emailrecv_destination, program, profile, diags)
     _run_pass(instr_rules.check_tcpopen_connections, program, profile, diags, env)
     _run_pass(instr_rules.check_tcpopen_handle_type, program, profile, diags)
@@ -314,7 +303,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # unconditional -- oracle-confirmed the same way as the two calls just above.
     _run_pass(instr_rules.check_precision_variable, program, profile, diags)
     _run_pass(instr_rules.check_vibrating_wire_diagnostics, program, profile, diags)
-    _run_pass(instr_rules.check_iif_types, _with_inline(program), profile, diags)
+    _run_pass(instr_rules.check_iif_types, ctx.flat, profile, diags)
     # Built-in function call arity (`Expression expects , : %s.` / `No Matching, or out of place )
     # in expression: %s.`, `checker/expressions.py`'s `check_function_arity`, own module docstring
     # for the oracle evidence and the safe allow-lists). Also pass 1, unconditional -- oracle-
@@ -322,7 +311,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(var_types.check_ctype, program, profile, diags)
     _run_pass(var_types.check_pointer_deref, program, profile, diags)
     held_member: list = []  # compile-stage `Member` index errors, see `pass1_errors` below
-    _run_pass(expressions.check_function_arity, _with_inline(program), profile, diags, held_member)
+    _run_pass(expressions.check_function_arity, ctx.flat, profile, diags, held_member)
     # Ungated on CR6/CR1000X (unlike step 2 below): reachability/background-calibration/fnotch all
     # oracle-confirmed to fire even when the file has other errors elsewhere (`checker/warnings.py`,
     # `docs/instructions.md`). **Not** shared by CR300/CR350 (`profile.early_warnings_gated`,
@@ -330,7 +319,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # clean.
     if not profile.single_pass and not diags.errors:
         # CR6/CR1000X: an unknown structure member is a pass-1 error (`checker/structs.py`).
-        _run_pass(structs.check_members, program, profile, diags, _with_inline(program))
+        _run_pass(structs.check_members, program, profile, diags, ctx.flat)
     early = Diagnostics()  # CR6/CR1000X `Scan`/`DataInterval` value errors, see below
     if not profile.early_warnings_gated:
         early_start = len(diags.items)
@@ -356,7 +345,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     ranges = Diagnostics()  # `measure.json` `const_ranges` findings, see below
     leading = Diagnostics()  # pass-2 findings that print ahead of their line's other findings
     claims = Diagnostics()  # terminal-ownership conflicts, see below
-    links = structure.CallLinks()
+    links = structure.CallLinks(positions=ctx.positions)
 
     def before_cutoff(diagnostic) -> bool:  # tier B (below) redefines it once a stop is known
         return True
@@ -412,8 +401,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # where (if anywhere) tier B should be considered cut off, matching the real compiler's own
         # "stop entirely at the first placement error" behaviour.
         pass2_start = len(diags.items)
-        _run_pass(instr_rules.check_spi_open_order, _with_inline(program), profile, leading)
-        _run_pass(terminals.check_i2c_open_order, _with_inline(program), profile, ranges, env)
+        _run_pass(instr_rules.check_spi_open_order, ctx.flat, profile, leading)
+        _run_pass(terminals.check_i2c_open_order, ctx.flat, profile, ranges, env)
         # Block-closer messages come before a same-line placement error (`EndIf illegally
         # occurs before BeginProg.` follows `END IF without IF...`).
         # CR300/CR350: collected aside in `leading` (printed first on their line, but they do not
@@ -421,11 +410,11 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(structure.check_block_closers, program, profile, leading if profile.single_pass else diags)
         # Tier B also checks the statements of a one-line `If` (oracle: `If X Then Y = 1` ->
         # `Invalid, or out of place expression: Y = 1.`).
-        flat = _with_inline(program)
+        flat = ctx.flat
         n_generic = len(diags.items)
         stop_line = _run_pass_capture(structure.check_pass2, flat, profile, diags, env, links)
         generic_errors += diags.items[n_generic:]
-        # Every stop is one expanded-source position (`links.positions`), the earliest wins; an
+        # Every stop is one expanded-source position (`ctx.positions`), the earliest wins; an
         # included file has its own line numbers, so a physical line cannot order them.
         # Like the `Scan` value errors, a nested `Scan` neither gates tier C nor survives past a
         # placement stop (oracle, CR6/CR1000X, 2026-10-03: a later bad channel is still reported).
@@ -455,17 +444,15 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # An orphan `EndTable`/empty table ends pass 2 too (reported in tier C, `check_table_
         # structure`), cutting a later placement error.
         if not profile.single_pass:
-            early_table_stop = _run_pass_capture(
-                instr_data.check_table_structure, _with_inline(program), profile, Diagnostics()
-            )
+            early_table_stop = _run_pass_capture(instr_data.check_table_structure, ctx.flat, profile, Diagnostics())
             if early_table_stop is not None:
                 stops.append(early_table_stop)
-        stop_at = min((links.positions[k] for k in stops if k in links.positions), default=None)
+        stop_at = min((ctx.positions[k] for k in stops if k in ctx.positions), default=None)
 
         def before_cutoff(diagnostic) -> bool:
             if stop_at is None:
                 return True
-            return links.positions.get((diagnostic.file, diagnostic.line), stop_at) <= stop_at
+            return ctx.positions.get((diagnostic.file, diagnostic.line), stop_at) <= stop_at
 
         # The reachability warning is printed by the walk that stops at these (oracle, 2026-10-12)
         kept = [
@@ -628,8 +615,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     ):
         # CR300/CR350: runs unless an earlier finding other than an unknown `CallTable` table
         # exists (`docs/instructions.md`, SetSetting and SetStatus field names).
-        _run_pass(instr_rules.check_settings_fields, _with_inline(program), profile, diags, fields, env)
-        _run_pass(instr_rules.check_option_values, _with_inline(program), profile, bounds, env)
+        _run_pass(instr_rules.check_settings_fields, ctx.flat, profile, diags, fields, env)
+        _run_pass(instr_rules.check_option_values, ctx.flat, profile, bounds, env)
     if not diags.errors:
         # After passes 1 and 2 are clean: CR300/CR350 table `Reps`/bounds, then unclosed
         # `Scan`/`For`/`Do`/`If` at end of program.
@@ -647,8 +634,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             _run_pass(instr_data.check_eventcount_tables, program, profile, bounds)
         _run_pass(instr_data.check_table_reps_late, program, profile, diags, env)
         if profile.single_pass:
-            _run_pass(instr_rules.check_dnp_update, _with_inline(program), profile, diags, env)
-            _run_pass(instr_rules.check_portbridge_array, _with_inline(program), profile, diags, env)
+            _run_pass(instr_rules.check_dnp_update, ctx.flat, profile, diags, env)
+            _run_pass(instr_rules.check_portbridge_array, ctx.flat, profile, diags, env)
     if (
         not diags.errors
         or (
@@ -740,11 +727,11 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(var_types.check, program, profile, diags, env)
 
         if profile.single_pass:
-            _run_pass(instr_measure.check_const_ranges, _with_inline(program).statements, profile, diags, env)
+            _run_pass(instr_measure.check_const_ranges, ctx.flat.statements, profile, diags, env)
         _run_pass(instructions.check, program, profile, diags, env)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.
-        table_stop = _run_pass_capture(instr_data.check_table_structure, _with_inline(program), profile, diags)
+        table_stop = _run_pass_capture(instr_data.check_table_structure, ctx.flat, profile, diags)
         _run_pass(instr_data.check_fieldnames, program, profile, diags, env)
         _run_pass(instr_data.check_fieldclassify, program, profile, diags, env)
         apply_diags = Diagnostics()
@@ -759,7 +746,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
                 len(diags.items),
             )
             diags.items.insert(at, extra)
-        _run_pass(instr_rules.check_samplefieldcal, _with_inline(program), profile, diags)
+        _run_pass(instr_rules.check_samplefieldcal, ctx.flat, profile, diags)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): `Range`/`SW12`/
         # `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value-set and value-range checks.
         _run_pass(instr_measure.check, program, profile, diags, env)
@@ -768,7 +755,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         if oom is not None:
             # A failed builder allocation ends the compile there (CSAT3, round 31): nothing from a
             # later statement is printed.
-            at = links.positions.get((oom.file, oom.line), oom.line)
+            at = ctx.positions.get((oom.file, oom.line), oom.line)
             tail = diags.items[tier_c_start:]
             oom_index = next(i for i, d in enumerate(tail) if d is oom)
             diags.items[tier_c_start:] = [
@@ -776,19 +763,19 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
                 for i, d in enumerate(tail)
                 if d.severity != "error"
                 or not d.line
-                or links.positions.get((d.file, d.line), d.line) < at
+                or ctx.positions.get((d.file, d.line), d.line) < at
                 or (d.line == oom.line and i <= oom_index)
             ]
-            ranges.items = [d for d in ranges.items if links.positions.get((d.file, d.line), d.line) < at]
+            ranges.items = [d for d in ranges.items if ctx.positions.get((d.file, d.line), d.line) < at]
             bounds.items = [
                 d
                 for d in bounds.items  # (a later index too, round 31 review)
-                if links.positions.get((d.file, d.line), d.line) < at
+                if ctx.positions.get((d.file, d.line), d.line) < at
             ]
             diags.items[:tier_c_start] = [  # (and a later early warning: `Scan never reached`)
                 d
                 for d in diags.items[:tier_c_start]
-                if d.severity != "warning" or not d.line or links.positions.get((d.file, d.line), d.line) < at
+                if d.severity != "warning" or not d.line or ctx.positions.get((d.file, d.line), d.line) < at
             ]
     if generic_errors:
         diags.items[tier_c_start:] = [
@@ -796,32 +783,32 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         ]
     if profile.single_pass and unknown_table_diags:
         # (CR300/CR350: the unknown table ends the walk there; tier C stops with it)
-        end_pos = min(links.positions.get((d.file, d.line), d.line) for d in unknown_table_diags)
+        end_pos = min(ctx.positions.get((d.file, d.line), d.line) for d in unknown_table_diags)
         diags.items[tier_c_start:] = [
             d
             for d in diags.items[tier_c_start:]
-            if d.severity != "error" or not d.line or links.positions.get((d.file, d.line), d.line) <= end_pos
+            if d.severity != "error" or not d.line or ctx.positions.get((d.file, d.line), d.line) <= end_pos
         ]
     if generic_errors and len(diags.items) > tier_c_start:
         # Tier-C findings print in source order among the generic pass-2 ones (oracle, CR6/
         # CR1000X, 2026-10-04: a bad channel on an earlier line precedes a later `foo bar`).
         tail = diags.items[pass2_start:]
         slots = [i for i, d in enumerate(tail) if d.severity == "error" and d.line]
-        ordered = sorted((tail[i] for i in slots), key=lambda d: links.positions.get((d.file, d.line), d.line))
+        ordered = sorted((tail[i] for i in slots), key=lambda d: ctx.positions.get((d.file, d.line), d.line))
         for i, d in zip(slots, ordered):
             tail[i] = d
         diags.items[pass2_start:] = tail
-    if table_stop is not None and table_stop in links.positions:
-        late_pos = links.positions[table_stop]
+    if table_stop is not None and table_stop in ctx.positions:
+        late_pos = ctx.positions[table_stop]
         diags.items[tier_c_start:] = [
             d
             for d in diags.items[tier_c_start:]
-            if d.severity != "error" or links.positions.get((d.file, d.line), late_pos) <= late_pos
+            if d.severity != "error" or ctx.positions.get((d.file, d.line), late_pos) <= late_pos
         ]
     if profile.single_pass and not diags.errors:
         # CR300/CR350: structure member/assignment errors; they do not hide the early warnings
         # (oracle: `Invalid fnotch value` still printed) and are sorted in by line.
-        flat_program = _with_inline(program)
+        flat_program = ctx.flat
         _run_pass(structs.check_members, program, profile, diags, flat_program)
         _run_pass(structs.check_struct_assignment, program, profile, diags, flat_program)
     if not diags.errors and not fields.items and not pipe.items and not early.items:
@@ -866,20 +853,20 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
 
     if early.items:
         early.items = [d for d in early.items if before_cutoff(d)]
-        if table_stop is not None and table_stop in links.positions:
+        if table_stop is not None and table_stop in ctx.positions:
             early.items = [
-                d for d in early.items if links.positions.get((d.file, d.line), 0) <= links.positions[table_stop]
+                d for d in early.items if ctx.positions.get((d.file, d.line), 0) <= ctx.positions[table_stop]
             ]
     if bounds.items:
         _place_index_bounds(bounds, diags, flat, profile.single_pass)
     diags.items += bounds.items + fields.items + ranges.items + early.items
     for d in reversed(soft):  # before the errors of its own and later lines (oracle, round 58)
-        here = (links.positions.get((d.file, d.line), d.line), d.line)
+        here = (ctx.positions.get((d.file, d.line), d.line), d.line)
         at = next(
             (
                 i
                 for i, o in enumerate(diags.items)
-                if o.severity == "error" and (links.positions.get((o.file, o.line), o.line), o.line) >= here
+                if o.severity == "error" and (ctx.positions.get((o.file, o.line), o.line), o.line) >= here
             ),
             len(diags.items),
         )
@@ -888,7 +875,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # Terminal conflicts hide nothing and print first on their line. An SDI-12 one is reported only
     # when no error, another conflict included, precedes it (oracle, CR6/CR1000X, round 37).
     def pos(d):
-        return links.positions.get((d.file, d.line), d.line)
+        return ctx.positions.get((d.file, d.line), d.line)
 
     others = [pos(d) for d in diags.items + leading.items + claims.items if d.severity == "error" and d.line]
     leading.items += [
@@ -926,7 +913,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     if profile.single_pass:
         _run_pass(instr_data.finalize_illegal_table_names, program, profile, diags)
     _run_pass(cr3xx.check_tcpopen_handle_early, program, profile, diags)
-    _run_pass(cr3xx.check_too_many_cascade, _with_inline(program), profile, diags)
+    _run_pass(cr3xx.check_too_many_cascade, ctx.flat, profile, diags)
     _run_pass(cr3xx.drop_compound_target_repeat, program, profile, diags)
     _run_pass(cr3xx.order_block_keyword_calls, program, profile, diags)
     _run_pass(cr3xx.fix_then_operand, program, profile, diags)
@@ -935,9 +922,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(cr3xx.order_unterminated_string, program, profile, diags)
     _run_pass(cr3xx.check_tcpopen_handle, program, profile, diags)
     _run_pass(cr3xx.add_string_illegal, program, profile, diags)
-    _run_pass(warnings.add_truncate_warnings, _with_inline(program), profile, diags)
+    _run_pass(warnings.add_truncate_warnings, ctx.flat, profile, diags)
     _run_pass(cr3xx.semicolon_headers, program, profile, diags)
-    _run_pass(intervals.fold_timeout_expressions, _with_inline(program), profile, diags, env, pass1_items)
+    _run_pass(intervals.fold_timeout_expressions, ctx.flat, profile, diags, env, pass1_items)
     _run_pass(intervals.order_timeout_negative, diags, profile, program)
     _run_pass(cr3xx.drop_after_alias_collision, program, profile, diags)
 

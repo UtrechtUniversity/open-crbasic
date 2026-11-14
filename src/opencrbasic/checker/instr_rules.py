@@ -17,8 +17,8 @@ from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from ..tables import _unit_value
-from . import longconv, symbols
-from .expressions import _arg_text, _known_names, _type_code_kinds, _undefined_names, _variable_refs
+from . import context, longconv
+from .expressions import _arg_text, _type_code_kinds, _undefined_names, _variable_refs
 
 # `type_codes.json` codes exempt from the "missing required parameter" error: when the
 # statement's own physical line runs out of tokens right at one of these, `FUN_004baf00` silently
@@ -106,7 +106,7 @@ _DECLARATION_WORDS = frozenset({"PUBLIC", "DIM", "STATIC", "CONST", "ALIAS", "UN
 def unterminated_string_shape(
     stmt: S.Stmt,
     profile,
-    subs: set[str],
+    subs: frozenset[str] | set[str],
     operands: set[str] | None = None,
     functions: frozenset[str] | set[str] = frozenset(),
 ) -> str | None:
@@ -210,9 +210,9 @@ def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnos
     `Foo("abc` -> `Invalid or malformed function argument.`; `S = "abc` -> `String without end
     quote` then the fallback echoing the raw line; `If X Then S = "abc` -> `String without end
     quote` then the fallback for `S = "abc:endif` (the compiler's block-form rewrite)."""
-    from . import structure, symbols
+    from . import structure
 
-    subs = symbols.declared_subs(program)
+    subs = context.of(program).declared_subs
     operands = structure.pass1_operands(program, profile)
     functions = user_functions(program)
     for stmt in program.statements:
@@ -356,7 +356,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
     in the file" (oracle evidence there), which covers this case for free.
     """
     outside = {k for k, in_sub in misplaced_returns(program).items() if not in_sub}
-    known = _known_names(program, profile)
+    known = context.of(program, profile).known_names
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or id(stmt) in outside:
             continue
@@ -435,8 +435,8 @@ def _report_constant_destinations(
     `tests/fixtures/short_constant_dest.json`), as `check_precision_variable` reports it for a
     complete statement. Other destinations: `instr_data.check_constant_destinations`."""
     if stmt.keyword.upper() in _PRECISION_VARIABLE_POSITIONS:
-        known = _known_names(program, profile)
-        variables = symbols.declared_variable_names(program)
+        known = context.of(program, profile).known_names
+        variables = context.of(program, profile).declared_variable_names
         if (
             stmt.args
             and stmt.args[0] is not None
@@ -1405,7 +1405,7 @@ _PRECISION_VARIABLE_POSITIONS: dict[str, frozenset[int]] = {
 }
 
 
-def _has_call(expr: S.Expr | None, variable_names: set[str]) -> bool:
+def _has_call(expr: S.Expr | None, variable_names: frozenset[str] | set[str]) -> bool:
     """A function call (an `Index` that is not an array element) or a `Status.X`/`Public.X` member
     reference anywhere in `expr`."""
     if isinstance(expr, S.Member):
@@ -1484,7 +1484,7 @@ def check_iif_types(program: S.Program, profile, diags: Diagnostics) -> None:
     if "IIF" not in profile.functions:
         return
     typer = _Typer(program)
-    known = _known_names(program, profile)
+    known = context.of(program, profile).known_names
     str_consts = _string_consts(program)
     busy = {(d.line, d.file) for d in diags.items if d.severity == "error"}
     for stmt in program.statements:
@@ -1524,7 +1524,7 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
     from . import instr_data  # (a one-line If's statement too, round 52)
 
     known: set[str] | None = None
-    variable_names: set[str] | None = None
+    variable_names: frozenset[str] | set[str] | None = None
     str_consts: set[str] | None = None
     for stmt in instr_data._with_inline(program.statements):
         if not isinstance(stmt, S.Instruction):
@@ -1534,8 +1534,8 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
         if not positions or kw not in profile.instructions:
             continue
         if known is None or variable_names is None:
-            known = _known_names(program, profile)
-            variable_names = symbols.declared_variable_names(program)
+            known = context.of(program, profile).known_names
+            variable_names = context.of(program, profile).declared_variable_names
         record = profile.instructions[kw]
         if given_count(stmt, profile) < _required_count(_real_params(record["params"])) and profile.name in (
             "cr6",
@@ -1570,7 +1570,7 @@ def check_vibrating_wire_diagnostics(program: S.Program, profile, diags: Diagnos
         for v in st.vars
         if v.type == "STRING"
     }
-    variables = symbols.declared_variable_names(program)  # (an undefined name: pass 2 reports it)
+    variables = context.of(program).declared_variable_names  # (an undefined name: pass 2 reports it)
     for st in instr_data._with_inline(program.statements):
         if isinstance(st, S.Instruction) and st.keyword.upper() == "VIBRATINGWIRE" and len(st.args) > 7:
             arg = st.args[7]
@@ -1680,15 +1680,16 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics, env: c
     toward zero, a string or anything outside Long range gives `-2147483648`."""
     if not _RUNNING_AVG & profile.instructions.keys():
         return
-    scopes = symbols.statement_scopes(program, profile)  # its own routine's parameters, also named like a later `Const`
-    from .expressions import _alias_names, _has_dotted_field, _known_names, _undefined_names
+    ctx = context.of(program, profile)
+    scopes = ctx.statement_scopes  # its own routine's parameters, also named like a later `Const`
+    from .expressions import _alias_names, _has_dotted_field, _undefined_names
 
     known = None
 
     def variable_type(arg: S.Expr | None, view: S.Program) -> str | None:
         if not isinstance(arg, (S.Name, S.Index)):
             return None
-        return symbols.declared_variable_types(view).get(arg.name.upper())
+        return context.of(view, profile, env).variable_types().get(arg.name.upper())
 
     from . import longconv
 
@@ -1712,7 +1713,7 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics, env: c
             continue
         kw = stmt.keyword.upper()
         args = list(stmt.args) + [None] * (8 - len(stmt.args))
-        view = symbols.scoped_view(program, stmt, publics=True)  # the storage visible here (round 71)
+        view = ctx.scoped_view(stmt, publics=True)  # the storage visible here (round 71)
         if (
             kw in ("TOTALRUN", "STDDEVRUN")
             and args[4] is not None
@@ -1731,7 +1732,7 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics, env: c
         ):
             # a variable, alias or field anywhere in it: its own routine's parameters (also named
             # like a later `Const`) and locals, but no other routine's (`N+0`, round 71)
-            visible = symbols.declared_variable_names(view) | _alias_names(view) | scopes[id(stmt)][0]
+            visible = context.of(view, profile, env).declared_variable_names | _alias_names(view) | scopes[id(stmt)][0]
             variable = bool(_variable_refs(args[at], visible)) or _has_dotted_field(args[at])
             # only literals and numeric `Const`s under operators: a function call or a String
             # `Const` is the instances error too; `True` is -1 (round 71)
@@ -1743,7 +1744,7 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics, env: c
             instances = -int(value) if isinstance(value, bool) else number(args[at])
             if constant and instances is None:
                 if known is None:
-                    known = _known_names(program, profile)
+                    known = context.of(program, profile).known_names
                 constant = not _undefined_names(args[at], known)
             if constant and instances is not None and instances < 0:
                 diags.error(stmt.line, "Out of memory.", stmt.file)  # (ends the compile, not modelled)
@@ -1821,7 +1822,7 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics, env: co
             if v is not None and v < 0:
                 diags.error(stmt.line, f"Invalid option {v}", stmt.file)
             elif isinstance(dest, (S.Name, S.Index)) and (empty_index or (v is not None and v >= 10)):
-                scope = symbols.scoped_view(program, stmt)
+                scope = context.of(program).scoped_view(stmt)
                 typer = var_types._Typer(program, scope, profile=profile)
                 if typer.types.get(dest.name.upper()) in typer.structure_types:
                     if empty_index:
@@ -1938,8 +1939,9 @@ def _cdm_delay_overlong(args: list, env: consteval.Env, profile, names, literals
 def _matrix_shapes(program: S.Program, env: consteval.Env) -> dict[str, tuple[int, int]]:
     """Name -> (rows, columns) of every variable declared exactly once as a Float of at most two
     constant dimensions (a 1-D array is `(n, 1)`, a scalar `(1, 1)`)."""
-    dims = symbols.declared_all_dims(program, env)
-    types = symbols.declared_variable_types(program)
+    ctx = context.of(program, env=env)
+    dims = ctx.declared_all_dims
+    types = ctx.variable_types()
     seen: set[str] = set()
     repeated: set[str] = set()
     for st in program.statements:
@@ -2164,7 +2166,7 @@ _SERIALIN_DEST_MESSAGE = "A string variable destination is required"
 
 
 def _serialin_types(program: S.Program, profile) -> dict[str, str]:
-    types = symbols.declared_variable_types(program)
+    types = context.of(program).variable_types()
     for stmt in program.statements:
         if isinstance(stmt, S.ConstDecl):
             types[stmt.name.upper()] = "CONST"
@@ -2373,9 +2375,9 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
     if "EMAILRECV" not in profile.functions:
         return
     types = _serialin_types(program, profile)
-    from .expressions import _index_nodes, _known_names, _undefined_names
+    from .expressions import _index_nodes, _undefined_names
 
-    known = _known_names(program, profile)
+    known = context.of(program, profile).known_names
 
     def bad(a):
         # CR300/CR350 name the undefined variable first and still report the destination
@@ -2431,7 +2433,7 @@ def check_tcpopen_handle_type(program: S.Program, profile, diags: Diagnostics) -
         return
     from .expressions import _index_nodes, _stmt_exprs
 
-    types = symbols.declared_variable_types(program)
+    types = context.of(program).variable_types()
     for stmt in program.statements:
         if isinstance(stmt, S.Call) and stmt.name.upper() == "TCPOPEN":
             calls = [stmt.args]
@@ -2467,8 +2469,8 @@ def check_tcpopen_connections(program: S.Program, profile, diags: Diagnostics, e
     only the second line (oracle, all four loggers, 2026-10-12; review R13C-6)."""
     from .expressions import _index_nodes, _stmt_exprs
 
-    types = symbols.declared_variable_types(program)
-    dims = symbols.declared_all_dims(program, env)
+    types = context.of(program).variable_types()
+    dims = context.of(program, env=env).declared_all_dims
     declared: dict[str, int] = {}
     for st in program.statements:
         if isinstance(st, S.Declaration):
@@ -2576,7 +2578,7 @@ def check_sdi12_nan_fill(program: S.Program, profile, diags: Diagnostics, env) -
         return
     from .instr_measure import _flat_offset, _index_value, _measurement_aliases
 
-    tables = symbols.scope_tables(program, env, scalars=True)
+    tables = context.of(program, env=env).scope_tables(scalars=True)
     aliases = _measurement_aliases(program, tables, env)
     for st in program.statements:
         if not (
@@ -2949,8 +2951,8 @@ def check_dnp_update(program: S.Program, profile, diags: Diagnostics, env=None) 
     defined = False
     failed_bases: list[int] = []  # static groups an event group was used before
     assigned: set[int] = set()
-    types = symbols.declared_variable_types(program)
-    tables = symbols.scope_tables(program, env) if env is not None else None
+    types = context.of(program).variable_types()
+    tables = context.of(program, env=env).scope_tables() if env is not None else None
     conv = (env, profile, longconv.float_names(program.statements), longconv.literal_names(program.statements))
     info: dict[int, tuple] = {}
     typer = None
@@ -2969,7 +2971,7 @@ def check_dnp_update(program: S.Program, profile, diags: Diagnostics, env=None) 
                     from . import var_types
 
                     typer = var_types._Typer(program, profile=profile)
-                    known = _known_names(program, profile)
+                    known = context.of(program, profile).known_names
                 flag = st.args[5]
                 if known is not None and not _undefined_names(flag, known):
                     long_flag = _dnp_long_flag(flag, typer, env, profile, routine_names)
@@ -3009,8 +3011,8 @@ def check_portbridge_array(program: S.Program, profile, diags: Diagnostics, env)
     (2,3) and whose type is Long, else `Bridge parameter must be an Array(2,3) of type long.`;
     docs/instructions.md. A literal or a plainly declared variable of another shape/type is flagged;
     anything not resolvable (undeclared, `B()`, `B(1,1)`, `Const`, `Alias`) is left alone."""
-    types = symbols.declared_variable_types(program)
-    tables = symbols.scope_tables(program, env)
+    types = context.of(program).variable_types()
+    tables = context.of(program, env=env).scope_tables()
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "PORTBRIDGE" or len(stmt.args) != 2:
             continue
@@ -3150,8 +3152,8 @@ def check_fieldcal_variable_args(program: S.Program, profile, diags: Diagnostics
     expression, a String variable or an element with a string subscript. The real compiler also
     prints `Table <name> declared with no output fields.` at the `EndTable` of a table whose only
     field is `SampleFieldCal` when a `FieldCal` argument is bad; not modelled here."""
-    types = symbols.declared_variable_types(program)
-    dims = symbols.declared_all_dims(program, env) if env is not None else None
+    types = context.of(program).variable_types()
+    dims = context.of(program, env=env).declared_all_dims if env is not None else None
     conv = None
     if env is not None:
         conv = (env, profile, longconv.float_names(program.statements), longconv.literal_names(program.statements))
@@ -3744,7 +3746,7 @@ def check_settings_fields(
             and (stop is None or d.line < stop[1])
         ):
             stop = (d.file, d.line)
-    const_tables = symbols.const_table_fields(program)
+    const_tables = context.of(program).const_table_fields
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ENDPROG":
             break

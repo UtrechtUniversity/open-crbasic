@@ -20,7 +20,7 @@ import struct
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
-from . import instr_rules
+from . import context, instr_rules
 
 _FUNCTIONS = frozenset({"TIMEINTOINTERVAL", "IFTIME"})
 # Functions whose integer-typed constant arguments draw `Parameter must be integral.`, with the
@@ -75,7 +75,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     from . import expressions, instr_data
 
     wide = wide_constants(program, profile)
-    known = expressions._known_names(program, profile)
+    known = context.of(program, profile).known_names
     positions = {id(st): i for i, st in enumerate(program.statements)}
     in_table = blocked_table = False
     scan: tuple[int, int] | None = None
@@ -174,9 +174,8 @@ def _timer_context(stmt, call, known, single_pass):
 
 def _timer_shadowed(program, stmt, positions, diags):
     """CR6/CR1000X resolve earlier visible storage named Timer before the built-in."""
-    from . import symbols
 
-    for decl in symbols.scoped_view(program, stmt).statements:
+    for decl in context.of(program).scoped_view(stmt).statements:
         if positions[id(decl)] > positions[id(stmt)]:
             continue
         if isinstance(decl, S.SubDef) and any(p.name.upper() == "TIMER" for p in decl.params):
@@ -230,7 +229,7 @@ def _undefined_sibling(call: S.Index, i: int, program: S.Program, profile) -> bo
     """Whether another argument of `call` (not position `i`) names an undefined symbol."""
     from . import expressions  # lazy: `expressions` imports this module's package
 
-    known = expressions._known_names(program, profile)
+    known = context.of(program, profile).known_names
     return any(a is not None and expressions._undefined_names(a, known) for j, a in enumerate(call.args) if j != i)
 
 
@@ -324,7 +323,7 @@ def fold_timeout_expressions(program: S.Program, profile, diags: Diagnostics, en
                     or (k > line_first and any(position(d) == line_first for d in counted))
                 )
                 if not before and profile.single_pass:
-                    known = known or expressions._known_names(program, profile)
+                    known = known or context.of(program, profile).known_names
                     before = any(a is not None and expressions._undefined_names(a, known) for a in call.args[:i])
                 if before and gate is not None:
                     if own is not None:

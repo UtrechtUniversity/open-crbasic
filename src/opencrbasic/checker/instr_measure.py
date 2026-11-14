@@ -16,7 +16,7 @@ from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
-from . import longconv, scan_time, symbols, var_types
+from . import context, longconv, scan_time, symbols, var_types
 
 
 def check(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -44,7 +44,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
             if sequential is None:
                 sequential = is_sequential(program, profile, env)
             prefix = S.Program(program.name, statements[: pos + 1])
-            scope = symbols.scoped_view(prefix, stmt, publics=True)
+            scope = context.of(prefix, profile, env).scoped_view(stmt, publics=True)
             typer = var_types._Typer(program, scope, profile=profile)
             _check_delay(stmt, measure["delay"], env, diags, sequential, slow, typer=typer)
         if kw == "EXCITEV" and measure.get("delay", {}).get("task_memory") and len(stmt.args) == 3:
@@ -64,7 +64,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if kw == "CH400STATUS" and "CH400STATUS" in profile.instructions:
             _check_ch400status(stmt, env, diags)
         if kw == "FFT" and "FFT" in profile.instructions:
-            _check_fft_source(stmt, symbols.declared_all_dims(symbols.scoped_view(program, stmt), env), env, diags)
+            scope_view = context.of(program, profile, env).scoped_view(stmt)
+            _check_fft_source(stmt, context.of(scope_view, profile, env).declared_all_dims, env, diags)
         if kw == "SDI12RECORDER" and profile.single_pass:
             _check_sdi12_structure_dest(stmt, program, diags)
         if kw == "TABLEFILE" and "tablefile" in measure:
@@ -84,7 +85,7 @@ def _check_timed_sdm(
 ) -> None:
     if not any(isinstance(s, S.Instruction) and s.keyword.upper() == "TIMEDCONTROL" for s in statements):
         return
-    scope = symbols.scope_tables(program, env, scalars=True)
+    scope = context.of(program, env=env).scope_tables(scalars=True)
     names = longconv.float_names(statements), longconv.literal_names(statements)
     sequential = is_sequential(program, profile, env)
     aliases: dict[str, tuple[str, int]] = {}
@@ -406,7 +407,7 @@ def _check_sdi12_structure_dest(stmt: S.Instruction, program: S.Program, diags: 
     dest = stmt.args[0] if stmt.args else None
     if not isinstance(dest, (S.Name, S.Index)) or (isinstance(dest, S.Index) and None in dest.args):
         return
-    type_name = symbols.declared_variable_types(program).get(dest.name.upper())
+    type_name = context.of(program).variable_types().get(dest.name.upper())
     if type_name is not None and any(
         isinstance(st, S.Instruction)
         and st.keyword.upper() == "STRUCTURETYPE"
@@ -485,7 +486,7 @@ def _check_structure_members(
     dest = stmt.args[0]
     if not isinstance(dest, (S.Name, S.Index)):
         return
-    type_name = symbols.declared_variable_types(program).get(dest.name.upper())
+    type_name = context.of(program).variable_types().get(dest.name.upper())
     if type_name is None:
         return
     members = _structure_members(program, type_name)
@@ -534,7 +535,7 @@ def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics,
         return
     variable_names = frozenset(
         name
-        for name in symbols.declared_variable_names(program)
+        for name in context.of(program, profile).declared_variable_names
         if not symbols.is_reserved_predefined_name(name, profile)
     )
     earlier = {(d.line, d.file) for d in diags.items if d.severity == "error"}
@@ -642,7 +643,7 @@ def _check_gps_nmea(stmt: S.Instruction, program: S.Program, env: consteval.Env,
         decl = next(
             (
                 v
-                for st in reversed(symbols.scoped_view(program, stmt).statements)
+                for st in reversed(context.of(program).scoped_view(stmt).statements)
                 if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC")
                 for v in st.vars
                 if v.name.upper() == arg.name.upper()
@@ -1248,7 +1249,7 @@ def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
         total = math.prod(shape)
         declared_names = {
             v.name.upper(): v.name
-            for decl in symbols.scoped_view(program, st).statements
+            for decl in context.of(program).scoped_view(st).statements
             if isinstance(decl, S.Declaration)
             for v in decl.vars
         }
@@ -1280,7 +1281,7 @@ def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
         key = id(tables(stmt))
         if key not in cache:
             visible = {}
-            for st in symbols.scoped_view(program, stmt).statements:
+            for st in context.of(program).scoped_view(stmt).statements:
                 visible.update(aliases.get(id(st), {}))
             cache[key] = visible
         entry = cache[key].get(dest.name.upper())
@@ -1316,9 +1317,8 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
     checked = _REPS_CHECKED.get(profile.name, frozenset())
     if not checked:
         return
-    from . import symbols
 
-    tables = symbols.scope_tables(program, env, scalars=True, parameters=True)
+    tables = context.of(program, env=env).scope_tables(scalars=True, parameters=True)
     alias_storage = _measurement_aliases(program, tables, env)
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in checked or len(stmt.args) < 2:
@@ -1584,10 +1584,11 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics, 
     from .expressions import _arg_text
     from .instr_rules import _next_simple_token, cdm_null_module, cdm_unsupported_module
 
-    tables = symbols.scope_tables(program, env, scalars=True)
+    ctx = context.of(program, profile, env)
+    tables = ctx.scope_tables(scalars=True)
     # the running statistics also bound a routine's scalar parameter (`Sub R(Q)` / `MinRun(Q,2,...)`
     # is `Variable Q out of bounds.`; oracle, CR6/CR1000X, 2026-10-25, round 35)
-    with_parameters = symbols.scope_tables(program, env, scalars=True, parameters=True)
+    with_parameters = ctx.scope_tables(scalars=True, parameters=True)
     dims: dict[str, tuple[int, ...]] = {}
     types: dict[str, str] = {}
     arrays: set[str] = set()

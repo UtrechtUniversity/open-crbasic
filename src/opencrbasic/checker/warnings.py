@@ -14,7 +14,7 @@ from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
-from . import instr_rules, structure, symbols
+from . import context, instr_rules, structure
 
 
 def _table_arg_name(stmt: S.Instruction) -> str | None:
@@ -383,7 +383,7 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
                     # variable gives no warning at all (oracle, CR6/CR1000X, 2026-10-12, fuzz R15)
                     routines = {st.name.upper() for st in statements if isinstance(st, S.SubDef)}
                     if stmt.name.upper() not in routines:
-                        if stmt.name.upper() in symbols.declared_variable_names(program):
+                        if stmt.name.upper() in context.of(program, profile).declared_variable_names:
                             return
                         name = "Expr"
                 diags.warning(stmt.line, f"{name} never reached at run time.", stmt.file)
@@ -626,7 +626,7 @@ def add_truncate_warnings(program: S.Program, profile, diags: Diagnostics) -> No
     variable, at its line before the arity error (`Expression expects , :`, `No Matching, or out of
     place )`, or the empty-call `Invalid, or out of place expression:`). Not modelled: the same warnings
     of a valid call with a variable argument (printed twice, in both passes)."""
-    variables = symbols.declared_variable_names(program)
+    variables = context.of(program).declared_variable_names
     for stmt in program.statements:
         text = getattr(stmt, "text", None) or ""
         m = _TRUNCATE_CALL_RE.search(text)

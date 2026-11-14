@@ -15,7 +15,7 @@ from .. import consteval, tables
 from .. import syntax as S
 from ..diagnostics import Diagnostics
 from ..profiles import Profile
-from . import symbols
+from . import context
 
 _NUMERIC = ("FLOAT", "LONG")
 # built-in functions returning a String (`kind` 312, docs/binary.md), the same on all four loggers;
@@ -32,7 +32,7 @@ _STATUS_STRING_FIELDS = frozenset(
 
 def _types(program: S.Program, *, scoped: bool = False) -> tuple[dict[str, str], dict[str, str]]:
     """Declared variable types and `Alias` name -> target variable name (upper case)."""
-    types = symbols.declared_variable_types(program, prefer_last=scoped)
+    types = context.of(program).variable_types(prefer_last=scoped)
     alias: dict[str, str] = {}
     for st in program.statements:
         if scoped and isinstance(st, S.SubDef):
@@ -73,7 +73,7 @@ class _Typer:
                 public: list[S.Stmt] = [
                     st for st in visible.statements if isinstance(st, S.Declaration) and st.kind == "PUBLIC"
                 ]
-                self.table_types["PUBLIC"] = symbols.declared_variable_types(S.Program(visible.name, public))
+                self.table_types["PUBLIC"] = context.of(S.Program(visible.name, public), profile).variable_types()
 
     def base(self, name: str) -> str:
         return self.alias.get(name.upper(), name.upper())
@@ -285,7 +285,7 @@ def check_string_operands(program: S.Program, profile, diags: Diagnostics) -> No
 
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     typer = _Typer(program)
-    tables = symbols.scope_tables(program, env)
+    tables = context.of(program, env=env).scope_tables()
     in_prog = False
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "BEGINPROG":
@@ -424,9 +424,8 @@ def check_ctype(program: S.Program, profile, diags: Diagnostics) -> None:
         return
     env = consteval.Env(profile, dict(program.consts))
     legal = frozenset(v for n in ("UINT1", "IEEE4", "IEEE8") if isinstance(v := _symbol_value(env, n), int))
-    from . import expressions
 
-    known = None if profile.single_pass else expressions._known_names(program, profile)
+    known = None if profile.single_pass else context.of(program, profile).known_names
     for stmt in program.statements:
         for top in _statement_expressions(stmt):
             for node in _subexpressions(top):
@@ -461,46 +460,6 @@ def _dereference_names(top: S.Expr | None):
             yield operand.name if isinstance(operand, (S.Name, S.Index)) else None
 
 
-def _routine_scopes(program: S.Program):
-    """`stmt id -> {UPPER name: (declared name, type)}` for the variables visible at a statement:
-    the globals, then the statement's own routine's locals and parameters (a local shadows)."""
-
-    def declarations(stmts):
-        out: dict[str, tuple[str, str]] = {}
-        clash: set[str] = set()
-        for st in stmts:
-            if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
-                for v in st.vars:
-                    kind = "FLOAT" if v.paren_dim else (v.type or "FLOAT").upper()
-                    key = v.name.upper()
-                    if out.setdefault(key, (v.name, kind))[1] != kind:
-                        clash.add(key)
-        return {k: v for k, v in out.items() if k not in clash}
-
-    groups: list[tuple[S.SubDef | None, list]] = [(None, [])]
-    for st in program.statements:
-        if isinstance(st, S.SubDef):
-            groups.append((st, []))
-        groups[-1][1].append(st)
-        if S.ends_routine(st):
-            groups.append((None, []))
-    glob = declarations(st for routine, stmts in groups if routine is None for st in stmts)
-    scopes: dict[int, dict] = {}
-    for routine, stmts in groups:
-        if routine is None:
-            scope = glob
-        else:
-            scope = dict(glob)
-            scope.update(declarations(stmts))
-            for prm in routine.params:
-                scope[prm.name.upper()] = (prm.name, (prm.type or "FLOAT").upper())
-            if routine.keyword.upper() == "FUNCTION":
-                scope.setdefault(routine.name.upper(), (routine.name, ""))
-        for st in stmts:
-            scopes[id(st)] = scope
-    return scopes
-
-
 def check_pointer_deref(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR6/CR1000X: `!name` on a declared variable that is not of a pointer type (`As Long!`).
     Rules and oracle evidence: `docs/checker.md` "Round 14: `!name` on a non-pointer variable"."""
@@ -508,7 +467,8 @@ def check_pointer_deref(program: S.Program, profile, diags: Diagnostics) -> None
         return
     from . import expressions, structure
 
-    scopes = _routine_scopes(program)
+    ctx = context.of(program, profile)
+    scopes = ctx.routine_scopes
 
     def offender(scope, tops):
         """Declared name of the first `!` operand without a pointer type, or None."""
@@ -521,7 +481,7 @@ def check_pointer_deref(program: S.Program, profile, diags: Diagnostics) -> None
                     return entry[0]
         return None
 
-    known = expressions._known_names(program, profile)
+    known = ctx.known_names
     for stmt in program.statements:
         scope = scopes[id(stmt)]
         derefs = [

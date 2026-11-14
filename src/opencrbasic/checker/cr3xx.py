@@ -15,7 +15,7 @@ from typing import TypedDict
 from .. import bindings, consteval, lexer
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
-from . import expressions, instr_rules, longconv, structure, symbols
+from . import context, expressions, instr_rules, longconv, structure, symbols
 
 # `SerialOpen`'s own `ComPort` argument (position 0, the only position checked here) is the one
 # `Serial*` function on CR300/CR350 whose compile-time validator additionally requires a genuine
@@ -251,7 +251,7 @@ def check_dropped_tail(program: S.Program, profile, diags: Diagnostics) -> None:
         if not tail or any(t.kind == "OP" and t.text in ("(", ".", ",") for t in tail):
             continue
         if known is None:
-            known = expressions._known_names(program, profile)
+            known = context.of(program, profile).known_names
         for t in tail:
             if t.kind == "IDENT" and t.upper not in known:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=t.text), stmt.file)
@@ -269,8 +269,9 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
     cr3 = profile.name in ("cr300", "cr350")
     from .instr_data import _with_inline
 
-    known = expressions._known_names(program, profile)
-    variable_names = symbols.declared_variable_names(program)
+    ctx = context.of(program, profile)
+    known = ctx.known_names
+    variable_names = ctx.declared_variable_names
     for stmt in _with_inline(program.statements) if cr3 else program.statements:
         if not isinstance(stmt, S.Call):
             continue
@@ -974,16 +975,13 @@ _FLOAT_DEST = 8  # `variable_or_array` "Dest" parameter (`docs/type-codes.md`)
 _DEST_MESSAGE = "Illegal destination variable type, expecting Float."
 
 
-_variable_types = symbols.declared_variable_types
-
-
 def _destination_types(program: S.Program) -> tuple[dict[str, str], dict[int, dict[str, str]]]:
     """`declared_variable_types` plus each alias name with its declared source's type, so a Long,
     Boolean or String alias is no Float destination (round 31). A chain `Alias Z=Y` on an alias
     `Z` fails, so only a declared variable passes its type on. An alias inside a routine is that
     routine's only: the second result maps `id(statement)` to its routine's alias types (oracle,
     CR300/CR350, 2026-10-24, `tests/fixtures/r31_review_fixes.json` f1)."""
-    types = _variable_types(program)
+    types = context.of(program).variable_types()
     declared = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration) for v in st.vars}
     scoped: dict[int, dict[str, str]] = {}
     local: dict[str, str] | None = None
@@ -1032,7 +1030,7 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
     constant_names = profile.symbols.keys() | expressions._EXTRA_PREDEFINED_SYMBOLS
     function_names = set(profile.functions)
     destination_env = _destination_env(consteval.Env(profile))
-    destination_variables = symbols.declared_variable_names(program)
+    destination_variables = context.of(program, profile).declared_variable_names
     params: dict[str, str] = {}  # the enclosing routine's parameters hide a global (round 31)
     scalar_params: set[str] = set()
     per_line = collections.Counter((st.line, st.file) for st in program.statements)
@@ -1117,8 +1115,8 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
         if not info or not info["params"] or info["params"][0] != _FLOAT_DEST:
             continue
         if types is None:
-            (types, scoped), known = _destination_types(program), expressions._known_names(program, profile)
-            ds = expressions.program_dims(program, profile, known)
+            ctx = context.of(program, profile)
+            (types, scoped), known, ds = _destination_types(program), ctx.known_names, ctx.dims_state
         assert known is not None and ds is not None
         arg = stmt.args[0]
         assert arg is not None
@@ -1260,7 +1258,7 @@ def check_undefined_arg_aborts(program: S.Program, profile, diags: Diagnostics) 
         if not info or not info["params"]:
             continue
         if known is None:
-            known = expressions._known_names(program, profile)
+            known = context.of(program, profile).known_names
         for index, arg in enumerate(stmt.args):
             names = [n for n in _expr_names(arg) if n.upper() not in known]
             if not names:
@@ -1329,9 +1327,9 @@ def _report_rewritten_first_arg(
     15000)` after `Dim Z banana` then `Public PTemp`)."""
     import dataclasses
 
-    known = expressions._known_names(
+    known = context.of(
         dataclasses.replace(program, statements=[st for st in program.statements if id(st) not in dropped]), profile
-    )
+    ).known_names
     tables = getattr(known, "tables", ())
     types, scoped = _destination_types(program)
 
@@ -1431,7 +1429,7 @@ def _report_unregistered(
             dataclasses.replace(st, params=[]) if isinstance(st, S.SubDef) and id(st) in tainted_subs else st
         )
     modified = dataclasses.replace(program, statements=statements)
-    unregistered = expressions._known_names(program, profile) - expressions._known_names(modified, profile)
+    unregistered = context.of(program, profile).known_names - context.of(modified, profile).known_names
     functions = {
         st.name.upper()
         for st in program.statements
@@ -1629,13 +1627,13 @@ def prose_known(program: S.Program, profile) -> set[str]:
     is reported (oracle, CR300, 2026-10-01: `foo Battery` -> `Battery is not defined.`, `foo Sin`
     and `foo Scan` are not)."""
     instruction_only = set(profile.instructions) - set(profile.symbols) - set(profile.functions)
-    known = expressions._known_names(program, profile)
+    known = context.of(program, profile).known_names
     return set(known) - instruction_only - set(known.tables)
 
 
 def prose_known_tables(program: S.Program, profile) -> set[str]:
     """Upper-cased user `DataTable` names (a table field line is not an unknown table)."""
-    return set(getattr(expressions._known_names(program, profile), "tables", ()))
+    return set(getattr(context.of(program, profile).known_names, "tables", ()))
 
 
 def first_declarations(program: S.Program) -> dict[str, tuple[str, int]]:
@@ -1988,7 +1986,7 @@ def check_undefined_call_args(program: S.Program, profile, diags: Diagnostics) -
         return
     if not diags.items:
         return
-    subs = symbols.declared_subs(program)
+    subs = context.of(program, profile).declared_subs
     calls_by_key: dict[tuple[int, str], S.Call] = {}
     for stmt in program.statements:
         if not isinstance(stmt, S.Call) or stmt.explicit:
@@ -2019,10 +2017,11 @@ def check_undefined_call_args(program: S.Program, profile, diags: Diagnostics) -
             and nxt.message.startswith(_GENERIC_FALLBACK_PREFIX)
         ):
             if known is None:
-                known = expressions._known_names(program, profile)
-            routines = frozenset(
-                st.name.upper() for st in program.statements if isinstance(st, S.SubDef)
-            ) - symbols.declared_variable_names(program)
+                known = context.of(program, profile).known_names
+            routines = (
+                frozenset(st.name.upper() for st in program.statements if isinstance(st, S.SubDef))
+                - context.of(program, profile).declared_variable_names
+            )
             names = _call_arg_undefined_names(stmt.args, known, routines)
             new_items.append(d)
             for undefined_name in names:
@@ -2088,7 +2087,7 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
     if not named:
         return
     stmts = program.statements
-    known = expressions._known_names(program, profile)
+    known = context.of(program, profile).known_names
 
     def has_names(stmt) -> bool:
         exprs = (
@@ -2344,7 +2343,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                         call.group(2),
                         cinfo,
                         here,
-                        symbols.declared_variable_names(program),
+                        context.of(program, profile).declared_variable_names,
                         profile,
                         _inside_table(program, d.line, d.file),
                     )
@@ -2456,13 +2455,13 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                         new_items.append(Diagnostic("error", d.line, f"Variable illegal in Parameter: {rest}.", d.file))
                     changed = True
                     continue
-            callables = frozenset(symbols.declared_variable_names(program) | set(profile.functions))
+            callables = frozenset(context.of(program, profile).declared_variable_names | set(profile.functions))
             fw = _LINE_WORD_RE.match(text, len(text) - len(text.lstrip(" \t")))
             needs_paren = bool(
                 fw
                 and fw.group(0).upper() not in profile.instructions
                 and not text[fw.end() :].lstrip(" \t").startswith(("(", "."))
-                and fw.group(0).upper() not in symbols.declared_variable_names(program)
+                and fw.group(0).upper() not in context.of(program, profile).declared_variable_names
                 and structure._bare_function_needs_paren(fw.group(0).upper(), profile.functions)
             )
             cond_text = structure.condition_part(text)
@@ -2549,7 +2548,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     head is None
                     and call
                     and call.group(1).upper() in profile.functions
-                    and call.group(1).upper() not in symbols.declared_variable_names(program)
+                    and call.group(1).upper() not in context.of(program, profile).declared_variable_names
                     and juxt
                 ):
                     # a built-in call whose argument list holds juxtaposed operands (oracle, CR300,
@@ -2593,7 +2592,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     and stmt.reason != "lex error: unterminated string"
                     and (
                         refined := structure._unclosed_call_message(
-                            profile, stmt.text, stmt.at_eol, symbols.declared_variable_names(program)
+                            profile, stmt.text, stmt.at_eol, context.of(program, profile).declared_variable_names
                         )
                     )
                 ):
@@ -2607,7 +2606,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                         head == "No Matching, or out of place ) in expression: "
                         and (
                             refined := structure._unclosed_call_message(
-                                profile, cond, False, symbols.declared_variable_names(program)
+                                profile, cond, False, context.of(program, profile).declared_variable_names
                             )
                         )
                         and refined.startswith("Expression expects ,")
@@ -2713,7 +2712,7 @@ def order_names_around_arity(program: S.Program, profile, diags: Diagnostics) ->
             continue
         own = [(i, d) for i, d in enumerate(diags.items) if (d.line, d.file) == key and d.severity == "error"]
         if known is None:
-            known = expressions._known_names(program, profile)
+            known = context.of(program, profile).known_names
         state: _ArityState = {"names": []}
         for e in exprs:
             _arity_walk(e, known, profile, state)
@@ -3044,7 +3043,7 @@ def order_unterminated_string(program: S.Program, profile, diags: Diagnostics) -
     if profile.name not in ("cr300", "cr350"):
         return
     known = None
-    declared = symbols.declared_variable_names(program)
+    declared = context.of(program).declared_variable_names
     for stmt in program.statements:
         if not isinstance(stmt, S.Unparsed) or stmt.reason != "lex error: unterminated string":
             continue
@@ -3216,8 +3215,9 @@ def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics, early:
     line comes first, with the connection count check."""
     if profile.name not in ("cr300", "cr350"):
         return
-    types = symbols.declared_variable_types(program)
-    known = expressions._known_names(program, profile)
+    ctx = context.of(program, profile)
+    types = ctx.variable_types()
+    known = ctx.known_names
     gone = diags.cascade_gone
     params: dict[str, str | None] = {}  # the enclosing Sub/Function's plain parameters: name -> type
     for stmt in program.statements:
