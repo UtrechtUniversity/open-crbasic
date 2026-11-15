@@ -1,6 +1,6 @@
 # opencrbasic progress
 
-Current compiler state and handoff, updated **2026-11-14 for release 1.2.0, after development round 150; v1.0 released internally (M0-M7 done)** (round-51
+Current compiler state and handoff, updated **2026-11-15 for release 1.2.1 (checker restructure, no new rules), after development round 150; v1.0 released internally (M0-M7 done)** (round-51
 fuzz triage and M3 report/configuration, round 52; include names, round 53; two false rejects, two false
 accepts and three first-error families, round 54; PipeLine placement data and four false accepts/rejects,
 round 55; four fuzz false accepts and a UINT1 warning, round 56; the M1 gate scope and its last five
@@ -29,8 +29,8 @@ Latest observed validation, on macOS Apple Silicon with Wine 11.17 and Python 3.
 
 | Check | Latest result |
 |---|---|
-| `pytest -q -n 8 -m 'not server'` (release 1.2.0, 2026-11-14) | 80,850 passed, 32 skipped, 911 strict xfail |
-| `pytest -q -m server` (release 1.2.0, 2026-11-14, after a restart of the machine) | 162 passed, 12 skipped; `multiprocessing.Lock()` still succeeds afterwards |
+| `pytest -q -n auto -m 'not server'` (release 1.2.1, 2026-11-15) | 80,772 passed, 31 skipped, 911 strict xfail; 4,145 CR300/CR350 cases pass on their recorded later-diagnostic output ([cascade removal](docs/loggers.md#later-diagnostic-cascade-no-longer-modelled-2026-11-15)) |
+| `pytest -q -m server` (release 1.2.1, 2026-11-15) | 162 passed, 12 skipped. Release 1.2.0, after a restart of the machine: the same counts; `multiprocessing.Lock()` still succeeds afterwards |
 | Fixture audit of rounds 76-149 (`tools/fixture_audit.py`, 75 fixtures, cached reference results; round 150) and of `r150_*.json` (`--no-cache`) | 18,550 cases and 164 cases, 0 differing, 0 without verdict |
 | Round-24–31 fixture audits (15 fixtures, cached oracle) | 0 differing, 0 without verdict |
 | Round-59 fixture audit (`r59_*` and the four edited fixtures) | 0 differing, 0 without verdict |
@@ -70,6 +70,12 @@ Four-profile diagnostic comparison, rerun in round 66 and unchanged from round 2
 | CR1000X | 19 / 0 | 506 / 1 |
 | CR300 | 8 / 11 | 505 / 2 |
 | CR350 | 9 / 10 | 505 / 2 |
+
+Release 1.2.1 (2026-11-15, `difftest.py --group all` on cached reference results, 20 repository
+programs; the help examples were not available and are not re-measured): CR6 20 exact; CR300 and
+CR350 1 exact and 19 with the same first error and different later diagnostics, since the
+[CR300/CR350 cascade is no longer modelled](docs/loggers.md#later-diagnostic-cascade-no-longer-modelled-2026-11-15).
+CR1000X was not rerun.
 
 No corpus verdict mismatches, implementation exceptions or lost exact cases were observed on
 usable reference results. The CR300/CR350 repository rejections reflect CR6-specific programs. The

@@ -1,3 +1,3 @@
 """Open-source CRBasic (CR6) pre-compiler."""
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
