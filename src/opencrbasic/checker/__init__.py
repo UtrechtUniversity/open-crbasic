@@ -29,7 +29,7 @@ Compilation runs in explicit phases whose findings go either to `diags.items` (g
 5. `late` / `late_scan`: CR300/CR350 deferred `Sub` calls, executable `DataTable` checks, late
    settings/option/bounds/table-reps checks, gated early warnings, and `check_scan_placement_late`.
    Surviving `held` errors are activated here (suppressing same-statement/line undefined-symbol
-   errors), and `late*`/`held` findings are marked `cascade=False`.
+   errors).
 6. `tier_c` / `tier_c_apply` / `tier_c_tail`: runs when no gating error blocks Tier C (`pass1`,
    `stage2a`, `late*`, non-generic `tier_b`, plus `tier_b_generic`/`held`/`TABLE_NAME_KINDS` on
    `single_pass`; `tier_b_calltable` `could_not_find_table` never blocks Tier C). Runs `instr_measure`,
@@ -737,10 +737,6 @@ def _check_with_context(
             )
         ]
         diags.items.extend(held_active)
-    diags.items[:] = [
-        dataclasses.replace(d, cascade=False) if d.phase.startswith("late") or d.phase == "held" else d
-        for d in diags.items
-    ]
 
     table_stop = None
     if not any(_blocks_tier_c(d, profile.single_pass) for d in diags.errors):

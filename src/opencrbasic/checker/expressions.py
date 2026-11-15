@@ -2980,7 +2980,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
                 # `tests/fixtures/r150_const_initializer_arguments.json`).
                 in_range = problem == "timer_option" or problem.endswith(" cannot be negative")
                 message = _arity_message(problem, text, profile, False)
-                diags.items.append(Diagnostic("error", stmt.line, message, stmt.file, trigger=in_range))
+                diags.items.append(Diagnostic("error", stmt.line, message, stmt.file))
                 if in_range:
                     if known is None:
                         known = ctx.known_names
@@ -3022,7 +3022,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
                     and isinstance(stmt.value, S.Index)
                     and structs._operand_kind(stmt.target, kinds, struct_types) == "S"
                 ):
-                    diags.items.append(Diagnostic("error", stmt.line, structs._WRONG_TYPE, stmt.file, cascade=False))
+                    diags.items.append(Diagnostic("error", stmt.line, structs._WRONG_TYPE, stmt.file))
                     mine.append(diags.items[-1])
             if problem:
                 diags.items.append(
@@ -3032,7 +3032,6 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics, held: 
                         _arity_message(problem, stmt.text, profile, stmt.at_eol, whole_statement=True),
                         stmt.file,
                         stmt=id(stmt),
-                        trigger=problem == "network_constint",
                     )
                 )
                 _hold(held, diags, problem)

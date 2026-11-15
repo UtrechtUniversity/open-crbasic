@@ -1749,7 +1749,7 @@ def _illegal_table_name(st: S.Instruction) -> list[Diagnostic]:
         kind = "table_name_illegal" if dot else "table_name_number"
     else:
         return []
-    return [Diagnostic("error", st.line, text, st.file, cascade=False, kind=kind)]
+    return [Diagnostic("error", st.line, text, st.file, kind=kind)]
 
 
 def is_table_name_diag(d: Diagnostic) -> bool:

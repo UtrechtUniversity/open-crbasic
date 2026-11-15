@@ -71,8 +71,8 @@ commands are given so they can be re-run.
   undefined-name error (`line N: Too many parameters:  Sec.` for `Scan (1,Sec,0,0)`, the table
   fields of a later `DataTable`, `Q is not defined.`); statements before the error, and a missing
   file's warning, are unaffected. `Program.include_error_at` records the statement count at each
-  reported include error; `cr3xx.check_too_many_cascade` taints from the first statement at or
-  after it. CR6/CR1000X have no cascade.
+  reported include error; the cascade taints from the first statement at or
+  after it (no longer modelled since release 1.2.1, `docs/loggers.md`). CR6/CR1000X have no cascade.
 - `Section` (as read by a `#If Section = "Name" Then` inside an `IncludeSection()`-included file)
   is bound to the `Name` argument only for the lines that call brought in. Referencing `Section`
   anywhere else is an ordinary undefined-symbol error: `Invalid symbol in expression: Section =

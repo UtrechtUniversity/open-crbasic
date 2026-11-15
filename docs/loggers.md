@@ -1096,3 +1096,27 @@ Oracle-confirmed, CR300/CR350.
 - An unknown call's argument scan stops at a table member (`Foo(Bad,Tb.X)` -> Foo, Bad, and no
   fallback line).
 - `Nope += 1` reports `Nope` once.
+
+## Later-diagnostic cascade no longer modelled (2026-11-15)
+
+Release 1.2.1 removed the CR300/CR350 passes that only reproduced diagnostics after the first
+error, under the human decision of 2026-10-24 (`PLAN.md`: order, wording and cascade of later
+diagnostics are accepted differences). The reference behaviour recorded in the sections above and
+in `docs/checker.md` is unchanged and still observed; opencrbasic no longer reproduces it.
+
+Removed from `checker/cr3xx.py`: `check_too_many_cascade` (the `Too many parameters` cascade and
+its helpers `_report_unregistered`, `_report_rewritten_first_arg`, `_reword_prose`),
+`check_undefined_call_args`, `check_undefined_arg_aborts`, `check_tcpopen_handle_early`,
+`drop_compound_target_repeat`, `order_target_name_first` and `drop_after_alias_collision`. Notes
+that name these functions describe the reference, not the current implementation.
+
+Measured on the 76,837 single-file fixture cases, before and after the removal (2026-11-15):
+
+- 4,167 cases changed, all CR300/CR350 (2,085 and 2,082); no verdict and no first error changed.
+- 4,103 went from exact to "same first error, later diagnostics differ". The other 64 were
+  already `not_modelled` and stayed in their impact class.
+- CR6 and CR1000X output is identical.
+
+The fixtures keep the reference output. `tests/cr3xx_later_baseline.txt` pins the output
+opencrbasic gives for each affected case (`tests/conftest.py`), so a case outside that list must
+still match the reference exactly and a listed case fails when its output changes.

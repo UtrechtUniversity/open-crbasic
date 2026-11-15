@@ -1211,7 +1211,7 @@ class _Parser:
             return seg
         from .checker.cr3xx import _ABORTING_PARAMS
 
-        table = seg[0].upper == "DATATABLE"  # (its errors start the cascade: oracle, 2026-10-12)
+        table = seg[0].upper == "DATATABLE"
         if table and index == 0 and i == 3 and seg[2].kind == "IDENT":
             if t.col == seg[2].col + len(seg[2].text):
                 return seg  # `DataTable (T;,...)` names the table `T;` (`_parse_segment`)
@@ -1220,7 +1220,7 @@ class _Parser:
             symbol = seg_text[seg[start].col : t.col + 1].strip()
 
         def error(message: str) -> None:
-            self.diags.items.append(Diagnostic("error", line, message, file, trigger=table))
+            self.diags.items.append(Diagnostic("error", line, message, file))
 
         error(f"Invalid symbol in expression: {symbol}.")
         params = self.profile.instructions[seg[0].upper]["params"]

@@ -1431,8 +1431,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 )
                 header_dims_failed |= failed
             for message in stmt.header_errors:
-                optional_error = _optional_header_error(message)
-                diags.items.append(Diagnostic("error", stmt.line, message, stmt.file, trigger=optional_error))
+                diags.items.append(Diagnostic("error", stmt.line, message, stmt.file))
             in_sub = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and _block_word(args) in ("SUB", "FUNCTION")):
             in_sub = False

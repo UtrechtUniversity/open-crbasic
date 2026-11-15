@@ -158,14 +158,12 @@ def check_members(program: S.Program, profile, diags: Diagnostics, flat: S.Progr
             base, path, index = left[0]
             sep = "\n" if profile.fallback_echo_newline and st.at_eol else ""
             diags.items += [
-                Diagnostic("error", st.line, f"Could not find {base}.{path}({index}).", st.file, cascade=False),
-                Diagnostic(
-                    "error", st.line, f"Invalid assignment in expression: {st.text}{sep}.", st.file, cascade=False
-                ),
+                Diagnostic("error", st.line, f"Could not find {base}.{path}({index}).", st.file),
+                Diagnostic("error", st.line, f"Invalid assignment in expression: {st.text}{sep}.", st.file),
             ]
         else:
             diags.items += [
-                Diagnostic("error", st.line, f"Could not find {base}.{path}({index}).", st.file, cascade=False)
+                Diagnostic("error", st.line, f"Could not find {base}.{path}({index}).", st.file)
                 for base, path, index in right
             ]
 
@@ -234,7 +232,5 @@ def check_struct_assignment(program: S.Program, profile, diags: Diagnostics, fla
         for m in messages:
             # (no `Too many parameters` cascade: oracle, 2026-10-03)
             diags.items.append(
-                Diagnostic(
-                    "error", st.line, m or structure._out_of_place(profile, st.text, st.at_eol), st.file, cascade=False
-                )
+                Diagnostic("error", st.line, m or structure._out_of_place(profile, st.text, st.at_eol), st.file)
             )

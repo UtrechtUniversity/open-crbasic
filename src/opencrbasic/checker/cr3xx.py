@@ -319,9 +319,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                 continue
             if consteval.is_finite_number(port) and not isinstance(port, bool):
                 if int(port) not in ports:
-                    diags.items.append(
-                        Diagnostic("error", stmt.line, f"ComPort {int(port)} illegal.", stmt.file, trigger=cr3)
-                    )
+                    diags.items.append(Diagnostic("error", stmt.line, f"ComPort {int(port)} illegal.", stmt.file))
                     if profile.name != "cr350":
                         diags.error(
                             stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}{sep}.", stmt.file
@@ -456,7 +454,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                 except consteval.NotConstant:
                     size = None
                 if consteval.is_finite_number(size) and 0 < size < 2**31:
-                    diags.items.append(Diagnostic("error", stmt.line, "Out of memory.", stmt.file, trigger=True))
+                    diags.items.append(Diagnostic("error", stmt.line, "Out of memory.", stmt.file))
         if profile.name == "cr350" and consteval.is_finite_number(port):
             _check_cr350_comms_mode(stmt, int(port), profile, program.consts, diags, invalid_format, False)
         if profile.name == "cr300" and constant_port and len(stmt.args) == 6 and stmt.args[5] is not None:
@@ -649,9 +647,7 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
                 if (d.line, d.file) != key
                 or not d.message.startswith(("Dimensions not declared:", "Too many parameters:"))
             ]
-            diags.items.append(
-                Diagnostic("error", stmt.line, f"Dimensions not declared: {raw}.", stmt.file, trigger=True)
-            )
+            diags.items.append(Diagnostic("error", stmt.line, f"Dimensions not declared: {raw}.", stmt.file))
             if len(stmt.args) > 1 and stmt.args[1] is not None:
                 raw = expressions._arg_text(stmt, 1)
                 token = instr_rules._next_simple_token(raw) or raw
@@ -1396,17 +1392,12 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 signed = None
             table = table or signed
             if table:
-                new_items.append(
-                    Diagnostic("error", d.line, f"Could not find DataTable {table.group(1)}.", d.file, cascade=False)
-                )
-                d = dataclasses.replace(d, cascade=False)  # (no cascade: oracle, `r1` probe)
+                new_items.append(Diagnostic("error", d.line, f"Could not find DataTable {table.group(1)}.", d.file))
                 changed = True
                 if _loose_before_beginprog(program, d.line, d.file):
                     # (oracle, CR300, 2026-10-11: `foo.` before `BeginProg` also gets the placement line)
                     new_items.append(d)
-                    new_items.append(
-                        Diagnostic("error", d.line, "Expr illegally occurs before BeginProg.", d.file, cascade=False)
-                    )
+                    new_items.append(Diagnostic("error", d.line, "Expr illegally occurs before BeginProg.", d.file))
                     continue
             bare = text.rstrip("\n")
             cp = structure.condition_part(bare)
@@ -2172,7 +2163,7 @@ def order_unterminated_string(program: S.Program, profile, diags: Diagnostics) -
         if not names and (m := _IF_STRING_RE.match(stmt.text)):
             if known is None:
                 known = prose_known(program, profile)
-            here = known - declared_later(first_declarations(program), stmt.line, stmt.file) - diags.cascade_gone
+            here = known - declared_later(first_declarations(program), stmt.line, stmt.file)
             words = _leading_unknown_words(m.group(1), here) + ([m.group(2)] if m.group(2).upper() not in here else [])
             names = [
                 Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=w), stmt.file, True)
@@ -2310,7 +2301,6 @@ def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics) -> Non
     ctx = context.of(program, profile)
     types = ctx.variable_types()
     known = ctx.known_names
-    gone = diags.cascade_gone
     params: dict[str, str | None] = {}  # the enclosing Sub/Function's plain parameters: name -> type
     for stmt in program.statements:
         if isinstance(stmt, S.SubDef):
@@ -2355,7 +2345,7 @@ def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics) -> Non
                     if params[up] is None:
                         continue  # (a ByVal/ByRef, array or unusual-type parameter: not probed)
                     bad = params[up] not in ("LONG", "BOOLEAN")
-                elif up in gone or up not in known:
+                elif up not in known:
                     bad = True
                 elif up in types:
                     bad = types[up] not in ("LONG", "BOOLEAN")

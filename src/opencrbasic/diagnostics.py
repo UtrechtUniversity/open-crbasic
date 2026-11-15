@@ -194,8 +194,6 @@ class Diagnostic:
     show_file: bool | str = True  # whether an origin outside `main_file` gets a `<file>` prefix:
     # True always, False never, "cr3xx" only on CR300/CR350 (pass-2 on CR6/CR1000X, pass-1 there);
     # see this module's docstring.
-    cascade: bool = True  # CR300/CR350: may start the `Too many parameters` cascade (`cr3xx`)
-    trigger: bool = field(default=False, compare=False)  # starts it whatever the message (`cr3xx`)
     stmt: int = field(default=0, compare=False)  # id() of the statement that raised it, when tagged
     kind: str = field(default="", compare=False)  # canonical message-family identifier
     phase: str = field(default="", compare=False)  # checker stage or aside bucket that emitted it
@@ -244,7 +242,6 @@ class Diagnostic:
 class Diagnostics(LoadProvenance):
     items: list[Diagnostic] = field(default_factory=list)
     asides: list[Diagnostic] = field(default_factory=list)  # findings gated/merged by checker resolve step
-    cascade_gone: set[str] = field(default_factory=set)  # CR300/CR350 names a declaration cascade left unregistered
 
     def error(
         self,
