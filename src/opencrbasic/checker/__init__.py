@@ -470,14 +470,10 @@ def _check_with_context(
     _run_pass(instr_rules.check_essinitialize_too_many, program, profile, diags, phase="pass1")
     _run_pass(instr_rules.check_snmpvariable_too_many, program, profile, diags, phase="pass1")
     _run_pass(instr_rules.check_snmp_oid, program, profile, diags, env, phase="pass1")
-    _run_pass(instr_rules.check_modemcallback_baud, program, profile, diags, phase="pass1")
-    _run_pass(instr_rules.check_serialin_destination, program, profile, diags, phase="pass1")
-    _run_pass(instr_rules.check_serialin_comport, ctx.flat, profile, diags, env, phase="pass1")
+    _run_pass(instr_rules.run_rules, "pass1", ctx.flat, profile, diags, env, phase="pass1")
     _run_pass(instr_rules.check_emailrecv_destination, program, profile, diags, phase="pass1")
     _run_pass(instr_rules.check_tcpopen_connections, program, profile, diags, env, phase="pass1")
     _run_pass(instr_rules.check_tcpopen_handle_type, program, profile, diags, phase="pass1")
-    _run_pass(instr_rules.check_precision_variable, program, profile, diags, phase="pass1")
-    _run_pass(instr_rules.check_vibrating_wire_diagnostics, program, profile, diags, phase="pass1")
     _run_pass(instr_rules.check_iif_types, ctx.flat, profile, diags, phase="pass1")
     _run_pass(var_types.check_ctype, program, profile, diags, phase="pass1")
     _run_pass(var_types.check_pointer_deref, program, profile, diags, phase="pass1")
@@ -592,8 +588,8 @@ def _check_with_context(
         _run_pass(expressions.check_table_members, flat, profile, diags, phase="tier_b_generic")
         _run_pass(expressions.check_digit_members, flat, profile, diags, phase="tier_b_generic")
         _run_pass(expressions.check_undefined_dotted_bases, flat, profile, diags, phase="tier_b_generic")
-        _run_pass(instr_rules.check_debug_args, flat, profile, diags, env, phase="tier_b_generic")
-        _run_aside("leading", diags, instr_rules.check_serialbrk_comport, flat, profile, _ASIDE, env)
+        _run_pass(instr_rules.run_rules, "tier_b_generic", flat, profile, diags, env, phase="tier_b_generic")
+        _run_aside("leading", diags, instr_rules.run_rules, "leading", flat, profile, _ASIDE, env)
         if not profile.single_pass:
             diags.items[:] = [
                 dataclasses.replace(d, show_file=False)
@@ -611,7 +607,7 @@ def _check_with_context(
 
         if not profile.single_pass:
             _run_aside("bounds", diags, expressions.check_instruction_index_bounds, flat, profile, _ASIDE, env)
-            _run_aside("bounds", diags, instr_rules.check_avgrun_options, flat, profile, _ASIDE, env)
+            _run_aside("bounds", diags, instr_rules.run_rules, "bounds", flat, profile, _ASIDE, env)
             _run_aside("bounds", diags, instr_data.check_output_datatype, flat, profile, _ASIDE, env)
             _run_aside("leading", diags, instr_data.check_odd_pair_reps, flat, profile, _ASIDE, env)
             _run_aside("bounds", diags, instr_rules.check_option_values, flat, profile, _ASIDE, env)
@@ -624,14 +620,12 @@ def _check_with_context(
             _run_aside("bounds", diags, instr_rules.check_fieldcal_variable_args, flat, profile, _ASIDE, env)
             _run_aside("bounds", diags, instr_rules.check_pulsecount_channels, flat, profile, _ASIDE)
             _run_aside("claims", diags, instr_rules.check_terminal_conflicts, flat, profile, _ASIDE, env)
-            _run_aside("bounds", diags, instr_rules.check_sdi12_nan_fill, flat, profile, _ASIDE, env)
             _run_aside("leading", diags, instr_rules.check_dnp_update, flat, profile, _ASIDE, env)
-            _run_aside("bounds", diags, instr_rules.check_portbridge_array, flat, profile, _ASIDE, env)
             _run_aside("bounds", diags, instr_rules.check_cdm_address_types, flat, profile, _ASIDE, env)
             _run_aside("bounds", diags, instr_rules.check_avw200_scan_time, flat, profile, _ASIDE, env)
             _run_aside("bounds", diags, instr_rules.check_epi_scan_buffers, flat, profile, _ASIDE, env)
 
-        _run_pass(instr_rules.check_sdm_address, program, profile, diags, env, phase="tier_b")
+        _run_pass(instr_rules.run_rules, "tier_b", program, profile, diags, env, phase="tier_b")
         if not profile.single_pass:
             _run_aside("ranges", diags, instr_measure.check_const_ranges, flat.statements, profile, _ASIDE, env)
         _run_pass(instr_data.check_unclosed_calltable, program, diags, profile, phase="tier_b_calltable")
@@ -684,13 +678,12 @@ def _check_with_context(
             _run_aside("bounds", diags, expressions.check_calibrate_size, program, profile, _ASIDE, env)
             _run_aside("bounds", diags, expressions.check_subcall_element_bounds, program, profile, _ASIDE, env)
             _run_aside("bounds", diags, instr_rules.check_fieldcal_variable_args, program, profile, _ASIDE, env)
-            _run_aside("bounds", diags, instr_rules.check_matrix_destination, program, profile, _ASIDE)
-            _run_aside("bounds", diags, instr_rules.check_avgrun_options, program, profile, _ASIDE, env)
+            _run_aside("bounds", diags, instr_rules.run_rules, "bounds", program, profile, _ASIDE, env)
             _run_aside("bounds", diags, instr_data.check_eventcount_tables, program, profile, _ASIDE)
         _run_pass(instr_data.check_table_reps_late, program, profile, diags, env, phase="late")
         if profile.single_pass:
             _run_pass(instr_rules.check_dnp_update, ctx.flat, profile, diags, env, phase="late")
-            _run_pass(instr_rules.check_portbridge_array, ctx.flat, profile, diags, env, phase="late")
+            _run_pass(instr_rules.run_rules, "late", ctx.flat, profile, diags, env, phase="late")
     if (
         not diags.errors or (profile.single_pass and all(d.kind in COULD_NOT_FIND_KINDS for d in diags.errors))
     ) and profile.early_warnings_gated:

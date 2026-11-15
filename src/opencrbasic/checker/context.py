@@ -639,6 +639,85 @@ class Context:
 
         return expressions._build_dims_state(self)
 
+    @functools.cached_property
+    def float_names(self) -> frozenset[str]:
+        """Float-typed declaration names in `self.program` for `longconv` coercion."""
+        from . import longconv
+
+        return longconv.float_names(self.program.statements)
+
+    @functools.cached_property
+    def literal_names(self) -> frozenset[str]:
+        """Float-typed declaration names preserving literal coercions in `longconv`."""
+        from . import longconv
+
+        return longconv.literal_names(self.program.statements)
+
+    @functools.cached_property
+    def string_consts(self) -> frozenset[str]:
+        """Upper-case names of `Const` declarations holding strings or joined strings."""
+        out: set[str] = set()
+        for st in self.program.statements:
+            if isinstance(st, S.ConstDecl) and _stringish_const(st.value, out):
+                out.add(st.name.upper())
+        return frozenset(out)
+
+    @functools.cached_property
+    def alias_names(self) -> frozenset[str]:
+        """Upper-case names introduced as `Alias` targets in `self.program`."""
+        return frozenset(
+            a.name.upper()
+            for st in self.program.statements
+            if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
+            for a in st.args[1:]
+            if isinstance(a, S.Name)
+        )
+
+    @functools.cached_property
+    def _serialin_types_map(self) -> dict[str, str]:
+        assert self.profile is not None
+        types = self.variable_types()
+        for stmt in self.program.statements:
+            if isinstance(stmt, S.ConstDecl):
+                types[stmt.name.upper()] = "CONST"
+            elif (
+                isinstance(stmt, S.Instruction)
+                and stmt.keyword.upper() == "ALIAS"
+                and stmt.args
+                and isinstance(stmt.args[0], (S.Name, S.Index))
+            ):
+                kind = types.get(stmt.args[0].name.upper())
+                if kind is not None:
+                    for alias in stmt.args[1:]:
+                        if isinstance(alias, S.Name):
+                            types[alias.name.upper()] = kind
+        for name in self.profile.functions:
+            types.setdefault(name, "FUNCTION")
+        for name in self.profile.symbols:  # `SerialIn(ComRS232,...)` (oracle, CR6/CR1000X, round 59)
+            types.setdefault(name, "CONST")
+        return types
+
+    def serialin_types(self) -> dict[str, str]:
+        """Fresh `name -> type/role` dict for string-destination and argument checks."""
+        return dict(self._serialin_types_map)
+
+    @functools.cached_property
+    def measurement_aliases(self):
+        """Cached `Alias` storage lookup callable `(stmt, dest, allow_bare_index=False)`."""
+        from . import instr_measure
+
+        return instr_measure._build_measurement_aliases(self.program, self.scope_tables(scalars=True), self.env)
+
+
+def _stringish_const(expr: S.Expr | None, str_consts: set[str] | frozenset[str]) -> bool:
+    if isinstance(expr, S.String):
+        return True
+    if isinstance(expr, S.Name):
+        return expr.name.upper() in str_consts
+    if isinstance(expr, S.Binary) and expr.op in ("&", "+"):
+        return _stringish_const(expr.left, str_consts) or _stringish_const(expr.right, str_consts)
+    return False
+
 
 _CURRENT: ContextVar[Context | None] = ContextVar("opencrbasic_checker_context", default=None)
 

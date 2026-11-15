@@ -1246,13 +1246,7 @@ class KnownNames(set[str]):
 def _alias_names(program: S.Program) -> set[str]:
     """`Alias` names: a variable for the const-only positions (`Sample(1,IEEE4,Ux)` with
     `Alias A(1) = Ux` is `Variable illegal in Parameter: Ux.`; oracle, CR6/CR1000X, 2026-10-25)."""
-    return {
-        a.name.upper()
-        for st in program.statements
-        if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
-        for a in st.args[1:]
-        if isinstance(a, S.Name)
-    }
+    return set(context.of(program).alias_names)
 
 
 def _value_less_tables(ctx: context.Context) -> frozenset:

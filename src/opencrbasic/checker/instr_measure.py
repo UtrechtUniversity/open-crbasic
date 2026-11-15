@@ -1198,6 +1198,11 @@ def _measurement_output_count(stmt: S.Instruction, reps: int, env: consteval.Env
 
 
 def _measurement_aliases(program: S.Program, tables, env: consteval.Env):
+    """Cached alias destination lookup for `program`."""
+    return context.of(program, env=env).measurement_aliases
+
+
+def _build_measurement_aliases(program: S.Program, tables, env: consteval.Env):
     """Alias destinations: `(backing elements, start offset, diagnostic name, declared size)`,
     the size None for a bare alias name (rounds 26 and 30).
 
