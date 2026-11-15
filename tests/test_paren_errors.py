@@ -24,42 +24,42 @@ ROWS = [
     (
         "Public V(4)\nAlias V((1+2))=WatchDog\n" + BODY,
         ALIAS_CR6,
-        ALIAS_CR6 + ["line 4: Too many parameters:  Sec."],
+        ALIAS_CR6,
     ),
     (
         "Public V(4,4)\nAlias V(2,(1+2)) = W\n" + BODY,
         ALIAS_CR6,
-        ALIAS_CR6 + ["line 4: Too many parameters:  Sec."],
+        ALIAS_CR6,
     ),
     (
         "Public V(4)\nAlias V((1))=W\n" + BODY,
         [f"line 2: {PAREN} (1.", "line 2: Alias is illegally dimensioned."],
-        [f"line 2: {PAREN} (1.", "line 2: Alias is illegally dimensioned.", "line 4: Too many parameters:  Sec."],
+        [f"line 2: {PAREN} (1.", "line 2: Alias is illegally dimensioned."],
     ),
     (
         "Const CRLF = CHR(13,1) + CHR(10)\n" + BODY,
         [f"line 1: {PAREN} CHR(13,1) + CHR(10)."],
-        [f"line 1: {PAREN} CHR(13,1) + CHR(10).", "line 3: Too many parameters:  Sec."],
+        [f"line 1: {PAREN} CHR(13,1) + CHR(10)."],
     ),
     (
         "Public X\nBeginProg\n  X = ASin( 1\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
         None,
-        [f"line 3: {PAREN}   X = ASin( 1\n.", "line 4: Too many parameters:  Sec."],
+        [f"line 3: {PAREN}   X = ASin( 1\n."],
     ),
     (
         "Public X\nBeginProg\n  X = ATN2(1)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
         None,
-        ["line 3: Expression expects , :   X = ATN2(1)\n.", "line 4: Too many parameters:  Sec."],
+        ["line 3: Expression expects , :   X = ATN2(1)\n."],
     ),
     (
         "Public X\nBeginProg\n  X = (1))\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
         None,
-        ["line 3: Incomplete expression:   X = (1))\n.", "line 4: Too many parameters:  Sec."],
+        ["line 3: Incomplete expression:   X = (1))\n."],
     ),
     (
         "Public X\nBeginProg\n  X = Sin\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
         None,
-        ["line 3: Expression expects ( :   X = Sin\n.", "line 4: Too many parameters:  Sec."],
+        ["line 3: Expression expects ( :   X = Sin\n."],
     ),
 ]
 

@@ -40,13 +40,11 @@ CASES = [
                 "line 4: String without end quote",
                 'line 4: Invalid, or out of place expression:   S = "abc',
                 ".",
-                "line 5: Too many parameters:  Sec.",
             ],
             "cr350": [
                 "line 4: String without end quote",
                 'line 4: Invalid, or out of place expression:   S = "abc',
                 ".",
-                "line 5: Too many parameters:  Sec.",
             ],
         },
     ),

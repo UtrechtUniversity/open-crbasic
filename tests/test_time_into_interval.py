@@ -183,7 +183,6 @@ CASES = [
             ],
             "cr300": [
                 "line 2: Invalid Variable declaration banana.",
-                "line 4: Too many parameters:  Sec.",
                 "line 5: Interval (1) must be > 0 and TimeInto Interval (3) must be < Interval.",
             ],
         },

@@ -24,8 +24,8 @@ CASES = [
         {
             "cr6": ['line 3: Too many parameters:  "fuzz".'],
             "cr1000x": ['line 3: Too many parameters:  "fuzz".'],
-            "cr300": ['line 3: Too many parameters:  "fuzz".', "line 6: Too many parameters:  Sec."],
-            "cr350": ['line 3: Too many parameters:  "fuzz".', "line 6: Too many parameters:  Sec."],
+            "cr300": ['line 3: Too many parameters:  "fuzz".'],
+            "cr350": ['line 3: Too many parameters:  "fuzz".'],
         },
     ),
     (
@@ -34,8 +34,8 @@ CASES = [
         {
             "cr6": ["line 3: Too many parameters:  1."],
             "cr1000x": ["line 3: Too many parameters:  1."],
-            "cr300": ["line 3: Too many parameters:  1.", "line 6: Too many parameters:  Sec."],
-            "cr350": ["line 3: Too many parameters:  1.", "line 6: Too many parameters:  Sec."],
+            "cr300": ["line 3: Too many parameters:  1."],
+            "cr350": ["line 3: Too many parameters:  1."],
         },
     ),
     (
@@ -44,8 +44,8 @@ CASES = [
         {
             "cr6": ['line 3: Too many parameters:  "fuzz".'],
             "cr1000x": ['line 3: Too many parameters:  "fuzz".'],
-            "cr300": ['line 3: Too many parameters:  "fuzz".', "line 6: Too many parameters:  Sec."],
-            "cr350": ['line 3: Too many parameters:  "fuzz".', "line 6: Too many parameters:  Sec."],
+            "cr300": ['line 3: Too many parameters:  "fuzz".'],
+            "cr350": ['line 3: Too many parameters:  "fuzz".'],
         },
     ),
     (
@@ -54,8 +54,8 @@ CASES = [
         {
             "cr6": ['line 3: Too many parameters:  "fuzz".'],
             "cr1000x": ['line 3: Too many parameters:  "fuzz".'],
-            "cr300": ['line 3: Too many parameters:  "fuzz".', "line 6: Too many parameters:  Sec."],
-            "cr350": ['line 3: Too many parameters:  "fuzz".', "line 6: Too many parameters:  Sec."],
+            "cr300": ['line 3: Too many parameters:  "fuzz".'],
+            "cr350": ['line 3: Too many parameters:  "fuzz".'],
         },
     ),
     (
@@ -64,8 +64,8 @@ CASES = [
         {
             "cr6": ["line 3: Too many parameters:  1+2."],
             "cr1000x": ["line 3: Too many parameters:  1+2."],
-            "cr300": ["line 3: Too many parameters:  1+2.", "line 6: Too many parameters:  Sec."],
-            "cr350": ["line 3: Too many parameters:  1+2.", "line 6: Too many parameters:  Sec."],
+            "cr300": ["line 3: Too many parameters:  1+2."],
+            "cr350": ["line 3: Too many parameters:  1+2."],
         },
     ),
     (
@@ -74,8 +74,8 @@ CASES = [
         {
             "cr6": ["line 3: Too many parameters:  Y."],
             "cr1000x": ["line 3: Too many parameters:  Y."],
-            "cr300": ["line 3: Too many parameters:  Y.", "line 6: Too many parameters:  Sec."],
-            "cr350": ["line 3: Too many parameters:  Y.", "line 6: Too many parameters:  Sec."],
+            "cr300": ["line 3: Too many parameters:  Y."],
+            "cr350": ["line 3: Too many parameters:  Y."],
         },
     ),
     (
@@ -84,8 +84,8 @@ CASES = [
         {
             "cr6": ["line 3: Too many parameters:  1."],
             "cr1000x": ["line 3: Too many parameters:  1."],
-            "cr300": ["line 3: Too many parameters:  1.", "line 6: Too many parameters:  Sec."],
-            "cr350": ["line 3: Too many parameters:  1.", "line 6: Too many parameters:  Sec."],
+            "cr300": ["line 3: Too many parameters:  1."],
+            "cr350": ["line 3: Too many parameters:  1."],
         },
     ),
     (
@@ -94,16 +94,8 @@ CASES = [
         {
             "cr6": ["line 3: Too many parameters:  1."],
             "cr1000x": ["line 3: Too many parameters:  1."],
-            "cr300": [
-                "line 3: Too many parameters:  1.",
-                "line 4: Too many parameters:  Y.",
-                "line 7: Too many parameters:  Sec.",
-            ],
-            "cr350": [
-                "line 3: Too many parameters:  1.",
-                "line 4: Too many parameters:  Y.",
-                "line 7: Too many parameters:  Sec.",
-            ],
+            "cr300": ["line 3: Too many parameters:  1."],
+            "cr350": ["line 3: Too many parameters:  1."],
         },
     ),
     (
@@ -114,12 +106,10 @@ CASES = [
             "cr1000x": ["line 3: Too many parameters:  1."],
             "cr300": [
                 "line 3: Too many parameters:  1.",
-                "line 6: Too many parameters:  Sec.",
                 "line 8: Q is not defined.",
             ],
             "cr350": [
                 "line 3: Too many parameters:  1.",
-                "line 6: Too many parameters:  Sec.",
                 "line 8: Q is not defined.",
             ],
         },

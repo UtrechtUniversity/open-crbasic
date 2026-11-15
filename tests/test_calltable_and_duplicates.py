@@ -99,5 +99,4 @@ def test_cr300_empty_dims_as(logger):
     assert messages("Public A() As Long\n" + BODY, logger) == [
         "As is not defined.",
         "Variable illegal in Parameter:  As.",
-        "Too many parameters:  Sec.",
     ]

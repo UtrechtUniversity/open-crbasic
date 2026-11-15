@@ -24,7 +24,6 @@ CR300_LOGGERS = ("cr300", "cr350")
 ALL_LOGGERS = CR6_LOGGERS + CR300_LOGGERS
 
 EXPR = "Invalid, or out of place expression:"
-SCAN = "line 4: Too many parameters:  Sec."
 SERIAL_A = '    SerialOpen("a",115200,0,0,10000)'
 PORT = "line 4: ComPort 0 illegal."
 CONST_INT = "Parameter must be a constant integer:"
@@ -37,13 +36,13 @@ ROWS = [
         "const_expr_comment",
         "Const Pi = 4*ATN() 'c\nPublic X\n" + B + E,
         [f"line 1: {EXPR} 4*ATN() ."],
-        [f"line 1: {EXPR} 4*ATN() .", SCAN],
+        [f"line 1: {EXPR} 4*ATN() ."],
     ),
     (
         "const_expr_plain",
         "Const Pi = 4*ATN()\nPublic X\n" + B + E,
         [f"line 1: {EXPR} 4*ATN()."],
-        [f"line 1: {EXPR} 4*ATN().", SCAN],
+        [f"line 1: {EXPR} 4*ATN()."],
     ),
     (
         "serialopen_string_comport_then_undefined",
@@ -92,14 +91,13 @@ CR300_ONLY = [
     (
         "realtime_then_portset",
         "Public X, A(9)\n" + B + "    RealTime(5)\n    PortSet(C1,1)\n" + E,
-        [f"line 4: {VARIABLE} 5.", "line 5: Too many parameters:  1."],
+        [f"line 4: {VARIABLE} 5."],
     ),
     (
         "battery_paren_then_portset",
         "Public X, A(9)\n" + B + "    Battery((1+2))\n    PortSet(C1,1)\n" + E,
         [
             "line 4: Illegal destination variable type, expecting Float.",
-            "line 5: Too many parameters:  1.",
         ],
     ),
 ]

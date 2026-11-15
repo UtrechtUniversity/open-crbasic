@@ -15,22 +15,6 @@ def messages(text: str, logger: str) -> list[str]:
     return [d.message for d in sorted(diags.errors, key=lambda d: d.line)]
 
 
-BODY = "BeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n"
-
-
-@pytest.mark.parametrize("logger", ["cr300", "cr350"])
-@pytest.mark.parametrize(
-    "decls,first",
-    [
-        ("Public id As Long\nPublic id As Long\n", "id already declared as a variable."),
-        ("Const A = 1\nPublic A\n", "A is already declared as a CONST."),
-        ("Public X\nPublic A As StringX * 50\nDim Z banana\n", "Variable Type StringX not supported"),
-    ],
-)
-def test_declaration_error_taints_scan(decls, first, logger):
-    assert messages(decls + BODY, logger) == [first, "Too many parameters:  Sec."]
-
-
 @pytest.mark.parametrize("logger", ["cr300", "cr350"])
 def test_no_pass_gate(logger):
     # Oracle: pass-2 findings are still reported after a pass-1 error on CR300/CR350.

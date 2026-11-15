@@ -53,7 +53,6 @@ def test_cr300_cascade(logger):
     text = "Public essBatteryStatus As Float\nESSVariables Dim\n" + TAIL
     out = lines(text, logger)
     assert out[0] == "line 2: ESS variable essBatteryStatus must be declared as Long"
-    assert "line 5: Too many parameters:  Sec." in out
 
 
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x", "cr300", "cr350"])

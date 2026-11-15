@@ -640,9 +640,7 @@ def _check_with_context(
 
         _run_pass(cr3xx.check_unknown_line_words, flat, profile, diags, phase="tier_b")
         _run_pass(cr3xx.check_for_header, flat, profile, diags, phase="tier_b")
-        _run_pass(cr3xx.check_undefined_call_args, flat, profile, diags, phase="tier_b")
         _run_pass(cr3xx.check_float_destinations, flat, profile, diags, phase="tier_b")
-        _run_pass(cr3xx.check_undefined_arg_aborts, flat, profile, diags, phase="tier_b")
         _run_pass(cr3xx.drop_too_many_after_variable_illegal, flat, profile, diags, phase="tier_b")
         _run_pass(cr3xx.drop_calltable_error_with_other_errors, program, profile, diags, phase="tier_b")
 
@@ -793,13 +791,9 @@ def _check_with_context(
     _run_pass(cr3xx.drop_shortfall_with_names, program, profile, diags, phase="cr3xx")
     if profile.single_pass:
         _run_pass(instr_data.finalize_illegal_table_names, program, profile, diags, phase="cr3xx")
-    _run_pass(cr3xx.check_tcpopen_handle_early, program, profile, diags, phase="cr3xx")
-    _run_pass(cr3xx.check_too_many_cascade, ctx.flat, profile, diags, phase="cr3xx")
-    _run_pass(cr3xx.drop_compound_target_repeat, program, profile, diags, phase="cr3xx")
     _run_pass(cr3xx.order_block_keyword_calls, program, profile, diags, phase="cr3xx")
     _run_pass(cr3xx.fix_then_operand, program, profile, diags, phase="cr3xx")
     _run_pass(cr3xx.order_invalid_assignments, program, profile, diags, phase="cr3xx")
-    _run_pass(cr3xx.order_target_name_first, program, profile, diags, phase="cr3xx")
     _run_pass(cr3xx.order_unterminated_string, program, profile, diags, phase="cr3xx")
     _run_pass(cr3xx.check_tcpopen_handle, program, profile, diags, phase="cr3xx")
     _run_pass(cr3xx.add_string_illegal, program, profile, diags, phase="cr3xx")
@@ -807,7 +801,6 @@ def _check_with_context(
     _run_pass(cr3xx.semicolon_headers, program, profile, diags, phase="cr3xx")
     _run_pass(intervals.fold_timeout_expressions, ctx.flat, profile, diags, env, pass1_items, phase="cr3xx")
     _run_pass(intervals.order_timeout_negative, diags, profile, program, phase="cr3xx")
-    _run_pass(cr3xx.drop_after_alias_collision, program, profile, diags, phase="cr3xx")
 
     def is_constant(expr: S.Expr | None) -> bool:
         return consteval.is_constant(expr, env)
