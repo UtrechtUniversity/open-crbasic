@@ -3,37 +3,62 @@
 A native re-implementation of Campbell Scientific's CRBasic pre-compilers for the CR6, CR1000X,
 CR300 and CR350 dataloggers (`CR6Comp.exe`, `cr1000xcomp.exe`, `cr300comp.exe`, `cr350comp.exe`),
 with a language server. It runs on Linux, macOS and Windows with only Python 3.15+, no Wine and no
-Windows binaries. It is MIT licensed and not affiliated with Campbell Scientific; provenance and
-what this repository deliberately leaves out are in the [legal notes](docs/legal.md). Version 1.0:
-[release record](docs/release-1.0.md).
+Windows binaries. It is MIT licensed and **not affiliated with, endorsed by or derived from code of
+Campbell Scientific**; provenance and what this repository deliberately leaves out are in the
+[legal notes](docs/legal.md). It checks programs; it is not the reference compiler, so keep
+Campbell's compiler as the gate before flashing hardware.
+
+## Install
 
 ```bash
 pip install opencrbasic           # crbc, the compiler
-pip install "opencrbasic[lsp]"    # also crbc-lsp, the language server
+pip install "opencrbasic[lsp]"    # also crbc-lsp, the language server (adds pygls)
+# or, with uv:
+uv tool install opencrbasic       # uv tool install "opencrbasic[lsp]" for the language server
 ```
 
-The VS Code extension lives in [open-crbasic-vsix](https://github.com/UtrechtUniversity/open-crbasic-vsix);
-agent skills for writing CRBasic in [open-crbasic-skills](https://github.com/UtrechtUniversity/open-crbasic-skills).
+Requires Python 3.15 or newer. The compiler has no runtime dependencies.
 
-Status, measured against the real compilers: `PROGRESS.md`. Design and the v1.0 milestones:
-[`PLAN.md`](PLAN.md#v10-milestones).
+## Related projects
 
-## Scope
+- [open-crbasic-vsix](https://github.com/UtrechtUniversity/open-crbasic-vsix): VS Code extension
+  (Marketplace: `OttodeVisserUU.opencrbasic`), the client for `crbc-lsp`.
+- [open-crbasic-rs](https://github.com/UtrechtUniversity/open-crbasic-rs): a Rust port of the
+  verdict path (crate `opencrbasic`, binary `crbc`), equal to this package on all fixtures.
+- [open-loggernet](https://github.com/UtrechtUniversity/open-loggernet): a LoggerNet-free client
+  and `oln` command line for the loggers; it uses opencrbasic as its compiler when
+  `CR6COMP=opencrbasic` is set.
 
-- **Gated profiles: CR6 and CR1000X.** On these, v1.0 gates the reference verdict in the relevant
-  area (the station/GEUS instruction set and language constructs), the execution mode, and the
-  first error for realistic mistakes on relevant rules, measured on the station programs, the 507
-  CRBasic help examples, the 66 GEUS programs, the saved fuzz replay and fresh `--relevant` fuzz
-  seeds. The help examples and GEUS programs are not redistributed here; see
-  [tests/corpus/README.md](tests/corpus/README.md) for running against local copies. One relevant-area false accept is known: a `Sub` name that is also another routine's
-  parameter, used as a value. CR300 and CR350 are best effort: measured and kept, not gated (human
-  decision 2026-10-24).
-- **Outputs.** stdout, the message file, `-s`, `-u`, `-p`/`-i`, `-l`/`-c` and the CR6 TDF (`-z`) are
-  compared byte for byte by the [artifact matrix](docs/artifacts.md), which also lists what is best
-  effort per profile. `-t` covers the oracle-fitted instruction set (`docs/cli.md`).
-- **Excluded:** the CDM binary image of `-b` ([PLAN](PLAN.md#explicit-exclusions-from-parity)).
-- Known remaining cases (false accepts outside the relevant set, first-error decisions, matrix
-  differences) are listed in the release record.
+## Supported loggers
+
+| Logger | `--logger` | File extension | Status |
+|---|---|---|---|
+| CR6 | `cr6` (default) | `.CR6` | gated against `CR6Comp.exe` |
+| CR1000X | `cr1000x` | `.CR1X` | gated against `cr1000xcomp.exe` |
+| CR300 | `cr300` | `.CR300` | best effort |
+| CR350 | `cr350` | `.CR350` | best effort |
+
+"Gated" means the reference verdict, execution mode and first error for realistic mistakes are
+compared with the real compiler on every release; "best effort" means measured and kept, not gated.
+Per-logger differences: [`docs/loggers.md`](docs/loggers.md).
+
+## Limitations
+
+- **Not the reference compiler.** Measured against the real compilers on the CRBasic help examples,
+  a field station's programs and fuzzed mutations, not exhaustively. A small number of false accepts
+  (programs opencrbasic accepts and Campbell's compiler rejects) are known and listed in the
+  [release record](docs/release-1.0.md). In the gated area one is known: a `Sub` name that is also
+  another routine's parameter, used as a value.
+- **Diagnostics after the first error** may differ in order, wording or cascade from the reference.
+  The first error is fixed when it comes from a realistic mistake
+  ([`docs/first-error-review.md`](docs/first-error-review.md)).
+- **Not implemented:** the CDM binary image of `-b` (an empty file is written for programs that use
+  CDM hardware); `-m` is accepted and does nothing; `-t` covers only the oracle-fitted instruction
+  set. CR1000X, CR300 and CR350 table definition files (`-z`) use the CR6 Status table (best effort).
+  Outputs and what is best effort per profile: [`docs/artifacts.md`](docs/artifacts.md).
+- **Editor:** the editor features were host-tested in VS Code on macOS only; Windows and Linux are
+  not claimed, and the check and coverage-notice display has not been host-tested.
+- **No hardware tests:** compiling and comparing says nothing about runtime behaviour on a logger.
 
 ## Three channels
 
@@ -52,8 +77,8 @@ Every finding belongs to one channel ([PLAN](PLAN.md#three-diagnostic-channels))
 ## Accepted differences
 
 In the differential tools, equal means equal exit status and equal stdout after whitespace
-normalization (line endings, trailing spaces); the artifact matrix compares bytes. By the human decision of 2026-10-24, differences in the order,
-wording or cascade of diagnostics after the first error are accepted and do not block a release;
+normalization (line endings, trailing spaces); the artifact matrix compares bytes. Differences in the order,
+wording or cascade of diagnostics after the first error are accepted;
 differences in the first error are fixed when they come from a realistic mistake and otherwise
 recorded in [`docs/first-error-review.md`](docs/first-error-review.md). Runner failures and
 reference crashes are never counted as verdicts.
@@ -68,21 +93,7 @@ reference crashes are never counted as verdicts.
   with another (`docs/lsp-api.md`). `checks.SCHEMA_VERSION` (now 2) versions the `--report` JSON.
   Each is bumped only on an incompatible change.
 
-## Use
-
-Python dependencies are managed with [uv](https://docs.astral.sh/uv/). The package itself has
-no runtime dependencies; the `dev` group adds pytest, pefile (for the reverse-engineering tools),
-pygls, pyrefly and pre-commit.
-
-```bash
-uv sync                              # environment from uv.lock
-uv run pre-commit install            # ruff, pyrefly and file hygiene on every commit
-uv run crbc Program.CR6              # compile
-uv run pytest -q -n auto             # tests
-uv tool install .                    # optional: `crbc` on PATH outside the project
-```
-
-Contributor and agent conventions: [AGENTS.md](AGENTS.md).
+## Usage
 
 `crbc` is a drop-in for `CR6Comp.exe` (`docs/cli.md`):
 
@@ -91,6 +102,10 @@ crbc [options] program [messagefile]
   -s            also print ProgSignature
   -z FILE       write the binary table definition file (TDF)
   -l FILE       write the text table list (also -c)
+  -p FILE / -i FILE   write the preprocessed source (-i also expands Include/IncludeSection)
+  -u            add "declared but not used" warnings
+  -t            the [Times] section (oracle-fitted instruction set only)
+  -b FILE       CDM binary image (not implemented; see Limitations)
   -v / -d       print version (then compile / and exit)
   --logger L    cr6 | cr1000x | cr300 | cr350 (default: from the file extension
                 .CR6/.CR1X/.CR300/.CR350, else cr6)
@@ -156,6 +171,22 @@ opencrbasic checks and, with `opencrbasic.coverageNotices`, the coverage notices
 were host-tested in VS Code on macOS (T-01 to T-18, `LSP_TO_BE_TESTED.md`); the check and notice display
 (M6) has not been host-tested yet, and Windows and Linux are not claimed.
 
+## Development
+
+Python dependencies are managed with [uv](https://docs.astral.sh/uv/). The package itself has
+no runtime dependencies; the `dev` group adds pytest, pefile (for the reverse-engineering tools),
+pygls, pyrefly and pre-commit.
+
+```bash
+uv sync                              # environment from uv.lock
+uv run pre-commit install            # ruff, pyrefly and file hygiene on every commit
+uv run pytest -q -n auto             # tests
+uv run crbc Program.CR6              # compile with the checkout
+uv tool install .                    # optional: `crbc` on PATH outside the project
+```
+
+Contributor and agent conventions: [AGENTS.md](AGENTS.md).
+
 ## How it was built
 
 The exe is the logger's own compiler built for Windows. Its instruction, function and
@@ -219,3 +250,8 @@ Every push to `dev` that passes CI is published to TestPyPI as `<version>.dev<ru
 to `main` publishes to PyPI when `version` in `pyproject.toml` (and `opencrbasic.__version__`) has
 not been released yet. Publishing uses PyPI trusted publishing from the `pypi` and `testpypi` GitHub
 environments; no API token is stored in the repository.
+
+## License
+
+[MIT](LICENSE), copyright 2026 Utrecht University. Campbell Scientific, CRBasic, CR6, CR1000X, CR300,
+CR350 and LoggerNet are trademarks of their owners; this project is independent of them.

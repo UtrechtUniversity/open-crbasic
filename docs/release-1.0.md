@@ -1,6 +1,6 @@
 # opencrbasic 1.0.0 release record (M7)
 
-Internal release ([legal notes](legal.md): internal use only, never published or redistributed).
+Released internally at the time; the project has since been open sourced ([legal notes](legal.md)).
 Tag `opencrbasic-v1.0.0` (local, annotated) on the commit that adds this file; its parent is
 `9fa407a4`. The v1.0 milestones and their exit criteria: [PLAN](../PLAN.md#v10-milestones).
 
