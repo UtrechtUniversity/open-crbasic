@@ -82,9 +82,9 @@ def test_limited_source_refuses_an_oversized_file_without_reading_it(tmp_path):
 
 
 def test_analysis_reports_oversized_files_it_did_not_read(tmp_path):
-    (tmp_path / "Lib.crb").write_text(BIG_LIB)
+    (tmp_path / "Lib.crb").write_text(BIG_LIB, newline="")
     entry = tmp_path / "A.CR6"
-    entry.write_text(INCLUDING)
+    entry.write_text(INCLUDING, newline="")
     result = analyze(AnalysisRequest(entry, "cr6", max_file_bytes=100))
     lib = (tmp_path / "Lib.crb").absolute()
     assert dict(result.dependencies.oversized) == {lib: 168}
@@ -147,7 +147,7 @@ def test_close_clears_diagnostics_under_the_uri_the_client_used(make_client, tmp
     sub.mkdir(parents=True)
     path = sub / "X.CR6"
     text = "Public x\nBeginProg\nx = Missing\nEndProg\n"
-    path.write_text(text)
+    path.write_text(text, newline="")
     client = started(make_client, root, {"debounceMs": 0, "entries": ["nothing/**"]}, pull_configuration=False)
     uri = path.as_uri().replace("/d/X.CR6", "/d/./X.CR6")  # the same file, another spelling
     client.notify(

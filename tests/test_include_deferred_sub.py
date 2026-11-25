@@ -14,9 +14,9 @@ FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "include_deferred_sub
 @pytest.mark.parametrize("case", FIXTURE["cases"], ids=lambda case: case["id"])
 def test_include_deferred_sub_observations(case, tmp_path):
     for name, text in case["siblings"].items():
-        (tmp_path / name).write_text(text, encoding="utf-8")
+        (tmp_path / name).write_text(text, encoding="utf-8", newline="")
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
 
     result = compile_file(program, profiles.get(case["logger"]))
 

@@ -17,7 +17,7 @@ CASES = [
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
 def test_serialopen_comport_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
 
     result = compile_file(program, profiles.get(case["logger"]))
 

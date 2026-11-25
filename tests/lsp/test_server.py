@@ -65,7 +65,7 @@ def project(tmp_path: Path, **files: str) -> Path:
     root = tmp_path / "proj"
     root.mkdir()
     for name, text in files.items():
-        (root / name).write_text(text)
+        (root / name).write_text(text, newline="")
     return root
 
 
@@ -309,7 +309,7 @@ def test_unsaved_include_edit_save_and_close(make_client, tmp_path):
     client.open(lib, LIB, version=1)
     client.change(lib, BAD_LIB, 2)
     client.wait_diagnostics(lib, lambda d: any(x["severity"] == 1 for x in d), after=len(client.publishes(lib)) - 1)
-    lib.write_text(BAD_LIB)
+    lib.write_text(BAD_LIB, newline="")
     client.save(lib)
     time.sleep(0.5)
     n = len(client.publishes(lib))

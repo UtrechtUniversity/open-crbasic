@@ -19,7 +19,7 @@ CASES = [
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
 def test_reference_verdict(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"])
+    program.write_text(case["source"], newline="")
     result = compile_file(program, profiles.get(case["logger"]))
     assert not result.implementation_exceptions
     assert (0 if result.ok else 1) == case["expected_exit"]

@@ -107,7 +107,7 @@ def test_completion_without_a_program_is_incomplete(tmp_path):
 
     path = tmp_path / "x.CR6"
     text = "Public Temp\nBeginProg\n  x = Status.\nEndProg\n"
-    path.write_text(text)
+    path.write_text(text, newline="")
     ctx = Ctx("cr6", "utf-16", "utf-8", {path: text.encode()}, {})
     got = features.completion(ctx, None, None, path, types.Position(2, 13))
     assert got.is_incomplete is True and got.items == []
@@ -131,7 +131,7 @@ def _apply(line: str, rng: dict, new: str) -> str:
 
 def _started(make_client, tmp_path: Path, text: str) -> tuple[LspClient, Path]:
     path = tmp_path / "M.CR6"
-    path.write_text(text, encoding="utf-8")
+    path.write_text(text, encoding="utf-8", newline="")
     client = make_client()
     client.initialize(tmp_path, LATIN1)
     client.open(path, text)

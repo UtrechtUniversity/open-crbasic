@@ -110,7 +110,7 @@ def project(tmp_path: Path, **files: str) -> Path:
     root = tmp_path / "proj"
     root.mkdir()
     for name, text in files.items():
-        (root / name).write_text(text)
+        (root / name).write_text(text, newline="")
     return root
 
 

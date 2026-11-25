@@ -81,6 +81,7 @@ ignore = ["E702", "E731", "E741", "B009", "B010", "B023", "B905"]
 [tool.pyrefly]
 preset = "default"
 python-version = "3.15"
+python-platform = "linux"  # as CI checks it; a Windows host lacks resource.getrusage and os.killpg
 project-includes = ["src", "tools", "tests"]
 search-path = ["src", "tools", "tests/lsp"]
 project-excludes = ["tests/corpus", "tests/fixtures"]

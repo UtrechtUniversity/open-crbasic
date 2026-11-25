@@ -15,7 +15,7 @@ FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "option_args.json").r
 @pytest.mark.parametrize("case", FIXTURE["cases"], ids=lambda case: case["id"])
 def test_option_args_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
 
     result = compile_file(program, profiles.get(case["logger"]))
 

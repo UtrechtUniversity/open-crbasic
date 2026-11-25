@@ -14,7 +14,7 @@ CASES = FIXTURE["cases"]
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
 def test_fnotch_min_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
 
     result = compile_file(program, profiles.get(case["logger"]))
     actual_exit = 0 if result.ok else 1

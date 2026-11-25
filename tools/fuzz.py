@@ -90,7 +90,8 @@ def siblings_digest(directory: Path = CRBASIC_DIR) -> str:
     """SHA-256 over the sibling files a `needs_siblings` reproducer compiles against: a recorded
     reference result is stale once they change (round 40)."""
     h = hashlib.sha256()
-    for entry in sorted(directory.iterdir()):
+    # by name, case-sensitively: a WindowsPath sorts case-insensitively and changes the digest
+    for entry in sorted(directory.iterdir(), key=lambda p: p.name):
         if entry.is_file() and entry.suffix.lower() in SOURCE_SUFFIXES:  # not the compiler's *.xxx output
             h.update(entry.name.encode() + b"\0" + entry.read_bytes() + b"\0")
     return h.hexdigest()

@@ -12,7 +12,7 @@ FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "pipeline_tasks.json"
 @pytest.mark.parametrize("case", FIXTURE["cases"], ids=lambda case: case["id"])
 def test_pipeline_task_placement_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"])
+    program.write_text(case["source"], newline="")
 
     result = compile_file(program, profiles.get(case["logger"]))
 

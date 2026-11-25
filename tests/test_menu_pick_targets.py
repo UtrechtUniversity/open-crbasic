@@ -13,7 +13,7 @@ CASES = json.loads((FIXTURES / "r101_menu_pick_targets.json").read_text(encoding
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
 def test_menu_pick_target_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
 
     result = compile_file(program, profiles.get(case["logger"]))
 

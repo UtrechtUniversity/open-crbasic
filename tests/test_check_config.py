@@ -3,6 +3,7 @@
 The reference channel (stdout, `CR6cmple.xxx`) must be byte-identical with and without any of it."""
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -30,7 +31,7 @@ def _crbc(cwd, *args):
 
 def _analyze(tmp_path, toml="", cli=None, lsp=None, src=SRC, logger="cr6"):
     entry = tmp_path / "t.CR6"
-    entry.write_text(src)
+    entry.write_text(src, newline="")
     cfg = checkconfig.Config()
     if toml:
         (tmp_path / checkconfig.FILE_NAME).write_text(toml)
@@ -218,7 +219,12 @@ def test_cr6comp_native_command_runs_no_checks(tmp_path):
         ],
         capture_output=True,
         text=True,
-        env={"PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src"), "CR6COMP": "opencrbasic"},
+        env={
+            # the host variables Windows needs to start Python and find the home directory
+            **{k: os.environ[k] for k in ("SYSTEMROOT", "USERPROFILE", "HOME") if k in os.environ},
+            "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src"),
+            "CR6COMP": "opencrbasic",
+        },
     )
     assert run.stdout == "(True, 't.CR6 -- Compiled in PipelineMode.')\n", run.stderr
 

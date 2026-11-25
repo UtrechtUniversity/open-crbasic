@@ -12,7 +12,7 @@ from opencrbasic import formatting
 from opencrbasic.lsp.session import display_text
 
 from .assertions import required
-from .lspclient import LspClient
+from .lspclient import LspClient, uri_path
 
 pytestmark = pytest.mark.server
 from .test_features_server import copy_crbasic, locate, make_client, units  # noqa: F401
@@ -57,7 +57,7 @@ def project(tmp_path: Path, **files: str) -> Path:
     root = tmp_path / "proj"
     root.mkdir()
     for name, text in files.items():
-        (root / name.replace("_", ".")).write_text(text, encoding="utf-8")
+        (root / name.replace("_", ".")).write_text(text, encoding="utf-8", newline="")
     return root
 
 
@@ -129,17 +129,17 @@ def test_rename_across_a_library_and_two_entries(make_client, tmp_path):
     }
     edit = rename_at(client, lib, 0, 9, "lib_w")
     changes = edit["documentChanges"]
-    by_uri = {c["textDocument"]["uri"]: c for c in changes}
-    assert set(by_uri) == {lib.as_uri(), a.as_uri(), b.as_uri()}
-    assert by_uri[lib.as_uri()]["textDocument"]["version"] == 7  # open: its version
-    assert by_uri[a.as_uri()]["textDocument"]["version"] == 3
-    assert by_uri[b.as_uri()]["textDocument"]["version"] is None  # closed: no version
-    assert len(by_uri[lib.as_uri()]["edits"]) == 1
+    by_uri = {uri_path(c["textDocument"]["uri"]): c for c in changes}
+    assert set(by_uri) == {uri_path(lib.as_uri()), uri_path(a.as_uri()), uri_path(b.as_uri())}
+    assert by_uri[uri_path(lib.as_uri())]["textDocument"]["version"] == 7  # open: its version
+    assert by_uri[uri_path(a.as_uri())]["textDocument"]["version"] == 3
+    assert by_uri[uri_path(b.as_uri())]["textDocument"]["version"] is None  # closed: no version
+    assert len(by_uri[uri_path(lib.as_uri())]["edits"]) == 1
     for c in changes:  # one edit per use, none duplicated
         assert all(e["newText"] == "lib_w" for e in c["edits"])
-    new_lib = apply(LIB, by_uri[lib.as_uri()]["edits"])
-    new_a = apply(ENTRY, by_uri[a.as_uri()]["edits"])
-    new_b = apply(ENTRY, by_uri[b.as_uri()]["edits"])
+    new_lib = apply(LIB, by_uri[uri_path(lib.as_uri())]["edits"])
+    new_a = apply(ENTRY, by_uri[uri_path(a.as_uri())]["edits"])
+    new_b = apply(ENTRY, by_uri[uri_path(b.as_uri())]["edits"])
     assert new_lib == "Public lib_w As Long\n"
     assert new_a == ENTRY.replace("lib_v", "lib_w") == new_b
     # apply the edit the way a client would: the library first, so both entries fail, then the rest
@@ -177,10 +177,10 @@ def test_rename_from_a_use_in_one_entry_edits_every_entry(make_client, tmp_path)
         rename_at(client, path, line, ch, "renamedValue") for path, line, ch in ((a, 2, 3), (b, 2, 3), (lib, 0, 9))
     ]
     assert edits[0] == edits[1] == edits[2]
-    by_uri = {c["textDocument"]["uri"]: c["edits"] for c in edits[0]["documentChanges"]}
-    assert set(by_uri) == {a.as_uri(), b.as_uri(), lib.as_uri()}
+    by_uri = {uri_path(c["textDocument"]["uri"]): c["edits"] for c in edits[0]["documentChanges"]}
+    assert set(by_uri) == {uri_path(a.as_uri()), uri_path(b.as_uri()), uri_path(lib.as_uri())}
     for path in (a, b, lib):
-        path.write_text(apply(path.read_text(), by_uri[path.as_uri()]))
+        path.write_text(apply(path.read_text(), by_uri[uri_path(path.as_uri())]))
     assert b.read_text() == SHARED_USE.format(extra="").replace("sharedValue", "renamedValue")
     assert client.shutdown() == 0
 
@@ -244,9 +244,9 @@ def test_rename_waits_for_the_analysis_of_a_changed_document(make_client, tmp_pa
     changed = ENTRY.replace("x = x + lib_v", "x = x + lib_v + lib_v")
     client.change(a, changed, 2)  # the analysis of version 2 is pending
     edit = rename_at(client, lib, 0, 9, "lib_w")
-    by_uri = {c["textDocument"]["uri"]: c for c in edit["documentChanges"]}
-    assert by_uri[a.as_uri()]["textDocument"]["version"] == 2
-    assert apply(changed, by_uri[a.as_uri()]["edits"]) == changed.replace("lib_v", "lib_w")
+    by_uri = {uri_path(c["textDocument"]["uri"]): c for c in edit["documentChanges"]}
+    assert by_uri[uri_path(a.as_uri())]["textDocument"]["version"] == 2
+    assert apply(changed, by_uri[uri_path(a.as_uri())]["edits"]) == changed.replace("lib_v", "lib_w")
     assert client.shutdown() == 0
 
 

@@ -16,7 +16,7 @@ from opencrbasic import editing, navigation
 from opencrbasic.analysis import AnalysisRequest, analyze
 
 from .assertions import required
-from .lspclient import LspClient
+from .lspclient import LspClient, uri_file, uri_path
 
 pytestmark = pytest.mark.server
 
@@ -134,7 +134,7 @@ def shared(tmp_path_factory):
 def small_project(tmp_path: Path, text: str, name: str = "Small.CR6", **files: str) -> Path:
     root = tmp_path / "proj"
     root.mkdir()
-    (root / name).write_text(text, encoding="utf-8")
+    (root / name).write_text(text, encoding="utf-8", newline="")
     for fname, content in files.items():
         (root / fname.replace("_", ".")).write_text(content, encoding="utf-8")
     return root
@@ -203,10 +203,10 @@ def test_document_links_cover_the_file_name(shared):
     assert len(got) == len(want) >= 20
     names = {slice_of(text, g["range"]) for g in got}
     assert "CPU:StationConfig.crb" in names
-    targets = {Path(g["target"].removeprefix("file://")).name for g in got}
+    targets = {uri_file(g["target"]).name for g in got}
     assert "StationConfig.crb" in targets and "PowerProfileLib.crb" in targets
     for g in got:
-        assert Path(g["target"].removeprefix("file://")).is_file()
+        assert uri_file(g["target"]).is_file()
 
 
 def test_semantic_tokens_decode_to_declared_names(shared):
@@ -296,8 +296,8 @@ def test_definition_across_files(shared):
     else:
         pytest.fail(f"no use of {name} gave a definition")
     assert len(got) >= 1
-    target = Path(got[0]["uri"].removeprefix("file://"))
-    assert target.suffix.lower() == ".crb" and target.parent == root
+    target = uri_path(got[0]["uri"])
+    assert target.suffix.lower() == ".crb" and target.parent == uri_path(root.as_uri())
     assert slice_of(target.read_text(encoding="utf-8"), got[0]["range"]).lower() == name.lower()
 
 

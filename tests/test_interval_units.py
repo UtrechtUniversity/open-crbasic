@@ -14,7 +14,7 @@ CASES = FIXTURE["cases"]
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
 def test_interval_units_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
 
     result = compile_file(program, profiles.get(case["logger"]))
 
@@ -25,7 +25,7 @@ def test_interval_units_observations(case, tmp_path):
 @pytest.mark.parametrize("case", [c for c in CASES if "expected_interval_lines" in c], ids=lambda c: c["id"])
 def test_interval_units_table_list(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
     parsed, _ = parser.parse_file(program)
     tables, table_list, _ = build_tables(parsed, profiles.get(case["logger"]), dict(parsed.consts))
 

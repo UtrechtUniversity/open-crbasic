@@ -22,7 +22,7 @@ CASES = [
 @pytest.mark.parametrize("cid,logger,source,expected", CASES, ids=[f"{c[0]}-{c[1]}" for c in CASES])
 def test_tdf_anonymous(cid, logger, source, expected, tmp_path):
     p = tmp_path / "t.CR6"
-    p.write_text(source)
+    p.write_text(source, newline="")
     program, _ = parser.parse_file(p)
     tables, _, _ = build_tables(program, profiles.get(logger), dict(program.consts))
     got = [

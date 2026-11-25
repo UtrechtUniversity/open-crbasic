@@ -60,7 +60,7 @@ def project(tmp_path: Path, **files: str) -> Path:
     root = tmp_path / "proj"
     root.mkdir()
     for name, text in files.items():
-        (root / name.replace("_", ".")).write_text(text, encoding="utf-8")
+        (root / name.replace("_", ".")).write_text(text, encoding="utf-8", newline="")
     return root
 
 

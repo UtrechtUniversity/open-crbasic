@@ -12,7 +12,7 @@ FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "const_shadow_sub.jso
 @pytest.mark.parametrize("case", FIXTURE["cases"], ids=lambda case: case["id"])
 def test_const_shadow_sub_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
 
     result = compile_file(program, profiles.get(case["logger"]))
 

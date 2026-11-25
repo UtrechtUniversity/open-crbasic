@@ -23,7 +23,7 @@ FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "r28_parameter_aliase
 )
 def test_parameter_alias_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
 
     result = compile_file(program, profiles.get(case["logger"]))
 
@@ -44,7 +44,7 @@ def test_parameter_alias_observations(case, tmp_path):
 def test_forward_parameter_dimension_stays_rejected(case, tmp_path):
     # Keep the rejection mandatory while exact header diagnostics remain expected failures.
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
     result = compile_file(program, profiles.get(case["logger"]))
 
     assert not result.implementation_exceptions

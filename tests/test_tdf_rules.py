@@ -18,7 +18,7 @@ CASES = json.loads((ROOT / "tests" / "fixtures" / "tdf_rules.json").read_text())
 @pytest.mark.parametrize("case", CASES, ids=[c["id"] for c in CASES])
 def test_tdf_rules(case, tmp_path):
     p = tmp_path / "t.CR6"
-    p.write_text(case["source"])
+    p.write_text(case["source"], newline="")
     program, diags = parser.parse_file(p)
     tables, lst, _ = build_tables(program, profiles.get("cr6"), dict(program.consts))
     assert tdf.serialize(tables) == base64.b64decode(case["tdf"])

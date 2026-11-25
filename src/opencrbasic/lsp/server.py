@@ -52,7 +52,7 @@ def _git_revision(src_dir: Path) -> str | None:
         )
     except OSError, subprocess.SubprocessError:
         return None
-    lines = out.stdout.split()
+    lines = out.stdout.splitlines()  # not split(): the top-level path may contain spaces
     if out.returncode != 0 or len(lines) != 2:
         return None
     top, rev = Path(lines[0]), lines[1]

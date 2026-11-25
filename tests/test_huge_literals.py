@@ -47,6 +47,6 @@ def _sources(value):
 def test_no_implementation_exception(tmp_path, logger, value):
     program = tmp_path / "t.CR6"
     for source in _sources(value):
-        program.write_text(source)
+        program.write_text(source, newline="")
         result = compile_file(program, profiles.get(logger))
         assert not result.implementation_exceptions, (source, result.implementation_exceptions)

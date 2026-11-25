@@ -14,6 +14,21 @@ from typing import Any
 SRC = Path(__file__).resolve().parents[2] / "src"
 
 
+def uri_file(uri: str) -> Path:
+    """The file a `file:` URI names."""
+    from pygls.uris import to_fs_path
+
+    path = to_fs_path(uri)
+    assert path is not None, uri
+    return Path(path)
+
+
+def uri_path(uri: str) -> Path:
+    """`uri_file`, case-normalised as the host file system compares names: on Windows the server
+    spells a drive it derived itself `c:`, as VS Code does, and `Path.as_uri()` spells it `C:`."""
+    return Path(os.path.normcase(uri_file(uri)))
+
+
 class LspClient:
     def __init__(self, env: dict[str, str] | None = None, settings: Any = None, pull_configuration: bool = True):
         child_env = dict(os.environ)

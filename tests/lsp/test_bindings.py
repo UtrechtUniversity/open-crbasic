@@ -426,7 +426,7 @@ def test_inactive_if_branch_is_not_indexed():
 
 def _write(tmp: Path, name: str, text: str) -> Path:
     path = tmp / name
-    path.write_text(text, encoding="utf-8")
+    path.write_text(text, encoding="utf-8", newline="")
     return path
 
 

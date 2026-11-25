@@ -71,7 +71,7 @@ CASES = [
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
 def test_const_range_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
     result = compile_file(program, profiles.get(case["logger"]))
     exit_code = 0 if result.ok else 1
     actual = "\n".join(result.result_lines())

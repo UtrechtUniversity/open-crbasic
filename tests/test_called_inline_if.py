@@ -12,7 +12,7 @@ CASES = json.loads((Path(__file__).parent / "fixtures" / "called_inline_if.json"
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
 def test_called_inline_if_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
 
     result = compile_file(program, profiles.get(case["logger"]))
 

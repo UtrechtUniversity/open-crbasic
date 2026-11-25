@@ -23,9 +23,9 @@ FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "r34_multi_order_swee
 )
 def test_r34_multi_order_sweep_observations(case, tmp_path):
     program = tmp_path / "t.CR6"
-    program.write_text(case["source"], encoding="utf-8")
+    program.write_text(case["source"], encoding="utf-8", newline="")
     for name, text in case.get("siblings", {}).items():
-        (tmp_path / name).write_text(text, encoding="utf-8")
+        (tmp_path / name).write_text(text, encoding="utf-8", newline="")
 
     result = compile_file(program, profiles.get(case["logger"]))
 
