@@ -4,6 +4,7 @@ program defines. No second pipeline: `compiler_output` is `compiler.compile_file
 Neither writes a file. See `docs/lsp-api.md` "Commands (LSP-09b)".
 """
 
+import re
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -126,3 +127,43 @@ def render_table_fields(tables: list[TableInfo]) -> str:
             lines.append(f"| {name} | {f.type} | {f.units or ''} | {f.process or ''} |")
         lines.append("")
     return "\n".join(lines)
+
+
+_WORD = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\$?")
+
+
+@dataclass(frozen=True)
+class InstructionItem:
+    name: str  # conventional spelling (`casing.spelling`), else the catalog's
+    kind: str  # "instruction" | "function"
+    params: tuple[str, ...]  # parameter names: the help's, else `arg1`...
+    optional: tuple[bool, ...]  # per parameter: the help or the tables say it may be left out
+    summary: str  # the help page's summary; "" without help
+
+
+def instruction_list(profile: str, help_provider=None) -> list[InstructionItem]:
+    """Every instruction and function of `profile`, sorted by name, with the parameter names an
+    insertion needs. The same names, signatures and help as completion and signature help."""
+    from . import casing, hover
+    from .catalog import InstructionCatalog
+
+    cat = InstructionCatalog.for_profile(profile)
+    out = []
+    for kind in ("instruction", "function"):
+        for name in cat.names(kind):
+            if cat.get(name, "keyword") is not None or not _WORD.fullmatch(name):
+                continue  # structure words (`If`, `Scan`) and operators (`<<`) are not inserted
+            sig = hover.signature_help(name, 0, profile, help_provider)
+            parameters = () if sig is None else sig.parameters
+            help = help_provider.lookup(name) if help_provider is not None else None
+            spelled = casing.spelling(name, profile, (), help_provider) or name
+            out.append(
+                InstructionItem(
+                    spelled,
+                    kind,
+                    tuple(p.label for p in parameters),
+                    tuple(p.optional for p in parameters),
+                    help.summary if help is not None else "",
+                )
+            )
+    return sorted(out, key=lambda i: (i.name.upper(), i.name))

@@ -311,6 +311,39 @@ class Navigation:
         return [out[k] for k in sorted(out)]
 
 
+# Declarations a program itself owns and can leave unused: CodeLens counts and unused hints.
+COUNTED_KINDS = frozenset({"public", "dim", "static", "const", "sub", "function", "datatable", "consttable", "alias"})
+_UNUSED_KINDS = COUNTED_KINDS - {"alias"}  # an alias renames a variable the alias statement uses
+
+
+def reference_counts(nav: Navigation, path) -> list[tuple[Site, int]]:
+    """(declaration site in `path`, number of references to it in this analysis) for each
+    declaration of `COUNTED_KINDS` with an exact range, in file order."""
+    if nav.index is None:
+        return []
+    out = [
+        (s, len(nav.index.references_to(s.rec)))
+        for s in nav._path_sites(path)
+        if isinstance(s.rec, bindings.Declaration) and s.rec.kind in COUNTED_KINDS
+    ]
+    return sorted(out, key=lambda t: (t[0].line, t[0].start))
+
+
+def unused_declarations(nav: Navigation) -> list[Site]:
+    """Sites of the declarations no reference of this analysis resolves to. Empty when the index
+    has failures or unparsed statements: a reference it missed would make a used name look
+    unused."""
+    if nav.index is None or nav.index.failures or nav.index.unparsed:
+        return []
+    out = []
+    for d in nav.index.declarations:
+        if d.kind in _UNUSED_KINDS and d.scope != "predefined" and not nav.index.references_to(d):
+            site = nav.site_of(d)
+            if site is not None and site.path is not None:
+                out.append(site)
+    return out
+
+
 def _ref_kind(ref: bindings.Reference) -> str:
     if ref.is_write or ref.role == bindings.WRITE:
         return "write"

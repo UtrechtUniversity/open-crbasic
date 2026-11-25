@@ -5,8 +5,10 @@ and from the core feature modules through `features`. Capabilities advertised: f
 sync (open/close/change/save), published diagnostics, completion (trigger `.`), hover, signature
 help (triggers `(` `,`), document symbols, folding ranges, document links, definition,
 references, document highlights, full semantic tokens, prepareRename/rename, document and range
-formatting, quick-fix code actions, parameter-name inlay hints and the commands
-`opencrbasic.showCompilerOutput` and `opencrbasic.showTableFields`. Each has a stdio transcript test.
+formatting, quick-fix code actions, parameter-name inlay hints, reference-count code lenses,
+on-type case correction and the commands `opencrbasic.showCompilerOutput`,
+`opencrbasic.showTableFields`, `opencrbasic.instructions`, `opencrbasic.instructionHelp` and
+`opencrbasic.dataTables`. Each has a stdio transcript test.
 """
 
 import asyncio
@@ -29,6 +31,12 @@ CHECKS_PATTERN = "**/opencrbasic.toml"  # the check configuration (`checkconfig.
 CONFIG_PULL_TIMEOUT = 10.0
 COMMAND_COMPILER_OUTPUT = "opencrbasic.showCompilerOutput"
 COMMAND_TABLE_FIELDS = "opencrbasic.showTableFields"
+COMMAND_INSTRUCTIONS = "opencrbasic.instructions"
+COMMAND_INSTRUCTION_HELP = "opencrbasic.instructionHelp"
+COMMAND_DATA_TABLES = "opencrbasic.dataTables"
+# Characters after which the name just typed is respelled (`casing`); VS Code sends them only
+# with `editor.formatOnType`, which the extension turns on for CRBasic.
+CASE_TRIGGERS = [" ", "(", ")", ",", "\n", "=", "+", "-", "*", "/", "<", ">", "&", ":", "'", "."]
 
 
 def _git_revision(src_dir: Path) -> str | None:
@@ -105,13 +113,14 @@ def build_server():
                 version=version,
                 diagnostics=[
                     types.Diagnostic(
-                        range=types.Range(types.Position(d.line, 0), types.Position(d.end_line, d.end)),
+                        range=types.Range(types.Position(d.line, d.start), types.Position(d.end_line, d.end)),
                         message=d.message,
                         severity=severities[d.severity],
                         source=d.source,
                         code=d.code,
                         code_description=types.CodeDescription(d.link) if d.link else None,
                         data=dict(d.data) if d.data else None,
+                        tags=[types.DiagnosticTag.Unnecessary] if d.unnecessary else None,
                     )
                     for d in diags
                 ],
@@ -293,10 +302,14 @@ def build_server():
         value = getattr(server.workspace, "position_encoding", None)
         return str(getattr(value, "value", value) or "utf-16")
 
-    async def make_ctx() -> features.Ctx:
+    async def make_ctx(path: Path) -> features.Ctx:
         await session.configured()
+        return context_now(path)
+
+    def context_now(path: Path) -> features.Ctx:
+        """The request context from the documents as they are now (no await in between)."""
         return features.Ctx(
-            session.config.logger,
+            session.profile_for(path),
             position_encoding(),
             session.config.encoding,
             session.blobs(),
@@ -333,43 +346,50 @@ def build_server():
     @guarded("completion", lambda: types.CompletionList(False, []))
     async def on_completion(params: types.CompletionParams):
         path, ana, result = await prepared(params.text_document.uri, wait=False, first=True)
-        return await asyncio.to_thread(features.completion, await make_ctx(), ana, result, path, params.position)
+        return await asyncio.to_thread(features.completion, await make_ctx(path), ana, result, path, params.position)
 
     @server.feature(types.TEXT_DOCUMENT_HOVER)
     @guarded("hover", None)
     async def on_hover(params: types.HoverParams):
         path, ana, result = await prepared(params.text_document.uri, wait=False)
-        return await asyncio.to_thread(features.hover, await make_ctx(), ana, result, path, params.position)
+        return await asyncio.to_thread(features.hover, await make_ctx(path), ana, result, path, params.position)
 
     @server.feature(types.TEXT_DOCUMENT_SIGNATURE_HELP, types.SignatureHelpOptions(trigger_characters=["(", ","]))
     @guarded("signatureHelp", None)
     async def on_signature_help(params: types.SignatureHelpParams):
         return await asyncio.to_thread(
-            features.signature_help, await make_ctx(), fs_path(params.text_document.uri), params.position
+            features.signature_help,
+            await make_ctx(fs_path(params.text_document.uri)),
+            fs_path(params.text_document.uri),
+            params.position,
         )
 
     @server.feature(types.TEXT_DOCUMENT_DOCUMENT_SYMBOL)
     @guarded("documentSymbol", list)
     async def on_document_symbol(params: types.DocumentSymbolParams):
         path, ana, result = await prepared(params.text_document.uri, wait=True)
-        return await asyncio.to_thread(features.document_symbols, await make_ctx(), ana, result, path)
+        return await asyncio.to_thread(features.document_symbols, await make_ctx(path), ana, result, path)
 
     @server.feature(types.TEXT_DOCUMENT_FOLDING_RANGE)
     @guarded("foldingRange", list)
     async def on_folding_range(params: types.FoldingRangeParams):
-        return await asyncio.to_thread(features.folding_ranges, await make_ctx(), fs_path(params.text_document.uri))
+        return await asyncio.to_thread(
+            features.folding_ranges,
+            await make_ctx(fs_path(params.text_document.uri)),
+            fs_path(params.text_document.uri),
+        )
 
     @server.feature(types.TEXT_DOCUMENT_DOCUMENT_LINK)
     @guarded("documentLink", list)
     async def on_document_link(params: types.DocumentLinkParams):
         path, ana, result = await prepared(params.text_document.uri, wait=True)
-        return await asyncio.to_thread(features.document_links, await make_ctx(), ana, result, path)
+        return await asyncio.to_thread(features.document_links, await make_ctx(path), ana, result, path)
 
     @server.feature(types.TEXT_DOCUMENT_DEFINITION)
     @guarded("definition", list)
     async def on_definition(params: types.DefinitionParams):
         path, ana, result = await prepared(params.text_document.uri, wait=True)
-        return await asyncio.to_thread(features.definition, await make_ctx(), ana, result, path, params.position)
+        return await asyncio.to_thread(features.definition, await make_ctx(path), ana, result, path, params.position)
 
     @server.feature(types.TEXT_DOCUMENT_REFERENCES)
     @guarded("references", list)
@@ -380,7 +400,7 @@ def build_server():
         path, ana, result = await prepared(params.text_document.uri, wait=True)
         if result is None:
             return []
-        ctx = await make_ctx()
+        ctx = await make_ctx(path)
         home = next((p for p, e in session.entries.items() if e.analysed is ana), Path())
         analyses: dict[int, tuple] = {id(ana): (home, ana, result)}
 
@@ -405,14 +425,14 @@ def build_server():
     async def on_document_highlight(params: types.DocumentHighlightParams):
         path, ana, result = await prepared(params.text_document.uri, wait=True)
         return await asyncio.to_thread(
-            features.document_highlights, await make_ctx(), ana, result, path, params.position
+            features.document_highlights, await make_ctx(path), ana, result, path, params.position
         )
 
     @server.feature(types.TEXT_DOCUMENT_SEMANTIC_TOKENS_FULL, features.LEGEND)
     @guarded("semanticTokens", lambda: types.SemanticTokens(data=[]))
     async def on_semantic_tokens(params: types.SemanticTokensParams):
         path, ana, result = await prepared(params.text_document.uri, wait=True)
-        return await asyncio.to_thread(features.semantic_tokens, await make_ctx(), ana, result, path)
+        return await asyncio.to_thread(features.semantic_tokens, await make_ctx(path), ana, result, path)
 
     # ---- rename, formatting, quick fixes (LSP-07-wire) ---------------------------------
 
@@ -439,17 +459,6 @@ def build_server():
 
     def refuse(what: str, reason: str, message: str) -> Refused:
         return Refused(f"{what}: {message}", data={"reason": reason})
-
-    def context_now() -> features.Ctx:
-        """The request context from the documents as they are now (no await in between)."""
-        return features.Ctx(
-            session.config.logger,
-            position_encoding(),
-            session.config.encoding,
-            session.blobs(),
-            {p: d.uri for p, d in session.docs.items()},
-            session.help_provider(),
-        )
 
     def locked(entries, function, *args):
         """Runs in a thread: `function` with the core-call guard of every entry's program held
@@ -514,7 +523,7 @@ def build_server():
         # no await from the currency check to the snapshot: the edit fits these documents
         if not all(session.current(e) for e in entries):
             raise refuse(what, "pending", "a document changed while the request was prepared")
-        ctx = context_now()
+        ctx = context_now(path)
         versions = {p: d.version for p, d in session.docs.items()}
         source = OverlaySource(DiskSource(), session.blobs())  # buffers as the analyses read them
         if new_name is None:
@@ -560,7 +569,7 @@ def build_server():
         if not all(session.current(e) for e in entries):
             show_info("Cannot format: a document changed while the request was prepared")
             return []
-        ctx = context_now()
+        ctx = context_now(path)
         return await asyncio.to_thread(features.formatting_edits, ctx, path, params.options, where)
 
     @server.feature(types.TEXT_DOCUMENT_FORMATTING)
@@ -593,7 +602,7 @@ def build_server():
         if not sources or [id(e) for e in session.fresh_contributors(path)] != [id(e) for e in entries]:
             return []
         doc = session.docs.get(path)
-        ctx = context_now()
+        ctx = context_now(path)
         return await asyncio.to_thread(
             locked,
             entries,
@@ -638,7 +647,7 @@ def build_server():
         path, ana, result = await prepared(params.text_document.uri, wait=True)
         if result is None or not session.fresh(path, ana):  # a stale program has stale lines
             return []
-        ctx = await make_ctx()
+        ctx = await make_ctx(path)
         first, last = ctx.decoded(path, params.range.start), ctx.decoded(path, params.range.end)
         if first is None or last is None:
             return []
@@ -692,6 +701,69 @@ def build_server():
             raise refuse(what, "no_program", "a parsed program is not available")
         tables = await asyncio.to_thread(locked, [entry], commands.table_fields, result)
         return session.display(commands.render_table_fields(tables))
+
+    @server.feature(types.TEXT_DOCUMENT_CODE_LENS, types.CodeLensOptions(resolve_provider=False))
+    @guarded("codeLens", list)
+    async def on_code_lens(params: types.CodeLensParams):
+        await session.configured()
+        if not session.config.code_lens_references:
+            return []
+        path, ana, result = await prepared(params.text_document.uri, wait=True)
+        if result is None or not session.fresh(path, ana):  # a stale program has stale lines
+            return []
+        return await asyncio.to_thread(features.code_lenses, await make_ctx(path), ana, result, path)
+
+    @server.feature(
+        types.TEXT_DOCUMENT_ON_TYPE_FORMATTING,
+        types.DocumentOnTypeFormattingOptions(CASE_TRIGGERS[0], CASE_TRIGGERS[1:]),
+    )
+    @guarded("onTypeFormatting", list)
+    async def on_type_formatting(params: types.DocumentOnTypeFormattingParams):
+        await session.configured()
+        if not session.config.case_correction:
+            return []
+        path, ana, result = await prepared(params.text_document.uri, wait=False, first=True)
+        ctx = context_now(path)  # the document as it is now, with the typed character
+        return await asyncio.to_thread(features.case_edits, ctx, ana, result, path, params.position, params.ch)
+
+    def document_arg(args: tuple, what: str, extra: int = 0) -> Path:
+        """The document path of a command whose first argument is a document URI."""
+        task = asyncio.current_task()
+        if task is not None:
+            task.add_done_callback(lambda t: t.cancelled() or t.exception())
+        if len(args) != 1 + extra or not all(isinstance(a, str) for a in args):
+            raise refuse(what, "bad_arguments", f"expected {1 + extra} string argument(s), the first the document URI")
+        try:
+            return fs_path(args[0])
+        except ValueError as exc:
+            raise refuse(what, "bad_arguments", str(exc)) from exc
+
+    @server.command(COMMAND_INSTRUCTIONS)
+    async def on_instructions(*args):
+        path = document_arg(args, "Cannot list instructions")
+        return await asyncio.to_thread(features.instructions, await make_ctx(path))
+
+    @server.command(COMMAND_INSTRUCTION_HELP)
+    async def on_instruction_help(*args):
+        path = document_arg(args, "Cannot show instruction help", extra=1)
+        return await asyncio.to_thread(features.instruction_help, await make_ctx(path), args[1])
+
+    @server.command(COMMAND_DATA_TABLES)
+    async def on_data_tables(*args):
+        what = "Cannot list data tables"
+        _, entry = await command_entry(args, what)
+        if not session.current(entry):
+            raise refuse(
+                what,
+                "pending",
+                f"the analysis of {entry.path.name} is not current "
+                "(pending, failed or timed out); try again when it has finished",
+            )
+        result = await session.load(entry.analysed)
+        if result is None:
+            raise refuse(what, "no_program", "a parsed program is not available")
+        ctx = await make_ctx(entry.path)
+        return await asyncio.to_thread(locked, [entry], features.data_tables, ctx, entry.analysed, result)
 
     server.session = session  # type: ignore[attr-defined]
     server.state = state  # type: ignore[attr-defined]

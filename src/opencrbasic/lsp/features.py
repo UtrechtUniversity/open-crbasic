@@ -14,7 +14,7 @@ from typing import Any
 
 from lsprotocol import types
 
-from .. import editing, formatting, inlay, navigation, positions, quickfix, rename
+from .. import casing, commands, editing, formatting, inlay, navigation, positions, quickfix, rename
 from .. import hover as hovering
 
 LEGEND = types.SemanticTokensLegend(
@@ -600,3 +600,100 @@ def code_actions(
                         )
                     )
     return actions
+
+
+# ---- reference counts, case correction, sidebar commands ----------------------------------------
+
+SHOW_REFERENCES = "opencrbasic.showReferences"  # a client command: (uri, position) -> the references view
+
+
+def code_lenses(ctx: Ctx, ana: Any, result: Any, path: Path) -> list[types.CodeLens]:
+    """A reference count above each declaration in `path`, counted in this program."""
+    nav = _navigation(ana, result)
+    if nav is None:
+        return []
+    with _guard(ana):
+        counts = navigation.reference_counts(nav, path)
+    uri, seen, out = ctx.uri(path), set(), []
+    for site, n in counts:
+        if (site.line, site.start) in seen:  # a file included twice has each site twice
+            continue
+        seen.add((site.line, site.start))
+        where = ctx.columns(path, site.line, site.start, site.end)
+        title = f"{n} reference{'' if n == 1 else 's'}"
+        out.append(types.CodeLens(where, types.Command(title, SHOW_REFERENCES, arguments=[uri, where.start])))
+    return out
+
+
+def case_edits(ctx: Ctx, ana: Any, result: Any, path: Path, position: types.Position, ch: str) -> list[types.TextEdit]:
+    """The respelling of the name just typed (`casing`), as at most one edit."""
+    lines, at = ctx.lines(path), ctx.decoded(path, position)
+    if lines is None or at is None:
+        return []
+    program = getattr(result, "program", None)
+    with _guard(ana):
+        declared = (
+            _memo(ana, "declared", lambda: editing.declared_names(program, ctx.profile)) if program is not None else []
+        )
+        found = casing.correction(
+            [line.decode("latin-1") for line in lines],
+            at[0],
+            at[1],
+            ctx.profile,
+            [d.name for d in declared],
+            ctx.help,
+            newline=ch == "\n",
+        )
+    if found is None:
+        return []
+    return [types.TextEdit(ctx.columns(path, found.line, found.start, found.end), found.text)]
+
+
+def instructions(ctx: Ctx) -> list[dict]:
+    """The `opencrbasic.instructions` answer: the profile's instructions and functions."""
+    return [
+        {"name": i.name, "kind": i.kind, "params": list(i.params), "optional": list(i.optional), "summary": i.summary}
+        for i in commands.instruction_list(ctx.profile, ctx.help)
+    ]
+
+
+def instruction_help(ctx: Ctx, name: str) -> str | None:
+    """The `opencrbasic.instructionHelp` answer: the hover markdown of a catalog name."""
+    return hovering.catalog_markdown(name, ctx.profile, ctx.help)
+
+
+def data_tables(ctx: Ctx, ana: Any, result: Any) -> dict:
+    """The `opencrbasic.dataTables` answer: `commands.table_fields`, each table with the
+    location of its `DataTable` declaration when it has an exact range."""
+    tables = commands.table_fields(result) if result is not None else []
+    nav = _navigation(ana, result)
+    where: dict[str, Any] = {}
+    if nav is not None:
+        for site in nav._build():
+            rec = site.rec
+            if getattr(rec, "kind", None) == "datatable" and site.path is not None:
+                where.setdefault(rec.name.upper(), site)
+    out = []
+    for t in tables:
+        site = where.get(t.name.upper())
+        location = (
+            None
+            if site is None
+            else {
+                "uri": ctx.uri(site.path),
+                "range": _json(ctx.columns(site.path, site.line, site.start, site.end)),
+            }
+        )
+        fields = [
+            {"name": f.name, "type": f.type, "units": f.units, "process": f.process, "dimension": f.dimension}
+            for f in t.fields
+        ]
+        out.append({"name": t.name, "interval": t.interval, "location": location, "fields": fields})
+    return {"compiled": bool(getattr(result, "ok", False)), "tables": out}
+
+
+def _json(r: types.Range) -> dict:
+    return {
+        "start": {"line": r.start.line, "character": r.start.character},
+        "end": {"line": r.end.line, "character": r.end.character},
+    }

@@ -10,12 +10,15 @@ from typing import Any
 
 from .. import profiles
 
+AUTO_LOGGER = "auto"  # `logger`: each entry's profile from its extension (`profiles.EXTENSIONS`), else cr6
+LIBRARY_SUFFIXES = frozenset({".crb"})  # include files: never an entry
+
 
 @dataclass(frozen=True)
 class Config:
-    entries: tuple[str, ...] = ("**/*.CR6",)
+    entries: tuple[str, ...] = ("**/*.{CR6,CR1X,CR300,CR350}",)
     exclude: tuple[str, ...] = ()
-    logger: str = "cr6"
+    logger: str = AUTO_LOGGER
     encoding: str = "utf-8"
     debounce_ms: int = 300
     analysis_timeout_ms: int = 10000
@@ -27,14 +30,26 @@ class Config:
     inlay_parameter_names: bool = True  # `inlayHints.parameterNames`
     checks: tuple[tuple[str, str], ...] = ()  # `checks`: severity per check code (LSP layer)
     coverage_notices: bool = False  # `coverageNotices`: publish coverage notices as hints
+    unused_hints: bool = True  # `unusedHints`: fade declarations nothing references
+    code_lens_references: bool = True  # `codeLens.references`: reference counts above declarations
+    case_correction: bool = True  # `caseCorrection`: on-type spelling of known names
 
-    def analysis_key(self) -> tuple[str, str, int, tuple[tuple[str, str], ...], bool]:
+    def analysis_key(self) -> tuple[str, str, int, tuple[tuple[str, str], ...], bool, bool]:
         """What changes every entry's analysis input or outcome."""
-        return (self.logger, self.encoding, self.max_file_bytes, self.checks, self.coverage_notices)
+        return (self.logger, self.encoding, self.max_file_bytes, self.checks, self.coverage_notices, self.unused_hints)
 
     def entry_suffixes(self) -> frozenset[str]:
         """Extensions (lower case) that make an opened file an entry program."""
+        if self.logger == AUTO_LOGGER:
+            return frozenset(profiles.EXTENSIONS)
         return frozenset({".cr6"} | {ext for ext, name in profiles.EXTENSIONS.items() if name == self.logger})
+
+    def logger_for(self, entry: Path) -> str:
+        """The profile name an entry program is analysed with: the configured logger, or with
+        `auto` the one its extension implies (`profiles.for_file`, as `crbc` without `--logger`)."""
+        if self.logger == AUTO_LOGGER:
+            return profiles.for_file(Path(entry)).name
+        return self.logger
 
 
 def _str_list(value: Any) -> tuple[str, ...] | None:
@@ -67,10 +82,10 @@ def parse_config(options: Any, base: Config | None = None) -> tuple[Config, list
                 changes[attr] = value
     if "logger" in options:
         value = options["logger"]
-        if isinstance(value, str) and value in profiles.PROFILES:
+        if isinstance(value, str) and (value in profiles.PROFILES or value == AUTO_LOGGER):
             changes["logger"] = value
         else:
-            warnings.append(f"ignoring 'logger': expected one of {', '.join(profiles.PROFILES)}")
+            warnings.append(f"ignoring 'logger': expected {AUTO_LOGGER} or one of {', '.join(profiles.PROFILES)}")
     if "encoding" in options:
         value = options["encoding"]
         try:
@@ -114,11 +129,27 @@ def parse_config(options: Any, base: Config | None = None) -> tuple[Config, list
             )
         except checkconfig.ConfigError as e:
             warnings.append(f"ignoring {e}")
-    if "coverageNotices" in options:
-        if isinstance(options["coverageNotices"], bool):
-            changes["coverage_notices"] = options["coverageNotices"]
+    for key, attr in (
+        ("coverageNotices", "coverage_notices"),
+        ("unusedHints", "unused_hints"),
+        ("caseCorrection", "case_correction"),
+    ):
+        if key in options:
+            if isinstance(options[key], bool):
+                changes[attr] = options[key]
+            else:
+                warnings.append(f"ignoring {key!r}: expected a boolean")
+    lens = options.get("codeLens")
+    flat = "codeLens.references"
+    if isinstance(lens, Mapping) and "references" in lens:
+        present, value = True, lens["references"]
+    else:
+        present, value = flat in options, options.get(flat)
+    if present:
+        if isinstance(value, bool):
+            changes["code_lens_references"] = value
         else:
-            warnings.append("ignoring 'coverageNotices': expected a boolean")
+            warnings.append("ignoring 'codeLens.references': expected a boolean")
     if "helpDirectory" in options:
         value = options["helpDirectory"]
         if value is None or isinstance(value, str):
@@ -197,6 +228,6 @@ def watch_pattern() -> str:
     """The `workspace/didChangeWatchedFiles` glob: library files and the program extensions of
     every logger profile, each in lower and upper case (LSP globs are case-sensitive; the server
     filters by the configured logger). A mixed-case extension such as `.Cr6` is not watched."""
-    suffixes = {".crb", ".cr6", *profiles.EXTENSIONS}
+    suffixes = {*LIBRARY_SUFFIXES, ".cr6", *profiles.EXTENSIONS}
     names = sorted({v for s in suffixes for v in (s.lower()[1:], s.upper()[1:])})
     return "**/*.{" + ",".join(names) + "}"

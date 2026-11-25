@@ -27,6 +27,8 @@ class JobResult:
     # (channel, code, severity, message, line, resolved path or None, compiler file name, span, link)
     findings: tuple[tuple[str, str, str, str, int, str | None, str, tuple[int, int] | None, str], ...] = ()
     config_error: str | None = None  # invalid `opencrbasic.toml` (no checks ran)
+    # declarations nothing references: (resolved path, 0-based line, decoded start, end, name, kind)
+    unused: tuple[tuple[str, int, int, int, str, str], ...] = ()
 
 
 def _pickle_program(program: object) -> bytes | None:
@@ -77,6 +79,7 @@ def run_analysis(
     checks: tuple[tuple[str, str], ...] = (),
     notices: bool = False,
     config_root: str | None = None,
+    unused: bool = False,
 ) -> JobResult:
     _test_hooks(entry)
     from .. import analysis
@@ -125,4 +128,19 @@ def run_analysis(
             for f in result.findings
         ),
         result.config_error,
+        _unused(result) if unused else (),
     )
+
+
+def _unused(result) -> tuple[tuple[str, int, int, int, str, str], ...]:
+    """Unused declarations of a program the compiler accepts (as `crbc -u` reports them only
+    then: a program with errors may lack the references that use its names)."""
+    if result.program is None or any(d.severity == "error" for d in result.diagnostics):
+        return ()
+    from .. import navigation
+
+    try:
+        sites = navigation.unused_declarations(navigation.navigation(result))
+    except Exception:  # a hint only: never fail the analysis over it
+        return ()
+    return tuple((str(s.path), s.line, s.start, s.end, s.rec.name, getattr(s.rec, "kind", "")) for s in sites)

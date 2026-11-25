@@ -7,9 +7,9 @@ def test_defaults():
     cfg, warnings = parse_config(None)
     assert cfg == Config() and warnings == []
     assert (cfg.entries, cfg.exclude, cfg.logger, cfg.encoding, cfg.debounce_ms, cfg.analysis_timeout_ms) == (
-        ("**/*.CR6",),
+        ("**/*.{CR6,CR1X,CR300,CR350}",),
         (),
-        "cr6",
+        "auto",
         "utf-8",
         300,
         10000,
@@ -27,7 +27,30 @@ def test_valid_and_invalid_values():
     )
     assert cfg2 == cfg and len(warnings) == 5
     assert ".cr300" in cfg.entry_suffixes() and ".cr6" in cfg.entry_suffixes()
-    assert ".cr300" not in Config().entry_suffixes()
+    assert ".cr300" not in Config(logger="cr6").entry_suffixes()
+    assert Config().entry_suffixes() == {".cr6", ".cr1x", ".cr300", ".cr350"}  # auto: every logger's
+
+
+def test_auto_logger_follows_the_extension():
+    from pathlib import Path
+
+    auto, fixed = Config(), Config(logger="cr300")
+    assert [auto.logger_for(Path(f"P.{e}")) for e in ("CR6", "cr1x", "CR300", "CR350", "crb")] == [
+        "cr6",
+        "cr1000x",
+        "cr300",
+        "cr350",
+        "cr6",
+    ]
+    assert fixed.logger_for(Path("P.CR6")) == "cr300"  # a configured logger wins, as `crbc --logger`
+    assert parse_config({"logger": "auto"}, fixed)[0].logger == "auto"
+
+
+def test_editor_feature_switches():
+    cfg, warnings = parse_config({"unusedHints": False, "caseCorrection": False, "codeLens": {"references": False}})
+    assert (cfg.unused_hints, cfg.case_correction, cfg.code_lens_references, warnings) == (False, False, False, [])
+    cfg, warnings = parse_config({"codeLens.references": False, "unusedHints": "no"})
+    assert cfg.code_lens_references is False and cfg.unused_hints is True and len(warnings) == 1
 
 
 def test_help_directory_and_feature_wait():

@@ -346,7 +346,9 @@ def test_cache_budget_drops_programs_and_rebuilds_them_on_demand(tmp_path, monke
 
     async def scenario() -> None:
         session = Session(lambda uri, version, diags: published.append((uri, diags)), workers=1)
-        await session.configure(Config(debounce_ms=0, analysis_timeout_ms=60000, max_cache_mb=1), [root])
+        await session.configure(
+            Config(debounce_ms=0, analysis_timeout_ms=60000, max_cache_mb=1, unused_hints=False), [root]
+        )
         await settle(session)
         held = [e for e in session.entries.values() if e.analysed is not None]
         assert len(held) == 1  # only the newest program is kept

@@ -367,17 +367,21 @@ with a stdio transcript test in `tests/lsp/test_features_server.py`):
 | `documentFormattingProvider`, `documentRangeFormattingProvider` | | `formatting.format_indentation`, `formatting.format_range` |
 | `codeActionProvider` | kinds `["quickfix"]` | `quickfix.code_actions` |
 | `inlayHintProvider` | no resolve | `inlay.parameter_hints` ("Inlay hints and commands (LSP-09c)") |
-| `executeCommandProvider` | `opencrbasic.showCompilerOutput`, `opencrbasic.showTableFields` | `commands.compiler_output`, `commands.table_fields` |
+| `codeLensProvider` | no resolve | `navigation.reference_counts` ("Editor features") |
+| `documentOnTypeFormattingProvider` | `server.CASE_TRIGGERS` (space, newline, punctuation) | `casing.correction` ("Editor features") |
+| `executeCommandProvider` | `opencrbasic.showCompilerOutput`, `opencrbasic.showTableFields`, `opencrbasic.instructions`, `opencrbasic.instructionHelp`, `opencrbasic.dataTables` | `commands.compiler_output`, `commands.table_fields`, `commands.instruction_list`, `hover.catalog_markdown` |
 
 pygls additionally advertises `workspace.workspaceFolders` (changes are handled, see "Workspace (LSP-06a)").
-Nothing else (range or delta semantic tokens, no other code-action kinds, no on-type formatting,
-no pull diagnostics) is advertised.
+Nothing else (range or delta semantic tokens, no other code-action kinds, no pull diagnostics) is
+advertised.
 
 ### Configuration
 
-Keys (defaults in `config.py` follow LSP-00 "Configured entries"): `entries` (`["**/*.CR6"]`),
-`exclude` (`[]`), `logger` (`"cr6"`), `encoding` (`"utf-8"`), `debounceMs` (300),
-`analysisTimeoutMs` (10000), `maxFileBytes` (2097152), `maxQueuedJobs` (64), `maxCacheMb` (256) ("Workspace (LSP-06a)"), `checks` (`{}`: a severity per check code, `error`/`warning`/`info`/`off`, above `opencrbasic.toml`; an invalid map is ignored with a log line), `coverageNotices` (`false`), `helpDirectory` (`""`: no help text), `inlayHints.parameterNames` (`true`; a nested object `{"inlayHints": {"parameterNames": false}}` or the flat key; "Inlay hints and commands (LSP-09c)") and `featureWaitMs` (1500, see
+Keys (defaults in `config.py`): `entries` (`["**/*.{CR6,CR1X,CR300,CR350}"]`),
+`exclude` (`[]`), `logger` (`"auto"`: each entry's profile from its extension, `profiles.for_file`, as
+`crbc` without `--logger`; or one of `cr6`, `cr1000x`, `cr300`, `cr350` for every entry), `encoding` (`"utf-8"`), `debounceMs` (300),
+`analysisTimeoutMs` (10000), `maxFileBytes` (2097152), `maxQueuedJobs` (64), `maxCacheMb` (256) ("Workspace (LSP-06a)"), `checks` (`{}`: a severity per check code, `error`/`warning`/`info`/`off`, above `opencrbasic.toml`; an invalid map is ignored with a log line), `coverageNotices` (`false`), `helpDirectory` (`""`: no help text), `inlayHints.parameterNames` (`true`; a nested object `{"inlayHints": {"parameterNames": false}}` or the flat key; "Inlay hints and commands (LSP-09c)"), `unusedHints` (`true`), `codeLens.references` (`true`; nested
+or flat, as `inlayHints`), `caseCorrection` (`true`) ("Editor features") and `featureWaitMs` (1500, see
 "Language features"). The VS Code extension contributes every key except `featureWaitMs`, with the
 same defaults (open-crbasic-vsix `package.json`, checked by `test_vscode_contributes_server_tuning_keys`);
 `featureWaitMs` is internal and set only by a client that sends it. Sources, in order: `initializationOptions`, then, when the client
@@ -390,14 +394,17 @@ disappeared from the settings returns to its default (or its initialization-opti
 reload with no settings (a pull that failed, or a notification without settings from a client that
 cannot be pulled) keeps the current configuration. An invalid value is ignored with a log line and
 that key keeps its default or initialization-option value. Changing `logger` or `encoding`
-re-analyzes every entry, and so does changing `checks` or `coverageNotices`; changing `entries`/`exclude` re-discovers (entries that drop out have
+re-analyzes every entry, and so does changing `checks`, `coverageNotices` or `unusedHints`; changing `entries`/`exclude` re-discovers (entries that drop out have
 their diagnostics cleared); `debounceMs` and `analysisTimeoutMs` apply to later jobs.
 
 Entry discovery globs the workspace folders (`entries` minus `exclude`; workspace-relative,
 case-insensitive; `*`, `?`, `**`, `{a,b}`; directories starting with `.`, `node_modules` and `__pycache__` are not
 walked) at startup, on configuration change, on workspace-folder changes and on watched-file events ("Workspace (LSP-06a)"). An opened file with
-extension `.CR6` (case-insensitive; additionally the extension of the configured logger, e.g.
-`.CR1X`) is an entry for itself while it is open, configured or not. A `.crb` is never an entry.
+a logger's program extension is an entry for itself while it is open, configured or not: with `auto`
+any of `.CR6`, `.CR1X`, `.CR300`, `.CR350`; with a fixed logger `.CR6` and that logger's own
+extension (e.g. `.CR1X` for `cr1000x`). Under a fixed logger a program extension of another logger
+is never an entry, even when `entries` matches it. A `.crb` is never an entry. The language features
+of a file use the profile of the entry that answers for it (`Session.profile_for`).
 
 ### Workspace (LSP-06a)
 
@@ -704,6 +711,9 @@ can affect have finished (bounded, as for rename). The result is a JSON string.
 |---|---|
 | `opencrbasic.showCompilerOutput` | `commands.compiler_output(entry, logger, overlays, maxFileBytes)`: the text `crbc` prints for the entry, computed from the open buffers as overlays (unsaved text is used, a library buffer is compiled through its entry) and the disk, writing no file. It runs as a job in the analysis worker pool (`Session.compiler_output`, `worker.run_compiler_output`; LSP-R5a) with the analysis bounds: `maxFileBytes` applies to the entry (checked before the job) and to every file the current text includes (`sources.LimitedSource`, not read), and `analysisTimeoutMs` kills and restarts the worker pool exactly as for an analysis. Compiler text is passed through the same latin-1 to file-encoding display step as diagnostics (`session.display`); for ASCII the text equals the core's. |
 | `opencrbasic.showTableFields` | `commands.render_table_fields(commands.table_fields(result))` for the entry's current parsed program; Markdown. A program that does not compile gives the core's "No tables" text. |
+| `opencrbasic.dataTables` | The same tables as JSON for the side bar: `{"compiled": bool, "tables": [{"name", "interval", "location": {"uri", "range"} or null, "fields": [{"name", "type", "units", "process", "dimension"}]}]}`; `location` is the `DataTable` name's exact range (none for `Status`, `DataTableInfo`, `Public`). Same refusals as table fields. |
+| `opencrbasic.instructions` | Every instruction and function of the document's profile, without the structure keywords and operators: `[{"name", "kind", "params", "optional", "summary"}]` (`commands.instruction_list`; parameter names and summary from the help when configured, else `argN` and `""`). |
+| `opencrbasic.instructionHelp` | Two arguments, the document URI and a name: `hover.catalog_markdown` for the document's profile (the hover text of that catalog name), or `null`. |
 
 Refusals are LSP errors (code -32803, `data.reason`), the same shape as rename: `bad_arguments` (not
 exactly one string argument, or a non-`file:` URI), `no_entry` (no entry reads the file), for
@@ -722,6 +732,33 @@ Fields"). The ids differ from the server's because `vscode-languageclient` regis
 advertised server command itself and a second registration of one id fails. They open a read-only
 `opencrbasic-output:` document beside the editor whose content is the server command's answer for the
 active CRBasic file; running the command again refreshes it.
+
+### Editor features
+
+**Unused hints.** With `unusedHints`, the analysis worker adds `navigation.unused_declarations`: every
+`Public`, `Dim`, `Static`, `Const`, `Sub`, `Function`, `DataTable` and `ConstTable` declaration of
+the program that no reference resolves to, with its exact name range. They are published as Hint
+diagnostics with tag `Unnecessary` (clients fade the name), source `opencrbasic (unused)`, message
+`<Kind> <name> is declared but never used.` None while the program has an error (like `crbc -u`,
+which runs only then), or when the binding index has failures or unparsed statements (a missed
+reference would make a used name look unused). An `Alias` is not reported. This is the binding
+index's view, not the reference compiler's `-u`: a `Const` or a table is reported, `-u` does neither.
+
+**Code lenses.** With `codeLens.references`, one lens per declaration of those kinds and `Alias` in
+the file, titled `N reference(s)`: the references to it in the program that answers for the file
+(as `textDocument/references` without the declaration, within that one program). The command is
+`opencrbasic.showReferences` with arguments `[uri, position]`; the client implements it. `[]` while
+the program does not reflect the open document.
+
+**Case correction.** `textDocument/onTypeFormatting` (clients send it only with
+`editor.formatOnType`) answers with at most one edit: the name ending just before the typed
+character (for a newline, the end of the line above) respelled by `casing.spelling`: a declared
+name to its declaration's spelling, then the help syntax's spelling, the structure keywords,
+data types and Boolean literals, an instruction's table spelling, a predefined constant's table
+spelling when it is mixed case or has a digit or `_`, and the operator words. Functions and other
+all-upper table spellings are not respelled without help. Nothing inside a string or comment,
+after `.`, `#` or `&`. `[]` with `caseCorrection` false. Formatting (`Format Document`) does not
+change case.
 
 ## Binding index (LSP-05a)
 

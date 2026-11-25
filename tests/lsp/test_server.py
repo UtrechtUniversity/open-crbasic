@@ -21,7 +21,7 @@ pytestmark = pytest.mark.server
 
 ROOT = Path(__file__).resolve().parents[2]
 CRBASIC = (ROOT / "tests" / "corpus" / "station").resolve()
-FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000}
+FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000, "unusedHints": False}  # unused hints: test_unused_hints
 
 SMALL = """Public x As Long
 Include("CPU:Lib.crb")
@@ -116,8 +116,13 @@ def test_lifecycle_and_capabilities(make_client, tmp_path):
         "documentRangeFormattingProvider",
         "codeActionProvider",
         "inlayHintProvider",
+        "codeLensProvider",
+        "documentOnTypeFormattingProvider",
     }, caps
     assert sorted(caps["executeCommandProvider"]["commands"]) == [
+        "opencrbasic.dataTables",
+        "opencrbasic.instructionHelp",
+        "opencrbasic.instructions",
         "opencrbasic.showCompilerOutput",
         "opencrbasic.showTableFields",
     ]
@@ -151,7 +156,7 @@ def test_vscode_language_covers_logger_extensions():
     lowered = {ext.lower() for ext in declared}
     logger_exts = set(profiles.EXTENSIONS)
     assert logger_exts <= lowered
-    assert lowered - logger_exts == {".crb"}  # the only non-logger extension
+    assert lowered - logger_exts == {".crb", ".dld"}  # a library, and a program of no logger
     for ext in logger_exts:
         assert ext.upper() in declared, ext  # both spellings, as .CR6 / .cr6 are declared
 
@@ -173,6 +178,9 @@ SERVER_KEY_ATTRS = {
     "inlayHints.parameterNames": "inlay_parameter_names",
     "checks": "checks",
     "coverageNotices": "coverage_notices",
+    "unusedHints": "unused_hints",
+    "codeLens.references": "code_lens_references",
+    "caseCorrection": "case_correction",
 }
 INTERNAL_SERVER_KEYS = {"featureWaitMs"}
 
@@ -188,7 +196,7 @@ def test_vscode_contributes_server_tuning_keys():
         name.removeprefix("opencrbasic."): prop for name, prop in props.items() if name.startswith("opencrbasic.")
     }
     server_keys = set(SERVER_KEY_ATTRS) - INTERNAL_SERVER_KEYS
-    client_only = {"pythonPath", "serverArgs", "serverEnv", "trace.server"}
+    client_only = {"pythonPath", "serverArgs", "serverEnv", "trace.server", "compiler", "crbcPath"}
     assert set(contributed) == server_keys | client_only
     defaults = lsp_config.Config()
     for key in server_keys:
@@ -358,7 +366,7 @@ def test_program_file_that_is_not_an_entry_gets_the_information_note(make_client
     root = small_project(tmp_path)
     other = root / "Other.CR300"  # a program extension of another logger (H-06)
     other.write_text(SMALL)
-    client = started(make_client, root)
+    client = started(make_client, root, {**FAST, "logger": "cr6"})
     client.open(other, SMALL)
     params = client.wait_diagnostics(other, lambda d: bool(d))
     (diag,) = params["diagnostics"]

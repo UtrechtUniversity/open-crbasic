@@ -85,9 +85,9 @@ Names and defaults come from open-crbasic-vsix `package.json`. "Applied" says ho
 | `opencrbasic.pythonPath` | `python3` | Interpreter that runs the server | restarts the server |
 | `opencrbasic.serverArgs` | `["-m", "opencrbasic.lsp"]` | Arguments after the interpreter | restarts the server |
 | `opencrbasic.serverEnv` | `{}` | Extra server environment variables; they override inherited ones (for example `PYTHONPATH`) | restarts the server |
-| `opencrbasic.entries` | `["**/*.CR6"]` | Workspace-relative globs of entry programs | sent to the running server |
+| `opencrbasic.entries` | `["**/*.{CR6,CR1X,CR300,CR350}"]` | Workspace-relative globs of entry programs | sent to the running server |
 | `opencrbasic.exclude` | `[]` | Globs removed from the entries | sent to the running server |
-| `opencrbasic.logger` | `cr6` | Profile: `cr6`, `cr1000x`, `cr300` or `cr350` | sent; every entry is re-analysed |
+| `opencrbasic.logger` | `auto` | Profile: `auto` (each program's from its extension, as `crbc` does), or `cr6`, `cr1000x`, `cr300` or `cr350` for every program | sent; every entry is re-analysed |
 | `opencrbasic.encoding` | `utf-8` | Encoding for unsaved text and for files | sent; every entry is re-analysed |
 | `opencrbasic.debounceMs` | `300` | Quiet time after an edit before analysis (minimum 0) | sent; later jobs |
 | `opencrbasic.analysisTimeoutMs` | `10000` | Limit for one analysis (minimum 1) | sent; later jobs |
@@ -95,6 +95,11 @@ Names and defaults come from open-crbasic-vsix `package.json`. "Applied" says ho
 | `opencrbasic.coverageNotices` | `false` | Hints naming the reference compiler rules opencrbasic does not model, at the first use of a CR6 instruction (source `opencrbasic (coverage)`) | sent; every entry re-analysed |
 | `opencrbasic.helpDirectory` | `""` | Folder of the extracted CRBasic help (section 6) | sent; indexed in the background |
 | `opencrbasic.inlayHints.parameterNames` | `true` | Parameter names before call arguments (section 5.11); needs `helpDirectory` | sent; hints refresh |
+| `opencrbasic.unusedHints` | `true` | Fade declarations nothing uses, while the program has no errors (source `opencrbasic (unused)`) | sent; every entry re-analysed |
+| `opencrbasic.codeLens.references` | `true` | Reference counts above declarations | sent |
+| `opencrbasic.caseCorrection` | `true` | Respell the name just typed; needs `editor.formatOnType`, which the extension turns on for CRBasic | sent |
+| `opencrbasic.compiler` | `python` | Compiler for Logger: Build and Show Compiler Output: `python` (the server) or `rust` (open-crbasic-rs `crbc`, on the saved file) | client only |
+| `opencrbasic.crbcPath` | `""` | The Rust `crbc`; empty: Cargo's bin directory, else `crbc` on PATH | client only |
 | `opencrbasic.trace.server` | `off` | `messages` or `verbose` trace in the `opencrbasic` output channel | applied at once |
 
 - The server pulls the non-launch settings (`workspace/configuration`) after each change notice.
@@ -129,24 +134,26 @@ The server analyses each *entry* together with the files it includes.
 - A `.crb` library is never an entry. Its diagnostics come from the entries that include it. When
   several entries contribute to the same file, each message gets an `[EntryName] ` prefix. Observed
   at `7c450ed5`.
-- While it is open, a `.CR6` file is an entry of itself, and so is a file whose extension belongs to
-  the configured logger (for example `.CR1X` with `cr1000x`). Observed at `679f2f70` for `.CR300`, `.CR1X`
-  and `.CR350`.
+- While it is open, a program file is an entry of itself: with `logger: auto` any `.CR6`, `.CR1X`,
+  `.CR300` or `.CR350`, with a fixed logger a `.CR6` and a file whose extension belongs to that
+  logger (for example `.CR1X` with `cr1000x`). Observed at `679f2f70` for `.CR300`, `.CR1X` and
+  `.CR350` with a fixed logger; `auto` is not yet observed in an editor.
 - An open `.crb` that no entry includes shows one information note at line 0: "No configured entry
   program includes this file; diagnostics come from the entry programs that include it." Observed at
   `7c450ed5`.
 - Changing `entries` or `exclude` re-discovers the entries; a file that drops out loses its
   diagnostics. Observed at `7c450ed5`: excluding `SbdPayload_tester.CR6` removed its warnings,
   and removing the exclusion restored them.
-- **Large workspaces.** The default `**/*.CR6` matches every `.CR6` file in the workspace; opened as
+- **Large workspaces.** The default `**/*.{CR6,CR1X,CR300,CR350}` matches every program file in the workspace; opened as
   a workspace, this repository has thousands under `tests/corpus/` (fuzz and CHM corpora). Narrow
   `entries` for such a folder. The cost of analysing them all is not measured.
   Observed at `7c450ed5`: an explicit restart with the 16 station programs as entries gave a last initial
   publication 0.576 s after `initialize`. That is not an all-entries-complete signal, and the server
   exposes none.
-- The logger comes from `opencrbasic.logger` and never from the file extension. A `.CR300` file with
-  the default `cr6` is not an entry; set the logger to `cr300` to analyse it. Observed at `7c450ed5`
-  after the language was chosen by hand. The automatic association (LSP-01e) was observed at `7d6db3b1` and
+- With the default `logger: auto` each entry is analysed with the logger its extension names, as
+  `crbc` without `--logger` does (a `.crb` with the entry that includes it). A fixed logger applies to
+  every entry, and a program file of another logger is then not an entry: a `.CR300` under `cr6` gets
+  the "not an entry program" note (observed at `7c450ed5` for the earlier `cr6` default). The automatic association (LSP-01e) was observed at `7d6db3b1` and
   `679f2f70`: all three extensions open as `crbasic` (section 8).
 
 **Files changed outside the editor (LSP-06a).** When the client supports dynamic registration, the

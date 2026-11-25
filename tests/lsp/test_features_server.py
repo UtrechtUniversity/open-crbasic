@@ -45,6 +45,8 @@ EXPECTED_CAPABILITIES = {
     "documentRangeFormattingProvider",
     "codeActionProvider",
     "inlayHintProvider",
+    "codeLensProvider",
+    "documentOnTypeFormattingProvider",
 }
 
 UNICODE = """Public x As Long

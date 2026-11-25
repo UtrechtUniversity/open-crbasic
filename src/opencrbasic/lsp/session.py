@@ -23,8 +23,8 @@ from dataclasses import dataclass, field, replace
 from pathlib import Path
 from urllib.parse import quote
 
-from .. import checkconfig, positions
-from .config import Config, discover
+from .. import checkconfig, positions, profiles
+from .config import LIBRARY_SUFFIXES, Config, discover
 from .worker import JobResult, OutputResult, run_analysis, run_compiler_output
 
 SRC_COMPILE = "opencrbasic"
@@ -32,7 +32,15 @@ SRC_INTERNAL = "opencrbasic (internal)"
 SRC_SERVER = "opencrbasic (server)"
 SRC_CHECK = "opencrbasic (check)"  # opencrbasic checks (`OCB...`): the reference accepts these
 SRC_COVERAGE = "opencrbasic (coverage)"  # coverage notices: reference rules opencrbasic does not model
+SRC_UNUSED = "opencrbasic (unused)"  # declarations nothing references (`unusedHints`)
 _CHANNELS = {"check": SRC_CHECK, "notice": SRC_COVERAGE}
+_UNUSED_WHAT = {
+    "sub": "Sub",
+    "function": "Function",
+    "datatable": "Table",
+    "consttable": "ConstTable",
+    "const": "Constant",
+}
 _SEVERITIES = {"info": "information"}  # check severity -> LSP severity name, where they differ
 MARKERS = ("Internal error: unable to compile program.", "Internal error: unable to parse program.")
 INFO_UNINCLUDED = (
@@ -48,7 +56,7 @@ CREATED, CHANGED, DELETED = "created", "changed", "deleted"
 
 @dataclass(frozen=True)
 class Diag:
-    line: int  # 0-based LSP line where the range starts; the range starts at character 0
+    line: int  # 0-based LSP line where the range starts
     end_line: int  # 0-based LSP line where the range ends (== line for one physical line)
     end: int  # end character (negotiated position-encoding units) of end_line
     severity: str  # "error" | "warning" | "information" | "hint"
@@ -57,6 +65,8 @@ class Diag:
     code: str | None = None
     link: str | None = None  # `codeDescription.href`
     data: tuple[tuple[str, object], ...] = ()  # `data`: the entry and the diagnostic's index (quick fixes)
+    start: int = 0  # start character on `line`
+    unnecessary: bool = False  # tag `Unnecessary`: the client fades the range
 
 
 # publish(uri, version or None, diagnostics)
@@ -83,6 +93,7 @@ class Raw:
     code: str | None = None
     link: str | None = None
     index: int | None = None  # position in the job's diagnostics (quick fixes)
+    columns: tuple[int, int] | None = None  # decoded (start, end) on the span's line; None: whole lines
 
 
 class Analysed:
@@ -206,6 +217,7 @@ class Snapshot:
     kind: str = "analysis"  # the worker job: "analysis" or "compiler_output"
     checks: tuple[tuple[str, str], ...] = ()  # LSP check severities (analysis only)
     notices: bool = False  # coverage notices (analysis only)
+    unused: bool = False  # declarations nothing references, as faded hints (analysis only)
 
 
 class ServerError(Exception):
@@ -368,7 +380,7 @@ class Session:
         is not a program or library file is a directory: everything read below it is affected."""
         if self._closed:
             return
-        known = self.config.entry_suffixes() | {".crb"}
+        known = self.config.entry_suffixes() | LIBRARY_SUFFIXES
         rediscover = False
         files: list[Path] = []
         trees: list[Path] = []
@@ -379,7 +391,7 @@ class Session:
                     files.append(path)
             elif path.suffix.lower() in known:
                 if kind != CHANGED:
-                    rediscover = rediscover or path.suffix.lower() != ".crb"
+                    rediscover = rediscover or path.suffix.lower() not in LIBRARY_SUFFIXES
                 if path not in self.docs:
                     files.append(path)
             elif kind == CREATED or (kind == DELETED and self._known_below(path)):
@@ -412,8 +424,13 @@ class Session:
         return next((str(f) for f in self.folders if f == path or f in path.parents), None)
 
     def _wanted_entries(self) -> set[Path]:
+        """Discovered and open programs; a program extension of a logger other than a configured
+        one is never an entry (`Other.CR300` under `logger: cr6`), whatever `entries` matches."""
         suffixes = self.config.entry_suffixes()
-        return set(self.discovered) | {p for p in self.docs if p.suffix.lower() in suffixes}
+        foreign = set(profiles.EXTENSIONS) - suffixes
+        return {p for p in self.discovered if p.suffix.lower() not in foreign} | {
+            p for p in self.docs if p.suffix.lower() in suffixes
+        }
 
     def _sync_entries(self, force: bool = False) -> None:
         wanted = self._wanted_entries()
@@ -548,15 +565,16 @@ class Session:
         if not self._deferred:
             self._noticed.discard("queue")
 
-    def _snapshot(self) -> Snapshot:
+    def _snapshot(self, entry: Path) -> Snapshot:
         return Snapshot(
             tuple((str(p), d.data) for p, d in self.docs.items()),
             {p: d.version for p, d in self.docs.items()},
-            self.config.logger,
+            self.config.logger_for(entry),
             self.config.analysis_timeout_ms / 1000,
             self.config.max_file_bytes,
             checks=self.config.checks,
             notices=self.config.coverage_notices,
+            unused=self.config.unused_hints,
         )
 
     async def _entry_loop(self, entry: Entry) -> None:
@@ -569,7 +587,7 @@ class Session:
                     break
                 target = entry.requested
                 entry.triggers = set()
-                snap = self._snapshot()
+                snap = self._snapshot(entry.path)
                 outcome = await self._guarded_job(entry, snap)
                 if not entry.removed and entry.requested != target and self._unaffected(entry, outcome):
                     target = entry.requested  # the newer requests cannot change it
@@ -584,7 +602,7 @@ class Session:
             entry.done = entry.requested
             self._apply(
                 entry,
-                self._snapshot(),
+                self._snapshot(entry.path),
                 ServerError("Internal error in the language server scheduler; see the server log."),
             )
 
@@ -632,7 +650,7 @@ class Session:
         the analysis bounds: the `maxFileBytes` limit applies to the entry (checked first) and to
         every file this compilation reads, and `analysisTimeoutMs` kills the worker as for an
         analysis (docs/lsp-api.md "Inlay hints and commands (LSP-09c)")."""
-        snap = replace(self._snapshot(), kind="compiler_output")
+        snap = replace(self._snapshot(entry.path), kind="compiler_output")
         limit = self.config.max_file_bytes
         sizes = {Path(p): len(data) for p, data in snap.overlays}
         over = await asyncio.to_thread(_oversize, entry.path, sizes, limit)
@@ -715,6 +733,7 @@ class Session:
                     snap.checks,
                     snap.notices,
                     root,
+                    snap.unused,
                 )
             else:
                 future = loop.run_in_executor(
@@ -834,6 +853,18 @@ class Session:
                     link=link,
                 )
             )
+        for path, line, start, end, name, kind in result.unused:
+            what = _UNUSED_WHAT.get(kind, "Variable")
+            out.setdefault(Path(path), []).append(
+                Raw(
+                    "hint",
+                    f"{what} {name} is declared but never used.",
+                    line + 1,
+                    span=(line + 1, line + 1),
+                    source=SRC_UNUSED,
+                    columns=(start, end),
+                )
+            )
         if result.config_error:
             out.setdefault(entry.path, []).append(
                 Raw(
@@ -892,16 +923,26 @@ class Session:
                 if raw is None or raw.index is None or token is None
                 else (("entry", str(entry)), ("result", token), ("index", raw.index))
             )
+            start, end = 0, positions.units(lines[last], self.position_encoding)
+            if raw is not None and raw.columns is not None:
+                start, end = (
+                    positions.editor_character(
+                        lines[first], col, encoding=self.position_encoding, file_encoding=self.config.encoding
+                    )
+                    for col in raw.columns
+                )
             return Diag(
                 first,
                 last,
-                positions.units(lines[last], self.position_encoding),
+                end,
                 severity,
                 message,
                 source,
                 raw.code if raw else None,
                 raw.link if raw else None,
                 data,
+                start,
+                raw is not None and raw.columns is not None,
             )
 
         contributors = [e for e in self.entries.values() if e.contrib.get(path) and e.versions.get(path) == current]
@@ -952,7 +993,10 @@ class Session:
         ):
             out.append(
                 make(
-                    0, "information", INFO_UNINCLUDED if path.suffix.lower() == ".crb" else INFO_NOT_ENTRY, SRC_COMPILE
+                    0,
+                    "information",
+                    INFO_UNINCLUDED if path.suffix.lower() in LIBRARY_SUFFIXES else INFO_NOT_ENTRY,
+                    SRC_COMPILE,
                 )
             )
         return out
@@ -1007,6 +1051,15 @@ class Session:
     def blobs(self) -> dict[Path, bytes]:
         """Bytes of every open document (what the compiler would read), by path."""
         return {p: d.data for p, d in self.docs.items()}
+
+    def profile_for(self, path: Path) -> str:
+        """The logger profile the language features use for `path`: its own entry's when it is
+        one (or would be), else that of the first entry (sorted by path) that read it."""
+        if path in self.entries or path.suffix.lower() not in LIBRARY_SUFFIXES:
+            return self.config.logger_for(path)
+        key = _key(path)
+        reader = next((e for _, e in sorted(self.entries.items()) if e.reads.get(key)), None)
+        return self.config.logger_for(reader.path if reader is not None else path)
 
     def _pick(self, path: Path) -> Analysed | None:
         """The program features use for `path`: its own entry's, else the first entry (sorted by

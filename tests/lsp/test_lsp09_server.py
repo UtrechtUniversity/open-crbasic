@@ -99,7 +99,7 @@ def test_capabilities_list_the_hint_provider_and_both_commands(make_client, tmp_
     client = make_client()
     caps = client.initialize(root, FAST)["capabilities"]
     assert caps["inlayHintProvider"] in (True, {"resolveProvider": False})
-    assert sorted(caps["executeCommandProvider"]["commands"]) == [COMPILER_OUTPUT, TABLE_FIELDS]
+    assert {COMPILER_OUTPUT, TABLE_FIELDS} <= set(caps["executeCommandProvider"]["commands"])
     assert client.shutdown() == 0
 
 

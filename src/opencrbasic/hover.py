@@ -651,17 +651,23 @@ def hover(
     found = decls.get(name.upper())
     if found:
         return Hover(_declaration_markdown(list(found)), line, start, end)
+    md = catalog_markdown(name, profile, help_provider)
+    return None if md is None else Hover(md, line, start, end)
+
+
+def catalog_markdown(name: str, profile, help_provider: HelpLookup | None = None) -> str | None:
+    """The hover markdown of a catalog name (instruction, function, predefined constant,
+    keyword), or None when the profile has no such name."""
     cat = _catalog(profile)
     entry = cat.get(name)
     if entry is None:
         return None
     callable_entry = _callable_entry(cat, name)
-    if callable_entry is not None:
-        help = help_provider.lookup(callable_entry.name) if help_provider is not None else None
-        md = _callable_markdown(callable_entry, help, help_provider is not None, cat.entries(name))
-        sym = cat.get(name, "symbol")
-        if sym is not None:
-            md += f"\n\nAlso a predefined constant: {sym.name} = {sym.value}."
-    else:
-        md = _simple_markdown(entry)
-    return Hover(md, line, start, end)
+    if callable_entry is None:
+        return _simple_markdown(entry)
+    help = help_provider.lookup(callable_entry.name) if help_provider is not None else None
+    md = _callable_markdown(callable_entry, help, help_provider is not None, cat.entries(name))
+    sym = cat.get(name, "symbol")
+    if sym is not None:
+        md += f"\n\nAlso a predefined constant: {sym.name} = {sym.value}."
+    return md
